@@ -4,8 +4,8 @@ import AuthProvider from "@/components/AuthProvider";
 
 export const metadata: Metadata = {
     title: {
-      default: "Crankcase — DIY Mechanic Guides",
-          template: "%s · Crankcase",
+      default: "Crankcase Garage — DIY Mechanic Guides",
+          template: "%s · Crankcase Garage",
     },
     description:
           "Look up fluid capacities, vehicle specs, torque values, and step-by-step repair guides for your car.",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     },
     appleWebApp: {
           capable: true,
-          title: "Crankcase",
+          title: "Crankcase Garage",
           statusBarStyle: "black-translucent",
     },
     other: {
