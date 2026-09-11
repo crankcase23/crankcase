@@ -8,7 +8,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-slate-100 font-bold text-lg">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-orange-500 p-1.5">
-              <CrankcaseMark panFill="#0f172a" accentFill="#f97316" />
+              <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-5 w-5" />
             </span>
             Crank<span className="text-orange-500">case</span>
           </Link>
@@ -40,7 +40,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <div className="sm:col-span-1">
               <div className="flex items-center gap-2 text-slate-100 font-bold">
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-orange-500 p-1.5">
-                  <CrankcaseMark panFill="#0f172a" accentFill="#f97316" />
+                  <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-4 w-4" />
                 </span>
                 Crank<span className="text-orange-500">case</span>
               </div>
