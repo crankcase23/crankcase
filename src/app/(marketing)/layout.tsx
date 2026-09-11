@@ -10,7 +10,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-orange-500 p-1.5">
               <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-5 w-5" />
             </span>
-            Crank<span className="text-orange-500">case</span>
+            Crank<span className="text-orange-500">case</span> Garage
           </Link>
           <nav className="flex items-center gap-6 text-sm">
             <Link href="/#how-it-works" className="hidden text-slate-300 hover:text-white sm:inline">
@@ -42,7 +42,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-orange-500 p-1.5">
                   <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-4 w-4" />
                 </span>
-                Crank<span className="text-orange-500">case</span>
+                Crank<span className="text-orange-500">case</span> Garage
               </div>
               <p className="mt-3 text-sm text-slate-500">
                 Fluid capacities, torque specs, and step-by-step repair guides for the car
@@ -107,7 +107,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             </div>
           </div>
           <div className="mt-10 border-t border-slate-800 pt-6 text-xs text-slate-600">
-            &copy; {new Date().getFullYear()} Crankcase. Early prototype — not a live public
+            &copy; {new Date().getFullYear()} Crankcase Garage. Early prototype — not a live public
             product yet. Specs and torque values are general reference figures, not a
             replacement for your factory service manual.
           </div>
