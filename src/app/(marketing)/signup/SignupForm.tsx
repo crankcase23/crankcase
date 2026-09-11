@@ -50,7 +50,7 @@ export default function SignupPage() {
       </p>
 
       <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-xs text-amber-900">
-        🧰 Heads up — Crankcase is built for routine maintenance (oil changes, brakes,
+                🧰 Heads up — Crankcase Garage is built for routine maintenance (oil changes, brakes,
         fluids, filters). For engine, transmission, or other major repair work, please
         consult a professional mechanic.
       </div>
