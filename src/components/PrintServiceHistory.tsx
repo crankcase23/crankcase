@@ -43,7 +43,7 @@ export default function PrintServiceHistory({
           </div>
           <h1 className="mt-1 text-2xl font-bold">{vehicleLabel}</h1>
           {vehicleSubline && <p className="mt-1 text-sm text-slate-600">{vehicleSubline}</p>}
-          <p className="mt-3 text-xs text-slate-500">Report generated {printedOn} via Crankcase</p>
+          <p className="mt-3 text-xs text-slate-500">Report generated {printedOn} via Crankcase Garage</p>
         </div>
 
         <div className="px-8 py-6 print:px-0">
