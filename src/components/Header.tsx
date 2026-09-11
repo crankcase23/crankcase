@@ -17,7 +17,7 @@ return (
     onClick={() => setOpen(false)}
     >
   <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-orange-500 p-1.5">
-  <CrankcaseMark panFill="#0f172a" accentFill="#f97316" />
+  <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-5 w-5" />
   </span>
   Crank<span className="text-orange-500">case</span>
   </Link>
