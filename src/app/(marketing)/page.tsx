@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Crankcase — DIY Mechanic Guides",
+    title: "Crankcase Garage — DIY Mechanic Guides",
   description:
     "Fluid capacities, real torque specs, and step-by-step repair guides for your exact vehicle, plus a printable service history. Free to start.",
 };
