@@ -44,7 +44,7 @@ export default function PrintVehicleSpecSheet({
             {vehicle.engine} · {vehicle.drivetrain} · {vehicle.transmission}
           </p>
           <p className="mt-3 text-xs text-slate-500">
-            Printed {printedOn} via Crankcase — reference figures only, always confirm
+            Printed {printedOn} via Crankcase Garage — reference figures only, always confirm
             against your factory service manual.
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function PrintVehicleSpecSheet({
           <p className="mt-8 text-xs text-slate-500">
             Reference figures only — always confirm against your vehicle&apos;s factory
             service manual or door-jamb/build sticker before finalizing a fluid fill or
-            torque a fastener. Crankcase covers routine maintenance only; for engine,
+            torque a fastener. Crankcase Garage covers routine maintenance only; for engine,
             transmission, or other major repair work, see a professional mechanic.
           </p>
         </div>
