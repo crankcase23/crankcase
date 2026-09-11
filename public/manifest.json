@@ -1,6 +1,6 @@
 {
-  "name": "Crankcase — DIY Mechanic Guides",
-  "short_name": "Crankcase",
+  "name": "Crankcase Garage — DIY Mechanic Guides",
+  "short_name": "Crankcase Garage",
   "description": "Fluid capacities, torque specs, and step-by-step repair guides for your exact vehicle, plus a printable service history.",
   "start_url": "/garage",
   "scope": "/",
