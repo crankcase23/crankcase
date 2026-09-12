@@ -1,32 +1,33 @@
 @import "tailwindcss";
 
 :root {
-    --background: #020617;
-    --foreground: #f1f5f9;
+  --background: #020617;
+  --foreground: #f1f5f9;
+  --font-display: "Big Shoulders Display", ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
 }
 
 /* Printable pages (e.g. vehicle service history) hide the app chrome and
    render on a plain white page instead of the dark theme. */
 @media print {
-    body > header,
-    body > footer,
-    .no-print {
-          display: none !important;
-    }
-    body {
-          background: #fff;
-    }
+  body > header,
+  body > footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
 }
