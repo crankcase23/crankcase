@@ -15,7 +15,7 @@ export const PRODUCTS: Product[] = [
     imageUrl: "https://images-api.printify.com/mockup/6aa4db3db64b58138306526d/22073/97933/sump-mark-tee.jpg?camera_label=front",
     printifyProductId: "6aa4db3db64b58138306526d",
   },
-];
+  ];
 
 export function getProductBySlug(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
