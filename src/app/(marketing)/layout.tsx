@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/auth";
-import CrankcaseMark from "@/components/CrankcaseMark";
+import CrankcaseBadge from "@/components/CrankcaseBadge";
 import CartLink from "@/components/CartLink";
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
@@ -11,11 +11,8 @@ export default async function MarketingLayout({ children }: { children: React.Re
     <>
       <header className="border-b border-slate-800 bg-slate-950/95 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href={logoHref} className="flex items-center gap-2 text-slate-100 font-bold text-lg">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-orange-500 p-1.5">
-              <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-5 w-5" />
-            </span>
-            Crank<span className="text-orange-500">case</span> Garage
+          <Link href={logoHref} className="flex items-center">
+            <CrankcaseBadge className="h-11 w-auto" />
           </Link>
           <nav className="flex items-center gap-6 text-sm">
             <Link href="/how-it-works" className="hidden text-slate-300 hover:text-white sm:inline">
@@ -55,12 +52,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
         <div className="mx-auto max-w-6xl px-4 py-12">
           <div className="grid gap-10 sm:grid-cols-4">
             <div className="sm:col-span-1">
-              <div className="flex items-center gap-2 text-slate-100 font-bold">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-orange-500 p-1.5">
-                  <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-4 w-4" />
-                </span>
-                Crank<span className="text-orange-500">case</span> Garage
-              </div>
+              <CrankcaseBadge className="h-9 w-auto" />
               <p className="mt-3 text-sm text-slate-500">
                 Fluid capacities, torque specs, and step-by-step repair guides for the car
                 you actually own.
