@@ -1,0 +1,214 @@
+// One-off sync script: pulls the real product catalog from Printify and
+// regenerates src/data/products.ts from it.
+//
+// Usage (from the repo root, Node 20+):
+//   node --env-file=.env.local scripts/printify-sync.mjs
+//
+// Requires two env vars (put them in .env.local, which is gitignored â never
+// commit real values):
+//   PRINTIFY_API_TOKEN  - Personal Access Token, from Printify > My Profile > Connections
+//   PRINTIFY_SHOP_ID    - the numeric id of your Printify store (find it by
+//                          hitting GET https://api.printify.com/v1/shops.json
+//                          with the token above, or from the store URL in the
+//                          Printify dashboard)
+//
+// What it does:
+//   - Fetches every product in the shop (paginated) via the Printify API.
+//   - Keeps only products marked `visible: true` in Printify.
+//   - Category ("apparel" vs "accessories") comes from a tag on the product in
+//     Printify: tag it "apparel" or "accessories" (case-insensitive). Untagged
+//     products default to "apparel" â tag yours to get this right.
+//   - Sizes come from a Printify option group named "Size" if the product has
+//     one. This is a simple first pass: it lists every size value Printify has
+//     for the product, it does NOT check per-variant availability, so a
+//     sold-out single size can still show as selectable. Fine for a
+//     browse-only catalog with checkout disabled; revisit before real checkout.
+//   - Price is the lowest enabled variant's price (Printify prices are in
+//     cents), rounded to a whole dollar.
+//   - Image is the product's default image, falling back to the first image.
+//
+// Safety: if Printify returns zero visible products (e.g. you haven't
+// uploaded anything yet, or the token/shop id is wrong), this script refuses
+// to overwrite src/data/products.ts â it would otherwise wipe out the
+// existing catalog and leave /swag empty. Fix the setup and re-run.
+//
+// Re-running this script is the whole "sync": it always fully regenerates
+// src/data/products.ts from whatever is in Printify right now. Once you've
+// run it successfully, Printify is the source of truth for the catalog â
+// don't hand-edit src/data/products.ts afterward, it'll just get overwritten
+// next sync.
+
+import { writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const API_BASE = "https://api.printify.com/v1";
+const TOKEN = process.env.PRINTIFY_API_TOKEN;
+const SHOP_ID = process.env.PRINTIFY_SHOP_ID;
+
+if (!TOKEN || !SHOP_ID) {
+  console.error(
+    "Missing PRINTIFY_API_TOKEN and/or PRINTIFY_SHOP_ID.\n" +
+      "Put both in .env.local and run with: node --env-file=.env.local scripts/printify-sync.mjs"
+  );
+  process.exit(1);
+}
+
+async function printifyFetch(pathname) {
+  const res = await fetch(`${API_BASE}${pathname}`, {
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      "User-Agent": "crankcase-garage-sync/1.0",
+    },
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Printify API ${pathname} -> ${res.status} ${res.statusText}\n${body}`);
+  }
+  return res.json();
+}
+
+async function fetchAllProducts() {
+  const all = [];
+  let page = 1;
+  for (;;) {
+    const data = await printifyFetch(
+      `/shops/${SHOP_ID}/products.json?page=${page}&limit=50`
+    );
+    const items = data.data ?? [];
+    all.push(...items);
+    const lastPage = data.last_page ?? page;
+    if (items.length === 0 || page >= lastPage) break;
+    page += 1;
+  }
+  return all;
+}
+
+function slugify(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function stripHtml(html) {
+  const text = html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > 180 ? `${text.slice(0, 177)}...` : text;
+}
+
+function pickCategory(tags) {
+  const lower = (tags ?? []).map((t) => t.toLowerCase());
+  if (lower.includes("accessories")) return "accessories";
+  if (lower.includes("apparel")) return "apparel";
+  return "apparel"; // default â tag your Printify products to override
+}
+
+function pickSizes(options) {
+  const sizeGroup = (options ?? []).find((o) => /size/i.test(o.name ?? ""));
+  if (!sizeGroup) return undefined;
+  const values = (sizeGroup.values ?? []).map((v) => v.title).filter(Boolean);
+  return values.length ? values : undefined;
+}
+
+function pickImage(images) {
+  if (!images || images.length === 0) return undefined;
+  const def = images.find((i) => i.is_default);
+  return (def ?? images[0]).src;
+}
+
+function pickPrice(variants) {
+  const enabled = (variants ?? []).filter((v) => v.is_enabled && v.is_available);
+  const pool = enabled.length ? enabled : variants ?? [];
+  if (pool.length === 0) return 0;
+  const cents = Math.min(...pool.map((v) => v.price));
+  return Math.round(cents / 100);
+}
+
+const FALLBACK_TILE_COLOR = "#1e293b";
+
+function toProduct(printifyProduct) {
+  return {
+    id: `printify-${printifyProduct.id}`,
+    slug: slugify(printifyProduct.title),
+    name: printifyProduct.title,
+    description: stripHtml(printifyProduct.description ?? ""),
+    price: pickPrice(printifyProduct.variants),
+    category: pickCategory(printifyProduct.tags),
+    sizes: pickSizes(printifyProduct.options),
+    tileColor: FALLBACK_TILE_COLOR,
+    imageUrl: pickImage(printifyProduct.images),
+    printifyProductId: String(printifyProduct.id),
+  };
+}
+
+function renderProductsFile(products) {
+  const lines = products.map((p) => {
+    const fields = [
+      `    id: ${JSON.stringify(p.id)},`,
+      `    slug: ${JSON.stringify(p.slug)},`,
+      `    name: ${JSON.stringify(p.name)},`,
+      `    description: ${JSON.stringify(p.description)},`,
+      `    price: ${p.price},`,
+      `    category: ${JSON.stringify(p.category)},`,
+      p.sizes ? `    sizes: ${JSON.stringify(p.sizes)},` : null,
+      `    tileColor: ${JSON.stringify(p.tileColor)},`,
+      p.imageUrl ? `    imageUrl: ${JSON.stringify(p.imageUrl)},` : null,
+      p.printifyProductId ? `    printifyProductId: ${JSON.stringify(p.printifyProductId)},` : null,
+    ].filter(Boolean);
+    return `  {\n${fields.join("\n")}\n  }`;
+  });
+
+  return `import { Product } from "@/types/product";
+
+// GENERATED by scripts/printify-sync.mjs â do not hand-edit, it gets
+// overwritten on the next sync. Last synced: ${new Date().toISOString()}
+export const PRODUCTS: Product[] = [
+${lines.join(",\n")},
+];
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return PRODUCTS.find((p) => p.slug === slug);
+}
+`;
+}
+
+async function main() {
+  console.log(`Fetching products for shop ${SHOP_ID}...`);
+  const raw = await fetchAllProducts();
+  const visible = raw.filter((p) => p.visible);
+  console.log(`Found ${raw.length} product(s), ${visible.length} visible.`);
+
+  if (visible.length === 0) {
+    console.error(
+      "No visible products came back from Printify â refusing to overwrite " +
+        "src/data/products.ts (that would empty out /swag). Upload and " +
+        "publish at least one product in Printify, then re-run."
+    );
+    process.exit(1);
+  }
+
+  const products = visible.map(toProduct);
+  const fileContents = renderProductsFile(products);
+
+  const outPath = path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "..",
+    "src",
+    "data",
+    "products.ts"
+  );
+  await writeFile(outPath, fileContents, "utf-8");
+  console.log(`Wrote ${products.length} product(s) to ${outPath}`);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
