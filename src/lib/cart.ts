@@ -11,19 +11,35 @@ export interface CartItem {
 const STORAGE_KEY = "crankcase:cart";
 const listeners = new Set<() => void>();
 
+// Cache the last-read snapshot so getSnapshot returns a stable reference when nothing changed.
+// Without this, useSyncExternalStore sees a new array every render and loops forever.
+let cachedRaw: string | null = null;
+let cachedItems: CartItem[] = [];
+
 function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
+  let raw: string | null = null;
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as CartItem[]) : [];
+    raw = window.localStorage.getItem(STORAGE_KEY);
   } catch {
-    return [];
+    return cachedItems;
   }
+  if (raw === cachedRaw) return cachedItems;
+  cachedRaw = raw;
+  try {
+    cachedItems = raw ? (JSON.parse(raw) as CartItem[]) : [];
+  } catch {
+    cachedItems = [];
+  }
+  return cachedItems;
 }
 
 function writeCart(items: CartItem[]) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  const raw = JSON.stringify(items);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedItems = items;
   listeners.forEach((l) => l());
 }
 
@@ -45,7 +61,7 @@ function sameLine(a: CartItem, productId: string, size?: string) {
 }
 
 export function addToCart(productId: string, quantity = 1, size?: string) {
-  const items = readCart();
+  const items = readCart().slice();
   const existing = items.find((i) => sameLine(i, productId, size));
   if (existing) {
     existing.quantity += quantity;
@@ -62,8 +78,7 @@ export function updateQuantity(productId: string, quantity: number, size?: strin
   if (quantity <= 0) {
     writeCart(items.filter((i) => i !== line));
   } else {
-    line.quantity = quantity;
-    writeCart(items);
+    writeCart(items.map((i) => (i === line ? { ...i, quantity } : i)));
   }
 }
 
