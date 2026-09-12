@@ -18,10 +18,19 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
       <div
-        className="flex h-40 items-center justify-center"
+        className="flex h-40 items-center justify-center overflow-hidden"
         style={{ backgroundColor: product.tileColor }}
       >
-        <CrankcaseMark className="h-14 w-14" accentFill="#f97316" panFill="#0f172a" />
+        {product.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <CrankcaseMark className="h-14 w-14" accentFill="#f97316" panFill="#0f172a" />
+        )}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3 className="font-semibold text-slate-100">{product.name}</h3>
@@ -48,7 +57,7 @@ export default function ProductCard({ product }: { product: Product }) {
           onClick={handleAdd}
           className="mt-2 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-orange-400"
         >
-          {justAdded ? "Added ✓" : "Add to Cart"}
+          {justAdded ? "Added â" : "Add to Cart"}
         </button>
       </div>
     </div>
