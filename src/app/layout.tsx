@@ -1,13 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Big_Shoulders_Display } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
-
-const bigShoulders = Big_Shoulders_Display({
-  subsets: ["latin"],
-  weight: ["700", "800"],
-  variable: "--font-display",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -37,7 +30,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`h-full antialiased ${bigShoulders.variable}`}>
+    <html lang="en" className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-slate-950 text-slate-100">
         <AuthProvider>{children}</AuthProvider>
       </body>
