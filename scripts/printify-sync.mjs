@@ -15,9 +15,11 @@
 // What it does:
 //   - Fetches every product in the shop (paginated) via the Printify API.
 //   - Keeps only products marked `visible: true` in Printify.
-//   - Category ("apparel" vs "accessories") comes from a tag on the product in
-//     Printify: tag it "apparel" or "accessories" (case-insensitive). Untagged
-//     products default to "apparel" â tag yours to get this right.
+//   - Category ("apparel" vs "accessories") is guessed from the product title
+//     (sticker/mug/keychain/etc. -> accessories, everything else -> apparel,
+//     hats included). Printify's "API" store type doesn't expose a tags field
+//     in its editor, so there's nothing to hand-tag; rename the product in
+//     Printify if it lands in the wrong section.
 //   - Sizes come from a Printify option group named "Size" if the product has
 //     one. This is a simple first pass: it lists every size value Printify has
 //     for the product, it does NOT check per-variant availability, so a
@@ -103,11 +105,35 @@ function stripHtml(html) {
   return text.length > 180 ? `${text.slice(0, 177)}...` : text;
 }
 
-function pickCategory(tags) {
+const ACCESSORY_KEYWORDS = [
+  "sticker",
+  "mug",
+  "keychain",
+  "tote",
+  "bag",
+  "magnet",
+  "pin",
+  "poster",
+  "print",
+  "coaster",
+  "phone case",
+  "mousepad",
+  "bottle",
+];
+
+function pickCategory(tags, title) {
+  // Printify's "API" store type doesn't expose a product tags field in its
+  // editor UI, so tags will normally be empty â this is here in case that
+  // ever changes, or you tag products some other way via the API directly.
   const lower = (tags ?? []).map((t) => t.toLowerCase());
   if (lower.includes("accessories")) return "accessories";
   if (lower.includes("apparel")) return "apparel";
-  return "apparel"; // default â tag your Printify products to override
+
+  // Practical fallback: guess from the product title. A hat/cap still
+  // counts as apparel here, matching how this site's catalog is organized.
+  const t = (title ?? "").toLowerCase();
+  if (ACCESSORY_KEYWORDS.some((k) => t.includes(k))) return "accessories";
+  return "apparel";
 }
 
 function pickSizes(options) {
@@ -140,7 +166,7 @@ function toProduct(printifyProduct) {
     name: printifyProduct.title,
     description: stripHtml(printifyProduct.description ?? ""),
     price: pickPrice(printifyProduct.variants),
-    category: pickCategory(printifyProduct.tags),
+    category: pickCategory(printifyProduct.tags, printifyProduct.title),
     sizes: pickSizes(printifyProduct.options),
     tileColor: FALLBACK_TILE_COLOR,
     imageUrl: pickImage(printifyProduct.images),
