@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CrankcaseMark from "@/components/CrankcaseMark";
+import CartLink from "@/components/CartLink";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +20,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <Link href="/pricing" className="hidden text-slate-300 hover:text-white sm:inline">
               Pricing
             </Link>
+            <Link href="/swag" className="hidden text-slate-300 hover:text-white sm:inline">
+              Swag
+            </Link>
+            <CartLink className="hidden text-slate-300 hover:text-white sm:inline" />
             <Link href="/login" className="text-slate-300 hover:text-white">
               Log In
             </Link>
@@ -67,6 +72,16 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                 <li>
                   <Link href="/vehicles/2014-jeep-grand-cherokee-3.6l" className="hover:text-white">
                     Live Demo
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/swag" className="hover:text-white">
+                    Swag
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cart" className="hover:text-white">
+                    Cart
                   </Link>
                 </li>
               </ul>
