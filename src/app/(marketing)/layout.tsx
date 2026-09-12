@@ -1,20 +1,24 @@
 import Link from "next/link";
+import { auth } from "@/auth";
 import CrankcaseMark from "@/components/CrankcaseMark";
 import CartLink from "@/components/CartLink";
 
-export default function MarketingLayout({ children }: { children: React.ReactNode }) {
+export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  const logoHref = session ? "/garage" : "/";
+
   return (
     <>
       <header className="border-b border-slate-800 bg-slate-950/95 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-slate-100 font-bold text-lg">
+          <Link href={logoHref} className="flex items-center gap-2 text-slate-100 font-bold text-lg">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-orange-500 p-1.5">
               <CrankcaseMark panFill="#0f172a" accentFill="#f97316" className="h-5 w-5" />
             </span>
             Crank<span className="text-orange-500">case</span> Garage
           </Link>
           <nav className="flex items-center gap-6 text-sm">
-            <Link href="/#how-it-works" className="hidden text-slate-300 hover:text-white sm:inline">
+            <Link href="/how-it-works" className="hidden text-slate-300 hover:text-white sm:inline">
               How It Works
             </Link>
             <Link href="/pricing" className="hidden text-slate-300 hover:text-white sm:inline">
@@ -24,15 +28,23 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               Swag
             </Link>
             <CartLink className="hidden text-slate-300 hover:text-white sm:inline" />
-            <Link href="/login" className="text-slate-300 hover:text-white">
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-orange-500 px-4 py-2 font-semibold text-slate-950 hover:bg-orange-400"
-            >
-              Get Started
-            </Link>
+            {session ? (
+              <Link href="/garage" className="text-slate-300 hover:text-white">
+                My Garage
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-slate-300 hover:text-white">
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-lg bg-orange-500 px-4 py-2 font-semibold text-slate-950 hover:bg-orange-400"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </header>
@@ -60,7 +72,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               </div>
               <ul className="mt-3 space-y-2 text-sm text-slate-400">
                 <li>
-                  <Link href="/#how-it-works" className="hover:text-white">
+                  <Link href="/how-it-works" className="hover:text-white">
                     How It Works
                   </Link>
                 </li>
@@ -91,16 +103,26 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                 Account
               </div>
               <ul className="mt-3 space-y-2 text-sm text-slate-400">
-                <li>
-                  <Link href="/login" className="hover:text-white">
-                    Log In
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/signup" className="hover:text-white">
-                    Sign Up
-                  </Link>
-                </li>
+                {session ? (
+                  <li>
+                    <Link href="/garage" className="hover:text-white">
+                      My Garage
+                    </Link>
+                  </li>
+                ) : (
+                  <>
+                    <li>
+                      <Link href="/login" className="hover:text-white">
+                        Log In
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/signup" className="hover:text-white">
+                        Sign Up
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
             <div>
