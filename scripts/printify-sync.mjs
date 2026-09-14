@@ -176,10 +176,17 @@ function pickColors(options, variants, images) {
       // color's value id at this group's position to find its variants.
       // A color group's `values` list is every swatch the underlying
       // blueprint supports (Gildan 2000 alone offers 60+), not just the
-      // ones actually offered on this product — require at least one
-      // enabled variant so only real, selected colors make it through.
+      // ones actually offered on this product — `product.variants` is
+      // already scoped to only the combinations picked in Printify's
+      // "Select variants" picker, so requiring at least one matching
+      // variant here (any status) is enough to drop the blueprint-only
+      // colors. Deliberately NOT filtering on is_enabled/is_available: a
+      // color the merchant picked can still have its one SKU flagged
+      // unavailable by the supplier (e.g. a sold-out size), and that
+      // shouldn't erase the whole color from the picker — same reasoning
+      // as pickSizes() above not checking per-variant availability.
       const variantIds = (variants ?? [])
-        .filter((v) => Array.isArray(v.options) && v.options[groupIndex] === value.id && v.is_enabled)
+        .filter((v) => Array.isArray(v.options) && v.options[groupIndex] === value.id)
         .map((v) => v.id);
       if (variantIds.length === 0) return null;
 
