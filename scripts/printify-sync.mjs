@@ -6,33 +6,38 @@
 //
 // Requires two env vars (put them in .env.local, which is gitignored — never
 // commit real values):
-//   PRINTIFY_API_TOKEN  - Personal Access Token, from Printify > My Profile > Connections
-//   PRINTIFY_SHOP_ID    - the numeric id of your Printify store (find it by
-//                          hitting GET https://api.printify.com/v1/shops.json
-//                          with the token above, or from the store URL in the
-//                          Printify dashboard)
+//   PRINTIFY_API_TOKEN - Personal Access Token, from Printify > My Profile > Connections
+//   PRINTIFY_SHOP_ID   - the numeric id of your Printify store (find it by
+//                        hitting GET https://api.printify.com/v1/shops.json
+//                        with the token above, or from the store URL in the
+//                        Printify dashboard)
 //
 // What it does:
-//   - Fetches every product in the shop (paginated) via the Printify API.
-//   - Keeps only products marked `visible: true` in Printify.
-//   - Category ("apparel" vs "accessories") is guessed from the product title
-//     (sticker/mug/keychain/etc. -> accessories, everything else -> apparel,
-//     hats included). Printify's "API" store type doesn't expose a tags field
-//     in its editor, so there's nothing to hand-tag; rename the product in
-//     Printify if it lands in the wrong section.
-//   - Sizes come from a Printify option group named "Size" if the product has
-//     one. This is a simple first pass: it lists every size value Printify has
-//     for the product, it does NOT check per-variant availability, so a
-//     sold-out single size can still show as selectable. Fine for a
-//     browse-only catalog with checkout disabled; revisit before real checkout.
-//   - Colors come from a Printify option group named "Colors"/"Color", when
-//     the product has one. Each color gets its swatch hex (from Printify's
-//     own `colors` field on the option value) and, when available, the
-//     product photo tied to that color's variants. Colors Printify didn't
-//     give a hex for are skipped rather than guessed.
-//   - Price is the lowest enabled variant's price (Printify prices are in
-//     cents), rounded to a whole dollar.
-//   - Image is the product's default image, falling back to the first image.
+// - Fetches every product in the shop (paginated) via the Printify API.
+// - Keeps only products marked `visible: true` in Printify.
+// - Category ("apparel" vs "accessories") is guessed from the product title
+//   (sticker/mug/keychain/etc. -> accessories, everything else -> apparel,
+//   hats included). Printify's "API" store type doesn't expose a tags field
+//   in its editor, so there's nothing to hand-tag; rename the product in
+//   Printify if it lands in the wrong section.
+// - Sizes come from a Printify option group named "Size" if the product has
+//   one. This is a simple first pass: it lists every size value Printify has
+//   for the product, it does NOT check per-variant availability, so a
+//   sold-out single size can still show as selectable. Fine for a
+//   browse-only catalog with checkout disabled; revisit before real checkout.
+// - Colors come from a Printify option group named "Colors"/"Color", when
+//   the product has one. Each color gets its swatch hex (from Printify's
+//   own `colors` field on the option value) and, when available, the
+//   product photo tied to that color's variants. Colors Printify didn't
+//   give a hex for are skipped rather than guessed. IMPORTANT: a Printify
+//   option group's `values` list is every color the underlying blueprint
+//   (e.g. "Gildan 2000") supports — dozens of them — not just the ones
+//   actually offered on this product. Only a color with at least one
+//   `is_enabled` variant is a real, selected color; the rest are just the
+//   blueprint's full swatch catalog and must be filtered out.
+// - Price is the lowest enabled variant's price (Printify prices are in
+//   cents), rounded to a whole dollar.
+// - Image is the product's default image, falling back to the first image.
 //
 // Safety: if Printify returns zero visible products (e.g. you haven't
 // uploaded anything yet, or the token/shop id is wrong), this script refuses
@@ -169,9 +174,14 @@ function pickColors(options, variants, images) {
       // Variant.options is an array of option-VALUE ids, one per option group,
       // in the same order as the product's `options` array — match this
       // color's value id at this group's position to find its variants.
+      // A color group's `values` list is every swatch the underlying
+      // blueprint supports (Gildan 2000 alone offers 60+), not just the
+      // ones actually offered on this product — require at least one
+      // enabled variant so only real, selected colors make it through.
       const variantIds = (variants ?? [])
-        .filter((v) => Array.isArray(v.options) && v.options[groupIndex] === value.id)
+        .filter((v) => Array.isArray(v.options) && v.options[groupIndex] === value.id && v.is_enabled)
         .map((v) => v.id);
+      if (variantIds.length === 0) return null;
 
       const matchingImages = (images ?? []).filter(
         (img) => Array.isArray(img.variant_ids) && img.variant_ids.some((id) => variantIds.includes(id))
