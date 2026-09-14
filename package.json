@@ -11,6 +11,7 @@
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.2",
     "next": "16.3.4",
