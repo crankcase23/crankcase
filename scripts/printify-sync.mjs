@@ -171,22 +171,26 @@ function pickColors(options, variants, images) {
       const hex = Array.isArray(value.colors) && value.colors.length > 0 ? value.colors[0] : undefined;
       if (!hex) return null;
 
-      // Variant.options is an array of option-VALUE ids, one per option group,
-      // in the same order as the product's `options` array — match this
-      // color's value id at this group's position to find its variants.
-      // A color group's `values` list is every swatch the underlying
-      // blueprint supports (Gildan 2000 alone offers 60+), not just the
-      // ones actually offered on this product — `product.variants` is
-      // already scoped to only the combinations picked in Printify's
-      // "Select variants" picker, so requiring at least one matching
-      // variant here (any status) is enough to drop the blueprint-only
-      // colors. Deliberately NOT filtering on is_enabled/is_available: a
-      // color the merchant picked can still have its one SKU flagged
-      // unavailable by the supplier (e.g. a sold-out size), and that
-      // shouldn't erase the whole color from the picker — same reasoning
-      // as pickSizes() above not checking per-variant availability.
+      // Variant.options is an array of option-VALUE ids, but Printify does
+      // NOT reliably keep it in the same group order for every variant —
+      // e.g. on one hat, "One size / Black" came back as [size, color] while
+      // "One size / White" came back as [color, size]. So match by checking
+      // whether this value's id appears ANYWHERE in a variant's options,
+      // never by position (value ids are unique across all option groups,
+      // so membership is unambiguous).
+      //
+      // Also require is_enabled: a color group's `values` list is every
+      // swatch the underlying blueprint supports (Gildan 2000 alone offers
+      // 60+, a trucker hat's multi-tone combos included), not just the ones
+      // actually picked for this product — Printify still creates a variant
+      // entry for each with is_enabled: false. Only a color with at least
+      // one is_enabled variant was actually chosen in Printify's "Select
+      // variants" picker. (Not checking is_available too: a picked color's
+      // one SKU can be flagged out of stock by the supplier without the
+      // merchant having removed the color — same reasoning as pickSizes()
+      // above not checking per-variant availability.)
       const variantIds = (variants ?? [])
-        .filter((v) => Array.isArray(v.options) && v.options[groupIndex] === value.id)
+        .filter((v) => Array.isArray(v.options) && v.options.includes(value.id) && v.is_enabled)
         .map((v) => v.id);
       if (variantIds.length === 0) return null;
 
