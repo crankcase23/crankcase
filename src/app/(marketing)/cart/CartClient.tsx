@@ -36,23 +36,27 @@ export default function CartClient() {
 
       <div className="divide-y divide-slate-800 rounded-xl border border-slate-800 bg-slate-900">
         {lines.map(({ item, product }) => (
-          <div key={`${item.productId}-${item.size ?? ""}`} className="flex items-center gap-4 p-4">
+          <div key={`${item.productId}-${item.size ?? ""}-${item.color ?? ""}`} className="flex items-center gap-4 p-4">
             <div className="flex-1">
               <div className="font-medium text-slate-100">{product?.name}</div>
-              {item.size && <div className="text-sm text-slate-500">Size: {item.size}</div>}
+              {(item.size || item.color) && (
+                <div className="text-sm text-slate-500">
+                  {[item.color, item.size].filter(Boolean).join(" · ")}
+                </div>
+              )}
             </div>
             <input
               type="number"
               min={1}
               value={item.quantity}
-              onChange={(e) => updateQuantity(item.productId, Number(e.target.value), item.size)}
+              onChange={(e) => updateQuantity(item.productId, Number(e.target.value), item.size, item.color)}
               className="w-16 rounded-md border border-slate-700 bg-slate-950 px-2 py-1 text-center text-slate-200"
               aria-label={`Quantity for ${product?.name}`}
             />
             <div className="w-16 text-right text-slate-300">${(product?.price ?? 0) * item.quantity}</div>
             <button
               type="button"
-              onClick={() => removeFromCart(item.productId, item.size)}
+              onClick={() => removeFromCart(item.productId, item.size, item.color)}
               className="text-slate-500 hover:text-white"
               aria-label={`Remove ${product?.name} from cart`}
               title="Remove"

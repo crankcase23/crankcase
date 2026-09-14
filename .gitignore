@@ -8,7 +8,7 @@
 # Production
 /build
 
-# Env files with real secrets â never commit these
+# Env files with real secrets — never commit these
 .env
 .env*.local
 

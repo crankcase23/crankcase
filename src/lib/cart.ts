@@ -5,41 +5,26 @@ import { useSyncExternalStore } from "react";
 export interface CartItem {
   productId: string;
   size?: string;
+  color?: string;
   quantity: number;
 }
 
 const STORAGE_KEY = "crankcase:cart";
 const listeners = new Set<() => void>();
 
-// Cache the last-read snapshot so getSnapshot returns a stable reference when nothing changed.
-// Without this, useSyncExternalStore sees a new array every render and loops forever.
-let cachedRaw: string | null = null;
-let cachedItems: CartItem[] = [];
-
 function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
-  let raw: string | null = null;
   try {
-    raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as CartItem[]) : [];
   } catch {
-    return cachedItems;
+    return [];
   }
-  if (raw === cachedRaw) return cachedItems;
-  cachedRaw = raw;
-  try {
-    cachedItems = raw ? (JSON.parse(raw) as CartItem[]) : [];
-  } catch {
-    cachedItems = [];
-  }
-  return cachedItems;
 }
 
 function writeCart(items: CartItem[]) {
   if (typeof window === "undefined") return;
-  const raw = JSON.stringify(items);
-  window.localStorage.setItem(STORAGE_KEY, raw);
-  cachedRaw = raw;
-  cachedItems = items;
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   listeners.forEach((l) => l());
 }
 
@@ -56,34 +41,35 @@ function getServerSnapshot(): CartItem[] {
   return [];
 }
 
-function sameLine(a: CartItem, productId: string, size?: string) {
-  return a.productId === productId && (a.size ?? null) === (size ?? null);
+function sameLine(a: CartItem, productId: string, size?: string, color?: string) {
+  return a.productId === productId && (a.size ?? null) === (size ?? null) && (a.color ?? null) === (color ?? null);
 }
 
-export function addToCart(productId: string, quantity = 1, size?: string) {
-  const items = readCart().slice();
-  const existing = items.find((i) => sameLine(i, productId, size));
+export function addToCart(productId: string, quantity = 1, size?: string, color?: string) {
+  const items = readCart();
+  const existing = items.find((i) => sameLine(i, productId, size, color));
   if (existing) {
     existing.quantity += quantity;
   } else {
-    items.push({ productId, size, quantity });
+    items.push({ productId, size, color, quantity });
   }
   writeCart(items);
 }
 
-export function updateQuantity(productId: string, quantity: number, size?: string) {
+export function updateQuantity(productId: string, quantity: number, size?: string, color?: string) {
   const items = readCart();
-  const line = items.find((i) => sameLine(i, productId, size));
+  const line = items.find((i) => sameLine(i, productId, size, color));
   if (!line) return;
   if (quantity <= 0) {
     writeCart(items.filter((i) => i !== line));
   } else {
-    writeCart(items.map((i) => (i === line ? { ...i, quantity } : i)));
+    line.quantity = quantity;
+    writeCart(items);
   }
 }
 
-export function removeFromCart(productId: string, size?: string) {
-  const items = readCart().filter((i) => !sameLine(i, productId, size));
+export function removeFromCart(productId: string, size?: string, color?: string) {
+  const items = readCart().filter((i) => !sameLine(i, productId, size, color));
   writeCart(items);
 }
 

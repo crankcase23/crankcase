@@ -4,7 +4,7 @@
 // Usage (from the repo root, Node 20+):
 //   node --env-file=.env.local scripts/printify-sync.mjs
 //
-// Requires two env vars (put them in .env.local, which is gitignored â never
+// Requires two env vars (put them in .env.local, which is gitignored — never
 // commit real values):
 //   PRINTIFY_API_TOKEN  - Personal Access Token, from Printify > My Profile > Connections
 //   PRINTIFY_SHOP_ID    - the numeric id of your Printify store (find it by
@@ -25,18 +25,23 @@
 //     for the product, it does NOT check per-variant availability, so a
 //     sold-out single size can still show as selectable. Fine for a
 //     browse-only catalog with checkout disabled; revisit before real checkout.
+//   - Colors come from a Printify option group named "Colors"/"Color", when
+//     the product has one. Each color gets its swatch hex (from Printify's
+//     own `colors` field on the option value) and, when available, the
+//     product photo tied to that color's variants. Colors Printify didn't
+//     give a hex for are skipped rather than guessed.
 //   - Price is the lowest enabled variant's price (Printify prices are in
 //     cents), rounded to a whole dollar.
 //   - Image is the product's default image, falling back to the first image.
 //
 // Safety: if Printify returns zero visible products (e.g. you haven't
 // uploaded anything yet, or the token/shop id is wrong), this script refuses
-// to overwrite src/data/products.ts â it would otherwise wipe out the
+// to overwrite src/data/products.ts — it would otherwise wipe out the
 // existing catalog and leave /swag empty. Fix the setup and re-run.
 //
 // Re-running this script is the whole "sync": it always fully regenerates
 // src/data/products.ts from whatever is in Printify right now. Once you've
-// run it successfully, Printify is the source of truth for the catalog â
+// run it successfully, Printify is the source of truth for the catalog —
 // don't hand-edit src/data/products.ts afterward, it'll just get overwritten
 // next sync.
 
@@ -123,7 +128,7 @@ const ACCESSORY_KEYWORDS = [
 
 function pickCategory(tags, title) {
   // Printify's "API" store type doesn't expose a product tags field in its
-  // editor UI, so tags will normally be empty â this is here in case that
+  // editor UI, so tags will normally be empty — this is here in case that
   // ever changes, or you tag products some other way via the API directly.
   const lower = (tags ?? []).map((t) => t.toLowerCase());
   if (lower.includes("accessories")) return "accessories";
@@ -149,6 +154,37 @@ function pickImage(images) {
   return (def ?? images[0]).src;
 }
 
+function pickColors(options, variants, images) {
+  const groupIndex = (options ?? []).findIndex((o) => /colou?rs?/i.test(o.name ?? ""));
+  if (groupIndex === -1) return undefined;
+  const colorGroup = options[groupIndex];
+
+  const colors = (colorGroup.values ?? [])
+    .map((value) => {
+      // Printify gives most color option values a `colors` array of hex swatches
+      // (two entries for a heather/marl blend) — use the first as the swatch.
+      const hex = Array.isArray(value.colors) && value.colors.length > 0 ? value.colors[0] : undefined;
+      if (!hex) return null;
+
+      // Variant.options is an array of option-VALUE ids, one per option group,
+      // in the same order as the product's `options` array — match this
+      // color's value id at this group's position to find its variants.
+      const variantIds = (variants ?? [])
+        .filter((v) => Array.isArray(v.options) && v.options[groupIndex] === value.id)
+        .map((v) => v.id);
+
+      const matchingImages = (images ?? []).filter(
+        (img) => Array.isArray(img.variant_ids) && img.variant_ids.some((id) => variantIds.includes(id))
+      );
+      const image = matchingImages.find((img) => img.is_default) ?? matchingImages[0];
+
+      return { name: value.title, hex, imageUrl: image?.src };
+    })
+    .filter(Boolean);
+
+  return colors.length ? colors : undefined;
+}
+
 function pickPrice(variants) {
   const enabled = (variants ?? []).filter((v) => v.is_enabled && v.is_available);
   const pool = enabled.length ? enabled : variants ?? [];
@@ -168,6 +204,7 @@ function toProduct(printifyProduct) {
     price: pickPrice(printifyProduct.variants),
     category: pickCategory(printifyProduct.tags, printifyProduct.title),
     sizes: pickSizes(printifyProduct.options),
+    colors: pickColors(printifyProduct.options, printifyProduct.variants, printifyProduct.images),
     tileColor: FALLBACK_TILE_COLOR,
     imageUrl: pickImage(printifyProduct.images),
     printifyProductId: String(printifyProduct.id),
@@ -184,6 +221,7 @@ function renderProductsFile(products) {
       `    price: ${p.price},`,
       `    category: ${JSON.stringify(p.category)},`,
       p.sizes ? `    sizes: ${JSON.stringify(p.sizes)},` : null,
+      p.colors ? `    colors: ${JSON.stringify(p.colors)},` : null,
       `    tileColor: ${JSON.stringify(p.tileColor)},`,
       p.imageUrl ? `    imageUrl: ${JSON.stringify(p.imageUrl)},` : null,
       p.printifyProductId ? `    printifyProductId: ${JSON.stringify(p.printifyProductId)},` : null,
@@ -193,7 +231,7 @@ function renderProductsFile(products) {
 
   return `import { Product } from "@/types/product";
 
-// GENERATED by scripts/printify-sync.mjs â do not hand-edit, it gets
+// GENERATED by scripts/printify-sync.mjs — do not hand-edit, it gets
 // overwritten on the next sync. Last synced: ${new Date().toISOString()}
 export const PRODUCTS: Product[] = [
 ${lines.join(",\n")},
@@ -213,7 +251,7 @@ async function main() {
 
   if (visible.length === 0) {
     console.error(
-      "No visible products came back from Printify â refusing to overwrite " +
+      "No visible products came back from Printify — refusing to overwrite " +
         "src/data/products.ts (that would empty out /swag). Upload and " +
         "publish at least one product in Printify, then re-run."
     );
