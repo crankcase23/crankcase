@@ -12,19 +12,33 @@ export interface CartItem {
 const STORAGE_KEY = "crankcase:cart";
 const listeners = new Set<() => void>();
 
+// Cache the last-parsed cart alongside the raw string it came from, so
+// getSnapshot() returns the SAME array reference when localStorage hasn't
+// actually changed. useSyncExternalStore requires this — if getSnapshot
+// returns a brand-new array every call (e.g. via JSON.parse each time),
+// React sees a "changed" value on every check and re-renders forever,
+// which is exactly the "Maximum update depth exceeded" crash this caused.
+let cachedRaw: string | null = null;
+let cachedItems: CartItem[] = [];
+
 function readCart(): CartItem[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") return cachedItems;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as CartItem[]) : [];
+    if (raw === cachedRaw) return cachedItems;
+    cachedRaw = raw;
+    cachedItems = raw ? (JSON.parse(raw) as CartItem[]) : [];
+    return cachedItems;
   } catch {
-    return [];
+    return cachedItems;
   }
 }
 
 function writeCart(items: CartItem[]) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  cachedItems = items;
+  cachedRaw = JSON.stringify(items);
+  window.localStorage.setItem(STORAGE_KEY, cachedRaw);
   listeners.forEach((l) => l());
 }
 
@@ -38,7 +52,7 @@ function getSnapshot(): CartItem[] {
 }
 
 function getServerSnapshot(): CartItem[] {
-  return [];
+  return cachedItems;
 }
 
 function sameLine(a: CartItem, productId: string, size?: string, color?: string) {
@@ -47,25 +61,29 @@ function sameLine(a: CartItem, productId: string, size?: string, color?: string)
 
 export function addToCart(productId: string, quantity = 1, size?: string, color?: string) {
   const items = readCart();
-  const existing = items.find((i) => sameLine(i, productId, size, color));
-  if (existing) {
-    existing.quantity += quantity;
+  const idx = items.findIndex((i) => sameLine(i, productId, size, color));
+  let next: CartItem[];
+  if (idx >= 0) {
+    next = items.slice();
+    next[idx] = { ...next[idx], quantity: next[idx].quantity + quantity };
   } else {
-    items.push({ productId, size, color, quantity });
+    next = [...items, { productId, size, color, quantity }];
   }
-  writeCart(items);
+  writeCart(next);
 }
 
 export function updateQuantity(productId: string, quantity: number, size?: string, color?: string) {
   const items = readCart();
-  const line = items.find((i) => sameLine(i, productId, size, color));
-  if (!line) return;
+  const idx = items.findIndex((i) => sameLine(i, productId, size, color));
+  if (idx === -1) return;
+  let next: CartItem[];
   if (quantity <= 0) {
-    writeCart(items.filter((i) => i !== line));
+    next = items.filter((_, i) => i !== idx);
   } else {
-    line.quantity = quantity;
-    writeCart(items);
+    next = items.slice();
+    next[idx] = { ...next[idx], quantity };
   }
+  writeCart(next);
 }
 
 export function removeFromCart(productId: string, size?: string, color?: string) {
