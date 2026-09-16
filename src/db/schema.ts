@@ -30,6 +30,10 @@ export const users = pgTable("users", {
       // Gates access to /admin (src/lib/adminAuth.ts). Flipped by hand in the DB
       // for Andy's own account -- there's no UI to grant this, on purpose.
       isAdmin: boolean("is_admin").notNull().default(false),
+      // Set by the events.signIn hook in src/auth.ts on every successful login.
+      // Nullable -- accounts created before this shipped have never had a login
+      // recorded until they sign in again. See loginEvents below for full history.
+      lastLoginAt: timestamp("last_login_at"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -89,7 +93,6 @@ export const odometerReadings = pgTable(
             pk: primaryKey({ columns: [table.garageEntryId] }),
       }),
       );
-
 // Cache of real Open Labor Project data for vehicles that AREN'T one of our
 // hand-curated catalog entries (src/data/vehicles.ts) -- i.e. anything a user
 // added via VIN decode or the manual "add a vehicle" form. Keyed by a
@@ -148,9 +151,8 @@ export const reminderNotifications = pgTable(
 // /admin dashboard (src/app/admin). Presence of a row = unlocked; there's
 // no boolean to flip, just insert/delete. NOT enforced anywhere yet (no
 // paywall exists -- premium guides/Service History still render in full
-// for everyone, see src/lib/reminders.ts-adjacent build notes) -- this
-// table exists so admin gifting has somewhere real to write to, ready for
-// when enforcement ships.
+// for everyone) -- this table exists so admin gifting has somewhere real to
+// write to, ready for when enforcement ships.
 export const vehicleUnlocks = pgTable(
       "vehicle_unlocks",
       {
@@ -167,3 +169,15 @@ export const vehicleUnlocks = pgTable(
             pk: primaryKey({ columns: [table.userId, table.garageEntryId] }),
       }),
       );
+
+// One row per successful sign-in, purely for the admin "login history" view
+// (src/app/admin) -- recorded via NextAuth's events.signIn hook in
+// src/auth.ts. users.lastLoginAt (most recent only) is cheaper to query for
+// the main admin list; this table backs the full per-user history.
+export const loginEvents = pgTable("login_events", {
+      id: text("id").primaryKey(),
+      userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+      loggedInAt: timestamp("logged_in_at").notNull().defaultNow(),
+});
