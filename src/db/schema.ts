@@ -27,6 +27,9 @@ export const users = pgTable("users", {
       // /account. No separate consent/verification needed like SMS would
       // require -- it's the same address they log in with.
       emailRemindersOptOut: boolean("email_reminders_opt_out").notNull().default(false),
+      // Gates access to /admin (src/lib/adminAuth.ts). Flipped by hand in the DB
+      // for Andy's own account -- there's no UI to grant this, on purpose.
+      isAdmin: boolean("is_admin").notNull().default(false),
       createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -37,8 +40,8 @@ export const users = pgTable("users", {
 export const garageEntries = pgTable("garage_entries", {
       id: text("id").primaryKey(),
       userId: text("user_id")
-        .notNull()
-        .references(() => users.id, { onDelete: "cascade" }),
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
       kind: text("kind").notNull(), // "catalog" | "custom"
       vehicleId: text("vehicle_id"), // set when kind = "catalog"
       year: text("year"),
@@ -55,11 +58,11 @@ export const garageEntries = pgTable("garage_entries", {
 export const serviceEntries = pgTable("service_entries", {
       id: text("id").primaryKey(),
       userId: text("user_id")
-        .notNull()
-        .references(() => users.id, { onDelete: "cascade" }),
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
       garageEntryId: text("garage_entry_id")
-        .notNull()
-        .references(() => garageEntries.id, { onDelete: "cascade" }),
+      .notNull()
+      .references(() => garageEntries.id, { onDelete: "cascade" }),
       date: text("date").notNull(),
       mileage: integer("mileage").notNull(),
       title: text("title").notNull(),
@@ -72,20 +75,20 @@ export const serviceEntries = pgTable("service_entries", {
 // crankcase:odometer:<vehicleId> localStorage key.
 export const odometerReadings = pgTable(
       "odometer_readings",
-    {
+      {
             garageEntryId: text("garage_entry_id")
-              .notNull()
-              .references(() => garageEntries.id, { onDelete: "cascade" }),
-        userId: text("user_id")
-              .notNull()
-              .references(() => users.id, { onDelete: "cascade" }),
+            .notNull()
+            .references(() => garageEntries.id, { onDelete: "cascade" }),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
             miles: integer("miles").notNull(),
             updatedAt: timestamp("updated_at").notNull().defaultNow(),
-    },
+      },
       (table) => ({
-              pk: primaryKey({ columns: [table.garageEntryId] }),
+            pk: primaryKey({ columns: [table.garageEntryId] }),
       }),
-    );
+      );
 
 // Cache of real Open Labor Project data for vehicles that AREN'T one of our
 // hand-curated catalog entries (src/data/vehicles.ts) -- i.e. anything a user
@@ -96,12 +99,12 @@ export const odometerReadings = pgTable(
 // 10-requests/day cap across every user of this app, not per-user.
 //
 // status:
-//   "pending"   -- never successfully fetched yet (may have failed/been
-//                  quota-limited on a prior attempt; safe to retry later)
-//   "ok"        -- fluids has real data, safe to render
-//   "not_found" -- Open Labor Project has no data for this vehicle; don't
-//                  keep re-asking on every page load, but do allow a retry
-//                  after some time in case their database grows
+// "pending" -- never successfully fetched yet (may have failed/been
+// quota-limited on a prior attempt; safe to retry later)
+// "ok" -- fluids has real data, safe to render
+// "not_found" -- Open Labor Project has no data for this vehicle; don't
+// keep re-asking on every page load, but do allow a retry
+// after some time in case their database grows
 export const vehicleDataCache = pgTable("vehicle_data_cache", {
       cacheKey: text("cache_key").primaryKey(),
       make: text("make").notNull(),
@@ -127,15 +130,40 @@ export const vehicleDataCache = pgTable("vehicle_data_cache", {
 // and statuses this references.
 export const reminderNotifications = pgTable(
       "reminder_notifications",
-    {
+      {
             garageEntryId: text("garage_entry_id")
-              .notNull()
-              .references(() => garageEntries.id, { onDelete: "cascade" }),
+            .notNull()
+            .references(() => garageEntries.id, { onDelete: "cascade" }),
             itemKey: text("item_key").notNull(), // MaintenanceItem.key from src/lib/reminders.ts
             status: text("status").notNull(), // ReminderStatus last notified for
             notifiedAt: timestamp("notified_at").notNull().defaultNow(),
-    },
+      },
       (table) => ({
-              pk: primaryKey({ columns: [table.garageEntryId, table.itemKey] }),
+            pk: primaryKey({ columns: [table.garageEntryId, table.itemKey] }),
       }),
-    );
+      );
+
+// One row per (user, vehicle) that has premium access -- either paid for
+// (once Stripe/checkout exists -- not built yet) or comped by Andy via the
+// /admin dashboard (src/app/admin). Presence of a row = unlocked; there's
+// no boolean to flip, just insert/delete. NOT enforced anywhere yet (no
+// paywall exists -- premium guides/Service History still render in full
+// for everyone, see src/lib/reminders.ts-adjacent build notes) -- this
+// table exists so admin gifting has somewhere real to write to, ready for
+// when enforcement ships.
+export const vehicleUnlocks = pgTable(
+      "vehicle_unlocks",
+      {
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            garageEntryId: text("garage_entry_id")
+            .notNull()
+            .references(() => garageEntries.id, { onDelete: "cascade" }),
+            source: text("source").notNull(), // "gift" | "purchase"
+            grantedAt: timestamp("granted_at").notNull().defaultNow(),
+      },
+      (table) => ({
+            pk: primaryKey({ columns: [table.userId, table.garageEntryId] }),
+      }),
+      );
