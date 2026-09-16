@@ -17,6 +17,7 @@ import type { NextRequest } from "next/server";
 
 export function proxy(request: NextRequest) {
   const password = process.env.SITE_PASSWORD;
+  console.log("[proxy-debug]", { host: request.headers.get("host"), hasPassword: Boolean(password), passwordLen: password ? password.length : 0 });
   if (!password) return NextResponse.next();
 
   const authHeader = request.headers.get("authorization");
