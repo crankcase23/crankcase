@@ -44,7 +44,7 @@ let csv = csvRow(["Owner email", "Kind", "Year", "Make", "Model", "Trim", "Engin
         make = v.make;
         model = v.model;
         trim = v.trim;
-        engine = v.engine;
+        engine = v.engine ?? "";
       }
     }
     csv += csvRow([
