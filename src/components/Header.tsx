@@ -5,19 +5,25 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import CrankcaseBadge from "@/components/CrankcaseBadge";
 
-export default function Header() {
+export default function Header({ isAdmin = false }: { isAdmin?: boolean }) {
   const [open, setOpen] = useState(false);
 
   return (
     <header className="border-b border-slate-800 bg-slate-950/95 backdrop-blur sticky top-0 z-10">
       <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
-        <Link
+        <div className="flex items-center gap-3">
+          <Link
           href="/garage"
           className="flex items-center"
           onClick={() => setOpen(false)}
         >
           <CrankcaseBadge className="h-11 w-auto" />
         </Link>
+          {isAdmin && (
+      <Link href="/admin" className="rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-400 hover:bg-amber-500/20">
+      Admin</Link>
+      )}
+        </div>
 
         <nav className="hidden sm:flex items-center gap-5 text-sm text-slate-300">
           <Link href="/garage" className="hover:text-white">
