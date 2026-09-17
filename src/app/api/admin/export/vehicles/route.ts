@@ -43,7 +43,7 @@ let csv = csvRow(["Owner email", "Kind", "Year", "Make", "Model", "Trim", "Engin
         year = String(v.year);
         make = v.make;
         model = v.model;
-        trim = v.trim;
+        trim = v.trim ?? "";
         engine = v.engine ?? "";
       }
     }
