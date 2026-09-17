@@ -34,3 +34,15 @@ export async function verifyPassword(email: string, password: string) {
   const valid = await bcrypt.compare(password, user.passwordHash);
   return valid ? user : null;
 }
+
+
+export async function findUserById(id: string) {
+  const rows = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  return rows[0] ?? null;
+}
+
+export async function updatePassword(userId: string, newPassword: string) {
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+  await db.update(users).set({ passwordHash }).where(eq(users.id, userId));
+  return passwordHash;
+}
