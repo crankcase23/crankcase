@@ -322,7 +322,7 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 </section>
 
 {/* SECONDARY: browse the catalog or enter manually, collapsed by default */}
-<details className="mt-8">
+<details open className="mt-8">
 <summary className="cursor-pointer text-sm font-medium text-slate-400 hover:text-slate-200">
 Don&apos;t have your VIN handy? Browse the catalog or enter details manually
 </summary>
