@@ -411,12 +411,12 @@ image: "/steps/generic-cleanup.svg",
 id: "silverado-1500-oil-change",
 vehicleId: "2020-chevrolet-silverado-1500-5.3l",
 title: "Engine Oil & Filter Change",
-summary: "Drain-and-refill oil service for the 5.3L EcoTec3 V8, with its cartridge-style oil filter housing.",
+summary: "Drain-and-refill oil service for the 5.3L EcoTec3 V8, with its spin-on oil filter.",
 difficulty: "Easy",
 tier: "free",
 estTime: "45-60 min",
 tools: [
-{ name: "Oil filter housing wrench", note: "Cartridge cap, GM-style flute pattern" },
+{ name: "Oil filter wrench", note: "Strap or cap-style for the spin-on filter" },
 { name: "Socket set + ratchet", note: "For drain plug and under-shield fasteners" },
 { name: "Torque wrench", note: "Range covering 15-25 ft-lb" },
 { name: "Large drain pan", note: "10+ qt capacity" },
@@ -426,7 +426,7 @@ tools: [
 ],
 parts: [
 "8.0 qt (7.6 L) dexos1 0W-20 full-synthetic engine oil",
-"ACDelco (or equivalent) cartridge oil filter element + housing O-ring",
+"ACDelco (or equivalent) spin-on oil filter",
 "Drain plug gasket (replace if not self-sealing)",
 ],
 safety: [
@@ -435,11 +435,17 @@ safety: [
 "Used oil and filters are hazardous waste — take them to a recycling/auto parts drop-off, never pour down a drain.",
 ],
 torqueSpecs: [
-{ fastener: "Oil pan drain plug", value: "18 ft-lb (24 Nm)" },
 {
-fastener: "Oil filter housing cap",
-value: "18 ft-lb (24 Nm)",
-notes: "Housing is plastic — do not overtighten, snug + spec torque only.",
+fastener: "Oil pan drain plug",
+value: "18 ft-lb (25 Nm)",
+notes: "Use new crush washer.",
+provenance: { source: "open-labor-project", confidence: "high" },
+},
+{
+fastener: "Spin-on oil filter",
+value: "22 ft-lb (30 Nm)",
+notes: "Reference torque if using a filter wrench — most techs simply hand-tighten plus 3/4 turn past gasket contact instead of using a torque wrench on a spin-on filter.",
+provenance: { source: "open-labor-project", confidence: "high" },
 },
 ],
 steps: [
@@ -467,22 +473,18 @@ image: "/steps/oil-drain.svg",
 },
 {
 number: 4,
-title: "Remove and replace the oil filter cartridge",
+title: "Remove the old filter",
 instructions:
-"The filter housing cap is on the side of the engine block. Unscrew it counterclockwise with the housing wrench, lift out the old filter element, and let residual oil drain from the housing before wiping it clean.",
-image: "/steps/oil-filter-cartridge.svg",
-torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (24 Nm)" }],
+"Locate the spin-on filter on the side of the engine block. Use the filter wrench to break it loose, then unscrew it by hand — have the drain pan positioned underneath, it will spill some oil.",
+image: "/steps/oil-filter-spinon-remove.svg",
 },
 {
 number: 5,
-title: "Install the new filter and reassemble",
+title: "Install the new filter and drain plug",
 instructions:
-"Fit the new filter element into the cap, lightly oil the new O-ring, and thread the cap back in by hand before torquing it. Reinstall the drain plug with a new gasket and torque it to spec.",
+"Wipe the mounting surface clean, lightly oil the new filter's gasket, and spin it on by hand until snug plus the additional turn specified on the filter. Reinstall the drain plug with a new gasket and torque it to spec.",
 image: "/steps/oil-filter-install.svg",
-torque: [
-{ fastener: "Oil filter housing cap", value: "18 ft-lb (24 Nm)" },
-{ fastener: "Oil pan drain plug", value: "18 ft-lb (24 Nm)" },
-],
+torque: [{ fastener: "Oil pan drain plug", value: "18 ft-lb (25 Nm)" }],
 },
 {
 number: 6,
@@ -512,12 +514,12 @@ image: "/steps/generic-cleanup.svg",
 id: "ford-escape-oil-change",
 vehicleId: "2021-ford-escape-1.5l",
 title: "Engine Oil & Filter Change",
-summary: "Drain-and-refill oil service for the 1.5L EcoBoost turbo three-cylinder, with its cartridge-style oil filter.",
+summary: "Drain-and-refill oil service for the 1.5L EcoBoost turbo three-cylinder, with its spin-on oil filter.",
 difficulty: "Easy",
 tier: "free",
-estTime: "40-55 min",
+estTime: "35-50 min",
 tools: [
-{ name: "Oil filter housing wrench", note: "Cartridge cap, Ford-style flute pattern" },
+{ name: "Oil filter wrench", note: "Strap or cap-style for the spin-on filter" },
 { name: "Socket set + ratchet", note: "For drain plug and under-shield fasteners" },
 { name: "Torque wrench", note: "Range covering 10-25 ft-lb" },
 { name: "Drain pan", note: "6+ qt capacity" },
@@ -527,8 +529,8 @@ tools: [
 ],
 parts: [
 "5.7 qt (5.4 L) 0W-20 full-synthetic engine oil",
-"Motorcraft (or equivalent) cartridge oil filter element + housing O-ring",
-"Drain plug gasket (replace if not self-sealing)",
+"Motorcraft FL-910-S (or equivalent) spin-on oil filter",
+"Drain plug crush washer (replace each service)",
 ],
 safety: [
 "Let a hot engine cool for 10-15 min before draining — hot oil causes burns.",
@@ -536,11 +538,16 @@ safety: [
 "Used oil and filters are hazardous waste — take them to a recycling/auto parts drop-off, never pour down a drain.",
 ],
 torqueSpecs: [
-{ fastener: "Oil pan drain plug", value: "20 ft-lb (27 Nm)" },
 {
-fastener: "Oil filter housing cap",
-value: "17 ft-lb (23 Nm)",
-notes: "Housing is plastic — do not overtighten, snug + spec torque only.",
+fastener: "Oil pan drain plug",
+value: "15 ft-lb (20 Nm)",
+notes: "Use new crush washer.",
+provenance: { source: "open-labor-project", confidence: "high" },
+},
+{
+fastener: "Spin-on oil filter",
+value: "Hand-tighten per filter instructions (typically 3/4 turn past gasket contact)",
+notes: "Don't use a torque wrench on a spin-on filter — follow the printed instructions on the filter itself.",
 },
 ],
 steps: [
@@ -568,22 +575,18 @@ image: "/steps/oil-drain.svg",
 },
 {
 number: 4,
-title: "Remove and replace the oil filter cartridge",
+title: "Remove the old filter",
 instructions:
-"The filter housing cap is near the front of the engine, under a plastic cover. Unscrew the cap counterclockwise with the housing wrench, lift out the old filter element, and let residual oil drain from the housing before wiping it clean.",
-image: "/steps/oil-filter-cartridge.svg",
-torque: [{ fastener: "Oil filter housing cap", value: "17 ft-lb (23 Nm)" }],
+"Locate the spin-on filter near the front of the engine block. Use the filter wrench to break it loose, then unscrew it by hand — have the drain pan positioned underneath, it will spill some oil.",
+image: "/steps/oil-filter-spinon-remove.svg",
 },
 {
 number: 5,
-title: "Install the new filter and reassemble",
+title: "Install the new filter and drain plug",
 instructions:
-"Fit the new filter element into the cap, lightly oil the new O-ring, and thread the cap back in by hand before torquing it. Reinstall the drain plug with a new gasket and torque it to spec.",
+"Wipe the mounting surface clean, lightly oil the new filter's gasket, and spin it on by hand until snug plus the additional turn specified on the filter. Reinstall the drain plug with a new crush washer and torque it to spec.",
 image: "/steps/oil-filter-install.svg",
-torque: [
-{ fastener: "Oil filter housing cap", value: "17 ft-lb (23 Nm)" },
-{ fastener: "Oil pan drain plug", value: "20 ft-lb (27 Nm)" },
-],
+torque: [{ fastener: "Oil pan drain plug", value: "15 ft-lb (20 Nm)" }],
 },
 {
 number: 6,
