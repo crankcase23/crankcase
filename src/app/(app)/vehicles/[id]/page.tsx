@@ -6,6 +6,7 @@ import { SpecTable, FluidTable, DifficultyBadge, TierBadge } from "@/components/
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
+import ViewTracker from "@/components/ViewTracker";
 
 export function generateStaticParams() {
   return listVehicles().map((v) => ({ id: v.id }));
@@ -33,6 +34,8 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
+      {/* Records the view for admin analytics. Renders nothing. */}
+      <ViewTracker type="vehicle.viewed" objectId={vehicle.id} objectType="vehicle" />
       <Link href="/garage" className="text-sm text-slate-400 hover:text-slate-200">
         &larr; Back to garage
       </Link>

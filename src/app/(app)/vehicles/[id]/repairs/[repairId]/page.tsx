@@ -5,6 +5,7 @@ import { findVehicle, findRepair, allRepairs } from "@/lib/data";
 import { ToolList, BulletList, TorqueTable, DifficultyBadge, TierBadge } from "@/components/tables";
 import RepairStepCard from "@/components/RepairStepCard";
 import DataDisclaimer from "@/components/DataDisclaimer";
+import ViewTracker from "@/components/ViewTracker";
 
 export function generateStaticParams() {
   return allRepairs().map((r) => ({ id: r.vehicleId, repairId: r.id }));
@@ -33,6 +34,8 @@ export default async function RepairGuidePage(
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
+      {/* Records the view for admin analytics. Renders nothing. */}
+      <ViewTracker type="guide.viewed" objectId={guide.id} objectType="guide" />
       <Link
         href={`/vehicles/${vehicle.id}`}
         className="text-sm text-slate-400 hover:text-slate-200"

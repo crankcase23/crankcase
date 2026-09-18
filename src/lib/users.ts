@@ -32,7 +32,12 @@ export async function verifyPassword(email: string, password: string) {
   const user = await findUserByEmail(email);
   if (!user) return null;
   const valid = await bcrypt.compare(password, user.passwordHash);
-  return valid ? user : null;
+  if (!valid) return null;
+  // Accounts disabled from /admin keep all their data but can no longer sign
+  // in. Every pre-existing row defaults to "active" (see src/db/schema.ts), so
+  // this changes nothing for normal accounts.
+  if (user.status === "disabled") return null;
+  return user;
 }
 
 

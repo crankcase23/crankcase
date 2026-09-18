@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireUserId } from "@/lib/apiAuth";
 import { resolveGarageEntryId } from "@/lib/garageEntries";
 import { listServiceEntries, addServiceEntry } from "@/lib/serviceEntriesDb";
+import { recordEvent, EVENT_TYPES } from "@/lib/events";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const userId = await requireUserId();
@@ -33,5 +34,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const garageEntryId = await resolveGarageEntryId(userId, id, { create: true });
   const entry = await addServiceEntry(userId, garageEntryId!, { date, mileage, title, guideId, notes });
+  await recordEvent({
+    type: EVENT_TYPES.SERVICE_LOGGED,
+    userId,
+    objectType: "garage_entry",
+    objectId: garageEntryId!,
+    metadata: { title, mileage, guideId },
+  });
   return NextResponse.json({ entry });
 }

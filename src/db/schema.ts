@@ -30,6 +30,16 @@ export const users = pgTable("users", {
       // Gates access to /admin (src/lib/adminAuth.ts). Flipped by hand in the DB
       // for Andy's own account -- there's no UI to grant this, on purpose.
       isAdmin: boolean("is_admin").notNull().default(false),
+      // Display name. Signup has never collected one, so this is null for
+      // every existing account; /admin can set it, and the UI falls back to
+      // the email's local part. Added 2026-09-18 with the admin command center.
+      name: text("name"),
+      // "active" | "disabled". Disabled accounts still exist (and keep their
+      // data) but are refused at sign-in by src/auth.ts. Defaults to active so
+      // every pre-existing row keeps working exactly as before.
+      status: text("status").notNull().default("active"),
+      disabledAt: timestamp("disabled_at"),
+      disabledReason: text("disabled_reason"),
       // Set by the events.signIn hook in src/auth.ts on every successful login.
       // Nullable -- accounts created before this shipped have never had a login
       // recorded until they sign in again. See loginEvents below for full history.
@@ -180,4 +190,190 @@ export const loginEvents = pgTable("login_events", {
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
       loggedInAt: timestamp("logged_in_at").notNull().defaultNow(),
+});
+
+// ---------------------------------------------------------------------------
+// Admin command center (added 2026-09-18)
+//
+// Everything below backs /admin. Nothing here is user-facing; the existing
+// tables above are untouched except for two additive nullable/defaulted
+// columns on `users` (name, status) further down in the migration notes.
+// ---------------------------------------------------------------------------
+
+// Append-only record of every administrative action. Written by
+// src/lib/admin/audit.ts -- never updated or deleted from the app. Read by
+// /admin/security. `metadata` holds action-specific context (old/new values,
+// reason, target email) so the log stays useful without a join per row.
+export const adminAuditLog = pgTable("admin_audit_log", {
+      id: text("id").primaryKey(),
+      adminUserId: text("admin_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+      action: text("action").notNull(), // e.g. "user.disable", "unlock.grant", "content.publish"
+      objectType: text("object_type"), // "user" | "garage_entry" | "content" | "guide" | ...
+      objectId: text("object_id"),
+      summary: text("summary"), // one-line human description rendered in the log
+      metadata: jsonb("metadata"),
+      ip: text("ip"),
+      userAgent: text("user_agent"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Role grants for admin accounts. users.isAdmin remains the master switch
+// (an account with isAdmin=false can never reach /admin regardless of rows
+// here); this table decides WHAT an admin may do once inside. An admin with
+// no row is treated as SUPPORT_ADMIN (least privilege) -- see
+// src/lib/admin/rbac.ts. Andy's own account should get a super_admin row.
+export const adminRoles = pgTable(
+      "admin_roles",
+      {
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            role: text("role").notNull(), // "super_admin" | "content_admin" | "support_admin" | "analytics_admin"
+            grantedBy: text("granted_by"),
+            grantedAt: timestamp("granted_at").notNull().defaultNow(),
+      },
+      (table) => ({
+            pk: primaryKey({ columns: [table.userId, table.role] }),
+      }),
+      );
+
+// Generic first-party event stream -- the single source for the Command
+// Center activity feed, the Analytics section, and the funnel. Deliberately
+// one wide table rather than a table per event type: the admin UI always
+// queries it the same way (filter by type/date, order by createdAt) and a
+// single well-indexed append-only table scales to millions of rows fine.
+//
+// No third-party analytics provider is involved; nothing leaves the
+// database. `userId` is null for anonymous/logged-out events.
+export const appEvents = pgTable("app_events", {
+      id: text("id").primaryKey(),
+      type: text("type").notNull(), // see EVENT_TYPES in src/lib/events.ts
+      userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
+      objectType: text("object_type"), // "vehicle" | "guide" | "garage_entry" | ...
+      objectId: text("object_id"),
+      path: text("path"), // request path, when the event is a page/guide view
+      metadata: jsonb("metadata"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Application errors captured by src/lib/errors.ts. This is the "glitches"
+// visibility Andy asked for, kept first-party so it needs no Sentry account
+// or DSN. Rows are grouped in the UI by `fingerprint` (a stable hash of
+// source+message) so one recurring bug is one line, not five hundred.
+export const errorEvents = pgTable("error_events", {
+      id: text("id").primaryKey(),
+      fingerprint: text("fingerprint").notNull(),
+      level: text("level").notNull().default("error"), // "warning" | "error" | "fatal"
+      source: text("source").notNull(), // route / module that threw
+      message: text("message").notNull(),
+      stack: text("stack"),
+      path: text("path"),
+      userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
+      status: text("status").notNull().default("open"), // "open" | "resolved" | "ignored"
+      metadata: jsonb("metadata"),
+      resolvedAt: timestamp("resolved_at"),
+      resolvedBy: text("resolved_by"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// ---------------------------------------------------------------------------
+// Commerce tables -- SCHEMA ONLY, NOTHING WRITES TO THESE YET.
+//
+// There is no Stripe integration and no checkout in this app (see build
+// notes: "don't build Stripe without asking first"). These exist so the
+// Revenue section is built against a real shape rather than invented
+// numbers -- every query in /admin/revenue runs against these tables today
+// and correctly returns zero rows, which the UI renders as "Waiting for
+// data". When payments ship, the provider webhook writes here and the whole
+// section lights up with no UI rework.
+// ---------------------------------------------------------------------------
+
+// A one-time purchase -- today that means a per-vehicle premium unlock, the
+// paid counterpart to the `gift` rows in vehicleUnlocks above.
+export const purchases = pgTable("purchases", {
+      id: text("id").primaryKey(),
+      userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+      garageEntryId: text("garage_entry_id").references(() => garageEntries.id, { onDelete: "set null" }),
+      vehicleId: text("vehicle_id"), // catalog vehicle id, kept denormalized so revenue-by-vehicle survives a garage delete
+      guideId: text("guide_id"), // set if we ever sell a single guide rather than a whole vehicle
+      description: text("description"),
+      amountCents: integer("amount_cents").notNull(),
+      refundedCents: integer("refunded_cents").notNull().default(0),
+      currency: text("currency").notNull().default("usd"),
+      status: text("status").notNull(), // "succeeded" | "pending" | "failed" | "refunded" | "partially_refunded"
+      provider: text("provider"), // "stripe" | ...
+      providerRef: text("provider_ref"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// A recurring plan. Nothing sells subscriptions today; MRR/churn in
+// /admin/revenue are computed from this table and read zero until it fills.
+export const subscriptions = pgTable("subscriptions", {
+      id: text("id").primaryKey(),
+      userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+      plan: text("plan").notNull(),
+      status: text("status").notNull(), // "active" | "trialing" | "past_due" | "canceled"
+      priceCents: integer("price_cents").notNull(),
+      currency: text("currency").notNull().default("usd"),
+      interval: text("interval").notNull().default("month"), // "month" | "year"
+      provider: text("provider"),
+      providerRef: text("provider_ref"),
+      currentPeriodStart: timestamp("current_period_start"),
+      currentPeriodEnd: timestamp("current_period_end"),
+      cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+      canceledAt: timestamp("canceled_at"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Payment-provider event log (charges, failures, refunds, disputes). Drives
+// the "Failed payments" alert on the Command Center once a provider exists.
+export const paymentEvents = pgTable("payment_events", {
+      id: text("id").primaryKey(),
+      type: text("type").notNull(), // "payment_succeeded" | "payment_failed" | "refund" | "dispute" | ...
+      userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
+      purchaseId: text("purchase_id").references(() => purchases.id, { onDelete: "set null" }),
+      subscriptionId: text("subscription_id").references(() => subscriptions.id, { onDelete: "set null" }),
+      amountCents: integer("amount_cents"),
+      currency: text("currency").notNull().default("usd"),
+      status: text("status"), // provider status string
+      message: text("message"),
+      provider: text("provider"),
+      providerRef: text("provider_ref"),
+      resolvedAt: timestamp("resolved_at"), // set when an admin clears a failed payment
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Lightweight CMS: articles, FAQs, announcements and homepage/featured
+// slots all share one table because they share one editorial workflow
+// (draft -> published -> archived) and one set of SEO fields. `kind` keeps
+// them apart; `body` is markdown-ish plain text rendered by the consumer.
+//
+// NOTE: repair guides deliberately do NOT live here. Guide content stays in
+// src/data/repairs.ts under version control -- /admin/guides is a read-only
+// console over that code plus a publish-readiness validator. See
+// src/lib/admin/guides.ts for why.
+export const contentBlocks = pgTable("content_blocks", {
+      id: text("id").primaryKey(),
+      kind: text("kind").notNull(), // "article" | "faq" | "announcement" | "featured"
+      slug: text("slug").notNull().unique(),
+      title: text("title").notNull(),
+      excerpt: text("excerpt"),
+      body: text("body"),
+      status: text("status").notNull().default("draft"), // "draft" | "published" | "archived"
+      seoTitle: text("seo_title"),
+      seoDescription: text("seo_description"),
+      imageUrl: text("image_url"),
+      targetRef: text("target_ref"), // e.g. a guide/vehicle id for "featured" rows
+      sortOrder: integer("sort_order").notNull().default(0),
+      publishedAt: timestamp("published_at"),
+      createdBy: text("created_by"),
+      updatedBy: text("updated_by"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+      updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

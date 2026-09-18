@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createUser } from "@/lib/users";
+import { recordEvent, EVENT_TYPES } from "@/lib/events";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -18,6 +19,8 @@ export async function POST(request: Request) {
 
   try {
     const user = await createUser(email, password);
+    // Feeds the admin activity feed and the signup funnel. Never throws.
+    await recordEvent({ type: EVENT_TYPES.USER_SIGNED_UP, userId: user.id, objectType: "user", objectId: user.id });
     return NextResponse.json({ id: user.id, email: user.email });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Could not create account.";
