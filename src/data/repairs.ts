@@ -518,6 +518,117 @@ image: "/steps/generic-cleanup.svg",
 ],
 },
 
+// --------------------------------------------------------------- SIERRA
+// Same GM T1XX full-size truck/SUV platform, same 5.3L EcoTec3 (L84) engine
+// and 8L80 transmission as the Chevrolet Silverado 1500 above — see
+// claude/content-scaling-strategy-2026-09-19.md. This guide is deliberately
+// near-identical to the Silverado one; only the vehicleId/id and a couple of
+// GMC-specific part-brand mentions change. Torque numbers are the Silverado's
+// own real Open Labor Project data, carried over because it's genuinely the
+// same fastener on the same engine — flagged in each note as not yet
+// independently re-pulled from Open Labor Project under GMC/Sierra 1500's own
+// make/model, which should still happen once quota allows to confirm rather
+// than assume.
+{
+id: "sierra-1500-oil-change",
+vehicleId: "2020-gmc-sierra-1500-5.3l",
+title: "Engine Oil & Filter Change",
+summary: "Drain-and-refill oil service for the 5.3L EcoTec3 V8, with its spin-on oil filter — the same GM engine and layout as the Chevrolet Silverado 1500.",
+difficulty: "Easy",
+tier: "free",
+estTime: "45-60 min",
+tools: [
+{ name: "Oil filter wrench", note: "Strap or cap-style for the spin-on filter" },
+{ name: "Socket set + ratchet", note: "For drain plug and under-shield fasteners" },
+{ name: "Torque wrench", note: "Range covering 15-25 ft-lb" },
+{ name: "Large drain pan", note: "10+ qt capacity" },
+{ name: "Funnel with extension", note: "Truck ride height makes reach longer" },
+{ name: "Jack + 2 jack stands or drive-up ramps" },
+{ name: "Nitrile gloves + safety glasses" },
+],
+parts: [
+"8.0 qt (7.6 L) dexos1 0W-20 full-synthetic engine oil",
+"ACDelco (or equivalent) spin-on oil filter",
+"Drain plug gasket (replace if not self-sealing)",
+],
+safety: [
+"Let a hot engine cool for 10-15 min before draining — hot oil causes burns.",
+"Use jack stands rated for the truck's weight; never work under a vehicle held only by a jack.",
+"Used oil and filters are hazardous waste — take them to a recycling/auto parts drop-off, never pour down a drain.",
+],
+torqueSpecs: [
+{
+fastener: "Oil pan drain plug",
+value: "18 ft-lb (25 Nm)",
+notes: "Same 5.3L EcoTec3 (L84) engine as the Chevrolet Silverado 1500 — this figure is carried over from that vehicle's real Open Labor Project data (high confidence) since GM uses the identical fastener/torque spec across both trucks. Use new crush washer. Not yet independently pulled from Open Labor Project under the Sierra's own make/model.",
+},
+{
+fastener: "Spin-on oil filter",
+value: "22 ft-lb (30 Nm)",
+notes: "Reference torque if using a filter wrench — most techs simply hand-tighten plus 3/4 turn past gasket contact instead of using a torque wrench on a spin-on filter. Same platform-twin sourcing note as the drain plug above.",
+},
+],
+steps: [
+{
+number: 1,
+title: "Warm the engine briefly, then park and secure",
+instructions:
+"Run the engine for 2-3 minutes so the oil flows more easily, then shut it off. Park on level ground, set the parking brake, and chock the wheels.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Raise the vehicle and remove the under-engine shield",
+instructions:
+"Support the truck on jack stands at the frame's rated lift points. Remove the plastic under-engine shield if equipped — it's held by a mix of push-pin fasteners and bolts along its edge.",
+image: "/steps/generic-raise-vehicle.svg",
+warning: "Confirm the vehicle is stable on the stands before reaching underneath.",
+},
+{
+number: 3,
+title: "Drain the old oil",
+instructions:
+"Position the large drain pan under the oil pan's drain plug. Loosen the plug with a socket, then finish removing it by hand and let the oil fully drain — it holds 8 quarts, so give it time.",
+image: "/steps/oil-drain.svg",
+},
+{
+number: 4,
+title: "Remove the old filter",
+instructions:
+"Locate the spin-on filter on the side of the engine block. Use the filter wrench to break it loose, then unscrew it by hand — have the drain pan positioned underneath, it will spill some oil.",
+image: "/steps/oil-filter-spinon-remove.svg",
+},
+{
+number: 5,
+title: "Install the new filter and drain plug",
+instructions:
+"Wipe the mounting surface clean, lightly oil the new filter's gasket, and spin it on by hand until snug plus the additional turn specified on the filter. Reinstall the drain plug with a new gasket and torque it to spec.",
+image: "/steps/oil-filter-install.svg",
+torque: [{ fastener: "Oil pan drain plug", value: "18 ft-lb (25 Nm)" }],
+},
+{
+number: 6,
+title: "Reinstall the under-shield and lower the vehicle",
+instructions: "Reattach the under-engine shield fasteners (if removed) and carefully lower the truck back to the ground.",
+image: "/steps/generic-lower-vehicle.svg",
+},
+{
+number: 7,
+title: "Refill and check",
+instructions:
+"Remove the oil fill cap on the valve cover and add oil in stages, checking the dipstick as you approach 8 qt. Start the engine, let it run ~30 seconds, shut it off, and check under the truck for leaks at the drain plug and filter cap.",
+image: "/steps/oil-fill-check.svg",
+},
+{
+number: 8,
+title: "Final level check and oil-life reset",
+instructions:
+"Wait a few minutes for oil to settle, recheck the dipstick, and top off if needed. Reset the oil-life system via the dash Driver Information Center menu. Dispose of the old oil and filter at a recycling center.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+
 // --------------------------------------------------------------- ESCAPE
 {
 id: "ford-escape-oil-change",
