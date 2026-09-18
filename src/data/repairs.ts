@@ -38,7 +38,11 @@ safety: [
 "Used oil and filters are hazardous waste — take them to a recycling/auto parts drop-off, never pour down a drain.",
 ],
 torqueSpecs: [
-{ fastener: "Oil pan drain plug", value: "20 ft-lb (27 Nm)" },
+{
+fastener: "Oil pan drain plug",
+value: "20 ft-lb (27 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
+},
 {
 fastener: "Oil filter housing cap",
 value: "18 ft-lb (24 Nm)",
@@ -237,11 +241,16 @@ safety: [
 "Recycle used oil and the filter at an auto parts store or recycling center.",
 ],
 torqueSpecs: [
-{ fastener: "Oil pan drain plug", value: "29 ft-lb (39 Nm)" },
+{
+fastener: "Oil pan drain plug",
+value: "29 ft-lb (39 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
+},
 {
 fastener: "Spin-on oil filter",
-value: "Hand-tighten per filter instructions (typically 3/4 turn past gasket contact)",
-notes: "Don't use a torque wrench on a spin-on filter — follow the printed instructions on the filter itself.",
+value: "16 ft-lb (22 Nm)",
+notes: "Reference torque if using a filter wrench — most techs simply hand-tighten plus 3/4 turn past gasket contact instead of using a torque wrench on a spin-on filter.",
+provenance: { source: "open-labor-project", confidence: "high" },
 },
 ],
 steps: [
@@ -334,8 +343,8 @@ safety: [
 torqueSpecs: [
 {
 fastener: "Oil pan drain plug",
-value: "15-20 ft-lb (20-27 Nm)",
-notes: "Ford has specified slightly different values across production runs — confirm the figure for this truck before final torque.",
+value: "20 ft-lb (27 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 },
 {
 fastener: "Oil filter housing cap",
@@ -380,7 +389,7 @@ instructions:
 image: "/steps/oil-filter-install.svg",
 torque: [
 { fastener: "Oil filter housing cap", value: "~25 ft-lb (34 Nm)" },
-{ fastener: "Oil pan drain plug", value: "15-20 ft-lb (20-27 Nm)" },
+{ fastener: "Oil pan drain plug", value: "20 ft-lb (27 Nm)" },
 ],
 },
 {
