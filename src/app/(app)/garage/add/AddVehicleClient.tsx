@@ -3,17 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { listVehicles, matchCatalogVehicles } from "@/lib/data";
+import { matchCatalogVehicles } from "@/lib/data";
 import { getVehicleMakes, getVehicleModels } from "@/lib/vpicBrowse";
 import { useGarage } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
 
 export default function AddVehiclePage() {
 const router = useRouter();
-const { entries, addCatalogVehicle, addCustomVehicle } = useGarage();
-const catalog = listVehicles();
-const inGarage = new Set(entries.filter((e) => e.kind === "catalog").map((e) => e.id));
-
+const { addCatalogVehicle, addCustomVehicle } = useGarage();
 // --- VIN decode: the primary path (2026-09-19 redesign, see
 // claude/crankcase-v1-build-notes.md) — decoding now checks the real
 // catalog first, so a matching vehicle routes to its real specs/guides
@@ -79,11 +76,6 @@ trim: decoded.trim,
 engine: engine || undefined,
 });
 router.push(`/garage/custom/${id}`);
-}
-
-async function handleAddCatalog(id: string) {
-await addCatalogVehicle(id);
-router.push(`/vehicles/${id}`);
 }
 
   // --- Manual entry: dropdown pickers (2026-09-18). Andy asked for dropdowns
@@ -322,48 +314,13 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 </section>
 
 {/* SECONDARY: browse the catalog or enter manually, collapsed by default */}
-<details open className="mt-8">
-<summary className="cursor-pointer text-sm font-medium text-slate-400 hover:text-slate-200">
-Don&apos;t have your VIN handy? Browse the catalog or enter details manually
-</summary>
-
-<section className="mt-5">
-<h2 className="mb-3 text-lg font-semibold text-slate-100">
-Vehicles with full guides
-</h2>
-<div className="grid gap-3 sm:grid-cols-2">
-{catalog.map((v) => {
-const already = inGarage.has(v.id);
-return (
-<button
-key={v.id}
-type="button"
-disabled={already}
-onClick={() => handleAddCatalog(v.id)}
-className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-left transition enabled:hover:border-orange-500 enabled:hover:bg-slate-800/80 disabled:cursor-not-allowed disabled:opacity-50"
->
-<div className="text-xs uppercase tracking-wide text-orange-400 font-semibold">
-{v.year}
-</div>
-<div className="mt-0.5 font-bold text-slate-100">
-{v.make} {v.model} {v.trim}
-</div>
-<div className="mt-1 text-xs text-slate-500">{v.engine}</div>
-<div className="mt-2 text-xs font-medium text-orange-400">
-{already ? "Already in your garage" : "+ Add to garage"}
-</div>
-</button>
-);
-})}
-</div>
-</section>
 
 <section className="mt-8 rounded-xl border border-slate-800 bg-slate-900/60 p-5">
-<h2 className="text-lg font-semibold text-slate-100">Still don&apos;t see it?</h2>
+<h2 className="text-lg font-semibold text-slate-100">Don&apos;t have your VIN?</h2>
 <p className="mt-1 text-sm text-slate-400">
-Add it anyway. We won&apos;t have curated specs or torque data for it
-yet, but you can still log service history and get maintenance
-reminders.
+Pick it from the lists below. If we have curated specs and guides for
+it, we will take you straight to them. If not, you can still log
+service history and get maintenance reminders.
 </p>
 <form onSubmit={handleAddCustom} className="mt-4 grid gap-3 sm:grid-cols-2">
   <div>
@@ -530,7 +487,6 @@ reminders.
   </button>
 </form>
 </section>
-</details>
 </div>
 );
 }
