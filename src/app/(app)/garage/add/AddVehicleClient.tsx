@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { listVehicles, matchCatalogVehicles } from "@/lib/data";
+import { getVehicleMakes, getVehicleModels } from "@/lib/vpicBrowse";
 import { useGarage } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
 
@@ -85,25 +86,118 @@ await addCatalogVehicle(id);
 router.push(`/vehicles/${id}`);
 }
 
-// --- Manual entry (fallback, tucked under the details toggle below)
-const [year, setYear] = useState("");
-const [make, setMake] = useState("");
-const [model, setModel] = useState("");
-const [trim, setTrim] = useState("");
-const [engine, setEngine] = useState("");
+  // --- Manual entry: dropdown pickers (2026-09-18). Andy asked for dropdowns
+  // for people who do not have a VIN handy. Year/Make/Model come from the free
+  // NHTSA vPIC browse endpoints (src/lib/vpicBrowse.ts). Trim and Engine are
+  // real dropdowns when our own catalog covers that year/make/model, and fall
+  // back to free text otherwise, because vPIC only returns trim and engine
+  // from an actual VIN decode and has no browseable list of either.
+  const [year, setYear] = useState("");
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [trim, setTrim] = useState("");
+  const [engine, setEngine] = useState("");
+  const [startMileage, setStartMileage] = useState("");
+  const [makes, setMakes] = useState<string[]>([]);
+  const [models, setModels] = useState<string[]>([]);
+  const [loadingModels, setLoadingModels] = useState(false);
+  const [savingCustom, setSavingCustom] = useState(false);
 
-async function handleAddCustom(e: React.FormEvent) {
-e.preventDefault();
-if (!year.trim() && !make.trim() && !model.trim()) return;
-const id = await addCustomVehicle({
-year: year.trim() || undefined,
-make: make.trim() || undefined,
-model: model.trim() || undefined,
-trim: trim.trim() || undefined,
-engine: engine.trim() || undefined,
-});
-router.push(`/garage/custom/${id}`);
-}
+  const years = useMemo(() => {
+    const newest = new Date().getFullYear() + 1;
+    return Array.from({ length: newest - 1980 }, (_, i) => String(newest - i));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    getVehicleMakes().then((list) => {
+      if (!cancelled) setMakes(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!year || !make) {
+      setModels([]);
+      return;
+    }
+    let cancelled = false;
+    setLoadingModels(true);
+    setModels([]);
+    getVehicleModels(make, year)
+      .then((list) => {
+        if (!cancelled) setModels(list);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingModels(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [year, make]);
+
+  // The trim and engine choices we can offer with confidence come from our own
+  // curated catalog, not from vPIC.
+  const catalogMatches = useMemo(
+    () => (year && make && model ? matchCatalogVehicles({ year, make, model }) : []),
+    [year, make, model]
+  );
+  const trimOptions = useMemo(
+    () => [...new Set(catalogMatches.map((v) => v.trim).filter(Boolean))] as string[],
+    [catalogMatches]
+  );
+  const engineOptions = useMemo(
+    () => [...new Set(catalogMatches.map((v) => v.engine).filter(Boolean))] as string[],
+    [catalogMatches]
+  );
+
+  const fieldClass =
+    "w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none disabled:opacity-40";
+  const labelClass = "mb-1 block text-xs text-slate-400";
+
+  // Optional. Reminders read the odometer to sharpen their estimates, so
+  // capturing it at add time means they are useful without a second visit.
+  async function saveStartMileage(vehicleId: string) {
+    const miles = Number(startMileage.replace(/[^0-9]/g, ""));
+    if (!Number.isFinite(miles) || miles <= 0) return;
+    await fetch(`/api/garage/${vehicleId}/odometer`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value: miles }),
+    }).catch(() => {});
+  }
+
+  async function handleAddCustom(e: React.FormEvent) {
+    e.preventDefault();
+    if (!year || !make || !model) return;
+    setSavingCustom(true);
+    try {
+      // If the picks land on a vehicle we actually have curated data for, send
+      // them to the real page rather than a bare custom entry.
+      const exact =
+        catalogMatches.find((v) => v.engine === engine) ??
+        (catalogMatches.length === 1 ? catalogMatches[0] : undefined);
+      if (exact) {
+        await addCatalogVehicle(exact.id);
+        await saveStartMileage(exact.id);
+        router.push(`/vehicles/${exact.id}`);
+        return;
+      }
+      const id = await addCustomVehicle({
+        year: year || undefined,
+        make: make || undefined,
+        model: model || undefined,
+        trim: trim.trim() || undefined,
+        engine: engine.trim() || undefined,
+      });
+      await saveStartMileage(id);
+      router.push(`/garage/custom/${id}`);
+    } finally {
+      setSavingCustom(false);
+    }
+  }
 
 return (
 <div className="mx-auto max-w-3xl px-4 py-10">
@@ -272,64 +366,168 @@ yet, but you can still log service history and get maintenance
 reminders.
 </p>
 <form onSubmit={handleAddCustom} className="mt-4 grid gap-3 sm:grid-cols-2">
-<div>
-<label htmlFor="year" className="mb-1 block text-xs text-slate-400">Year</label>
-<input
-id="year"
-value={year}
-onChange={(e) => setYear(e.target.value)}
-placeholder="2016"
-className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
-/>
-</div>
-<div>
-<label htmlFor="make" className="mb-1 block text-xs text-slate-400">Make</label>
-<input
-id="make"
-value={make}
-onChange={(e) => setMake(e.target.value)}
-placeholder="Toyota"
-className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
-/>
-</div>
-<div>
-<label htmlFor="model" className="mb-1 block text-xs text-slate-400">Model</label>
-<input
-id="model"
-value={model}
-onChange={(e) => setModel(e.target.value)}
-placeholder="Tacoma"
-className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
-/>
-</div>
-<div>
-<label htmlFor="trim" className="mb-1 block text-xs text-slate-400">Trim (optional)</label>
-<input
-id="trim"
-value={trim}
-onChange={(e) => setTrim(e.target.value)}
-placeholder="TRD Off-Road"
-className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
-/>
-</div>
-<div className="sm:col-span-2">
-<label htmlFor="engine" className="mb-1 block text-xs text-slate-400">Engine (optional)</label>
-<input
-id="engine"
-value={engine}
-onChange={(e) => setEngine(e.target.value)}
-placeholder="3.5L V6"
-className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
-/>
-</div>
-<div className="sm:col-span-2">
-<button
-type="submit"
-className="rounded-lg bg-orange-500 px-5 py-2.5 font-semibold text-slate-950 hover:bg-orange-400"
->
-Add to garage
-</button>
-</div>
+  <div>
+    <label htmlFor="year" className={labelClass}>
+      Year
+    </label>
+    <select
+      id="year"
+      value={year}
+      onChange={(e) => {
+        setYear(e.target.value);
+        setModel("");
+        setTrim("");
+        setEngine("");
+      }}
+      className={fieldClass}
+    >
+      <option value="">Select a year</option>
+      {years.map((y) => (
+        <option key={y} value={y}>
+          {y}
+        </option>
+      ))}
+    </select>
+  </div>
+  <div>
+    <label htmlFor="make" className={labelClass}>
+      Make
+    </label>
+    <select
+      id="make"
+      value={make}
+      onChange={(e) => {
+        setMake(e.target.value);
+        setModel("");
+        setTrim("");
+        setEngine("");
+      }}
+      disabled={!year}
+      className={fieldClass}
+    >
+      <option value="">{makes.length ? "Select a make" : "Loading makes…"}</option>
+      {makes.map((m) => (
+        <option key={m} value={m}>
+          {m}
+        </option>
+      ))}
+    </select>
+  </div>
+  <div>
+    <label htmlFor="model" className={labelClass}>
+      Model
+    </label>
+    <select
+      id="model"
+      value={model}
+      onChange={(e) => {
+        setModel(e.target.value);
+        setTrim("");
+        setEngine("");
+      }}
+      disabled={!year || !make || loadingModels}
+      className={fieldClass}
+    >
+      <option value="">
+        {loadingModels
+          ? "Loading models…"
+          : models.length
+            ? "Select a model"
+            : "Pick a year and make first"}
+      </option>
+      {models.map((m) => (
+        <option key={m} value={m}>
+          {m}
+        </option>
+      ))}
+    </select>
+  </div>
+  <div>
+    <label htmlFor="trim" className={labelClass}>
+      Trim{trimOptions.length === 0 ? " (optional)" : ""}
+    </label>
+    {trimOptions.length > 0 ? (
+      <select
+        id="trim"
+        value={trim}
+        onChange={(e) => setTrim(e.target.value)}
+        className={fieldClass}
+      >
+        <option value="">Select a trim</option>
+        {trimOptions.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        id="trim"
+        value={trim}
+        onChange={(e) => setTrim(e.target.value)}
+        placeholder="LT, EX, XLT"
+        className={fieldClass}
+      />
+    )}
+  </div>
+  <div>
+    <label htmlFor="engine" className={labelClass}>
+      Engine{engineOptions.length === 0 ? " (optional)" : ""}
+    </label>
+    {engineOptions.length > 0 ? (
+      <select
+        id="engine"
+        value={engine}
+        onChange={(e) => setEngine(e.target.value)}
+        className={fieldClass}
+      >
+        <option value="">Select an engine</option>
+        {engineOptions.map((en) => (
+          <option key={en} value={en}>
+            {en}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        id="engine"
+        value={engine}
+        onChange={(e) => setEngine(e.target.value)}
+        placeholder="3.6L V6"
+        className={fieldClass}
+      />
+    )}
+  </div>
+  <div>
+    <label htmlFor="startMileage" className={labelClass}>
+      Current mileage (optional)
+    </label>
+    <input
+      id="startMileage"
+      value={startMileage}
+      onChange={(e) => setStartMileage(e.target.value)}
+      inputMode="numeric"
+      placeholder="118500"
+      className={fieldClass}
+    />
+  </div>
+  {catalogMatches.length > 0 && (
+    <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300 sm:col-span-2">
+      We have full specs, fluid capacities and guides for this one. Pick your
+      engine and it will land on the curated page.
+    </p>
+  )}
+  <p className="text-xs text-slate-500 sm:col-span-2">
+    Mileage is optional and only sharpens your maintenance reminders. You can
+    set or change it any time on the vehicle page.
+  </p>
+  <button
+    type="submit"
+    disabled={!year || !make || !model || savingCustom}
+    className="rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-50 sm:col-span-2"
+  >
+    {savingCustom ? "Adding…" : "+ Add to garage"}
+  </button>
 </form>
 </section>
 </details>
