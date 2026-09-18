@@ -213,7 +213,7 @@ fluids: [
 name: "Engine Oil",
 capacity: "8.0 qt (7.6 L) with filter change",
 spec: "dexos1 0W-20 full synthetic",
-notes: "Cartridge-style filter on the side of the block, not spin-on — needs a filter wrench, not a strap tool.",
+notes: "Spin-on canister filter, not a cartridge — a standard filter wrench or strap tool works.",
 },
 {
 name: "Engine Coolant",
@@ -278,7 +278,7 @@ fluids: [
 name: "Engine Oil",
 capacity: "5.7 qt (5.4 L) with filter change",
 spec: "0W-20 full synthetic, API SN or higher",
-notes: "Cartridge-style filter under a cap near the front of the engine, not spin-on.",
+notes: "Spin-on canister filter (Motorcraft FL-910-S or equivalent), not a cartridge — a standard filter wrench or strap tool works.",
 },
 {
 name: "Engine Coolant",
