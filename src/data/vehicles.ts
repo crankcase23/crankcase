@@ -253,6 +253,56 @@ spec: "All-season washer fluid",
 },
 ],
 },
+{
+id: "2021-ford-escape-1.5l",
+year: 2021,
+make: "Ford",
+model: "Escape",
+trim: "SE (FWD)",
+engine: "1.5L EcoBoost Turbo I3",
+drivetrain: "FWD",
+transmission: "8-speed automatic (8F35)",
+specs: [
+{ label: "Engine", value: "1.5L turbocharged I3, 181 hp / 190 lb-ft" },
+{ label: "Drivetrain", value: "FWD" },
+{ label: "Transmission", value: "8-speed automatic (8F35)" },
+{ label: "Curb weight", value: "~3,400 lb" },
+{ label: "Fuel tank", value: "18.6 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 96R, ~590 CCA" },
+{ label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm)" },
+{ label: "Front tire size (SE)", value: "225/60R17" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "5.7 qt (5.4 L) with filter change",
+spec: "0W-20 full synthetic, API SN or higher",
+notes: "Cartridge-style filter under a cap near the front of the engine, not spin-on.",
+},
+{
+name: "Engine Coolant",
+capacity: "~6.9 qt (6.5 L) system capacity",
+spec: "Motorcraft Orange (Gold) Full-Life coolant, 50/50 premix",
+},
+{
+name: "Automatic Transmission Fluid (8F35)",
+capacity: "~3.9 qt (3.7 L) for a pan drain-and-fill (service fill)",
+spec: "Motorcraft Mercon ULV (ultra-low viscosity ATF)",
+notes: "Ford calls this transmission \"filled for life\" with no dipstick — a fluid/filter service only replaces what drains from the pan.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~3.9 qt (3.7 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+},
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
