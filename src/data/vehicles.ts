@@ -28,7 +28,7 @@ specs: [
 { label: "Curb weight", value: "~4,510 lb" },
 { label: "Fuel tank", value: "24.6 gal" },
 { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
-{ label: "Battery", value: "Group size 48 (H6), ~700 CCA" },
+{ label: "Battery", value: "Group H7 (94R) AGM, ~800 CCA" },
 { label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm)" },
 { label: "Front tire size (base)", value: "245/70R17" },
 ],
