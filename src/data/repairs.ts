@@ -2584,8 +2584,16 @@ image: "/steps/generic-cleanup.svg",
 ...silveradoK2xxGuides,
 ];
 
-const VEHICLE_GUIDE_ALIASES: Record<string, string> = { "2018-chevrolet-silverado-1500-5.3l-wt": "2018-chevrolet-silverado-1500-5.3l" }; export function getRepairsForVehicle(vehicleId: string): RepairGuide[] { const canonicalId = VEHICLE_GUIDE_ALIASES[vehicleId] ?? vehicleId;
-return repairs.filter((r) => r.vehicleId === canonicalId);
+// There was briefly an alias map here pointing a separate "Work Truck Regular
+// Cab" vehicle id at this one's guides. That entry is gone: cab and trim are no
+// longer separate catalog vehicles, because two entries sharing an engine, a
+// transmission and every fluid meant duplicated guides, double-counted coverage
+// and a VIN decode that asked the reader a question it could already answer.
+// One catalog entry per year + model + engine + drivetrain. If cab or trim ever
+// genuinely changes what someone buys or torques, that is a guide variant, not
+// a second vehicle. See claude/silverado-catalog-collapse-2026-09-19.md.
+export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {
+return repairs.filter((r) => r.vehicleId === vehicleId);
 }
 
 export function getRepairById(id: string): RepairGuide | undefined {
