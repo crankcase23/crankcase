@@ -376,6 +376,63 @@ spec: "All-season washer fluid",
 },
 ],
 },
+{
+  id: "2021-ford-explorer-2.3l",
+    year: 2021,
+    make: "Ford",
+    model: "Explorer",
+    trim: "XLT (AWD)",
+    engine: "2.3L EcoBoost Turbo I4",
+    drivetrain: "AWD",
+    transmission: "10-speed automatic (10R80)",
+    specs: [
+    { label: "Engine", value: "2.3L EcoBoost turbo I4, 300 hp / 310 lb-ft" },
+    { label: "Drivetrain", value: "AWD" },
+    { label: "Transmission", value: "10-speed automatic (10R80)" },
+    { label: "Curb weight", value: "~4,555 lb" },
+    { label: "Fuel tank", value: "18.6 gal" },
+    { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+    { label: "Battery", value: "Group size 96R, ~650 CCA" },
+    { label: "Wheel lug nut torque", value: "150 ft-lb (203 Nm)" },
+    { label: "Front tire size (XLT)", value: "255/60R18" },
+    ],
+    fluids: [
+    {
+      name: "Engine Oil",
+      capacity: "5.7 qt (5.4 L) with filter change",
+      spec: "5W-30 full synthetic, API SN or higher",
+      notes: "Cartridge-style filter, same family as other Ford EcoBoost engines -- not a spin-on canister. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+    },
+    {
+      name: "Engine Coolant",
+      capacity: "~12.7 qt (12.0 L) system capacity",
+      spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix",
+      notes: "Curated reference figure, not yet independently verified against a factory source -- Ford has used more than one coolant color/spec across EcoBoost applications and model years (see the F-150 and Escape entries in this file for how easily this gets mixed up). Confirm against your underhood label before topping off or flushing.",
+    },
+    {
+      name: "Automatic Transmission Fluid (10R80)",
+      capacity: "~4-5 qt (3.8-4.7 L) for a pan drain-and-fill (service fill)",
+      spec: "Motorcraft Mercon ULV (ultra-low viscosity ATF)",
+      notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan. Same 10R80 transmission family Ford uses across several platforms.",
+    },
+    {
+      name: "Rear Drive Unit Fluid (AWD)",
+      capacity: "~1.0-1.5 qt (0.9-1.4 L), estimate",
+      spec: "Motorcraft SAE 75W-140 synthetic gear oil (typical for Ford AWD rear drive units) -- unconfirmed for this specific application",
+      notes: "The CD6 platform's AWD system uses a power transfer unit and a separate rear drive module rather than a traditional transfer case plus differential. Capacity and exact spec are not yet confirmed against a factory source for this vehicle -- treat this figure as a rough placeholder until verified.",
+    },
+    {
+      name: "Brake Fluid",
+      capacity: "Fill to MAX line in reservoir",
+      spec: "DOT 3",
+    },
+    {
+      name: "Windshield Washer Fluid",
+      capacity: "~7.5 qt (7.1 L) reservoir",
+      spec: "All-season washer fluid",
+    },
+    ],
+    },
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
