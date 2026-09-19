@@ -153,14 +153,14 @@ safety: [
 ],
 torqueSpecs: [
 {
-fastener: "Caliper slide/guide bolts",
-value: "18-25 ft-lb (24-34 Nm)",
-notes: "Range varies by caliper bracket design — confirm the exact figure for this caliper before final torque.",
+fastener: "Caliper slide/guide bolts (front)",
+value: "41 ft-lb (55 Nm)",
+notes: "Factory figure from the WK2 service manual brake torque table (55 Nm). Independently confirmed by a technician quoting 41 ft-lb for the front guide pins on a 2015 Grand Cherokee Laredo 2WD. The front pins take roughly twice the rear - do not carry a rear figure forward.",
 },
 {
-fastener: "Caliper bracket-to-knuckle bolts",
-value: "Not verified - look this up before reassembly",
-notes: "Rotors only. We have not been able to source a figure we trust for this vehicle: the data service returned values that contradicted each other on identical hardware, and the enthusiast forums carrying the answer are paywalled. This bolt holds the caliper to the car, so confirm it against the factory service manual or a shop before final tightening rather than guessing.",
+fastener: "Caliper bracket (adapter) bolts to knuckle",
+value: "148 ft-lb (200 Nm)",
+notes: "Rotors only. From the 2014-2016 service manual brake torque table, non-SRT. Corroborated two ways: the other three rows of that same table match figures sourced independently, and the fastener is an M14x1.5 grade 10.9 bolt whose published limit is about 154 ft-lb, which makes 148 a normal factory spec for it. Heads up for early trucks - the 2011 manual front suspension table lists 89 ft-lb for this bolt, so on a 2011-2013 WK2 confirm before torquing.",
 },
 { fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" },
 ],
