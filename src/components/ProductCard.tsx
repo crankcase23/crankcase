@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Product } from "@/types/product";
 import { addToCart } from "@/lib/cart";
+import { pickDefaultColor, productHref } from "@/lib/products";
 import CrankcaseMark from "@/components/CrankcaseMark";
 
 export default function ProductCard({ product }: { product: Product }) {
   const [size, setSize] = useState(product.sizes?.[0]);
-  const [color, setColor] = useState(product.colors?.[0]?.name);
+  const [color, setColor] = useState(pickDefaultColor(product.colors)?.name);
   const [justAdded, setJustAdded] = useState(false);
 
   const selectedColor = product.colors?.find((c) => c.name === color);
@@ -21,7 +23,8 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
-      <div
+      <Link
+        href={productHref(product)}
         className="flex h-40 items-center justify-center overflow-hidden"
         style={{ backgroundColor: selectedColor?.hex ?? product.tileColor }}
       >
@@ -35,9 +38,11 @@ export default function ProductCard({ product }: { product: Product }) {
         ) : (
           <CrankcaseMark className="h-14 w-14" accentFill="#f97316" panFill="#0f172a" />
         )}
-      </div>
+      </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="font-semibold text-slate-100">{product.name}</h3>
+        <Link href={productHref(product)} className="w-fit">
+          <h3 className="font-semibold text-slate-100 hover:text-orange-400">{product.name}</h3>
+        </Link>
         <p className="text-sm text-slate-400">{product.description}</p>
 
         {product.colors && (

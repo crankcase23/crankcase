@@ -41,6 +41,12 @@
 // - Price is the lowest enabled variant's price (Printify prices are in
 //   cents), rounded to a whole dollar.
 // - Image is the product's default image, falling back to the first image.
+// - fullDescription carries the complete, untruncated description (for the
+//   product detail page); description stays the ~180-char card blurb.
+// - Each color also gets a backImageUrl when Printify has a "back"-angle
+//   mockup for it (see pickBackImage's comment for the caveat on how that's
+//   detected), and every product gets up to 6 additionalImageUrls (its
+//   other mockups) for the detail page's photo gallery.
 //
 // Safety: if Printify returns zero visible products (e.g. you haven't
 // uploaded anything yet, or the token/shop id is wrong), this script refuses
@@ -106,8 +112,8 @@ function slugify(title) {
     .replace(/^-+|-+$/g, "");
 }
 
-function stripHtml(html) {
-  const text = html
+function cleanText(html) {
+  return html
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
@@ -115,7 +121,17 @@ function stripHtml(html) {
     .replace(/&quot;/g, '"')
     .replace(/\s+/g, " ")
     .trim();
+}
+
+// Short blurb for the catalog card grid.
+function stripHtml(html) {
+  const text = cleanText(html);
   return text.length > 180 ? `${text.slice(0, 177)}...` : text;
+}
+
+// Complete, untruncated description for the product detail page.
+function stripHtmlFull(html) {
+  return cleanText(html);
 }
 
 const VALID_CATEGORIES = ["shirts", "sweatshirts", "hoodies", "hats", "accessories"];
@@ -158,6 +174,27 @@ function pickImage(images) {
   return (def ?? images[0]).src;
 }
 
+// Finds a "back of garment" mockup among the images tied to a given color's
+// variants. Printify's own images[] entries carry a `position` field for
+// which side of the product a mockup shows (e.g. "front"/"back") on the
+// product types that have one — apparel does, a mug or sticker sheet
+// doesn't. When that field is present and one of the matching images is
+// tagged "back", use it. Falls back to undefined (no back view) rather than
+// guessing, since a wrong guess (a folded-flat shot, a close-up) would be
+// worse than simply not showing a second angle.
+//
+// CAVEAT: this has only been checked against this shop's own catalog by
+// reading rendered mockup URLs in Printify's UI, not against raw API JSON
+// (this sandbox can't reach api.printify.com to confirm the exact field
+// name/values Printify sends back). If a real sync run doesn't pick up back
+// images that clearly exist in Printify's mockup library, log one raw
+// `images` entry and check its actual field names against this function.
+function pickBackImage(matchingImages) {
+  if (!matchingImages || matchingImages.length === 0) return undefined;
+  const back = matchingImages.find((img) => /back/i.test(img.position ?? ""));
+  return back?.src;
+}
+
 function pickColors(options, variants, images) {
   const groupIndex = (options ?? []).findIndex((o) => /colou?rs?/i.test(o.name ?? ""));
   if (groupIndex === -1) return undefined;
@@ -197,12 +234,27 @@ function pickColors(options, variants, images) {
         (img) => Array.isArray(img.variant_ids) && img.variant_ids.some((id) => variantIds.includes(id))
       );
       const image = matchingImages.find((img) => img.is_default) ?? matchingImages[0];
+      const backImage = pickBackImage(matchingImages);
 
-      return { name: value.title, hex, imageUrl: image?.src };
+      return { name: value.title, hex, imageUrl: image?.src, backImageUrl: backImage };
     })
     .filter(Boolean);
 
   return colors.length ? colors : undefined;
+}
+
+// Extra photos for the detail page's gallery: every mockup for the product
+// beyond the one used as its main card image, capped so a hat with a dozen
+// lifestyle shots doesn't turn the gallery into a wall of thumbnails.
+const MAX_ADDITIONAL_IMAGES = 6;
+
+function pickAdditionalImages(images, mainImageUrl) {
+  if (!images || images.length === 0) return undefined;
+  const extras = images
+    .map((img) => img.src)
+    .filter((src) => src && src !== mainImageUrl);
+  const unique = Array.from(new Set(extras)).slice(0, MAX_ADDITIONAL_IMAGES);
+  return unique.length ? unique : undefined;
 }
 
 function pickPrice(variants) {
@@ -216,17 +268,31 @@ function pickPrice(variants) {
 const FALLBACK_TILE_COLOR = "#1e293b";
 
 function toProduct(printifyProduct) {
+  const description = stripHtml(printifyProduct.description ?? "");
+  const fullDescription = stripHtmlFull(printifyProduct.description ?? "");
+  const imageUrl = pickImage(printifyProduct.images);
+  const colors = pickColors(printifyProduct.options, printifyProduct.variants, printifyProduct.images);
+
   return {
     id: `printify-${printifyProduct.id}`,
     slug: slugify(printifyProduct.title),
     name: printifyProduct.title,
-    description: stripHtml(printifyProduct.description ?? ""),
+    description,
+    // Only worth a separate field when it actually differs from the
+    // truncated blurb — keeps products.ts from carrying a duplicate copy of
+    // every short description.
+    fullDescription: fullDescription !== description ? fullDescription : undefined,
     price: pickPrice(printifyProduct.variants),
     category: pickCategory(printifyProduct.tags, printifyProduct.title),
     sizes: pickSizes(printifyProduct.options),
-    colors: pickColors(printifyProduct.options, printifyProduct.variants, printifyProduct.images),
+    colors,
     tileColor: FALLBACK_TILE_COLOR,
-    imageUrl: pickImage(printifyProduct.images),
+    imageUrl,
+    // Product-level fallback back image: whichever color's back view would
+    // otherwise show first (or the default image's own match, for products
+    // with no color options at all).
+    backImageUrl: colors?.find((c) => c.backImageUrl)?.backImageUrl,
+    additionalImageUrls: pickAdditionalImages(printifyProduct.images, imageUrl),
     printifyProductId: String(printifyProduct.id),
   };
 }
@@ -238,12 +304,15 @@ function renderProductsFile(products) {
       `    slug: ${JSON.stringify(p.slug)},`,
       `    name: ${JSON.stringify(p.name)},`,
       `    description: ${JSON.stringify(p.description)},`,
+      p.fullDescription ? `    fullDescription: ${JSON.stringify(p.fullDescription)},` : null,
       `    price: ${p.price},`,
       `    category: ${JSON.stringify(p.category)},`,
       p.sizes ? `    sizes: ${JSON.stringify(p.sizes)},` : null,
       p.colors ? `    colors: ${JSON.stringify(p.colors)},` : null,
       `    tileColor: ${JSON.stringify(p.tileColor)},`,
       p.imageUrl ? `    imageUrl: ${JSON.stringify(p.imageUrl)},` : null,
+      p.backImageUrl ? `    backImageUrl: ${JSON.stringify(p.backImageUrl)},` : null,
+      p.additionalImageUrls ? `    additionalImageUrls: ${JSON.stringify(p.additionalImageUrls)},` : null,
       p.printifyProductId ? `    printifyProductId: ${JSON.stringify(p.printifyProductId)},` : null,
     ].filter(Boolean);
     return `  {\n${fields.join("\n")}\n  }`;
