@@ -438,7 +438,7 @@ id: "2018-chevrolet-silverado-1500-5.3l",
 year: 2018,
 make: "Chevrolet",
 model: "Silverado 1500",
-trim: "All cabs and trims (4WD)",
+trim: "",
 engine: "5.3L EcoTec3 V8 (L83)",
 drivetrain: "4WD",
 transmission: "6-speed automatic (6L80)",
@@ -452,6 +452,7 @@ specs: [
 { label: "Battery", value: "Group 94R (H7), 720 CCA OE" },
 { label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm)" },
 { label: "Front tire size", value: "P255/70R17" },
+{ label: "Cab and trim coverage", value: "Every cab style and trim built with the 5.3L V8 and 4WD" },
 ],
 fluids: [
 {
