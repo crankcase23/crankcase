@@ -560,6 +560,7 @@ torqueSpecs: [
 {
 fastener: "Oil pan drain plug",
 value: "18 ft-lb (25 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 notes: "Same 5.3L EcoTec3 (L84) engine as the Chevrolet Silverado 1500 — this figure is carried over from that vehicle's real Open Labor Project data (high confidence) since GM uses the identical fastener/torque spec across both trucks. Use new crush washer. Not yet independently pulled from Open Labor Project under the Sierra's own make/model.",
 },
 {
@@ -869,6 +870,7 @@ torqueSpecs: [
 {
 fastener: "Wheel lug nuts",
 value: "80 ft-lb (108 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
 },
 ],
@@ -969,6 +971,7 @@ torqueSpecs: [
 {
 fastener: "Wheel lug nuts",
 value: "150 ft-lb (203 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
 },
 ],
@@ -1069,6 +1072,7 @@ torqueSpecs: [
 {
 fastener: "Wheel lug nuts",
 value: "140 ft-lb (190 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
 },
 ],
@@ -1169,6 +1173,7 @@ torqueSpecs: [
 {
 fastener: "Wheel lug nuts",
 value: "140 ft-lb (190 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
 },
 ],
@@ -1269,6 +1274,7 @@ torqueSpecs: [
 {
 fastener: "Wheel lug nuts",
 value: "100 ft-lb (136 Nm)",
+provenance: { source: "open-labor-project", confidence: "high" },
 notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
 },
 ],
