@@ -127,6 +127,15 @@ return vehicles.filter((v) => {
 // "looks the same" is the bug this whole fix exists to close.
 export function catalogMatchLooksExact(decoded: DecodedVin, vehicle: Vehicle): boolean {
   const catalogTrim = (vehicle.trim ?? "").toLowerCase();
+
+  // One exception to the bias above. An entry whose trim declares it covers
+  // every cab and trim is not making a claim a VIN can contradict, so the
+  // caveat would be telling a reader their truck might not be covered when it
+  // explicitly is. Cab and trim were only ever a catalog-level question because
+  // there were briefly two entries for one truck; those are collapsed now.
+  // See claude/silverado-catalog-collapse-2026-09-19.md.
+  if (/\ball cabs\b/.test(catalogTrim)) return true;
+
   if (decoded.bodyCabType) {
     const cab = decoded.bodyCabType.toLowerCase();
     if (cab && !catalogTrim.includes(cab)) return false;
