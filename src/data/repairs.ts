@@ -2584,8 +2584,8 @@ image: "/steps/generic-cleanup.svg",
 ...silveradoK2xxGuides,
 ];
 
-export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {
-return repairs.filter((r) => r.vehicleId === vehicleId);
+const VEHICLE_GUIDE_ALIASES: Record<string, string> = { "2018-chevrolet-silverado-1500-5.3l-wt": "2018-chevrolet-silverado-1500-5.3l" }; export function getRepairsForVehicle(vehicleId: string): RepairGuide[] { const canonicalId = VEHICLE_GUIDE_ALIASES[vehicleId] ?? vehicleId;
+return repairs.filter((r) => r.vehicleId === canonicalId);
 }
 
 export function getRepairById(id: string): RepairGuide | undefined {
