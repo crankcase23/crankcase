@@ -1,5 +1,5 @@
 import { allRepairs, listVehicles, findVehicle } from "@/lib/data";
-import type { RepairGuide, Vehicle } from "@/types/vehicle";
+import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
 
 // ---------------------------------------------------------------------------
 // Guide console.
@@ -30,7 +30,7 @@ export interface ValidationIssue {
 }
 
 export interface GuideRecord {
-  guide: RepairGuide;
+  guide: ResolvedGuide;
   vehicle: Vehicle | undefined;
   vehicleLabel: string;
   status: GuideStatus;
@@ -51,7 +51,7 @@ export interface GuideRecord {
 const CHECKS: {
   field: string;
   severity: "required" | "recommended";
-  test: (g: RepairGuide) => boolean;
+  test: (g: ResolvedGuide) => boolean;
   message: string;
 }[] = [
   { field: "title", severity: "required", test: (g) => g.title.trim().length > 3, message: "Guide needs a title." },
@@ -68,7 +68,7 @@ const CHECKS: {
     // Torque specs are the core of the product, so a guide without them is
     // normally incomplete. The exception is a job with no torqued fastener at
     // all -- wiper blades, cabin and engine air filters. Those declare
-    // noFasteners and are exempt from this one check only. See RepairGuide.
+    // noFasteners and are exempt from this one check only. See ResolvedGuide.
     test: (g) => g.noFasteners === true || g.torqueSpecs.length > 0,
     message: "No torque specifications. This is the core of the product.",
   },
@@ -103,7 +103,7 @@ const CHECKS: {
   },
 ];
 
-export function validateGuide(guide: RepairGuide): ValidationIssue[] {
+export function validateGuide(guide: ResolvedGuide): ValidationIssue[] {
   return CHECKS.filter((c) => !c.test(guide)).map((c) => ({
     field: c.field,
     message: c.message,
@@ -111,7 +111,7 @@ export function validateGuide(guide: RepairGuide): ValidationIssue[] {
   }));
 }
 
-export function buildGuideRecord(guide: RepairGuide): GuideRecord {
+export function buildGuideRecord(guide: ResolvedGuide): GuideRecord {
   const vehicle = findVehicle(guide.vehicleId);
   const issues = validateGuide(guide);
   const requiredMissing = issues.filter((i) => i.severity === "required").length;
@@ -205,7 +205,7 @@ export interface VehicleDataIssue {
 /** Data-integrity problems in the curated catalog (src/data/vehicles.ts). */
 export function getCatalogDataIssues(): VehicleDataIssue[] {
   const out: VehicleDataIssue[] = [];
-  const guidesByVehicle = new Map<string, RepairGuide[]>();
+  const guidesByVehicle = new Map<string, ResolvedGuide[]>();
   for (const g of allRepairs()) {
     const list = guidesByVehicle.get(g.vehicleId) ?? [];
     list.push(g);
