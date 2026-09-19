@@ -78,12 +78,6 @@ export const JOB_CATALOG: JobType[] = [
     exclusionNote: "FWD vehicles have no separately serviceable differential",
   },
   { id: "serpentine-belt", label: "Serpentine Belt", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
-  {
-    id: "spark-plugs",
-    label: "Spark Plugs",
-    appliesTo: (v) => !isElectric(v) && !isDiesel(v),
-    exclusionNote: "Diesels and EVs have no spark plugs",
-  },
   { id: "fluid-checks", label: "Fluid Checks & Top-Offs", appliesTo: () => true },
   { id: "fuse-bulb", label: "Fuse & Bulb Replacement", appliesTo: () => true },
   { id: "pcv-valve", label: "PCV Valve", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
