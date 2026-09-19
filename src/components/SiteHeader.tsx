@@ -29,7 +29,13 @@ import { useCartCount } from "@/lib/cart";
  * border, so it occupies 65px. AdminShell stacks its own sticky header directly
  * beneath it and hardcodes that number. Change the height here and you must
  * change AdminShell to match: its header (top-[65px]), its side rail
- * (top-[122px] / h-[calc(100vh-122px)]), and its root min-height.
+ * (top-[124px] / h-[calc(100vh-124px)]), and its root min-height.
+ *
+ * Those two numbers were measured in a real browser at 1920px, not derived:
+ * this bar is 65px (h-16 + 1px border) and the admin command header is 59px,
+ * so the rail starts at 124. Do not recompute them from the class names - the
+ * admin header height is driven by its email/role block, which is taller than
+ * the buttons beside it.
  */
 
 type Tab = {
