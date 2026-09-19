@@ -116,7 +116,16 @@ export async function getHealthChecks(): Promise<HealthCheck[]> {
   });
 
   // --- vehicle data API -----------------------------------------------------
-  const olpConfigured = Boolean(process.env.OPEN_LABOR_PROJECT_API_KEY || process.env.OLP_API_KEY);
+  // Must match the variable src/lib/openLaborProject.ts actually reads. This
+  // check originally looked for OPEN_LABOR_PROJECT_API_KEY / OLP_API_KEY, which
+  // nothing sets — so it reported the integration offline while it was working
+  // fine. The legacy names are kept as a fallback only so a differently-named
+  // deployment doesn't regress; OPEN_LABOR_API_KEY is the real one.
+  const olpConfigured = Boolean(
+    process.env.OPEN_LABOR_API_KEY ||
+      process.env.OPEN_LABOR_PROJECT_API_KEY ||
+      process.env.OLP_API_KEY,
+  );
   const cacheProbe = await timed(async () => {
     const [ok, pending, notFound] = await Promise.all([
       db.select({ n: count() }).from(vehicleDataCache).where(eq(vehicleDataCache.status, "ok")),
