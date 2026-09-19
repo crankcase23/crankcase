@@ -2641,7 +2641,8 @@ fig.slots || {},
 const fill = (s: string): string =>
 s.replace(/\{\{(\w+)\}\}/g, (m, k: string) => (k in slots ? slots[k] : m));
 
-const byFastener = new Map(fig.torqueSpecs.map((t) => [t.fastener, t]));
+const byFastener = new Map<string, TorqueSpec>();
+for (const t of fig.torqueSpecs) byFastener.set(t.fastener, t);
 
 const steps: RepairStep[] = [];
 for (const s of g.steps) {
