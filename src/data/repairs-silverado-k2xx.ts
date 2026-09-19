@@ -552,4 +552,368 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       },
     ],
   },
+  {
+    id: "silverado-2018-engine-air-filter",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Engine Air Filter Replacement",
+    jobType: "engine-air-filter",
+    summary:
+      "A five-minute job that turns into a twenty-minute job because of one screw. The airbox lid takes four T25 Torx screws and a hard line runs directly over the lower front one, leaving about an inch of clearance.",
+    difficulty: "Easy",
+    estTime: "15-25 min",
+    tier: "free",
+    noFasteners: true,
+    tools: [
+      { name: "T25 Torx bit", note: "On a 1/4 inch drive with a ball universal and a long extension - this is the whole trick" },
+      { name: "Flashlight" },
+      { name: "Shop vac or rag", note: "For the debris that always sits in the bottom of the box" },
+    ],
+    parts: ["Engine air filter (panel type)"],
+    safety: [
+      "Engine off and cool enough to lean over.",
+      "Do not run the engine with the airbox open. Anything that goes down the intake tube goes through the MAF sensor and into the engine.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Find the four screws before you start turning anything",
+        instructions:
+          "The airbox is on the driver's side at the front of the engine bay. The lid is held by four T25 Torx screws, one at each corner - this is not a tool-less clip box. Locate all four with a flashlight first. The lower front one is the problem: a hard line runs straight over it with roughly an inch of clearance.",
+      },
+      {
+        number: 2,
+        title: "Get the awkward screw out without stripping it",
+        instructions:
+          "Use a 1/4 inch drive T25 with a ball universal joint and a ten-inch extension, coming in at an angle under the line. Keep hard downward pressure the whole time - T25 heads strip easily and a stripped screw in a plastic airbox lid is a genuinely irritating extraction. If you cannot get a clean bite, go to the next step instead of forcing it.",
+        warning: "Do not cam the bit out of the head. Dealers strip these routinely and some just leave the screw out afterwards.",
+      },
+      {
+        number: 3,
+        title: "Alternative: pull the whole airbox and do it on the bench",
+        instructions:
+          "If the angle is beating you, unplug the MAF connector, loosen the clamp on the intake tube, and lift the entire airbox out. It comes free in about five minutes, and on the bench all four screws are straight-on and easy. This is often faster than fighting the one screw in place.",
+      },
+      {
+        number: 4,
+        title: "Swap the filter and clean the box",
+        instructions:
+          "Note which way the old filter sits, lift it out, and vacuum or wipe out the leaves and grit in the bottom of the housing. Anything left in there gets pulled against the new filter the first time you drive. Set the new filter in the same orientation and make sure its seal sits flat all the way round.",
+      },
+      {
+        number: 5,
+        title: "Close it up and check the seal",
+        instructions:
+          "Refit the lid and start all four screws by hand before tightening any of them - the lid has to pull down evenly or the seal gaps. Snug only; they thread into plastic. If you removed the airbox, reconnect the MAF plug and retighten the intake tube clamp, and double-check the plug is fully latched. An unplugged MAF will throw a check engine light and make the truck run badly.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-cabin-air-filter",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Cabin Air Filter Replacement",
+    jobType: "cabin-air-filter",
+    summary:
+      "Behind the glove box, no tools, about ten minutes. Worth knowing: the older GM trucks that shipped with no cabin filter at all were the 2007-2013 generation - yours has one.",
+    difficulty: "Easy",
+    estTime: "10-15 min",
+    tier: "free",
+    noFasteners: true,
+    tools: [{ name: "Flashlight" }],
+    parts: ["Cabin air filter (GM 23281440 or equivalent)"],
+    safety: [
+      "A filthy cabin filter is full of mold spores and road dust. Bag it rather than shaking it out inside the truck.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Empty the glove box",
+        instructions:
+          "Take everything out. The box has to swing down past its normal stop and anything loose inside ends up in the footwell.",
+      },
+      {
+        number: 2,
+        title: "Release the stops and let the box drop",
+        instructions:
+          "Open the glove box fully, then squeeze the plastic stop tabs on each side near the hinges inward. The box will swing down well past its normal travel and expose the filter door in the HVAC case behind it. No tools, no screws.",
+      },
+      {
+        number: 3,
+        title: "Pull the old filter and note its direction",
+        instructions:
+          "There is an airflow arrow printed on the filter frame. Look at it before the filter is out - putting the new one in backwards does not stop it working but it does shed collected dirt into the blower instead of catching it. Slide the old one out flat; it will be dirtier than you expect.",
+      },
+      {
+        number: 4,
+        title: "Fit the new filter",
+        instructions:
+          "Slide the new filter in with the airflow arrow pointing the same way the old one did. Make sure it seats fully into its channel - a filter that is cocked lets unfiltered air past the edge and you get no benefit.",
+      },
+      {
+        number: 5,
+        title: "Close everything up and test the fan",
+        instructions:
+          "Close the filter door, lift the glove box back until the side tabs click past their stops, and run the blower through all its speeds. It should be at least as strong as before, usually noticeably stronger if the old filter was bad.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-wiper-blades",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Wiper Blade Replacement",
+    jobType: "wiper-blades",
+    summary:
+      "Five minutes, no tools. The only real risk is a spring-loaded wiper arm snapping down onto bare glass, which cracks windshields.",
+    difficulty: "Easy",
+    estTime: "10 min",
+    tier: "free",
+    noFasteners: true,
+    tools: [{ name: "Towel or folded rag", note: "Padding under the arm in case it snaps down" }],
+    parts: ["Front wiper blade pair - check length for your build, driver and passenger sides differ"],
+    safety: [
+      "Lay a towel on the windshield before you lift the arms. A wiper arm with no blade on it will crack glass if it snaps back.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Check the sizes before you buy",
+        instructions:
+          "The driver and passenger blades are different lengths on this truck. Measure the old ones or look them up by your exact build rather than buying two of the same length.",
+      },
+      {
+        number: 2,
+        title: "Lift the arm and pad the glass",
+        instructions:
+          "Pull the wiper arm up until it locks in the raised position, then lay a folded towel on the windshield underneath it.",
+        warning: "Never let a bare wiper arm snap down onto the glass. That is the one way this job gets expensive.",
+      },
+      {
+        number: 3,
+        title: "Release the old blade",
+        instructions:
+          "Find the release tab where the blade meets the arm's hook or pin. Press it and slide the blade down along the arm to unhook it. If it will not move, you have not fully depressed the tab - do not force it, they break.",
+      },
+      {
+        number: 4,
+        title: "Fit the new blade",
+        instructions:
+          "Slide the new blade onto the arm until the latch clicks. Tug it firmly - a blade that is not latched will come off at highway speed and the bare arm will score the glass.",
+      },
+      {
+        number: 5,
+        title: "Lower the arms and test with washer fluid",
+        instructions:
+          "Lower both arms gently onto the glass, remove the towel, then run the wipers with washer fluid. Dry glass tears new rubber. Watch for streaking or chatter - chatter usually means the arm is slightly twisted rather than a bad blade.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-coolant",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Coolant Drain & Fill",
+    jobType: "coolant",
+    summary:
+      "A drain-and-fill on the radiator, not a full system flush. The system holds 16.8 qt total but only about 8 qt comes out this way - the block keeps the rest, and that is the number people get wrong at the parts counter.",
+    difficulty: "Moderate",
+    estTime: "1-1.5 hrs",
+    tier: "premium",
+    tools: [
+      { name: "Drain pan", note: "3 gallon or larger, wide" },
+      { name: "Pliers or a small socket", note: "For the radiator drain petcock, only if it needs starting" },
+      { name: "Funnel", note: "A spill-free funnel kit makes the burping step far easier" },
+      { name: "Jack + 2 jack stands", note: "Optional but it makes the petcock reachable" },
+      { name: "Nitrile gloves + eye protection" },
+    ],
+    parts: [
+      "2 gallons of DEX-COOL 50/50 premix, or 1 gallon of concentrate plus distilled water",
+      "Distilled water - never tap water",
+    ],
+    safety: [
+      "Never open a cooling system that is hot. The coolant is above its boiling point under pressure and will flash to steam the moment you release the cap. Cold engine only.",
+      "Coolant is sweet-tasting and lethal to pets and wildlife. Catch every drop, clean up spills immediately, and take the old fluid to a recycler.",
+      "Keep hands clear of the fans. On this truck they can spin up after the key is off.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Radiator drain petcock",
+        value: "Hand-tight only",
+        notes:
+          "It is a plastic fitting. Snug it by hand and stop - putting a wrench on it and cracking the neck turns a fluid change into a radiator replacement.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Start cold, and confirm it",
+        instructions:
+          "Park on level ground and leave the truck overnight if you can. Touch the upper radiator hose - if there is any warmth in it, walk away and come back later. This is the one step in the job that can actually hurt you.",
+        warning: "Do not touch the surge tank cap on a warm engine.",
+      },
+      {
+        number: 2,
+        title: "Position the pan and open the petcock",
+        instructions:
+          "The drain petcock is at the bottom corner of the radiator. Put a wide pan underneath with plenty of margin - the first flow arcs outward before it runs down the frame. Open the petcock by hand; if it is stiff, use pliers to start it and then back off. Remove the surge tank cap to let it breathe and it will drain much faster.",
+      },
+      {
+        number: 3,
+        title: "Let it drain and measure what comes out",
+        instructions:
+          "Expect roughly 8 quarts. That is normal and correct for a radiator drain - the block and heater core hold the remainder, which is why the total system figure of 16.8 qt is not the amount you need to buy. Look at the old coolant while it drains: it should be orange and clear. Brown, rusty, or oily coolant is telling you about a different problem.",
+      },
+      {
+        number: 4,
+        title: "Close the petcock",
+        instructions:
+          "Close the petcock hand-tight. No tools. Wipe the area dry so you can spot a weep later.",
+        torque: [{ fastener: "Radiator drain petcock", value: "Hand-tight only" }],
+      },
+      {
+        number: 5,
+        title: "Refill with the right stuff",
+        instructions:
+          "Fill slowly through the surge tank with DEX-COOL 50/50 premix, or concentrate cut with distilled water. Never tap water - the minerals in it scale the inside of the system. Slow pouring matters: dumping it in traps air pockets that take much longer to work out than they took to create.",
+        warning: "DEX-COOL is an OAT coolant. Mixing it with green IAT coolant gels the mixture and plugs the heater core and radiator. Do not top this system up with whatever is on the shelf.",
+      },
+      {
+        number: 6,
+        title: "Burp the air out",
+        instructions:
+          "With the cap off or a spill-free funnel fitted, start the engine and set the heater to maximum heat with the fan on low - that opens the heater core to flow. Let it idle until the thermostat opens and you see the level in the funnel drop and bubbles stop rising. Top up as it falls. Then shut it off, let it cool completely, and check the level again cold. It will need more.",
+      },
+      {
+        number: 7,
+        title: "Check the level cold over the next few days",
+        instructions:
+          "Check the surge tank cold each morning for the next two or three days and top up to the cold fill line. Air keeps working its way out of a truck cooling system for a while. A heater that blows cold at idle but warm at speed is the classic sign of air still trapped in the heater core.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-driveline-fluid",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Differential & Transfer Case Fluid",
+    jobType: "driveline-fluid",
+    summary:
+      "Three fills on a 4WD: front diff, transfer case, rear axle. The rear is the awkward one - it has no drain plug, so the cover has to come off. The front and the transfer case both have proper drain and fill plugs.",
+    difficulty: "Moderate",
+    estTime: "2-3 hrs for all three",
+    tier: "premium",
+    tools: [
+      { name: "Socket set + ratchet", note: "Fill and drain plugs, and the rear cover bolts" },
+      { name: "Torque wrench" },
+      { name: "Fluid transfer pump", note: "You cannot pour into any of these - a hand pump or squeeze bottle with a hose is essential" },
+      { name: "Drain pan" },
+      { name: "Gasket scraper or plastic razor", note: "Rear axle only" },
+      { name: "Brake cleaner", note: "Rear axle only - the sealing surfaces must be oil-free" },
+      { name: "Jack + 4 jack stands", note: "The truck should be level, or the fill levels will be wrong" },
+      { name: "Nitrile gloves + eye protection" },
+    ],
+    parts: [
+      "Rear axle: 75W-85 synthetic axle lubricant (GM 19300457), quantity per your axle size",
+      "Front differential: 1.5 qt of 75W-90 synthetic GL-5",
+      "Transfer case: 1.6 qt of DEXRON-VI ATF",
+      "Rear axle cover gasket or RTV sealant",
+      "Shop towels - gear oil gets everywhere",
+    ],
+    safety: [
+      "Level the truck on four jack stands. A fill-to-the-plug level taken on a tilted truck is wrong in a way you will not notice until something whines.",
+      "Gear oil smells foul and stains permanently. Gloves, and old clothes.",
+      "Crack the FILL plug loose before you drain anything. If the fill plug is seized and the fluid is already out, the truck is stuck on stands until you win that fight.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Rear axle cover bolts",
+        value: "20 ft-lb (27 Nm)",
+        notes: "Star pattern. Community figure citing service data rather than a scanned manual page - treat as a reference.",
+      },
+      {
+        fastener: "Rear axle fill plug",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure from the same source as the cover bolts.",
+      },
+      {
+        fastener: "Transfer case drain and fill plugs",
+        value: "13 ft-lb (18 Nm)",
+        notes:
+          "This is the weakest number in the guide. One source specific to this generation says 13 ft-lb; an older-generation source says 15. Anything in that range is fine, and erring low is the safe direction into an aluminum case.",
+      },
+      {
+        fastener: "Front differential drain and fill plugs",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Level the truck and identify your rear axle",
+        instructions:
+          "Get all four corners on stands so the truck sits level. While you are under there, count the bolts on the rear differential cover: ten bolts is the 8.6-inch axle and takes about 4.2 pints, twelve bolts is the 9.5-inch and takes 5.5 pints. A 5.3L LT is most likely the 8.6. Buy fluid after you have counted, not before.",
+      },
+      {
+        number: 2,
+        title: "Crack every fill plug loose first",
+        instructions:
+          "Before draining anything, break loose the rear axle fill plug, the front differential fill plug and the transfer case fill plug. If one of them is seized you want to discover that while the fluid is still in there and the truck can still be driven to a shop.",
+        warning: "This is the single most important sequencing rule in this job.",
+      },
+      {
+        number: 3,
+        title: "Transfer case: drain, refill with ATF",
+        instructions:
+          "Drain plug out, let it empty, plug back in at 13 ft-lb (18 Nm). Pump in 1.6 qt of DEXRON-VI until it just weeps from the fill hole, then fit the fill plug at the same torque. Note the fluid: this case takes ATF, not gear oil, and not Auto-Trak II. Auto-Trak II is the blue fluid for the older New Process case and parts counters still hand it over for these trucks.",
+        torque: [{ fastener: "Transfer case drain and fill plugs", value: "13 ft-lb (18 Nm)" }],
+      },
+      {
+        number: 4,
+        title: "Front differential: drain, refill with 75W-90",
+        instructions:
+          "The front axle does have a drain plug. Drain it, refit the plug at 24 ft-lb (33 Nm), then pump in 75W-90 synthetic until it reaches the bottom edge of the fill hole and starts to seep back out. That is about 1.5 qt. Fit the fill plug at the same torque.",
+        torque: [{ fastener: "Front differential drain and fill plugs", value: "24 ft-lb (33 Nm)" }],
+      },
+      {
+        number: 5,
+        title: "Rear axle: take the cover off, because there is no drain plug",
+        instructions:
+          "There is no drain plug on this axle. Put a wide pan under it, remove all the cover bolts except two at the top, then break the cover seal and let it hinge down on those two bolts so the oil pours into the pan in a controlled way rather than all at once down your arm. Once it slows, take the last two bolts out and remove the cover.",
+        warning: "Do not pry between the cover and the housing with a screwdriver. Gouging that sealing face guarantees a leak. Tap the cover with a dead blow to break the seal.",
+      },
+      {
+        number: 6,
+        title: "Look inside while you are in there",
+        instructions:
+          "A light film of grey on the magnet is normal wear. A pile of metal flakes, or chunks you can feel between your fingers, is not - stop and get it looked at rather than putting fresh oil over a failing ring and pinion. Clean the magnet, wipe the housing out with lint-free rags, and check the gear teeth for pitting or chipping.",
+      },
+      {
+        number: 7,
+        title: "Clean both sealing faces properly",
+        instructions:
+          "Scrape the old gasket or RTV off the cover and the housing with a plastic razor or a gasket scraper, then wipe both faces with brake cleaner until a clean rag stays clean. Any oil film left behind will stop new sealant from bonding, and a rear axle that weeps gear oil onto your driveway is a job you will be doing twice.",
+      },
+      {
+        number: 8,
+        title: "Seal and refit the cover",
+        instructions:
+          "Either fit a new gasket, or lay a continuous 3/16 inch bead of RTV around the cover inside the bolt holes with a loop around each hole. Fit the cover and snug the bolts by hand, then torque to 20 ft-lb (27 Nm) in a star pattern. If you used RTV, let it set up for the time on the tube before adding fluid.",
+        torque: [{ fastener: "Rear axle cover bolts", value: "20 ft-lb (27 Nm)" }],
+      },
+      {
+        number: 9,
+        title: "Fill the rear axle - and skip the friction modifier",
+        instructions:
+          "Pump 75W-85 synthetic in through the fill hole until it sits level with the bottom edge of the hole. If your truck has the G80 locker, do NOT add limited-slip friction modifier. The G80 is a locker that happens to use clutches rather than a clutch-type limited slip, and GM bulletin PIP4054D says an additive makes its clutch pack slip and miss engagement. This is the opposite of the usual rule and it is the mistake most people make on this axle.",
+        torque: [{ fastener: "Rear axle fill plug", value: "24 ft-lb (33 Nm)" }],
+        warning: "Friction modifier in a G80 axle causes the exact problem you would be trying to prevent.",
+      },
+      {
+        number: 10,
+        title: "Drive it, then check for leaks",
+        instructions:
+          "Lower the truck and drive it gently for ten minutes to warm everything through. Park it, wait an hour, and look underneath with a flashlight at the axle cover, both diff plugs and the transfer case plugs. Check again the following morning - a slow weep only shows itself overnight.",
+      },
+    ],
+  },
 ];
