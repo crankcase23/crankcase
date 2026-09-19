@@ -4,7 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { matchCatalogVehicles } from "@/lib/data";
-import { getVehicleMakes, getVehicleModels } from "@/lib/vpicBrowse";
+import {
+  VEHICLE_MAKES,
+  findMakeByName,
+  getVehicleModels,
+  listModelYears,
+} from "@/lib/vpicBrowse";
 import { useGarage } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
 
@@ -90,35 +95,22 @@ router.push(`/garage/custom/${id}`);
   const [trim, setTrim] = useState("");
   const [engine, setEngine] = useState("");
   const [startMileage, setStartMileage] = useState("");
-  const [makes, setMakes] = useState<string[]>([]);
   const [models, setModels] = useState<string[]>([]);
   const [loadingModels, setLoadingModels] = useState(false);
   const [savingCustom, setSavingCustom] = useState(false);
 
-  const years = useMemo(() => {
-    const newest = new Date().getFullYear() + 1;
-    return Array.from({ length: newest - 1995 }, (_, i) => String(newest - i));
-  }, []);
+  const years = useMemo(() => listModelYears(), []);
+  const selectedMake = useMemo(() => findMakeByName(make), [make]);
 
   useEffect(() => {
-    let cancelled = false;
-    getVehicleMakes().then((list) => {
-      if (!cancelled) setMakes(list);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!year || !make) {
+    if (!year || !selectedMake) {
       setModels([]);
       return;
     }
     let cancelled = false;
     setLoadingModels(true);
     setModels([]);
-    getVehicleModels(make, year)
+    getVehicleModels(selectedMake.id, year)
       .then((list) => {
         if (!cancelled) setModels(list);
       })
@@ -128,7 +120,7 @@ router.push(`/garage/custom/${id}`);
     return () => {
       cancelled = true;
     };
-  }, [year, make]);
+  }, [year, selectedMake]);
 
   // The trim and engine choices we can offer with confidence come from our own
   // curated catalog, not from vPIC.
@@ -327,8 +319,9 @@ service history and get maintenance reminders.
     <label htmlFor="year" className={labelClass}>
       Year
     </label>
-    <select
+    <input
       id="year"
+      list="year-options"
       value={year}
       onChange={(e) => {
         setYear(e.target.value);
@@ -336,22 +329,23 @@ service history and get maintenance reminders.
         setTrim("");
         setEngine("");
       }}
+      inputMode="numeric"
+      placeholder="Type or pick a year"
       className={fieldClass}
-    >
-      <option value="">Select a year</option>
+    />
+    <datalist id="year-options">
       {years.map((y) => (
-        <option key={y} value={y}>
-          {y}
-        </option>
+        <option key={y} value={y} />
       ))}
-    </select>
+    </datalist>
   </div>
   <div>
     <label htmlFor="make" className={labelClass}>
       Make
     </label>
-    <select
+    <input
       id="make"
+      list="make-options"
       value={make}
       onChange={(e) => {
         setMake(e.target.value);
@@ -360,44 +354,43 @@ service history and get maintenance reminders.
         setEngine("");
       }}
       disabled={!year}
+      placeholder="Start typing a make"
       className={fieldClass}
-    >
-      <option value="">{makes.length ? "Select a make" : "Loading makes…"}</option>
-      {makes.map((m) => (
-        <option key={m} value={m}>
-          {m}
-        </option>
+    />
+    <datalist id="make-options">
+      {VEHICLE_MAKES.map((entry) => (
+        <option key={entry.id} value={entry.name} />
       ))}
-    </select>
+    </datalist>
   </div>
   <div>
     <label htmlFor="model" className={labelClass}>
       Model
     </label>
-    <select
+    <input
       id="model"
+      list="model-options"
       value={model}
       onChange={(e) => {
         setModel(e.target.value);
         setTrim("");
         setEngine("");
       }}
-      disabled={!year || !make || loadingModels}
-      className={fieldClass}
-    >
-      <option value="">
-        {loadingModels
+      disabled={!year || !selectedMake || loadingModels}
+      placeholder={
+        loadingModels
           ? "Loading models…"
-          : models.length
-            ? "Select a model"
-            : "Pick a year and make first"}
-      </option>
+          : selectedMake
+            ? "Start typing a model"
+            : "Pick a year and make first"
+      }
+      className={fieldClass}
+    />
+    <datalist id="model-options">
       {models.map((m) => (
-        <option key={m} value={m}>
-          {m}
-        </option>
+        <option key={m} value={m} />
       ))}
-    </select>
+    </datalist>
   </div>
   <div>
     <label htmlFor="trim" className={labelClass}>
