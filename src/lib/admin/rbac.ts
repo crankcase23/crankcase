@@ -59,7 +59,9 @@ export type Permission =
   | "system.view"
   | "system.manage"
   | "audit.view"
-  | "roles.manage";
+  | "roles.manage"
+  | "todo.view"
+  | "todo.manage";
 
 const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
   // Deliberately the only role with delete, role management and system
@@ -82,6 +84,8 @@ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
     "system.manage",
     "audit.view",
     "roles.manage",
+    "todo.view",
+    "todo.manage",
   ],
   content_admin: [
     "command.view",
@@ -91,6 +95,8 @@ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
     "content.edit",
     "content.publish",
     "analytics.view",
+    "todo.view",
+    "todo.manage",
   ],
   support_admin: [
     "command.view",
@@ -100,8 +106,18 @@ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
     "vehicles.view",
     "guides.view",
     "content.view",
+    "todo.view",
+    "todo.manage",
   ],
-  analytics_admin: ["command.view", "vehicles.view", "guides.view", "revenue.view", "analytics.view", "system.view"],
+  analytics_admin: [
+    "command.view",
+    "vehicles.view",
+    "guides.view",
+    "revenue.view",
+    "analytics.view",
+    "system.view",
+    "todo.view",
+  ],
 };
 
 export interface AdminContext {

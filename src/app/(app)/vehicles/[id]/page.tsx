@@ -7,6 +7,7 @@ import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
 import ViewTracker from "@/components/ViewTracker";
+import FeedbackWidget from "@/components/FeedbackWidget";
 
 export function generateStaticParams() {
   return listVehicles().map((v) => ({ id: v.id }));
@@ -122,6 +123,10 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
         guideTitles={repairGuides.map((g) => g.title)}
       />
+
+      {/* Fluid capacities and specs live on this page -- same reason the
+          guides carry one. */}
+      <FeedbackWidget vehicleId={vehicle.id} />
     </div>
   );
 }

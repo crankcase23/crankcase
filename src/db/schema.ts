@@ -377,3 +377,59 @@ export const contentBlocks = pgTable("content_blocks", {
       createdAt: timestamp("created_at").notNull().defaultNow(),
       updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+// ---------------------------------------------------------------------------
+// To-Do / feedback (added 2026-09-18)
+// ---------------------------------------------------------------------------
+
+// User-submitted feedback from the widget on guide and vehicle pages. This is
+// the highest-signal table in the app: a DIY user telling you a torque spec
+// looks wrong matters more than any metric on the dashboard, because being
+// wrong about a torque value is how someone strips a bolt.
+//
+// Captured context (path, vehicle, guide) is filled in automatically from
+// wherever they were, so the report is actionable without a back-and-forth.
+export const feedback = pgTable("feedback", {
+      id: text("id").primaryKey(),
+      userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
+      // "bug" | "data" | "idea" | "other" -- "data" means "this number looks
+      // wrong", which is the category that gets triaged first.
+      kind: text("kind").notNull().default("other"),
+      message: text("message").notNull(),
+      path: text("path"),
+      vehicleId: text("vehicle_id"), // catalog vehicle id, when reported from one
+      guideId: text("guide_id"), // repair guide id, when reported from one
+      // "new" | "triaged" | "resolved" | "wontfix"
+      status: text("status").notNull().default("new"),
+      // Set by an admin during triage, not by the reporter -- users are bad at
+      // rating their own severity and it isn't their job.
+      severity: text("severity"), // "low" | "medium" | "high"
+      adminNote: text("admin_note"),
+      resolvedBy: text("resolved_by"),
+      resolvedAt: timestamp("resolved_at"),
+      userAgent: text("user_agent"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Manual admin to-do items, sitting alongside the derived signals on
+// /admin/todo. Deliberately simple: the derived half of that page is the part
+// that can never go stale, and this half exists for the things no query can
+// infer. Keeping it small is the point -- a heavyweight task system here would
+// just become another doc that drifts.
+export const adminTasks = pgTable("admin_tasks", {
+      id: text("id").primaryKey(),
+      title: text("title").notNull(),
+      detail: text("detail"),
+      // "content" | "data" | "product" | "ops"
+      category: text("category").notNull().default("product"),
+      // "open" | "doing" | "done"
+      status: text("status").notNull().default("open"),
+      // Lower sorts first. Plain integer rather than an enum so reordering
+      // doesn't need a migration.
+      priority: integer("priority").notNull().default(100),
+      createdBy: text("created_by"),
+      completedBy: text("completed_by"),
+      completedAt: timestamp("completed_at"),
+      createdAt: timestamp("created_at").notNull().defaultNow(),
+      updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});

@@ -6,6 +6,7 @@ import { ToolList, BulletList, TorqueTable, DifficultyBadge, TierBadge } from "@
 import RepairStepCard from "@/components/RepairStepCard";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ViewTracker from "@/components/ViewTracker";
+import FeedbackWidget from "@/components/FeedbackWidget";
 
 export function generateStaticParams() {
   return allRepairs().map((r) => ({ id: r.vehicleId, repairId: r.id }));
@@ -100,6 +101,10 @@ export default async function RepairGuidePage(
           ))}
         </div>
       </section>
+
+      {/* Torque specs are the one thing on this site that can hurt someone if
+          they're wrong, so the report control lives on every guide. */}
+      <FeedbackWidget vehicleId={vehicle.id} guideId={guide.id} />
     </div>
   );
 }

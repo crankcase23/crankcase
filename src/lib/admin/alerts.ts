@@ -6,6 +6,7 @@ import {
   contentBlocks,
   garageEntries,
   vehicleDataCache,
+  feedback,
 } from "@/db/schema";
 import { getGuideSummary, listGuideRecords } from "./guides";
 
@@ -40,7 +41,7 @@ export async function getAlerts(): Promise<Alert[]> {
   const since24h = new Date(Date.now() - DAY_MS);
   const since7d = new Date(Date.now() - 7 * DAY_MS);
 
-  const [openErrors, recentErrors, failedPayments, draftContent, staleCustomVehicles, failedLookups] =
+  const [openErrors, recentErrors, failedPayments, draftContent, newReports, staleCustomVehicles, failedLookups] =
     await Promise.all([
       db.select({ n: count() }).from(errorEvents).where(eq(errorEvents.status, "open")),
       db
@@ -52,6 +53,7 @@ export async function getAlerts(): Promise<Alert[]> {
         .from(paymentEvents)
         .where(and(eq(paymentEvents.type, "payment_failed"), isNull(paymentEvents.resolvedAt))),
       db.select({ n: count() }).from(contentBlocks).where(eq(contentBlocks.status, "draft")),
+      db.select({ n: count() }).from(feedback).where(eq(feedback.status, "new")),
       // Custom garage entries are vehicles we have no curated data for --
       // every one is a user telling us what to build next.
       db.select({ n: count() }).from(garageEntries).where(eq(garageEntries.kind, "custom")),
@@ -61,6 +63,22 @@ export async function getAlerts(): Promise<Alert[]> {
         .from(vehicleDataCache)
         .where(and(eq(vehicleDataCache.status, "pending"), gte(vehicleDataCache.attempts, 3))),
     ]);
+
+  // --- user reports ---------------------------------------------------------
+  // Deliberately first: a person taking the trouble to report a wrong torque
+  // spec outranks every computed signal below.
+  const newReportCount = newReports[0]?.n ?? 0;
+  if (newReportCount > 0) {
+    alerts.push({
+      id: "feedback-new",
+      severity: "critical",
+      title: "Untriaged user reports",
+      detail: `${newReportCount} report${newReportCount === 1 ? "" : "s"} submitted from the site and not yet looked at.`,
+      count: newReportCount,
+      href: "/admin/todo#inbox",
+      actionLabel: "Open inbox",
+    });
+  }
 
   // --- system errors --------------------------------------------------------
   const openErrorCount = openErrors[0]?.n ?? 0;

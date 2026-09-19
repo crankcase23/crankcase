@@ -18,6 +18,7 @@ import { getAlertCount } from "@/lib/admin/alerts";
 
 const NAV: { href: string; label: string; icon: NavItem["icon"]; permission: Parameters<typeof canShow>[1] }[] = [
   { href: "/admin", label: "Command Center", icon: "command", permission: "command.view" },
+  { href: "/admin/todo", label: "To-Do", icon: "content", permission: "todo.view" },
   { href: "/admin/users", label: "Users", icon: "users", permission: "users.view" },
   { href: "/admin/vehicles", label: "Vehicles", icon: "vehicle", permission: "vehicles.view" },
   { href: "/admin/guides", label: "Service Guides", icon: "guide", permission: "guides.view" },
