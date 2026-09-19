@@ -63,14 +63,14 @@ export default function SiteHeader({
 }: {
   isAuthed?: boolean;
   isAdmin?: boolean;
-  /** Admin pages run to max-w-[1400px]; everything else is max-w-6xl. */
+  /** Admin runs its shell edge to edge, so the bar does too; everything else is max-w-6xl. */
   wide?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() ?? "/";
   const cartCount = useCartCount();
 
-  const shell = wide ? "max-w-[1400px]" : "max-w-6xl";
+  const shell = wide ? "max-w-none" : "max-w-6xl";
 
   function isActive(tab: Tab) {
     const roots = tab.match ?? [tab.href];
