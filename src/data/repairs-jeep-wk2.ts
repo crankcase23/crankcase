@@ -620,4 +620,165 @@ export const jeepGrandCherokeeWk2Guides: RepairGuide[] = [
       },
     ],
   },
+  {
+    id: "jeep-grand-cherokee-rear-brake-pads",
+    vehicleId: "2014-jeep-grand-cherokee-3.6l",
+    title: "Rear Brake Pads & Rotors",
+    jobType: "brake-pads-rear",
+    summary:
+      "Rear brake service on the WK2 Grand Cherokee, pads on their own or pads and rotors together. The rear piston pushes straight in - the parking brake is a separate drum hidden inside the rotor hat, not a screw-in piston.",
+    hasRotorOption: true,
+    difficulty: "Moderate",
+    estTime: "1-1.5 hrs pads only, 2-2.5 hrs with rotors (both sides)",
+    tier: "premium",
+    tools: [
+      { name: "Lug wrench or impact gun" },
+      { name: "Socket set", note: "For the caliper slide/guide bolts" },
+      { name: "C-clamp or dedicated caliper piston tool" },
+      { name: "Torque wrench", note: "One that covers 20 ft-lb and one that covers 89 ft-lb - a single big wrench is usually inaccurate at the low end" },
+      { name: "Breaker bar", note: "Rotors only - the caliper bracket bolts are the tightest fasteners in this job" },
+      { name: "External Torx (E-series) sockets", note: "Check the bolt heads before you shop. The WK2 front bracket bolts are commonly E18 external Torx; confirm what your rear bracket bolts take rather than assuming a hex" },
+      { name: "Flat screwdriver", note: "Rotors only - for backing off the parking brake star wheel through the adjuster slot" },
+      { name: "Dead blow or brass hammer", note: "Rotors only - for breaking a rust-bonded rotor free, after the parking brake has been ruled out" },
+      { name: "Wire brush", note: "Rotors only - cleaning the hub face is what prevents a pulsation" },
+      { name: "Jack + 2 jack stands" },
+      { name: "Brake cleaner spray" },
+      { name: "High-temp brake grease (for slide pins)" },
+      { name: "Nitrile gloves + eye protection" },
+    ],
+    parts: [
+      "Rear brake pad set (semi-metallic or ceramic)",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New slide pin boots if the old ones are torn or hardened",
+      "Rear brake rotors, pair - only if replacing rotors",
+    ],
+    safety: [
+      "Brake dust can contain harmful particulates - never blow it out with compressed air; use brake cleaner and a wet rag.",
+      "Support the caliper with a hook or wire once removed - never let it hang by the brake hose.",
+      "The parking brake shoes live inside the rotor hat on this truck. Leave the parking brake released for the entire job, and do not drive off before cycling it a few times to let it re-adjust.",
+      "Pump the brake pedal to restore firm pedal feel before driving; test brakes at low speed before normal driving.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper slide/guide bolts (rear)",
+        value: "20 ft-lb (27.5 Nm)",
+        notes:
+          "Factory figure from the WK2 service manual brake torque table. Independently confirmed by a technician quoting 20 ft-lb for the rear guide pins on a 2015 Grand Cherokee Laredo 2WD. This is half the front figure - the two are not interchangeable.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "89 ft-lb (120 Nm)",
+        notes:
+          "Rotors only. From the service manual brake torque table, non-SRT (120 Nm). Two separate manual transcriptions - the 2014-2016 book and the 2018 book - give the same 89 ft-lb for the rear adapter, and the other rows of that table match figures sourced independently.",
+      },
+      { fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Release the parking brake and leave it off",
+        instructions:
+          "Do this before anything else. The WK2 parking brake is a small drum brake built into the hat of the rear rotor, operated by the foot pedal - it is not part of the caliper. If the shoes are applied, the rotor will not come off, and people spend twenty minutes beating on a rotor that is being held from the inside. Release the pedal fully and keep it released until the job is done. Chock the front wheels since you are giving up the parking brake.",
+        warning: "With the parking brake off, the front wheels are the only thing holding the vehicle. Chock them before lifting.",
+      },
+      {
+        number: 2,
+        title: "Break the lug nuts loose and raise the vehicle",
+        instructions:
+          "With the vehicle still on the ground, loosen (do not remove) the lug nuts on both rear wheels. Raise the rear, support it on jack stands at the factory lift points, and remove both wheels. Do both sides - brakes are replaced in axle pairs.",
+      },
+      {
+        number: 3,
+        title: "Look at what you have before you take it apart",
+        instructions:
+          "Note which way the pads sit, where the anti-rattle clips are, and whether the wear indicator tab is inboard or outboard. Take a photo. Check the rotor face for deep scoring and the caliper for fluid weeping around the piston boot - a weeping rear caliper turns this into a different job and is worth catching now rather than after the new pads are in.",
+      },
+      {
+        number: 4,
+        title: "Remove the two caliper slide bolts and lift the caliper off",
+        instructions:
+          "The slide (guide) bolts run through the caliper into the bracket, usually behind rubber boots. Remove both, then work the caliper off the bracket. Hang it from a coil spring or suspension arm with a wire hook or bungee.",
+        warning: "Never let the caliper hang by the brake hose. The hose is not a structural part and damage to it is not always visible.",
+      },
+      {
+        number: 5,
+        title: "Compress the piston straight in",
+        instructions:
+          "Put the old outer pad back against the piston as a pressure plate and drive the piston in with a C-clamp. Push it straight - do NOT twist it. The WK2 rear caliper has a plain hydraulic piston because the parking brake is a separate drum-in-hat system, so there is no screw-in mechanism to wind back and a rewind tool is not needed. Keep an eye on the brake fluid reservoir while you do it; if it is near full, siphon a little out first so it does not overflow.",
+        warning: "Do not push a piston back through fluid that has nowhere to go. Check the reservoir level before you start compressing.",
+      },
+      {
+        number: 6,
+        title: "Pull the old pads and the anti-rattle clips",
+        instructions:
+          "Lift the old pads out of the bracket and pop the stainless anti-rattle clips off their ledges. Wire-brush the ledges down to clean metal and wipe them with brake cleaner. Rust scale under a clip is the single most common cause of a pad that will not release and a rear that runs hot.",
+      },
+      {
+        number: 7,
+        title: "Remove the caliper bracket bolts",
+        instructions:
+          "Two bolts hold the bracket to the knuckle, and they are the tightest fasteners in this job. Check the head type first - the WK2 front bracket bolts are commonly E18 external Torx and the rears may match. Use a breaker bar, keep the socket square, and do not round them off.",
+        rotorsOnly: true,
+      },
+      {
+        number: 8,
+        title: "Get the rotor off - and know what is holding it",
+        instructions:
+          "If there is a retaining screw in the rotor face, remove it. Then pull the rotor. If it will not budge, stop and think before reaching for a hammer: on this truck the usual culprit is the parking brake shoes inside the hat still holding, so back the star wheel adjuster off through the access slot (the slot is there but is not obvious - look at the rotor face and the backing plate). Only once the shoes are backed off should you work rust at the hub face with a dead blow and penetrant.",
+        rotorsOnly: true,
+        warning: "Never strike the rotor friction surface with a steel hammer, and never pry against the parking brake backing plate - it bends easily and will then drag forever.",
+      },
+      {
+        number: 9,
+        title: "Clean the hub face",
+        instructions:
+          "Wire-brush the hub mounting face down to bare metal and wipe it with brake cleaner. This is the step people skip and it is the one that decides whether you get a pulsation. A rust flake a few thousandths thick under a new rotor produces exactly the pedal shudder the new parts were supposed to fix.",
+        rotorsOnly: true,
+      },
+      {
+        number: 10,
+        title: "Fit the new rotor",
+        instructions:
+          "New rotors ship with a protective oil coating - scrub it off both faces with brake cleaner and a clean rag until the rag comes away clean. Set the rotor on the hub and snug the retaining screw if the vehicle uses one, or hold the rotor in place with a lug nut while you reinstall the bracket.",
+        rotorsOnly: true,
+      },
+      {
+        number: 11,
+        title: "Reinstall the caliper bracket",
+        instructions:
+          "Start both bracket bolts by hand to avoid cross-threading, then torque them to 89 ft-lb (120 Nm). If the bolts came out with thread locker residue, clean the threads and apply fresh medium-strength locker.",
+        torque: "89 ft-lb (120 Nm)",
+        rotorsOnly: true,
+      },
+      {
+        number: 12,
+        title: "Grease the slide pins and fit the new pads",
+        instructions:
+          "Pull each slide pin, wipe it clean, and re-grease it with high-temp brake grease - a thin even film, not a packed boot. Replace any boot that is torn or hardened. Fit the new anti-rattle clips, then the new pads, with the wear indicator in the same position you photographed. Keep grease off the friction surfaces.",
+      },
+      {
+        number: 13,
+        title: "Set the caliper back and torque the slide bolts",
+        instructions:
+          "Lower the caliper over the new pads and start both slide bolts by hand. Torque to 20 ft-lb (27.5 Nm). This is a low figure and it is easy to overshoot with a big wrench - use one that reads accurately down there.",
+        torque: "20 ft-lb (27.5 Nm)",
+      },
+      {
+        number: 14,
+        title: "Wheels on, then pump the pedal before you move",
+        instructions:
+          "Mount the wheels, snug the lugs, lower the vehicle, and torque the lug nuts to 130 ft-lb (176 Nm) in a star pattern. Then, with the engine off, pump the brake pedal until it is firm - the first pump or two will go to the floor while the pistons take up the gap.",
+        torque: "130 ft-lb (176 Nm)",
+        warning: "Do not move the vehicle until the pedal is firm. A first press on a soft pedal is how people back into things.",
+      },
+      {
+        number: 15,
+        title: "Re-adjust the parking brake and bed the pads",
+        instructions:
+          "Apply and release the parking brake eight to ten times - it self-adjusts, and this is what takes the slack back out after the rotors came off. Then bed the new pads: from about 35 mph, brake firmly but short of ABS down to around 10 mph, release, and repeat six to eight times with a short cruise between each to let them cool. Finish with a few miles of normal driving without sitting on the brake at a stop.",
+        warning: "Do not come to a full stop and hold the pedal while the brakes are still hot from bedding - it will print pad material onto the rotor and give you the pulsation you were trying to avoid.",
+      },
+    ],
+  },
 ];
