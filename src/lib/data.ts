@@ -3,8 +3,13 @@
 // real database or an external API later won't require touching any UI code.
 
 import { vehicles, getVehicleById } from "@/data/vehicles";
-import { repairs, getRepairsForVehicle, getRepairById } from "@/data/repairs";
-import { Vehicle, RepairGuide } from "@/types/vehicle";
+import {
+  resolvedRepairs,
+  getRepairsForVehicle,
+  getRepairById,
+  getPendingFitment,
+} from "@/data/repairs";
+import { Vehicle, ResolvedGuide } from "@/types/vehicle";
 import { DecodedVin } from "@/lib/vpic";
 
 export function listVehicles(): Vehicle[] {
@@ -15,17 +20,23 @@ export function findVehicle(id: string): Vehicle | undefined {
   return getVehicleById(id);
 }
 
-export function listRepairsForVehicle(vehicleId: string): RepairGuide[] {
+export function listRepairsForVehicle(vehicleId: string): ResolvedGuide[] {
   return getRepairsForVehicle(vehicleId);
 }
 
-export function findRepair(id: string): RepairGuide | undefined {
+export function findRepair(id: string): ResolvedGuide | undefined {
   return getRepairById(id);
 }
 
-export function allRepairs(): RepairGuide[] {
-  return repairs;
+// The RESOLVED set, not the authored one. A shared guide is authored once and
+// appears here once per vehicle it was actually verified for, which is what
+// makes the admin counts reflect what a reader can really open.
+export function allRepairs(): ResolvedGuide[] {
+  return resolvedRepairs;
 }
+
+// Shared procedures that fit a vehicle but are still waiting on its numbers.
+export { getPendingFitment };
 
 export function searchVehicles(query: string): Vehicle[] {
   const q = query.trim().toLowerCase();
