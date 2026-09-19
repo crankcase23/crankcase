@@ -1,70 +1,125 @@
-// Free, public NHTSA vPIC browse endpoints — the same database behind the VIN
-// decode in src/lib/vpic.ts, but keyed by year/make/model instead of by VIN.
-// No API key, no quota, no cost. Powers the dropdowns on /garage/add for
-// people who do not have their VIN handy.
+// Vehicle pickers for the no-VIN path on /garage/add.
 //
-// Deliberately NOT using vPIC GetAllMakes: it returns 12,000+ registered
-// manufacturers, including trailer and farm-equipment builders, which is
-// unusable as a dropdown. The three passenger vehicle types below cover cars,
-// trucks and SUVs in roughly 300 entries.
+// The make list is baked in rather than fetched from NHTSA vPIC, for three
+// reasons:
+//   1. The car + truck + MPV vehicle-type lists total 406 entries and are full
+//      of street sweepers, fire apparatus, class 8 trucks, RV brands, defunct
+//      coachbuilders and one-off customs. "1955 Custom Belair", "Allianz
+//      Sweeper Company" and "Zzknown" are all real entries.
+//   2. Fetching them cost a network round trip before the form was usable.
+//   3. Holding the numeric MakeId is what makes the model lookup below exact
+//      instead of fuzzy — see getVehicleModels.
 //
-// vPIC has no browseable trim or engine list — those come back only from a
-// real VIN decode — so /garage/add sources trim and engine from our own
-// curated catalog when it has that year/make/model, and falls back to free
-// text when it does not.
+// Scion is deliberately absent: vPIC returns zero models for it at any year,
+// so it would be a dead end. Scion VINs decode under Toyota.
 
 const BASE = "https://vpic.nhtsa.dot.gov/api/vehicles";
 const AS_JSON = "?format=json";
 
-const VEHICLE_TYPES = ["car", "truck", "multipurpose passenger vehicle (mpv)"];
+// First model year offered. 1996 is the OBD-II cutover; before it, vPIC model
+// lists get both longer and much dirtier (1985 Honda returns 71 models, padded
+// with motorcycles), and nothing in the curated catalog reaches back that far.
+export const EARLIEST_MODEL_YEAR = 1996;
 
-let makesCache: string[] | null = null;
-
-// vPIC returns makes shouted in all caps ("ASTON MARTIN"). Catalog matching is
-// case-insensitive, so this is purely so the dropdown does not yell.
-function titleCase(value: string): string {
-  return value
-    .toLowerCase()
-    .split(" ")
-    .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
-    .join(" ");
+export interface VehicleMake {
+  id: number;
+  name: string;
 }
 
-export async function getVehicleMakes(): Promise<string[]> {
-  if (makesCache) return makesCache;
-  try {
-    const lists = await Promise.all(
-      VEHICLE_TYPES.map(async (type) => {
-        const res = await fetch(
-          `${BASE}/GetMakesForVehicleType/${encodeURIComponent(type)}${AS_JSON}`
-        );
-        if (!res.ok) return [] as string[];
-        const json = await res.json();
-        return ((json?.Results ?? []) as { MakeName?: string }[]).map(
-          (row) => row.MakeName ?? ""
-        );
-      })
-    );
-    const merged = [...new Set(lists.flat().filter(Boolean).map(titleCase))].sort();
-    makesCache = merged;
-    return merged;
-  } catch {
-    return [];
-  }
+export const VEHICLE_MAKES: VehicleMake[] = [
+  { id: 475, name: "Acura" },
+  { id: 493, name: "Alfa Romeo" },
+  { id: 606, name: "AM General" },
+  { id: 440, name: "Aston Martin" },
+  { id: 582, name: "Audi" },
+  { id: 583, name: "Bentley" },
+  { id: 452, name: "BMW" },
+  { id: 468, name: "Buick" },
+  { id: 469, name: "Cadillac" },
+  { id: 467, name: "Chevrolet" },
+  { id: 477, name: "Chrysler" },
+  { id: 1077, name: "Daewoo" },
+  { id: 476, name: "Dodge" },
+  { id: 2408, name: "Eagle" },
+  { id: 603, name: "Ferrari" },
+  { id: 492, name: "Fiat" },
+  { id: 11856, name: "Fisker" },
+  { id: 460, name: "Ford" },
+  { id: 5083, name: "Genesis" },
+  { id: 472, name: "GMC" },
+  { id: 474, name: "Honda" },
+  { id: 951, name: "Hummer" },
+  { id: 498, name: "Hyundai" },
+  { id: 480, name: "Infiniti" },
+  { id: 542, name: "Isuzu" },
+  { id: 442, name: "Jaguar" },
+  { id: 483, name: "Jeep" },
+  { id: 499, name: "Kia" },
+  { id: 502, name: "Lamborghini" },
+  { id: 444, name: "Land Rover" },
+  { id: 515, name: "Lexus" },
+  { id: 464, name: "Lincoln" },
+  { id: 466, name: "Lotus" },
+  { id: 10919, name: "Lucid" },
+  { id: 443, name: "Maserati" },
+  { id: 533, name: "Maybach" },
+  { id: 473, name: "Mazda" },
+  { id: 2236, name: "McLaren" },
+  { id: 449, name: "Mercedes-Benz" },
+  { id: 465, name: "Mercury" },
+  { id: 456, name: "Mini" },
+  { id: 481, name: "Mitsubishi" },
+  { id: 478, name: "Nissan" },
+  { id: 4162, name: "Oldsmobile" },
+  { id: 2409, name: "Plymouth" },
+  { id: 10224, name: "Polestar" },
+  { id: 536, name: "Pontiac" },
+  { id: 584, name: "Porsche" },
+  { id: 496, name: "Ram" },
+  { id: 10887, name: "Rivian" },
+  { id: 445, name: "Rolls-Royce" },
+  { id: 572, name: "Saab" },
+  { id: 1056, name: "Saturn" },
+  { id: 504, name: "Smart" },
+  { id: 523, name: "Subaru" },
+  { id: 509, name: "Suzuki" },
+  { id: 441, name: "Tesla" },
+  { id: 448, name: "Toyota" },
+  { id: 11366, name: "VinFast" },
+  { id: 482, name: "Volkswagen" },
+  { id: 485, name: "Volvo" },
+];
+
+export function listModelYears(): string[] {
+  const newest = new Date().getFullYear() + 1;
+  const years: string[] = [];
+  for (let y = newest; y >= EARLIEST_MODEL_YEAR; y--) years.push(String(y));
+  return years;
 }
 
-// vPIC returns one row per body style, so the raw response repeats each model
-// several times (2014 Jeep comes back with "Wrangler" three times). Collapse it.
+export function findMakeByName(name: string): VehicleMake | undefined {
+  const needle = name.trim().toLowerCase();
+  if (!needle) return undefined;
+  return VEHICLE_MAKES.find((make) => make.name.toLowerCase() === needle);
+}
+
+// Always look models up by numeric MakeId, never by name. The vPIC by-name
+// endpoint does a fuzzy substring match: asking for "RAM" returns 79 results
+// including "Brammo Street Bikes" and "Best Lane Enterprises dba Ramp Free".
+// By id it returns the 11 real Ram models.
+//
+// vPIC also returns one row per body style, so the same model repeats several
+// times in the raw response. Collapse it.
 export async function getVehicleModels(
-  make: string,
+  makeId: number,
   year: string
 ): Promise<string[]> {
-  if (!make || !year) return [];
+  if (!makeId || !year) return [];
   try {
     const res = await fetch(
-      `${BASE}/GetModelsForMakeYear/make/${encodeURIComponent(
-        make
-      )}/modelyear/${encodeURIComponent(year)}${AS_JSON}`
+      `${BASE}/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${encodeURIComponent(
+        year
+      )}${AS_JSON}`
     );
     if (!res.ok) return [];
     const json = await res.json();
