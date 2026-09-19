@@ -48,6 +48,12 @@ export interface RepairStep {
   image?: string; // path under /public
   torque?: TorqueSpec[];
   warning?: string;
+  /**
+   * Marks a step that only applies when the rotors are being replaced as well
+   * as the pads. The guide page hides these when the reader says pads-only and
+   * renumbers what is left, so nobody is ever told to skip a range of numbers.
+   */
+  rotorsOnly?: boolean;
 }
 
 export type Difficulty = "Easy" | "Moderate" | "Advanced";
@@ -114,6 +120,12 @@ export interface RepairGuide {
    * if the procedure torques anything at all, this stays unset.
    */
   noFasteners?: boolean;
+  /**
+   * Set on a brake guide that covers both the pads-only and the pads-and-rotors
+   * path. Turns on the rotor toggle at the top of the step list; steps marked
+   * rotorsOnly are shown or hidden by it.
+   */
+  hasRotorOption?: boolean;
   /**
    * Which covered service job this guide satisfies. Drives the Coverage tab.
    *
