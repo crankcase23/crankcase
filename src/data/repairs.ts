@@ -1,4 +1,5 @@
 import { RepairGuide } from "@/types/vehicle";
+import { jeepGrandCherokeeWk2Guides } from "./repairs-jeep-wk2";
 
 // Step images are original schematic illustrations (public/steps/*.svg) —
 // not photos from any manual — meant to show *what* to do, not stand in for
@@ -2539,6 +2540,7 @@ image: "/steps/generic-cleanup.svg",
 },
 ],
 },
+  ...jeepGrandCherokeeWk2Guides,
 ];
 
 export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {
