@@ -249,9 +249,13 @@ pickedMatchId === v.id
 {v.year}
 </div>
 <div className="mt-0.5 font-bold text-slate-100">
-{v.make} {v.model} {v.trim}
+{v.make} {v.model}
+{v.trim ? " " + v.trim : ""}
 </div>
-<div className="mt-1 text-xs text-slate-500">{v.engine}</div>
+<div className="mt-1 text-xs text-slate-500">
+{v.engine}
+{v.drivetrain ? " \u00b7 " + v.drivetrain : ""}
+</div>
 </button>
 ))}
 </div>
