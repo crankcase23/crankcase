@@ -53,8 +53,9 @@ notes: "Total dry-fill is much higher (~9.5 qt); a fluid/filter service only rep
 },
 {
 name: "Rear Axle Fluid (2WD)",
-capacity: "~1.5 qt (1.4 L)",
-spec: "SAE 75W-90 gear oil",
+capacity: "~1.0-1.5 qt (0.9-1.4 L)",
+spec: "Mopar 75W-85 gear oil (GL-5)",
+notes: "Checked 2026-09-19 and left broadly as written — published figures for the WK2 rear axle range from about 0.95 qt to 1.5 qt depending on axle and drivetrain, so this is shown as a range rather than a single number. Fill to the bottom edge of the fill plug hole with the vehicle level; that is the factory procedure and is self-correcting.",
 },
 {
 name: "Power Steering Fluid",
@@ -234,8 +235,9 @@ spec: "SAE 75W-90 synthetic gear oil",
 },
 {
 name: "Rear Differential Fluid",
-capacity: "~3.4 pt (1.6 L), 9.76-inch axle",
-spec: "SAE 75W-90 synthetic gear oil (+ friction modifier if limited-slip)",
+capacity: "~5.5 pt (2.75 qt / 2.6 L), AAM 9.76-inch axle",
+spec: "SAE 75W-85 synthetic axle lubricant (GM 19300457) — 75W-90 is a common substitute (+ friction modifier if limited-slip)",
+notes: "CORRECTED 2026-09-19. This previously read ~3.4 pt (1.6 L), which is roughly 40% under every source checked and would leave the axle badly underfilled — the same error that was found on the F-150's 9.75-inch axle, apparently from the same bad basis. GM's own fill spec for the 1500-series rear axle is 75W-85, not the 75W-90 originally listed here. Fill to the bottom edge of the fill plug hole with the vehicle level; that is the factory procedure and is self-correcting whichever published figure you trust.",
 },
 {
 name: "Transfer Case Fluid (4WD)",
@@ -299,8 +301,9 @@ spec: "SAE 75W-90 synthetic gear oil",
 },
 {
 name: "Rear Differential Fluid",
-capacity: "~3.4 pt (1.6 L), 9.76-inch axle",
-spec: "SAE 75W-90 synthetic gear oil (+ friction modifier if limited-slip)",
+capacity: "~5.5 pt (2.75 qt / 2.6 L), AAM 9.76-inch axle",
+spec: "SAE 75W-85 synthetic axle lubricant (GM 19300457) — 75W-90 is a common substitute (+ friction modifier if limited-slip)",
+notes: "CORRECTED 2026-09-19. This previously read ~3.4 pt (1.6 L), which is roughly 40% under every source checked and would leave the axle badly underfilled — the same error that was found on the F-150's 9.75-inch axle, apparently from the same bad basis. GM's own fill spec for the 1500-series rear axle is 75W-85, not the 75W-90 originally listed here. Fill to the bottom edge of the fill plug hole with the vehicle level; that is the factory procedure and is self-correcting whichever published figure you trust.",
 },
 {
 name: "Transfer Case Fluid (4WD)",
@@ -342,9 +345,9 @@ specs: [
 fluids: [
 {
 name: "Engine Oil",
-capacity: "5.7 qt (5.4 L) with filter change",
-spec: "0W-20 full synthetic, API SN or higher",
-notes: "Spin-on canister filter (Motorcraft FL-910-S or equivalent), not a cartridge — a standard filter wrench or strap tool works.",
+capacity: "5.3 qt (5.05 L) with filter change",
+spec: "SAE 5W-20 synthetic blend, API SP (Motorcraft or equivalent)",
+notes: "CORRECTED 2026-09-19 against the 2021 Escape owner's manual, which specifies 5.3 qt / 5.05 L and Motorcraft SAE 5W-20 Synthetic Blend meeting API SP. This entry previously read 5.7 qt of 0W-20 full synthetic — a 0.4 qt overfill and the wrong viscosity. Spin-on canister filter (Motorcraft FL-910-S or equivalent), not a cartridge — a standard filter wrench or strap tool works.",
 },
 {
 name: "Engine Coolant",
