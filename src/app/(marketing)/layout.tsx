@@ -1,50 +1,25 @@
 import Link from "next/link";
 import { auth } from "@/auth";
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import CrankcaseBadge from "@/components/CrankcaseBadge";
-import CartLink from "@/components/CartLink";
+import SiteHeader from "@/components/SiteHeader";
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
-  const logoHref = session ? "/garage" : "/";
+
+  // Only a query for signed-in visitors -- logged-out marketing pages, which are
+  // the ones that have to be fast, skip it entirely.
+  let isAdmin = false;
+  if (session?.user?.id) {
+    const rows = await db.select().from(users).where(eq(users.id, session.user.id));
+    isAdmin = rows[0]?.isAdmin ?? false;
+  }
 
   return (
     <>
-      <header className="border-b border-slate-800 bg-slate-950/95 backdrop-blur sticky top-0 z-10">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href={logoHref} className="flex items-center">
-            <CrankcaseBadge className="h-11 w-auto" />
-          </Link>
-          <nav className="flex items-center gap-6 text-sm">
-            <Link href="/how-it-works" className="hidden text-slate-300 hover:text-white sm:inline">
-              How It Works
-            </Link>
-            <Link href="/pricing" className="hidden text-slate-300 hover:text-white sm:inline">
-              Pricing
-            </Link>
-            <Link href="/swag" className="hidden text-slate-300 hover:text-white sm:inline">
-              Swag
-            </Link>
-            <CartLink className="hidden text-slate-300 hover:text-white sm:inline" />
-            {session ? (
-              <Link href="/garage" className="text-slate-300 hover:text-white">
-                My Garage
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" className="text-slate-300 hover:text-white">
-                  Log In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="rounded-lg bg-orange-500 px-4 py-2 font-semibold text-slate-950 hover:bg-orange-400"
-                >
-                  Get Started
-                </Link>
-              </>
-            )}
-          </nav>
-        </div>
-      </header>
+      <SiteHeader isAuthed={!!session} isAdmin={isAdmin} />
 
       <main className="flex-1">{children}</main>
 
@@ -76,6 +51,11 @@ export default async function MarketingLayout({ children }: { children: React.Re
                 <li>
                   <Link href="/vehicles/2014-jeep-grand-cherokee-3.6l" className="hover:text-white">
                     Live Demo
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/decode" className="hover:text-white">
+                    VIN Lookup
                   </Link>
                 </li>
                 <li>
