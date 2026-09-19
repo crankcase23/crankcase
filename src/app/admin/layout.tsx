@@ -22,6 +22,7 @@ const NAV: { href: string; label: string; icon: NavItem["icon"]; permission: Par
   { href: "/admin/users", label: "Users", icon: "users", permission: "users.view" },
   { href: "/admin/vehicles", label: "Vehicles", icon: "vehicle", permission: "vehicles.view" },
   { href: "/admin/guides", label: "Service Guides", icon: "guide", permission: "guides.view" },
+  { href: "/admin/coverage", label: "Guide Coverage", icon: "coverage", permission: "guides.view" },
   { href: "/admin/content", label: "Content", icon: "content", permission: "content.view" },
   { href: "/admin/revenue", label: "Revenue", icon: "revenue", permission: "revenue.view" },
   { href: "/admin/analytics", label: "Analytics", icon: "analytics", permission: "analytics.view" },

@@ -20,9 +20,19 @@ export type IconName =
   | "close"
   | "chevronLeft"
   | "logout"
-  | "external";
+  | "external"
+  | "coverage";
 
 const PATHS: Record<IconName, React.ReactNode> = {
+  // Checklist: two done, one outstanding -- the shape of the coverage report.
+  coverage: (
+    <>
+      <path d="M4 7.2l1.6 1.6L9 5.4" />
+      <path d="M4 14.2l1.6 1.6L9 12.4" />
+      <path d="M4.6 20h3.2" />
+      <path d="M12.5 7h7.5M12.5 14h7.5M12.5 20h7.5" />
+    </>
+  ),
   // Gauge / dashboard
   command: (
     <>

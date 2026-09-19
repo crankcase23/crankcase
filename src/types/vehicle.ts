@@ -59,6 +59,36 @@ export type Difficulty = "Easy" | "Moderate" | "Advanced";
 // Free/Premium badges so the model is visible before it's wired up.
 export type ContentTier = "free" | "premium";
 
+/**
+ * The service jobs Crankcase Garage covers, as approved in the coverage-scope
+ * doc. This is the vocabulary the coverage report counts against: a vehicle's
+ * target is the subset of these that applies to it, and its progress is how
+ * many of those it actually has a guide for.
+ *
+ * Adding a job here is a product decision, not a code one -- it raises the
+ * target for every applicable vehicle in the catalog and will show up as
+ * newly-missing work on the Coverage tab. Check the coverage-scope doc before
+ * adding one, and set its applicability in src/lib/admin/coverage.ts.
+ */
+export type JobTypeId =
+  | "oil-change"
+  | "tire-rotation"
+  | "engine-air-filter"
+  | "cabin-air-filter"
+  | "wiper-blades"
+  | "battery"
+  | "brake-pads-front"
+  | "brake-pads-rear"
+  | "coolant"
+  | "driveline-fluid"
+  | "serpentine-belt"
+  | "spark-plugs"
+  | "fluid-checks"
+  | "fuse-bulb"
+  | "pcv-valve"
+  | "o2-sensor"
+  | "key-fob-battery";
+
 export interface RepairGuide {
   id: string;
   vehicleId: string;
@@ -84,6 +114,16 @@ export interface RepairGuide {
    * if the procedure torques anything at all, this stays unset.
    */
   noFasteners?: boolean;
+  /**
+   * Which covered service job this guide satisfies. Drives the Coverage tab.
+   *
+   * Optional so a guide is never rejected for lacking it, but a guide without
+   * one counts toward nothing -- the Coverage report lists unclassified guides
+   * explicitly rather than quietly ignoring them, so the gap stays visible.
+   * Matching on title instead was considered and rejected: a retitled guide
+   * would silently stop counting.
+   */
+  jobType?: JobTypeId;
 }
 
 export interface Vehicle {
