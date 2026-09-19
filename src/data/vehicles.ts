@@ -43,7 +43,8 @@ provenance: { source: "curated" },
 {
 name: "Engine Coolant",
 capacity: "~12.9 qt (12.2 L) system capacity",
-spec: "Mopar OAT (orange), 5-year/100k mi coolant, 50/50 premix",
+spec: "Mopar Antifreeze/Coolant 10 Year/150,000 Mile Formula OAT, 50/50 premix",
+notes: "CORRECTED 2026-09-19 against the 2014 Grand Cherokee owner's manual, which names the 10 Year/150,000 Mile OAT formula by name. This entry previously said 5-year/100k and called the coolant orange. Orange is the older HOAT chemistry Chrysler used earlier in this generation, and 2013-2014 is exactly the changeover window -- putting HOAT into an OAT system is the gelling scenario. Confirm against your underhood label rather than matching color at the parts counter; the factory color for this fill was not verifiable from primary literature.",
 },
 {
 name: "Automatic Transmission Fluid (845RE)",
@@ -104,7 +105,8 @@ provenance: { source: "curated" },
 {
 name: "Engine Coolant",
 capacity: "~4.5 qt (4.3 L) system capacity",
-spec: "Honda Long Life (Type 2) coolant, blue, 50/50 premix",
+spec: "Honda Genuine Type 2 antifreeze/coolant, blue, prediluted 50/50",
+notes: "Verified 2026-09-19 -- unchanged. This is one of the stronger use-OEM-only cases: Honda Type 2 carries a phosphate additive package and no silicates, which is the opposite of European silicate coolants. A universal green or a European formula is not a safe substitute here.",
 },
 {
 name: "CVT Fluid",
@@ -155,7 +157,8 @@ provenance: { source: "curated" },
 {
 name: "Engine Coolant",
 capacity: "~16.6 qt (15.7 L) system capacity",
-spec: "Motorcraft Orange (Gold) Full-Life coolant, 50/50 premix",
+spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix (VC-3, VC-3DIL-B)",
+notes: "CORRECTED 2026-09-19. This previously read 'Motorcraft Orange (Gold)', which conflates two different products -- Gold is VC-7 / WSS-M97B51-A1, a separate specification, and treating them as interchangeable is exactly how a cooling system gets cross-contaminated. The factory fill here is Orange. Ford has since approved Motorcraft YELLOW (WSS-M97B57-A1/-A2) as the service replacement for any vehicle factory-filled with Orange, and is phasing Orange out of the catalog -- so Yellow is a correct modern refill for this truck. Ford's own bulletin warns Yellow is NOT a universal substitute and must not be used on vehicles factory-filled with any other Motorcraft coolant, Gold included.",
 },
 {
 name: "Automatic Transmission Fluid (6R80)",
@@ -351,8 +354,9 @@ notes: "CORRECTED 2026-09-19 against the 2021 Escape owner's manual, which speci
 },
 {
 name: "Engine Coolant",
-capacity: "~6.9 qt (6.5 L) system capacity",
-spec: "Motorcraft Orange (Gold) Full-Life coolant, 50/50 premix",
+capacity: "7.6 qt (7.2 L) system capacity",
+spec: "Motorcraft Yellow prediluted antifreeze/coolant, Ford spec WSS-M97B57-A2 (concentrate: VC-13-G, WSS-M97B57-A1)",
+notes: "CORRECTED 2026-09-19. This previously read Motorcraft Orange (Gold), which is the wrong chemistry for this vehicle -- the 2020+ Escape's 1.5L three-cylinder takes Motorcraft YELLOW. The trap is real and worth knowing about: a Ford owner-manual page titled 'Capacities and Specifications - 1.5L EcoBoost' lists Orange, but that page describes the 2017-2019 Escape's 1.5L FOUR-cylinder. Same model name, same displacement, different engine, different coolant. Capacity was also corrected from 6.9 qt.",
 },
 {
 name: "Automatic Transmission Fluid (8F35)",
