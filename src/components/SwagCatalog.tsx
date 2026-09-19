@@ -27,7 +27,22 @@ export default function SwagCatalog({ products }: { products: Product[] }) {
     [products]
   );
 
-  const visible = active === "all" ? products : products.filter((p) => p.category === active);
+  // On "All", group products into labeled sections by category (same idea as
+  // the vehicle page's GuideGroups: a job you came for sits under the heading
+  // you'd have looked for it under, instead of one undifferentiated pile).
+  // Once a specific category is picked, that grouping is redundant with the
+  // active filter button, so it collapses to a single flat grid.
+  const sections = useMemo(() => {
+    if (active !== "all") {
+      return [{ category: active, items: products.filter((p) => p.category === active) }];
+    }
+    return categories.map((category) => ({
+      category,
+      items: products.filter((p) => p.category === category),
+    }));
+  }, [active, categories, products]);
+
+  const isEmpty = sections.every((s) => s.items.length === 0);
 
   return (
     <div>
@@ -43,11 +58,29 @@ export default function SwagCatalog({ products }: { products: Product[] }) {
         ))}
       </div>
 
-      {visible.length === 0 ? (
+      {isEmpty ? (
         <p className="text-slate-400">No products in this category yet.</p>
+      ) : active === "all" ? (
+        <div className="space-y-10">
+          {sections.map((section) => (
+            <div key={section.category}>
+              <h2 className="mb-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-orange-400">
+                {CATEGORY_LABELS[section.category]}
+                <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[11px] font-medium text-slate-400">
+                  {section.items.length}
+                </span>
+              </h2>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {section.items.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((product) => (
+          {sections[0].items.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
