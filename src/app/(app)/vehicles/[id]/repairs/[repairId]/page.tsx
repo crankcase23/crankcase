@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findVehicle, findRepair, allRepairs } from "@/lib/data";
 import { ToolList, BulletList, TorqueTable, DifficultyBadge, TierBadge } from "@/components/tables";
-import RepairStepCard from "@/components/RepairStepCard";
+import StepList from "@/components/StepList";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
@@ -95,11 +95,7 @@ export default async function RepairGuidePage(
 
       <section className="mt-10">
         <h2 className="mb-4 text-lg font-semibold text-slate-100">Step-by-Step</h2>
-        <div className="space-y-4">
-          {guide.steps.map((step) => (
-            <RepairStepCard key={step.number} step={step} />
-          ))}
-        </div>
+        <StepList steps={guide.steps} hasRotorOption={guide.hasRotorOption} />
       </section>
 
       {/* Torque specs are the one thing on this site that can hurt someone if
