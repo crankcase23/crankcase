@@ -25,10 +25,11 @@ import { useCartCount } from "@/lib/cart";
  *      is a better answer than hiding the tab and pretending the feature is
  *      not there.
  *
- * HEIGHT IS LOAD-BEARING. The bar is sticky and fixed at h-16 (64px), and
- * AdminShell stacks its own sticky header directly beneath it using that 64px
- * as a hardcoded offset. Changing the height here means changing AdminShell's
- * header (top-16) and side rail (top-[121px] / h-[calc(100vh-121px)]) to match.
+ * HEIGHT IS LOAD-BEARING. The bar is sticky, h-16 (64px) plus a 1px bottom
+ * border, so it occupies 65px. AdminShell stacks its own sticky header directly
+ * beneath it and hardcodes that number. Change the height here and you must
+ * change AdminShell to match: its header (top-[65px]), its side rail
+ * (top-[122px] / h-[calc(100vh-122px)]), and its root min-height.
  */
 
 type Tab = {
