@@ -97,7 +97,7 @@ router.push(`/garage/custom/${id}`);
 
   const years = useMemo(() => {
     const newest = new Date().getFullYear() + 1;
-    return Array.from({ length: newest - 1980 }, (_, i) => String(newest - i));
+    return Array.from({ length: newest - 1995 }, (_, i) => String(newest - i));
   }, []);
 
   useEffect(() => {
