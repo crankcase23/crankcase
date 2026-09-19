@@ -748,7 +748,7 @@ export const jeepGrandCherokeeWk2Guides: RepairGuide[] = [
         title: "Reinstall the caliper bracket",
         instructions:
           "Start both bracket bolts by hand to avoid cross-threading, then torque them to 89 ft-lb (120 Nm). If the bolts came out with thread locker residue, clean the threads and apply fresh medium-strength locker.",
-        torque: "89 ft-lb (120 Nm)",
+        torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "89 ft-lb (120 Nm)" }],
         rotorsOnly: true,
       },
       {
@@ -762,14 +762,14 @@ export const jeepGrandCherokeeWk2Guides: RepairGuide[] = [
         title: "Set the caliper back and torque the slide bolts",
         instructions:
           "Lower the caliper over the new pads and start both slide bolts by hand. Torque to 20 ft-lb (27.5 Nm). This is a low figure and it is easy to overshoot with a big wrench - use one that reads accurately down there.",
-        torque: "20 ft-lb (27.5 Nm)",
+        torque: [{ fastener: "Caliper slide/guide bolts (rear)", value: "20 ft-lb (27.5 Nm)" }],
       },
       {
         number: 14,
         title: "Wheels on, then pump the pedal before you move",
         instructions:
           "Mount the wheels, snug the lugs, lower the vehicle, and torque the lug nuts to 130 ft-lb (176 Nm) in a star pattern. Then, with the engine off, pump the brake pedal until it is firm - the first pump or two will go to the floor while the pistons take up the gap.",
-        torque: "130 ft-lb (176 Nm)",
+        torque: [{ fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" }],
         warning: "Do not move the vehicle until the pedal is firm. A first press on a soft pedal is how people back into things.",
       },
       {
