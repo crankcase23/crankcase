@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <rect x="0" y="0" width="240" height="200" rx="16" fill="#0f172a"/>
+  <rect x="10" y="10" width="220" height="180" rx="12" fill="#1e293b"/>
+
+  <g stroke="#94a3b8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M34 54 h172"/>
+    <path d="M34 54 v46"/>
+    <path d="M206 54 v92"/>
+    <path d="M60 100 h96 a10 10 0 0 1 10 10 v34 a10 10 0 0 1 -10 10 h-96 a10 10 0 0 1 -10 -10 v-34 a10 10 0 0 1 10 -10 z"/>
+  </g>
+
+  <g stroke="#f97316" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 86 a38 38 0 0 0 -6 22"/>
+    <path d="M34 100 l6 10 l10 -4"/>
+    <rect x="84" y="62" width="60" height="26" rx="4"/>
+    <path d="M96 62 v26"/>
+    <path d="M108 62 v26"/>
+    <path d="M120 62 v26"/>
+    <path d="M132 62 v26"/>
+  </g>
+
+  <text x="120" y="184" text-anchor="middle" fill="#f97316" font-family="sans-serif" font-size="11" letter-spacing="1">FILTER BEHIND GLOVE BOX</text>
+</svg>

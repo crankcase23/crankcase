@@ -1341,6 +1341,1081 @@ torque: [{ fastener: "Wheel lug nuts", value: "100 ft-lb (136 Nm)" }],
 },
 ],
 },
+// --------------------------------- WIPERS, CABIN + ENGINE AIR FILTERS
+// Fastener-free jobs: nothing on any of these is torqued, so they carry
+// noFasteners and an empty torqueSpecs array. Per-vehicle details were
+// researched and cross-checked; three guides are deliberately absent
+// because their access procedure could not be confirmed (Escape cabin
+// filter, Silverado + Sierra engine air filter).
+{
+id: "jeep-grand-cherokee-wiper-blades",
+vehicleId: "2014-jeep-grand-cherokee-3.6l",
+title: "Wiper Blade Replacement",
+summary:
+"Swap the front and rear wiper blades on the WK2 Grand Cherokee. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Blades release by hand" },
+{ name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
+],
+parts: [
+"Driver side wiper blade, 22 inch",
+"Passenger side wiper blade, 21 inch",
+"Rear wiper blade, 11 inch",
+"Optional: washer fluid, since you are already there",
+],
+safety: [
+"A wiper arm under spring tension will snap back hard enough to crack a windshield. Never let go of a raised arm, and lay a folded towel on the glass while you work.",
+"Do not drive with the arms bare against the glass. Bare metal on glass scratches it permanently in a single wipe.",
+"Never run the wipers on a dry windshield to test them. Wet the glass first.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Confirm the sizes before you buy",
+instructions:
+"This vehicle takes a 22 inch driver-side blade and a 21 inch passenger-side blade. The rear wiper on this vehicle takes a 11 inch blade and usually uses a different attachment than the fronts -- check it separately rather than assuming. Write the sizes down -- in-store lookup kiosks and online size charts are frequently wrong about body-style variants.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Lift the arms into the service position",
+instructions:
+"Park with the wipers in their resting position, then lift each arm away from the glass until it locks upright. Lay your folded towel over the windshield underneath them before you go any further.",
+image: "/steps/wiper-arm-lift.svg",
+warning: "Keep a hand on the arm the whole time. A spring-loaded arm falling onto bare glass can crack a windshield.",
+},
+{
+number: 3,
+title: "Look at how the old blade attaches",
+instructions:
+"Before removing anything, look at the joint between arm and blade. Most are a hook (J-hook) style, some are a push-button or pin style. Knowing which you have before the old one is off makes fitting the new one obvious instead of a guessing game in the cold.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 4,
+title: "Release and remove the old blade",
+instructions:
+"Press the release tab or squeeze the locking clip where the blade meets the arm, then slide the blade down along the arm to unhook it. It should come free with light pressure -- if you are fighting it, the tab is not fully depressed.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 5,
+title: "Fit the new blade until it clicks",
+instructions:
+"Line the new blade up the same way the old one sat and slide it onto the arm until you hear and feel a positive click. Then tug the blade gently away from the arm. If it moves, it is not latched -- reseat it. A blade that comes off at highway speed takes the paint with it.",
+image: "/steps/wiper-blade-release.svg",
+warning: "Do not skip the tug test. A blade that feels seated but is not latched is the single most common failure on this job.",
+},
+{
+number: 6,
+title: "Lower the arms and test properly",
+instructions:
+"Lower each arm gently onto the glass -- do not let it snap down. Remove the towel, wet the windshield with washer fluid, then run the wipers through a full cycle. Listen for chatter or skipping and look for streaks, which usually mean the blade is not sitting flat on the glass.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "civic-wiper-blades",
+vehicleId: "2018-honda-civic-1.5t",
+title: "Wiper Blade Replacement",
+summary:
+"Swap the front wiper blades on the 10th-gen Civic sedan. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Blades release by hand" },
+{ name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
+],
+parts: [
+"Driver side wiper blade, 26 inch",
+"Passenger side wiper blade, 18 inch",
+"Optional: washer fluid, since you are already there",
+],
+safety: [
+"A wiper arm under spring tension will snap back hard enough to crack a windshield. Never let go of a raised arm, and lay a folded towel on the glass while you work.",
+"Do not drive with the arms bare against the glass. Bare metal on glass scratches it permanently in a single wipe.",
+"Never run the wipers on a dry windshield to test them. Wet the glass first.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Confirm the sizes before you buy",
+instructions:
+"This vehicle takes a 26 inch driver-side blade and a 18 inch passenger-side blade. This EX sedan has no rear wiper. Parts-store size charts routinely list a 14 inch rear blade for a 2018 Civic because they lump the sedan, coupe and hatchback into one entry -- that blade is for the hatchback. Do not buy one. Write the sizes down -- in-store lookup kiosks and online size charts are frequently wrong about body-style variants.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Lift the arms into the service position",
+instructions:
+"Park with the wipers in their resting position, then lift each arm away from the glass until it locks upright. Lay your folded towel over the windshield underneath them before you go any further.",
+image: "/steps/wiper-arm-lift.svg",
+warning: "Keep a hand on the arm the whole time. A spring-loaded arm falling onto bare glass can crack a windshield.",
+},
+{
+number: 3,
+title: "Look at how the old blade attaches",
+instructions:
+"Before removing anything, look at the joint between arm and blade. Most are a hook (J-hook) style, some are a push-button or pin style. Knowing which you have before the old one is off makes fitting the new one obvious instead of a guessing game in the cold.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 4,
+title: "Release and remove the old blade",
+instructions:
+"Press the release tab or squeeze the locking clip where the blade meets the arm, then slide the blade down along the arm to unhook it. It should come free with light pressure -- if you are fighting it, the tab is not fully depressed.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 5,
+title: "Fit the new blade until it clicks",
+instructions:
+"Line the new blade up the same way the old one sat and slide it onto the arm until you hear and feel a positive click. Then tug the blade gently away from the arm. If it moves, it is not latched -- reseat it. A blade that comes off at highway speed takes the paint with it.",
+image: "/steps/wiper-blade-release.svg",
+warning: "Do not skip the tug test. A blade that feels seated but is not latched is the single most common failure on this job.",
+},
+{
+number: 6,
+title: "Lower the arms and test properly",
+instructions:
+"Lower each arm gently onto the glass -- do not let it snap down. Remove the towel, wet the windshield with washer fluid, then run the wipers through a full cycle. Listen for chatter or skipping and look for streaks, which usually mean the blade is not sitting flat on the glass.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "f150-wiper-blades",
+vehicleId: "2015-ford-f150-5.0l",
+title: "Wiper Blade Replacement",
+summary:
+"Swap the front wiper blades on the 13th-gen F-150. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Blades release by hand" },
+{ name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
+],
+parts: [
+"Driver side wiper blade, 22 inch",
+"Passenger side wiper blade, 22 inch",
+"Optional: washer fluid, since you are already there",
+],
+safety: [
+"A wiper arm under spring tension will snap back hard enough to crack a windshield. Never let go of a raised arm, and lay a folded towel on the glass while you work.",
+"Do not drive with the arms bare against the glass. Bare metal on glass scratches it permanently in a single wipe.",
+"Never run the wipers on a dry windshield to test them. Wet the glass first.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Confirm the sizes before you buy",
+instructions:
+"This vehicle takes a 22 inch driver-side blade and a 22 inch passenger-side blade. This vehicle has no rear wiper. Write the sizes down -- in-store lookup kiosks and online size charts are frequently wrong about body-style variants.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Lift the arms into the service position",
+instructions:
+"Park with the wipers in their resting position, then lift each arm away from the glass until it locks upright. Lay your folded towel over the windshield underneath them before you go any further.",
+image: "/steps/wiper-arm-lift.svg",
+warning: "Keep a hand on the arm the whole time. A spring-loaded arm falling onto bare glass can crack a windshield.",
+},
+{
+number: 3,
+title: "Look at how the old blade attaches",
+instructions:
+"Before removing anything, look at the joint between arm and blade. Most are a hook (J-hook) style, some are a push-button or pin style. Knowing which you have before the old one is off makes fitting the new one obvious instead of a guessing game in the cold.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 4,
+title: "Release and remove the old blade",
+instructions:
+"Press the release tab or squeeze the locking clip where the blade meets the arm, then slide the blade down along the arm to unhook it. It should come free with light pressure -- if you are fighting it, the tab is not fully depressed.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 5,
+title: "Fit the new blade until it clicks",
+instructions:
+"Line the new blade up the same way the old one sat and slide it onto the arm until you hear and feel a positive click. Then tug the blade gently away from the arm. If it moves, it is not latched -- reseat it. A blade that comes off at highway speed takes the paint with it.",
+image: "/steps/wiper-blade-release.svg",
+warning: "Do not skip the tug test. A blade that feels seated but is not latched is the single most common failure on this job.",
+},
+{
+number: 6,
+title: "Lower the arms and test properly",
+instructions:
+"Lower each arm gently onto the glass -- do not let it snap down. Remove the towel, wet the windshield with washer fluid, then run the wipers through a full cycle. Listen for chatter or skipping and look for streaks, which usually mean the blade is not sitting flat on the glass.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "silverado-1500-wiper-blades",
+vehicleId: "2020-chevrolet-silverado-1500-5.3l",
+title: "Wiper Blade Replacement",
+summary:
+"Swap the front wiper blades on the T1 Silverado 1500. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Blades release by hand" },
+{ name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
+],
+parts: [
+"Driver side wiper blade, 22 inch",
+"Passenger side wiper blade, 22 inch",
+"Optional: washer fluid, since you are already there",
+],
+safety: [
+"A wiper arm under spring tension will snap back hard enough to crack a windshield. Never let go of a raised arm, and lay a folded towel on the glass while you work.",
+"Do not drive with the arms bare against the glass. Bare metal on glass scratches it permanently in a single wipe.",
+"Never run the wipers on a dry windshield to test them. Wet the glass first.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Confirm the sizes before you buy",
+instructions:
+"This vehicle takes a 22 inch driver-side blade and a 22 inch passenger-side blade. This vehicle has no rear wiper. Write the sizes down -- in-store lookup kiosks and online size charts are frequently wrong about body-style variants.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Lift the arms into the service position",
+instructions:
+"Park with the wipers in their resting position, then lift each arm away from the glass until it locks upright. Lay your folded towel over the windshield underneath them before you go any further.",
+image: "/steps/wiper-arm-lift.svg",
+warning: "Keep a hand on the arm the whole time. A spring-loaded arm falling onto bare glass can crack a windshield.",
+},
+{
+number: 3,
+title: "Look at how the old blade attaches",
+instructions:
+"Before removing anything, look at the joint between arm and blade. Most are a hook (J-hook) style, some are a push-button or pin style. Knowing which you have before the old one is off makes fitting the new one obvious instead of a guessing game in the cold.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 4,
+title: "Release and remove the old blade",
+instructions:
+"Press the release tab or squeeze the locking clip where the blade meets the arm, then slide the blade down along the arm to unhook it. It should come free with light pressure -- if you are fighting it, the tab is not fully depressed.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 5,
+title: "Fit the new blade until it clicks",
+instructions:
+"Line the new blade up the same way the old one sat and slide it onto the arm until you hear and feel a positive click. Then tug the blade gently away from the arm. If it moves, it is not latched -- reseat it. A blade that comes off at highway speed takes the paint with it.",
+image: "/steps/wiper-blade-release.svg",
+warning: "Do not skip the tug test. A blade that feels seated but is not latched is the single most common failure on this job.",
+},
+{
+number: 6,
+title: "Lower the arms and test properly",
+instructions:
+"Lower each arm gently onto the glass -- do not let it snap down. Remove the towel, wet the windshield with washer fluid, then run the wipers through a full cycle. Listen for chatter or skipping and look for streaks, which usually mean the blade is not sitting flat on the glass.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "sierra-1500-wiper-blades",
+vehicleId: "2020-gmc-sierra-1500-5.3l",
+title: "Wiper Blade Replacement",
+summary:
+"Swap the front wiper blades on the T1 Sierra 1500. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Blades release by hand" },
+{ name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
+],
+parts: [
+"Driver side wiper blade, 22 inch",
+"Passenger side wiper blade, 22 inch",
+"Optional: washer fluid, since you are already there",
+],
+safety: [
+"A wiper arm under spring tension will snap back hard enough to crack a windshield. Never let go of a raised arm, and lay a folded towel on the glass while you work.",
+"Do not drive with the arms bare against the glass. Bare metal on glass scratches it permanently in a single wipe.",
+"Never run the wipers on a dry windshield to test them. Wet the glass first.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Confirm the sizes before you buy",
+instructions:
+"This vehicle takes a 22 inch driver-side blade and a 22 inch passenger-side blade. This vehicle has no rear wiper. Write the sizes down -- in-store lookup kiosks and online size charts are frequently wrong about body-style variants.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Lift the arms into the service position",
+instructions:
+"Park with the wipers in their resting position, then lift each arm away from the glass until it locks upright. Lay your folded towel over the windshield underneath them before you go any further.",
+image: "/steps/wiper-arm-lift.svg",
+warning: "Keep a hand on the arm the whole time. A spring-loaded arm falling onto bare glass can crack a windshield.",
+},
+{
+number: 3,
+title: "Look at how the old blade attaches",
+instructions:
+"Before removing anything, look at the joint between arm and blade. Most are a hook (J-hook) style, some are a push-button or pin style. Knowing which you have before the old one is off makes fitting the new one obvious instead of a guessing game in the cold.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 4,
+title: "Release and remove the old blade",
+instructions:
+"Press the release tab or squeeze the locking clip where the blade meets the arm, then slide the blade down along the arm to unhook it. It should come free with light pressure -- if you are fighting it, the tab is not fully depressed.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 5,
+title: "Fit the new blade until it clicks",
+instructions:
+"Line the new blade up the same way the old one sat and slide it onto the arm until you hear and feel a positive click. Then tug the blade gently away from the arm. If it moves, it is not latched -- reseat it. A blade that comes off at highway speed takes the paint with it.",
+image: "/steps/wiper-blade-release.svg",
+warning: "Do not skip the tug test. A blade that feels seated but is not latched is the single most common failure on this job.",
+},
+{
+number: 6,
+title: "Lower the arms and test properly",
+instructions:
+"Lower each arm gently onto the glass -- do not let it snap down. Remove the towel, wet the windshield with washer fluid, then run the wipers through a full cycle. Listen for chatter or skipping and look for streaks, which usually mean the blade is not sitting flat on the glass.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "ford-escape-wiper-blades",
+vehicleId: "2021-ford-escape-1.5l",
+title: "Wiper Blade Replacement",
+summary:
+"Swap the front and rear wiper blades on the 2020+ Escape. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Blades release by hand" },
+{ name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
+],
+parts: [
+"Driver side wiper blade, 24 inch",
+"Passenger side wiper blade, 20 inch",
+"Rear wiper blade, 11 inch",
+"Optional: washer fluid, since you are already there",
+],
+safety: [
+"A wiper arm under spring tension will snap back hard enough to crack a windshield. Never let go of a raised arm, and lay a folded towel on the glass while you work.",
+"Do not drive with the arms bare against the glass. Bare metal on glass scratches it permanently in a single wipe.",
+"Never run the wipers on a dry windshield to test them. Wet the glass first.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Confirm the sizes before you buy",
+instructions:
+"This vehicle takes a 24 inch driver-side blade and a 20 inch passenger-side blade. The rear wiper on this vehicle takes a 11 inch blade and usually uses a different attachment than the fronts -- check it separately rather than assuming. Write the sizes down -- in-store lookup kiosks and online size charts are frequently wrong about body-style variants.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 2,
+title: "Lift the arms into the service position",
+instructions:
+"Park with the wipers in their resting position, then lift each arm away from the glass until it locks upright. Lay your folded towel over the windshield underneath them before you go any further.",
+image: "/steps/wiper-arm-lift.svg",
+warning: "Keep a hand on the arm the whole time. A spring-loaded arm falling onto bare glass can crack a windshield.",
+},
+{
+number: 3,
+title: "Look at how the old blade attaches",
+instructions:
+"Before removing anything, look at the joint between arm and blade. Most are a hook (J-hook) style, some are a push-button or pin style. Knowing which you have before the old one is off makes fitting the new one obvious instead of a guessing game in the cold.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 4,
+title: "Release and remove the old blade",
+instructions:
+"Press the release tab or squeeze the locking clip where the blade meets the arm, then slide the blade down along the arm to unhook it. It should come free with light pressure -- if you are fighting it, the tab is not fully depressed.",
+image: "/steps/wiper-blade-release.svg",
+},
+{
+number: 5,
+title: "Fit the new blade until it clicks",
+instructions:
+"Line the new blade up the same way the old one sat and slide it onto the arm until you hear and feel a positive click. Then tug the blade gently away from the arm. If it moves, it is not latched -- reseat it. A blade that comes off at highway speed takes the paint with it.",
+image: "/steps/wiper-blade-release.svg",
+warning: "Do not skip the tug test. A blade that feels seated but is not latched is the single most common failure on this job.",
+},
+{
+number: 6,
+title: "Lower the arms and test properly",
+instructions:
+"Lower each arm gently onto the glass -- do not let it snap down. Remove the towel, wet the windshield with washer fluid, then run the wipers through a full cycle. Listen for chatter or skipping and look for streaks, which usually mean the blade is not sitting flat on the glass.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "jeep-grand-cherokee-cabin-filter",
+vehicleId: "2014-jeep-grand-cherokee-3.6l",
+title: "Cabin Air Filter Replacement",
+summary:
+"Replace the cabin air filter on the WK2 Grand Cherokee. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "25-35 min",
+noFasteners: true,
+tools: [
+{ name: "Trim panel tool", note: "For the glove box shelf, if it is clipped" },
+{ name: "Small flashlight", note: "The filter slot sits deep behind the dash" },
+],
+parts: [
+"Cabin air filter (Mopar 68079487AA or equivalent)",
+"Optional: a few spare trim clips, in case an old one breaks",
+],
+safety: [
+"An old cabin filter can hold mould, pollen and rodent debris. Wear gloves, avoid shaking it out inside the car, and bag it before it goes in the bin.",
+"Work with the ignition off. There is wiring behind the glove box on every one of these vehicles.",
+"Do not force a trim panel. Plastic clips on a dash get brittle with age and heat -- if something will not move, a fastener is still holding it.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Know what you are looking at",
+instructions:
+"The cabin filter cleans the air coming through the vents, not anything the engine breathes. Most manufacturers want it yearly or around every 15,000 miles, and almost nobody does it that often. If your fan seems weaker than it used to or the car smells musty when the A/C starts, this is usually why.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 2,
+title: "Empty the glove box and clear your workspace",
+instructions:
+"Take everything out of the glove box -- it will be upside down shortly. Push the passenger seat back as far as it goes and get a light in there. This job is entirely about being able to see what you are doing.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 3,
+title: "Get to the filter housing",
+instructions:
+"The filter sits behind the glove box bin. On this platform the glove box shelf comes out of the instrument panel rather than just swinging down, so work slowly and keep track of which fasteners came from where.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 4,
+title: "Note the airflow direction, then pull the old filter",
+instructions:
+"Check the old filter for an airflow arrow and match it. If the old one has no readable arrow, note which way it came out before you pull it clear. Slide the old filter out slowly and keep it flat -- they collect a surprising amount of leaf litter and grit that will dump into the footwell if you tip it.",
+image: "/steps/filter-airflow.svg",
+warning: "A cabin filter fitted backwards still passes air, so nothing will seem wrong -- it just filters and seals poorly. Get the direction right the first time.",
+},
+{
+number: 5,
+title: "Clean the housing and fit the new filter",
+instructions:
+"Wipe out any debris sitting in the empty housing before the new filter goes in, otherwise it lands on the fresh filter immediately. Slide the new one in with its arrow matching the direction you noted, making sure it seats flat and square rather than bowing in the middle.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 6,
+title: "Reassemble and confirm the fan",
+instructions:
+"Refit the cover and put everything back in reverse order, making sure any electrical connector you disturbed clicks home. Start the car and run the fan up to full on fresh air. It should be noticeably stronger than before, and there should be no new rattle or whistle from behind the dash.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "civic-cabin-filter",
+vehicleId: "2018-honda-civic-1.5t",
+title: "Cabin Air Filter Replacement",
+summary:
+"Replace the cabin air filter on the 10th-gen Civic. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "The glove box and filter cover are both hand-released" },
+{ name: "Small flashlight", note: "Makes the cover tabs much easier to find" },
+],
+parts: [
+"Cabin air filter for the 10th-gen Civic",
+"Optional: a few spare trim clips, in case an old one breaks",
+],
+safety: [
+"An old cabin filter can hold mould, pollen and rodent debris. Wear gloves, avoid shaking it out inside the car, and bag it before it goes in the bin.",
+"Work with the ignition off. There is wiring behind the glove box on every one of these vehicles.",
+"Do not force a trim panel. Plastic clips on a dash get brittle with age and heat -- if something will not move, a fastener is still holding it.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Know what you are looking at",
+instructions:
+"The cabin filter cleans the air coming through the vents, not anything the engine breathes. Most manufacturers want it yearly or around every 15,000 miles, and almost nobody does it that often. If your fan seems weaker than it used to or the car smells musty when the A/C starts, this is usually why.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 2,
+title: "Empty the glove box and clear your workspace",
+instructions:
+"Take everything out of the glove box -- it will be upside down shortly. Push the passenger seat back as far as it goes and get a light in there. This job is entirely about being able to see what you are doing.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 3,
+title: "Get to the filter housing",
+instructions:
+"Squeeze both sides of the glove box inward to clear the bump stops and let it swing all the way down -- the glove box stays attached and no tools are needed. Behind it is the filter cover, held by two tabs on each side. Push the tabs inward and pull the cover straight out.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 4,
+title: "Note the airflow direction, then pull the old filter",
+instructions:
+"The airflow arrow on this vehicle points DOWN. Fit the new filter with its arrow pointing down. Slide the old filter out slowly and keep it flat -- they collect a surprising amount of leaf litter and grit that will dump into the footwell if you tip it.",
+image: "/steps/filter-airflow.svg",
+warning: "A cabin filter fitted backwards still passes air, so nothing will seem wrong -- it just filters and seals poorly. Get the direction right the first time.",
+},
+{
+number: 5,
+title: "Clean the housing and fit the new filter",
+instructions:
+"Wipe out any debris sitting in the empty housing before the new filter goes in, otherwise it lands on the fresh filter immediately. Slide the new one in with its arrow matching the direction you noted, making sure it seats flat and square rather than bowing in the middle.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 6,
+title: "Reassemble and confirm the fan",
+instructions:
+"Refit the cover and put everything back in reverse order, making sure any electrical connector you disturbed clicks home. Start the car and run the fan up to full on fresh air. It should be noticeably stronger than before, and there should be no new rattle or whistle from behind the dash.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "f150-cabin-filter",
+vehicleId: "2015-ford-f150-5.0l",
+title: "Cabin Air Filter Replacement",
+summary:
+"Replace the cabin air filter on the 13th-gen F-150. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+difficulty: "Moderate",
+tier: "premium",
+estTime: "40-50 min",
+noFasteners: true,
+tools: [
+{ name: "Trim removal tool", note: "Plastic, not a screwdriver -- a screwdriver marks the dash" },
+{ name: "7mm socket + short ratchet", note: "For the upper compartment bolts" },
+{ name: "Small flashlight" },
+],
+parts: [
+"Cabin air filter for the 2015+ F-150",
+"Optional: a few spare trim clips, in case an old one breaks",
+],
+safety: [
+"An old cabin filter can hold mould, pollen and rodent debris. Wear gloves, avoid shaking it out inside the car, and bag it before it goes in the bin.",
+"Work with the ignition off. There is wiring behind the glove box on every one of these vehicles.",
+"Do not force a trim panel. Plastic clips on a dash get brittle with age and heat -- if something will not move, a fastener is still holding it.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Know what you are looking at",
+instructions:
+"The cabin filter cleans the air coming through the vents, not anything the engine breathes. Most manufacturers want it yearly or around every 15,000 miles, and almost nobody does it that often. If your fan seems weaker than it used to or the car smells musty when the A/C starts, this is usually why.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 2,
+title: "Empty the glove box and clear your workspace",
+instructions:
+"Take everything out of the glove box -- it will be upside down shortly. Push the passenger seat back as far as it goes and get a light in there. This job is entirely about being able to see what you are doing.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 3,
+title: "Get to the filter housing",
+instructions:
+"This is the most involved cabin filter of the six vehicles in the catalog -- it is not a drop-the-glove-box job. Empty the glove box and lower it by pushing in on each side to release the tabs. Remove the front trim panel by disengaging its clips with a trim tool. Undo the bolts at the top of the upper compartment with a 7mm socket. Disconnect the electrical connector, then gently pry the upper glove compartment free.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 4,
+title: "Note the airflow direction, then pull the old filter",
+instructions:
+"Note the airflow direction marked on the old filter before you pull it out, and fit the new one the same way. Slide the old filter out slowly and keep it flat -- they collect a surprising amount of leaf litter and grit that will dump into the footwell if you tip it.",
+image: "/steps/filter-airflow.svg",
+warning: "A cabin filter fitted backwards still passes air, so nothing will seem wrong -- it just filters and seals poorly. Get the direction right the first time.",
+},
+{
+number: 5,
+title: "Clean the housing and fit the new filter",
+instructions:
+"Wipe out any debris sitting in the empty housing before the new filter goes in, otherwise it lands on the fresh filter immediately. Slide the new one in with its arrow matching the direction you noted, making sure it seats flat and square rather than bowing in the middle.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 6,
+title: "Reassemble and confirm the fan",
+instructions:
+"Refit the cover and put everything back in reverse order, making sure any electrical connector you disturbed clicks home. Start the car and run the fan up to full on fresh air. It should be noticeably stronger than before, and there should be no new rattle or whistle from behind the dash.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "silverado-1500-cabin-filter",
+vehicleId: "2020-chevrolet-silverado-1500-5.3l",
+title: "Cabin Air Filter Replacement",
+summary:
+"Replace the cabin air filter on the T1 Silverado 1500. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "The damper clip and glove box both release by hand" },
+{ name: "Small flashlight" },
+],
+parts: [
+"Cabin air filter for the 2019+ Silverado 1500",
+"Optional: a few spare trim clips, in case an old one breaks",
+],
+safety: [
+"An old cabin filter can hold mould, pollen and rodent debris. Wear gloves, avoid shaking it out inside the car, and bag it before it goes in the bin.",
+"Work with the ignition off. There is wiring behind the glove box on every one of these vehicles.",
+"Do not force a trim panel. Plastic clips on a dash get brittle with age and heat -- if something will not move, a fastener is still holding it.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Know what you are looking at",
+instructions:
+"The cabin filter cleans the air coming through the vents, not anything the engine breathes. Most manufacturers want it yearly or around every 15,000 miles, and almost nobody does it that often. If your fan seems weaker than it used to or the car smells musty when the A/C starts, this is usually why.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 2,
+title: "Empty the glove box and clear your workspace",
+instructions:
+"Take everything out of the glove box -- it will be upside down shortly. Push the passenger seat back as far as it goes and get a light in there. This job is entirely about being able to see what you are doing.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 3,
+title: "Get to the filter housing",
+instructions:
+"Unhook the damper arm on the left side of the glove box by pinching its clip, then squeeze both sides of the box inward to clear the stops and swing it fully down. No tools needed. The filter sits in the HVAC housing behind it.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 4,
+title: "Note the airflow direction, then pull the old filter",
+instructions:
+"The airflow arrow on this truck points DOWN. Worth confirming against your own old filter as you pull it -- published answers for the previous-generation body disagree, and the filter itself is the authority. Slide the old filter out slowly and keep it flat -- they collect a surprising amount of leaf litter and grit that will dump into the footwell if you tip it.",
+image: "/steps/filter-airflow.svg",
+warning: "A cabin filter fitted backwards still passes air, so nothing will seem wrong -- it just filters and seals poorly. Get the direction right the first time.",
+},
+{
+number: 5,
+title: "Clean the housing and fit the new filter",
+instructions:
+"Wipe out any debris sitting in the empty housing before the new filter goes in, otherwise it lands on the fresh filter immediately. Slide the new one in with its arrow matching the direction you noted, making sure it seats flat and square rather than bowing in the middle.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 6,
+title: "Reassemble and confirm the fan",
+instructions:
+"Refit the cover and put everything back in reverse order, making sure any electrical connector you disturbed clicks home. Start the car and run the fan up to full on fresh air. It should be noticeably stronger than before, and there should be no new rattle or whistle from behind the dash.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "sierra-1500-cabin-filter",
+vehicleId: "2020-gmc-sierra-1500-5.3l",
+title: "Cabin Air Filter Replacement",
+summary:
+"Replace the cabin air filter on the T1 Sierra 1500. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "The damper clip and glove box both release by hand" },
+{ name: "Small flashlight" },
+],
+parts: [
+"Cabin air filter for the 2019+ Sierra 1500",
+"Optional: a few spare trim clips, in case an old one breaks",
+],
+safety: [
+"An old cabin filter can hold mould, pollen and rodent debris. Wear gloves, avoid shaking it out inside the car, and bag it before it goes in the bin.",
+"Work with the ignition off. There is wiring behind the glove box on every one of these vehicles.",
+"Do not force a trim panel. Plastic clips on a dash get brittle with age and heat -- if something will not move, a fastener is still holding it.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Know what you are looking at",
+instructions:
+"The cabin filter cleans the air coming through the vents, not anything the engine breathes. Most manufacturers want it yearly or around every 15,000 miles, and almost nobody does it that often. If your fan seems weaker than it used to or the car smells musty when the A/C starts, this is usually why.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 2,
+title: "Empty the glove box and clear your workspace",
+instructions:
+"Take everything out of the glove box -- it will be upside down shortly. Push the passenger seat back as far as it goes and get a light in there. This job is entirely about being able to see what you are doing.",
+image: "/steps/generic-park-secure.svg",
+},
+{
+number: 3,
+title: "Get to the filter housing",
+instructions:
+"Mechanically identical to the Silverado -- same platform, same HVAC box. Unhook the damper arm on the left side of the glove box by pinching its clip, then squeeze both sides inward to clear the stops and swing it fully down. No tools needed.",
+image: "/steps/cabin-filter-access.svg",
+},
+{
+number: 4,
+title: "Note the airflow direction, then pull the old filter",
+instructions:
+"The airflow arrow on this truck points DOWN. Worth confirming against your own old filter as you pull it -- published answers for the previous-generation body disagree, and the filter itself is the authority. Slide the old filter out slowly and keep it flat -- they collect a surprising amount of leaf litter and grit that will dump into the footwell if you tip it.",
+image: "/steps/filter-airflow.svg",
+warning: "A cabin filter fitted backwards still passes air, so nothing will seem wrong -- it just filters and seals poorly. Get the direction right the first time.",
+},
+{
+number: 5,
+title: "Clean the housing and fit the new filter",
+instructions:
+"Wipe out any debris sitting in the empty housing before the new filter goes in, otherwise it lands on the fresh filter immediately. Slide the new one in with its arrow matching the direction you noted, making sure it seats flat and square rather than bowing in the middle.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 6,
+title: "Reassemble and confirm the fan",
+instructions:
+"Refit the cover and put everything back in reverse order, making sure any electrical connector you disturbed clicks home. Start the car and run the fan up to full on fresh air. It should be noticeably stronger than before, and there should be no new rattle or whistle from behind the dash.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "jeep-grand-cherokee-engine-air-filter",
+vehicleId: "2014-jeep-grand-cherokee-3.6l",
+title: "Engine Air Filter Replacement",
+summary:
+"Replace the engine air filter on the WK2 Grand Cherokee 3.6L. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15-20 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "The latches are hand-operated" },
+{ name: "Shop towel", note: "For wiping out the housing" },
+],
+parts: [
+"Engine air filter element matched to this year and engine",
+"Optional: a spare airbox lid clip, if yours look tired",
+],
+safety: [
+"Work on a cold engine. There is nothing hot in the airbox itself, but the parts around it hold heat for a long time.",
+"Never run the engine with the airbox open. Anything that gets pulled down the intake tube goes straight into the engine.",
+"Do not drop anything into the open intake. If you do, stop and retrieve it before closing up -- do not start the engine and hope.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Find the airbox",
+instructions:
+"Follow the large intake tube back from the engine and it ends at a big black plastic box -- that is the airbox. It is the easiest component in the engine bay to identify because nothing else looks like it, so follow the tube rather than hunting by memory of where it sits on other cars.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 2,
+title: "Open the housing",
+instructions:
+"The lid is held by two metal flip-latches along one side. Flip each latch away from the box and let it swing down, then lift the upper half of the housing off. The intake tube stays connected -- you do not need to loosen anything else.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 3,
+title: "Lift the old element out and read it",
+instructions:
+"Pull the old filter straight up and out, noting which way round it sat. Hold it up to a light: if you cannot see light through the pleats, it is well past due. Look at the dirty side too -- leaves and seeds mean debris is getting past the intake snorkel, and a greasy film usually points at crankcase ventilation rather than the filter.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 4,
+title: "Clean out the empty housing",
+instructions:
+"There is almost always a layer of grit, leaf fragments and sometimes an acorn sitting in the bottom of the box. Wipe it out with a shop towel or pick it out by hand. Do not blow it out with compressed air while the housing is open to the intake -- that pushes debris toward the engine.",
+image: "/steps/generic-cleanup.svg",
+warning: "Anything left loose in the housing gets drawn against the new filter the moment you start the engine.",
+},
+{
+number: 5,
+title: "Seat the new element",
+instructions:
+"Drop the new filter in the same orientation the old one came out. Its rubber sealing edge must sit flat all the way around the housing lip without folding or crimping. A filter that is even slightly proud on one edge lets unfiltered air bypass it completely, which defeats the whole point of changing it.",
+image: "/steps/filter-airflow.svg",
+warning: "If the lid does not close with light pressure, the filter is not seated. Reseat it rather than forcing the lid.",
+},
+{
+number: 6,
+title: "Close up and verify",
+instructions:
+"Refit the lid and secure every clip, screw or clamp you released, reconnecting the intake tube if you disturbed it. Start the engine and listen: a whistle or sucking noise from the airbox means the lid is not sealed or a clip was missed. It should sound exactly as it did before you started.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "civic-engine-air-filter",
+vehicleId: "2018-honda-civic-1.5t",
+title: "Engine Air Filter Replacement",
+summary:
+"Replace the engine air filter on the 10th-gen Civic 1.5L Turbo. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "20-25 min",
+noFasteners: true,
+tools: [
+{ name: "8mm socket + short ratchet", note: "Use this, NOT a screwdriver -- these screws strip easily" },
+{ name: "Shop towel" },
+],
+parts: [
+"Engine air filter element matched to this year and engine",
+"Optional: a spare airbox lid clip, if yours look tired",
+],
+safety: [
+"Work on a cold engine. There is nothing hot in the airbox itself, but the parts around it hold heat for a long time.",
+"Never run the engine with the airbox open. Anything that gets pulled down the intake tube goes straight into the engine.",
+"Do not drop anything into the open intake. If you do, stop and retrieve it before closing up -- do not start the engine and hope.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Find the airbox",
+instructions:
+"Follow the large intake tube back from the engine and it ends at a big black plastic box -- that is the airbox. It is the easiest component in the engine bay to identify because nothing else looks like it, so follow the tube rather than hunting by memory of where it sits on other cars.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 2,
+title: "Open the housing",
+instructions:
+"Four screws hold the airbox lid, and this is where people wreck the job: on the 1.5L turbo those screws have 8mm hex heads in a JIS pattern, not a true Phillips. A Phillips screwdriver will cam out and round them off. Use an 8mm socket on a short ratchet instead. (The naturally-aspirated 2.0L Civic uses snap clips here, so a guide or video for an LX or Sport will not match this car.)",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 3,
+title: "Lift the old element out and read it",
+instructions:
+"Pull the old filter straight up and out, noting which way round it sat. Hold it up to a light: if you cannot see light through the pleats, it is well past due. Look at the dirty side too -- leaves and seeds mean debris is getting past the intake snorkel, and a greasy film usually points at crankcase ventilation rather than the filter.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 4,
+title: "Clean out the empty housing",
+instructions:
+"There is almost always a layer of grit, leaf fragments and sometimes an acorn sitting in the bottom of the box. Wipe it out with a shop towel or pick it out by hand. Do not blow it out with compressed air while the housing is open to the intake -- that pushes debris toward the engine.",
+image: "/steps/generic-cleanup.svg",
+warning: "Anything left loose in the housing gets drawn against the new filter the moment you start the engine.",
+},
+{
+number: 5,
+title: "Seat the new element",
+instructions:
+"Drop the new filter in the same orientation the old one came out. Its rubber sealing edge must sit flat all the way around the housing lip without folding or crimping. A filter that is even slightly proud on one edge lets unfiltered air bypass it completely, which defeats the whole point of changing it.",
+image: "/steps/filter-airflow.svg",
+warning: "If the lid does not close with light pressure, the filter is not seated. Reseat it rather than forcing the lid.",
+},
+{
+number: 6,
+title: "Close up and verify",
+instructions:
+"Refit the lid and secure every clip, screw or clamp you released, reconnecting the intake tube if you disturbed it. Start the engine and listen: a whistle or sucking noise from the airbox means the lid is not sealed or a clip was missed. It should sound exactly as it did before you started.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "f150-engine-air-filter",
+vehicleId: "2015-ford-f150-5.0l",
+title: "Engine Air Filter Replacement",
+summary:
+"Replace the engine air filter on the 13th-gen F-150 5.0L. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "15 min",
+noFasteners: true,
+tools: [
+{ name: "No tools required", note: "Both lid clips release by hand" },
+{ name: "Shop towel" },
+],
+parts: [
+"Engine air filter element matched to this year and engine",
+"Optional: a spare airbox lid clip, if yours look tired",
+],
+safety: [
+"Work on a cold engine. There is nothing hot in the airbox itself, but the parts around it hold heat for a long time.",
+"Never run the engine with the airbox open. Anything that gets pulled down the intake tube goes straight into the engine.",
+"Do not drop anything into the open intake. If you do, stop and retrieve it before closing up -- do not start the engine and hope.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Find the airbox",
+instructions:
+"Follow the large intake tube back from the engine and it ends at a big black plastic box -- that is the airbox. It is the easiest component in the engine bay to identify because nothing else looks like it, so follow the tube rather than hunting by memory of where it sits on other cars.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 2,
+title: "Open the housing",
+instructions:
+"Two clips hold the airbox lid. Release both and lift the lid enough to slide the element out.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 3,
+title: "Lift the old element out and read it",
+instructions:
+"Pull the old filter straight up and out, noting which way round it sat. Hold it up to a light: if you cannot see light through the pleats, it is well past due. Look at the dirty side too -- leaves and seeds mean debris is getting past the intake snorkel, and a greasy film usually points at crankcase ventilation rather than the filter.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 4,
+title: "Clean out the empty housing",
+instructions:
+"There is almost always a layer of grit, leaf fragments and sometimes an acorn sitting in the bottom of the box. Wipe it out with a shop towel or pick it out by hand. Do not blow it out with compressed air while the housing is open to the intake -- that pushes debris toward the engine.",
+image: "/steps/generic-cleanup.svg",
+warning: "Anything left loose in the housing gets drawn against the new filter the moment you start the engine.",
+},
+{
+number: 5,
+title: "Seat the new element",
+instructions:
+"Drop the new filter in the same orientation the old one came out. Its rubber sealing edge must sit flat all the way around the housing lip without folding or crimping. A filter that is even slightly proud on one edge lets unfiltered air bypass it completely, which defeats the whole point of changing it.",
+image: "/steps/filter-airflow.svg",
+warning: "If the lid does not close with light pressure, the filter is not seated. Reseat it rather than forcing the lid.",
+},
+{
+number: 6,
+title: "Close up and verify",
+instructions:
+"Refit the lid and secure every clip, screw or clamp you released, reconnecting the intake tube if you disturbed it. Start the engine and listen: a whistle or sucking noise from the airbox means the lid is not sealed or a clip was missed. It should sound exactly as it did before you started.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
+{
+id: "ford-escape-engine-air-filter",
+vehicleId: "2021-ford-escape-1.5l",
+title: "Engine Air Filter Replacement",
+summary:
+"Replace the engine air filter on the 2020+ Escape 1.5L EcoBoost. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+difficulty: "Easy",
+tier: "premium",
+estTime: "20 min",
+noFasteners: true,
+tools: [
+{ name: "Flat screwdriver", note: "For the intake boot clamp" },
+{ name: "Shop towel" },
+],
+parts: [
+"Engine air filter element matched to this year and engine",
+"Optional: a spare airbox lid clip, if yours look tired",
+],
+safety: [
+"Work on a cold engine. There is nothing hot in the airbox itself, but the parts around it hold heat for a long time.",
+"Never run the engine with the airbox open. Anything that gets pulled down the intake tube goes straight into the engine.",
+"Do not drop anything into the open intake. If you do, stop and retrieve it before closing up -- do not start the engine and hope.",
+],
+torqueSpecs: [],
+steps: [
+{
+number: 1,
+title: "Find the airbox",
+instructions:
+"Follow the large intake tube back from the engine and it ends at a big black plastic box -- that is the airbox. It is the easiest component in the engine bay to identify because nothing else looks like it, so follow the tube rather than hunting by memory of where it sits on other cars.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 2,
+title: "Open the housing",
+instructions:
+"This one differs from most: the intake boot has to come off first. Loosen the clamp on the housing cover with a screwdriver, gently pull the boot back and away from the cover, then release the two clips and lift the cover off. Ford's own manual warns to seat the new element without crimping its edges.",
+image: "/steps/airbox-open.svg",
+},
+{
+number: 3,
+title: "Lift the old element out and read it",
+instructions:
+"Pull the old filter straight up and out, noting which way round it sat. Hold it up to a light: if you cannot see light through the pleats, it is well past due. Look at the dirty side too -- leaves and seeds mean debris is getting past the intake snorkel, and a greasy film usually points at crankcase ventilation rather than the filter.",
+image: "/steps/filter-airflow.svg",
+},
+{
+number: 4,
+title: "Clean out the empty housing",
+instructions:
+"There is almost always a layer of grit, leaf fragments and sometimes an acorn sitting in the bottom of the box. Wipe it out with a shop towel or pick it out by hand. Do not blow it out with compressed air while the housing is open to the intake -- that pushes debris toward the engine.",
+image: "/steps/generic-cleanup.svg",
+warning: "Anything left loose in the housing gets drawn against the new filter the moment you start the engine.",
+},
+{
+number: 5,
+title: "Seat the new element",
+instructions:
+"Drop the new filter in the same orientation the old one came out. Its rubber sealing edge must sit flat all the way around the housing lip without folding or crimping. A filter that is even slightly proud on one edge lets unfiltered air bypass it completely, which defeats the whole point of changing it.",
+image: "/steps/filter-airflow.svg",
+warning: "If the lid does not close with light pressure, the filter is not seated. Reseat it rather than forcing the lid.",
+},
+{
+number: 6,
+title: "Close up and verify",
+instructions:
+"Refit the lid and secure every clip, screw or clamp you released, reconnecting the intake tube if you disturbed it. Start the engine and listen: a whistle or sucking noise from the airbox means the lid is not sealed or a clip was missed. It should sound exactly as it did before you started.",
+image: "/steps/generic-cleanup.svg",
+},
+],
+},
 ];
 
 export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {

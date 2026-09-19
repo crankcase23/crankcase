@@ -62,7 +62,16 @@ const CHECKS: {
   { field: "parts", severity: "required", test: (g) => g.parts.length > 0, message: "No parts or supplies listed." },
   { field: "safety", severity: "required", test: (g) => g.safety.length > 0, message: "No safety warnings. Required on every guide." },
   { field: "steps", severity: "required", test: (g) => g.steps.length >= 3, message: "Fewer than 3 steps — procedure looks incomplete." },
-  { field: "torqueSpecs", severity: "required", test: (g) => g.torqueSpecs.length > 0, message: "No torque specifications. This is the core of the product." },
+  {
+    field: "torqueSpecs",
+    severity: "required",
+    // Torque specs are the core of the product, so a guide without them is
+    // normally incomplete. The exception is a job with no torqued fastener at
+    // all -- wiper blades, cabin and engine air filters. Those declare
+    // noFasteners and are exempt from this one check only. See RepairGuide.
+    test: (g) => g.noFasteners === true || g.torqueSpecs.length > 0,
+    message: "No torque specifications. This is the core of the product.",
+  },
   {
     field: "stepDetail",
     severity: "recommended",
@@ -78,7 +87,9 @@ const CHECKS: {
   {
     field: "provenance",
     severity: "recommended",
-    test: (g) => g.torqueSpecs.some((t) => t.provenance?.source === "open-labor-project"),
+    // A fastener-free guide has nothing to source, so flagging it here would
+    // be permanent noise on the Build Queue rather than a real gap.
+    test: (g) => g.noFasteners === true || g.torqueSpecs.some((t) => t.provenance?.source === "open-labor-project"),
     message: "No torque spec is backed by real sourced data — all hand-typed.",
   },
   {

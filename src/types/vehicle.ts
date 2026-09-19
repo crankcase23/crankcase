@@ -72,6 +72,18 @@ export interface RepairGuide {
   safety: string[];
   torqueSpecs: TorqueSpec[];
   steps: RepairStep[];
+  /**
+   * Set on the small number of approved jobs that genuinely have no torqued
+   * fastener anywhere in the procedure — wiper blades snap onto an arm, cabin
+   * and engine air filters sit behind clips or a single trim screw.
+   *
+   * The guide console treats a missing torque spec as a publish-blocking
+   * error, which is correct for every job that bolts something to the car and
+   * wrong for these. This flag turns that one check off for the guide, and
+   * nothing else. It is NOT a way to ship a fastener job without its specs:
+   * if the procedure torques anything at all, this stays unset.
+   */
+  noFasteners?: boolean;
 }
 
 export interface Vehicle {

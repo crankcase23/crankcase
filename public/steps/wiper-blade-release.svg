@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <rect x="0" y="0" width="240" height="200" rx="16" fill="#0f172a"/>
+  <rect x="10" y="10" width="220" height="180" rx="12" fill="#1e293b"/>
+
+  <g stroke="#94a3b8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 74 h96 a18 18 0 0 1 18 18 v6"/>
+    <rect x="44" y="118" width="164" height="16" rx="8"/>
+    <path d="M78 118 v-8"/>
+    <path d="M172 118 v-8"/>
+    <path d="M78 110 h94"/>
+  </g>
+
+  <g stroke="#f97316" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M146 98 v14"/>
+    <rect x="132" y="94" width="28" height="18" rx="5"/>
+    <path d="M176 76 h30"/>
+    <path d="M198 68 l8 8 l-8 8"/>
+  </g>
+
+  <text x="120" y="172" text-anchor="middle" fill="#f97316" font-family="sans-serif" font-size="11" letter-spacing="1">PRESS TAB, SLIDE BLADE OFF</text>
+</svg>
