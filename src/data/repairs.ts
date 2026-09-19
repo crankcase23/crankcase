@@ -1,4 +1,13 @@
-import { RepairGuide } from "@/types/vehicle";
+import {
+  RepairGuide,
+  RepairStep,
+  TorqueSpec,
+  Vehicle,
+  GuideFitment,
+  GuideFigures,
+  JobTypeId,
+} from "@/types/vehicle";
+import { vehicles } from "./vehicles";
 import { jeepGrandCherokeeWk2Guides } from "./repairs-jeep-wk2";
 import { silveradoK2xxGuides } from "./repairs-silverado-k2xx";
 
@@ -2592,10 +2601,147 @@ image: "/steps/generic-cleanup.svg",
 // One catalog entry per year + model + engine + drivetrain. If cab or trim ever
 // genuinely changes what someone buys or torques, that is a guide variant, not
 // a second vehicle. See claude/silverado-catalog-collapse-2026-09-19.md.
+// ---------------------------------------------------------------------------
+// FITMENT RESOLUTION
+//
+// A guide reaches a vehicle by one of two routes.
+//
+//   vehicleId   written for that one vehicle. The original shape, still
+//               correct for a genuinely one-off procedure.
+//   fitment     written ONCE against a platform / engine / driveline key, and
+//               bound to per-vehicle numbers here at resolve time.
+//
+// The rule the second route exists to enforce, and the reason it is worth the
+// machinery: PROCEDURE INHERITS, NUMBERS DO NOT. A guide whose key matches a
+// vehicle but which carries no verified figures entry for that vehicle
+// resolves to NOTHING for it. It does not quietly fall back to the donor
+// vehicle's torque and capacities.
+//
+// Silence is the correct failure mode here. A missing guide is a visible gap
+// on the coverage page that someone comes back and fills. An inherited number
+// is a reader putting a torque wrench on a figure that belongs to a different
+// truck, with nothing anywhere on the page to suggest anything is wrong.
+// ---------------------------------------------------------------------------
+
+function matchesFitment(f: GuideFitment, v: Vehicle): boolean {
+if (!v.keys) return false;
+if (v.keys[f.on] !== f.key) return false;
+if (f.years && (v.year < f.years[0] || v.year > f.years[1])) return false;
+if (f.except && f.except.indexOf(v.id) !== -1) return false;
+return true;
+}
+
+// Returns null when the shared procedure cannot be honestly bound to this
+// vehicle, which the caller treats exactly like no guide at all.
+function bindGuide(g: RepairGuide, v: Vehicle, fig: GuideFigures): RepairGuide | null {
+const slots: Record<string, string> = Object.assign(
+{ vehicle: v.year + " " + v.make + " " + v.model },
+fig.slots || {},
+);
+const fill = (s: string): string =>
+s.replace(/\{\{(\w+)\}\}/g, (m, k: string) => (k in slots ? slots[k] : m));
+
+const byFastener = new Map(fig.torqueSpecs.map((t) => [t.fastener, t]));
+
+const steps: RepairStep[] = [];
+for (const s of g.steps) {
+let torque = s.torque;
+if (torque) {
+const bound: TorqueSpec[] = [];
+for (const t of torque) {
+// A shared step names the fastener; this vehicle's own figures supply
+// the value. No match means the guide was never actually sourced for
+// this vehicle, so withhold the whole thing rather than render a
+// number that came from somewhere else. This also permanently kills
+// the old bug where a torque figure lived in two places and only one
+// of them got corrected.
+const real = byFastener.get(t.fastener);
+if (!real) return null;
+bound.push(t.onlyFor ? Object.assign({}, real, { onlyFor: t.onlyFor }) : real);
+}
+torque = bound;
+}
+steps.push(
+Object.assign({}, s, {
+title: fill(s.title),
+instructions: fill(s.instructions),
+warning: s.warning ? fill(s.warning) : undefined,
+torque,
+}),
+);
+}
+
+const out: RepairGuide = Object.assign({}, g, {
+id: fig.id,
+vehicleId: v.id,
+title: fill(g.title),
+summary: fill(g.summary),
+parts: fig.parts,
+torqueSpecs: fig.torqueSpecs,
+variantParts: fig.variantParts || g.variantParts,
+steps,
+});
+delete out.fitment;
+delete out.figures;
+return out;
+}
+
+// Every guide every catalog vehicle is entitled to, already bound to that
+// vehicle's own numbers. Resolved once at module load; both lookups read it.
+export const resolvedRepairs: RepairGuide[] = (() => {
+const out: RepairGuide[] = [];
+for (const v of vehicles) {
+for (const g of repairs) {
+if (g.vehicleId) {
+if (g.vehicleId === v.id) out.push(g);
+continue;
+}
+if (!g.fitment || !matchesFitment(g.fitment, v)) continue;
+const fig = g.figures ? g.figures[v.id] : undefined;
+if (!fig) continue; // see the rule at the top of this section
+const bound = bindGuide(g, v, fig);
+if (bound) out.push(bound);
+}
+}
+return out;
+})();
+
 export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {
-return repairs.filter((r) => r.vehicleId === vehicleId);
+return resolvedRepairs.filter((r) => r.vehicleId === vehicleId);
 }
 
 export function getRepairById(id: string): RepairGuide | undefined {
-return repairs.find((r) => r.id === id);
+return resolvedRepairs.find((r) => r.id === id);
+}
+
+export interface PendingFitment {
+vehicleId: string;
+guideId: string;
+jobType?: JobTypeId;
+reason: "no-figures" | "figures-incomplete";
+}
+
+// Every vehicle a shared guide COULD serve but does not yet, because its
+// numbers have not been verified for that vehicle.
+//
+// This is what stops a shared procedure from looking like coverage it has not
+// earned. The admin coverage page reads it to draw "procedure written, numbers
+// unverified" as its own state, distinct from a job nobody has touched - the
+// first is an afternoon of table lookups, the second is a whole guide to write,
+// and a planner that cannot tell them apart is not much of a planner.
+export function getPendingFitment(): PendingFitment[] {
+const out: PendingFitment[] = [];
+for (const v of vehicles) {
+for (const g of repairs) {
+if (g.vehicleId || !g.fitment) continue;
+if (!matchesFitment(g.fitment, v)) continue;
+const fig = g.figures ? g.figures[v.id] : undefined;
+if (!fig) {
+out.push({ vehicleId: v.id, guideId: g.id, jobType: g.jobType, reason: "no-figures" });
+} else if (!bindGuide(g, v, fig)) {
+out.push({ vehicleId: v.id, guideId: g.id, jobType: g.jobType, reason: "figures-incomplete" });
+}
+}
+}
+return out;
 }
