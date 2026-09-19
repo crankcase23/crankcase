@@ -48,7 +48,7 @@ return;
 }
 setDecoded(result);
 const found = matchCatalogVehicles(result);
-if (found.length === 1) setPickedMatchId(found[0].id);
+if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(result, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
 } catch {
 setDecodeError(
 "Couldn't reach the NHTSA VIN decoder right now. Try again in a moment, or add your vehicle manually below."
@@ -266,7 +266,7 @@ className="mt-4 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 </div>
 )}
 
-{decoded && matches.length === 0 && (
+{decoded && (
 <div className="mt-5">
 <dl className="divide-y divide-slate-800 rounded-lg border border-slate-800 bg-slate-950/60 px-4">
 {[
@@ -289,7 +289,8 @@ className="mt-4 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 </div>
 ))}
 </dl>
-<p className="mt-3 text-sm text-slate-400">
+  {matches.length === 0 && (
+  <p className="mt-3 text-sm text-slate-400">
 We don&apos;t have curated specs or torque data for this one yet — you
 can still add it and track service history and maintenance reminders
 on it.
@@ -301,6 +302,7 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 >
 + Add this vehicle to my garage
 </button>
+  )}
 </div>
 )}
 </section>
