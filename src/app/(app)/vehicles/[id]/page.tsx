@@ -2,10 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
-import { SpecTable, FluidTable, DifficultyBadge, TierBadge } from "@/components/tables";
+import { SpecTable, FluidTable, TierBadge } from "@/components/tables";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
+import GuideGroups from "@/components/GuideGroups";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
 
@@ -84,39 +85,9 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         <FluidTable fluids={vehicle.fluids} />
       </section>
 
-      <section className="mt-10">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">Repair Guides</h2>
-        {repairGuides.length === 0 ? (
-          <p className="text-sm text-slate-500">No repair guides for this vehicle yet.</p>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {repairGuides.map((guide) => (
-              <Link
-                key={guide.id}
-                href={`/vehicles/${vehicle.id}/repairs/${guide.id}`}
-                className="group block rounded-xl border border-slate-800 bg-slate-900 p-5 transition hover:border-orange-500 hover:bg-slate-800/80"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="font-semibold text-slate-100">{guide.title}</h3>
-                  <div className="flex shrink-0 items-center gap-1.5">
-                    <TierBadge tier={guide.tier} />
-                    <DifficultyBadge difficulty={guide.difficulty} />
-                  </div>
-                </div>
-                <p className="mt-2 text-sm text-slate-400">{guide.summary}</p>
-                <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                  <span>⏱ {guide.estTime}</span>
-                  <span className="font-medium text-orange-400 group-hover:text-orange-300">
-                    Open guide &rarr;
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
-
       <MaintenanceReminders vehicleId={vehicle.id} />
+
+      <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
 
       <ServiceHistory
         vehicleId={vehicle.id}
