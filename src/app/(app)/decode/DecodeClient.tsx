@@ -71,7 +71,7 @@ async function handleSubmit(e: React.FormEvent) {
     const decoded = await decodeVin(vin);
     setResult(decoded);
     const found = matchCatalogVehicles(decoded);
-    if (found.length === 1) setPickedMatchId(found[0].id);
+    if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(decoded, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
   } catch {
     setError("Couldn't reach the NHTSA VIN decoder right now. Try again in a moment.");
   } finally {
@@ -165,7 +165,7 @@ return (
     </div>
   )}
   
-    {result && matches.length === 0 && (
+    {result && (
     <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-5">
       {result.errorText && !result.make && (
       <p className="text-sm text-amber-400">{result.errorText}</p>
@@ -193,7 +193,7 @@ return (
           </div>
           ))}
     </dl>
-      {result.make && (
+      {result.make && matches.length === 0 && (
       <button
         type="button"
         onClick={handleAddToGarage}
