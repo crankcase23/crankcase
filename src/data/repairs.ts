@@ -6,6 +6,7 @@ import {
   GuideFitment,
   GuideFigures,
   JobTypeId,
+  ResolvedGuide,
 } from "@/types/vehicle";
 import { vehicles } from "./vehicles";
 import { jeepGrandCherokeeWk2Guides } from "./repairs-jeep-wk2";
@@ -2633,7 +2634,7 @@ return true;
 
 // Returns null when the shared procedure cannot be honestly bound to this
 // vehicle, which the caller treats exactly like no guide at all.
-function bindGuide(g: RepairGuide, v: Vehicle, fig: GuideFigures): RepairGuide | null {
+function bindGuide(g: RepairGuide, v: Vehicle, fig: GuideFigures): ResolvedGuide | null {
 const slots: Record<string, string> = Object.assign(
 { vehicle: v.year + " " + v.make + " " + v.model },
 fig.slots || {},
@@ -2672,7 +2673,7 @@ torque,
 );
 }
 
-const out: RepairGuide = Object.assign({}, g, {
+const out: ResolvedGuide = Object.assign({}, g, {
 id: fig.id,
 vehicleId: v.id,
 title: fill(g.title),
@@ -2689,12 +2690,13 @@ return out;
 
 // Every guide every catalog vehicle is entitled to, already bound to that
 // vehicle's own numbers. Resolved once at module load; both lookups read it.
-export const resolvedRepairs: RepairGuide[] = (() => {
-const out: RepairGuide[] = [];
+export const resolvedRepairs: ResolvedGuide[] = (() => {
+const out: ResolvedGuide[] = [];
 for (const v of vehicles) {
 for (const g of repairs) {
-if (g.vehicleId) {
-if (g.vehicleId === v.id) out.push(g);
+const vid = g.vehicleId;
+if (vid) {
+if (vid === v.id) out.push({ ...g, vehicleId: vid });
 continue;
 }
 if (!g.fitment || !matchesFitment(g.fitment, v)) continue;
@@ -2707,11 +2709,11 @@ if (bound) out.push(bound);
 return out;
 })();
 
-export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {
+export function getRepairsForVehicle(vehicleId: string): ResolvedGuide[] {
 return resolvedRepairs.filter((r) => r.vehicleId === vehicleId);
 }
 
-export function getRepairById(id: string): RepairGuide | undefined {
+export function getRepairById(id: string): ResolvedGuide | undefined {
 return resolvedRepairs.find((r) => r.id === id);
 }
 
