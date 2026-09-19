@@ -54,9 +54,9 @@ notes: "Total dry-fill is much higher (~9.5 qt); a fluid/filter service only rep
 },
 {
 name: "Rear Axle Fluid (2WD)",
-capacity: "~1.0-1.5 qt (0.9-1.4 L)",
-spec: "Mopar 75W-85 gear oil (GL-5)",
-notes: "Checked 2026-09-19 and left broadly as written — published figures for the WK2 rear axle range from about 0.95 qt to 1.5 qt depending on axle and drivetrain, so this is shown as a range rather than a single number. Fill to the bottom edge of the fill plug hole with the vehicle level; that is the factory procedure and is self-correcting.",
+capacity: "1.2 qt (1.1 L) - aluminum 230RIA axle, which is what a V6 2WD gets",
+spec: "Mopar Gear & Axle Lubricant SAE 75W-85, API GL-5 synthetic (non friction-modified)",
+notes: "TIGHTENED 2026-09-19 against the factory service manual capacity table. The old ~1.0-1.5 qt range was not a tolerance - it was the span across all four WK2 rear axles (195RIA 1.0 qt, 215RII 1.3, 225RII 1.5, 230RIA 1.2 without ELSD, 1.4 with). A V6 2WD is the 230RIA. Use plain 75W-85 with NO friction modifier: this axle is an open differential, and the modified fluid (Mopar 68083381AA) belongs only to the electronic limited-slip axle, which was a V8 and EcoDiesel option on 4x4s. There is no front differential and no transfer case on a 2WD. Fill to the bottom edge of the fill hole with the vehicle level - that is the factory procedure and it is self-correcting, so the capacity figure only tells you how much to buy.",
 },
 {
 name: "Power Steering Fluid",
