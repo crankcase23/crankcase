@@ -309,4 +309,315 @@ export const jeepGrandCherokeeWk2Guides: RepairGuide[] = [
       },
     ],
   },
+  {
+    id: "jeep-grand-cherokee-coolant",
+    vehicleId: "2014-jeep-grand-cherokee-3.6l",
+    title: "Coolant Drain & Fill",
+    jobType: "coolant",
+    summary:
+      "Drain-and-refill the cooling system on the 3.6 Pentastar and burp the air out. Nothing is unbolted and no gasket is disturbed.",
+    difficulty: "Moderate",
+    tier: "premium",
+    estTime: "60-90 min",
+    noFasteners: true,
+    tools: [
+      { name: "Drain pan", note: "At least 3 gallons - system capacity is around 12.9 qt" },
+      { name: "Long-neck funnel or spill-free funnel kit", note: "A spill-free funnel makes burping far easier" },
+      { name: "Pliers", note: "For a hose clamp only if your radiator has no petcock" },
+      { name: "Jack and jack stands", note: "Only if you cannot reach the petcock from above" },
+    ],
+    parts: [
+      "Mopar Antifreeze/Coolant 10 Year/150,000 Mile Formula OAT, 50/50 premix - roughly 13 qt to refill the system",
+      "Distilled water if you buy concentrate instead of premix",
+    ],
+    safety: [
+      "Cold engine only. A hot cooling system is pressurised and will spray scalding coolant the moment the cap moves. If the upper hose is warm to the touch, stop and wait.",
+      "Coolant is sweet-tasting and lethal to pets and wildlife. Catch every drop, keep the pan covered, and take the old fluid to a recycler.",
+      "Never open the pressure cap as the first move. Release pressure only when the engine is genuinely cold.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Confirm what is already in the system",
+        instructions:
+          "Read the underhood coolant label and look at the colour in the overflow bottle. This vehicle should have the 10 Year/150,000 Mile OAT formula. 2013-2014 is the changeover window for this generation, so some cars in this range left with the older orange HOAT chemistry.",
+        warning:
+          "Do not mix OAT and HOAT. Mixing the two chemistries is the scenario that turns coolant to gel and plugs a heater core. If you cannot tell what is in there, a full flush with distilled water first is the safe route.",
+      },
+      {
+        number: 2,
+        title: "Park cold and level",
+        instructions:
+          "Park on level ground, engine off and cold. Set the heater controls to full hot - that opens the heater core so it drains and fills with the rest of the system rather than trapping old fluid.",
+      },
+      {
+        number: 3,
+        title: "Position the pan and open the drain",
+        instructions:
+          "Slide the drain pan under the lower driver side of the radiator. Open the petcock by hand - it is plastic and turns with finger pressure. Then loosen the pressure cap to let the system breathe and the coolant will run freely.",
+        warning:
+          "The petcock is plastic and hand-tight by design. Do not put pliers or a wrench on it. Cracking that fitting turns a fluid change into a radiator replacement.",
+      },
+      {
+        number: 4,
+        title: "Let it drain out fully",
+        instructions:
+          "Give it fifteen to twenty minutes to stop dripping. A drain-and-fill recovers what is in the radiator and some of the block - expect to pull out less than full system capacity, which is normal and is why a second drain-and-fill a few hundred miles later is worth doing if the old fluid looked bad.",
+      },
+      {
+        number: 5,
+        title: "Close up and refill",
+        instructions:
+          "Close the petcock finger-tight. Fit the funnel to the filler neck and pour the new 50/50 premix in slowly. Slow pouring lets air escape instead of forming a pocket. Fill until the funnel holds a steady level above the neck.",
+      },
+      {
+        number: 6,
+        title: "Burp the air out",
+        instructions:
+          "With the funnel still fitted and full, start the engine and let it idle with the heater on full hot. As the thermostat opens you will see the level drop and bubbles come up through the funnel. Keep topping the funnel so it never runs dry. Continue until the bubbling stops and the upper hose is hot.",
+        warning:
+          "Watch the temperature gauge the entire time. If it climbs past normal, shut the engine off immediately - that means air is still trapped and the pump is not circulating.",
+      },
+      {
+        number: 7,
+        title: "Set the final level and check for leaks",
+        instructions:
+          "Shut the engine off, remove the funnel, fit the pressure cap, and set the overflow bottle to its cold MAX mark. Look under the car for drips at the petcock.",
+      },
+      {
+        number: 8,
+        title: "Re-check after a heat cycle",
+        instructions:
+          "Drive it, let it cool completely, then check the overflow bottle again. It is normal for the level to fall once as the last air works out. Top off cold to MAX and check once more after the next drive.",
+      },
+    ],
+  },
+  {
+    id: "jeep-grand-cherokee-serpentine-belt",
+    vehicleId: "2014-jeep-grand-cherokee-3.6l",
+    title: "Serpentine Belt Replacement",
+    jobType: "serpentine-belt",
+    summary:
+      "Swap the accessory drive belt on the 3.6 Pentastar. The automatic tensioner does the work - the whole job is releasing it and routing the new belt correctly.",
+    difficulty: "Moderate",
+    tier: "premium",
+    estTime: "45-60 min",
+    noFasteners: true,
+    tools: [
+      { name: "Serpentine belt tool or long breaker bar", note: "A belt tool with a swivel head earns its keep in a tight bay" },
+      { name: "Socket to fit the tensioner pulley bolt", note: "Read the size off your own tensioner - do not assume" },
+      { name: "Phone camera", note: "The single most important tool in this job, see step 2" },
+    ],
+    parts: ["Serpentine accessory drive belt for the 3.6L Pentastar"],
+    safety: [
+      "Engine off and cool, key out. A belt that starts turning with your hand in the drive will take fingers.",
+      "The tensioner is spring-loaded and under real force. Keep your fingers clear of the pulley path and never let the bar slip while the tensioner is held back.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Look for the routing label",
+        instructions:
+          "Check the underhood label and the radiator support for a belt routing diagram. If your vehicle still has one, it is the most trustworthy routing source you will find, because it matches the accessories this vehicle was actually built with.",
+      },
+      {
+        number: 2,
+        title: "Photograph the existing routing",
+        instructions:
+          "Before touching anything, take several clear photos of the belt path from different angles - which pulleys it wraps, and critically which ones it touches on the smooth back side versus the ribbed side. Do this even if you found a label.",
+        warning:
+          "A belt routed even one pulley wrong will squeal, shred, or drive the water pump backwards. Do not rely on memory and do not trust a generic diagram found online for a year-make-model - accessory layouts vary with options.",
+      },
+      {
+        number: 3,
+        title: "Inspect what you are replacing",
+        instructions:
+          "Look the old belt over as you work. Glazing, cracks across the ribs, or missing chunks explain a squeal. Also spin each idler and the tensioner pulley by hand once the belt is off - roughness or wobble means a bearing on the way out, and replacing the belt alone will not fix the noise.",
+      },
+      {
+        number: 4,
+        title: "Release the tensioner",
+        instructions:
+          "Fit the belt tool or breaker bar to the tensioner pulley bolt and rotate the tensioner arm to take the load off. Hold it there, slip the belt off the easiest accessible pulley - usually an idler - then let the tensioner down slowly.",
+        warning:
+          "Let the tensioner return under control. Letting it snap back can damage the internal damper.",
+      },
+      {
+        number: 5,
+        title: "Route the new belt",
+        instructions:
+          "Work the new belt onto every pulley except the last one, following your photos exactly. Make sure the ribs sit in the grooves everywhere and the smooth back only ever rides on a smooth idler.",
+      },
+      {
+        number: 6,
+        title: "Tension and seat it",
+        instructions:
+          "Release the tensioner again, slip the belt onto the final pulley, and ease the tensioner onto the belt. Walk around every pulley and confirm the belt is centred and fully seated in the grooves - a belt riding one rib off will destroy itself in minutes.",
+      },
+      {
+        number: 7,
+        title: "Run it and listen",
+        instructions:
+          "Start the engine and let it idle. Watch the belt track straight and listen for chirping. Shut it off, re-check that the belt is still seated on every pulley, and check again after a short drive.",
+      },
+    ],
+  },
+  {
+    id: "jeep-grand-cherokee-pcv-valve",
+    vehicleId: "2014-jeep-grand-cherokee-3.6l",
+    title: "PCV Valve Replacement",
+    jobType: "pcv-valve",
+    summary:
+      "Replace the PCV valve on the 3.6 Pentastar. A cheap twist-lock part with no torque spec and genuinely awful access - the hardest easy job on this engine.",
+    difficulty: "Moderate",
+    tier: "premium",
+    estTime: "45-90 min",
+    noFasteners: true,
+    tools: [
+      { name: "Long needle-nose pliers", note: "Reaching the release tab is the entire difficulty of this job" },
+      { name: "Flashlight or inspection light" },
+      { name: "Small mirror", note: "You will be working largely by feel - a mirror helps you learn the shape first" },
+      { name: "Nitrile gloves" },
+    ],
+    parts: ["PCV valve, Mopar 68083202AC (supersedes 68083202AB)"],
+    safety: [
+      "Engine off and cool. The valve sits against the firewall next to hot exhaust and hot coolant lines.",
+      "Expect a small amount of oil in the old valve. Have a rag ready so it does not end up down the back of the engine.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Know what you are in for",
+        instructions:
+          "The PCV valve is on the rear of the passenger side valve cover, facing the firewall. It is a separate serviceable part - the intake does not have to come off - but it is close to invisible from above and most of the work happens by feel. Budget more time than the part cost suggests.",
+        warning:
+          "If a guide tells you to remove the intake manifold for this, it is describing the oil cooler job or a different engine. Removing the intake is not required to change the PCV valve.",
+      },
+      {
+        number: 2,
+        title: "Find it by hand",
+        instructions:
+          "Reach down behind the passenger side valve cover toward the firewall and locate the valve and the hose clipped to it. Use the mirror and light to build a picture of which way the release tab faces before you try to move anything.",
+      },
+      {
+        number: 3,
+        title: "Disconnect the hose",
+        instructions:
+          "Release the hose connector from the valve and set the hose aside where it will not fall further down the back of the engine.",
+      },
+      {
+        number: 4,
+        title: "Release the twist-lock",
+        instructions:
+          "The valve is a quarter-turn twist-lock, not a threaded fitting. Press and hold the release tab while rotating the valve counterclockwise. Doing both at once in that space is the part everyone struggles with - long needle-nose pliers on the tab give you the leverage your fingers cannot.",
+        warning:
+          "Do not simply wrench on it. It does not unscrew, and forcing it while the tab is still engaged is how the old valve gets snapped off in the cover.",
+      },
+      {
+        number: 5,
+        title: "Compare old and new before fitting",
+        instructions:
+          "Hold the two side by side and confirm the body, tab position and seal match. Tip the old one up - a small amount of oil inside is normal; heavy sludge suggests the engine is due for shorter oil intervals.",
+      },
+      {
+        number: 6,
+        title: "Fit the new valve",
+        instructions:
+          "Seat the new valve into the cover and rotate it clockwise until the tab clicks home. Tug it lightly - a valve that is not locked will work loose and throw a vacuum leak and a rough idle.",
+      },
+      {
+        number: 7,
+        title: "Reconnect and verify",
+        instructions:
+          "Click the hose connector back on, start the engine and listen. A steady idle and no hissing means the seal is good. A new whistle or a rough idle means the valve or the hose is not fully seated - go back and check it.",
+      },
+    ],
+  },
+  {
+    id: "jeep-grand-cherokee-o2-sensor",
+    vehicleId: "2014-jeep-grand-cherokee-3.6l",
+    title: "Oxygen Sensor Replacement",
+    jobType: "o2-sensor",
+    summary:
+      "Unbolt-and-rebolt replacement of an oxygen sensor on the 3.6 Pentastar, including how to tell which of the four the code is actually pointing at.",
+    difficulty: "Moderate",
+    tier: "premium",
+    estTime: "45-90 min",
+    tools: [
+      { name: "Oxygen sensor socket", note: "7/8 in (22 mm) with a slot for the wiring pigtail" },
+      { name: "Ratchet and extensions" },
+      { name: "Penetrating oil" },
+      { name: "Torque wrench" },
+      { name: "OBD-II scanner", note: "To read the code and to clear it afterward" },
+      { name: "Jack and jack stands", note: "For the downstream sensors" },
+    ],
+    parts: [
+      "Oxygen sensor for the specific position named by your code - upstream and downstream are not interchangeable",
+      "Anti-seize, only if the new sensor does not arrive pre-coated",
+    ],
+    safety: [
+      "Exhaust components stay hot long after shutdown. Let the vehicle sit until the exhaust is cool enough to hold.",
+      "Never work under a vehicle held up by a jack alone. Jack stands on solid ground, every time.",
+      "A seized sensor in cold steel will round off or snap. Penetrating oil and patience beat brute force - a snapped sensor in the bung is a much bigger job.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oxygen sensor into exhaust bung",
+        value: "30 ft-lb (41 Nm)",
+        notes:
+          "Curated reference figure. Overtightening strips the bung threads, which is the failure that turns this into exhaust work. Confirm against the factory service manual or the instructions packed with your sensor.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Read the code and identify the position",
+        instructions:
+          "Scan the vehicle and note the exact code. This engine has four sensors - upstream and downstream on each bank. Bank 1 and Bank 2 refer to cylinder banks and Sensor 1 is upstream of the catalyst, Sensor 2 downstream. Replacing the wrong one is the most common wasted afternoon on this job.",
+        warning:
+          "An oxygen sensor code does not always mean a failed sensor. An exhaust leak upstream of a sensor produces the same lean reading. Look for leaks before spending money.",
+      },
+      {
+        number: 2,
+        title: "Soak the threads early",
+        instructions:
+          "Spray penetrating oil on the sensor threads and let it sit. Twenty minutes is a reasonable minimum, longer is better on a high-mileage vehicle. Doing this first costs nothing and prevents most snapped sensors.",
+      },
+      {
+        number: 3,
+        title: "Get access",
+        instructions:
+          "Upstream sensors are usually reachable from above near the exhaust manifolds. Downstream sensors need the vehicle raised - jack it, set jack stands, and chock the wheels before going underneath.",
+      },
+      {
+        number: 4,
+        title: "Unplug before unscrewing",
+        instructions:
+          "Trace the sensor wiring to its connector and unplug it first, releasing any clips holding the harness. Turning the sensor with the connector still attached twists and destroys the pigtail.",
+      },
+      {
+        number: 5,
+        title: "Remove the sensor",
+        instructions:
+          "Fit the oxygen sensor socket with the pigtail through the slot and break the sensor loose counterclockwise. If it will not move, stop, re-soak and wait rather than leaning harder.",
+      },
+      {
+        number: 6,
+        title: "Fit the new one",
+        instructions:
+          "Check whether the new sensor came with anti-seize already on the threads - most do, and adding more is unnecessary. Keep anti-seize off the sensor tip entirely. Start it by hand to be certain it is not cross-threading, then torque to 30 ft-lb (41 Nm).",
+        warning:
+          "Hand-start it. Cross-threading an exhaust bung is the one mistake here that cannot be undone in a driveway.",
+      },
+      {
+        number: 7,
+        title: "Reconnect, clear and confirm",
+        instructions:
+          "Plug the connector back in and secure the harness away from the exhaust. Lower the vehicle, clear the code with your scanner, and drive it. The light staying off through a few drive cycles is the confirmation - if it returns, the sensor was not the fault.",
+      },
+    ],
+  },
 ];
