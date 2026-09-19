@@ -26,6 +26,10 @@ export interface VehicleMake {
   name: string;
 }
 
+// Scion carries id 0: it is the one make vPIC does not have. Declared before
+// VEHICLE_MAKES so the array below can reference it without a TDZ error.
+const SCION_MAKE_ID = 0;
+
 export const VEHICLE_MAKES: VehicleMake[] = [
   { id: 475, name: "Acura" },
   { id: 493, name: "Alfa Romeo" },
@@ -80,6 +84,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
   { id: 445, name: "Rolls-Royce" },
   { id: 572, name: "Saab" },
   { id: 1056, name: "Saturn" },
+  { id: SCION_MAKE_ID, name: "Scion" },
   { id: 504, name: "Smart" },
   { id: 523, name: "Subaru" },
   { id: 509, name: "Suzuki" },
@@ -103,6 +108,41 @@ export function findMakeByName(name: string): VehicleMake | undefined {
   return VEHICLE_MAKES.find((make) => make.name.toLowerCase() === needle);
 }
 
+// Scion is the one make vPIC does not carry at all. It is absent from the full
+// 12,363-entry GetAllMakes list, not just the car/truck/MPV subsets, because
+// Scion VINs decode under Toyota. Toyota sold roughly a million of them in the
+// US between 2004 and 2016, so the lineup is hard-coded here by model year
+// rather than leaving those owners with a dead dropdown.
+//
+// These are the years each car existed AS a model year, which is not the same
+// as the calendar years Toyota press material quotes for launch and
+// discontinuation. The iM and iA went on sale in September 2015, for example,
+// but only ever existed as 2016 models.
+const SCION_MODELS: { name: string; from: number; to: number; skip?: number[] }[] = [
+  { name: "xA", from: 2004, to: 2006 },
+  // The xB took the 2007 model year off between its two generations.
+  { name: "xB", from: 2004, to: 2015, skip: [2007] },
+  { name: "tC", from: 2005, to: 2016 },
+  { name: "xD", from: 2008, to: 2014 },
+  { name: "iQ", from: 2012, to: 2015 },
+  // Became the Toyota 86 for 2017.
+  { name: "FR-S", from: 2013, to: 2016 },
+  // Became the Toyota Corolla iM for 2017.
+  { name: "iM", from: 2016, to: 2016 },
+  // Became the Toyota Yaris iA for 2017.
+  { name: "iA", from: 2016, to: 2016 },
+];
+
+function scionModelsFor(year: string): string[] {
+  const y = Number(year);
+  if (!Number.isFinite(y)) return [];
+  return SCION_MODELS.filter(
+    (model) =>
+      y >= model.from && y <= model.to && !(model.skip ?? []).includes(y)
+  )
+    .map((model) => model.name)
+    .sort();
+}
 // Always look models up by numeric MakeId, never by name. The vPIC by-name
 // endpoint does a fuzzy substring match: asking for "RAM" returns 79 results
 // including "Brammo Street Bikes" and "Best Lane Enterprises dba Ramp Free".
@@ -114,7 +154,9 @@ export async function getVehicleModels(
   makeId: number,
   year: string
 ): Promise<string[]> {
-  if (!makeId || !year) return [];
+  if (!year) return [];
+  if (makeId === SCION_MAKE_ID) return scionModelsFor(year);
+  if (!makeId) return [];
   try {
     const res = await fetch(
       `${BASE}/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${encodeURIComponent(
