@@ -57,14 +57,16 @@ export default function GuideBody({ guide }: { guide: RepairGuide }) {
 
   const tools = guide.tools.filter((t) => show(t.onlyFor));
 
+  // Variant parts lead the list: they are the ones that need a decision, so
+  // they belong where a reader standing in the parts aisle will see them first.
   const parts = [
-    ...guide.parts,
     ...(guide.variantParts ?? [])
       .filter((p) => show(p.onlyFor))
       .map((p) => {
         const t = tag(p.onlyFor);
         return t ? p.text + " [" + t + "]" : p.text;
       }),
+    ...guide.parts,
   ];
 
   const torqueSpecs = guide.torqueSpecs
