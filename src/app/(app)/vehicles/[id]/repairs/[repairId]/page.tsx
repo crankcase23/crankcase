@@ -2,8 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findVehicle, findRepair, allRepairs } from "@/lib/data";
-import { ToolList, BulletList, TorqueTable, DifficultyBadge, TierBadge } from "@/components/tables";
-import StepList from "@/components/StepList";
+import { DifficultyBadge, TierBadge } from "@/components/tables";
+import GuideBody from "@/components/GuideBody";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
@@ -70,33 +70,7 @@ export default async function RepairGuidePage(
         <DataDisclaimer />
       </div>
 
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
-        <section>
-          <h2 className="mb-3 text-lg font-semibold text-slate-100">Tools Needed</h2>
-          <ToolList tools={guide.tools} />
-        </section>
-        <section>
-          <h2 className="mb-3 text-lg font-semibold text-slate-100">Parts &amp; Supplies</h2>
-          <BulletList items={guide.parts} />
-        </section>
-      </div>
-
-      <section className="mt-8">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">Safety Notes</h2>
-        <div className="rounded-xl border border-rose-500/30 bg-rose-500/5 p-4">
-          <BulletList items={guide.safety} />
-        </div>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">Torque Specs</h2>
-        <TorqueTable specs={guide.torqueSpecs} />
-      </section>
-
-      <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold text-slate-100">Step-by-Step</h2>
-        <StepList steps={guide.steps} hasRotorOption={guide.hasRotorOption} />
-      </section>
+      <GuideBody guide={guide} />
 
       {/* Torque specs are the one thing on this site that can hurt someone if
           they're wrong, so the report control lives on every guide. */}
