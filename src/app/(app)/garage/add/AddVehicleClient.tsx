@@ -290,7 +290,8 @@ className="mt-4 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 ))}
 </dl>
   {matches.length === 0 && (
-  <p className="mt-3 text-sm text-slate-400">
+  <>
+        <p className="mt-3 text-sm text-slate-400">
 We don&apos;t have curated specs or torque data for this one yet — you
 can still add it and track service history and maintenance reminders
 on it.
@@ -302,6 +303,7 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 >
 + Add this vehicle to my garage
 </button>
+  </>
   )}
 </div>
 )}
