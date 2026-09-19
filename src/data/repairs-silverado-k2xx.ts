@@ -801,6 +801,42 @@ export const silveradoK2xxGuides: RepairGuide[] = [
     difficulty: "Moderate",
     estTime: "2-3 hrs for all three",
     tier: "premium",
+    variants: [
+      {
+        id: "rear-axle",
+        question: "Which rear axle is under your truck?",
+        howToTell:
+          "Count the bolts on the rear differential cover. Ten bolts is the 8.6-inch axle, twelve is the 9.5-inch. You can do this from beside the truck with a flashlight - it does not need to be in the air, and it decides how much gear oil you buy.",
+        options: [
+          { id: "axle-8-6", label: "10-bolt cover (8.6-inch)", hint: "Most 5.3L LT trucks" },
+          { id: "axle-9-5", label: "12-bolt cover (9.5-inch)" },
+        ],
+      },
+      {
+        id: "rear-locker",
+        question: "Does it have the G80 locking differential?",
+        howToTell:
+          "Look for RPO code G80 on the service parts sticker in the glovebox, or the label on the driver's B-pillar. If you cannot find the sticker, leave friction modifier out - no GM 1500 rear axle of this era wants it.",
+        options: [
+          { id: "g80-yes", label: "Yes, G80 locker" },
+          { id: "g80-no", label: "No, or not sure" },
+        ],
+      },
+    ],
+    variantParts: [
+      {
+        text: "Rear axle: 4.2 pints (2.1 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-8-6"],
+      },
+      {
+        text: "Rear axle: 5.5 pints (2.75 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-9-5"],
+      },
+      {
+        text: "Do NOT buy limited-slip friction modifier - the G80 must not have it",
+        onlyFor: ["g80-yes"],
+      },
+    ],
     tools: [
       { name: "Socket set + ratchet", note: "Fill and drain plugs, and the rear cover bolts" },
       { name: "Torque wrench" },
@@ -812,7 +848,6 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Nitrile gloves + eye protection" },
     ],
     parts: [
-      "Rear axle: 75W-85 synthetic axle lubricant (GM 19300457), quantity per your axle size",
       "Front differential: 1.5 qt of 75W-90 synthetic GL-5",
       "Transfer case: 1.6 qt of DEXRON-VI ATF",
       "Rear axle cover gasket or RTV sealant",
@@ -849,9 +884,9 @@ export const silveradoK2xxGuides: RepairGuide[] = [
     steps: [
       {
         number: 1,
-        title: "Level the truck and identify your rear axle",
+        title: "Level the truck",
         instructions:
-          "Get all four corners on stands so the truck sits level. While you are under there, count the bolts on the rear differential cover: ten bolts is the 8.6-inch axle and takes about 4.2 pints, twelve bolts is the 9.5-inch and takes 5.5 pints. A 5.3L LT is most likely the 8.6. Buy fluid after you have counted, not before.",
+          "Get all four corners on stands so the truck sits level. A fill-to-the-plug level taken on a tilted truck is wrong in a way you will not notice until something whines. If you have not answered the rear axle question at the top of this guide yet, count the cover bolts now and scroll back up - ten is the 8.6-inch, twelve is the 9.5-inch - so the parts list shows the right quantity.",
       },
       {
         number: 2,
