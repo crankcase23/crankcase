@@ -131,9 +131,74 @@ export type JobTypeId =
   | "o2-sensor"
   | "key-fob-battery";
 
+/**
+ * FITMENT - how a guide's PROCEDURE is shared across vehicles.
+ *
+ * The unit of sharing is never "the vehicle", and it is never "the engine" on
+ * its own either. It is whichever key actually decides the procedure FOR THAT
+ * JOB:
+ *
+ *   engine     oil, spark plugs, PCV, engine air filter, belt, coolant
+ *   platform   brakes, tire rotation, battery, cabin filter, wipers, fuse/bulb
+ *   driveline  transfer case, front and rear differential
+ *
+ * A 2020 Silverado and a 2020 Sierra share every one of these - same T1XX
+ * platform, same L84, same 8L80. A 2018 and a 2020 Silverado share none of
+ * them, despite both being "a 5.3L V8": different generation, different engine
+ * RPO. Keying on displacement would have shipped L83 figures to an L84 truck.
+ */
+export interface GuideFitment {
+  on: "platform" | "engine" | "driveline";
+  key: string;
+  /** Inclusive model-year window, for when the key alone is too broad. */
+  years?: [number, number];
+  /** Vehicle ids that match the key but must NOT receive this guide. */
+  except?: string[];
+}
+
+/**
+ * The numbers for ONE vehicle, bound to a shared procedure at resolve time.
+ *
+ * This is the safety gate of the entire fitment system. Procedure text is free
+ * to inherit. Torque, capacity and part numbers NEVER are. A shared guide with
+ * no figures entry for a vehicle does not render for that vehicle at all - it
+ * does not quietly fall back to the donor truck's numbers, because that is
+ * exactly how someone ends up torquing a fastener to a figure that belongs to
+ * a different axle.
+ *
+ * verified is typed as the literal true rather than boolean so an entry cannot
+ * be added at all without asserting that the two-source check from the build
+ * playbook was actually carried out for this specific vehicle.
+ */
+export interface GuideFigures {
+  /** Public guide id for this vehicle. Keeps URLs stable and readable. */
+  id: string;
+  verified: true;
+  torqueSpecs: TorqueSpec[];
+  parts: string[];
+  variantParts?: VariantPart[];
+  /** Fills {{token}} slots in the shared step text for this vehicle. */
+  slots?: Record<string, string>;
+}
+
 export interface RepairGuide {
   id: string;
-  vehicleId: string;
+  /**
+   * Set only on a guide written for one specific vehicle. This is the legacy
+   * shape, and it stays correct for a genuinely one-off procedure. A shared
+   * guide leaves this unset and carries fitment instead - the resolver fills
+   * it in per vehicle as it binds that vehicle's figures.
+   */
+  vehicleId?: string;
+  /**
+   * Set instead of vehicleId when this procedure is shared. Every vehicle
+   * whose keys match receives it, but ONLY if figures holds a verified entry
+   * for that vehicle. A key match with no figures resolves to nothing at all,
+   * deliberately - see GuideFigures.
+   */
+  fitment?: GuideFitment;
+  /** Per-vehicle numbers, keyed by vehicle id. Required alongside fitment. */
+  figures?: Record<string, GuideFigures>;
   title: string;
   summary: string;
   difficulty: Difficulty;
@@ -190,6 +255,23 @@ export interface RepairGuide {
   jobType?: JobTypeId;
 }
 
+/**
+ * What makes two vehicles "the same" for the purpose of reusing a procedure.
+ *
+ * Three separate axes, because any given job inherits on one of them and not
+ * the others. A Silverado and a Sierra share a platform AND an engine. A
+ * Silverado 5.3 and a Silverado 6.2 share a platform but not an engine. A
+ * 4WD and a 2WD of the same truck share both and not the driveline.
+ */
+export interface VehicleKeys {
+  /** Body/chassis generation, e.g. "gm-t1xx-1500", "jeep-wk2". */
+  platform: string;
+  /** Engine family AND generation, e.g. "gm-ecotec3-l84". Never "5.3l". */
+  engine: string;
+  /** Driveline option set, e.g. "gm-t1xx-4wd". Omit where nothing shares it. */
+  driveline?: string;
+}
+
 export interface Vehicle {
   id: string;
   year: number;
@@ -199,6 +281,15 @@ export interface Vehicle {
   engine: string;
   drivetrain: string;
   transmission: string;
+  /**
+   * Fitment keys. These are what let one written procedure serve every vehicle
+   * it genuinely fits, rather than being re-researched per truck. See
+   * GuideFitment for which key governs which job.
+   *
+   * Optional so an untagged vehicle still works - it simply receives only the
+   * guides written directly against its id.
+   */
+  keys?: VehicleKeys;
   image?: string;
   specs: SpecItem[];
   fluids: FluidCapacity[];
