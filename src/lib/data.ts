@@ -128,13 +128,16 @@ return vehicles.filter((v) => {
 export function catalogMatchLooksExact(decoded: DecodedVin, vehicle: Vehicle): boolean {
   const catalogTrim = (vehicle.trim ?? "").toLowerCase();
 
-  // One exception to the bias above. An entry whose trim declares it covers
-  // every cab and trim is not making a claim a VIN can contradict, so the
-  // caveat would be telling a reader their truck might not be covered when it
-  // explicitly is. Cab and trim were only ever a catalog-level question because
-  // there were briefly two entries for one truck; those are collapsed now.
-  // See claude/silverado-catalog-collapse-2026-09-19.md.
-  if (/\ball cabs\b/.test(catalogTrim)) return true;
+  // One exception to the bias above. An entry with NO trim is deliberately not
+  // making a trim claim: it covers every cab and trim built with that engine and
+  // drivetrain, so there is nothing here for a VIN to contradict. Without this,
+  // the 2018 Silverado - which covers all of them - would tell a Regular Cab
+  // owner their own truck might not be an exact match.
+  //
+  // Trim carries a trim NAME or nothing. It is not the place for a sentence
+  // about coverage breadth; that belongs in the spec table where a reader looks
+  // for detail. See claude/silverado-catalog-collapse-2026-09-19.md.
+  if (!catalogTrim) return true;
 
   if (decoded.bodyCabType) {
     const cab = decoded.bodyCabType.toLowerCase();
