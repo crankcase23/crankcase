@@ -122,7 +122,7 @@ return (
         ? exactMatch
         ? "We have full specs, fluid capacities, and repair guides for this exact vehicle."
         : "Same engine as a vehicle we have full guides for -- fluid and torque data below should apply, but see the note below on trim/cab."
-        : "We have full guides for this vehicle. Pick your engine:"}
+        : "We have full guides for more than one build of this vehicle. Pick the one that matches yours:"}
     </div>
       {matches.length === 1 && !exactMatch && (
       <div className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2.5 text-xs text-amber-300">
@@ -154,6 +154,11 @@ return (
       </button>
       ))}
     </div>
+    {matches.length > 1 && pickedMatchId && (
+    <p className="mt-2 text-xs text-slate-500">
+      Selected from what your VIN decoded to. Tap another card if that is not your truck.
+    </p>
+    )}
     <button
       type="button"
       onClick={handleAddMatch}
