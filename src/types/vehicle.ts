@@ -256,6 +256,18 @@ export interface RepairGuide {
 }
 
 /**
+ * A guide AFTER fitment resolution: always bound to exactly one vehicle, with
+ * that vehicle's own verified numbers already substituted in.
+ *
+ * Everything user-facing and everything in the admin console reads this shape
+ * rather than the authored one. An authored shared guide has no vehicleId at
+ * all, so asking it which vehicle it belongs to is a question with no answer -
+ * this type is how that distinction stays in the compiler instead of in
+ * somebody's memory.
+ */
+export type ResolvedGuide = RepairGuide & { vehicleId: string };
+
+/**
  * What makes two vehicles "the same" for the purpose of reusing a procedure.
  *
  * Three separate axes, because any given job inherits on one of them and not
