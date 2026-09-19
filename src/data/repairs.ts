@@ -216,9 +216,10 @@ rotorsOnly: true,
 {
 number: 8,
 title: "Fit the new rotor and refit the bracket",
-instructions: "New rotors ship with a protective oil coating. Clean both friction faces with brake cleaner and a lint-free rag before fitting. Seat the rotor flat against the hub, refit the retaining screw if there was one, then refit the caliper bracket and torque its bolts to the factory figure for this vehicle.",
+instructions: "New rotors ship with a protective oil coating. Clean both friction faces with brake cleaner and a lint-free rag before fitting. Seat the rotor flat against the hub, refit the retaining screw if there was one, then refit the caliper bracket and torque its bolts to 148 ft-lb (200 Nm).",
+torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "148 ft-lb (200 Nm)" }],
 rotorsOnly: true,
-warning: "Two things here. Do not skip degreasing the new rotor - that coating bakes onto the pads and the brakes never feel right afterward. And see the Torque Specs note above: the bracket bolt figure is the one value in this guide we have not been able to verify, so confirm it before final tightening.",
+warning: "Two things here. Do not skip degreasing the new rotor - that coating bakes onto the pads and the brakes never feel right afterward. And these bracket bolts are the tightest fasteners in the job at 148 ft-lb - use a real torque wrench on them rather than guessing with the breaker bar you used to crack them loose.",
 },
 {
 number: 9,
@@ -233,7 +234,7 @@ title: "Install new pads and reinstall the caliper",
 instructions:
 "Seat the new pads and anti-rattle hardware into the bracket, swing the caliper back down over the rotor, and reinstall the slide bolts.",
 image: "/steps/brake-install.svg",
-torque: [{ fastener: "Caliper slide/guide bolts", value: "18-25 ft-lb (24-34 Nm)" }],
+torque: [{ fastener: "Caliper slide/guide bolts (front)", value: "41 ft-lb (55 Nm)" }],
 },
 {
 number: 11,
