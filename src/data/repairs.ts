@@ -1,4 +1,6 @@
 import { RepairGuide } from "@/types/vehicle";
+import { jeepGrandCherokeeWk2Guides } from "./repairs-jeep-wk2";
+import { silveradoK2xxGuides } from "./repairs-silverado-k2xx";
 
 // Step images are original schematic illustrations (public/steps/*.svg) —
 // not photos from any manual — meant to show *what* to do, not stand in for
@@ -117,17 +119,21 @@ image: "/steps/generic-cleanup.svg",
 {
 id: "jeep-grand-cherokee-front-brake-pads",
 vehicleId: "2014-jeep-grand-cherokee-3.6l",
-title: "Front Brake Pad Replacement",
+title: "Front Brake Pads & Rotors",
 jobType: "brake-pads-front",
-summary: "Replacing front brake pads and inspecting rotors on the WK2 Grand Cherokee.",
+summary: "Front brake service on the WK2 Grand Cherokee, covering pads on their own or pads and rotors together. Pick which job you are doing at the top of the steps and the procedure changes to match.",
+hasRotorOption: true,
 difficulty: "Moderate",
 tier: "premium",
-estTime: "1-1.5 hrs (both sides)",
+estTime: "1-1.5 hrs pads only, 2-2.5 hrs with rotors (both sides)",
 tools: [
 { name: "Lug wrench or impact gun" },
 { name: "Socket set", note: "For caliper slide/guide bolts" },
 { name: "C-clamp or dedicated caliper piston tool" },
 { name: "Torque wrench" },
+{ name: "Breaker bar", note: "Rotors only - the caliper bracket bolts are the tightest fasteners in this job" },
+{ name: "Dead blow or brass hammer", note: "Rotors only - for breaking a rust-bonded rotor free" },
+{ name: "Wire brush", note: "Rotors only - cleaning the hub face is what prevents a pulsation" },
 { name: "Jack + 2 jack stands" },
 { name: "Wire brush + brake cleaner spray" },
 { name: "High-temp brake grease (for slide pins)" },
@@ -138,6 +144,8 @@ parts: [
 "Brake cleaner",
 "High-temp brake/caliper grease",
 "New slide pin boots if the old ones are torn or hardened",
+"Front brake rotors, pair - only if replacing rotors",
+"Rotor retaining screw if the original is damaged on removal - only if replacing rotors",
 ],
 safety: [
 "Brake dust can contain harmful particulates — never blow it out with compressed air; use brake cleaner and a wet rag.",
@@ -146,9 +154,14 @@ safety: [
 ],
 torqueSpecs: [
 {
-fastener: "Caliper slide/guide bolts",
-value: "18-25 ft-lb (24-34 Nm)",
-notes: "Range varies by caliper bracket design — confirm the exact figure for this caliper before final torque.",
+fastener: "Caliper slide/guide bolts (front)",
+value: "41 ft-lb (55 Nm)",
+notes: "Factory figure from the WK2 service manual brake torque table (55 Nm). Independently confirmed by a technician quoting 41 ft-lb for the front guide pins on a 2015 Grand Cherokee Laredo 2WD. The front pins take roughly twice the rear - do not carry a rear figure forward.",
+},
+{
+fastener: "Caliper bracket (adapter) bolts to knuckle",
+value: "148 ft-lb (200 Nm)",
+notes: "Rotors only. From the 2014-2016 service manual brake torque table, non-SRT. Corroborated two ways: the other three rows of that same table match figures sourced independently, and the fastener is an M14x1.5 grade 10.9 bolt whose published limit is about 154 ft-lb, which makes 148 a normal factory spec for it. Heads up for early trucks - the 2011 manual front suspension table lists 89 ft-lb for this bolt, so on a 2011-2013 WK2 confirm before torquing.",
 },
 { fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" },
 ],
@@ -183,21 +196,49 @@ image: "/steps/brake-piston-compress.svg",
 },
 {
 number: 5,
+title: "Remove the caliper bracket",
+instructions: "The bracket the pads sit in has to come off before the rotor will clear the studs. It is held by two large bolts into the back of the steering knuckle, and they are usually very tight - this is what the breaker bar is for.",
+rotorsOnly: true,
+warning: "Keep supporting the caliper. Never let the caliper or the bracket hang on the flexible brake hose - the hose is not a structural part and tearing it turns this into a hydraulic repair and a bleed.",
+},
+{
+number: 6,
+title: "Free the old rotor",
+instructions: "The rotor may lift straight off, or it may be held by a small retaining screw and bonded to the hub by rust. Remove the screw if one is fitted, then tap the rotor hat - the flat centre section, never the friction surface - with a dead blow or brass hammer until the bond breaks.",
+rotorsOnly: true,
+warning: "Rust bonds can be stubborn. Penetrating oil around the hub centre and patience beat force. Do not heat a rotor with a torch and do not hammer the friction surface of a rotor you might reuse.",
+},
+{
+number: 7,
+title: "Clean the hub face",
+instructions: "Wire brush every trace of rust and scale off the hub face where the new rotor seats. This is the step people skip and it is the step that causes brake pulsation - even a thin ridge of rust under the rotor hat holds the new rotor out of true, and you will feel it through the pedal within a few hundred miles.",
+rotorsOnly: true,
+},
+{
+number: 8,
+title: "Fit the new rotor and refit the bracket",
+instructions: "New rotors ship with a protective oil coating. Clean both friction faces with brake cleaner and a lint-free rag before fitting. Seat the rotor flat against the hub, refit the retaining screw if there was one, then refit the caliper bracket and torque its bolts to 148 ft-lb (200 Nm).",
+torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "148 ft-lb (200 Nm)" }],
+rotorsOnly: true,
+warning: "Two things here. Do not skip degreasing the new rotor - that coating bakes onto the pads and the brakes never feel right afterward. And these bracket bolts are the tightest fasteners in the job at 148 ft-lb - use a real torque wrench on them rather than guessing with the breaker bar you used to crack them loose.",
+},
+{
+number: 9,
 title: "Clean and lubricate",
 instructions:
 "Wire-brush the caliper bracket's contact points and clean the slide pins. Apply a thin coat of high-temp brake grease to the slide pins and the pad's contact points on the bracket.",
 image: "/steps/brake-lubricate.svg",
 },
 {
-number: 6,
+number: 10,
 title: "Install new pads and reinstall the caliper",
 instructions:
 "Seat the new pads and anti-rattle hardware into the bracket, swing the caliper back down over the rotor, and reinstall the slide bolts.",
 image: "/steps/brake-install.svg",
-torque: [{ fastener: "Caliper slide/guide bolts", value: "18-25 ft-lb (24-34 Nm)" }],
+torque: [{ fastener: "Caliper slide/guide bolts (front)", value: "41 ft-lb (55 Nm)" }],
 },
 {
-number: 7,
+number: 11,
 title: "Reinstall the wheel and repeat on the other side",
 instructions:
 "Reinstall the wheel, snug the lug nuts, lower the vehicle, then torque the lug nuts in a star pattern. Repeat steps 1-6 on the opposite side.",
@@ -205,7 +246,7 @@ image: "/steps/wheel-torque.svg",
 torque: [{ fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" }],
 },
 {
-number: 8,
+number: 12,
 title: "Bed in the brakes",
 instructions:
 "Before normal driving, pump the brake pedal several times until firm and check the fluid level. Do a few moderate stops from low speed in an empty area to bed in the new pads per the pad manufacturer's instructions.",
@@ -2539,6 +2580,8 @@ image: "/steps/generic-cleanup.svg",
 },
 ],
 },
+  ...jeepGrandCherokeeWk2Guides,
+...silveradoK2xxGuides,
 ];
 
 export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {

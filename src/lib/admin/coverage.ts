@@ -45,6 +45,17 @@ export function isElectric(v: Vehicle): boolean {
   return /\belectric\b|\bbev\b|\bkwh\b|\bev\b|dual motor|single motor/.test(s);
 }
 
+/**
+ * True when the PCV function is cast into the valve cover rather than being a
+ * replaceable valve, which puts the job on the disassemble-and-reseal side of
+ * our scope line: you cannot service it without pulling and resealing the
+ * cover. GM's Gen V small block (EcoTec3 L83/L84/L86/L87) is the case that
+ * forced this - same ruling that took spark plugs off the 3.6 Pentastar.
+ */
+export function hasIntegratedPcv(v: Vehicle): boolean {
+  return /ecotec3/i.test(v.engine);
+}
+
 export function isDiesel(v: Vehicle): boolean {
   return /diesel|duramax|powerstroke|power stroke|ecodiesel|cummins|tdi/i.test(v.engine);
 }
@@ -78,15 +89,15 @@ export const JOB_CATALOG: JobType[] = [
     exclusionNote: "FWD vehicles have no separately serviceable differential",
   },
   { id: "serpentine-belt", label: "Serpentine Belt", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
-  {
-    id: "spark-plugs",
-    label: "Spark Plugs",
-    appliesTo: (v) => !isElectric(v) && !isDiesel(v),
-    exclusionNote: "Diesels and EVs have no spark plugs",
-  },
   { id: "fluid-checks", label: "Fluid Checks & Top-Offs", appliesTo: () => true },
   { id: "fuse-bulb", label: "Fuse & Bulb Replacement", appliesTo: () => true },
-  { id: "pcv-valve", label: "PCV Valve", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
+  {
+    id: "pcv-valve",
+    label: "PCV Valve",
+    appliesTo: (v) => !isElectric(v) && !hasIntegratedPcv(v),
+    exclusionNote:
+      "Not applicable to EVs, and not serviceable on engines whose PCV is cast into the valve cover",
+  },
   { id: "o2-sensor", label: "Oxygen Sensor", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
   { id: "key-fob-battery", label: "Key Fob Battery", appliesTo: () => true },
 ];

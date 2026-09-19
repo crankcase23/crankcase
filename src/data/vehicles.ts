@@ -28,7 +28,7 @@ specs: [
 { label: "Curb weight", value: "~4,510 lb" },
 { label: "Fuel tank", value: "24.6 gal" },
 { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
-{ label: "Battery", value: "Group size 48 (H6), ~700 CCA" },
+{ label: "Battery", value: "Group H7 (94R) AGM, ~800 CCA" },
 { label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm)" },
 { label: "Front tire size (base)", value: "245/70R17" },
 ],
@@ -433,6 +433,90 @@ spec: "All-season washer fluid",
     },
     ],
     },
+{
+id: "2018-chevrolet-silverado-1500-5.3l",
+year: 2018,
+make: "Chevrolet",
+model: "Silverado 1500",
+trim: "LT Crew Cab (4WD)",
+engine: "5.3L EcoTec3 V8 (L83)",
+drivetrain: "4WD",
+transmission: "6-speed automatic (6L80)",
+specs: [
+{ label: "Engine", value: "5.3L EcoTec3 V8, 355 hp / 383 lb-ft" },
+{ label: "Drivetrain", value: "4WD" },
+{ label: "Transmission", value: "6-speed automatic (6L80, RPO MYC)" },
+{ label: "Curb weight", value: "~5,100 lb" },
+{ label: "Fuel tank", value: "26 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group 94R (H7), 720 CCA OE" },
+{ label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm)" },
+{ label: "Front tire size (LT)", value: "P255/70R17" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "8.0 qt (7.6 L) with filter change",
+spec: "dexos1 0W-20 full synthetic",
+notes:
+"Capacity and viscosity come from GM's own published engine oil capacity table for 2016-2018. The 6-quart 5W-30 figures you will find online belong to the pre-2014 Vortec 5.3L and do not apply to the EcoTec3. Filter is a spin-on canister (ACDelco PF63), not a cartridge.",
+},
+{
+name: "Engine Coolant",
+capacity: "16.8 qt (15.9 L) total system",
+spec: "DEX-COOL (orange), extended-life OAT, 50/50 premix",
+notes:
+"That is the TOTAL system figure. A radiator drain-and-fill only recovers about 8 qt because the block holds the rest, so do not buy to total capacity for a simple drain.",
+},
+{
+name: "Automatic Transmission Fluid (6L80)",
+capacity: "~6.0 qt (5.7 L) for a pan drain-and-fill (service fill)",
+spec: "DEXRON-VI full synthetic ATF",
+notes:
+"Dry fill is 12.2 qt; a pan service only replaces what drains out. There is no dipstick - level is set at a check plug with the fluid inside a narrow temperature window. If your truck is a Z71 LTZ Crew 4WD or High Country it may have the 8L90 eight-speed instead, which takes DEXRON-HP and will be damaged by DEXRON-VI. Check the RPO sticker: MYC is the 6L80, M5U is the 8L90.",
+},
+{
+name: "Transfer Case Fluid (4WD)",
+capacity: "3.2 pt (1.6 qt / 1.5 L)",
+spec: "DEXRON-VI ATF",
+notes:
+"Not Auto-Trak II. That blue fluid is the spec for the older New Process NP246 case and parts counters still hand it over for these trucks. Every Magna MP-series case used on this generation takes DEXRON-VI.",
+},
+{
+name: "Front Differential Fluid (4WD)",
+capacity: "3 pt (1.5 qt / 1.4 L), 8.25-inch front axle",
+spec: "SAE 75W-90 synthetic GL-5 gear oil",
+notes:
+"The front axle has both a drain and a fill plug, unlike the rear. Early printings of the owner's manual called for 80W-90; 75W-90 synthetic is the current answer.",
+},
+{
+name: "Rear Differential Fluid",
+capacity:
+"8.6-inch axle (10-bolt cover): ~4.2 pt (2.1 qt / 2.0 L). 9.5-inch axle (12-bolt cover): 5.5 pt (2.75 qt / 2.6 L)",
+spec:
+"SAE 75W-85 synthetic axle lubricant (GM 19300457). 75W-90 is a common substitute",
+notes:
+"THERE IS NO DRAIN PLUG. The cover has to come off to drain this axle - there is a fill plug only. Count the cover bolts to tell which axle you have: 10 bolts is the 8.6-inch, 12 bolts is the 9.5-inch. A 5.3L LT is most likely the 8.6-inch. If you have the G80 locker, do NOT add friction modifier - the G80 is a locker rather than a clutch-type limited slip, and GM bulletin PIP4054D says an additive makes its clutch pack slip and miss engagement. This is the opposite of the usual limited-slip rule.",
+},
+{
+name: "Brake Fluid",
+capacity: "~1 qt for a full flush",
+spec: "DOT 3",
+},
+{
+name: "Power Steering Fluid",
+capacity: "None - this truck has electric power steering",
+spec: "N/A",
+notes:
+"There is no hydraulic power steering circuit at all. Assist comes from an electric motor mounted to the steering gear, so there is no reservoir, no fluid to check and nothing to flush. If a shop offers you a power steering flush on this truck, they are selling you a service that does not exist on it.",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "Fill to the reservoir",
+spec: "All-season washer fluid",
+},
+],
+},
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {

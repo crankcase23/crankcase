@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import AdminShell, { type NavItem } from "@/components/admin/AdminShell";
+import SiteHeader from "@/components/SiteHeader";
 import { getAdminContext, ROLE_LABELS } from "@/lib/admin/rbac";
 import { getAlertCount } from "@/lib/admin/alerts";
 
@@ -56,8 +57,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const roleLabel = ctx.roles.map((r) => ROLE_LABELS[r]).join(" · ");
 
   return (
-    <AdminShell navItems={navItems} adminEmail={ctx.email} roleLabel={roleLabel} alertCount={alertCount}>
-      {children}
-    </AdminShell>
+    <>
+      <SiteHeader isAuthed isAdmin wide />
+      <AdminShell navItems={navItems} adminEmail={ctx.email} roleLabel={roleLabel} alertCount={alertCount}>
+        {children}
+      </AdminShell>
+    </>
   );
 }

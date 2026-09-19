@@ -6,6 +6,38 @@
 export interface Tool {
   name: string;
   note?: string;
+  /** Only show this tool when one of these variant option ids is selected. */
+  onlyFor?: string[];
+}
+
+/**
+ * One answer to a variant question, e.g. "10-bolt cover (8.6-inch axle)".
+ *
+ * Variants exist for one reason: some facts a reader needs depend on how their
+ * particular truck was built, and the ones that matter are the ones that change
+ * WHAT THEY BUY or WHAT THEY TORQUE. Cab length and trim do not qualify; rear
+ * axle size does, because it decides how much gear oil ends up in the cart.
+ */
+export interface GuideVariantOption {
+  id: string;
+  label: string;
+  /** Optional nudge, e.g. "Most 5.3L LT trucks". */
+  hint?: string;
+}
+
+export interface GuideVariantGroup {
+  id: string;
+  /** The question put to the reader, e.g. "Which rear axle do you have?" */
+  question: string;
+  /** How to tell, with no special tools and without taking anything apart. */
+  howToTell: string;
+  options: GuideVariantOption[];
+}
+
+/** A part whose presence or quantity depends on a variant answer. */
+export interface VariantPart {
+  text: string;
+  onlyFor: string[];
 }
 
 // Where a value came from, and how much to trust it. "curated" is our own
@@ -26,6 +58,8 @@ export interface TorqueSpec {
   value: string; // e.g. "20 ft-lb (27 Nm)"
   notes?: string;
   provenance?: Provenance;
+  /** Only show this figure when one of these variant option ids is selected. */
+  onlyFor?: string[];
 }
 
 export interface FluidCapacity {
@@ -48,6 +82,14 @@ export interface RepairStep {
   image?: string; // path under /public
   torque?: TorqueSpec[];
   warning?: string;
+  /**
+   * Marks a step that only applies when the rotors are being replaced as well
+   * as the pads. The guide page hides these when the reader says pads-only and
+   * renumbers what is left, so nobody is ever told to skip a range of numbers.
+   */
+  rotorsOnly?: boolean;
+  /** Only show this step when one of these variant option ids is selected. */
+  onlyFor?: string[];
 }
 
 export type Difficulty = "Easy" | "Moderate" | "Advanced";
@@ -114,6 +156,28 @@ export interface RepairGuide {
    * if the procedure torques anything at all, this stays unset.
    */
   noFasteners?: boolean;
+  /**
+   * Set on a brake guide that covers both the pads-only and the pads-and-rotors
+   * path. Turns on the rotor toggle at the top of the step list; steps marked
+   * rotorsOnly are shown or hidden by it.
+   */
+  hasRotorOption?: boolean;
+  /**
+   * Questions about how this particular vehicle was built, asked ABOVE the
+   * parts list because the whole point is to answer them before the parts run
+   * rather than while lying under the truck on stands.
+   *
+   * Only add a group when the answer changes what the reader buys or what they
+   * torque. Nothing is hidden until a question is answered - an unanswered
+   * guide still shows every option, tagged with which build it applies to.
+   */
+  variants?: GuideVariantGroup[];
+  /**
+   * Parts whose presence or quantity depends on a variant answer. Kept
+   * separate from `parts` so that field stays a plain string[] for the admin
+   * console and the guide validator.
+   */
+  variantParts?: VariantPart[];
   /**
    * Which covered service job this guide satisfies. Drives the Coverage tab.
    *

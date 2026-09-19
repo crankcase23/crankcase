@@ -140,9 +140,9 @@ export default function AdminShell({
   );
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-[calc(100vh-65px)] bg-slate-950">
       {/* ---------------------------------------------------------------- top */}
-      <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
+      <header className="sticky top-[65px] z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
         <div className="flex items-center gap-3 px-3 py-2.5 sm:px-4">
           <button
             type="button"
@@ -152,10 +152,6 @@ export default function AdminShell({
           >
             <Icon name="menu" className="h-[18px] w-[18px]" />
           </button>
-
-          <Link href="/admin" className="flex shrink-0 items-center gap-2.5">
-            <CrankcaseBadge className="h-8 w-auto shrink-0 sm:h-9" />
-          </Link>
 
           <span className="hidden items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-2.5 py-1 md:inline-flex">
             <span className="relative flex h-1.5 w-1.5">
@@ -214,7 +210,7 @@ export default function AdminShell({
       <div className="flex">
         {/* --------------------------------------------------------- side rail */}
         <aside
-          className={`sticky top-[57px] hidden h-[calc(100vh-57px)] shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${
+          className={`sticky top-[124px] hidden h-[calc(100vh-124px)] shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${
             collapsed ? "w-[60px]" : "w-[240px]"
           }`}
         >
