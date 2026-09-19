@@ -140,9 +140,9 @@ export default function AdminShell({
   );
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-slate-950">
+    <div className="min-h-[calc(100vh-65px)] bg-slate-950">
       {/* ---------------------------------------------------------------- top */}
-      <header className="sticky top-16 z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
+      <header className="sticky top-[65px] z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
         <div className="flex items-center gap-3 px-3 py-2.5 sm:px-4">
           <button
             type="button"
@@ -210,7 +210,7 @@ export default function AdminShell({
       <div className="flex">
         {/* --------------------------------------------------------- side rail */}
         <aside
-          className={`sticky top-[121px] hidden h-[calc(100vh-121px)] shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${
+          className={`sticky top-[122px] hidden h-[calc(100vh-122px)] shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${
             collapsed ? "w-[60px]" : "w-[240px]"
           }`}
         >
