@@ -210,7 +210,7 @@ export default function AdminShell({
       <div className="flex">
         {/* --------------------------------------------------------- side rail */}
         <aside
-          className={`sticky top-[122px] hidden h-[calc(100vh-122px)] shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${
+          className={`sticky top-[124px] hidden h-[calc(100vh-124px)] shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${
             collapsed ? "w-[60px]" : "w-[240px]"
           }`}
         >
