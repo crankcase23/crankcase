@@ -916,4 +916,354 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       },
     ],
   },
+  {
+    id: "silverado-2018-serpentine-belt",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Serpentine Belt Replacement",
+    jobType: "serpentine-belt",
+    summary:
+      "One belt, one spring-loaded automatic tensioner, no adjustment to set. The part people get wrong is the routing, and the fix for that is under your hood already.",
+    difficulty: "Moderate",
+    estTime: "45-60 min",
+    tier: "premium",
+    tools: [
+      { name: "15mm socket or wrench", note: "Fits the tensioner pulley bolt" },
+      { name: "1/2 inch drive breaker bar or ratchet", note: "Alternative - the tensioner arm has a 1/2 inch square drive hole" },
+      { name: "Phone camera", note: "Photograph the routing before anything moves. Do not skip this" },
+      { name: "Flashlight" },
+      { name: "Nitrile gloves" },
+    ],
+    parts: ["Serpentine belt - match by your exact engine and accessory package"],
+    safety: [
+      "Engine off, key out. A belt job on a running engine costs fingers.",
+      "The tensioner is under spring load. Keep your hand clear of the pulley and let it swing back under control rather than letting go of the bar.",
+      "Let the engine cool. The belt runs right past the exhaust manifolds.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "None removed in this job",
+        value: "No fastener is loosened or retightened",
+        notes:
+          "The tensioner is only levered aside to slip the belt off and back on; nothing is unbolted. Replacing the tensioner itself is a different job with its own torque figures.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Photograph the routing, twice",
+        instructions:
+          "Before you touch anything, take clear photos of how the belt wraps every pulley, from two angles. Accessory layout on these trucks varies with options, so a routing diagram you find online may not match your truck. The photos are the one source you know is correct.",
+      },
+      {
+        number: 2,
+        title: "Find the underhood decal too",
+        instructions:
+          "There is a belt routing decal under the hood or on the radiator support. Use it as your backup reference rather than a web diagram. If the decal and your photos disagree, trust the photos - the truck in front of you wins.",
+      },
+      {
+        number: 3,
+        title: "Inspect the old belt before you throw it out",
+        instructions:
+          "Look at what you are replacing: cracks across the ribs, chunks missing, glazed shiny faces, or a frayed edge. An edge frayed on one side means something is misaligned, and a new belt will do exactly the same thing. Spin each idler and the tensioner pulley by hand with the belt off - roughness or wobble means that pulley is next to fail and is worth doing now.",
+      },
+      {
+        number: 4,
+        title: "Release the tensioner and slip the belt off",
+        instructions:
+          "The tensioner sits upper left in the engine bay. Put a 15mm socket on its pulley bolt, or a 1/2 inch drive bar into the square hole in its arm, and rotate clockwise to swing the arm away and slacken the belt. Hold it there and slip the belt off the smoothest pulley you can reach - usually an idler - then let the tensioner swing back slowly.",
+        warning: "Do not let the bar snap back. The spring is strong and the arm will take a knuckle with it.",
+      },
+      {
+        number: 5,
+        title: "Route the new belt, leaving the tensioner for last",
+        instructions:
+          "Thread the new belt over every pulley according to your photos, ribs seated in the grooves of the grooved pulleys and the flat back against the smooth idlers. Leave the tensioner or the centre idler as the last one to go on - that is the slack you need to finish the loop.",
+      },
+      {
+        number: 6,
+        title: "Check every pulley before you start it",
+        instructions:
+          "Release the tensioner back onto the belt, then walk around every pulley with a flashlight and confirm the belt is centred and fully seated in each groove. A belt that is one rib off looks almost right and will shred within a minute of running. This check is worth two full minutes.",
+      },
+      {
+        number: 7,
+        title: "Start it and listen",
+        instructions:
+          "Start the engine and listen for chirping or squealing while you watch the belt track. A brief chirp on the first start is normal as it seats. Anything that persists means it is misrouted, mis-seated, or a pulley is out of alignment. Shut it down and look again rather than driving off.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-fluid-checks",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Fluid Checks & Top-Offs",
+    jobType: "fluid-checks",
+    summary:
+      "The monthly walk-around. Two things about this truck make it different from what you may be used to: there is no transmission dipstick, and there is no power steering fluid at all.",
+    difficulty: "Easy",
+    estTime: "15 min",
+    tier: "free",
+    noFasteners: true,
+    tools: [
+      { name: "Clean rag or paper towel" },
+      { name: "Flashlight" },
+      { name: "Funnel" },
+      { name: "Tire pressure gauge" },
+    ],
+    parts: [
+      "dexos1 0W-20 for topping up oil",
+      "DEX-COOL 50/50 premix",
+      "Washer fluid",
+      "DOT 3 brake fluid, only if you actually need it",
+    ],
+    safety: [
+      "Cold engine for the coolant check. Never open the surge tank warm.",
+      "If the brake fluid is genuinely low, something is wrong - either the pads are worn down or you have a leak. Topping it up hides the symptom rather than fixing it.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Engine oil - level and condition",
+        instructions:
+          "Park level, engine off five minutes. Pull the dipstick, wipe, reseat it fully, pull again. It should read in the middle of the hatched area. Look at the oil as well as the level: black is fine and normal, gritty or milky is not. Worth being attentive on this engine - the 5.3 with cylinder deactivation has a known appetite for oil between changes, so check it rather than assuming.",
+      },
+      {
+        number: 2,
+        title: "Coolant - cold, at the surge tank",
+        instructions:
+          "Read the level against the cold fill mark on the side of the translucent surge tank without opening anything. It should be orange and clear. If it is low, find out why before topping up - this system does not consume coolant in normal use, so a falling level means it is going somewhere.",
+        warning: "Cold only. Never open the cap on a warm engine.",
+      },
+      {
+        number: 3,
+        title: "Transmission - there is no dipstick",
+        instructions:
+          "This truck has no transmission dipstick. Level is set from underneath at a check plug, with the engine running and the fluid inside a specific temperature window, which realistically needs a scan tool or the transmission temperature readout in the driver information centre. You cannot check this in the driveway the way you could on an older truck, and that is not a fault. What you can do is watch for symptoms: slipping, harsh or flaring shifts, or a burnt smell.",
+      },
+      {
+        number: 4,
+        title: "Power steering - this truck does not have any",
+        instructions:
+          "There is no power steering fluid to check. Assist on this generation comes from an electric motor mounted to the steering gear, with no hydraulic circuit, no reservoir and nothing to flush. If a shop offers you a power steering flush on this truck, they are selling you a service that does not exist on it.",
+      },
+      {
+        number: 5,
+        title: "Brake fluid - look, do not top up reflexively",
+        instructions:
+          "The reservoir is translucent; read it against the MIN and MAX marks without opening it. The level drops naturally as the pads wear, because the pistons sit further out. That is expected. A level genuinely below MIN means either the pads are near the end or there is a leak - both are things to find, not things to pour over.",
+      },
+      {
+        number: 6,
+        title: "Washer fluid and tire pressures",
+        instructions:
+          "Top the washer bottle with all-season fluid. Then check all four tires cold against the pressure on the driver's door jamb label, not the number moulded into the sidewall. The TPMS light only comes on when a tire is already well down, so it is not a substitute for a gauge once a month.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-fuse-bulb",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Fuse & Bulb Replacement",
+    jobType: "fuse-bulb",
+    summary:
+      "Two boxes, one under the hood and one in the cab, and a simple rule: a fuse that blows twice is not a fuse problem.",
+    difficulty: "Easy",
+    estTime: "15-30 min",
+    tier: "free",
+    noFasteners: true,
+    tools: [
+      { name: "Fuse puller", note: "Usually clipped inside the underhood fuse box lid" },
+      { name: "Test light or multimeter", note: "Optional, but it settles the question in seconds" },
+      { name: "Flashlight" },
+      { name: "Clean gloves or a rag", note: "For handling bulbs - skin oil shortens halogen bulb life" },
+    ],
+    parts: [
+      "Assorted blade fuses matching the amperage you are replacing",
+      "Replacement bulb of the correct type for the fixture",
+    ],
+    safety: [
+      "Never fit a fuse of higher amperage than the one that blew. The fuse protects the wiring, and a bigger fuse just moves the failure from a 50 cent part to the harness.",
+      "Key off before pulling fuses.",
+      "Let a bulb cool before touching it, and handle halogen capsules with a rag or gloves.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Find the right box and read the lid",
+        instructions:
+          "There are two: the underhood box on the driver's side, and an interior box in the cab. The map is printed on the inside of each lid, and it is specific to how your truck was built - use it rather than a generic chart from the internet.",
+      },
+      {
+        number: 2,
+        title: "Identify the blown fuse",
+        instructions:
+          "Pull the suspect fuse and hold it to the light. A blown one has a visibly broken or darkened metal strip. If you cannot tell by eye, a test light across the two test points on top of the fuse while it is still seated tells you immediately - light on both sides means good, light on one side only means blown.",
+      },
+      {
+        number: 3,
+        title: "Replace with the same amperage",
+        instructions:
+          "Match the number on top exactly: 10 for 10, 20 for 20. Push the new one fully home. If you do not have the right rating, drive on the dead circuit rather than fitting a bigger fuse.",
+        warning: "Fitting a higher-rated fuse is how wiring harness fires start. There is never a good reason for it.",
+      },
+      {
+        number: 4,
+        title: "If it blows again, stop replacing it",
+        instructions:
+          "A fuse that blows once can be a fluke. A fuse that blows twice is telling you there is a short or a failing component on that circuit, and the third fuse will go the same way. That is the point to trace the circuit rather than keep feeding it fuses.",
+      },
+      {
+        number: 5,
+        title: "Bulbs: get at the back of the housing",
+        instructions:
+          "Most exterior bulbs come out from behind the housing - twist the socket a quarter turn counter-clockwise and it releases. Headlight access on this truck is easier than most; for the rear, the tail light assembly is held by a couple of fasteners reached from the bed opening. Work out the access before you start pulling on anything.",
+      },
+      {
+        number: 6,
+        title: "Handle the new bulb properly and test",
+        instructions:
+          "Do not touch the glass of a halogen capsule with bare fingers - the oil creates a hot spot and the bulb fails early. Use a rag or gloves. Seat the new bulb, twist the socket back in until it stops, then test the circuit before you put any trim back. Also check its partner on the other side: bulbs fitted at the factory tend to fail within a few months of each other.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-o2-sensor",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Oxygen Sensor Replacement",
+    jobType: "o2-sensor",
+    summary:
+      "Four sensors on this V8 - two upstream, two downstream. The hard part is not the wrench work, it is being certain which one the code is blaming and that the sensor is the fault rather than the messenger.",
+    difficulty: "Moderate",
+    estTime: "1-2 hrs",
+    tier: "premium",
+    tools: [
+      { name: "OBD-II scanner", note: "Required. Do not guess which sensor - the code names the bank and position" },
+      { name: "Oxygen sensor socket", note: "A slotted 22mm socket that lets the harness pass through" },
+      { name: "Ratchet + extensions" },
+      { name: "Penetrating oil" },
+      { name: "Torque wrench" },
+      { name: "Jack + 2 jack stands" },
+      { name: "Nitrile gloves + eye protection" },
+    ],
+    parts: [
+      "Oxygen sensor for the specific position the code names",
+      "Anti-seize, only if the new sensor does not arrive with it pre-applied",
+    ],
+    safety: [
+      "Exhaust components stay hot far longer than you expect. Let the truck sit at least an hour, ideally overnight.",
+      "Never work under a vehicle supported only by a jack.",
+      "Disconnect the battery negative before unplugging the sensor connector.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oxygen sensor",
+        value: "~31 ft-lb (42 Nm)",
+        notes:
+          "Curated reference value, not a figure we have traced to the factory manual for this truck. Confirm against your service manual before final tightening. Over-torquing into a hot exhaust bung is how the next person ends up drilling it out.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Read the code and work out which sensor it means",
+        instructions:
+          "Scan the truck and write the exact code down. Bank 1 is the driver's side on this engine, bank 2 the passenger side; sensor 1 is upstream of the catalytic converter, sensor 2 is downstream. So a P0137 on bank 1 sensor 2 is the driver's side downstream sensor and no other. Replacing the wrong sensor is the most common way money gets wasted on this job.",
+      },
+      {
+        number: 2,
+        title: "Be sure it is the sensor and not the messenger",
+        instructions:
+          "An oxygen sensor code often means the sensor is correctly reporting a real problem somewhere else - a vacuum leak, an exhaust leak ahead of the sensor, or a failing catalytic converter. Before buying parts, look at the live data: a healthy upstream sensor swings rapidly between roughly 0.1 and 0.9 volts, while a lazy or flat trace points at the sensor itself. A downstream sensor should be comparatively steady.",
+        warning: "If the code came with a rough idle or a fuel trim problem, fix that first. A new sensor will report the same fault.",
+      },
+      {
+        number: 3,
+        title: "Let it cool, then raise and support the truck",
+        instructions:
+          "Give the exhaust an hour minimum. Raise the truck and get it on stands. Penetrating oil on the sensor threads now, so it has time to work while you set up.",
+      },
+      {
+        number: 4,
+        title: "Unplug the connector before you turn anything",
+        instructions:
+          "Trace the sensor wiring back to its connector and unclip it, releasing any harness retainers along the way. Unplug first, then unscrew - turning the sensor with the harness still connected twists and can break the wires, which is how a simple job becomes a splice.",
+      },
+      {
+        number: 5,
+        title: "Break the sensor loose",
+        instructions:
+          "Fit the slotted oxygen sensor socket with the harness through the slot and turn counter-clockwise. These seize into the bung, so expect real effort. Steady pressure, not shock loading - if it will not move, more penetrant and more time beats more force.",
+        warning: "If the bung threads strip or the sensor shears, the job goes from an hour to an exhaust shop visit. Patience is genuinely cheaper here.",
+      },
+      {
+        number: 6,
+        title: "Fit the new sensor",
+        instructions:
+          "Most new sensors arrive with anti-seize already on the threads - if yours does, do not add more, and keep it off the sensor tip entirely. Start it by hand to be certain it is not cross-threaded, then torque to about 31 ft-lb (42 Nm). Confirm that figure against your service manual first; it is a reference value.",
+        torque: [{ fastener: "Oxygen sensor", value: "~31 ft-lb (42 Nm)" }],
+      },
+      {
+        number: 7,
+        title: "Reconnect, clear the code, confirm over several drives",
+        instructions:
+          "Plug the connector back in, secure the harness away from the exhaust so it cannot melt, and reconnect the battery. Clear the code and drive the truck. The light staying off through several drive cycles is the confirmation - if it comes back, the sensor was reporting a real fault rather than being one.",
+      },
+    ],
+  },
+  {
+    id: "silverado-2018-key-fob-battery",
+    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+    title: "Key Fob Battery Replacement",
+    jobType: "key-fob-battery",
+    summary:
+      "Five minutes and a couple of dollars. Worth doing before you assume the fob has died - a weak fob battery is the most common cause of a truck that will not respond to remote start.",
+    difficulty: "Easy",
+    estTime: "5-10 min",
+    tier: "free",
+    noFasteners: true,
+    tools: [
+      { name: "Small flat screwdriver or a plastic trim tool", note: "Plastic is kinder to the case seam" },
+      { name: "Clean cloth", note: "Skin oil on a coin cell shortens its life" },
+    ],
+    parts: ["CR2032 coin cell - check the old one, some fobs take a CR2025"],
+    safety: [
+      "Coin cells are a serious swallowing hazard for children and pets. Keep the old one out of reach and dispose of it properly rather than leaving it on a counter.",
+    ],
+    torqueSpecs: [],
+    steps: [
+      {
+        number: 1,
+        title: "Rule out the simple stuff first",
+        instructions:
+          "Before opening anything, try the spare fob. If the spare works normally, it is the battery or the fob itself. If neither fob works, the problem is on the truck's side and a new coin cell will not fix it.",
+      },
+      {
+        number: 2,
+        title: "Open the case at the seam",
+        instructions:
+          "Slide out the mechanical key blade first if your fob has one - on many GM fobs that exposes the release. Then find the seam around the edge of the case and work a plastic trim tool into it, twisting gently to walk the halves apart. Go around the edge rather than forcing one spot.",
+        warning: "Do not pry at the buttons or the keyring loop. The clips are around the perimeter and forcing elsewhere cracks the housing.",
+      },
+      {
+        number: 3,
+        title: "Note which way the old cell sits",
+        instructions:
+          "Look at which side faces up - usually the positive side with the writing on it, but check yours rather than assuming. Take a photo if there is any doubt. Fitted upside down the fob simply does nothing, and you will think you bought a dead battery.",
+      },
+      {
+        number: 4,
+        title: "Swap the cell without touching its faces",
+        instructions:
+          "Lever the old cell out with a fingernail or the plastic tool. Handle the new one by its edges - skin oil on the flat faces builds resistance at the contacts and shortens its life. Press it in the same orientation until it seats under the retaining clip.",
+      },
+      {
+        number: 5,
+        title: "Close it up and test everything",
+        instructions:
+          "Press the halves together until the clips click all the way round, and refit the key blade. Then test every function from a normal distance: lock, unlock, tailgate, panic and remote start. Remote start is the one that goes first on a weak battery, so if that now works from across a parking lot, you have your answer.",
+      },
+    ],
+  },
 ];
