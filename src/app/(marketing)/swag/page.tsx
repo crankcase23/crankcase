@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PRODUCTS } from "@/data/products";
-import ProductCard from "@/components/ProductCard";
+import SwagCatalog from "@/components/SwagCatalog";
 
 export const metadata: Metadata = {
   title: "Swag Store",
@@ -8,9 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default function SwagPage() {
-  const apparel = PRODUCTS.filter((p) => p.category === "apparel");
-  const accessories = PRODUCTS.filter((p) => p.category === "accessories");
-
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10">
@@ -21,23 +18,7 @@ export default function SwagPage() {
         </p>
       </div>
 
-      <section className="mb-12">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Apparel</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {apparel.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Accessories</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {accessories.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+      <SwagCatalog products={PRODUCTS} />
     </div>
   );
 }

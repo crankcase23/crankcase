@@ -1,0 +1,1175 @@
+{
+  "pulledAt": "2026-09-19T02:51:08.326Z",
+  "remainingDaily": 0,
+  "stoppedEarly": "daily budget reached zero after call 10",
+  "results": [
+    {
+      "n": 1,
+      "label": "sierra / torque / oil-change",
+      "vehicle": {
+        "make": "gmc",
+        "model": "sierra-1500",
+        "year": "2020"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "oil-change",
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 9,
+      "body": {
+        "data": {
+          "make": "GMC",
+          "model": "Sierra 1500",
+          "engines": [
+            {
+              "engine": "3.0L I6 Duramax Diesel",
+              "engineSlug": "3.0l-i6-duramax",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Oil Change",
+                  "jobSlug": "oil-change",
+                  "category": "engine",
+                  "specs": [
+                    {
+                      "component": "Oil Filter Housing Cap",
+                      "nm": 25,
+                      "lbFt": 18,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "For cartridge-type filters",
+                      "isCritical": false,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "5.3L V8",
+              "engineSlug": "5.3l-v8",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Oil Change",
+                  "jobSlug": "oil-change",
+                  "category": "engine",
+                  "specs": [
+                    {
+                      "component": "Oil Drain Plug",
+                      "nm": 25,
+                      "lbFt": 18,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Use new crush washer",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "6.2L V8",
+              "engineSlug": "6.2l-v8",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Oil Change",
+                  "jobSlug": "oil-change",
+                  "category": "engine",
+                  "specs": [
+                    {
+                      "component": "Oil Drain Plug",
+                      "nm": 25,
+                      "lbFt": 18,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Use new crush washer",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Oil Filter (Spin-On)",
+                      "nm": 30,
+                      "lbFt": 22,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Hand tight plus 3/4 turn",
+                      "isCritical": false,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 3,
+          "totalSpecs": 4,
+          "region": "US",
+          "confidenceCounts": {
+            "estimated": 2,
+            "high": 4
+          },
+          "timestamp": "2026-09-19T02:50:03.560Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 2,
+      "label": "sierra / torque / brake-pads-front",
+      "vehicle": {
+        "make": "gmc",
+        "model": "sierra-1500",
+        "year": "2020"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "brake-pads-front",
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 8,
+      "body": {
+        "data": {
+          "make": "GMC",
+          "model": "Sierra 1500",
+          "engines": [
+            {
+              "engine": "3.0L I6 Duramax Diesel",
+              "engineSlug": "3.0l-i6-duramax",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "5.3L V8",
+              "engineSlug": "5.3l-v8",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Caliper Bracket Bolts",
+                      "nm": 210,
+                      "lbFt": 155,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Threadlocker recommended",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "6.2L V8",
+              "engineSlug": "6.2l-v8",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 3,
+          "totalSpecs": 4,
+          "region": "US",
+          "confidenceCounts": {
+            "estimated": 5,
+            "high": 4
+          },
+          "timestamp": "2026-09-19T02:50:10.753Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 3,
+      "label": "silverado / torque / brake-pads-front",
+      "vehicle": {
+        "make": "chevrolet",
+        "model": "silverado-1500",
+        "year": "2020"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "brake-pads-front",
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 7,
+      "body": {
+        "data": {
+          "make": "Chevrolet",
+          "model": "Silverado 1500",
+          "engines": [
+            {
+              "engine": "2.7L I4 Turbo L3B",
+              "engineSlug": "2.7l-i4-turbo-l3b",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "3.0L I6 Duramax LM2",
+              "engineSlug": "3.0l-i6-duramax-lm2",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Caliper Bracket Bolts",
+                      "nm": 221,
+                      "lbFt": 163,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Threadlocker recommended",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "4.3L V6 LV3",
+              "engineSlug": "4.3l-v6-lv3",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "5.3L V8 L84",
+              "engineSlug": "5.3l-v8-l84",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "6.2L V8 L87",
+              "engineSlug": "6.2l-v8-l87",
+              "yearRange": "2020-2020",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Caliper Bracket Bolts",
+                      "nm": 221,
+                      "lbFt": 163,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Threadlocker recommended",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 190,
+                      "lbFt": 140,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 5,
+          "totalSpecs": 7,
+          "region": "US",
+          "confidenceCounts": {
+            "estimated": 8,
+            "high": 7
+          },
+          "timestamp": "2026-09-19T02:50:17.947Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 4,
+      "label": "civic / torque / brake-pads-front",
+      "vehicle": {
+        "make": "honda",
+        "model": "civic",
+        "year": "2018"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "brake-pads-front",
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 6,
+      "body": {
+        "data": {
+          "make": "Honda",
+          "model": "Civic",
+          "engines": [
+            {
+              "engine": "1.5L I4 Turbo",
+              "engineSlug": "1.5l-i4-turbo",
+              "yearRange": "2018-2018",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 108,
+                      "lbFt": 80,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "2.0L I4",
+              "engineSlug": "2.0l-i4",
+              "yearRange": "2018-2018",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 108,
+                      "lbFt": 80,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 2,
+          "totalSpecs": 2,
+          "region": "US",
+          "confidenceCounts": {
+            "estimated": 4,
+            "high": 2
+          },
+          "timestamp": "2026-09-19T02:50:25.288Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 5,
+      "label": "f150 / torque / brake-pads-front",
+      "vehicle": {
+        "make": "ford",
+        "model": "f-150",
+        "year": "2015"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "brake-pads-front",
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 5,
+      "body": {
+        "data": {
+          "make": "Ford",
+          "model": "F-150",
+          "engines": [
+            {
+              "engine": "2.7L V6 EcoBoost",
+              "engineSlug": "2.7l-v6-ecoboost",
+              "yearRange": "2015-2015",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Caliper Bracket Bolts",
+                      "nm": 201,
+                      "lbFt": 148,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Threadlocker recommended [audit 2026-08: corrected from 88.0 lb-ft by triangulation]",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 203,
+                      "lbFt": 150,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "3.5L V6 EcoBoost",
+              "engineSlug": "3.5l-v6-ecoboost",
+              "yearRange": "2015-2015",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Caliper Bracket Bolts",
+                      "nm": 201,
+                      "lbFt": 148,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Threadlocker recommended [audit 2026-08: corrected from 88.0 lb-ft by triangulation]",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 203,
+                      "lbFt": 150,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "3.5L V6 Ti-VCT",
+              "engineSlug": "3.5l-v6-ti-vct",
+              "yearRange": "2015-2015",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 203,
+                      "lbFt": 150,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "5.0L V8 Coyote",
+              "engineSlug": "5.0l-v8-coyote",
+              "yearRange": "2015-2015",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Caliper Bracket Bolts",
+                      "nm": 201,
+                      "lbFt": 148,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Threadlocker recommended [audit 2026-08: corrected from 88.0 lb-ft by triangulation]",
+                      "isCritical": true,
+                      "confidence": "high"
+                    },
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 203,
+                      "lbFt": 150,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 4,
+          "totalSpecs": 7,
+          "region": "US",
+          "confidenceCounts": {
+            "high": 7,
+            "estimated": 5
+          },
+          "timestamp": "2026-09-19T02:50:32.488Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 6,
+      "label": "escape / torque / brake-pads-front",
+      "vehicle": {
+        "make": "ford",
+        "model": "escape",
+        "year": "2021"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "brake-pads-front",
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 4,
+      "body": {
+        "data": {
+          "make": "Ford",
+          "model": "Escape",
+          "engines": [
+            {
+              "engine": "1.5L I3 EcoBoost",
+              "engineSlug": "1.5l-i3-ecoboost",
+              "yearRange": "2021-2021",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 136,
+                      "lbFt": 100,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "engine": "2.5L I4 Hybrid",
+              "engineSlug": "2.5l-i4-hybrid",
+              "yearRange": "2021-2021",
+              "specsByJob": [
+                {
+                  "job": "Brake Pads - Front",
+                  "jobSlug": "brake-pads-front",
+                  "category": "brakes",
+                  "specs": [
+                    {
+                      "component": "Wheel Lug Nuts",
+                      "nm": 203,
+                      "lbFt": 150,
+                      "sequence": null,
+                      "angleDegrees": null,
+                      "notes": "Torque in star pattern",
+                      "isCritical": true,
+                      "confidence": "high"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 2,
+          "totalSpecs": 2,
+          "region": "US",
+          "confidenceCounts": {
+            "estimated": 10,
+            "high": 2
+          },
+          "timestamp": "2026-09-19T02:50:39.678Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 7,
+      "label": "jeep / torque / brake-pads-front",
+      "vehicle": {
+        "make": "jeep",
+        "model": "grand-cherokee",
+        "year": "2014"
+      },
+      "endpoint": "/torque-specs",
+      "params": {
+        "job": "brake-pads-front",
+        "min_confidence": "medium"
+      },
+      "status": 404,
+      "remainingDaily": 3,
+      "body": {
+        "data": null,
+        "meta": {
+          "timestamp": "2026-09-19T02:50:46.835Z"
+        },
+        "error": {
+          "code": "NO_SPECS_AT_CONFIDENCE",
+          "message": "The vehicle matched, but none of the specs reach min_confidence='medium'. What we hold is counted in error.confidenceCounts.",
+          "confidenceCounts": {
+            "estimated": 9
+          }
+        }
+      }
+    },
+    {
+      "n": 8,
+      "label": "jeep / fluids",
+      "vehicle": {
+        "make": "jeep",
+        "model": "grand-cherokee",
+        "year": "2014"
+      },
+      "endpoint": "/fluid-specs",
+      "params": {
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 2,
+      "body": {
+        "data": {
+          "make": "Jeep",
+          "model": "Grand Cherokee",
+          "engines": [
+            {
+              "engine": "3.0L V6 EcoDiesel",
+              "engineSlug": "3.0l-v6-ecodiesel",
+              "yearRange": "2014-2014",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "WK2 generation, switched to R-1234yf in 2014 Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            },
+            {
+              "engine": "3.6L V6 Pentastar",
+              "engineSlug": "3.6l-v6-pentastar",
+              "yearRange": "2014-2014",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "WK2 generation, switched to R-1234yf in 2014 Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            },
+            {
+              "engine": "5.7L V8 Hemi",
+              "engineSlug": "5.7l-v8-hemi",
+              "yearRange": "2014-2014",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "WK2 generation, switched to R-1234yf in 2014 Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 3,
+          "totalSpecs": 3,
+          "region": "US",
+          "confidenceCounts": {
+            "high": 3,
+            "estimated": 27
+          },
+          "timestamp": "2026-09-19T02:50:53.986Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 9,
+      "label": "civic / fluids",
+      "vehicle": {
+        "make": "honda",
+        "model": "civic",
+        "year": "2018"
+      },
+      "endpoint": "/fluid-specs",
+      "params": {
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 1,
+      "body": {
+        "data": {
+          "make": "Honda",
+          "model": "Civic",
+          "engines": [
+            {
+              "engine": "1.5L I4 Turbo",
+              "engineSlug": "1.5l-i4-turbo",
+              "yearRange": "2018-2018",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "10th generation, Honda transitioned to R-1234yf for 2016 MY Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            },
+            {
+              "engine": "2.0L I4",
+              "engineSlug": "2.0l-i4",
+              "yearRange": "2018-2018",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "10th generation, Honda transitioned to R-1234yf for 2016 MY Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 2,
+          "totalSpecs": 2,
+          "region": "US",
+          "confidenceCounts": {
+            "high": 2,
+            "estimated": 12
+          },
+          "timestamp": "2026-09-19T02:51:01.175Z"
+        },
+        "error": null
+      }
+    },
+    {
+      "n": 10,
+      "label": "f150 / fluids",
+      "vehicle": {
+        "make": "ford",
+        "model": "f-150",
+        "year": "2015"
+      },
+      "endpoint": "/fluid-specs",
+      "params": {
+        "min_confidence": "medium"
+      },
+      "status": 200,
+      "remainingDaily": 0,
+      "body": {
+        "data": {
+          "make": "Ford",
+          "model": "F-150",
+          "engines": [
+            {
+              "engine": "2.7L V6 EcoBoost",
+              "engineSlug": "2.7l-v6-ecoboost",
+              "yearRange": "2015-2015",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "13th generation redesign, switched to R-1234yf Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            },
+            {
+              "engine": "3.5L V6 EcoBoost",
+              "engineSlug": "3.5l-v6-ecoboost",
+              "yearRange": "2015-2015",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "13th generation redesign, switched to R-1234yf Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "13th generation redesign, switched to R-1234yf Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "Rear Differential",
+                  "systemType": "rear_diff",
+                  "fluidType": "75W-140 synthetic",
+                  "fluidSpec": "WSP-M2C197-A",
+                  "capacityQuarts": 3.5,
+                  "capacityLiters": 3.31,
+                  "drainRefillQuarts": 3.5,
+                  "drainRefillLiters": 3.31,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "9.75-inch rear axle typical. Add 4 oz friction modifier if limited-slip equipped.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "Rear Differential",
+                  "systemType": "rear_diff",
+                  "fluidType": "75W-140 synthetic",
+                  "fluidSpec": "WSP-M2C197-A",
+                  "capacityQuarts": 3.5,
+                  "capacityLiters": 3.31,
+                  "drainRefillQuarts": 3.5,
+                  "drainRefillLiters": 3.31,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "9.75-inch rear axle typical. Add 4 oz friction modifier if limited-slip equipped.",
+                  "confidence": "high"
+                }
+              ]
+            },
+            {
+              "engine": "3.5L V6 Ti-VCT",
+              "engineSlug": "3.5l-v6-ti-vct",
+              "yearRange": "2015-2015",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "13th generation redesign, switched to R-1234yf Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                }
+              ]
+            },
+            {
+              "engine": "5.0L V8 Coyote",
+              "engineSlug": "5.0l-v8-coyote",
+              "yearRange": "2015-2015",
+              "fluidSpecs": [
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "13th generation redesign, switched to R-1234yf Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "A/C Refrigerant",
+                  "systemType": "ac_refrigerant",
+                  "fluidType": "R-1234yf",
+                  "fluidSpec": null,
+                  "capacityQuarts": null,
+                  "capacityLiters": null,
+                  "drainRefillQuarts": null,
+                  "drainRefillLiters": null,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "13th generation redesign, switched to R-1234yf Always verify against the underhood charge label when legible — charge weight is a fill-to spec, not an estimate.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "Rear Differential",
+                  "systemType": "rear_diff",
+                  "fluidType": "75W-140 synthetic",
+                  "fluidSpec": "WSP-M2C197-A",
+                  "capacityQuarts": 3.5,
+                  "capacityLiters": 3.31,
+                  "drainRefillQuarts": 3.5,
+                  "drainRefillLiters": 3.31,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "9.75-inch rear axle typical. Add 4 oz friction modifier if limited-slip equipped.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "Rear Differential",
+                  "systemType": "rear_diff",
+                  "fluidType": "75W-140 synthetic",
+                  "fluidSpec": "WSP-M2C197-A",
+                  "capacityQuarts": 3.5,
+                  "capacityLiters": 3.31,
+                  "drainRefillQuarts": 3.5,
+                  "drainRefillLiters": 3.31,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "9.75-inch rear axle typical. Add 4 oz friction modifier if limited-slip equipped.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "Automatic Transmission",
+                  "systemType": "transmission_auto",
+                  "fluidType": "Mercon ULV",
+                  "fluidSpec": "WSS-M2C938-A",
+                  "capacityQuarts": 13.1,
+                  "capacityLiters": 12.39,
+                  "drainRefillQuarts": 5.5,
+                  "drainRefillLiters": 5.2,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "6R80 6-speed automatic. Ford considers lifetime fill but recommend service at 60k-100k miles under severe duty.",
+                  "confidence": "high"
+                },
+                {
+                  "system": "Automatic Transmission",
+                  "systemType": "transmission_auto",
+                  "fluidType": "Mercon ULV",
+                  "fluidSpec": "WSS-M2C938-A",
+                  "capacityQuarts": 13.1,
+                  "capacityLiters": 12.39,
+                  "drainRefillQuarts": 5.5,
+                  "drainRefillLiters": 5.2,
+                  "changeIntervalMiles": null,
+                  "changeIntervalKm": null,
+                  "notes": "6R80 6-speed automatic. Ford considers lifetime fill but recommend service at 60k-100k miles under severe duty.",
+                  "confidence": "high"
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "engineCount": 4,
+          "totalSpecs": 12,
+          "region": "US",
+          "confidenceCounts": {
+            "high": 12,
+            "estimated": 44
+          },
+          "timestamp": "2026-09-19T02:51:08.340Z"
+        },
+        "error": null
+      }
+    }
+  ]
+}

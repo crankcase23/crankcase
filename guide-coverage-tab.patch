@@ -1,0 +1,998 @@
+From b59be8fcb439c8de8e75cf881b84c83cdd817da0 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 18 Sep 2026 21:21:32 -0700
+Subject: [PATCH] Admin: add a Guide Coverage tab
+
+Answers one question per vehicle: how many guides should it have, how many
+are written, what is left.
+
+THE TARGET IS COMPUTED, NOT HARDCODED
+
+A flat "every vehicle needs N guides" would be wrong in both directions. A
+front-wheel-drive car has no separately serviceable differential; an EV has
+no oil to change, no spark plugs and no PCV valve. So each job in the
+catalog carries an applicability rule and a vehicle's target is the subset
+that actually applies to it. The Civic and Escape correctly show a target
+of 16 rather than 17 for exactly this reason, and the page says so in its
+own subtitle rather than leaving the discrepancy unexplained.
+
+The job catalog mirrors the approved "do cover" list in the coverage-scope
+project doc. Adding a row raises the target for every applicable vehicle
+and surfaces as newly-missing work, which is intended -- but it should
+follow a product decision, and the code says so.
+
+WHAT IS ON THE PAGE
+
+- Five tiles: vehicles, guides built, target, remaining, coverage percent.
+  These always describe the whole catalog, never the filtered view. A
+  headline number that changes when you filter a table is a number nobody
+  can quote.
+- Per-vehicle table: target, built, remaining, a progress meter, status,
+  and the first few outstanding jobs by name.
+- Filters for year, make, model, status and missing-job. The year/make/model
+  options narrow against each other so the dropdowns never offer a
+  combination that returns nothing. Plain GET form -- no client JS.
+- "Biggest gaps" panel: which job is missing on the most vehicles, which is
+  the build-order question the report exists to answer. Each row links to
+  the filtered view of the vehicles still needing it.
+
+Current reading: 28 built against a target of 100, 28% coverage, biggest
+gap is rear brake pads at 6 of 6 vehicles.
+
+GUIDES NOW CARRY A JOB TYPE
+
+RepairGuide gains an optional jobType, backfilled across all 28 guides.
+Matching on title was considered and rejected: retitling a guide would
+silently stop it counting. Optional so no guide is ever rejected for
+lacking it, but a guide without one counts toward nothing -- so the page
+lists unclassified guides explicitly instead of quietly ignoring them.
+
+No database work. The report is derived fresh from src/data on every load,
+so it cannot drift from the content the way a stored count would. Reuses
+guides.view rather than inventing a permission, so every existing role sees
+it with no migration.
+
+Verified: rendered against a real Postgres and a seeded super-admin, and
+screenshotted at 1500px and 820px -- tiles, filters, meters, badges and the
+filtered view all check out, no console or page errors. tsc clean, next
+build clean, eslint unchanged at the same 4 pre-existing problems.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BW5agZgw6hwJhg8nhGEW4T
+---
+ src/app/admin/coverage/page.tsx | 344 ++++++++++++++++++++++++++++++++
+ src/app/admin/layout.tsx        |   1 +
+ src/components/admin/icons.tsx  |  12 +-
+ src/data/repairs.ts             |  28 +++
+ src/lib/admin/coverage.ts       | 244 ++++++++++++++++++++++
+ src/types/vehicle.ts            |  40 ++++
+ 6 files changed, 668 insertions(+), 1 deletion(-)
+ create mode 100644 src/app/admin/coverage/page.tsx
+ create mode 100644 src/lib/admin/coverage.ts
+
+diff --git a/src/app/admin/coverage/page.tsx b/src/app/admin/coverage/page.tsx
+new file mode 100644
+index 0000000..2eb8170
+--- /dev/null
++++ b/src/app/admin/coverage/page.tsx
+@@ -0,0 +1,344 @@
++import Link from "next/link";
++import { redirect } from "next/navigation";
++import { requireAdmin } from "@/lib/admin/rbac";
++import {
++  listCoverage,
++  getCoverageSummary,
++  applyFilters,
++  getFilterOptions,
++  JOB_CATALOG,
++  type CoverageStatus,
++} from "@/lib/admin/coverage";
++import {
++  PageHeader,
++  Panel,
++  Table,
++  THead,
++  TBody,
++  TR,
++  TH,
++  TD,
++  Badge,
++  EmptyState,
++  KpiCard,
++  MicroLabel,
++} from "@/components/admin/ui";
++import { Meter } from "@/components/admin/charts";
++
++export const metadata = { title: "Guide Coverage" };
++
++const STATUS_TONE: Record<CoverageStatus, "positive" | "warning" | "critical"> = {
++  complete: "positive",
++  "in-progress": "warning",
++  "not-started": "critical",
++};
++
++const STATUS_LABEL: Record<CoverageStatus, string> = {
++  complete: "Complete",
++  "in-progress": "In progress",
++  "not-started": "Not started",
++};
++
++const SELECT =
++  "rounded-lg border border-slate-800 bg-slate-900/60 px-2.5 py-1.5 text-sm text-slate-200 " +
++  "focus:border-orange-500/60 focus:outline-none focus:ring-1 focus:ring-orange-500/40";
++
++export default async function AdminCoveragePage({
++  searchParams,
++}: {
++  searchParams: Promise<{ year?: string; make?: string; model?: string; status?: string; job?: string }>;
++}) {
++  const ctx = await requireAdmin("guides.view");
++  if (!ctx) redirect("/admin");
++
++  const params = await searchParams;
++  const filters = {
++    year: params.year || undefined,
++    make: params.make || undefined,
++    model: params.model || undefined,
++    status: params.status || undefined,
++    job: params.job || undefined,
++  };
++
++  const all = listCoverage();
++  // Tiles always describe the whole catalog, never the filtered view -- a
++  // headline number that changes when you filter a table is a number nobody
++  // can quote. The filtered count is shown on the table panel instead.
++  const summary = getCoverageSummary(all);
++  const rows = applyFilters(all, filters);
++  const { years, makes, models } = getFilterOptions(all, filters);
++
++  const filtersActive = Boolean(filters.year || filters.make || filters.model || filters.status || filters.job);
++
++  // Which job is missing on the most vehicles, descending. This is the
++  // "what should I build next" list, and it is the reason the report exists
++  // rather than a per-vehicle checklist alone.
++  const gaps = JOB_CATALOG.map((job) => {
++    const applicable = all.filter((r) => job.appliesTo(r.vehicle));
++    const missingOn = applicable.filter((r) => r.missing.some((m) => m.id === job.id));
++    return { job, applicable: applicable.length, missingOn: missingOn.length };
++  })
++    .filter((g) => g.applicable > 0)
++    .sort((a, b) => b.missingOn - a.missingOn || a.job.label.localeCompare(b.job.label));
++
++  return (
++    <>
++      <PageHeader
++        title="Guide Coverage"
++        description="How many guides each vehicle should have, how many are written, and what is left. Targets are computed per vehicle — a front-wheel-drive car is not counted as missing a differential service, and an EV is not counted as missing an oil change."
++      />
++
++      <div className="mb-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
++        <KpiCard label="Vehicles" value={summary.vehicles} hint={`${summary.vehiclesComplete} complete`} />
++        <KpiCard label="Guides built" value={summary.builtGuides} tone="accent" />
++        <KpiCard label="Target guides" value={summary.targetGuides} hint="Applicable jobs, all vehicles" />
++        <KpiCard
++          label="Remaining"
++          value={summary.remainingGuides}
++          tone={summary.remainingGuides > 0 ? "warning" : "positive"}
++        />
++        <KpiCard
++          label="Coverage"
++          value={`${summary.pct}%`}
++          tone={summary.pct >= 80 ? "positive" : summary.pct >= 40 ? "warning" : "critical"}
++          hint={`${summary.vehiclesNotStarted} not started · ${summary.vehiclesInProgress} in progress`}
++        />
++      </div>
++
++      {summary.unclassifiedGuides.length > 0 && (
++        <div className="mb-5 rounded-xl border border-amber-500/40 bg-amber-500/5 p-4">
++          <MicroLabel>Unclassified guides</MicroLabel>
++          <p className="mt-1.5 text-sm text-slate-300">
++            {summary.unclassifiedGuides.length} guide
++            {summary.unclassifiedGuides.length === 1 ? " has" : "s have"} no job type set, so{" "}
++            {summary.unclassifiedGuides.length === 1 ? "it counts" : "they count"} toward nothing on this page. Set{" "}
++            <code className="rounded bg-slate-900 px-1 py-0.5 text-[11px] text-slate-400">jobType</code> in{" "}
++            <code className="rounded bg-slate-900 px-1 py-0.5 text-[11px] text-slate-400">src/data/repairs.ts</code>.
++          </p>
++          <ul className="mt-2 space-y-0.5">
++            {summary.unclassifiedGuides.slice(0, 8).map((g) => (
++              <li key={g.id} className="text-[13px] text-slate-400">
++                {g.title} <span className="text-slate-600">— {g.vehicleId}</span>
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++
++      <Panel
++        title="By vehicle"
++        subtitle={filtersActive ? `${rows.length} of ${all.length} vehicles match` : `${all.length} vehicles`}
++      >
++        <form method="get" className="mb-4 flex flex-wrap items-end gap-2">
++          <label className="flex flex-col gap-1">
++            <MicroLabel>Year</MicroLabel>
++            <select name="year" defaultValue={filters.year ?? ""} className={SELECT}>
++              <option value="">All years</option>
++              {years.map((y) => (
++                <option key={y} value={y}>
++                  {y}
++                </option>
++              ))}
++            </select>
++          </label>
++
++          <label className="flex flex-col gap-1">
++            <MicroLabel>Make</MicroLabel>
++            <select name="make" defaultValue={filters.make ?? ""} className={SELECT}>
++              <option value="">All makes</option>
++              {makes.map((m) => (
++                <option key={m} value={m}>
++                  {m}
++                </option>
++              ))}
++            </select>
++          </label>
++
++          <label className="flex flex-col gap-1">
++            <MicroLabel>Model</MicroLabel>
++            <select name="model" defaultValue={filters.model ?? ""} className={SELECT}>
++              <option value="">All models</option>
++              {models.map((m) => (
++                <option key={m} value={m}>
++                  {m}
++                </option>
++              ))}
++            </select>
++          </label>
++
++          <label className="flex flex-col gap-1">
++            <MicroLabel>Status</MicroLabel>
++            <select name="status" defaultValue={filters.status ?? "all"} className={SELECT}>
++              <option value="all">Any status</option>
++              <option value="not-started">Not started</option>
++              <option value="in-progress">In progress</option>
++              <option value="complete">Complete</option>
++            </select>
++          </label>
++
++          <label className="flex flex-col gap-1">
++            <MicroLabel>Missing job</MicroLabel>
++            <select name="job" defaultValue={filters.job ?? "all"} className={SELECT}>
++              <option value="all">Any job</option>
++              {JOB_CATALOG.map((j) => (
++                <option key={j.id} value={j.id}>
++                  {j.label}
++                </option>
++              ))}
++            </select>
++          </label>
++
++          <button
++            type="submit"
++            className="rounded-lg border border-orange-500/40 bg-orange-500/10 px-3 py-1.5 text-sm font-medium text-orange-300 transition-colors hover:bg-orange-500/20"
++          >
++            Apply
++          </button>
++          {filtersActive && (
++            <Link
++              href="/admin/coverage"
++              className="rounded-lg border border-slate-800 px-3 py-1.5 text-sm text-slate-400 transition-colors hover:border-slate-700 hover:text-slate-200"
++            >
++              Clear
++            </Link>
++          )}
++        </form>
++
++        {rows.length === 0 ? (
++          <EmptyState
++            title="No vehicles match"
++            message="Nothing in the catalog fits that combination of filters. Clear them to see every vehicle."
++          />
++        ) : (
++          <Table minWidth={920}>
++            <THead>
++              <TR>
++                <TH>Vehicle</TH>
++                <TH align="right">Target</TH>
++                <TH align="right">Built</TH>
++                <TH align="right">Remaining</TH>
++                <TH>Progress</TH>
++                <TH>Status</TH>
++                <TH>Still needed</TH>
++              </TR>
++            </THead>
++            <TBody>
++              {rows.map((r) => (
++                <TR key={r.vehicle.id} href={`/admin/vehicles/${r.vehicle.id}`}>
++                  <TD>
++                    <div className="font-medium text-slate-200">{r.label}</div>
++                    <div className="text-[11px] text-slate-600">
++                      {r.vehicle.trim} · {r.vehicle.drivetrain} · {r.freeGuides} free / {r.premiumGuides} premium
++                    </div>
++                  </TD>
++                  <TD align="right" mono>
++                    {r.target}
++                  </TD>
++                  <TD align="right" mono>
++                    {r.done}
++                  </TD>
++                  <TD align="right" mono>
++                    {r.remaining > 0 ? (
++                      <span className="text-amber-400">{r.remaining}</span>
++                    ) : (
++                      <span className="text-emerald-400">0</span>
++                    )}
++                  </TD>
++                  <TD>
++                    <div className="w-32">
++                      <Meter
++                        value={r.pct}
++                        tone={r.status === "complete" ? "positive" : r.status === "not-started" ? "critical" : "accent"}
++                        caption={`${r.pct}%`}
++                      />
++                    </div>
++                  </TD>
++                  <TD>
++                    <Badge tone={STATUS_TONE[r.status]}>{STATUS_LABEL[r.status]}</Badge>
++                  </TD>
++                  <TD>
++                    {r.missing.length === 0 ? (
++                      <span className="text-[12px] text-slate-600">Nothing outstanding</span>
++                    ) : (
++                      <div className="flex flex-wrap gap-1">
++                        {r.missing.slice(0, 3).map((j) => (
++                          <span
++                            key={j.id}
++                            className="rounded border border-slate-800 bg-slate-900/60 px-1.5 py-0.5 text-[11px] text-slate-400"
++                          >
++                            {j.label}
++                          </span>
++                        ))}
++                        {r.missing.length > 3 && (
++                          <span className="px-1 py-0.5 text-[11px] text-slate-600">
++                            +{r.missing.length - 3} more
++                          </span>
++                        )}
++                      </div>
++                    )}
++                  </TD>
++                </TR>
++              ))}
++            </TBody>
++          </Table>
++        )}
++      </Panel>
++
++      <div className="mt-5">
++        <Panel
++          title="Biggest gaps"
++          subtitle="Which job is missing on the most vehicles — build order, highest leverage first"
++        >
++          <Table minWidth={620}>
++            <THead>
++              <TR>
++                <TH>Job</TH>
++                <TH align="right">Applies to</TH>
++                <TH align="right">Missing on</TH>
++                <TH>Coverage</TH>
++                <TH>Notes</TH>
++              </TR>
++            </THead>
++            <TBody>
++              {gaps.map((g) => {
++                const built = g.applicable - g.missingOn;
++                const pct = g.applicable === 0 ? 0 : Math.round((built / g.applicable) * 100);
++                return (
++                  <TR key={g.job.id}>
++                    <TD>
++                      <Link href={`/admin/coverage?job=${g.job.id}`} className="text-slate-200 hover:text-orange-300">
++                        {g.job.label}
++                      </Link>
++                    </TD>
++                    <TD align="right" mono>
++                      {g.applicable}
++                    </TD>
++                    <TD align="right" mono>
++                      {g.missingOn > 0 ? (
++                        <span className="text-amber-400">{g.missingOn}</span>
++                      ) : (
++                        <span className="text-emerald-400">0</span>
++                      )}
++                    </TD>
++                    <TD>
++                      <div className="w-28">
++                        <Meter value={pct} tone={pct === 100 ? "positive" : "accent"} caption={`${built}/${g.applicable}`} />
++                      </div>
++                    </TD>
++                    <TD>
++                      <span className="text-[11px] text-slate-600">
++                        {g.applicable < all.length && g.job.exclusionNote
++                          ? g.job.exclusionNote
++                          : ""}
++                      </span>
++                    </TD>
++                  </TR>
++                );
++              })}
++            </TBody>
++          </Table>
++        </Panel>
++      </div>
++    </>
++  );
++}
+diff --git a/src/app/admin/layout.tsx b/src/app/admin/layout.tsx
+index f88782b..0177ce1 100644
+--- a/src/app/admin/layout.tsx
++++ b/src/app/admin/layout.tsx
+@@ -22,6 +22,7 @@ const NAV: { href: string; label: string; icon: NavItem["icon"]; permission: Par
+   { href: "/admin/users", label: "Users", icon: "users", permission: "users.view" },
+   { href: "/admin/vehicles", label: "Vehicles", icon: "vehicle", permission: "vehicles.view" },
+   { href: "/admin/guides", label: "Service Guides", icon: "guide", permission: "guides.view" },
++  { href: "/admin/coverage", label: "Guide Coverage", icon: "coverage", permission: "guides.view" },
+   { href: "/admin/content", label: "Content", icon: "content", permission: "content.view" },
+   { href: "/admin/revenue", label: "Revenue", icon: "revenue", permission: "revenue.view" },
+   { href: "/admin/analytics", label: "Analytics", icon: "analytics", permission: "analytics.view" },
+diff --git a/src/components/admin/icons.tsx b/src/components/admin/icons.tsx
+index 237d2a3..dbdd2fe 100644
+--- a/src/components/admin/icons.tsx
++++ b/src/components/admin/icons.tsx
+@@ -20,9 +20,19 @@ export type IconName =
+   | "close"
+   | "chevronLeft"
+   | "logout"
+-  | "external";
++  | "external"
++  | "coverage";
+ 
+ const PATHS: Record<IconName, React.ReactNode> = {
++  // Checklist: two done, one outstanding -- the shape of the coverage report.
++  coverage: (
++    <>
++      <path d="M4 7.2l1.6 1.6L9 5.4" />
++      <path d="M4 14.2l1.6 1.6L9 12.4" />
++      <path d="M4.6 20h3.2" />
++      <path d="M12.5 7h7.5M12.5 14h7.5M12.5 20h7.5" />
++    </>
++  ),
+   // Gauge / dashboard
+   command: (
+     <>
+diff --git a/src/data/repairs.ts b/src/data/repairs.ts
+index 499f348..5e1ee79 100644
+--- a/src/data/repairs.ts
++++ b/src/data/repairs.ts
+@@ -13,6 +13,7 @@ export const repairs: RepairGuide[] = [
+ id: "jeep-grand-cherokee-oil-change",
+ vehicleId: "2014-jeep-grand-cherokee-3.6l",
+ title: "Engine Oil & Filter Change",
++jobType: "oil-change",
+ summary:
+ "Full drain-and-refill oil service for the 3.6L Pentastar V6, including the cartridge-style oil filter housing under the intake plenum.",
+ difficulty: "Easy",
+@@ -117,6 +118,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "jeep-grand-cherokee-front-brake-pads",
+ vehicleId: "2014-jeep-grand-cherokee-3.6l",
+ title: "Front Brake Pad Replacement",
++jobType: "brake-pads-front",
+ summary: "Replacing front brake pads and inspecting rotors on the WK2 Grand Cherokee.",
+ difficulty: "Moderate",
+ tier: "premium",
+@@ -217,6 +219,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "civic-oil-change",
+ vehicleId: "2018-honda-civic-1.5t",
+ title: "Engine Oil & Filter Change",
++jobType: "oil-change",
+ summary: "Drain-and-refill oil service for the 1.5L turbo four, with a spin-on oil filter.",
+ difficulty: "Easy",
+ tier: "free",
+@@ -317,6 +320,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "f150-oil-change",
+ vehicleId: "2015-ford-f150-5.0l",
+ title: "Engine Oil & Filter Change",
++jobType: "oil-change",
+ summary: "Drain-and-refill oil service for the 5.0L Coyote V8, with its cartridge-style oil filter.",
+ difficulty: "Easy",
+ tier: "free",
+@@ -420,6 +424,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "silverado-1500-oil-change",
+ vehicleId: "2020-chevrolet-silverado-1500-5.3l",
+ title: "Engine Oil & Filter Change",
++jobType: "oil-change",
+ summary: "Drain-and-refill oil service for the 5.3L EcoTec3 V8, with its spin-on oil filter.",
+ difficulty: "Easy",
+ tier: "free",
+@@ -533,6 +538,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "sierra-1500-oil-change",
+ vehicleId: "2020-gmc-sierra-1500-5.3l",
+ title: "Engine Oil & Filter Change",
++jobType: "oil-change",
+ summary: "Drain-and-refill oil service for the 5.3L EcoTec3 V8, with its spin-on oil filter — the same GM engine and layout as the Chevrolet Silverado 1500.",
+ difficulty: "Easy",
+ tier: "free",
+@@ -635,6 +641,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "ford-escape-oil-change",
+ vehicleId: "2021-ford-escape-1.5l",
+ title: "Engine Oil & Filter Change",
++jobType: "oil-change",
+ summary: "Drain-and-refill oil service for the 1.5L EcoBoost turbo three-cylinder, with its spin-on oil filter.",
+ difficulty: "Easy",
+ tier: "free",
+@@ -740,6 +747,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "jeep-grand-cherokee-tire-rotation",
+ vehicleId: "2014-jeep-grand-cherokee-3.6l",
+ title: "Tire Rotation",
++jobType: "tire-rotation",
+ summary:
+ "Even out tire wear on the WK2 Grand Cherokee by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
+ difficulty: "Easy",
+@@ -840,6 +848,7 @@ torque: [{ fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" }],
+ id: "civic-tire-rotation",
+ vehicleId: "2018-honda-civic-1.5t",
+ title: "Tire Rotation",
++jobType: "tire-rotation",
+ summary:
+ "Even out tire wear on the 10th-gen Civic by moving all four tires through a forward cross pattern, with a tread and brake inspection while the wheels are off.",
+ difficulty: "Easy",
+@@ -941,6 +950,7 @@ torque: [{ fastener: "Wheel lug nuts", value: "80 ft-lb (108 Nm)" }],
+ id: "f150-tire-rotation",
+ vehicleId: "2015-ford-f150-5.0l",
+ title: "Tire Rotation",
++jobType: "tire-rotation",
+ summary:
+ "Even out tire wear on the 13th-gen F-150 by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
+ difficulty: "Easy",
+@@ -1042,6 +1052,7 @@ torque: [{ fastener: "Wheel lug nuts", value: "150 ft-lb (203 Nm)" }],
+ id: "silverado-1500-tire-rotation",
+ vehicleId: "2020-chevrolet-silverado-1500-5.3l",
+ title: "Tire Rotation",
++jobType: "tire-rotation",
+ summary:
+ "Even out tire wear on the T1XX Silverado 1500 by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
+ difficulty: "Easy",
+@@ -1143,6 +1154,7 @@ torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
+ id: "sierra-1500-tire-rotation",
+ vehicleId: "2020-gmc-sierra-1500-5.3l",
+ title: "Tire Rotation",
++jobType: "tire-rotation",
+ summary:
+ "Even out tire wear on the T1XX Sierra 1500 by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
+ difficulty: "Easy",
+@@ -1244,6 +1256,7 @@ torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
+ id: "ford-escape-tire-rotation",
+ vehicleId: "2021-ford-escape-1.5l",
+ title: "Tire Rotation",
++jobType: "tire-rotation",
+ summary:
+ "Even out tire wear on the 2020+ Escape by moving all four tires through a forward cross pattern, with a tread and brake inspection while the wheels are off.",
+ difficulty: "Easy",
+@@ -1351,6 +1364,7 @@ torque: [{ fastener: "Wheel lug nuts", value: "100 ft-lb (136 Nm)" }],
+ id: "jeep-grand-cherokee-wiper-blades",
+ vehicleId: "2014-jeep-grand-cherokee-3.6l",
+ title: "Wiper Blade Replacement",
++jobType: "wiper-blades",
+ summary:
+ "Swap the front and rear wiper blades on the WK2 Grand Cherokee. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+ difficulty: "Easy",
+@@ -1424,6 +1438,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "civic-wiper-blades",
+ vehicleId: "2018-honda-civic-1.5t",
+ title: "Wiper Blade Replacement",
++jobType: "wiper-blades",
+ summary:
+ "Swap the front wiper blades on the 10th-gen Civic sedan. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+ difficulty: "Easy",
+@@ -1496,6 +1511,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "f150-wiper-blades",
+ vehicleId: "2015-ford-f150-5.0l",
+ title: "Wiper Blade Replacement",
++jobType: "wiper-blades",
+ summary:
+ "Swap the front wiper blades on the 13th-gen F-150. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+ difficulty: "Easy",
+@@ -1568,6 +1584,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "silverado-1500-wiper-blades",
+ vehicleId: "2020-chevrolet-silverado-1500-5.3l",
+ title: "Wiper Blade Replacement",
++jobType: "wiper-blades",
+ summary:
+ "Swap the front wiper blades on the T1 Silverado 1500. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+ difficulty: "Easy",
+@@ -1640,6 +1657,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "sierra-1500-wiper-blades",
+ vehicleId: "2020-gmc-sierra-1500-5.3l",
+ title: "Wiper Blade Replacement",
++jobType: "wiper-blades",
+ summary:
+ "Swap the front wiper blades on the T1 Sierra 1500. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+ difficulty: "Easy",
+@@ -1712,6 +1730,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "ford-escape-wiper-blades",
+ vehicleId: "2021-ford-escape-1.5l",
+ title: "Wiper Blade Replacement",
++jobType: "wiper-blades",
+ summary:
+ "Swap the front and rear wiper blades on the 2020+ Escape. No tools, no fasteners, and the fastest job in the catalog -- but the sizes are specific and easy to get wrong at the parts counter.",
+ difficulty: "Easy",
+@@ -1785,6 +1804,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "jeep-grand-cherokee-cabin-filter",
+ vehicleId: "2014-jeep-grand-cherokee-3.6l",
+ title: "Cabin Air Filter Replacement",
++jobType: "cabin-air-filter",
+ summary:
+ "Replace the cabin air filter on the WK2 Grand Cherokee. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+ difficulty: "Easy",
+@@ -1855,6 +1875,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "civic-cabin-filter",
+ vehicleId: "2018-honda-civic-1.5t",
+ title: "Cabin Air Filter Replacement",
++jobType: "cabin-air-filter",
+ summary:
+ "Replace the cabin air filter on the 10th-gen Civic. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+ difficulty: "Easy",
+@@ -1925,6 +1946,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "f150-cabin-filter",
+ vehicleId: "2015-ford-f150-5.0l",
+ title: "Cabin Air Filter Replacement",
++jobType: "cabin-air-filter",
+ summary:
+ "Replace the cabin air filter on the 13th-gen F-150. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+ difficulty: "Moderate",
+@@ -1996,6 +2018,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "silverado-1500-cabin-filter",
+ vehicleId: "2020-chevrolet-silverado-1500-5.3l",
+ title: "Cabin Air Filter Replacement",
++jobType: "cabin-air-filter",
+ summary:
+ "Replace the cabin air filter on the T1 Silverado 1500. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+ difficulty: "Easy",
+@@ -2066,6 +2089,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "sierra-1500-cabin-filter",
+ vehicleId: "2020-gmc-sierra-1500-5.3l",
+ title: "Cabin Air Filter Replacement",
++jobType: "cabin-air-filter",
+ summary:
+ "Replace the cabin air filter on the T1 Sierra 1500. It is the filter for the air you actually breathe, it is almost always overdue, and a clogged one is the usual reason the fan feels weak.",
+ difficulty: "Easy",
+@@ -2136,6 +2160,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "jeep-grand-cherokee-engine-air-filter",
+ vehicleId: "2014-jeep-grand-cherokee-3.6l",
+ title: "Engine Air Filter Replacement",
++jobType: "engine-air-filter",
+ summary:
+ "Replace the engine air filter on the WK2 Grand Cherokee 3.6L. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+ difficulty: "Easy",
+@@ -2207,6 +2232,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "civic-engine-air-filter",
+ vehicleId: "2018-honda-civic-1.5t",
+ title: "Engine Air Filter Replacement",
++jobType: "engine-air-filter",
+ summary:
+ "Replace the engine air filter on the 10th-gen Civic 1.5L Turbo. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+ difficulty: "Easy",
+@@ -2278,6 +2304,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "f150-engine-air-filter",
+ vehicleId: "2015-ford-f150-5.0l",
+ title: "Engine Air Filter Replacement",
++jobType: "engine-air-filter",
+ summary:
+ "Replace the engine air filter on the 13th-gen F-150 5.0L. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+ difficulty: "Easy",
+@@ -2349,6 +2376,7 @@ image: "/steps/generic-cleanup.svg",
+ id: "ford-escape-engine-air-filter",
+ vehicleId: "2021-ford-escape-1.5l",
+ title: "Engine Air Filter Replacement",
++jobType: "engine-air-filter",
+ summary:
+ "Replace the engine air filter on the 2020+ Escape 1.5L EcoBoost. One of the few jobs with a real payoff that takes minutes and needs almost nothing in the way of tools.",
+ difficulty: "Easy",
+diff --git a/src/lib/admin/coverage.ts b/src/lib/admin/coverage.ts
+new file mode 100644
+index 0000000..426b791
+--- /dev/null
++++ b/src/lib/admin/coverage.ts
+@@ -0,0 +1,244 @@
++import { allRepairs, listVehicles } from "@/lib/data";
++import type { JobTypeId, RepairGuide, Vehicle } from "@/types/vehicle";
++
++// ---------------------------------------------------------------------------
++// Guide coverage report.
++//
++// Answers one question per vehicle: how many guides SHOULD this car have, how
++// many does it have, and what is left.
++//
++// The target is computed, never hardcoded. A flat "every vehicle needs N
++// guides" would be wrong in both directions -- a front-wheel-drive car has no
++// serviceable differential, and an EV has no oil to change. So each job in the
++// catalog below carries an applicability rule, and a vehicle's target is the
++// subset of jobs that actually apply to it.
++//
++// This module is read-only over src/data/*.ts. It touches no database and
++// stores nothing: the numbers are derived fresh from the catalog every load,
++// so they cannot drift out of sync with the content the way a cached count
++// would.
++// ---------------------------------------------------------------------------
++
++export type CoverageStatus = "complete" | "in-progress" | "not-started";
++
++export interface JobType {
++  id: JobTypeId;
++  label: string;
++  /** Why this job might not apply to every vehicle. Shown in the UI. */
++  appliesTo: (v: Vehicle) => boolean;
++  /** Set when a job is universal, so the UI can explain exclusions honestly. */
++  exclusionNote?: string;
++}
++
++// --- vehicle classification -------------------------------------------------
++//
++// These read the free-text engine/drivetrain strings because the Vehicle type
++// has no structured fuel-type or driveline field yet. That is a deliberate
++// stopgap, not a design: when an EV actually enters the catalog, replacing
++// these with a real field is the right fix, and the whole report keys off
++// these three functions so it is a small change.
++
++/** Battery-electric only. A hybrid still has an engine, oil and plugs. */
++export function isElectric(v: Vehicle): boolean {
++  const s = `${v.engine} ${v.trim}`.toLowerCase();
++  if (/\bhybrid\b|\bphev\b|plug-in hybrid/.test(s)) return false;
++  return /\belectric\b|\bbev\b|\bkwh\b|\bev\b|dual motor|single motor/.test(s);
++}
++
++export function isDiesel(v: Vehicle): boolean {
++  return /diesel|duramax|powerstroke|power stroke|ecodiesel|cummins|tdi/i.test(v.engine);
++}
++
++/** True when there is no separately serviceable differential or transfer case. */
++export function isFrontWheelDrive(v: Vehicle): boolean {
++  return /^fwd\b|front-wheel|front wheel/i.test(v.drivetrain.trim());
++}
++
++// --- the catalog ------------------------------------------------------------
++//
++// Mirrors the approved "do cover" list in the coverage-scope project doc.
++// Keep them in step: adding a row here raises the target for every applicable
++// vehicle and will surface as newly-missing work, which is the intended
++// behaviour but should follow a product decision rather than precede one.
++
++export const JOB_CATALOG: JobType[] = [
++  { id: "oil-change", label: "Engine Oil & Filter Change", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
++  { id: "tire-rotation", label: "Tire Rotation", appliesTo: () => true },
++  { id: "brake-pads-front", label: "Front Brake Pads", appliesTo: () => true },
++  { id: "brake-pads-rear", label: "Rear Brake Pads", appliesTo: () => true },
++  { id: "battery", label: "Battery Replacement", appliesTo: () => true },
++  { id: "engine-air-filter", label: "Engine Air Filter", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
++  { id: "cabin-air-filter", label: "Cabin Air Filter", appliesTo: () => true },
++  { id: "wiper-blades", label: "Wiper Blades", appliesTo: () => true },
++  { id: "coolant", label: "Coolant Flush & Fill", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
++  {
++    id: "driveline-fluid",
++    label: "Differential / Transfer Case Fluid",
++    appliesTo: (v) => !isFrontWheelDrive(v),
++    exclusionNote: "FWD vehicles have no separately serviceable differential",
++  },
++  { id: "serpentine-belt", label: "Serpentine Belt", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
++  {
++    id: "spark-plugs",
++    label: "Spark Plugs",
++    appliesTo: (v) => !isElectric(v) && !isDiesel(v),
++    exclusionNote: "Diesels and EVs have no spark plugs",
++  },
++  { id: "fluid-checks", label: "Fluid Checks & Top-Offs", appliesTo: () => true },
++  { id: "fuse-bulb", label: "Fuse & Bulb Replacement", appliesTo: () => true },
++  { id: "pcv-valve", label: "PCV Valve", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
++  { id: "o2-sensor", label: "Oxygen Sensor", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
++  { id: "key-fob-battery", label: "Key Fob Battery", appliesTo: () => true },
++];
++
++export const JOB_LABELS: Record<JobTypeId, string> = JOB_CATALOG.reduce(
++  (acc, j) => ({ ...acc, [j.id]: j.label }),
++  {} as Record<JobTypeId, string>
++);
++
++// --- per-vehicle ------------------------------------------------------------
++
++export interface VehicleCoverage {
++  vehicle: Vehicle;
++  label: string;
++  /** Jobs that apply to this vehicle. */
++  target: number;
++  /** Applicable jobs that have a guide. */
++  done: number;
++  remaining: number;
++  /** 0-100, rounded. 100 only when remaining is genuinely 0. */
++  pct: number;
++  status: CoverageStatus;
++  built: { job: JobType; guide: RepairGuide }[];
++  missing: JobType[];
++  /** Jobs skipped for this vehicle, with the reason. Not counted anywhere. */
++  notApplicable: JobType[];
++  freeGuides: number;
++  premiumGuides: number;
++}
++
++export function getVehicleCoverage(vehicle: Vehicle, guides: RepairGuide[]): VehicleCoverage {
++  const mine = guides.filter((g) => g.vehicleId === vehicle.id);
++  const byJob = new Map<string, RepairGuide>();
++  for (const g of mine) if (g.jobType) byJob.set(g.jobType, g);
++
++  const applicable = JOB_CATALOG.filter((j) => j.appliesTo(vehicle));
++  const notApplicable = JOB_CATALOG.filter((j) => !j.appliesTo(vehicle));
++
++  const built: { job: JobType; guide: RepairGuide }[] = [];
++  const missing: JobType[] = [];
++  for (const job of applicable) {
++    const g = byJob.get(job.id);
++    if (g) built.push({ job, guide: g });
++    else missing.push(job);
++  }
++
++  const target = applicable.length;
++  const done = built.length;
++  const remaining = target - done;
++
++  return {
++    vehicle,
++    label: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
++    target,
++    done,
++    remaining,
++    pct: target === 0 ? 0 : Math.round((done / target) * 100),
++    status: remaining === 0 ? "complete" : done === 0 ? "not-started" : "in-progress",
++    built,
++    missing,
++    notApplicable,
++    freeGuides: mine.filter((g) => g.tier === "free").length,
++    premiumGuides: mine.filter((g) => g.tier === "premium").length,
++  };
++}
++
++export function listCoverage(): VehicleCoverage[] {
++  const guides = allRepairs();
++  return listVehicles().map((v) => getVehicleCoverage(v, guides));
++}
++
++// --- overall ----------------------------------------------------------------
++
++export interface CoverageSummary {
++  vehicles: number;
++  /** Sum of every vehicle's applicable-job count. */
++  targetGuides: number;
++  builtGuides: number;
++  remainingGuides: number;
++  pct: number;
++  vehiclesComplete: number;
++  vehiclesInProgress: number;
++  vehiclesNotStarted: number;
++  /** Guides in the data file with no jobType -- they count toward nothing. */
++  unclassifiedGuides: RepairGuide[];
++  /** Which job is missing on the most vehicles. The highest-leverage next build. */
++  biggestGap: { job: JobType; missingOn: number } | null;
++}
++
++export function getCoverageSummary(rows: VehicleCoverage[] = listCoverage()): CoverageSummary {
++  const targetGuides = rows.reduce((n, r) => n + r.target, 0);
++  const builtGuides = rows.reduce((n, r) => n + r.done, 0);
++
++  const missingCounts = new Map<JobTypeId, number>();
++  for (const r of rows) for (const j of r.missing) missingCounts.set(j.id, (missingCounts.get(j.id) ?? 0) + 1);
++
++  let biggestGap: CoverageSummary["biggestGap"] = null;
++  for (const [id, n] of missingCounts) {
++    if (!biggestGap || n > biggestGap.missingOn) {
++      const job = JOB_CATALOG.find((j) => j.id === id);
++      if (job) biggestGap = { job, missingOn: n };
++    }
++  }
++
++  return {
++    vehicles: rows.length,
++    targetGuides,
++    builtGuides,
++    remainingGuides: targetGuides - builtGuides,
++    pct: targetGuides === 0 ? 0 : Math.round((builtGuides / targetGuides) * 100),
++    vehiclesComplete: rows.filter((r) => r.status === "complete").length,
++    vehiclesInProgress: rows.filter((r) => r.status === "in-progress").length,
++    vehiclesNotStarted: rows.filter((r) => r.status === "not-started").length,
++    unclassifiedGuides: allRepairs().filter((g) => !g.jobType),
++    biggestGap,
++  };
++}
++
++// --- filtering --------------------------------------------------------------
++
++export interface CoverageFilters {
++  year?: string;
++  make?: string;
++  model?: string;
++  status?: string;
++  job?: string;
++}
++
++export function applyFilters(rows: VehicleCoverage[], f: CoverageFilters): VehicleCoverage[] {
++  let out = rows;
++  if (f.year) out = out.filter((r) => String(r.vehicle.year) === f.year);
++  if (f.make) out = out.filter((r) => r.vehicle.make === f.make);
++  if (f.model) out = out.filter((r) => r.vehicle.model === f.model);
++  if (f.status && f.status !== "all") out = out.filter((r) => r.status === f.status);
++  // Filtering by job answers "which vehicles still need X" -- the question you
++  // ask right before deciding what to build next.
++  if (f.job && f.job !== "all") out = out.filter((r) => r.missing.some((j) => j.id === f.job));
++  return out;
++}
++
++/**
++ * Options for the filter selects, narrowed by the choices already made so the
++ * dropdowns never offer a combination that returns nothing.
++ */
++export function getFilterOptions(rows: VehicleCoverage[], f: CoverageFilters) {
++  const years = [...new Set(rows.map((r) => r.vehicle.year))].sort((a, b) => b - a);
++
++  const forMakes = f.year ? rows.filter((r) => String(r.vehicle.year) === f.year) : rows;
++  const makes = [...new Set(forMakes.map((r) => r.vehicle.make))].sort();
++
++  const forModels = forMakes.filter((r) => !f.make || r.vehicle.make === f.make);
++  const models = [...new Set(forModels.map((r) => r.vehicle.model))].sort();
++
++  return { years, makes, models };
++}
+diff --git a/src/types/vehicle.ts b/src/types/vehicle.ts
+index db7e3ee..e6cbfb2 100644
+--- a/src/types/vehicle.ts
++++ b/src/types/vehicle.ts
+@@ -59,6 +59,36 @@ export type Difficulty = "Easy" | "Moderate" | "Advanced";
+ // Free/Premium badges so the model is visible before it's wired up.
+ export type ContentTier = "free" | "premium";
+ 
++/**
++ * The service jobs Crankcase Garage covers, as approved in the coverage-scope
++ * doc. This is the vocabulary the coverage report counts against: a vehicle's
++ * target is the subset of these that applies to it, and its progress is how
++ * many of those it actually has a guide for.
++ *
++ * Adding a job here is a product decision, not a code one -- it raises the
++ * target for every applicable vehicle in the catalog and will show up as
++ * newly-missing work on the Coverage tab. Check the coverage-scope doc before
++ * adding one, and set its applicability in src/lib/admin/coverage.ts.
++ */
++export type JobTypeId =
++  | "oil-change"
++  | "tire-rotation"
++  | "engine-air-filter"
++  | "cabin-air-filter"
++  | "wiper-blades"
++  | "battery"
++  | "brake-pads-front"
++  | "brake-pads-rear"
++  | "coolant"
++  | "driveline-fluid"
++  | "serpentine-belt"
++  | "spark-plugs"
++  | "fluid-checks"
++  | "fuse-bulb"
++  | "pcv-valve"
++  | "o2-sensor"
++  | "key-fob-battery";
++
+ export interface RepairGuide {
+   id: string;
+   vehicleId: string;
+@@ -84,6 +114,16 @@ export interface RepairGuide {
+    * if the procedure torques anything at all, this stays unset.
+    */
+   noFasteners?: boolean;
++  /**
++   * Which covered service job this guide satisfies. Drives the Coverage tab.
++   *
++   * Optional so a guide is never rejected for lacking it, but a guide without
++   * one counts toward nothing -- the Coverage report lists unclassified guides
++   * explicitly rather than quietly ignoring them, so the gap stays visible.
++   * Matching on title instead was considered and rejected: a retitled guide
++   * would silently stop counting.
++   */
++  jobType?: JobTypeId;
+ }
+ 
+ export interface Vehicle {
+-- 
+2.43.0
+

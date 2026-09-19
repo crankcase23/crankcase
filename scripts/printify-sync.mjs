@@ -15,11 +15,14 @@
 // What it does:
 // - Fetches every product in the shop (paginated) via the Printify API.
 // - Keeps only products marked `visible: true` in Printify.
-// - Category ("apparel" vs "accessories") is guessed from the product title
-//   (sticker/mug/keychain/etc. -> accessories, everything else -> apparel,
-//   hats included). Printify's "API" store type doesn't expose a tags field
-//   in its editor, so there's nothing to hand-tag; rename the product in
-//   Printify if it lands in the wrong section.
+// - Category ("shirts" | "sweatshirts" | "hoodies" | "hats" | "accessories")
+//   is guessed from the product title: "hoodie" -> hoodies, "sweatshirt"/
+//   "crewneck" -> sweatshirts, "hat"/"cap"/"beanie"/"trucker" -> hats,
+//   "tee"/"t-shirt"/"shirt"/"tank" -> shirts, everything else (mugs,
+//   stickers, keychains, etc.) -> accessories. Printify's "API" store type
+//   doesn't expose a tags field in its editor, so there's nothing to
+//   hand-tag; rename the product in Printify if it lands in the wrong
+//   section, or add a keyword to the matching list below.
 // - Sizes come from a Printify option group named "Size" if the product has
 //   one. This is a simple first pass: it lists every size value Printify has
 //   for the product, it does NOT check per-variant availability, so a
@@ -115,35 +118,31 @@ function stripHtml(html) {
   return text.length > 180 ? `${text.slice(0, 177)}...` : text;
 }
 
-const ACCESSORY_KEYWORDS = [
-  "sticker",
-  "mug",
-  "keychain",
-  "tote",
-  "bag",
-  "magnet",
-  "pin",
-  "poster",
-  "print",
-  "coaster",
-  "phone case",
-  "mousepad",
-  "bottle",
-];
+const VALID_CATEGORIES = ["shirts", "sweatshirts", "hoodies", "hats", "accessories"];
+
+// Checked in this order — "sweatshirt" contains the substring "shirt", so
+// sweatshirts must be matched before the shirt keywords or every sweatshirt
+// would land in "shirts".
+const HOODIE_KEYWORDS = ["hoodie"];
+const SWEATSHIRT_KEYWORDS = ["sweatshirt", "crewneck", "crew neck"];
+const HAT_KEYWORDS = ["hat", "cap", "beanie", "trucker"];
+const SHIRT_KEYWORDS = ["tee", "t-shirt", "shirt", "tank"];
 
 function pickCategory(tags, title) {
   // Printify's "API" store type doesn't expose a product tags field in its
   // editor UI, so tags will normally be empty — this is here in case that
   // ever changes, or you tag products some other way via the API directly.
   const lower = (tags ?? []).map((t) => t.toLowerCase());
-  if (lower.includes("accessories")) return "accessories";
-  if (lower.includes("apparel")) return "apparel";
+  const tagMatch = VALID_CATEGORIES.find((c) => lower.includes(c));
+  if (tagMatch) return tagMatch;
 
-  // Practical fallback: guess from the product title. A hat/cap still
-  // counts as apparel here, matching how this site's catalog is organized.
+  // Practical fallback: guess from the product title.
   const t = (title ?? "").toLowerCase();
-  if (ACCESSORY_KEYWORDS.some((k) => t.includes(k))) return "accessories";
-  return "apparel";
+  if (HOODIE_KEYWORDS.some((k) => t.includes(k))) return "hoodies";
+  if (SWEATSHIRT_KEYWORDS.some((k) => t.includes(k))) return "sweatshirts";
+  if (HAT_KEYWORDS.some((k) => t.includes(k))) return "hats";
+  if (SHIRT_KEYWORDS.some((k) => t.includes(k))) return "shirts";
+  return "accessories";
 }
 
 function pickSizes(options) {

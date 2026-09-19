@@ -1,4 +1,4 @@
-export type ProductCategory = "apparel" | "accessories";
+export type ProductCategory = "shirts" | "sweatshirts" | "hoodies" | "hats" | "accessories";
 
 export interface ProductColor {
   // Display name from Printify, e.g. "Black", "Heather Grey".

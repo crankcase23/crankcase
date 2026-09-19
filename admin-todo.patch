@@ -1,0 +1,1608 @@
+From 8f2b80cd8ceb0e533cc887460b3a6f8571f64047 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 18 Sep 2026 19:09:43 -0700
+Subject: [PATCH] Add To-Do tab with user feedback inbox and derived build
+ queue
+
+A tenth admin section, in three parts.
+
+1. FROM THE SITE -- user reports. A "Spot something wrong on this page?"
+   control now sits on every guide and vehicle page, capturing the page,
+   vehicle and guide automatically so a report is actionable without a
+   back-and-forth. On a site whose value is torque specs, a user saying "this
+   number looks wrong" is the highest-signal thing that can happen, and
+   nothing in the app captured it before -- a wrong torque value throws no
+   error and moves no metric, it just quietly makes someone strip a bolt.
+   Reports are triaged new -> triaged -> resolved/wontfix, never deleted, and
+   every status change is written to the audit log.
+
+2. BUILD QUEUE -- the "what's left" list, computed live rather than
+   remembered. Guide coverage gaps, vehicles missing the free hook guide,
+   hand-typed vs sourced specs, Open Labor Project cache health, the demand
+   backlog, open errors, draft content. This is the half that can never go
+   stale: close a gap and the item disappears on its own. It reuses the
+   existing guides/alerts logic rather than duplicating it.
+
+3. YOUR LIST -- a small manual task table for the things no query can infer.
+   Deliberately minimal; a heavyweight task system here would just become
+   another doc that drifts.
+
+Also surfaces untriaged reports as a critical alert on the Command Center,
+above every computed signal.
+
+Security: the public submit endpoint requires a session, caps message length
+server-side, accepts only known kinds, and rate-limits to 5 per account per
+hour counted in the database (an in-process counter would enforce nothing on
+serverless). Admin triage and task routes check todo.manage before touching
+the database. Analytics Admin gets read-only visibility, no triage.
+
+Requires migrations/2026-09-18-todo-and-feedback.sql.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BW5agZgw6hwJhg8nhGEW4T
+---
+ migrations/2026-09-18-todo-and-feedback.sql   |  67 +++
+ src/app/(app)/vehicles/[id]/page.tsx          |   5 +
+ .../vehicles/[id]/repairs/[repairId]/page.tsx |   5 +
+ src/app/admin/layout.tsx                      |   1 +
+ src/app/admin/todo/page.tsx                   | 429 ++++++++++++++++++
+ src/app/api/admin/feedback/route.ts           |  69 +++
+ src/app/api/admin/tasks/route.ts              |  82 ++++
+ src/app/api/feedback/route.ts                 |  77 ++++
+ src/components/FeedbackWidget.tsx             | 179 ++++++++
+ src/db/schema.ts                              |  56 +++
+ src/lib/admin/alerts.ts                       |  20 +-
+ src/lib/admin/rbac.ts                         |  20 +-
+ src/lib/admin/todo.ts                         | 368 +++++++++++++++
+ 13 files changed, 1375 insertions(+), 3 deletions(-)
+ create mode 100644 migrations/2026-09-18-todo-and-feedback.sql
+ create mode 100644 src/app/admin/todo/page.tsx
+ create mode 100644 src/app/api/admin/feedback/route.ts
+ create mode 100644 src/app/api/admin/tasks/route.ts
+ create mode 100644 src/app/api/feedback/route.ts
+ create mode 100644 src/components/FeedbackWidget.tsx
+ create mode 100644 src/lib/admin/todo.ts
+
+diff --git a/migrations/2026-09-18-todo-and-feedback.sql b/migrations/2026-09-18-todo-and-feedback.sql
+new file mode 100644
+index 0000000..7a476da
+--- /dev/null
++++ b/migrations/2026-09-18-todo-and-feedback.sql
+@@ -0,0 +1,67 @@
++-- ===========================================================================
++-- Crankcase Garage -- To-Do tab + user feedback  (SINGLE-PASTE)
++--
++-- Same shape as the command-center migration: everything is wrapped in one
++-- DO block, so Vercel's Neon Query panel accepts it in a single paste (that
++-- panel rejects semicolon-separated statements), and the whole thing runs in
++-- one transaction -- if any part fails, ALL of it rolls back.
++--
++-- BEFORE YOU RUN IT:
++--   1. Turn the "Read-only" toggle OFF (top right of the query panel).
++--   2. That's it. Nothing in here needs editing.
++--
++-- Everything is IF NOT EXISTS, so running it twice is harmless.
++-- ===========================================================================
++
++DO $todo$
++BEGIN
++
++  -- -------------------------------------------------------------------------
++  -- feedback -- user-submitted reports from the widget on guide/vehicle pages
++  -- -------------------------------------------------------------------------
++  CREATE TABLE IF NOT EXISTS feedback (
++    id text PRIMARY KEY,
++    user_id text REFERENCES users(id) ON DELETE SET NULL,
++    kind text NOT NULL DEFAULT 'other',
++    message text NOT NULL,
++    path text,
++    vehicle_id text,
++    guide_id text,
++    status text NOT NULL DEFAULT 'new',
++    severity text,
++    admin_note text,
++    resolved_by text,
++    resolved_at timestamp,
++    user_agent text,
++    created_at timestamp NOT NULL DEFAULT now()
++  );
++
++  -- The inbox reads newest-first filtered by status; these two cover it.
++  CREATE INDEX IF NOT EXISTS feedback_status_created_at_idx ON feedback (status, created_at DESC);
++  CREATE INDEX IF NOT EXISTS feedback_created_at_idx ON feedback (created_at DESC);
++  -- "show me everything reported against this guide"
++  CREATE INDEX IF NOT EXISTS feedback_guide_idx ON feedback (guide_id, created_at DESC);
++
++  -- -------------------------------------------------------------------------
++  -- admin_tasks -- the manual half of the To-Do page
++  -- -------------------------------------------------------------------------
++  CREATE TABLE IF NOT EXISTS admin_tasks (
++    id text PRIMARY KEY,
++    title text NOT NULL,
++    detail text,
++    category text NOT NULL DEFAULT 'product',
++    status text NOT NULL DEFAULT 'open',
++    priority integer NOT NULL DEFAULT 100,
++    created_by text,
++    completed_by text,
++    completed_at timestamp,
++    created_at timestamp NOT NULL DEFAULT now(),
++    updated_at timestamp NOT NULL DEFAULT now()
++  );
++
++  CREATE INDEX IF NOT EXISTS admin_tasks_status_priority_idx ON admin_tasks (status, priority, created_at);
++
++  RAISE NOTICE 'To-Do migration complete: feedback + admin_tasks ready.';
++
++END
++$todo$;
+diff --git a/src/app/(app)/vehicles/[id]/page.tsx b/src/app/(app)/vehicles/[id]/page.tsx
+index 65b3bbf..5a29872 100644
+--- a/src/app/(app)/vehicles/[id]/page.tsx
++++ b/src/app/(app)/vehicles/[id]/page.tsx
+@@ -7,6 +7,7 @@ import DataDisclaimer from "@/components/DataDisclaimer";
+ import ServiceHistory from "@/components/ServiceHistory";
+ import MaintenanceReminders from "@/components/MaintenanceReminders";
+ import ViewTracker from "@/components/ViewTracker";
++import FeedbackWidget from "@/components/FeedbackWidget";
+ 
+ export function generateStaticParams() {
+   return listVehicles().map((v) => ({ id: v.id }));
+@@ -122,6 +123,10 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
+         vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+         guideTitles={repairGuides.map((g) => g.title)}
+       />
++
++      {/* Fluid capacities and specs live on this page -- same reason the
++          guides carry one. */}
++      <FeedbackWidget vehicleId={vehicle.id} />
+     </div>
+   );
+ }
+diff --git a/src/app/(app)/vehicles/[id]/repairs/[repairId]/page.tsx b/src/app/(app)/vehicles/[id]/repairs/[repairId]/page.tsx
+index d9533e2..3fb052a 100644
+--- a/src/app/(app)/vehicles/[id]/repairs/[repairId]/page.tsx
++++ b/src/app/(app)/vehicles/[id]/repairs/[repairId]/page.tsx
+@@ -6,6 +6,7 @@ import { ToolList, BulletList, TorqueTable, DifficultyBadge, TierBadge } from "@
+ import RepairStepCard from "@/components/RepairStepCard";
+ import DataDisclaimer from "@/components/DataDisclaimer";
+ import ViewTracker from "@/components/ViewTracker";
++import FeedbackWidget from "@/components/FeedbackWidget";
+ 
+ export function generateStaticParams() {
+   return allRepairs().map((r) => ({ id: r.vehicleId, repairId: r.id }));
+@@ -100,6 +101,10 @@ export default async function RepairGuidePage(
+           ))}
+         </div>
+       </section>
++
++      {/* Torque specs are the one thing on this site that can hurt someone if
++          they're wrong, so the report control lives on every guide. */}
++      <FeedbackWidget vehicleId={vehicle.id} guideId={guide.id} />
+     </div>
+   );
+ }
+diff --git a/src/app/admin/layout.tsx b/src/app/admin/layout.tsx
+index 342f711..f88782b 100644
+--- a/src/app/admin/layout.tsx
++++ b/src/app/admin/layout.tsx
+@@ -18,6 +18,7 @@ import { getAlertCount } from "@/lib/admin/alerts";
+ 
+ const NAV: { href: string; label: string; icon: NavItem["icon"]; permission: Parameters<typeof canShow>[1] }[] = [
+   { href: "/admin", label: "Command Center", icon: "command", permission: "command.view" },
++  { href: "/admin/todo", label: "To-Do", icon: "content", permission: "todo.view" },
+   { href: "/admin/users", label: "Users", icon: "users", permission: "users.view" },
+   { href: "/admin/vehicles", label: "Vehicles", icon: "vehicle", permission: "vehicles.view" },
+   { href: "/admin/guides", label: "Service Guides", icon: "guide", permission: "guides.view" },
+diff --git a/src/app/admin/todo/page.tsx b/src/app/admin/todo/page.tsx
+new file mode 100644
+index 0000000..227da56
+--- /dev/null
++++ b/src/app/admin/todo/page.tsx
+@@ -0,0 +1,429 @@
++import Link from "next/link";
++import { redirect } from "next/navigation";
++import { requireAdmin } from "@/lib/admin/rbac";
++import {
++  listFeedback,
++  listTasks,
++  getBuildQueue,
++  getTodoSummary,
++  FEEDBACK_STATUSES,
++  FEEDBACK_KIND_LABELS,
++  TASK_CATEGORIES,
++  CATEGORY_LABELS,
++  type FeedbackStatus,
++} from "@/lib/admin/todo";
++import { relativeTime, formatDateTime, formatNumber } from "@/lib/admin/format";
++import {
++  PageHeader,
++  Panel,
++  KpiCard,
++  Badge,
++  EmptyState,
++  MicroLabel,
++  AdminButton,
++} from "@/components/admin/ui";
++import { Icon } from "@/components/admin/icons";
++
++export const metadata = { title: "To-Do" };
++
++export default async function AdminTodoPage({
++  searchParams,
++}: {
++  searchParams: Promise<{ inbox?: string; done?: string; ok?: string; error?: string }>;
++}) {
++  const ctx = await requireAdmin("todo.view");
++  if (!ctx) redirect("/admin");
++
++  const params = await searchParams;
++  const inboxFilter = (FEEDBACK_STATUSES as readonly string[]).includes(params.inbox ?? "")
++    ? (params.inbox as FeedbackStatus)
++    : "new";
++  const showDone = params.done === "1";
++  const canManage = ctx.permissions.has("todo.manage");
++
++  const [reports, tasks, signals, summary] = await Promise.all([
++    listFeedback(inboxFilter),
++    listTasks(showDone),
++    getBuildQueue(),
++    getTodoSummary(),
++  ]);
++
++  const severityTone = { critical: "critical", warning: "warning", info: "muted" } as const;
++
++  return (
++    <div>
++      <PageHeader
++        title="TO-DO"
++        description="What users are telling you, what the data says is missing, and whatever else you've parked here."
++      />
++
++      {params.ok && (
++        <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-sm text-emerald-300">
++          {decodeURIComponent(params.ok)}
++        </div>
++      )}
++      {params.error && (
++        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-sm text-rose-300">
++          {decodeURIComponent(params.error)}
++        </div>
++      )}
++
++      <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
++        <KpiCard
++          label="New Reports"
++          value={summary.newFeedback}
++          tone={summary.newFeedback > 0 ? "critical" : "default"}
++          hint="from real users"
++          href="/admin/todo?inbox=new#inbox"
++        />
++        <KpiCard label="In Triage" value={summary.triagedFeedback} href="/admin/todo?inbox=triaged#inbox" />
++        <KpiCard
++          label="Build Signals"
++          value={summary.signals}
++          hint={`${summary.criticalSignals} critical`}
++          tone={summary.criticalSignals > 0 ? "warning" : "default"}
++        />
++        <KpiCard label="Open Tasks" value={summary.openTasks} hint={`${summary.doneTasks} done`} />
++      </div>
++
++      {/* ============================================================ SECTION 1 */}
++      <section id="inbox" className="mb-6 scroll-mt-20">
++        <div className="mb-2 flex items-baseline gap-2">
++          <span className="font-mono text-[10px] text-orange-500">01</span>
++          <h2
++            className="text-lg font-bold tracking-wide text-slate-100"
++            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.04em" }}
++          >
++            FROM THE SITE
++          </h2>
++        </div>
++        <p className="mb-3 max-w-2xl text-xs leading-relaxed text-slate-500">
++          Reports submitted by users from guide and vehicle pages. This outranks everything below it — someone
++          telling you a torque value looks wrong is worth more than any metric on the dashboard.
++        </p>
++
++        <Panel padded={false} accent>
++          <div className="flex flex-wrap items-center gap-1 border-b border-slate-800/80 px-4 py-3">
++            {FEEDBACK_STATUSES.map((s) => (
++              <Link
++                key={s}
++                href={`/admin/todo?inbox=${s}#inbox`}
++                className={`rounded-md px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${
++                  inboxFilter === s
++                    ? "bg-orange-500 text-slate-950"
++                    : "text-slate-400 hover:bg-slate-800 hover:text-slate-100"
++                }`}
++              >
++                {s}
++              </Link>
++            ))}
++          </div>
++
++          {reports.length === 0 ? (
++            <div className="p-4">
++              <EmptyState
++                title={inboxFilter === "new" ? "Waiting for data" : `Nothing ${inboxFilter}`}
++                message={
++                  inboxFilter === "new"
++                    ? "No reports yet. A 'Spot something wrong on this page?' control now sits on every guide and vehicle page — anything users send lands here."
++                    : undefined
++                }
++              />
++            </div>
++          ) : (
++            <ul className="divide-y divide-slate-800/70">
++              {reports.map((r) => (
++                <li key={r.id} className="px-4 py-3">
++                  <div className="flex flex-wrap items-start justify-between gap-3">
++                    <div className="min-w-0 flex-1">
++                      <div className="flex flex-wrap items-center gap-2">
++                        <Badge tone={r.kind === "data" ? "critical" : r.kind === "bug" ? "warning" : "muted"}>
++                          {FEEDBACK_KIND_LABELS[r.kind] ?? r.kind}
++                        </Badge>
++                        {r.severity && <Badge tone="accent">{r.severity}</Badge>}
++                        <span className="font-mono text-[10px] text-slate-600" title={formatDateTime(r.createdAt)}>
++                          {relativeTime(r.createdAt)}
++                        </span>
++                      </div>
++
++                      <p className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed text-slate-200">
++                        {r.message}
++                      </p>
++
++                      <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-[10px] text-slate-600">
++                        {r.userId ? (
++                          <Link href={`/admin/users/${r.userId}`} className="hover:text-orange-400">
++                            {r.userEmail}
++                          </Link>
++                        ) : (
++                          <span>deleted account</span>
++                        )}
++                        {r.guideId && (
++                          <Link href={`/admin/guides/${r.guideId}`} className="hover:text-orange-400">
++                            guide: {r.guideId}
++                          </Link>
++                        )}
++                        {r.path && <span>{r.path}</span>}
++                      </div>
++
++                      {r.adminNote && (
++                        <p className="mt-1.5 rounded border-l-2 border-slate-700 pl-2 text-[11px] text-slate-500">
++                          {r.adminNote}
++                        </p>
++                      )}
++                    </div>
++
++                    {canManage && (
++                      <form action="/api/admin/feedback" method="post" className="flex shrink-0 flex-wrap gap-1.5">
++                        <input type="hidden" name="id" value={r.id} />
++                        {r.status !== "triaged" && (
++                          <AdminButton variant="secondary" name="status" value="triaged">
++                            Triage
++                          </AdminButton>
++                        )}
++                        {r.status !== "resolved" && (
++                          <AdminButton variant="primary" name="status" value="resolved">
++                            Resolve
++                          </AdminButton>
++                        )}
++                        {r.status !== "wontfix" && (
++                          <AdminButton variant="secondary" name="status" value="wontfix">
++                            Won&apos;t fix
++                          </AdminButton>
++                        )}
++                      </form>
++                    )}
++                  </div>
++                </li>
++              ))}
++            </ul>
++          )}
++        </Panel>
++      </section>
++
++      {/* ============================================================ SECTION 2 */}
++      <section id="queue" className="mb-6 scroll-mt-20">
++        <div className="mb-2 flex items-baseline gap-2">
++          <span className="font-mono text-[10px] text-orange-500">02</span>
++          <h2
++            className="text-lg font-bold tracking-wide text-slate-100"
++            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.04em" }}
++          >
++            BUILD QUEUE
++          </h2>
++        </div>
++        <p className="mb-3 max-w-2xl text-xs leading-relaxed text-slate-500">
++          Computed live from the catalog, the database and the Open Labor Project cache — not from a document
++          anyone has to remember to update. Close a gap and the item disappears on its own.
++        </p>
++
++        <Panel padded={false} accent>
++          {signals.length === 0 ? (
++            <div className="p-4">
++              <EmptyState
++                title="Nothing outstanding"
++                message="Every derived check passes: full guide coverage, no unresolved data lookups, no untriaged reports."
++              />
++            </div>
++          ) : (
++            <ul className="divide-y divide-slate-800/70">
++              {signals.map((s) => (
++                <li key={s.id} className="px-4 py-3">
++                  <div className="flex items-start gap-3">
++                    <span
++                      className={`mt-0.5 shrink-0 ${
++                        s.severity === "critical"
++                          ? "text-rose-400"
++                          : s.severity === "warning"
++                            ? "text-amber-400"
++                            : "text-slate-600"
++                      }`}
++                    >
++                      <Icon name="alert" className="h-4 w-4" />
++                    </span>
++                    <div className="min-w-0 flex-1">
++                      <div className="flex flex-wrap items-center gap-2">
++                        <span className="text-sm font-medium text-slate-100">{s.title}</span>
++                        <Badge tone={severityTone[s.severity]}>{s.category}</Badge>
++                        {s.count !== null && (
++                          <span className="font-mono text-[11px] tabular-nums text-slate-500">
++                            {formatNumber(s.count)}
++                          </span>
++                        )}
++                      </div>
++                      <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{s.detail}</p>
++                      {s.href && (
++                        <Link
++                          href={s.href}
++                          className="mt-1 inline-block text-[11px] font-medium text-orange-400 hover:text-orange-300"
++                        >
++                          Go there →
++                        </Link>
++                      )}
++                    </div>
++                  </div>
++                </li>
++              ))}
++            </ul>
++          )}
++        </Panel>
++      </section>
++
++      {/* ============================================================ SECTION 3 */}
++      <section id="tasks" className="scroll-mt-20">
++        <div className="mb-2 flex items-baseline gap-2">
++          <span className="font-mono text-[10px] text-orange-500">03</span>
++          <h2
++            className="text-lg font-bold tracking-wide text-slate-100"
++            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.04em" }}
++          >
++            YOUR LIST
++          </h2>
++        </div>
++        <p className="mb-3 max-w-2xl text-xs leading-relaxed text-slate-500">
++          Anything the queue above can&apos;t infer. Kept small on purpose — the derived half is what stays
++          accurate, this is for the rest.
++        </p>
++
++        <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
++          <Panel padded={false} accent>
++            <div className="flex items-center justify-between border-b border-slate-800/80 px-4 py-3">
++              <MicroLabel>
++                {tasks.length} {showDone ? "total" : "active"}
++              </MicroLabel>
++              <Link
++                href={showDone ? "/admin/todo#tasks" : "/admin/todo?done=1#tasks"}
++                className="text-[11px] text-slate-500 hover:text-orange-300"
++              >
++                {showDone ? "Hide completed" : "Show completed"}
++              </Link>
++            </div>
++
++            {tasks.length === 0 ? (
++              <div className="p-4">
++                <EmptyState title="Nothing here yet" message="Add something using the form beside this." />
++              </div>
++            ) : (
++              <ul className="divide-y divide-slate-800/70">
++                {tasks.map((t) => (
++                  <li key={t.id} className="flex items-start gap-3 px-4 py-2.5">
++                    {canManage ? (
++                      <form action="/api/admin/tasks" method="post" className="mt-0.5 shrink-0">
++                        <input type="hidden" name="id" value={t.id} />
++                        <input type="hidden" name="action" value={t.status === "done" ? "reopen" : "complete"} />
++                        <button
++                          type="submit"
++                          aria-label={t.status === "done" ? "Reopen" : "Mark done"}
++                          className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${
++                            t.status === "done"
++                              ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-400"
++                              : "border-slate-600 text-transparent hover:border-orange-500"
++                          }`}
++                        >
++                          ✓
++                        </button>
++                      </form>
++                    ) : (
++                      <span className="mt-0.5 h-4 w-4 shrink-0 rounded border border-slate-700" />
++                    )}
++
++                    <div className="min-w-0 flex-1">
++                      <div className="flex flex-wrap items-center gap-2">
++                        <span
++                          className={`text-sm ${
++                            t.status === "done" ? "text-slate-600 line-through" : "text-slate-200"
++                          }`}
++                        >
++                          {t.title}
++                        </span>
++                        <Badge tone="muted">{CATEGORY_LABELS[t.category] ?? t.category}</Badge>
++                        {t.status === "doing" && <Badge tone="accent">in progress</Badge>}
++                      </div>
++                      {t.detail && <p className="mt-0.5 text-xs text-slate-500">{t.detail}</p>}
++                    </div>
++
++                    {canManage && t.status !== "done" && (
++                      <form action="/api/admin/tasks" method="post" className="shrink-0">
++                        <input type="hidden" name="id" value={t.id} />
++                        <input type="hidden" name="action" value="delete" />
++                        <button
++                          type="submit"
++                          aria-label="Delete task"
++                          className="text-slate-700 hover:text-rose-400"
++                        >
++                          ✕
++                        </button>
++                      </form>
++                    )}
++                  </li>
++                ))}
++              </ul>
++            )}
++          </Panel>
++
++          {canManage && (
++            <Panel title="Add a task" eyebrow="Manual">
++              <form action="/api/admin/tasks" method="post" className="space-y-3">
++                <input type="hidden" name="action" value="create" />
++                <div>
++                  <label htmlFor="task-title" className="mb-1 block">
++                    <MicroLabel>Title *</MicroLabel>
++                  </label>
++                  <input
++                    id="task-title"
++                    name="title"
++                    required
++                    maxLength={200}
++                    className="w-full rounded-md border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500/50 focus:outline-none"
++                  />
++                </div>
++                <div>
++                  <label htmlFor="task-detail" className="mb-1 block">
++                    <MicroLabel>Detail</MicroLabel>
++                  </label>
++                  <textarea
++                    id="task-detail"
++                    name="detail"
++                    rows={2}
++                    maxLength={1000}
++                    className="w-full rounded-md border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500/50 focus:outline-none"
++                  />
++                </div>
++                <div>
++                  <label htmlFor="task-category" className="mb-1 block">
++                    <MicroLabel>Category</MicroLabel>
++                  </label>
++                  <select
++                    id="task-category"
++                    name="category"
++                    defaultValue="product"
++                    className="w-full rounded-md border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500/50 focus:outline-none"
++                  >
++                    {TASK_CATEGORIES.map((c) => (
++                      <option key={c} value={c}>
++                        {CATEGORY_LABELS[c]}
++                      </option>
++                    ))}
++                  </select>
++                </div>
++                <div>
++                  <label htmlFor="task-priority" className="mb-1 block">
++                    <MicroLabel>Priority (lower sorts first)</MicroLabel>
++                  </label>
++                  <input
++                    id="task-priority"
++                    name="priority"
++                    type="number"
++                    defaultValue={100}
++                    className="w-full rounded-md border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500/50 focus:outline-none"
++                  />
++                </div>
++                <AdminButton variant="primary">Add task</AdminButton>
++              </form>
++            </Panel>
++          )}
++        </div>
++      </section>
++    </div>
++  );
++}
+diff --git a/src/app/api/admin/feedback/route.ts b/src/app/api/admin/feedback/route.ts
+new file mode 100644
+index 0000000..338e5a7
+--- /dev/null
++++ b/src/app/api/admin/feedback/route.ts
+@@ -0,0 +1,69 @@
++import { NextResponse } from "next/server";
++import { eq } from "drizzle-orm";
++import { db } from "@/db";
++import { feedback } from "@/db/schema";
++import { requireAdmin } from "@/lib/admin/rbac";
++import { recordAudit } from "@/lib/admin/audit";
++import { recordError } from "@/lib/errors";
++import { FEEDBACK_STATUSES } from "@/lib/admin/todo";
++
++// Triage a user report: new -> triaged -> resolved / wontfix.
++//
++// Unlike the task routes, this IS audited. A user reported that a torque spec
++// looks wrong and somebody marked it "won't fix" -- that is exactly the kind
++// of decision you want a record of, on a site where a wrong number can hurt
++// someone. Reports are never deleted, only re-statused.
++
++export async function POST(request: Request) {
++  try {
++    const ctx = await requireAdmin("todo.manage");
++    if (!ctx) return NextResponse.json({ error: "Not authorized." }, { status: 403 });
++
++    const formData = await request.formData();
++    const id = String(formData.get("id") ?? "");
++    const status = String(formData.get("status") ?? "");
++    const note = String(formData.get("adminNote") ?? "").trim();
++
++    if (!id || !(FEEDBACK_STATUSES as readonly string[]).includes(status)) {
++      return NextResponse.json({ error: "Missing or invalid fields." }, { status: 400 });
++    }
++
++    const rows = await db
++      .select({ id: feedback.id, kind: feedback.kind, message: feedback.message, status: feedback.status })
++      .from(feedback)
++      .where(eq(feedback.id, id))
++      .limit(1);
++
++    const report = rows[0];
++    if (!report) return NextResponse.json({ error: "No such report." }, { status: 404 });
++
++    const resolving = status === "resolved" || status === "wontfix";
++    await db
++      .update(feedback)
++      .set({
++        status,
++        adminNote: note ? note.slice(0, 1000) : undefined,
++        resolvedAt: resolving ? new Date() : null,
++        resolvedBy: resolving ? ctx.userId : null,
++      })
++      .where(eq(feedback.id, id));
++
++    await recordAudit({
++      ctx,
++      action: "error.resolve",
++      objectType: "feedback",
++      objectId: id,
++      summary: `Marked user report "${report.message.slice(0, 60)}" as ${status}`,
++      metadata: { kind: report.kind, from: report.status, to: status, note: note || null },
++      request,
++    });
++
++    const url = new URL("/admin/todo", request.url);
++    url.searchParams.set("ok", `Report marked ${status}.`);
++    url.hash = "inbox";
++    return NextResponse.redirect(url, 303);
++  } catch (error) {
++    await recordError({ source: "api/admin/feedback", error, path: "/api/admin/feedback" });
++    return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
++  }
++}
+diff --git a/src/app/api/admin/tasks/route.ts b/src/app/api/admin/tasks/route.ts
+new file mode 100644
+index 0000000..cbe52a0
+--- /dev/null
++++ b/src/app/api/admin/tasks/route.ts
+@@ -0,0 +1,82 @@
++import { NextResponse } from "next/server";
++import { eq } from "drizzle-orm";
++import { db } from "@/db";
++import { adminTasks } from "@/db/schema";
++import { requireAdmin } from "@/lib/admin/rbac";
++import { createTask, TASK_CATEGORIES } from "@/lib/admin/todo";
++import { recordError } from "@/lib/errors";
++
++// Manual task CRUD for the To-Do page. Plain form posts, redirect back.
++//
++// Authorization is checked before anything is read from the database, so this
++// can't be used to probe whether a task id exists.
++//
++// Not audited: these are the admin's own scratch notes, not actions against
++// user data. The audit log is for things that affect accounts, access,
++// content and money -- filling it with "ticked off a to-do" would bury the
++// entries that matter.
++
++function back(request: Request, params: Record<string, string> = {}) {
++  const url = new URL("/admin/todo", request.url);
++  for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
++  url.hash = "tasks";
++  return NextResponse.redirect(url, 303);
++}
++
++export async function POST(request: Request) {
++  try {
++    const ctx = await requireAdmin("todo.manage");
++    if (!ctx) return NextResponse.json({ error: "Not authorized." }, { status: 403 });
++
++    const formData = await request.formData();
++    const action = String(formData.get("action") ?? "");
++    const id = String(formData.get("id") ?? "");
++
++    if (action === "create") {
++      const title = String(formData.get("title") ?? "").trim();
++      if (!title) return back(request, { error: "A title is required." });
++
++      const rawCategory = String(formData.get("category") ?? "product");
++      const category = (TASK_CATEGORIES as readonly string[]).includes(rawCategory) ? rawCategory : "product";
++
++      const rawPriority = Number.parseInt(String(formData.get("priority") ?? "100"), 10);
++      const detail = String(formData.get("detail") ?? "").trim();
++
++      await createTask({
++        title: title.slice(0, 200),
++        detail: detail ? detail.slice(0, 1000) : null,
++        category,
++        priority: Number.isFinite(rawPriority) ? rawPriority : 100,
++        createdBy: ctx.userId,
++      });
++
++      return back(request, { ok: "Task added." });
++    }
++
++    if (!id) return back(request, { error: "Missing task." });
++
++    if (action === "complete" || action === "reopen") {
++      const done = action === "complete";
++      await db
++        .update(adminTasks)
++        .set({
++          status: done ? "done" : "open",
++          completedAt: done ? new Date() : null,
++          completedBy: done ? ctx.userId : null,
++          updatedAt: new Date(),
++        })
++        .where(eq(adminTasks.id, id));
++      return back(request, { ok: done ? "Marked done." : "Reopened." });
++    }
++
++    if (action === "delete") {
++      await db.delete(adminTasks).where(eq(adminTasks.id, id));
++      return back(request, { ok: "Task removed." });
++    }
++
++    return back(request, { error: "Unknown action." });
++  } catch (error) {
++    await recordError({ source: "api/admin/tasks", error, path: "/api/admin/tasks" });
++    return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
++  }
++}
+diff --git a/src/app/api/feedback/route.ts b/src/app/api/feedback/route.ts
+new file mode 100644
+index 0000000..de568e1
+--- /dev/null
++++ b/src/app/api/feedback/route.ts
+@@ -0,0 +1,77 @@
++import { NextResponse } from "next/server";
++import { randomUUID } from "node:crypto";
++import { and, eq, gte, count } from "drizzle-orm";
++import { db } from "@/db";
++import { feedback } from "@/db/schema";
++import { requireUserId } from "@/lib/apiAuth";
++import { recordError } from "@/lib/errors";
++
++// User-facing feedback submission, backing FeedbackWidget.
++//
++// Guarded, because this is the one endpoint on the site that lets a visitor
++// write a row:
++//   * requires a signed-in session -- no anonymous writes;
++//   * caps the message length server-side, not just in the textarea;
++//   * only accepts the four known kinds;
++//   * rate-limits to 5 submissions per account per hour, counted in the
++//     database rather than in memory (this runs serverless, so an in-process
++//     counter would reset constantly and enforce nothing).
++//
++// Everything else -- who reported it, which page, which guide -- is derived
++// server-side or from the posted context, never trusted for authorization.
++
++const KINDS = new Set(["bug", "data", "idea", "other"]);
++const MAX_PER_HOUR = 5;
++
++export async function POST(request: Request) {
++  try {
++    const userId = await requireUserId();
++    if (!userId) {
++      return NextResponse.json({ error: "Please sign in to send feedback." }, { status: 401 });
++    }
++
++    const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
++    const message = typeof body?.message === "string" ? body.message.trim() : "";
++
++    if (message.length < 5) {
++      return NextResponse.json({ error: "Tell us a little more." }, { status: 400 });
++    }
++
++    const rawKind = typeof body?.kind === "string" ? body.kind : "other";
++    const kind = KINDS.has(rawKind) ? rawKind : "other";
++
++    const str = (v: unknown, max: number) =>
++      typeof v === "string" && v.trim() ? v.trim().slice(0, max) : null;
++
++    // Rate limit: count this account's submissions in the last hour.
++    const since = new Date(Date.now() - 60 * 60 * 1000);
++    const recent = await db
++      .select({ n: count() })
++      .from(feedback)
++      .where(and(eq(feedback.userId, userId), gte(feedback.createdAt, since)));
++
++    if ((recent[0]?.n ?? 0) >= MAX_PER_HOUR) {
++      return NextResponse.json(
++        { error: "That's a lot of reports in one hour — give it a bit and try again." },
++        { status: 429 }
++      );
++    }
++
++    await db.insert(feedback).values({
++      id: randomUUID(),
++      userId,
++      kind,
++      message: message.slice(0, 2000),
++      path: str(body?.path, 300),
++      vehicleId: str(body?.vehicleId, 120),
++      guideId: str(body?.guideId, 120),
++      status: "new",
++      userAgent: request.headers.get("user-agent")?.slice(0, 300) ?? null,
++    });
++
++    return NextResponse.json({ ok: true });
++  } catch (error) {
++    await recordError({ source: "api/feedback", error, path: "/api/feedback" });
++    return NextResponse.json({ error: "Could not send that right now." }, { status: 500 });
++  }
++}
+diff --git a/src/components/FeedbackWidget.tsx b/src/components/FeedbackWidget.tsx
+new file mode 100644
+index 0000000..661df9e
+--- /dev/null
++++ b/src/components/FeedbackWidget.tsx
+@@ -0,0 +1,179 @@
++"use client";
++
++import { useState } from "react";
++
++// ---------------------------------------------------------------------------
++// "Report a problem" -- the user-facing half of the admin To-Do inbox.
++//
++// Why this exists: on a site whose whole value is torque specs and fluid
++// capacities, the most important thing a user can tell you is "this number
++// looks wrong." Nothing else in the app captures that. A wrong torque value
++// doesn't throw an error, doesn't show up in analytics, and doesn't hurt any
++// metric -- it just quietly makes someone strip a bolt.
++//
++// Design constraints, deliberately:
++//   * Collapsed to a single unobtrusive link until clicked. This sits at the
++//     bottom of guide pages; it must not compete with the content.
++//   * Page context (path, vehicle, guide) is attached automatically, so the
++//     report is actionable without a back-and-forth.
++//   * No email field. They're signed in -- the account is already the contact.
++//   * Fails quietly and says so honestly. A broken feedback form must never
++//     eat what someone took the trouble to type.
++// ---------------------------------------------------------------------------
++
++const KINDS = [
++  { value: "data", label: "A spec or number looks wrong" },
++  { value: "bug", label: "Something on the page is broken" },
++  { value: "idea", label: "Suggestion" },
++  { value: "other", label: "Something else" },
++] as const;
++
++export default function FeedbackWidget({
++  vehicleId,
++  guideId,
++}: {
++  vehicleId?: string;
++  guideId?: string;
++}) {
++  const [open, setOpen] = useState(false);
++  const [kind, setKind] = useState<string>("data");
++  const [message, setMessage] = useState("");
++  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
++
++  async function submit(e: React.FormEvent) {
++    e.preventDefault();
++    const text = message.trim();
++    if (text.length < 5) return;
++
++    setState("sending");
++    try {
++      const res = await fetch("/api/feedback", {
++        method: "POST",
++        headers: { "Content-Type": "application/json" },
++        body: JSON.stringify({
++          kind,
++          message: text,
++          vehicleId,
++          guideId,
++          path: typeof window !== "undefined" ? window.location.pathname : undefined,
++        }),
++      });
++      if (!res.ok) throw new Error("bad status");
++      setState("sent");
++      setMessage("");
++    } catch {
++      setState("error");
++    }
++  }
++
++  if (!open) {
++    return (
++      <div className="mt-10 border-t border-slate-800 pt-5">
++        <button
++          type="button"
++          onClick={() => setOpen(true)}
++          className="text-sm text-slate-500 underline-offset-4 hover:text-orange-400 hover:underline"
++        >
++          Spot something wrong on this page? Tell us
++        </button>
++      </div>
++    );
++  }
++
++  return (
++    <div className="mt-10 rounded-xl border border-slate-800 bg-slate-900/40 p-4">
++      {state === "sent" ? (
++        <div>
++          <p className="text-sm font-medium text-emerald-400">Thanks — that went straight through.</p>
++          <p className="mt-1 text-xs leading-relaxed text-slate-400">
++            A real person reads these. If you flagged a spec, we check it against the source before changing
++            anything.
++          </p>
++          <button
++            type="button"
++            onClick={() => {
++              setState("idle");
++              setOpen(false);
++            }}
++            className="mt-3 text-xs text-slate-500 hover:text-slate-300"
++          >
++            Close
++          </button>
++        </div>
++      ) : (
++        <form onSubmit={submit}>
++          <div className="mb-3 flex items-start justify-between gap-3">
++            <div>
++              <h3 className="text-sm font-semibold text-slate-100">Report a problem</h3>
++              <p className="mt-0.5 text-xs text-slate-500">
++                We&apos;ll automatically include which page you&apos;re on.
++              </p>
++            </div>
++            <button
++              type="button"
++              onClick={() => setOpen(false)}
++              aria-label="Close"
++              className="shrink-0 text-slate-600 hover:text-slate-300"
++            >
++              ✕
++            </button>
++          </div>
++
++          <fieldset className="mb-3">
++            <legend className="sr-only">What kind of problem?</legend>
++            <div className="flex flex-wrap gap-1.5">
++              {KINDS.map((k) => (
++                <button
++                  key={k.value}
++                  type="button"
++                  onClick={() => setKind(k.value)}
++                  aria-pressed={kind === k.value}
++                  className={`rounded-md border px-2.5 py-1 text-xs transition-colors ${
++                    kind === k.value
++                      ? "border-orange-500 bg-orange-500/10 text-orange-300"
++                      : "border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
++                  }`}
++                >
++                  {k.label}
++                </button>
++              ))}
++            </div>
++          </fieldset>
++
++          <label htmlFor="feedback-message" className="sr-only">
++            What&apos;s wrong?
++          </label>
++          <textarea
++            id="feedback-message"
++            value={message}
++            onChange={(e) => setMessage(e.target.value)}
++            rows={3}
++            maxLength={2000}
++            required
++            placeholder={
++              kind === "data"
++                ? "Which value, and what do you think it should be? If you have a source, even better."
++                : "What happened?"
++            }
++            className="w-full rounded-md border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500/50 focus:outline-none"
++          />
++
++          <div className="mt-3 flex items-center gap-3">
++            <button
++              type="submit"
++              disabled={state === "sending" || message.trim().length < 5}
++              className="rounded-md border border-orange-500 bg-orange-500 px-3 py-1.5 text-xs font-medium text-slate-950 transition-colors hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"
++            >
++              {state === "sending" ? "Sending…" : "Send"}
++            </button>
++            {state === "error" && (
++              <span className="text-xs text-rose-400">
++                That didn&apos;t send. Your message is still here — try again in a moment.
++              </span>
++            )}
++          </div>
++        </form>
++      )}
++    </div>
++  );
++}
+diff --git a/src/db/schema.ts b/src/db/schema.ts
+index 183e8e8..6fe0721 100644
+--- a/src/db/schema.ts
++++ b/src/db/schema.ts
+@@ -377,3 +377,59 @@ export const contentBlocks = pgTable("content_blocks", {
+       createdAt: timestamp("created_at").notNull().defaultNow(),
+       updatedAt: timestamp("updated_at").notNull().defaultNow(),
+ });
++
++// ---------------------------------------------------------------------------
++// To-Do / feedback (added 2026-09-18)
++// ---------------------------------------------------------------------------
++
++// User-submitted feedback from the widget on guide and vehicle pages. This is
++// the highest-signal table in the app: a DIY user telling you a torque spec
++// looks wrong matters more than any metric on the dashboard, because being
++// wrong about a torque value is how someone strips a bolt.
++//
++// Captured context (path, vehicle, guide) is filled in automatically from
++// wherever they were, so the report is actionable without a back-and-forth.
++export const feedback = pgTable("feedback", {
++      id: text("id").primaryKey(),
++      userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
++      // "bug" | "data" | "idea" | "other" -- "data" means "this number looks
++      // wrong", which is the category that gets triaged first.
++      kind: text("kind").notNull().default("other"),
++      message: text("message").notNull(),
++      path: text("path"),
++      vehicleId: text("vehicle_id"), // catalog vehicle id, when reported from one
++      guideId: text("guide_id"), // repair guide id, when reported from one
++      // "new" | "triaged" | "resolved" | "wontfix"
++      status: text("status").notNull().default("new"),
++      // Set by an admin during triage, not by the reporter -- users are bad at
++      // rating their own severity and it isn't their job.
++      severity: text("severity"), // "low" | "medium" | "high"
++      adminNote: text("admin_note"),
++      resolvedBy: text("resolved_by"),
++      resolvedAt: timestamp("resolved_at"),
++      userAgent: text("user_agent"),
++      createdAt: timestamp("created_at").notNull().defaultNow(),
++});
++
++// Manual admin to-do items, sitting alongside the derived signals on
++// /admin/todo. Deliberately simple: the derived half of that page is the part
++// that can never go stale, and this half exists for the things no query can
++// infer. Keeping it small is the point -- a heavyweight task system here would
++// just become another doc that drifts.
++export const adminTasks = pgTable("admin_tasks", {
++      id: text("id").primaryKey(),
++      title: text("title").notNull(),
++      detail: text("detail"),
++      // "content" | "data" | "product" | "ops"
++      category: text("category").notNull().default("product"),
++      // "open" | "doing" | "done"
++      status: text("status").notNull().default("open"),
++      // Lower sorts first. Plain integer rather than an enum so reordering
++      // doesn't need a migration.
++      priority: integer("priority").notNull().default(100),
++      createdBy: text("created_by"),
++      completedBy: text("completed_by"),
++      completedAt: timestamp("completed_at"),
++      createdAt: timestamp("created_at").notNull().defaultNow(),
++      updatedAt: timestamp("updated_at").notNull().defaultNow(),
++});
+diff --git a/src/lib/admin/alerts.ts b/src/lib/admin/alerts.ts
+index b709cd6..9ab68f9 100644
+--- a/src/lib/admin/alerts.ts
++++ b/src/lib/admin/alerts.ts
+@@ -6,6 +6,7 @@ import {
+   contentBlocks,
+   garageEntries,
+   vehicleDataCache,
++  feedback,
+ } from "@/db/schema";
+ import { getGuideSummary, listGuideRecords } from "./guides";
+ 
+@@ -40,7 +41,7 @@ export async function getAlerts(): Promise<Alert[]> {
+   const since24h = new Date(Date.now() - DAY_MS);
+   const since7d = new Date(Date.now() - 7 * DAY_MS);
+ 
+-  const [openErrors, recentErrors, failedPayments, draftContent, staleCustomVehicles, failedLookups] =
++  const [openErrors, recentErrors, failedPayments, draftContent, newReports, staleCustomVehicles, failedLookups] =
+     await Promise.all([
+       db.select({ n: count() }).from(errorEvents).where(eq(errorEvents.status, "open")),
+       db
+@@ -52,6 +53,7 @@ export async function getAlerts(): Promise<Alert[]> {
+         .from(paymentEvents)
+         .where(and(eq(paymentEvents.type, "payment_failed"), isNull(paymentEvents.resolvedAt))),
+       db.select({ n: count() }).from(contentBlocks).where(eq(contentBlocks.status, "draft")),
++      db.select({ n: count() }).from(feedback).where(eq(feedback.status, "new")),
+       // Custom garage entries are vehicles we have no curated data for --
+       // every one is a user telling us what to build next.
+       db.select({ n: count() }).from(garageEntries).where(eq(garageEntries.kind, "custom")),
+@@ -62,6 +64,22 @@ export async function getAlerts(): Promise<Alert[]> {
+         .where(and(eq(vehicleDataCache.status, "pending"), gte(vehicleDataCache.attempts, 3))),
+     ]);
+ 
++  // --- user reports ---------------------------------------------------------
++  // Deliberately first: a person taking the trouble to report a wrong torque
++  // spec outranks every computed signal below.
++  const newReportCount = newReports[0]?.n ?? 0;
++  if (newReportCount > 0) {
++    alerts.push({
++      id: "feedback-new",
++      severity: "critical",
++      title: "Untriaged user reports",
++      detail: `${newReportCount} report${newReportCount === 1 ? "" : "s"} submitted from the site and not yet looked at.`,
++      count: newReportCount,
++      href: "/admin/todo#inbox",
++      actionLabel: "Open inbox",
++    });
++  }
++
+   // --- system errors --------------------------------------------------------
+   const openErrorCount = openErrors[0]?.n ?? 0;
+   const recentErrorCount = recentErrors[0]?.n ?? 0;
+diff --git a/src/lib/admin/rbac.ts b/src/lib/admin/rbac.ts
+index 47e6c2e..be83347 100644
+--- a/src/lib/admin/rbac.ts
++++ b/src/lib/admin/rbac.ts
+@@ -59,7 +59,9 @@ export type Permission =
+   | "system.view"
+   | "system.manage"
+   | "audit.view"
+-  | "roles.manage";
++  | "roles.manage"
++  | "todo.view"
++  | "todo.manage";
+ 
+ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
+   // Deliberately the only role with delete, role management and system
+@@ -82,6 +84,8 @@ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
+     "system.manage",
+     "audit.view",
+     "roles.manage",
++    "todo.view",
++    "todo.manage",
+   ],
+   content_admin: [
+     "command.view",
+@@ -91,6 +95,8 @@ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
+     "content.edit",
+     "content.publish",
+     "analytics.view",
++    "todo.view",
++    "todo.manage",
+   ],
+   support_admin: [
+     "command.view",
+@@ -100,8 +106,18 @@ const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
+     "vehicles.view",
+     "guides.view",
+     "content.view",
++    "todo.view",
++    "todo.manage",
++  ],
++  analytics_admin: [
++    "command.view",
++    "vehicles.view",
++    "guides.view",
++    "revenue.view",
++    "analytics.view",
++    "system.view",
++    "todo.view",
+   ],
+-  analytics_admin: ["command.view", "vehicles.view", "guides.view", "revenue.view", "analytics.view", "system.view"],
+ };
+ 
+ export interface AdminContext {
+diff --git a/src/lib/admin/todo.ts b/src/lib/admin/todo.ts
+new file mode 100644
+index 0000000..5750545
+--- /dev/null
++++ b/src/lib/admin/todo.ts
+@@ -0,0 +1,368 @@
++import { randomUUID } from "node:crypto";
++import { sql, eq, and, desc, asc, count, gte } from "drizzle-orm";
++import { db } from "@/db";
++import {
++  feedback,
++  adminTasks,
++  users,
++  errorEvents,
++  garageEntries,
++  vehicleDataCache,
++  contentBlocks,
++} from "@/db/schema";
++import { getGuideSummary, listGuideRecords } from "./guides";
++import { listVehicles } from "@/lib/data";
++
++// ---------------------------------------------------------------------------
++// The To-Do page has two halves, and the split is the whole design.
++//
++// DERIVED (this file's `getBuildQueue`): computed from live data every time
++// the page loads. Guide coverage, sourced-vs-hand-typed specs, Open Labor
++// Project cache health, demand backlog. This half can never go stale and
++// never needs maintaining -- which is exactly the failure mode of the process
++// docs it replaces. If a gap gets closed, the item disappears on its own.
++//
++// MANUAL (`listTasks`): a small task table for the things no query can infer.
++// Kept deliberately minimal. A heavyweight task system here would just become
++// another thing that drifts out of date.
++//
++// The inbox above both of them is user feedback plus captured errors -- real
++// reports from real people, which outrank anything either half computes.
++// ---------------------------------------------------------------------------
++
++// --- inbox ------------------------------------------------------------------
++
++export const FEEDBACK_STATUSES = ["new", "triaged", "resolved", "wontfix"] as const;
++export type FeedbackStatus = (typeof FEEDBACK_STATUSES)[number];
++
++export const FEEDBACK_KIND_LABELS: Record<string, string> = {
++  data: "Spec looks wrong",
++  bug: "Broken page",
++  idea: "Suggestion",
++  other: "Other",
++};
++
++export interface FeedbackRow {
++  id: string;
++  kind: string;
++  message: string;
++  path: string | null;
++  vehicleId: string | null;
++  guideId: string | null;
++  status: string;
++  severity: string | null;
++  adminNote: string | null;
++  createdAt: Date;
++  userId: string | null;
++  userEmail: string | null;
++}
++
++export async function listFeedback(status?: FeedbackStatus, limit = 50): Promise<FeedbackRow[]> {
++  return db
++    .select({
++      id: feedback.id,
++      kind: feedback.kind,
++      message: feedback.message,
++      path: feedback.path,
++      vehicleId: feedback.vehicleId,
++      guideId: feedback.guideId,
++      status: feedback.status,
++      severity: feedback.severity,
++      adminNote: feedback.adminNote,
++      createdAt: feedback.createdAt,
++      userId: feedback.userId,
++      userEmail: users.email,
++    })
++    .from(feedback)
++    .leftJoin(users, eq(users.id, feedback.userId))
++    .where(status ? eq(feedback.status, status) : undefined)
++    .orderBy(desc(feedback.createdAt))
++    .limit(limit);
++}
++
++export async function getFeedbackCounts(): Promise<Record<string, number>> {
++  const rows = await db.select({ status: feedback.status, n: count() }).from(feedback).groupBy(feedback.status);
++  const out: Record<string, number> = { new: 0, triaged: 0, resolved: 0, wontfix: 0 };
++  for (const r of rows) out[r.status] = r.n;
++  return out;
++}
++
++// --- manual tasks -----------------------------------------------------------
++
++export const TASK_CATEGORIES = ["content", "data", "product", "ops"] as const;
++export type TaskCategory = (typeof TASK_CATEGORIES)[number];
++export const TASK_STATUSES = ["open", "doing", "done"] as const;
++
++export const CATEGORY_LABELS: Record<string, string> = {
++  content: "Content",
++  data: "Data",
++  product: "Product",
++  ops: "Ops",
++};
++
++export async function listTasks(includeDone = false) {
++  return db
++    .select()
++    .from(adminTasks)
++    .where(includeDone ? undefined : sql`${adminTasks.status} <> 'done'`)
++    .orderBy(asc(adminTasks.status), asc(adminTasks.priority), asc(adminTasks.createdAt));
++}
++
++export async function createTask(input: {
++  title: string;
++  detail?: string | null;
++  category: string;
++  priority: number;
++  createdBy: string;
++}) {
++  const id = randomUUID();
++  await db.insert(adminTasks).values({
++    id,
++    title: input.title,
++    detail: input.detail ?? null,
++    category: input.category,
++    priority: input.priority,
++    createdBy: input.createdBy,
++  });
++  return id;
++}
++
++// --- derived build queue ----------------------------------------------------
++
++export type SignalSeverity = "critical" | "warning" | "info";
++
++export interface BuildSignal {
++  id: string;
++  severity: SignalSeverity;
++  category: string;
++  title: string;
++  detail: string;
++  /** The number that makes it concrete. Null when the signal is a yes/no. */
++  count: number | null;
++  href?: string;
++}
++
++/**
++ * Everything on the "what's left" list that can be computed rather than
++ * remembered. Each signal states the data behind it so it can be checked.
++ */
++export async function getBuildQueue(): Promise<BuildSignal[]> {
++  const signals: BuildSignal[] = [];
++  const summary = getGuideSummary();
++  const vehicles = listVehicles();
++
++  const [cacheRows, customDemand, openErrors, draftContent, newFeedback] = await Promise.all([
++    db
++      .select({ status: vehicleDataCache.status, n: count() })
++      .from(vehicleDataCache)
++      .groupBy(vehicleDataCache.status),
++    db
++      .select({
++        label: sql<string>`nullif(trim(concat_ws(' ', ${garageEntries.year}, ${garageEntries.make}, ${garageEntries.model})), '')`,
++        n: sql<number>`count(*)::int`,
++      })
++      .from(garageEntries)
++      .where(eq(garageEntries.kind, "custom"))
++      .groupBy(sql`nullif(trim(concat_ws(' ', ${garageEntries.year}, ${garageEntries.make}, ${garageEntries.model})), '')`)
++      .orderBy(sql`count(*) desc`)
++      .limit(5),
++    db.select({ n: count() }).from(errorEvents).where(eq(errorEvents.status, "open")),
++    db.select({ n: count() }).from(contentBlocks).where(eq(contentBlocks.status, "draft")),
++    db.select({ n: count() }).from(feedback).where(eq(feedback.status, "new")),
++  ]);
++
++  // --- guide coverage -------------------------------------------------------
++  if (summary.vehiclesWithoutFreeGuide.length > 0) {
++    signals.push({
++      id: "no-free-guide",
++      severity: "critical",
++      category: "Content",
++      title: "Vehicles with no free guide",
++      detail: `The freemium hook depends on every vehicle having one free guide. Missing on: ${summary.vehiclesWithoutFreeGuide
++        .map((v) => `${v.year} ${v.make} ${v.model}`)
++        .join(", ")}.`,
++      count: summary.vehiclesWithoutFreeGuide.length,
++      href: "/admin/guides#coverage",
++    });
++  }
++
++  if (summary.vehiclesWithoutGuides.length > 0) {
++    signals.push({
++      id: "no-guides",
++      severity: "warning",
++      category: "Content",
++      title: "Catalog vehicles with no guides at all",
++      detail: `Listed with specs but nothing to repair: ${summary.vehiclesWithoutGuides
++        .map((v) => `${v.year} ${v.make} ${v.model}`)
++        .join(", ")}.`,
++      count: summary.vehiclesWithoutGuides.length,
++      href: "/admin/guides#coverage",
++    });
++  }
++
++  if (summary.incomplete > 0) {
++    const worst = listGuideRecords()
++      .filter((r) => r.requiredMissing > 0)
++      .sort((a, b) => b.requiredMissing - a.requiredMissing)
++      .slice(0, 3)
++      .map((r) => r.guide.title);
++    signals.push({
++      id: "incomplete-guides",
++      severity: "warning",
++      category: "Content",
++      title: "Live guides failing the publish checklist",
++      detail: `${summary.incomplete} of ${summary.total} guides are missing something required — worst: ${worst.join(", ")}.`,
++      count: summary.incomplete,
++      href: "/admin/guides?filter=incomplete",
++    });
++  }
++
++  // --- data provenance ------------------------------------------------------
++  const handTypedVehicles = vehicles.filter(
++    (v) => v.fluids.length > 0 && !v.fluids.some((f) => f.provenance?.source === "open-labor-project")
++  );
++  if (handTypedVehicles.length > 0) {
++    signals.push({
++      id: "hand-typed-fluids",
++      severity: "warning",
++      category: "Data",
++      title: "Vehicles with no sourced fluid data",
++      detail: `Every fluid figure is hand-typed on: ${handTypedVehicles
++        .map((v) => `${v.year} ${v.make} ${v.model}`)
++        .join(", ")}. Backfill from Open Labor Project to get real provenance.`,
++      count: handTypedVehicles.length,
++      href: "/admin/vehicles",
++    });
++  }
++
++  const sourcedPct =
++    summary.totalTorqueSpecs === 0
++      ? 0
++      : Math.round((summary.realDataSpecs / summary.totalTorqueSpecs) * 100);
++  if (summary.totalTorqueSpecs > 0 && sourcedPct < 100) {
++    signals.push({
++      id: "torque-provenance",
++      severity: sourcedPct < 50 ? "warning" : "info",
++      category: "Data",
++      title: "Torque specs still hand-typed",
++      detail: `${summary.realDataSpecs} of ${summary.totalTorqueSpecs} torque values are backed by sourced data (${sourcedPct}%). The rest are hand-typed reference figures.`,
++      count: summary.totalTorqueSpecs - summary.realDataSpecs,
++      href: "/admin/guides",
++    });
++  }
++
++  // --- Open Labor Project cache --------------------------------------------
++  const cache: Record<string, number> = {};
++  for (const r of cacheRows) cache[r.status] = r.n;
++  const pending = cache.pending ?? 0;
++  const notFound = cache.not_found ?? 0;
++  const ok = cache.ok ?? 0;
++
++  if (pending > 0) {
++    signals.push({
++      id: "olp-pending",
++      severity: "warning",
++      category: "Data",
++      title: "Vehicle data lookups unresolved",
++      detail: `${pending} pending, ${ok} resolved, ${notFound} with no upstream data. Pending usually means the shared daily quota was tapped out — they retry safely.`,
++      count: pending,
++      href: "/admin/system#integrations",
++    });
++  } else if (ok + notFound === 0) {
++    signals.push({
++      id: "olp-empty",
++      severity: "info",
++      category: "Data",
++      title: "No vehicle data cached yet",
++      detail:
++        "Nothing has been looked up against Open Labor Project. The cache fills as users add vehicles outside the curated catalog.",
++      count: null,
++      href: "/admin/system#integrations",
++    });
++  }
++
++  // --- demand ---------------------------------------------------------------
++  const demand = customDemand.filter((d): d is { label: string; n: number } => Boolean(d.label));
++  if (demand.length > 0) {
++    signals.push({
++      id: "demand-backlog",
++      severity: "info",
++      category: "Content",
++      title: "Vehicles users added that you don't cover",
++      detail: `Most requested: ${demand.map((d) => `${d.label} (${d.n})`).join(", ")}. This is demand, not a guess.`,
++      count: demand.length,
++      href: "/admin/vehicles?kind=custom",
++    });
++  }
++
++  // --- housekeeping ---------------------------------------------------------
++  const errCount = openErrors[0]?.n ?? 0;
++  if (errCount > 0) {
++    signals.push({
++      id: "open-errors",
++      severity: "critical",
++      category: "Ops",
++      title: "Unresolved application errors",
++      detail: `${errCount} error${errCount === 1 ? "" : "s"} captured and not yet dealt with.`,
++      count: errCount,
++      href: "/admin/system#errors",
++    });
++  }
++
++  const drafts = draftContent[0]?.n ?? 0;
++  if (drafts > 0) {
++    signals.push({
++      id: "draft-content",
++      severity: "info",
++      category: "Content",
++      title: "Content sitting in draft",
++      detail: `${drafts} item${drafts === 1 ? "" : "s"} written but not published.`,
++      count: drafts,
++      href: "/admin/content?status=draft",
++    });
++  }
++
++  const unread = newFeedback[0]?.n ?? 0;
++  if (unread > 0) {
++    signals.push({
++      id: "new-feedback",
++      severity: "critical",
++      category: "Users",
++      title: "Untriaged user reports",
++      detail: `${unread} report${unread === 1 ? "" : "s"} from real users waiting in the inbox above.`,
++      count: unread,
++      href: "/admin/todo#inbox",
++    });
++  }
++
++  const order: Record<SignalSeverity, number> = { critical: 0, warning: 1, info: 2 };
++  return signals.sort((a, b) => order[a.severity] - order[b.severity]);
++}
++
++/** Headline numbers for the top of the To-Do page. */
++export async function getTodoSummary() {
++  const [fb, tasks, signals] = await Promise.all([
++    getFeedbackCounts(),
++    db.select({ status: adminTasks.status, n: count() }).from(adminTasks).groupBy(adminTasks.status),
++    getBuildQueue(),
++  ]);
++
++  const taskCounts: Record<string, number> = { open: 0, doing: 0, done: 0 };
++  for (const t of tasks) taskCounts[t.status] = t.n;
++
++  return {
++    newFeedback: fb.new ?? 0,
++    triagedFeedback: fb.triaged ?? 0,
++    openTasks: (taskCounts.open ?? 0) + (taskCounts.doing ?? 0),
++    doneTasks: taskCounts.done ?? 0,
++    signals: signals.length,
++    criticalSignals: signals.filter((s) => s.severity === "critical").length,
++  };
++}
++
++// Kept for a future "reports in the last 7 days" trend on this page.
++export async function countRecentFeedback(days = 7): Promise<number> {
++  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
++  const rows = await db.select({ n: count() }).from(feedback).where(and(gte(feedback.createdAt, since)));
++  return rows[0]?.n ?? 0;
++}
+-- 
+2.43.0
+

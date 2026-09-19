@@ -1,0 +1,767 @@
+From c99bc48c3b217d89c4613b9b0dd34fcf737ab341 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 18 Sep 2026 19:37:30 -0700
+Subject: [PATCH] Content: tire rotation guide for all six catalog vehicles
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Adds the first premium guide to the five vehicles that had nothing to
+sell — Civic, F-150, Silverado, Sierra and Escape were free-guide-only,
+so a per-vehicle unlock would have bought the user nothing.
+
+Written as one universal template applied per vehicle, per the platform
+-template approach in the content scaling strategy. The only per-vehicle
+inputs are drivetrain (which picks the cross pattern), lug nut torque,
+base tire size, jack points and the TPMS reset procedure.
+
+All torque values are the curated lug nut specs already carried in each
+vehicle's specs list — no new numbers were invented, and no Open Labor
+Project quota was spent. The guides correctly fail the admin console's
+"provenance" recommended check, which puts all six on the Build Queue
+for a sourced-data pass later. That is intended, not an oversight.
+
+Tier: premium on all six. The oil change stays the single free hook per
+vehicle, so the free-guide invariant is unchanged (verified: all six
+vehicles still have exactly one free guide). This same template becomes
+the free hook on EVs per claude/ev-free-guide-decision-2026-09-18.md.
+
+Three new original schematic illustrations in the existing house style:
+forward-cross and rearward-cross rotation patterns, and a tread depth
+check. Rasterized and visually verified — the first draft had the cross
+arrows terminating in empty space and was redrawn.
+
+Verified: next build compiles clean; all 13 guides pass every required
+validation check in src/lib/admin/guides.ts; 13 unique guide ids; all 18
+referenced step illustrations exist on disk; eslint unchanged at the same
+4 pre-existing problems (confirmed identical with the change stashed).
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BW5agZgw6hwJhg8nhGEW4T
+---
+ public/steps/tire-inspect.svg      |  20 +
+ public/steps/tire-rotation-fwd.svg |  30 ++
+ public/steps/tire-rotation-rwd.svg |  30 ++
+ src/data/repairs.ts                | 605 +++++++++++++++++++++++++++++
+ 4 files changed, 685 insertions(+)
+ create mode 100644 public/steps/tire-inspect.svg
+ create mode 100644 public/steps/tire-rotation-fwd.svg
+ create mode 100644 public/steps/tire-rotation-rwd.svg
+
+diff --git a/public/steps/tire-inspect.svg b/public/steps/tire-inspect.svg
+new file mode 100644
+index 0000000..855efac
+--- /dev/null
++++ b/public/steps/tire-inspect.svg
+@@ -0,0 +1,20 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
++  <rect x="0" y="0" width="240" height="200" rx="16" fill="#0f172a"/>
++  <rect x="10" y="10" width="220" height="180" rx="12" fill="#1e293b"/>
++
++  <g stroke="#94a3b8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
++    <path d="M58 58 h124 a10 10 0 0 1 10 10 v64 a10 10 0 0 1 -10 10 h-124 a10 10 0 0 1 -10 -10 v-64 a10 10 0 0 1 10 -10 z"/>
++    <path d="M76 58 v84"/>
++    <path d="M104 58 v84"/>
++    <path d="M136 58 v84"/>
++    <path d="M164 58 v84"/>
++  </g>
++
++  <g stroke="#f97316" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
++    <path d="M120 96 v34"/>
++    <path d="M112 122 l8 8 l8 -8"/>
++    <path d="M100 96 h40"/>
++  </g>
++
++  <text x="120" y="172" text-anchor="middle" fill="#f97316" font-family="sans-serif" font-size="11" letter-spacing="1">CHECK TREAD DEPTH</text>
++</svg>
+diff --git a/public/steps/tire-rotation-fwd.svg b/public/steps/tire-rotation-fwd.svg
+new file mode 100644
+index 0000000..3a65be5
+--- /dev/null
++++ b/public/steps/tire-rotation-fwd.svg
+@@ -0,0 +1,30 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
++  <rect x="0" y="0" width="240" height="200" rx="16" fill="#0f172a"/>
++  <rect x="10" y="10" width="220" height="180" rx="12" fill="#1e293b"/>
++
++  <text x="120" y="28" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="11" letter-spacing="3">FRONT</text>
++  <path d="M100 33 h40" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
++
++  <g stroke="#94a3b8" stroke-width="4" fill="none" stroke-linejoin="round">
++    <rect x="46" y="44" width="26" height="36" rx="8"/>
++    <rect x="168" y="44" width="26" height="36" rx="8"/>
++    <rect x="46" y="138" width="26" height="36" rx="8"/>
++    <rect x="168" y="138" width="26" height="36" rx="8"/>
++  </g>
++
++  <g stroke="#f97316" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
++    <!-- front tires straight back, same side -->
++    <path d="M30 50 V154"/>
++    <path d="M24 146 l6 8 l6 -8"/>
++    <path d="M210 50 V154"/>
++    <path d="M204 146 l6 8 l6 -8"/>
++    <!-- rear left crosses to front right -->
++    <path d="M52 134 V122 H188 V84"/>
++    <path d="M182 92 l6 -8 l6 8"/>
++    <!-- rear right crosses to front left -->
++    <path d="M174 134 V104 H66 V84"/>
++    <path d="M60 92 l6 -8 l6 8"/>
++  </g>
++
++  <text x="120" y="190" text-anchor="middle" fill="#f97316" font-family="sans-serif" font-size="11" letter-spacing="1">FORWARD CROSS</text>
++</svg>
+diff --git a/public/steps/tire-rotation-rwd.svg b/public/steps/tire-rotation-rwd.svg
+new file mode 100644
+index 0000000..17e1e83
+--- /dev/null
++++ b/public/steps/tire-rotation-rwd.svg
+@@ -0,0 +1,30 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
++  <rect x="0" y="0" width="240" height="200" rx="16" fill="#0f172a"/>
++  <rect x="10" y="10" width="220" height="180" rx="12" fill="#1e293b"/>
++
++  <text x="120" y="28" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="11" letter-spacing="3">FRONT</text>
++  <path d="M100 33 h40" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
++
++  <g stroke="#94a3b8" stroke-width="4" fill="none" stroke-linejoin="round">
++    <rect x="46" y="44" width="26" height="36" rx="8"/>
++    <rect x="168" y="44" width="26" height="36" rx="8"/>
++    <rect x="46" y="138" width="26" height="36" rx="8"/>
++    <rect x="168" y="138" width="26" height="36" rx="8"/>
++  </g>
++
++  <g stroke="#f97316" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
++    <!-- rear tires straight forward, same side -->
++    <path d="M30 168 V64"/>
++    <path d="M24 72 l6 -8 l6 8"/>
++    <path d="M210 168 V64"/>
++    <path d="M204 72 l6 -8 l6 8"/>
++    <!-- front left crosses to rear right -->
++    <path d="M52 84 V104 H188 V134"/>
++    <path d="M182 126 l6 8 l6 -8"/>
++    <!-- front right crosses to rear left -->
++    <path d="M174 84 V122 H66 V134"/>
++    <path d="M60 126 l6 8 l6 -8"/>
++  </g>
++
++  <text x="120" y="190" text-anchor="middle" fill="#f97316" font-family="sans-serif" font-size="11" letter-spacing="1">REARWARD CROSS</text>
++</svg>
+diff --git a/src/data/repairs.ts b/src/data/repairs.ts
+index 07668c9..c22af75 100644
+--- a/src/data/repairs.ts
++++ b/src/data/repairs.ts
+@@ -730,6 +730,611 @@ image: "/steps/generic-cleanup.svg",
+ },
+ ],
+ },
++// ------------------------------------------------- TIRE ROTATION
++// One universal template applied per vehicle. The only vehicle-specific
++// inputs are drivetrain (which decides the cross pattern), lug nut torque,
++// base tire size, jack points and the TPMS reset procedure. Lug torque is
++// curated reference data carried over from each vehicle's specs list.
++{
++id: "jeep-grand-cherokee-tire-rotation",
++vehicleId: "2014-jeep-grand-cherokee-3.6l",
++title: "Tire Rotation",
++summary:
++"Even out tire wear on the WK2 Grand Cherokee by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
++difficulty: "Easy",
++tier: "premium",
++estTime: "45-60 min",
++tools: [
++{ name: "Lug wrench or breaker bar", note: "Long handle makes breaking 130 ft-lb (176 Nm) loose far easier" },
++{ name: "Socket to fit the lug nuts", note: "Use a proper impact/deep socket — an ill-fitting one rounds the nut" },
++{ name: "Torque wrench", note: "Must cover 130 ft-lb (176 Nm)" },
++{ name: "Floor jack" },
++{ name: "4 jack stands", note: "All four wheels come off at once on a cross rotation" },
++{ name: "Wheel chocks" },
++{ name: "Tire pressure gauge" },
++{ name: "Tread depth gauge or a quarter", note: "A quarter works: if the tread does not reach Washington's hairline, you are near 4/32\" and shopping for tires" },
++],
++parts: [
++"None — this is a no-parts service",
++"Optional: replacement valve caps",
++"Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
++],
++safety: [
++"Never get under a vehicle supported only by a jack. Use stands rated for the vehicle's weight, on level concrete.",
++"Break the lug nuts loose while the tires are still on the ground. Trying to crack them with the wheel in the air spins the wheel and can pull the vehicle off the stands.",
++"Do not use an impact gun for final tightening. Impact guns routinely overshoot 130 ft-lb (176 Nm) by a wide margin, which warps rotors and stretches studs.",
++"Re-torque all lug nuts after 50-100 miles. Nuts commonly settle and lose clamp load after a wheel has been off.",
++],
++torqueSpecs: [
++{
++fastener: "Wheel lug nuts",
++value: "130 ft-lb (176 Nm)",
++notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
++},
++],
++steps: [
++{
++number: 1,
++title: "Confirm your tires can actually be cross-rotated",
++instructions:
++"Before anything else, check the sidewalls. If they show a rotation-direction arrow, the tires are directional and must stay on the same side of the vehicle — front-to-back only, never crossed. If the front and rear tires are different sizes (a staggered setup), they cannot be rotated front-to-back at all. Base 245/70R17 tires on this vehicle are normally neither, but aftermarket tires change that, so look.",
++image: "/steps/tire-rotation-rwd.svg",
++warning: "Crossing a directional tire to the other side of the vehicle puts the tread pattern backwards, which hurts wet braking and hydroplaning resistance.",
++},
++{
++number: 2,
++title: "Check and record cold tire pressures",
++instructions:
++"Check all four pressures before you move the vehicle, while the tires are cold, and write them down. Front and rear specs often differ, so you need the starting numbers to set them correctly once the tires have swapped axles. The door-jamb placard has the correct cold pressures.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 3,
++title: "Park, secure, and break the lug nuts loose",
++instructions:
++"Park on level ground, put it in park, set the parking brake, and chock the wheels. With all four tires still on the ground, break each lug nut loose about a half turn using the breaker bar. Do not remove them yet.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 4,
++title: "Raise the vehicle and support all four corners",
++instructions:
++"Lift the vehicle at pinch-weld jack points behind the front wheels and ahead of the rear wheels and set it down on four jack stands so every wheel is off the ground. Push firmly on a corner before you trust it — the vehicle should not rock or shift on the stands.",
++image: "/steps/generic-raise-vehicle.svg",
++warning: "A cross rotation needs all four wheels off at once. Do not try to do it one corner at a time with a single stand.",
++},
++{
++number: 5,
++title: "Remove the wheels and inspect while they are off",
++instructions:
++"Take the lug nuts the rest of the way off and pull each wheel. Set them down flat. This is the best look at the brakes you will get all year — check pad thickness through the caliper and glance at the rotor faces for deep grooves or a lip at the outer edge. Measure tread depth on each tire and note anything uneven: wear on both outer edges means chronic underinflation, wear down the middle means overinflation, and wear on one edge only points at alignment.",
++image: "/steps/tire-inspect.svg",
++},
++{
++number: 6,
++title: "Move each wheel to its new position",
++instructions:
++"This vehicle is RWD (2WD), so use the rearward cross pattern: the two rear tires come straight forward to the same side of the front axle, and the two front tires cross over to the opposite rear corner. Put simply, on a rear- or four-wheel-drive vehicle the rear tires carry the drive wear while the fronts wear from steering and braking, so this pattern swaps those two wear patterns across the axles. Clean any rust or scale off the hub face before a wheel goes back on — debris trapped behind the wheel is a common cause of a wheel that will not seat flat and a vibration that shows up a week later.",
++image: "/steps/tire-rotation-rwd.svg",
++},
++{
++number: 7,
++title: "Hand-thread, snug, and lower the vehicle",
++instructions:
++"Start every lug nut by hand — if a nut does not spin on freely with your fingers, stop and check the thread rather than forcing it with a wrench. Snug them in a star pattern just enough to pull the wheel flat against the hub, then lower the vehicle until the tires are carrying its weight.",
++image: "/steps/generic-lower-vehicle.svg",
++warning: "Cross-threading a lug stud is the single most common way this job goes wrong, and it turns a free service into a hub replacement.",
++},
++{
++number: 8,
++title: "Final torque, set pressures, reset TPMS",
++instructions:
++"With the vehicle's weight on the tires, torque every lug nut to 130 ft-lb (176 Nm) in a star pattern, working up to it in two or three passes. Set the tire pressures to the door-jamb placard values for their new positions. For TPMS: Uptown/dash menu — the WK2 relearns automatically after a few minutes of driving above ~15 mph. Then put a reminder on your phone to re-torque the lug nuts in 50-100 miles.",
++image: "/steps/wheel-torque.svg",
++torque: [{ fastener: "Wheel lug nuts", value: "130 ft-lb (176 Nm)" }],
++},
++],
++},
++{
++id: "civic-tire-rotation",
++vehicleId: "2018-honda-civic-1.5t",
++title: "Tire Rotation",
++summary:
++"Even out tire wear on the 10th-gen Civic by moving all four tires through a forward cross pattern, with a tread and brake inspection while the wheels are off.",
++difficulty: "Easy",
++tier: "premium",
++estTime: "45-60 min",
++tools: [
++{ name: "Lug wrench or breaker bar", note: "Long handle makes breaking 80 ft-lb (108 Nm) loose far easier" },
++{ name: "Socket to fit the lug nuts", note: "Use a proper impact/deep socket — an ill-fitting one rounds the nut" },
++{ name: "Torque wrench", note: "Must cover 80 ft-lb (108 Nm)" },
++{ name: "Floor jack" },
++{ name: "4 jack stands", note: "All four wheels come off at once on a cross rotation" },
++{ name: "Wheel chocks" },
++{ name: "Tire pressure gauge" },
++{ name: "Tread depth gauge or a quarter", note: "A quarter works: if the tread does not reach Washington's hairline, you are near 4/32\" and shopping for tires" },
++],
++parts: [
++"None — this is a no-parts service",
++"Optional: replacement valve caps",
++"Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
++],
++safety: [
++"Never get under a vehicle supported only by a jack. Use stands rated for the vehicle's weight, on level concrete.",
++"Break the lug nuts loose while the tires are still on the ground. Trying to crack them with the wheel in the air spins the wheel and can pull the vehicle off the stands.",
++"Do not use an impact gun for final tightening. Impact guns routinely overshoot 80 ft-lb (108 Nm) by a wide margin, which warps rotors and stretches studs.",
++"Re-torque all lug nuts after 50-100 miles. Nuts commonly settle and lose clamp load after a wheel has been off.",
++],
++torqueSpecs: [
++{
++fastener: "Wheel lug nuts",
++value: "80 ft-lb (108 Nm)",
++notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
++},
++],
++steps: [
++{
++number: 1,
++title: "Confirm your tires can actually be cross-rotated",
++instructions:
++"Before anything else, check the sidewalls. If they show a rotation-direction arrow, the tires are directional and must stay on the same side of the vehicle — front-to-back only, never crossed. If the front and rear tires are different sizes (a staggered setup), they cannot be rotated front-to-back at all. Base 215/55R16 tires on this vehicle are normally neither, but aftermarket tires change that, so look.",
++image: "/steps/tire-rotation-fwd.svg",
++warning: "Crossing a directional tire to the other side of the vehicle puts the tread pattern backwards, which hurts wet braking and hydroplaning resistance.",
++},
++{
++number: 2,
++title: "Check and record cold tire pressures",
++instructions:
++"Check all four pressures before you move the vehicle, while the tires are cold, and write them down. Front and rear specs often differ, so you need the starting numbers to set them correctly once the tires have swapped axles. The door-jamb placard has the correct cold pressures.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 3,
++title: "Park, secure, and break the lug nuts loose",
++instructions:
++"Park on level ground, put it in park, set the parking brake, and chock the wheels. With all four tires still on the ground, break each lug nut loose about a half turn using the breaker bar. Do not remove them yet.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 4,
++title: "Raise the vehicle and support all four corners",
++instructions:
++"Lift the vehicle at the reinforced pinch-weld points marked by notches in the rocker panel and set it down on four jack stands so every wheel is off the ground. Push firmly on a corner before you trust it — the vehicle should not rock or shift on the stands.",
++image: "/steps/generic-raise-vehicle.svg",
++warning: "A cross rotation needs all four wheels off at once. Do not try to do it one corner at a time with a single stand.",
++},
++{
++number: 5,
++title: "Remove the wheels and inspect while they are off",
++instructions:
++"Take the lug nuts the rest of the way off and pull each wheel. Set them down flat. This is the best look at the brakes you will get all year — check pad thickness through the caliper and glance at the rotor faces for deep grooves or a lip at the outer edge. Measure tread depth on each tire and note anything uneven: wear on both outer edges means chronic underinflation, wear down the middle means overinflation, and wear on one edge only points at alignment.",
++image: "/steps/tire-inspect.svg",
++},
++{
++number: 6,
++title: "Move each wheel to its new position",
++instructions:
++"This vehicle is FWD, so use the forward cross pattern: the two front tires come straight back to the same side of the rear axle, and the two rear tires cross over to the opposite front corner. Put simply, the front tires on a front-wheel-drive vehicle do the steering, most of the braking and all of the power delivery, so they wear fastest — this pattern gets them onto the rear axle to even out. Clean any rust or scale off the hub face before a wheel goes back on — debris trapped behind the wheel is a common cause of a wheel that will not seat flat and a vibration that shows up a week later.",
++image: "/steps/tire-rotation-fwd.svg",
++},
++{
++number: 7,
++title: "Hand-thread, snug, and lower the vehicle",
++instructions:
++"Start every lug nut by hand — if a nut does not spin on freely with your fingers, stop and check the thread rather than forcing it with a wrench. Snug them in a star pattern just enough to pull the wheel flat against the hub, then lower the vehicle until the tires are carrying its weight.",
++image: "/steps/generic-lower-vehicle.svg",
++warning: "Cross-threading a lug stud is the single most common way this job goes wrong, and it turns a free service into a hub replacement.",
++},
++{
++number: 8,
++title: "Final torque, set pressures, reset TPMS",
++instructions:
++"With the vehicle's weight on the tires, torque every lug nut to 80 ft-lb (108 Nm) in a star pattern, working up to it in two or three passes. Set the tire pressures to the door-jamb placard values for their new positions. For TPMS: Honda's indirect TPMS must be calibrated manually: Settings > Vehicle > TPMS Calibration > Initialize. Then put a reminder on your phone to re-torque the lug nuts in 50-100 miles.",
++image: "/steps/wheel-torque.svg",
++torque: [{ fastener: "Wheel lug nuts", value: "80 ft-lb (108 Nm)" }],
++},
++],
++},
++{
++id: "f150-tire-rotation",
++vehicleId: "2015-ford-f150-5.0l",
++title: "Tire Rotation",
++summary:
++"Even out tire wear on the 13th-gen F-150 by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
++difficulty: "Easy",
++tier: "premium",
++estTime: "45-60 min",
++tools: [
++{ name: "Lug wrench or breaker bar", note: "Long handle makes breaking 150 ft-lb (203 Nm) loose far easier" },
++{ name: "Socket to fit the lug nuts", note: "Use a proper impact/deep socket — an ill-fitting one rounds the nut" },
++{ name: "Torque wrench", note: "Must cover 150 ft-lb (203 Nm)" },
++{ name: "Floor jack" },
++{ name: "4 jack stands", note: "All four wheels come off at once on a cross rotation" },
++{ name: "Wheel chocks" },
++{ name: "Tire pressure gauge" },
++{ name: "Tread depth gauge or a quarter", note: "A quarter works: if the tread does not reach Washington's hairline, you are near 4/32\" and shopping for tires" },
++],
++parts: [
++"None — this is a no-parts service",
++"Optional: replacement valve caps",
++"Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
++],
++safety: [
++"Never get under a vehicle supported only by a jack. Use stands rated for the vehicle's weight, on level concrete.",
++"Break the lug nuts loose while the tires are still on the ground. Trying to crack them with the wheel in the air spins the wheel and can pull the vehicle off the stands.",
++"Do not use an impact gun for final tightening. Impact guns routinely overshoot 150 ft-lb (203 Nm) by a wide margin, which warps rotors and stretches studs.",
++"Re-torque all lug nuts after 50-100 miles. Nuts commonly settle and lose clamp load after a wheel has been off.",
++],
++torqueSpecs: [
++{
++fastener: "Wheel lug nuts",
++value: "150 ft-lb (203 Nm)",
++notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
++},
++],
++steps: [
++{
++number: 1,
++title: "Confirm your tires can actually be cross-rotated",
++instructions:
++"Before anything else, check the sidewalls. If they show a rotation-direction arrow, the tires are directional and must stay on the same side of the vehicle — front-to-back only, never crossed. If the front and rear tires are different sizes (a staggered setup), they cannot be rotated front-to-back at all. Base 265/70R17 tires on this vehicle are normally neither, but aftermarket tires change that, so look.",
++image: "/steps/tire-rotation-rwd.svg",
++warning: "Crossing a directional tire to the other side of the vehicle puts the tread pattern backwards, which hurts wet braking and hydroplaning resistance.",
++},
++{
++number: 2,
++title: "Check and record cold tire pressures",
++instructions:
++"Check all four pressures before you move the vehicle, while the tires are cold, and write them down. Front and rear specs often differ, so you need the starting numbers to set them correctly once the tires have swapped axles. The door-jamb placard has the correct cold pressures.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 3,
++title: "Park, secure, and break the lug nuts loose",
++instructions:
++"Park on level ground, put it in park, set the parking brake, and chock the wheels. With all four tires still on the ground, break each lug nut loose about a half turn using the breaker bar. Do not remove them yet.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 4,
++title: "Raise the vehicle and support all four corners",
++instructions:
++"Lift the vehicle at the frame rails behind the front wheels and the rear axle tube and set it down on four jack stands so every wheel is off the ground. Push firmly on a corner before you trust it — the vehicle should not rock or shift on the stands.",
++image: "/steps/generic-raise-vehicle.svg",
++warning: "A cross rotation needs all four wheels off at once. Do not try to do it one corner at a time with a single stand.",
++},
++{
++number: 5,
++title: "Remove the wheels and inspect while they are off",
++instructions:
++"Take the lug nuts the rest of the way off and pull each wheel. Set them down flat. This is the best look at the brakes you will get all year — check pad thickness through the caliper and glance at the rotor faces for deep grooves or a lip at the outer edge. Measure tread depth on each tire and note anything uneven: wear on both outer edges means chronic underinflation, wear down the middle means overinflation, and wear on one edge only points at alignment.",
++image: "/steps/tire-inspect.svg",
++},
++{
++number: 6,
++title: "Move each wheel to its new position",
++instructions:
++"This vehicle is 4WD, so use the rearward cross pattern: the two rear tires come straight forward to the same side of the front axle, and the two front tires cross over to the opposite rear corner. Put simply, on a rear- or four-wheel-drive vehicle the rear tires carry the drive wear while the fronts wear from steering and braking, so this pattern swaps those two wear patterns across the axles. Clean any rust or scale off the hub face before a wheel goes back on — debris trapped behind the wheel is a common cause of a wheel that will not seat flat and a vibration that shows up a week later.",
++image: "/steps/tire-rotation-rwd.svg",
++},
++{
++number: 7,
++title: "Hand-thread, snug, and lower the vehicle",
++instructions:
++"Start every lug nut by hand — if a nut does not spin on freely with your fingers, stop and check the thread rather than forcing it with a wrench. Snug them in a star pattern just enough to pull the wheel flat against the hub, then lower the vehicle until the tires are carrying its weight.",
++image: "/steps/generic-lower-vehicle.svg",
++warning: "Cross-threading a lug stud is the single most common way this job goes wrong, and it turns a free service into a hub replacement.",
++},
++{
++number: 8,
++title: "Final torque, set pressures, reset TPMS",
++instructions:
++"With the vehicle's weight on the tires, torque every lug nut to 150 ft-lb (203 Nm) in a star pattern, working up to it in two or three passes. Set the tire pressures to the door-jamb placard values for their new positions. For TPMS: direct TPMS — sensors report their own position, so no reset is needed, but let the truck sit keyed-on for a minute to re-read. Then put a reminder on your phone to re-torque the lug nuts in 50-100 miles.",
++image: "/steps/wheel-torque.svg",
++torque: [{ fastener: "Wheel lug nuts", value: "150 ft-lb (203 Nm)" }],
++},
++],
++},
++{
++id: "silverado-1500-tire-rotation",
++vehicleId: "2020-chevrolet-silverado-1500-5.3l",
++title: "Tire Rotation",
++summary:
++"Even out tire wear on the T1XX Silverado 1500 by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
++difficulty: "Easy",
++tier: "premium",
++estTime: "45-60 min",
++tools: [
++{ name: "Lug wrench or breaker bar", note: "Long handle makes breaking 140 ft-lb (190 Nm) loose far easier" },
++{ name: "Socket to fit the lug nuts", note: "Use a proper impact/deep socket — an ill-fitting one rounds the nut" },
++{ name: "Torque wrench", note: "Must cover 140 ft-lb (190 Nm)" },
++{ name: "Floor jack" },
++{ name: "4 jack stands", note: "All four wheels come off at once on a cross rotation" },
++{ name: "Wheel chocks" },
++{ name: "Tire pressure gauge" },
++{ name: "Tread depth gauge or a quarter", note: "A quarter works: if the tread does not reach Washington's hairline, you are near 4/32\" and shopping for tires" },
++],
++parts: [
++"None — this is a no-parts service",
++"Optional: replacement valve caps",
++"Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
++],
++safety: [
++"Never get under a vehicle supported only by a jack. Use stands rated for the vehicle's weight, on level concrete.",
++"Break the lug nuts loose while the tires are still on the ground. Trying to crack them with the wheel in the air spins the wheel and can pull the vehicle off the stands.",
++"Do not use an impact gun for final tightening. Impact guns routinely overshoot 140 ft-lb (190 Nm) by a wide margin, which warps rotors and stretches studs.",
++"Re-torque all lug nuts after 50-100 miles. Nuts commonly settle and lose clamp load after a wheel has been off.",
++],
++torqueSpecs: [
++{
++fastener: "Wheel lug nuts",
++value: "140 ft-lb (190 Nm)",
++notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
++},
++],
++steps: [
++{
++number: 1,
++title: "Confirm your tires can actually be cross-rotated",
++instructions:
++"Before anything else, check the sidewalls. If they show a rotation-direction arrow, the tires are directional and must stay on the same side of the vehicle — front-to-back only, never crossed. If the front and rear tires are different sizes (a staggered setup), they cannot be rotated front-to-back at all. Base 265/60R18 tires on this vehicle are normally neither, but aftermarket tires change that, so look.",
++image: "/steps/tire-rotation-rwd.svg",
++warning: "Crossing a directional tire to the other side of the vehicle puts the tread pattern backwards, which hurts wet braking and hydroplaning resistance.",
++},
++{
++number: 2,
++title: "Check and record cold tire pressures",
++instructions:
++"Check all four pressures before you move the vehicle, while the tires are cold, and write them down. Front and rear specs often differ, so you need the starting numbers to set them correctly once the tires have swapped axles. The door-jamb placard has the correct cold pressures.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 3,
++title: "Park, secure, and break the lug nuts loose",
++instructions:
++"Park on level ground, put it in park, set the parking brake, and chock the wheels. With all four tires still on the ground, break each lug nut loose about a half turn using the breaker bar. Do not remove them yet.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 4,
++title: "Raise the vehicle and support all four corners",
++instructions:
++"Lift the vehicle at the frame rails behind the front wheels and the rear axle tube and set it down on four jack stands so every wheel is off the ground. Push firmly on a corner before you trust it — the vehicle should not rock or shift on the stands.",
++image: "/steps/generic-raise-vehicle.svg",
++warning: "A cross rotation needs all four wheels off at once. Do not try to do it one corner at a time with a single stand.",
++},
++{
++number: 5,
++title: "Remove the wheels and inspect while they are off",
++instructions:
++"Take the lug nuts the rest of the way off and pull each wheel. Set them down flat. This is the best look at the brakes you will get all year — check pad thickness through the caliper and glance at the rotor faces for deep grooves or a lip at the outer edge. Measure tread depth on each tire and note anything uneven: wear on both outer edges means chronic underinflation, wear down the middle means overinflation, and wear on one edge only points at alignment.",
++image: "/steps/tire-inspect.svg",
++},
++{
++number: 6,
++title: "Move each wheel to its new position",
++instructions:
++"This vehicle is 4WD, so use the rearward cross pattern: the two rear tires come straight forward to the same side of the front axle, and the two front tires cross over to the opposite rear corner. Put simply, on a rear- or four-wheel-drive vehicle the rear tires carry the drive wear while the fronts wear from steering and braking, so this pattern swaps those two wear patterns across the axles. Clean any rust or scale off the hub face before a wheel goes back on — debris trapped behind the wheel is a common cause of a wheel that will not seat flat and a vibration that shows up a week later.",
++image: "/steps/tire-rotation-rwd.svg",
++},
++{
++number: 7,
++title: "Hand-thread, snug, and lower the vehicle",
++instructions:
++"Start every lug nut by hand — if a nut does not spin on freely with your fingers, stop and check the thread rather than forcing it with a wrench. Snug them in a star pattern just enough to pull the wheel flat against the hub, then lower the vehicle until the tires are carrying its weight.",
++image: "/steps/generic-lower-vehicle.svg",
++warning: "Cross-threading a lug stud is the single most common way this job goes wrong, and it turns a free service into a hub replacement.",
++},
++{
++number: 8,
++title: "Final torque, set pressures, reset TPMS",
++instructions:
++"With the vehicle's weight on the tires, torque every lug nut to 140 ft-lb (190 Nm) in a star pattern, working up to it in two or three passes. Set the tire pressures to the door-jamb placard values for their new positions. For TPMS: direct TPMS with position learn — if the DIC shows pressures on the wrong corners, run the relearn procedure from the vehicle settings menu. Then put a reminder on your phone to re-torque the lug nuts in 50-100 miles.",
++image: "/steps/wheel-torque.svg",
++torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
++},
++],
++},
++{
++id: "sierra-1500-tire-rotation",
++vehicleId: "2020-gmc-sierra-1500-5.3l",
++title: "Tire Rotation",
++summary:
++"Even out tire wear on the T1XX Sierra 1500 by moving all four tires through a rearward cross pattern, with a tread and brake inspection while the wheels are off.",
++difficulty: "Easy",
++tier: "premium",
++estTime: "45-60 min",
++tools: [
++{ name: "Lug wrench or breaker bar", note: "Long handle makes breaking 140 ft-lb (190 Nm) loose far easier" },
++{ name: "Socket to fit the lug nuts", note: "Use a proper impact/deep socket — an ill-fitting one rounds the nut" },
++{ name: "Torque wrench", note: "Must cover 140 ft-lb (190 Nm)" },
++{ name: "Floor jack" },
++{ name: "4 jack stands", note: "All four wheels come off at once on a cross rotation" },
++{ name: "Wheel chocks" },
++{ name: "Tire pressure gauge" },
++{ name: "Tread depth gauge or a quarter", note: "A quarter works: if the tread does not reach Washington's hairline, you are near 4/32\" and shopping for tires" },
++],
++parts: [
++"None — this is a no-parts service",
++"Optional: replacement valve caps",
++"Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
++],
++safety: [
++"Never get under a vehicle supported only by a jack. Use stands rated for the vehicle's weight, on level concrete.",
++"Break the lug nuts loose while the tires are still on the ground. Trying to crack them with the wheel in the air spins the wheel and can pull the vehicle off the stands.",
++"Do not use an impact gun for final tightening. Impact guns routinely overshoot 140 ft-lb (190 Nm) by a wide margin, which warps rotors and stretches studs.",
++"Re-torque all lug nuts after 50-100 miles. Nuts commonly settle and lose clamp load after a wheel has been off.",
++],
++torqueSpecs: [
++{
++fastener: "Wheel lug nuts",
++value: "140 ft-lb (190 Nm)",
++notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
++},
++],
++steps: [
++{
++number: 1,
++title: "Confirm your tires can actually be cross-rotated",
++instructions:
++"Before anything else, check the sidewalls. If they show a rotation-direction arrow, the tires are directional and must stay on the same side of the vehicle — front-to-back only, never crossed. If the front and rear tires are different sizes (a staggered setup), they cannot be rotated front-to-back at all. Base 265/60R18 tires on this vehicle are normally neither, but aftermarket tires change that, so look.",
++image: "/steps/tire-rotation-rwd.svg",
++warning: "Crossing a directional tire to the other side of the vehicle puts the tread pattern backwards, which hurts wet braking and hydroplaning resistance.",
++},
++{
++number: 2,
++title: "Check and record cold tire pressures",
++instructions:
++"Check all four pressures before you move the vehicle, while the tires are cold, and write them down. Front and rear specs often differ, so you need the starting numbers to set them correctly once the tires have swapped axles. The door-jamb placard has the correct cold pressures.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 3,
++title: "Park, secure, and break the lug nuts loose",
++instructions:
++"Park on level ground, put it in park, set the parking brake, and chock the wheels. With all four tires still on the ground, break each lug nut loose about a half turn using the breaker bar. Do not remove them yet.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 4,
++title: "Raise the vehicle and support all four corners",
++instructions:
++"Lift the vehicle at the frame rails behind the front wheels and the rear axle tube and set it down on four jack stands so every wheel is off the ground. Push firmly on a corner before you trust it — the vehicle should not rock or shift on the stands.",
++image: "/steps/generic-raise-vehicle.svg",
++warning: "A cross rotation needs all four wheels off at once. Do not try to do it one corner at a time with a single stand.",
++},
++{
++number: 5,
++title: "Remove the wheels and inspect while they are off",
++instructions:
++"Take the lug nuts the rest of the way off and pull each wheel. Set them down flat. This is the best look at the brakes you will get all year — check pad thickness through the caliper and glance at the rotor faces for deep grooves or a lip at the outer edge. Measure tread depth on each tire and note anything uneven: wear on both outer edges means chronic underinflation, wear down the middle means overinflation, and wear on one edge only points at alignment.",
++image: "/steps/tire-inspect.svg",
++},
++{
++number: 6,
++title: "Move each wheel to its new position",
++instructions:
++"This vehicle is 4WD, so use the rearward cross pattern: the two rear tires come straight forward to the same side of the front axle, and the two front tires cross over to the opposite rear corner. Put simply, on a rear- or four-wheel-drive vehicle the rear tires carry the drive wear while the fronts wear from steering and braking, so this pattern swaps those two wear patterns across the axles. Clean any rust or scale off the hub face before a wheel goes back on — debris trapped behind the wheel is a common cause of a wheel that will not seat flat and a vibration that shows up a week later.",
++image: "/steps/tire-rotation-rwd.svg",
++},
++{
++number: 7,
++title: "Hand-thread, snug, and lower the vehicle",
++instructions:
++"Start every lug nut by hand — if a nut does not spin on freely with your fingers, stop and check the thread rather than forcing it with a wrench. Snug them in a star pattern just enough to pull the wheel flat against the hub, then lower the vehicle until the tires are carrying its weight.",
++image: "/steps/generic-lower-vehicle.svg",
++warning: "Cross-threading a lug stud is the single most common way this job goes wrong, and it turns a free service into a hub replacement.",
++},
++{
++number: 8,
++title: "Final torque, set pressures, reset TPMS",
++instructions:
++"With the vehicle's weight on the tires, torque every lug nut to 140 ft-lb (190 Nm) in a star pattern, working up to it in two or three passes. Set the tire pressures to the door-jamb placard values for their new positions. For TPMS: direct TPMS with position learn — if the DIC shows pressures on the wrong corners, run the relearn procedure from the vehicle settings menu. Then put a reminder on your phone to re-torque the lug nuts in 50-100 miles.",
++image: "/steps/wheel-torque.svg",
++torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
++},
++],
++},
++{
++id: "ford-escape-tire-rotation",
++vehicleId: "2021-ford-escape-1.5l",
++title: "Tire Rotation",
++summary:
++"Even out tire wear on the 2020+ Escape by moving all four tires through a forward cross pattern, with a tread and brake inspection while the wheels are off.",
++difficulty: "Easy",
++tier: "premium",
++estTime: "45-60 min",
++tools: [
++{ name: "Lug wrench or breaker bar", note: "Long handle makes breaking 100 ft-lb (136 Nm) loose far easier" },
++{ name: "Socket to fit the lug nuts", note: "Use a proper impact/deep socket — an ill-fitting one rounds the nut" },
++{ name: "Torque wrench", note: "Must cover 100 ft-lb (136 Nm)" },
++{ name: "Floor jack" },
++{ name: "4 jack stands", note: "All four wheels come off at once on a cross rotation" },
++{ name: "Wheel chocks" },
++{ name: "Tire pressure gauge" },
++{ name: "Tread depth gauge or a quarter", note: "A quarter works: if the tread does not reach Washington's hairline, you are near 4/32\" and shopping for tires" },
++],
++parts: [
++"None — this is a no-parts service",
++"Optional: replacement valve caps",
++"Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
++],
++safety: [
++"Never get under a vehicle supported only by a jack. Use stands rated for the vehicle's weight, on level concrete.",
++"Break the lug nuts loose while the tires are still on the ground. Trying to crack them with the wheel in the air spins the wheel and can pull the vehicle off the stands.",
++"Do not use an impact gun for final tightening. Impact guns routinely overshoot 100 ft-lb (136 Nm) by a wide margin, which warps rotors and stretches studs.",
++"Re-torque all lug nuts after 50-100 miles. Nuts commonly settle and lose clamp load after a wheel has been off.",
++],
++torqueSpecs: [
++{
++fastener: "Wheel lug nuts",
++value: "100 ft-lb (136 Nm)",
++notes: "Tighten in a star/criss-cross pattern in two or three passes, not one shot per nut. Final torque with the wheels on the ground.",
++},
++],
++steps: [
++{
++number: 1,
++title: "Confirm your tires can actually be cross-rotated",
++instructions:
++"Before anything else, check the sidewalls. If they show a rotation-direction arrow, the tires are directional and must stay on the same side of the vehicle — front-to-back only, never crossed. If the front and rear tires are different sizes (a staggered setup), they cannot be rotated front-to-back at all. Base 225/60R17 tires on this vehicle are normally neither, but aftermarket tires change that, so look.",
++image: "/steps/tire-rotation-fwd.svg",
++warning: "Crossing a directional tire to the other side of the vehicle puts the tread pattern backwards, which hurts wet braking and hydroplaning resistance.",
++},
++{
++number: 2,
++title: "Check and record cold tire pressures",
++instructions:
++"Check all four pressures before you move the vehicle, while the tires are cold, and write them down. Front and rear specs often differ, so you need the starting numbers to set them correctly once the tires have swapped axles. The door-jamb placard has the correct cold pressures.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 3,
++title: "Park, secure, and break the lug nuts loose",
++instructions:
++"Park on level ground, put it in park, set the parking brake, and chock the wheels. With all four tires still on the ground, break each lug nut loose about a half turn using the breaker bar. Do not remove them yet.",
++image: "/steps/generic-park-secure.svg",
++},
++{
++number: 4,
++title: "Raise the vehicle and support all four corners",
++instructions:
++"Lift the vehicle at the reinforced pinch-weld points marked by triangular notches under the rocker panel and set it down on four jack stands so every wheel is off the ground. Push firmly on a corner before you trust it — the vehicle should not rock or shift on the stands.",
++image: "/steps/generic-raise-vehicle.svg",
++warning: "A cross rotation needs all four wheels off at once. Do not try to do it one corner at a time with a single stand.",
++},
++{
++number: 5,
++title: "Remove the wheels and inspect while they are off",
++instructions:
++"Take the lug nuts the rest of the way off and pull each wheel. Set them down flat. This is the best look at the brakes you will get all year — check pad thickness through the caliper and glance at the rotor faces for deep grooves or a lip at the outer edge. Measure tread depth on each tire and note anything uneven: wear on both outer edges means chronic underinflation, wear down the middle means overinflation, and wear on one edge only points at alignment.",
++image: "/steps/tire-inspect.svg",
++},
++{
++number: 6,
++title: "Move each wheel to its new position",
++instructions:
++"This vehicle is FWD, so use the forward cross pattern: the two front tires come straight back to the same side of the rear axle, and the two rear tires cross over to the opposite front corner. Put simply, the front tires on a front-wheel-drive vehicle do the steering, most of the braking and all of the power delivery, so they wear fastest — this pattern gets them onto the rear axle to even out. Clean any rust or scale off the hub face before a wheel goes back on — debris trapped behind the wheel is a common cause of a wheel that will not seat flat and a vibration that shows up a week later.",
++image: "/steps/tire-rotation-fwd.svg",
++},
++{
++number: 7,
++title: "Hand-thread, snug, and lower the vehicle",
++instructions:
++"Start every lug nut by hand — if a nut does not spin on freely with your fingers, stop and check the thread rather than forcing it with a wrench. Snug them in a star pattern just enough to pull the wheel flat against the hub, then lower the vehicle until the tires are carrying its weight.",
++image: "/steps/generic-lower-vehicle.svg",
++warning: "Cross-threading a lug stud is the single most common way this job goes wrong, and it turns a free service into a hub replacement.",
++},
++{
++number: 8,
++title: "Final torque, set pressures, reset TPMS",
++instructions:
++"With the vehicle's weight on the tires, torque every lug nut to 100 ft-lb (136 Nm) in a star pattern, working up to it in two or three passes. Set the tire pressures to the door-jamb placard values for their new positions. For TPMS: direct TPMS — sensors report their own position, so no reset is needed after a rotation. Then put a reminder on your phone to re-torque the lug nuts in 50-100 miles.",
++image: "/steps/wheel-torque.svg",
++torque: [{ fastener: "Wheel lug nuts", value: "100 ft-lb (136 Nm)" }],
++},
++],
++},
+ ];
+ 
+ export function getRepairsForVehicle(vehicleId: string): RepairGuide[] {
+-- 
+2.43.0
+
