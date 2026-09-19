@@ -3,7 +3,7 @@
 :root {
   --background: #020617;
   --foreground: #f1f5f9;
-  --font-display: "Big Shoulders Display", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Big Shoulders Display", "Arial Narrow", "Liberation Sans Narrow", ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme inline {

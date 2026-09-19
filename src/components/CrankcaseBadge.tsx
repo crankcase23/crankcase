@@ -17,6 +17,16 @@ export default function CrankcaseBadge({ className }: { className?: string }) {
           <polygon points="11,0 5.5,9.5 -5.5,9.5 -11,0 -5.5,-9.5 5.5,-9.5" fill="#0f172a" />
         </g>
       </g>
+      {/*
+        textLength pins the wordmark to a fixed width so it can never run into
+        the GARAGE chip at x=262. Without it, this text is laid out by whatever
+        font actually renders -- and if Big Shoulders Display is slow, blocked,
+        or fails to load, the fallback is far wider and the two overlap. The
+        --font-display also lists condensed fallbacks (see globals.css) so a
+        substitute needs less squeezing and stays closer to the real mark.
+        lengthAdjust="spacingAndGlyphs" keeps the letterforms proportional
+        rather than just squeezing the gaps.
+      */}
       <text
         x={90}
         y={62}
@@ -24,6 +34,8 @@ export default function CrankcaseBadge({ className }: { className?: string }) {
         fontWeight={800}
         fontSize={34}
         letterSpacing={0.5}
+        textLength={162}
+        lengthAdjust="spacingAndGlyphs"
         fill="#f8fafc"
       >
         CRANKCASE
@@ -37,6 +49,8 @@ export default function CrankcaseBadge({ className }: { className?: string }) {
         fontWeight={700}
         fontSize={22}
         letterSpacing={2}
+        textLength={104}
+        lengthAdjust="spacingAndGlyphs"
         fill="#f97316"
       >
         GARAGE

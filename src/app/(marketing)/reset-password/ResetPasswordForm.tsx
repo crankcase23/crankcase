@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
 export default function ResetPasswordForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
   const [password, setPassword] = useState("");

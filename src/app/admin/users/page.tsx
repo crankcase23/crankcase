@@ -36,6 +36,8 @@ export default async function AdminUsersPage({
     sort?: string;
     dir?: string;
     page?: string;
+    ok?: string;
+    error?: string;
   }>;
 }) {
   const ctx = await requireAdmin("users.view");
@@ -76,6 +78,17 @@ export default async function AdminUsersPage({
 
   return (
     <div>
+      {params.ok && (
+        <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-sm text-emerald-300">
+          {decodeURIComponent(params.ok)}
+        </div>
+      )}
+      {params.error && (
+        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-sm text-rose-300">
+          {decodeURIComponent(params.error)}
+        </div>
+      )}
+
       <PageHeader
         title="USERS"
         description="Every account on Crankcase Garage. Search by email or name, then open a profile for the full record."

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useGarage } from "@/lib/garage";
 import ServiceHistory from "@/components/ServiceHistory";
+import ViewTracker from "@/components/ViewTracker";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import { FluidTable } from "@/components/tables";
@@ -35,7 +36,11 @@ export default function CustomVehiclePage() {
   useEffect(() => {
         if (!custom || (!custom.make && !custom.model)) return;
         let cancelled = false;
-        setLookup({ status: "loading" });
+        // No setLookup({status:"loading"}) here on purpose. The initial state
+        // is already "loading", so this was redundant on mount -- and calling
+        // setState synchronously inside an effect is the cascading-render
+        // pattern React warns about (it was the one lint error left in this
+        // file). The fetch below sets the real state when it resolves.
         fetch("/api/vehicle-data/lookup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -86,6 +91,10 @@ export default function CustomVehiclePage() {
   
     return (
           <div className="mx-auto max-w-5xl px-4 py-10">
+                {/* Custom vehicles are exactly the ones in the admin demand
+                    backlog, so their views are the most useful signal we have
+                    about what to build next. Renders nothing. */}
+                <ViewTracker type="vehicle.viewed" objectId={entry!.id} objectType="garage_entry" />
                 <Link href="/garage" className="text-sm text-slate-400 hover:text-slate-200">
                         &larr; Back to garage
                 </Link>
