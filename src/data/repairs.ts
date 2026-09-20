@@ -1931,7 +1931,9 @@ image: "/steps/generic-cleanup.svg",
 // truck, with nothing anywhere on the page to suggest anything is wrong.
 // ---------------------------------------------------------------------------
 
-function matchesFitment(f: GuideFitment, v: Vehicle): boolean {
+// Exported so the service schedules resolve on exactly the same key logic the
+// guides do, rather than a second copy of it drifting out of step.
+export function matchesFitment(f: GuideFitment, v: Vehicle): boolean {
 if (!v.keys) return false;
 if (v.keys[f.on] !== f.key) return false;
 if (f.years && (v.year < f.years[0] || v.year > f.years[1])) return false;
