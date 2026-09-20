@@ -10,7 +10,7 @@ import {
 } from "@/types/vehicle";
 import { vehicles } from "./vehicles";
 import { jeepGrandCherokeeWk2Guides } from "./repairs-jeep-wk2";
-import { silveradoK2xxGuides } from "./repairs-silverado-k2xx";
+import { gmK2xxGuides } from "./repairs-gm-k2xx";
 import { gmT1xxGuides } from "./repairs-gm-t1xx";
 
 // Step images are original schematic illustrations (public/steps/*.svg) —
@@ -1897,7 +1897,7 @@ image: "/steps/generic-cleanup.svg",
 ],
 },
   ...jeepGrandCherokeeWk2Guides,
-...silveradoK2xxGuides,
+...gmK2xxGuides,
 ...gmT1xxGuides,
 ];
 
