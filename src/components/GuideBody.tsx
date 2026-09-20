@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ToolList, BulletList, TorqueTable } from "@/components/tables";
 import StepList from "@/components/StepList";
-import type { RepairGuide } from "@/types/vehicle";
+import type { ResolvedGuide } from "@/types/vehicle";
 
 /**
  * The part of a repair guide that reacts to how the reader's specific vehicle
@@ -24,7 +24,7 @@ import type { RepairGuide } from "@/types/vehicle";
  * Answering a question filters the noise out; it never reveals something that
  * was being withheld.
  */
-export default function GuideBody({ guide }: { guide: RepairGuide }) {
+export default function GuideBody({ guide }: { guide: ResolvedGuide }) {
   const groups = useMemo(() => guide.variants ?? [], [guide.variants]);
   const [picked, setPicked] = useState<Record<string, string>>({});
 
