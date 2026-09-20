@@ -347,7 +347,16 @@ export function milestonesFor(schedule: ServiceSchedule, limit = 12): Milestone[
   for (let m = schedule.gridStep; m <= schedule.gridTo && out.length < limit; m += schedule.gridStep) {
     const normal = schedule.items.filter((i) => dueAt(i.normal, m));
     const severeOnly = schedule.items.filter(
-      (i) => i.severe !== undefined && dueAt(i.severe, m) && !dueAt(i.normal, m),
+      (i) =>
+        i.severe !== undefined &&
+        // A job the manufacturer governs by monitor stays off the mileage grid
+        // even when its severe-service rule IS a mileage. The Jeep's "4,000
+        // miles in dust" is a condition, not a milestone, and rendering it as
+        // one puts engine oil under a mileage heading - the single thing this
+        // file exists to prevent. It is stated in words below the grid instead.
+        i.normal.kind !== "monitor" &&
+        dueAt(i.severe, m) &&
+        !dueAt(i.normal, m),
     );
     if (normal.length > 0 || severeOnly.length > 0) out.push({ miles: m, normal, severeOnly });
   }
