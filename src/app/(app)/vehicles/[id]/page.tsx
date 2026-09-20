@@ -10,6 +10,8 @@ import GuideGroups from "@/components/GuideGroups";
 import ServiceSchedule from "@/components/ServiceSchedule";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
+import { maintenanceItemsFor } from "@/lib/reminders";
+import { getServiceSchedule } from "@/data/service-schedules";
 import { auth } from "@/auth";
 import { listGarageEntries } from "@/lib/garageEntries";
 
@@ -102,7 +104,14 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
       <ServiceSchedule vehicle={vehicle} guides={repairGuides} />
 
-      <MaintenanceReminders vehicleId={vehicle.id} />
+      {/* Reminders run on this vehicle's factory intervals wherever we hold
+          its schedule -- otherwise the panel would contradict the Factory
+          Service Schedule directly above it. */}
+      <MaintenanceReminders
+        vehicleId={vehicle.id}
+        items={maintenanceItemsFor(vehicle)}
+        hasFactorySchedule={getServiceSchedule(vehicle) !== null}
+      />
 
       <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
 

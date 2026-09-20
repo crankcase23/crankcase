@@ -1,7 +1,10 @@
-// Generic maintenance-interval reminders. Deliberately not vehicle-specific
-// (real per-vehicle intervals live in a factory service manual) — these are
-// common rule-of-thumb intervals so a Service History log can tell you
-// roughly when something's due, on any vehicle, guides or not. Matches
+// Maintenance-interval reminders. MAINTENANCE_ITEMS below is the generic
+// rule-of-thumb table, used for any vehicle whose real schedule we do not
+// hold. Where we DO hold one, maintenanceItemsFor() swaps in the
+// manufacturer's own intervals from src/data/service-schedules.ts and drops
+// the rows the manufacturer never scheduled — both the vehicle page and the
+// reminder-email cron go through it, so neither can contradict the Factory
+// Service Schedule the vehicle page prints. Matches
 // against Service History entry titles by keyword, so it works whether the
 // entry came from a curated guide title or the generic job checklist in
 // src/components/ServiceHistory.tsx.

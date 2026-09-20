@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { useServiceHistory } from "@/lib/serviceHistory";
 import { useOdometer } from "@/lib/odometer";
-import { computeReminders, ReminderResult, ReminderStatus } from "@/lib/reminders";
+import {
+  computeReminders,
+  type MaintenanceItem,
+  type ReminderResult,
+  type ReminderStatus,
+} from "@/lib/reminders";
 
 const STATUS_STYLES: Record<ReminderStatus, string> = {
   overdue: "bg-rose-500/15 text-rose-300",
@@ -46,13 +51,26 @@ function statusLabel(r: ReminderResult): string {
   }
 }
 
-export default function MaintenanceReminders({ vehicleId }: { vehicleId: string }) {
+// `items` comes from the server as maintenanceItemsFor(vehicle), so a vehicle
+// whose factory schedule we hold is reminded on the manufacturer's own
+// intervals instead of the generic table. Left undefined (a custom garage
+// vehicle, which has no catalog entry), computeReminders falls back to the
+// generic rule-of-thumb set.
+export default function MaintenanceReminders({
+  vehicleId,
+  items,
+  hasFactorySchedule,
+}: {
+  vehicleId: string;
+  items?: MaintenanceItem[];
+  hasFactorySchedule?: boolean;
+}) {
   const { entries } = useServiceHistory(vehicleId);
   const { odometer, setOdometer } = useOdometer(vehicleId);
   const [odoInput, setOdoInput] = useState("");
   const [showAll, setShowAll] = useState(false);
 
-  const results = computeReminders(entries, odometer)
+  const results = computeReminders(entries, odometer, items)
     .slice()
     .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
 
@@ -75,8 +93,18 @@ export default function MaintenanceReminders({ vehicleId }: { vehicleId: string 
         <h2 className="text-lg font-semibold text-slate-100">Maintenance Reminders</h2>
       </div>
       <p className="mb-4 text-sm text-slate-500">
-        Rule-of-thumb intervals based on your logged Service History — not a
-        substitute for your owner&apos;s manual&apos;s actual schedule.
+        {hasFactorySchedule ? (
+          <>
+            Tracked against your logged Service History. Where the Factory Service
+            Schedule above publishes an interval, these use the manufacturer&apos;s own
+            figure; the rest are rule-of-thumb.
+          </>
+        ) : (
+          <>
+            Rule-of-thumb intervals based on your logged Service History — not a
+            substitute for your owner&apos;s manual&apos;s actual schedule.
+          </>
+        )}
       </p>
 
       <form onSubmit={handleOdoSubmit} className="mb-4 flex flex-wrap items-end gap-3">
