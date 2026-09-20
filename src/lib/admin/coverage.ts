@@ -1,4 +1,4 @@
-import { allRepairs, listVehicles } from "@/lib/data";
+import { allRepairs, listVehicles, getPendingFitment } from "@/lib/data";
 import type { JobTypeId, RepairGuide, Vehicle } from "@/types/vehicle";
 
 // ---------------------------------------------------------------------------
@@ -109,6 +109,23 @@ export const JOB_LABELS: Record<JobTypeId, string> = JOB_CATALOG.reduce(
 
 // --- per-vehicle ------------------------------------------------------------
 
+/**
+ * An applicable job whose PROCEDURE already exists - a shared guide fits this
+ * vehicle on platform, engine or driveline - but whose NUMBERS have not been
+ * verified for it yet, so the guide does not render.
+ *
+ * This is deliberately a subset of missing rather than a third bucket: it is
+ * not done, and it must not move the percentage. What it changes is the size
+ * of the job in front of you. A pending job is an afternoon of table lookups
+ * against two sources. A plain missing job is a guide to research and write.
+ * A planner that cannot tell those apart is not much of a planner.
+ */
+export interface PendingJob {
+  job: JobType;
+  /** The shared guide waiting on this vehicle's figures. */
+  guideId: string;
+}
+
 export interface VehicleCoverage {
   vehicle: Vehicle;
   label: string;
@@ -122,10 +139,20 @@ export interface VehicleCoverage {
   status: CoverageStatus;
   built: { job: JobType; guide: RepairGuide }[];
   missing: JobType[];
+  /** Subset of missing: procedure written, numbers not yet verified. */
+  pending: PendingJob[];
   /** Jobs skipped for this vehicle, with the reason. Not counted anywhere. */
   notApplicable: JobType[];
   freeGuides: number;
   premiumGuides: number;
+}
+
+// getPendingFitment walks every vehicle against every authored guide, so it is
+// resolved once and reused rather than recomputed per vehicle in listCoverage.
+let pendingCache: ReturnType<typeof getPendingFitment> | null = null;
+function pendingFor(vehicleId: string) {
+  if (!pendingCache) pendingCache = getPendingFitment();
+  return pendingCache.filter((p) => p.vehicleId === vehicleId);
 }
 
 export function getVehicleCoverage(vehicle: Vehicle, guides: RepairGuide[]): VehicleCoverage {
@@ -136,12 +163,25 @@ export function getVehicleCoverage(vehicle: Vehicle, guides: RepairGuide[]): Veh
   const applicable = JOB_CATALOG.filter((j) => j.appliesTo(vehicle));
   const notApplicable = JOB_CATALOG.filter((j) => !j.appliesTo(vehicle));
 
+  const pendingByJob = new Map<string, string>();
+  for (const p of pendingFor(vehicle.id)) {
+    if (p.jobType) pendingByJob.set(p.jobType, p.guideId);
+  }
+
   const built: { job: JobType; guide: RepairGuide }[] = [];
   const missing: JobType[] = [];
+  const pending: PendingJob[] = [];
   for (const job of applicable) {
     const g = byJob.get(job.id);
-    if (g) built.push({ job, guide: g });
-    else missing.push(job);
+    if (g) {
+      built.push({ job, guide: g });
+      continue;
+    }
+    // Still missing either way - a pending job is NOT done and must not move
+    // the percentage. It is only cheaper to finish than a blank one.
+    missing.push(job);
+    const guideId = pendingByJob.get(job.id);
+    if (guideId) pending.push({ job, guideId });
   }
 
   const target = applicable.length;
@@ -158,6 +198,7 @@ export function getVehicleCoverage(vehicle: Vehicle, guides: RepairGuide[]): Veh
     status: remaining === 0 ? "complete" : done === 0 ? "not-started" : "in-progress",
     built,
     missing,
+    pending,
     notApplicable,
     freeGuides: mine.filter((g) => g.tier === "free").length,
     premiumGuides: mine.filter((g) => g.tier === "premium").length,

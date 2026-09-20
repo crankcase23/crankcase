@@ -7,8 +7,11 @@ import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
 import GuideGroups from "@/components/GuideGroups";
+import ServiceSchedule from "@/components/ServiceSchedule";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
+import { auth } from "@/auth";
+import { listGarageEntries } from "@/lib/garageEntries";
 
 export function generateStaticParams() {
   return listVehicles().map((v) => ({ id: v.id }));
@@ -33,6 +36,19 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   if (!vehicle) notFound();
 
   const repairGuides = listRepairsForVehicle(vehicle.id);
+
+  // Per-user VIN, surfaced in Vehicle Specs below -- added 2026-09-19
+  // alongside the cab/trim-mismatch fix so a catalog match's real-world
+  // VIN is visible on the page, not just stored. This page is shared
+  // across every user who has this catalog vehicle, so the VIN has to
+  // come from THIS viewer's own garage entry, not the catalog record.
+  const session = await auth();
+  let vin: string | undefined;
+  if (session?.user?.id) {
+      const entries = await listGarageEntries(session.user.id);
+      const entry = entries.find((e) => e.kind === "catalog" && e.id === vehicle.id);
+      if (entry && entry.kind === "catalog") vin = entry.vin;
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -73,8 +89,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
           <TierBadge tier="free" />
         </div>
         <div className="max-w-xl">
-          <SpecTable specs={vehicle.specs} />
-        </div>
+<SpecTable specs={vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs} />        </div>
       </section>
 
       <section>
@@ -84,6 +99,8 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         </div>
         <FluidTable fluids={vehicle.fluids} />
       </section>
+
+      <ServiceSchedule vehicle={vehicle} guides={repairGuides} />
 
       <MaintenanceReminders vehicleId={vehicle.id} />
 

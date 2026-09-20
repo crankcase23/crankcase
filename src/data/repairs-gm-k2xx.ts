@@ -1,19 +1,67 @@
 import { RepairGuide } from "@/types/vehicle";
 
-// Guides for the 2018 Chevrolet Silverado 1500 (K2XX generation, 5.3L EcoTec3
-// L83, 4WD). Kept in its own file rather than appended to src/data/repairs.ts,
-// which is past 130 KB - see the vehicle build playbook.
+// ---------------------------------------------------------------------------
+// GM K2XX 1500 - shared procedures for the 2014-2018 full-size GM trucks
 //
-// SCOPE NOTE: there is deliberately no PCV valve guide here. On the EcoTec3 the
-// PCV function is cast into the valve cover and there is no removable valve, so
-// servicing it means replacing and resealing the cover - the
-// disassemble-and-reseal side of our scope line. The job is excluded for this
-// engine family in src/lib/admin/coverage.ts so it does not read as a gap.
+// Written originally for the 2018 Silverado 1500 5.3L, but written
+// generation-wide rather than year-specific, which is why they re-key cleanly:
+// the front brake guide already states that JD9 is the standard and
+// effectively only 1500 brake package for 2014-2018, and the cabin filter
+// guide already states that the trucks which shipped without one were the
+// 2007-2013 generation.
+//
+// Three different keys are in use here, because a job inherits on whichever
+// one actually governs it:
+//
+//   engine     gm-ecotec3-l83      oil, engine air filter, coolant,
+//                                  serpentine belt, fluid checks, O2 sensor
+//   platform   gm-k2xx-1500        tire rotation, front and rear brakes,
+//                                  battery, cabin filter, wipers, fuse and
+//                                  bulb, key fob
+//   driveline  gm-k2xx-1500-4wd    differential and transfer case
+//
+// That split is the whole point. A 2014 Silverado with the 4.3L LV3 V6 gets
+// every platform-keyed guide and none of the engine-keyed ones, automatically
+// and without anyone having to remember why. A 2WD truck gets no driveline
+// guide. Neither case needs a second copy of anything.
+//
+// What this unlocks: a 2014-2018 Sierra 1500, Tahoe, Suburban, Yukon or
+// Escalade needs NO new procedures. Tag it with these keys in vehicles.ts,
+// then add one figures entry per guide once that vehicle's numbers have
+// actually been verified against two sources. The procedure comes free. The
+// numbers never do - a guide with no figures entry for a vehicle renders
+// nothing for it rather than falling back to this truck's figures.
+//
+// Watch item: the guides deliberately name no bulb part numbers. 2014-2015
+// ran halogen (H11 low, 9005 high, 5202 fog) and the 2016 facelift moved the
+// equipped trims to D3S HID. If bulb numbers are ever added to the fuse and
+// bulb guide, it needs splitting with years: [2014, 2015] and [2016, 2018].
+//
+// HOW THE 2018 SIERRA FIGURES WERE SOURCED - read this before adding another.
+//
+// They were NOT copied across from the Silverado because the trucks look alike.
+// Every figure was researched against Sierra-specific sources first and only
+// then compared: the GMC Sierra 2014-2018 torque table for brakes, lug nuts and
+// driveline plugs, two GM TechLink battery tables, and a Sierra-specific fluid
+// lookup for the capacities. They came back identical to the Silverado, which
+// is the expected answer for a badge twin - but it was the answer, not the
+// assumption.
+//
+// That order mattered. The same pass caught a real error in the T1XX guides,
+// which were printing 22 ft-lb for a spin-on oil filter against GM's own
+// roughly 10 Nm, and it corrected the reason this file gives for rejecting a
+// Group 48 battery. Copying figures across on the strength of a shared platform
+// would have propagated both instead of finding them.
+//
+// So: no shortcut here, and please do not add one. A twin declaration was
+// considered and rejected for exactly this reason - see the fitment doc.
+//
+// See claude/guide-fitment-rules-2026-09-19.md.
+// ---------------------------------------------------------------------------
 
-export const silveradoK2xxGuides: RepairGuide[] = [
-  {
-    id: "silverado-2018-oil-change",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+export const gmK2xxGuides: RepairGuide[] = [
+{
+    id: "gm-k2xx-oil-change",
     title: "Engine Oil & Filter Change",
     jobType: "oil-change",
     summary:
@@ -30,29 +78,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Jack + 2 jack stands or ramps" },
       { name: "Nitrile gloves + eye protection" },
     ],
-    parts: [
-      "8 qt dexos1 0W-20 full synthetic",
-      "ACDelco PF63 spin-on oil filter (or equivalent)",
-      "Drain plug washer if yours is the crush-washer type",
-    ],
+
     safety: [
       "Never work under a vehicle held up by a jack alone - jack stands or ramps, every time.",
       "Hot oil will burn you. Warm the engine so the oil flows, then give it ten minutes before you pull the plug.",
       "Used oil is a hazardous waste. Most auto parts stores take it back free.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Oil drain plug",
-        value: "18 ft-lb (25 Nm)",
-        notes:
-          "Two sources agree on 18 ft-lb across the 4.3, 5.3 and 6.2. This is a low figure into an aluminum pan - a stripped pan is a far bigger job than a weeping plug, so do not lean on it.",
-      },
-      {
-        fastener: "Oil filter",
-        value: "Hand-tight plus three quarters of a turn after the gasket touches",
-        notes: "No torque wrench. Wipe a film of fresh oil on the new gasket first or it will grab and tear.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
@@ -85,7 +117,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Reinstall the drain plug",
         instructions:
           "Clean the plug and the pan boss. Fit a new washer if yours uses a crush washer. Start it by hand - always by hand, the aluminum pan strips easily - then torque to 18 ft-lb (25 Nm).",
-        torque: [{ fastener: "Oil drain plug", value: "18 ft-lb (25 Nm)" }],
+        torque: [{ fastener: "Oil drain plug", value: "" }],
       },
       {
         number: 6,
@@ -100,10 +132,56 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Look at the filter and the drain plug with the engine running, then again after a short drive. Reset the Oil Life through the Driver Information Center: Vehicle Information, scroll to Remaining Oil Life, hold the set button until it reads 100%. If you skip the reset the truck keeps counting down from the old number and will nag you early.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-tire-rotation",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "engine", key: "gm-ecotec3-l83" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-oil-change",
+verified: true,
+    parts: [
+      "8 qt dexos1 0W-20 full synthetic",
+      "ACDelco PF63 spin-on oil filter (or equivalent)",
+      "Drain plug washer if yours is the crush-washer type",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil drain plug",
+        value: "18 ft-lb (25 Nm)",
+        notes:
+          "Two sources agree on 18 ft-lb across the 4.3, 5.3 and 6.2. This is a low figure into an aluminum pan - a stripped pan is a far bigger job than a weeping plug, so do not lean on it.",
+      },
+      {
+        fastener: "Oil filter",
+        value: "Hand-tight plus one full turn after the gasket touches",
+        notes: "No torque wrench - the turn count IS the spec. GM bulletin 22-NA-009 (Sept 2022) revised this from three quarters of a turn to one full turn, to stop filters weeping at the gasket. Wipe a film of fresh oil on the new gasket first or it will grab and tear. Ignore any table giving this filter a 22 ft-lb or 41 ft-lb figure: the first is roughly three times GM number, the second is the filter adapter fitting, not the filter.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-oil-change",
+verified: true,
+    parts: [
+      "8 qt dexos1 0W-20 full synthetic",
+      "ACDelco PF63 spin-on oil filter (or equivalent)",
+      "Drain plug washer if yours is the crush-washer type",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil drain plug",
+        value: "18 ft-lb (25 Nm)",
+        notes:
+          "Two sources agree on 18 ft-lb across the 4.3, 5.3 and 6.2. This is a low figure into an aluminum pan - a stripped pan is a far bigger job than a weeping plug, so do not lean on it.",
+      },
+      {
+        fastener: "Oil filter",
+        value: "Hand-tight plus one full turn after the gasket touches",
+        notes: "No torque wrench - the turn count IS the spec. GM bulletin 22-NA-009 (Sept 2022) revised this from three quarters of a turn to one full turn, to stop filters weeping at the gasket. Wipe a film of fresh oil on the new gasket first or it will grab and tear. Ignore any table giving this filter a 22 ft-lb or 41 ft-lb figure: the first is roughly three times GM number, the second is the filter adapter fitting, not the filter.",
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-tire-rotation",
     title: "Tire Rotation",
     jobType: "tire-rotation",
     summary:
@@ -119,20 +197,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Wheel chocks" },
       { name: "Tire pressure gauge" },
     ],
-    parts: ["Replacement lug nuts if any are swollen or rounded"],
+
     safety: [
       "Never get under or beside a wheel that is held up by the jack alone.",
       "Break the lug nuts loose while the wheel is still on the ground. A wheel spinning in the air is how knuckles get broken.",
       "Re-torque after 50 to 100 miles. Wheels settle, and a nut that felt right cold can be loose warm.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Wheel lug nuts",
-        value: "140 ft-lb (190 Nm)",
-        notes:
-          "Three sources agree, and the figure has held across every printed Silverado 1500 owner's manual. Star pattern, in two passes.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
@@ -170,7 +241,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Torque to 140 ft-lb in a star pattern",
         instructions:
           "Lower the wheel until the tire just touches and torque in a star pattern to 140 ft-lb (190 Nm). Go around twice - the first pass seats the wheel, the second catches the nuts that relaxed when their neighbours pulled the wheel flat.",
-        torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
+        torque: [{ fastener: "Wheel lug nuts", value: "" }],
       },
       {
         number: 7,
@@ -179,14 +250,42 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Set all four to the pressure on the driver's door jamb label, not the number on the tire sidewall - the sidewall number is the tire's maximum, not the truck's spec. Drive 50 to 100 miles and re-torque.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-front-brake-pads",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-tire-rotation",
+verified: true,
+    parts: ["Replacement lug nuts if any are swollen or rounded"],
+    torqueSpecs: [
+      {
+        fastener: "Wheel lug nuts",
+        value: "140 ft-lb (190 Nm)",
+        notes:
+          "Three sources agree, and the figure has held across every printed K2XX 1500 owner's manual. Star pattern, in two passes.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-tire-rotation",
+verified: true,
+    parts: ["Replacement lug nuts if any are swollen or rounded"],
+    torqueSpecs: [
+      {
+        fastener: "Wheel lug nuts",
+        value: "140 ft-lb (190 Nm)",
+        notes:
+          "Three sources agree, and the figure has held across every printed K2XX 1500 owner's manual. Star pattern, in two passes.",
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-front-brake-pads",
     title: "Front Brake Pads & Rotors",
     jobType: "brake-pads-front",
     summary:
-      "Front brake service on the K2XX Silverado, pads alone or pads and rotors together. Pick which job you are doing at the top of the steps and the procedure changes to match.",
+      "Front brake service on the K2XX truck, pads alone or pads and rotors together. Pick which job you are doing at the top of the steps and the procedure changes to match.",
     hasRotorOption: true,
     difficulty: "Moderate",
     estTime: "1-1.5 hrs pads only, 2-2.5 hrs with rotors (both sides)",
@@ -204,33 +303,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "High-temp brake grease" },
       { name: "Nitrile gloves + eye protection" },
     ],
-    parts: [
-      "Front brake pad set",
-      "Brake cleaner",
-      "High-temp brake/caliper grease",
-      "New guide pin boots if the old ones are torn or hardened",
-      "Front brake rotors, pair - only if replacing rotors",
-    ],
+
     safety: [
       "Brake dust can contain harmful particulates - never blow it out with compressed air; use brake cleaner and a wet rag.",
       "Support the caliper with a hook or wire once removed - never let it hang by the brake hose.",
       "Pump the brake pedal to restore firm pedal feel before driving; test brakes at low speed before normal driving.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Caliper guide/slide pin bolts (front)",
-        value: "74 ft-lb (100 Nm)",
-        notes:
-          "JD9 brake code, which is the standard and effectively only 1500 brake package for 2014-2018. Two independent sources agree. This is much higher than the rear - do not carry the rear figure forward.",
-      },
-      {
-        fastener: "Caliper bracket (adapter) bolts to knuckle",
-        value: "170 ft-lb (230 Nm)",
-        notes:
-          "Rotors only. JD9 code. Beware the J95/J96 heavy-brake column in the same tables - it lists 221 ft-lb, roughly 50 percent over spec for a 1500 and a real over-torque.",
-      },
-      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
-    ],
+
     steps: [
       {
         number: 1,
@@ -291,7 +370,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Fit the new rotor and refit the bracket",
         instructions:
           "Scrub the shipping oil off both faces of the new rotor with brake cleaner until the rag comes away clean. Set it on the hub, hold it with a lug nut, then start both bracket bolts by hand and torque to 170 ft-lb (230 Nm).",
-        torque: [{ fastener: "Caliper bracket bolts to knuckle", value: "170 ft-lb (230 Nm)" }],
+        torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "" }],
         rotorsOnly: true,
       },
       {
@@ -305,25 +384,79 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Set the caliper back and torque the guide pins",
         instructions:
           "Lower the caliper over the new pads and start both pin bolts by hand. Torque to 74 ft-lb (100 Nm).",
-        torque: [{ fastener: "Caliper guide pin bolts", value: "74 ft-lb (100 Nm)" }],
+        torque: [{ fastener: "Caliper guide/slide pin bolts (front)", value: "" }],
       },
       {
         number: 12,
         title: "Wheels on, pedal firm, then bed the pads",
         instructions:
           "Mount the wheels, torque the lugs to 140 ft-lb (190 Nm) in a star pattern, and lower the truck. With the engine off, pump the pedal until it is firm - the first pump or two will go to the floor. Then bed the pads: from about 35 mph brake firmly but short of ABS down to 10 mph, release, repeat six to eight times with a short cruise between each.",
-        torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
+        torque: [{ fastener: "Wheel lug nuts", value: "" }],
         warning: "Do not move the truck until the pedal is firm, and do not sit on the brake at a stop while they are still hot from bedding - it prints pad material onto the rotor and gives you the pulsation you were trying to avoid.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-rear-brake-pads",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-front-brake-pads",
+verified: true,
+    parts: [
+      "Front brake pad set",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New guide pin boots if the old ones are torn or hardened",
+      "Front brake rotors, pair - only if replacing rotors",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper guide/slide pin bolts (front)",
+        value: "74 ft-lb (100 Nm)",
+        notes:
+          "JD9 brake code, which is the standard and effectively only 1500 brake package for 2014-2018. Two independent sources agree. This is much higher than the rear - do not carry the rear figure forward.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "170 ft-lb (230 Nm)",
+        notes:
+          "Rotors only. JD9 code. Beware the J95/J96 heavy-brake column in the same tables - it lists 221 ft-lb, roughly 50 percent over spec for a 1500 and a real over-torque.",
+      },
+      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-front-brake-pads",
+verified: true,
+    parts: [
+      "Front brake pad set",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New guide pin boots if the old ones are torn or hardened",
+      "Front brake rotors, pair - only if replacing rotors",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper guide/slide pin bolts (front)",
+        value: "74 ft-lb (100 Nm)",
+        notes:
+          "JD9 brake code, which is the standard and effectively only 1500 brake package for 2014-2018. Two independent sources agree. This is much higher than the rear - do not carry the rear figure forward.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "170 ft-lb (230 Nm)",
+        notes:
+          "Rotors only. JD9 code. Beware the J95/J96 heavy-brake column in the same tables - it lists 221 ft-lb, roughly 50 percent over spec for a 1500 and a real over-torque.",
+      },
+      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-rear-brake-pads",
     title: "Rear Brake Pads & Rotors",
     jobType: "brake-pads-rear",
     summary:
-      "Rear brake service on the K2XX Silverado. The piston pushes straight in - the parking brake is a separate drum inside the rotor hat, not a screw-in piston - and that same drum is what usually holds a stuck rotor on.",
+      "Rear brake service on the K2XX truck. The piston pushes straight in - the parking brake is a separate drum inside the rotor hat, not a screw-in piston - and that same drum is what usually holds a stuck rotor on.",
     hasRotorOption: true,
     difficulty: "Moderate",
     estTime: "1-1.5 hrs pads only, 2-2.5 hrs with rotors (both sides)",
@@ -342,34 +475,14 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "High-temp brake grease" },
       { name: "Nitrile gloves + eye protection" },
     ],
-    parts: [
-      "Rear brake pad set",
-      "Brake cleaner",
-      "High-temp brake/caliper grease",
-      "New guide pin boots if the old ones are torn or hardened",
-      "Rear brake rotors, pair - only if replacing rotors",
-    ],
+
     safety: [
       "Brake dust can contain harmful particulates - never blow it out with compressed air; use brake cleaner and a wet rag.",
       "Support the caliper with a hook or wire once removed - never let it hang by the brake hose.",
       "The parking brake shoes live inside the rotor hat. Leave the parking brake released for the whole job and cycle it several times before driving so it re-adjusts.",
       "Pump the brake pedal to restore firm pedal feel before driving; test brakes at low speed before normal driving.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Caliper guide/slide pin bolts (rear)",
-        value: "38 ft-lb (52 Nm)",
-        notes:
-          "JD9 brake code. Two independent sources agree. About half the front figure - the two are not interchangeable.",
-      },
-      {
-        fastener: "Caliper bracket (adapter) bolts to knuckle",
-        value: "148 ft-lb (200 Nm)",
-        notes:
-          "Rotors only. JD9 code, corroborated three ways. Ignore the J95/J96 column in the same tables - those are heavy-brake figures and far too high for a 1500.",
-      },
-      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
-    ],
+
     steps: [
       {
         number: 1,
@@ -437,7 +550,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Reinstall the caliper bracket",
         instructions:
           "Start both bracket bolts by hand, then torque to 148 ft-lb (200 Nm). Clean and re-apply medium-strength thread locker if the originals came out with residue on them.",
-        torque: [{ fastener: "Caliper bracket bolts to knuckle", value: "148 ft-lb (200 Nm)" }],
+        torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "" }],
         rotorsOnly: true,
       },
       {
@@ -445,25 +558,79 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Grease the pins, fit the pads, torque the guide bolts",
         instructions:
           "Clean and re-grease each guide pin with high-temp brake grease, replace any bad boots, fit the new clips and pads, then set the caliper back and torque both pin bolts to 38 ft-lb (52 Nm). That is a low figure and easy to overshoot with a big wrench.",
-        torque: [{ fastener: "Caliper guide pin bolts", value: "38 ft-lb (52 Nm)" }],
+        torque: [{ fastener: "Caliper guide/slide pin bolts (rear)", value: "" }],
       },
       {
         number: 12,
         title: "Wheels on, pedal firm, parking brake re-adjusted, then bed in",
         instructions:
           "Torque the lugs to 140 ft-lb (190 Nm) in a star pattern and lower the truck. Pump the pedal with the engine off until it is firm. Then apply and release the parking brake eight to ten times - it self-adjusts, and this is what takes the slack back out after the rotors came off. Finally bed the pads: 35 mph down to 10 mph, firm but short of ABS, six to eight times with a cruise between each.",
-        torque: [{ fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" }],
+        torque: [{ fastener: "Wheel lug nuts", value: "" }],
         warning: "Do not come to a full stop and hold the pedal while the brakes are hot from bedding - it prints pad material onto the rotor.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-battery",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-rear-brake-pads",
+verified: true,
+    parts: [
+      "Rear brake pad set",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New guide pin boots if the old ones are torn or hardened",
+      "Rear brake rotors, pair - only if replacing rotors",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper guide/slide pin bolts (rear)",
+        value: "38 ft-lb (52 Nm)",
+        notes:
+          "JD9 brake code. Two independent sources agree. About half the front figure - the two are not interchangeable.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "148 ft-lb (200 Nm)",
+        notes:
+          "Rotors only. JD9 code, corroborated three ways. Ignore the J95/J96 column in the same tables - those are heavy-brake figures and far too high for a 1500.",
+      },
+      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-rear-brake-pads",
+verified: true,
+    parts: [
+      "Rear brake pad set",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New guide pin boots if the old ones are torn or hardened",
+      "Rear brake rotors, pair - only if replacing rotors",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper guide/slide pin bolts (rear)",
+        value: "38 ft-lb (52 Nm)",
+        notes:
+          "JD9 brake code. Two independent sources agree. About half the front figure - the two are not interchangeable.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "148 ft-lb (200 Nm)",
+        notes:
+          "Rotors only. JD9 code, corroborated three ways. Ignore the J95/J96 column in the same tables - those are heavy-brake figures and far too high for a 1500.",
+      },
+      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-battery",
     title: "Battery Replacement",
     jobType: "battery",
     summary:
-      "Group 94R (H7) under the hood on the driver's side. The trap here is at the parts counter, not on the truck: half the retailers will also offer you a Group 48, which is the auxiliary battery for dual-battery trucks and will sit loose in this tray.",
+      "Group 94R (H7) under the hood on the driver's side. The trap here is at the parts counter, not on the truck: half the retailers will also offer you a Group 48, which is the row for the 4.3L V6 and the diesel, not your V8, and will sit loose in this tray.",
     difficulty: "Easy",
     estTime: "30 min",
     tier: "free",
@@ -475,34 +642,20 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Nitrile gloves + eye protection" },
       { name: "Memory saver", note: "Optional - an OBD-port saver keeps radio presets and relearned settings" },
     ],
-    parts: [
-      "Group 94R (H7) battery, 720 CCA minimum",
-      "Battery terminal protectant spray or felt washers",
-    ],
+
     safety: [
       "Batteries vent hydrogen. No smoking, no sparks, no open flame near one.",
       "Disconnect the NEGATIVE terminal first and reconnect it LAST. Touching a wrench between the positive post and any metal while the negative is still connected will weld the wrench.",
       "Battery acid will ruin clothing and injure eyes. Gloves and eye protection.",
       "A truck battery is heavier than it looks. Lift with your legs and keep it level.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Battery hold-down clamp bolt",
-        value: "13 ft-lb (18 Nm)",
-        notes: "Reference figure from a single published procedure. Snug is what matters - the clamp only has to stop the battery moving.",
-      },
-      {
-        fastener: "Battery terminal clamp nuts",
-        value: "11 ft-lb (15 Nm)",
-        notes: "Reference figure. Lead is soft; over-tightening deforms the post and guarantees a bad connection later.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
         title: "Confirm the group size before you buy",
         instructions:
-          "This truck takes a Group 94R, also called H7, 720 CCA from the factory. Several big retailers list a Group 48 (H6) as an alternate fit - that is the auxiliary battery for trucks built with the dual-battery option, not the primary. A 48 is physically shorter than a 94R and will move around in this tray no matter how you clamp it. If the counter hands you a 48, hand it back.",
+          "This truck takes a Group 94R, also called H7, 800 CCA from the factory. Several big retailers list a Group 48 (H6) as an alternate fit. Two GM TechLink battery tables put the V8 gas trucks (RPO L83/L86) in the 94R row and the 4.3L V6 and diesel in the 48 row - so a 48 is the right battery for a different truck, not a second battery for yours. On the dual-battery trucks GM notes the auxiliary battery is simply another 94R. A 48 is physically shorter than a 94R and will move around in this tray no matter how you clamp it. If the counter hands you a 48, hand it back.",
       },
       {
         number: 2,
@@ -534,14 +687,14 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Fit the new battery and clamp it down",
         instructions:
           "Set the new battery in with the posts on the same side as the old one, refit the hold-down and snug it to about 13 ft-lb (18 Nm). Grab the battery and push - if it rocks, the clamp is not doing its job or the battery is the wrong size.",
-        torque: [{ fastener: "Battery hold-down clamp bolt", value: "13 ft-lb (18 Nm)" }],
+        torque: [{ fastener: "Battery hold-down clamp bolt", value: "" }],
       },
       {
         number: 7,
         title: "Reconnect positive first, negative last",
         instructions:
           "Positive clamp on and snug to about 11 ft-lb (15 Nm), then negative. You may get a small spark as the negative touches - that is the truck's electronics drawing their first current and is normal. Spray both terminals with protectant.",
-        torque: [{ fastener: "Battery terminal clamp nuts", value: "11 ft-lb (15 Nm)" }],
+        torque: [{ fastener: "Battery terminal clamp nuts", value: "" }],
         warning: "Negative goes on LAST. Reversing the order puts a live positive on the truck while you are still working on it.",
       },
       {
@@ -551,10 +704,52 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Start the truck. Reset the clock and radio presets. Expect a slightly odd idle or shift feel for the first few drives while the adaptives relearn - that settles on its own and is not a fault.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-engine-air-filter",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-battery",
+verified: true,
+    parts: [
+      "Group 94R (H7) battery, 800 CCA minimum",
+      "Battery terminal protectant spray or felt washers",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Battery hold-down clamp bolt",
+        value: "13 ft-lb (18 Nm)",
+        notes: "Reference figure from a single published procedure. Snug is what matters - the clamp only has to stop the battery moving.",
+      },
+      {
+        fastener: "Battery terminal clamp nuts",
+        value: "11 ft-lb (15 Nm)",
+        notes: "Reference figure. Lead is soft; over-tightening deforms the post and guarantees a bad connection later.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-battery",
+verified: true,
+    parts: [
+      "Group 94R (H7) battery, 800 CCA minimum",
+      "Battery terminal protectant spray or felt washers",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Battery hold-down clamp bolt",
+        value: "13 ft-lb (18 Nm)",
+        notes: "Reference figure from a single published procedure. Snug is what matters - the clamp only has to stop the battery moving.",
+      },
+      {
+        fastener: "Battery terminal clamp nuts",
+        value: "11 ft-lb (15 Nm)",
+        notes: "Reference figure. Lead is soft; over-tightening deforms the post and guarantees a bad connection later.",
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-engine-air-filter",
     title: "Engine Air Filter Replacement",
     jobType: "engine-air-filter",
     summary:
@@ -568,12 +763,12 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Flashlight" },
       { name: "Shop vac or rag", note: "For the debris that always sits in the bottom of the box" },
     ],
-    parts: ["Engine air filter (panel type)"],
+
     safety: [
       "Engine off and cool enough to lean over.",
       "Do not run the engine with the airbox open. Anything that goes down the intake tube goes through the MAF sensor and into the engine.",
     ],
-    torqueSpecs: [],
+
     steps: [
       {
         number: 1,
@@ -607,10 +802,24 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Refit the lid and start all four screws by hand before tightening any of them - the lid has to pull down evenly or the seal gaps. Snug only; they thread into plastic. If you removed the airbox, reconnect the MAF plug and retighten the intake tube clamp, and double-check the plug is fully latched. An unplugged MAF will throw a check engine light and make the truck run badly.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-cabin-air-filter",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "engine", key: "gm-ecotec3-l83" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-engine-air-filter",
+verified: true,
+    parts: ["Engine air filter (panel type)"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-engine-air-filter",
+verified: true,
+    parts: ["Engine air filter (panel type)"],
+    torqueSpecs: [],
+},
+},
+},
+{
+    id: "gm-k2xx-cabin-air-filter",
     title: "Cabin Air Filter Replacement",
     jobType: "cabin-air-filter",
     summary:
@@ -620,11 +829,11 @@ export const silveradoK2xxGuides: RepairGuide[] = [
     tier: "free",
     noFasteners: true,
     tools: [{ name: "Flashlight" }],
-    parts: ["Cabin air filter (GM 23281440 or equivalent)"],
+
     safety: [
       "A filthy cabin filter is full of mold spores and road dust. Bag it rather than shaking it out inside the truck.",
     ],
-    torqueSpecs: [],
+
     steps: [
       {
         number: 1,
@@ -657,10 +866,24 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Close the filter door, lift the glove box back until the side tabs click past their stops, and run the blower through all its speeds. It should be at least as strong as before, usually noticeably stronger if the old filter was bad.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-wiper-blades",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-cabin-air-filter",
+verified: true,
+    parts: ["Cabin air filter (GM 23281440 or equivalent)"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-cabin-air-filter",
+verified: true,
+    parts: ["Cabin air filter (GM 23281440 or equivalent)"],
+    torqueSpecs: [],
+},
+},
+},
+{
+    id: "gm-k2xx-wiper-blades",
     title: "Wiper Blade Replacement",
     jobType: "wiper-blades",
     summary:
@@ -670,11 +893,11 @@ export const silveradoK2xxGuides: RepairGuide[] = [
     tier: "free",
     noFasteners: true,
     tools: [{ name: "Towel or folded rag", note: "Padding under the arm in case it snaps down" }],
-    parts: ["Front wiper blade pair - check length for your build, driver and passenger sides differ"],
+
     safety: [
       "Lay a towel on the windshield before you lift the arms. A wiper arm with no blade on it will crack glass if it snaps back.",
     ],
-    torqueSpecs: [],
+
     steps: [
       {
         number: 1,
@@ -708,10 +931,24 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Lower both arms gently onto the glass, remove the towel, then run the wipers with washer fluid. Dry glass tears new rubber. Watch for streaking or chatter - chatter usually means the arm is slightly twisted rather than a bad blade.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-coolant",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-wiper-blades",
+verified: true,
+    parts: ["Front wiper blade pair - check length for your build, driver and passenger sides differ"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-wiper-blades",
+verified: true,
+    parts: ["Front wiper blade pair - check length for your build, driver and passenger sides differ"],
+    torqueSpecs: [],
+},
+},
+},
+{
+    id: "gm-k2xx-coolant",
     title: "Coolant Drain & Fill",
     jobType: "coolant",
     summary:
@@ -726,23 +963,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Jack + 2 jack stands", note: "Optional but it makes the petcock reachable" },
       { name: "Nitrile gloves + eye protection" },
     ],
-    parts: [
-      "2 gallons of DEX-COOL 50/50 premix, or 1 gallon of concentrate plus distilled water",
-      "Distilled water - never tap water",
-    ],
+
     safety: [
       "Never open a cooling system that is hot. The coolant is above its boiling point under pressure and will flash to steam the moment you release the cap. Cold engine only.",
       "Coolant is sweet-tasting and lethal to pets and wildlife. Catch every drop, clean up spills immediately, and take the old fluid to a recycler.",
       "Keep hands clear of the fans. On this truck they can spin up after the key is off.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Radiator drain petcock",
-        value: "Hand-tight only",
-        notes:
-          "It is a plastic fitting. Snug it by hand and stop - putting a wrench on it and cracking the neck turns a fluid change into a radiator replacement.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
@@ -768,7 +995,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Close the petcock",
         instructions:
           "Close the petcock hand-tight. No tools. Wipe the area dry so you can spot a weep later.",
-        torque: [{ fastener: "Radiator drain petcock", value: "Hand-tight only" }],
+        torque: [{ fastener: "Radiator drain petcock", value: "" }],
       },
       {
         number: 5,
@@ -790,10 +1017,44 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Check the surge tank cold each morning for the next two or three days and top up to the cold fill line. Air keeps working its way out of a truck cooling system for a while. A heater that blows cold at idle but warm at speed is the classic sign of air still trapped in the heater core.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-driveline-fluid",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "engine", key: "gm-ecotec3-l83" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-coolant",
+verified: true,
+    parts: [
+      "2 gallons of DEX-COOL 50/50 premix, or 1 gallon of concentrate plus distilled water",
+      "Distilled water - never tap water",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Radiator drain petcock",
+        value: "Hand-tight only",
+        notes:
+          "It is a plastic fitting. Snug it by hand and stop - putting a wrench on it and cracking the neck turns a fluid change into a radiator replacement.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-coolant",
+verified: true,
+    parts: [
+      "2 gallons of DEX-COOL 50/50 premix, or 1 gallon of concentrate plus distilled water",
+      "Distilled water - never tap water",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Radiator drain petcock",
+        value: "Hand-tight only",
+        notes:
+          "It is a plastic fitting. Snug it by hand and stop - putting a wrench on it and cracking the neck turns a fluid change into a radiator replacement.",
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-driveline-fluid",
     title: "Differential & Transfer Case Fluid",
     jobType: "driveline-fluid",
     summary:
@@ -823,20 +1084,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         ],
       },
     ],
-    variantParts: [
-      {
-        text: "Rear axle: 4.2 pints (2.1 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
-        onlyFor: ["axle-8-6"],
-      },
-      {
-        text: "Rear axle: 5.5 pints (2.75 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
-        onlyFor: ["axle-9-5"],
-      },
-      {
-        text: "Do NOT buy limited-slip friction modifier - the G80 must not have it",
-        onlyFor: ["g80-yes"],
-      },
-    ],
+
     tools: [
       { name: "Socket set + ratchet", note: "Fill and drain plugs, and the rear cover bolts" },
       { name: "Torque wrench" },
@@ -847,40 +1095,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Jack + 4 jack stands", note: "The truck should be level, or the fill levels will be wrong" },
       { name: "Nitrile gloves + eye protection" },
     ],
-    parts: [
-      "Front differential: 1.5 qt of 75W-90 synthetic GL-5",
-      "Transfer case: 1.6 qt of DEXRON-VI ATF",
-      "Rear axle cover gasket or RTV sealant",
-      "Shop towels - gear oil gets everywhere",
-    ],
+
     safety: [
       "Level the truck on four jack stands. A fill-to-the-plug level taken on a tilted truck is wrong in a way you will not notice until something whines.",
       "Gear oil smells foul and stains permanently. Gloves, and old clothes.",
       "Crack the FILL plug loose before you drain anything. If the fill plug is seized and the fluid is already out, the truck is stuck on stands until you win that fight.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Rear axle cover bolts",
-        value: "20 ft-lb (27 Nm)",
-        notes: "Star pattern. Community figure citing service data rather than a scanned manual page - treat as a reference.",
-      },
-      {
-        fastener: "Rear axle fill plug",
-        value: "24 ft-lb (33 Nm)",
-        notes: "Reference figure from the same source as the cover bolts.",
-      },
-      {
-        fastener: "Transfer case drain and fill plugs",
-        value: "13 ft-lb (18 Nm)",
-        notes:
-          "This is the weakest number in the guide. One source specific to this generation says 13 ft-lb; an older-generation source says 15. Anything in that range is fine, and erring low is the safe direction into an aluminum case.",
-      },
-      {
-        fastener: "Front differential drain and fill plugs",
-        value: "24 ft-lb (33 Nm)",
-        notes: "Reference figure.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
@@ -900,14 +1121,14 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Transfer case: drain, refill with ATF",
         instructions:
           "Drain plug out, let it empty, plug back in at 13 ft-lb (18 Nm). Pump in 1.6 qt of DEXRON-VI until it just weeps from the fill hole, then fit the fill plug at the same torque. Note the fluid: this case takes ATF, not gear oil, and not Auto-Trak II. Auto-Trak II is the blue fluid for the older New Process case and parts counters still hand it over for these trucks.",
-        torque: [{ fastener: "Transfer case drain and fill plugs", value: "13 ft-lb (18 Nm)" }],
+        torque: [{ fastener: "Transfer case drain and fill plugs", value: "" }],
       },
       {
         number: 4,
         title: "Front differential: drain, refill with 75W-90",
         instructions:
           "The front axle does have a drain plug. Drain it, refit the plug at 24 ft-lb (33 Nm), then pump in 75W-90 synthetic until it reaches the bottom edge of the fill hole and starts to seep back out. That is about 1.5 qt. Fit the fill plug at the same torque.",
-        torque: [{ fastener: "Front differential drain and fill plugs", value: "24 ft-lb (33 Nm)" }],
+        torque: [{ fastener: "Front differential drain and fill plugs", value: "" }],
       },
       {
         number: 5,
@@ -933,14 +1154,14 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Seal and refit the cover",
         instructions:
           "Either fit a new gasket, or lay a continuous 3/16 inch bead of RTV around the cover inside the bolt holes with a loop around each hole. Fit the cover and snug the bolts by hand, then torque to 20 ft-lb (27 Nm) in a star pattern. If you used RTV, let it set up for the time on the tube before adding fluid.",
-        torque: [{ fastener: "Rear axle cover bolts", value: "20 ft-lb (27 Nm)" }],
+        torque: [{ fastener: "Rear axle cover bolts", value: "" }],
       },
       {
         number: 9,
         title: "Fill the rear axle - and skip the friction modifier",
         instructions:
           "Pump 75W-85 synthetic in through the fill hole until it sits level with the bottom edge of the hole. If your truck has the G80 locker, do NOT add limited-slip friction modifier. The G80 is a locker that happens to use clutches rather than a clutch-type limited slip, and GM bulletin PIP4054D says an additive makes its clutch pack slip and miss engagement. This is the opposite of the usual rule and it is the mistake most people make on this axle.",
-        torque: [{ fastener: "Rear axle fill plug", value: "24 ft-lb (33 Nm)" }],
+        torque: [{ fastener: "Rear axle fill plug", value: "" }],
         warning: "Friction modifier in a G80 axle causes the exact problem you would be trying to prevent.",
       },
       {
@@ -950,10 +1171,106 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Lower the truck and drive it gently for ten minutes to warm everything through. Park it, wait an hour, and look underneath with a flashlight at the axle cover, both diff plugs and the transfer case plugs. Check again the following morning - a slow weep only shows itself overnight.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-serpentine-belt",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "driveline", key: "gm-k2xx-1500-4wd" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-driveline-fluid",
+verified: true,
+    parts: [
+      "Front differential: 1.5 qt of 75W-90 synthetic GL-5",
+      "Transfer case: 1.6 qt of DEXRON-VI ATF",
+      "Rear axle cover gasket or RTV sealant",
+      "Shop towels - gear oil gets everywhere",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Rear axle cover bolts",
+        value: "20 ft-lb (27 Nm)",
+        notes: "Star pattern. SOURCES CONFLICT and neither is a scanned manual page: a Sierra-specific torque table gives 15 ft-lb (20 Nm) followed by a further 20 degrees, while community service-data postings give a flat 20 ft-lb. Bolt-grade math on a 5/16-18 brackets both, so neither will hurt the axle - but treat this as a reference figure, not a spec. If you have a real FSM page, trust it over this.",
+      },
+      {
+        fastener: "Rear axle fill plug",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure from the same source as the cover bolts.",
+      },
+      {
+        fastener: "Transfer case drain and fill plugs",
+        value: "13 ft-lb (18 Nm)",
+        notes:
+          "This is the weakest number in the guide. One source specific to this generation says 13 ft-lb; an older-generation source says 15. Anything in that range is fine, and erring low is the safe direction into an aluminum case.",
+      },
+      {
+        fastener: "Front differential drain and fill plugs",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure.",
+      },
+    ],
+    variantParts: [
+      {
+        text: "Rear axle: 4.2 pints (2.1 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-8-6"],
+      },
+      {
+        text: "Rear axle: 5.5 pints (2.75 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-9-5"],
+      },
+      {
+        text: "Do NOT buy limited-slip friction modifier - the G80 must not have it",
+        onlyFor: ["g80-yes"],
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-driveline-fluid",
+verified: true,
+    parts: [
+      "Front differential: 1.5 qt of 75W-90 synthetic GL-5",
+      "Transfer case: 1.6 qt of DEXRON-VI ATF",
+      "Rear axle cover gasket or RTV sealant",
+      "Shop towels - gear oil gets everywhere",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Rear axle cover bolts",
+        value: "20 ft-lb (27 Nm)",
+        notes: "Star pattern. SOURCES CONFLICT and neither is a scanned manual page: a Sierra-specific torque table gives 15 ft-lb (20 Nm) followed by a further 20 degrees, while community service-data postings give a flat 20 ft-lb. Bolt-grade math on a 5/16-18 brackets both, so neither will hurt the axle - but treat this as a reference figure, not a spec. If you have a real FSM page, trust it over this.",
+      },
+      {
+        fastener: "Rear axle fill plug",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure from the same source as the cover bolts.",
+      },
+      {
+        fastener: "Transfer case drain and fill plugs",
+        value: "13 ft-lb (18 Nm)",
+        notes:
+          "This is the weakest number in the guide. One source specific to this generation says 13 ft-lb; an older-generation source says 15. Anything in that range is fine, and erring low is the safe direction into an aluminum case.",
+      },
+      {
+        fastener: "Front differential drain and fill plugs",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure.",
+      },
+    ],
+    variantParts: [
+      {
+        text: "Rear axle: 4.2 pints (2.1 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-8-6"],
+      },
+      {
+        text: "Rear axle: 5.5 pints (2.75 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-9-5"],
+      },
+      {
+        text: "Do NOT buy limited-slip friction modifier - the G80 must not have it",
+        onlyFor: ["g80-yes"],
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-serpentine-belt",
     title: "Serpentine Belt Replacement",
     jobType: "serpentine-belt",
     summary:
@@ -968,20 +1285,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Flashlight" },
       { name: "Nitrile gloves" },
     ],
-    parts: ["Serpentine belt - match by your exact engine and accessory package"],
+
     safety: [
       "Engine off, key out. A belt job on a running engine costs fingers.",
       "The tensioner is under spring load. Keep your hand clear of the pulley and let it swing back under control rather than letting go of the bar.",
       "Let the engine cool. The belt runs right past the exhaust manifolds.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "None removed in this job",
-        value: "No fastener is loosened or retightened",
-        notes:
-          "The tensioner is only levered aside to slip the belt off and back on; nothing is unbolted. Replacing the tensioner itself is a different job with its own torque figures.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
@@ -1027,10 +1337,38 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Start the engine and listen for chirping or squealing while you watch the belt track. A brief chirp on the first start is normal as it seats. Anything that persists means it is misrouted, mis-seated, or a pulley is out of alignment. Shut it down and look again rather than driving off.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-fluid-checks",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "engine", key: "gm-ecotec3-l83" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-serpentine-belt",
+verified: true,
+    parts: ["Serpentine belt - match by your exact engine and accessory package"],
+    torqueSpecs: [
+      {
+        fastener: "None removed in this job",
+        value: "No fastener is loosened or retightened",
+        notes:
+          "The tensioner is only levered aside to slip the belt off and back on; nothing is unbolted. Replacing the tensioner itself is a different job with its own torque figures.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-serpentine-belt",
+verified: true,
+    parts: ["Serpentine belt - match by your exact engine and accessory package"],
+    torqueSpecs: [
+      {
+        fastener: "None removed in this job",
+        value: "No fastener is loosened or retightened",
+        notes:
+          "The tensioner is only levered aside to slip the belt off and back on; nothing is unbolted. Replacing the tensioner itself is a different job with its own torque figures.",
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-fluid-checks",
     title: "Fluid Checks & Top-Offs",
     jobType: "fluid-checks",
     summary:
@@ -1045,17 +1383,12 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Funnel" },
       { name: "Tire pressure gauge" },
     ],
-    parts: [
-      "dexos1 0W-20 for topping up oil",
-      "DEX-COOL 50/50 premix",
-      "Washer fluid",
-      "DOT 3 brake fluid, only if you actually need it",
-    ],
+
     safety: [
       "Cold engine for the coolant check. Never open the surge tank warm.",
       "If the brake fluid is genuinely low, something is wrong - either the pads are worn down or you have a leak. Topping it up hides the symptom rather than fixing it.",
     ],
-    torqueSpecs: [],
+
     steps: [
       {
         number: 1,
@@ -1095,10 +1428,34 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Top the washer bottle with all-season fluid. Then check all four tires cold against the pressure on the driver's door jamb label, not the number moulded into the sidewall. The TPMS light only comes on when a tire is already well down, so it is not a substitute for a gauge once a month.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-fuse-bulb",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "engine", key: "gm-ecotec3-l83" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-fluid-checks",
+verified: true,
+    parts: [
+      "dexos1 0W-20 for topping up oil",
+      "DEX-COOL 50/50 premix",
+      "Washer fluid",
+      "DOT 3 brake fluid, only if you actually need it",
+    ],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-fluid-checks",
+verified: true,
+    parts: [
+      "dexos1 0W-20 for topping up oil",
+      "DEX-COOL 50/50 premix",
+      "Washer fluid",
+      "DOT 3 brake fluid, only if you actually need it",
+    ],
+    torqueSpecs: [],
+},
+},
+},
+{
+    id: "gm-k2xx-fuse-bulb",
     title: "Fuse & Bulb Replacement",
     jobType: "fuse-bulb",
     summary:
@@ -1113,16 +1470,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Flashlight" },
       { name: "Clean gloves or a rag", note: "For handling bulbs - skin oil shortens halogen bulb life" },
     ],
-    parts: [
-      "Assorted blade fuses matching the amperage you are replacing",
-      "Replacement bulb of the correct type for the fixture",
-    ],
+
     safety: [
       "Never fit a fuse of higher amperage than the one that blew. The fuse protects the wiring, and a bigger fuse just moves the failure from a 50 cent part to the harness.",
       "Key off before pulling fuses.",
       "Let a bulb cool before touching it, and handle halogen capsules with a rag or gloves.",
     ],
-    torqueSpecs: [],
+
     steps: [
       {
         number: 1,
@@ -1162,10 +1516,30 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Do not touch the glass of a halogen capsule with bare fingers - the oil creates a hot spot and the bulb fails early. Use a rag or gloves. Seat the new bulb, twist the socket back in until it stops, then test the circuit before you put any trim back. Also check its partner on the other side: bulbs fitted at the factory tend to fail within a few months of each other.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-o2-sensor",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-fuse-bulb",
+verified: true,
+    parts: [
+      "Assorted blade fuses matching the amperage you are replacing",
+      "Replacement bulb of the correct type for the fixture",
+    ],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-fuse-bulb",
+verified: true,
+    parts: [
+      "Assorted blade fuses matching the amperage you are replacing",
+      "Replacement bulb of the correct type for the fixture",
+    ],
+    torqueSpecs: [],
+},
+},
+},
+{
+    id: "gm-k2xx-o2-sensor",
     title: "Oxygen Sensor Replacement",
     jobType: "o2-sensor",
     summary:
@@ -1182,23 +1556,13 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Jack + 2 jack stands" },
       { name: "Nitrile gloves + eye protection" },
     ],
-    parts: [
-      "Oxygen sensor for the specific position the code names",
-      "Anti-seize, only if the new sensor does not arrive with it pre-applied",
-    ],
+
     safety: [
       "Exhaust components stay hot far longer than you expect. Let the truck sit at least an hour, ideally overnight.",
       "Never work under a vehicle supported only by a jack.",
       "Disconnect the battery negative before unplugging the sensor connector.",
     ],
-    torqueSpecs: [
-      {
-        fastener: "Oxygen sensor",
-        value: "~31 ft-lb (42 Nm)",
-        notes:
-          "Curated reference value, not a figure we have traced to the factory manual for this truck. Confirm against your service manual before final tightening. Over-torquing into a hot exhaust bung is how the next person ends up drilling it out.",
-      },
-    ],
+
     steps: [
       {
         number: 1,
@@ -1237,7 +1601,7 @@ export const silveradoK2xxGuides: RepairGuide[] = [
         title: "Fit the new sensor",
         instructions:
           "Most new sensors arrive with anti-seize already on the threads - if yours does, do not add more, and keep it off the sensor tip entirely. Start it by hand to be certain it is not cross-threaded, then torque to about 31 ft-lb (42 Nm). Confirm that figure against your service manual first; it is a reference value.",
-        torque: [{ fastener: "Oxygen sensor", value: "~31 ft-lb (42 Nm)" }],
+        torque: [{ fastener: "Oxygen sensor", value: "" }],
       },
       {
         number: 7,
@@ -1246,10 +1610,44 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Plug the connector back in, secure the harness away from the exhaust so it cannot melt, and reconnect the battery. Clear the code and drive the truck. The light staying off through several drive cycles is the confirmation - if it comes back, the sensor was reporting a real fault rather than being one.",
       },
     ],
-  },
-  {
-    id: "silverado-2018-key-fob-battery",
-    vehicleId: "2018-chevrolet-silverado-1500-5.3l",
+  fitment: { on: "engine", key: "gm-ecotec3-l83" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-o2-sensor",
+verified: true,
+    parts: [
+      "Oxygen sensor for the specific position the code names",
+      "Anti-seize, only if the new sensor does not arrive with it pre-applied",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oxygen sensor",
+        value: "~31 ft-lb (42 Nm)",
+        notes:
+          "Curated reference value, not a figure we have traced to the factory manual for this truck. Confirm against your service manual before final tightening. Over-torquing into a hot exhaust bung is how the next person ends up drilling it out.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-o2-sensor",
+verified: true,
+    parts: [
+      "Oxygen sensor for the specific position the code names",
+      "Anti-seize, only if the new sensor does not arrive with it pre-applied",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oxygen sensor",
+        value: "~31 ft-lb (42 Nm)",
+        notes:
+          "Curated reference value, not a figure we have traced to the factory manual for this truck. Confirm against your service manual before final tightening. Over-torquing into a hot exhaust bung is how the next person ends up drilling it out.",
+      },
+    ],
+},
+},
+},
+{
+    id: "gm-k2xx-key-fob-battery",
     title: "Key Fob Battery Replacement",
     jobType: "key-fob-battery",
     summary:
@@ -1262,11 +1660,11 @@ export const silveradoK2xxGuides: RepairGuide[] = [
       { name: "Small flat screwdriver or a plastic trim tool", note: "Plastic is kinder to the case seam" },
       { name: "Clean cloth", note: "Skin oil on a coin cell shortens its life" },
     ],
-    parts: ["CR2032 coin cell - check the old one, some fobs take a CR2025"],
+
     safety: [
       "Coin cells are a serious swallowing hazard for children and pets. Keep the old one out of reach and dispose of it properly rather than leaving it on a counter.",
     ],
-    torqueSpecs: [],
+
     steps: [
       {
         number: 1,
@@ -1300,5 +1698,20 @@ export const silveradoK2xxGuides: RepairGuide[] = [
           "Press the halves together until the clips click all the way round, and refit the key blade. Then test every function from a normal distance: lock, unlock, tailgate, panic and remote start. Remote start is the one that goes first on a weak battery, so if that now works from across a parking lot, you have your answer.",
       },
     ],
-  },
+  fitment: { on: "platform", key: "gm-k2xx-1500" },
+figures: {
+"2018-chevrolet-silverado-1500-5.3l": {
+id: "silverado-2018-key-fob-battery",
+verified: true,
+    parts: ["CR2032 coin cell - check the old one, some fobs take a CR2025"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-key-fob-battery",
+verified: true,
+    parts: ["CR2032 coin cell - check the old one, some fobs take a CR2025"],
+    torqueSpecs: [],
+},
+},
+},
 ];

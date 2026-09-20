@@ -781,4 +781,138 @@ export const jeepGrandCherokeeWk2Guides: RepairGuide[] = [
       },
     ],
   },
+  {
+    id: "jeep-grand-cherokee-differential-fluid",
+    vehicleId: "2014-jeep-grand-cherokee-3.6l",
+    title: "Rear Differential Fluid",
+    jobType: "driveline-fluid",
+    summary:
+      "One fill, two plugs, about an hour. The thing almost everyone gets wrong about this axle: it has a proper drain plug and no removable cover at all, so most of the Jeep differential advice you will find does not apply to it.",
+    difficulty: "Easy",
+    estTime: "45-60 min",
+    tier: "premium",
+    variants: [
+      {
+        id: "rear-axle",
+        question: "Is your rear axle housing aluminum or cast iron?",
+        howToTell:
+          "Hold a magnet against the housing. It will not stick to aluminum. Aluminum housings also stay a grainy grey; the cast iron ones go rusty brown. Almost every 2014 V6 2WD is the aluminum 230RIA, but the iron 225RII shows up on earlier WK2 builds and it takes a different torque, which is the part that bites.",
+        options: [
+          { id: "axle-230ria", label: "Aluminum (230RIA)", hint: "Almost all V6 2WD" },
+          { id: "axle-225rii", label: "Cast iron (225RII)" },
+        ],
+      },
+    ],
+    variantParts: [
+      {
+        text: "1.2 qt (1.1 L) Mopar Gear & Axle Lubricant 75W-85 GL-5 synthetic - buy 2 qt so you are not short",
+        onlyFor: ["axle-230ria"],
+      },
+      {
+        text: "1.5 qt (1.4 L) Mopar Gear & Axle Lubricant 75W-85 GL-5 synthetic - buy 2 qt",
+        onlyFor: ["axle-225rii"],
+      },
+    ],
+    tools: [
+      { name: "Allen/hex key set", note: "Both plugs take a hex key. Check the size on your own axle before you shop - we have not been able to verify one figure we trust" },
+      { name: "Torque wrench", note: "Must read accurately down at 26 ft-lb. A big truck wrench will not" },
+      { name: "Fluid transfer pump or squeeze bottle with a hose", note: "You cannot pour into this - the fill hole faces sideways" },
+      { name: "Drain pan" },
+      { name: "Magnet", note: "For the aluminum-or-iron check above, and worth waving at the drained oil" },
+      { name: "Jack + 4 jack stands", note: "All four corners - the truck has to sit level or the fill level is wrong" },
+      { name: "Brake cleaner and rags" },
+      { name: "Nitrile gloves + eye protection" },
+    ],
+    parts: [
+      "New fill and drain plug seals if yours use crush washers and they look flattened",
+      "Shop towels - gear oil gets everywhere and the smell stays",
+    ],
+    safety: [
+      "Level the truck on four jack stands. Fill level on this axle is the bottom of the fill hole, so a nose-up truck ends up underfilled.",
+      "Crack the FILL plug loose before you touch the drain plug. If the fill plug is seized and the oil is already on the floor, the truck is stuck on the stands.",
+      "Gear oil is unpleasant and stains permanently. Gloves, eye protection, old clothes.",
+      "Warm the axle before draining but do not cook yourself on the exhaust - a ten minute drive is enough.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Drain plug and fill plug, aluminum 230RIA axle",
+        value: "26 ft-lb (35 Nm)",
+        onlyFor: ["axle-230ria"],
+        notes:
+          "Straight from the factory service manual drain-and-fill procedure for the 230RIA, which gives the same figure for both plugs. This is a low number into aluminum threads and it is genuinely the number - use a wrench that reads accurately down there rather than going by feel.",
+      },
+      {
+        fastener: "Drain plug and fill plug, cast iron 225RII axle",
+        value: "37 ft-lb (50 Nm)",
+        onlyFor: ["axle-225rii"],
+        notes:
+          "Factory service manual figure for the 225RII. Do NOT split the difference with the aluminum axle's 26 ft-lb - they are two different housings, and 37 ft-lb into an aluminum boss is how threads get pulled.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Know what you are working on before you crawl under it",
+        instructions:
+          "This is a 2WD Grand Cherokee, so there is exactly one gear oil fill on the whole truck: the rear axle. No transfer case, no front differential. The rear unit is an independent-suspension carrier bolted to the body, not a solid axle, and it has a drain plug and a fill plug and NO removable cover. That last point is the one that matters, because most of what you will find online about Jeep differentials is about a cover-off job.",
+        warning: "Do not go looking for a cover to unbolt. There is no cover, no gasket and no RTV on this axle. Prying at the housing seam will only damage it.",
+      },
+      {
+        number: 2,
+        title: "Do not use a guide written for a different Jeep",
+        instructions:
+          "Two near-misses to avoid. The 1999-2010 Grand Cherokee (WK1) has a solid rear axle where the cover does come off - that is where the cover-off instructions come from. And the 2014-and-up Cherokee (KL, the smaller one) has a rear diff with NO drain plug that must be suctioned out through the fill hole. Neither applies here. If a guide tells you to scrape a gasket or suck the oil out with a pump, it is describing a different vehicle.",
+      },
+      {
+        number: 3,
+        title: "Warm it up, then level it on stands",
+        instructions:
+          "Drive the truck ten minutes so the oil thins and carries more of the suspended material out with it. Then raise it and set it on four jack stands so it sits level front-to-back and side-to-side. The fill level is the bottom edge of the fill hole, so a truck sitting nose-up will read full while it is actually short.",
+      },
+      {
+        number: 4,
+        title: "Crack the FILL plug loose first",
+        instructions:
+          "Before the drain plug, before anything: break the fill plug loose and then snug it back. A steel plug in an aluminum housing that has not moved in years can be stubborn, and you want to find that out while the oil is still in the axle and the truck can still be driven somewhere. If it will not move, stop - penetrant and patience, or a shop, but not a drained axle you cannot refill.",
+        warning: "This is the single most important sequencing rule in this job.",
+      },
+      {
+        number: 5,
+        title: "Check the magnet test while you are under there",
+        instructions:
+          "Touch a magnet to the housing. No stick means aluminum, which is the 230RIA and takes 1.2 qt at 26 ft-lb. A firm stick means the cast iron 225RII, which takes 1.5 qt at 37 ft-lb. Answer the question at the top of this guide and the parts list and torque table below will show only your figures.",
+      },
+      {
+        number: 6,
+        title: "Drain it and read what comes out",
+        instructions:
+          "Pan underneath, drain plug out, let it empty completely. Then look at what you have: gear oil is dark and smells bad when it is perfectly healthy, so colour alone tells you little. What you want to see is an absence of glitter. A fine grey haze on the plug magnet is normal wear. Flakes you can feel between your fingers are not, and on this axle that matters more than usual - with no cover, there is no way to inspect or clean the inside, so the drained oil is the only report you get.",
+      },
+      {
+        number: 7,
+        title: "Clean and reinstall the drain plug",
+        instructions:
+          "Wipe the plug and its magnet clean, and wipe the sealing face on the housing. Fit a new crush washer if yours uses one and the old one is flattened. Start it by hand - always by hand into aluminum - then torque it to the figure for your axle in the Torque Specs table above. Answer the aluminum-or-iron question at the top of this guide and that table will show you one number instead of two.",
+      },
+      {
+        number: 8,
+        title: "Pump the new oil in until it runs back out",
+        instructions:
+          "The fill hole faces sideways, so a pump or a squeeze bottle with a hose is not optional. Pump 75W-85 in until it reaches the bottom edge of the fill hole and just begins to weep back out, then stop. That is the spec - the quart figure only tells you how much to buy, and filling to the hole is self-correcting. Use plain 75W-85 with no friction modifier: this is an open differential, and the friction-modified fluid belongs to the electronic limited-slip axle that came on V8 and diesel 4x4s.",
+        warning: "Do not add a limited-slip additive to this axle. It does nothing useful here, and the fluid you want is the plain one.",
+      },
+      {
+        number: 9,
+        title: "Fill plug back in, then check the vent",
+        instructions:
+          "Clean the fill plug and its sealing face, start it by hand and torque it to the same figure as the drain plug. While you are there, find the small vent hose running off the top of the carrier and make sure it is still attached and not pinched - a blocked axle vent builds pressure and pushes gear oil straight past the output seals, which turns a fluid change into a leak.",
+      },
+      {
+        number: 10,
+        title: "Lower it, drive it, then look underneath",
+        instructions:
+          "Lower the truck and drive it gently for ten minutes to warm everything through. Park it, wait an hour, and check both plugs with a flashlight. Check again the next morning - a slow weep from an aluminum boss only shows itself overnight, and it is much easier to fix now than after it has coated the underside.",
+      },
+    ],
+  },
 ];

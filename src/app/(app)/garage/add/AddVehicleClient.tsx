@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { matchCatalogVehicles } from "@/lib/data";
+import { matchCatalogVehicles, catalogMatchLooksExact } from "@/lib/data";
 import {
   VEHICLE_MAKES,
   findMakeByName,
@@ -26,7 +26,7 @@ const [decodeError, setDecodeError] = useState<string | null>(null);
 const [decoded, setDecoded] = useState<DecodedVin | null>(null);
 const [pickedMatchId, setPickedMatchId] = useState<string | null>(null);
 
-const matches = decoded ? matchCatalogVehicles(decoded) : [];
+const matches = decoded ? matchCatalogVehicles(decoded) : [];  const exactMatch = decoded && matches.length === 1 ? catalogMatchLooksExact(decoded, matches[0]) : true;
 
 async function handleDecode(e: React.FormEvent) {
 e.preventDefault();
@@ -48,7 +48,7 @@ return;
 }
 setDecoded(result);
 const found = matchCatalogVehicles(result);
-if (found.length === 1) setPickedMatchId(found[0].id);
+if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(result, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
 } catch {
 setDecodeError(
 "Couldn't reach the NHTSA VIN decoder right now. Try again in a moment, or add your vehicle manually below."
@@ -60,7 +60,7 @@ setDecoding(false);
 
 async function handleAddMatch() {
 if (!pickedMatchId) return;
-await addCatalogVehicle(pickedMatchId);
+await addCatalogVehicle(pickedMatchId, decoded?.vin);
 router.push(`/vehicles/${pickedMatchId}`);
 }
 
@@ -230,10 +230,10 @@ className="rounded-lg bg-orange-500 px-5 py-2 font-semibold text-slate-950 hover
 <div className="mt-5">
 <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-sm text-emerald-300">
 {matches.length === 1
-? "Good news — we have full specs, fluid capacities, and repair guides for this exact vehicle."
+? (exactMatch ? "Good news — we have full specs, fluid capacities, and repair guides for this exact vehicle." : "Same engine as a vehicle we have full guides for -- fluid and torque data below should apply, but see the note below on trim/cab.")
 : "Good news — we have full guides for this vehicle. Pick your engine:"}
 </div>
-<div className="mt-3 grid gap-3 sm:grid-cols-2">
+{matches.length === 1 && !exactMatch && ( <div className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2.5 text-xs text-amber-300"> Your VIN decoded as {[decoded.trim, decoded.bodyCabType].filter(Boolean).join(", ")} {decoded.trim || decoded.bodyCabType ? " -- " : ""} the trim/cab shown below ({matches[0].trim}) is what we have modeled for this engine and may not be an exact match for your specific truck. </div> )} <div className="mt-3 grid gap-3 sm:grid-cols-2">
 {matches.map((v) => (
 <button
 key={v.id}
@@ -249,9 +249,13 @@ pickedMatchId === v.id
 {v.year}
 </div>
 <div className="mt-0.5 font-bold text-slate-100">
-{v.make} {v.model} {v.trim}
+{v.make} {v.model}
+{v.trim ? " " + v.trim : ""}
 </div>
-<div className="mt-1 text-xs text-slate-500">{v.engine}</div>
+<div className="mt-1 text-xs text-slate-500">
+{v.engine}
+{v.drivetrain ? " \u00b7 " + v.drivetrain : ""}
+</div>
 </button>
 ))}
 </div>
@@ -266,14 +270,14 @@ className="mt-4 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 </div>
 )}
 
-{decoded && matches.length === 0 && (
+{decoded && (
 <div className="mt-5">
 <dl className="divide-y divide-slate-800 rounded-lg border border-slate-800 bg-slate-950/60 px-4">
 {[
 ["Year", decoded.year],
 ["Make", decoded.make],
 ["Model", decoded.model],
-["Trim", decoded.trim],
+["Trim", decoded.trim], ["Cab Type", decoded.bodyCabType],
 ["Body Class", decoded.bodyClass],
 ["Cylinders", decoded.engineCylinders],
 ["Displacement (L)", decoded.displacementL],
@@ -289,7 +293,9 @@ className="mt-4 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 </div>
 ))}
 </dl>
-<p className="mt-3 text-sm text-slate-400">
+  {matches.length === 0 && (
+  <>
+        <p className="mt-3 text-sm text-slate-400">
 We don&apos;t have curated specs or torque data for this one yet — you
 can still add it and track service history and maintenance reminders
 on it.
@@ -301,6 +307,8 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 >
 + Add this vehicle to my garage
 </button>
+  </>
+  )}
 </div>
 )}
 </section>

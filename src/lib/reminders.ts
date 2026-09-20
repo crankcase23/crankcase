@@ -7,6 +7,8 @@
 // src/components/ServiceHistory.tsx.
 
 import { ServiceEntry } from "@/types/service";
+import { Vehicle } from "@/types/vehicle";
+import { getServiceSchedule, IntervalRule } from "@/data/service-schedules";
 
 export interface MaintenanceItem {
   key: string;
@@ -96,8 +98,83 @@ function matchesItem(item: MaintenanceItem, title: string): boolean {
   return true;
 }
 
-export function computeReminders(entries: ServiceEntry[], odometer: number | null): ReminderResult[] {
-  return MAINTENANCE_ITEMS.map((item) => {
+/**
+ * Which schedule row, if any, governs each generic reminder. Only the rows we
+ * have actually sourced appear here - everything else keeps the generic
+ * interval, which is a reasonable default for a vehicle whose real schedule we
+ * do not hold.
+ */
+const OVERRIDE_BY_KEY: Record<string, (labelOrJob: string) => boolean> = {
+  oil: (k) => k === "oil-change",
+  "tire-rotation": (k) => k === "tire-rotation",
+  "engine-air-filter": (k) => k === "engine-air-filter",
+  "cabin-air-filter": (k) => k === "cabin-air-filter",
+  "coolant-flush": (k) => k === "coolant",
+  "transmission-fluid": (k) => k === "Automatic transmission fluid and filter",
+};
+
+function intervalToItemFields(rule: IntervalRule): Pick<MaintenanceItem, "intervalMiles" | "intervalMonths"> | null {
+  switch (rule.kind) {
+    case "miles":
+      return { intervalMiles: rule.miles, intervalMonths: rule.months };
+    case "months":
+      return { intervalMonths: rule.months };
+    // A monitor-governed job still deserves a nudge, but only at the OUTER
+    // limit the manual actually states. Anything tighter would be us inventing
+    // a mileage the manufacturer deliberately did not publish.
+    case "monitor":
+      return rule.outerMiles === undefined && rule.outerMonths === undefined
+        ? null
+        : { intervalMiles: rule.outerMiles, intervalMonths: rule.outerMonths };
+    // No published interval, unknown, or inspect-only: do not nag. Telling
+    // someone a service is overdue when the manufacturer never scheduled it is
+    // the quick-lube behaviour this product exists to be the opposite of.
+    default:
+      return null;
+  }
+}
+
+/**
+ * The reminder set for one vehicle: the generic table, with real factory
+ * intervals substituted in wherever we hold that vehicle's schedule, and rows
+ * dropped entirely where the manufacturer publishes no interval at all.
+ */
+export function maintenanceItemsFor(vehicle: Vehicle | null | undefined): MaintenanceItem[] {
+  const schedule = vehicle ? getServiceSchedule(vehicle) : null;
+  if (!schedule) return MAINTENANCE_ITEMS;
+
+  const out: MaintenanceItem[] = [];
+  for (const item of MAINTENANCE_ITEMS) {
+    const match = OVERRIDE_BY_KEY[item.key];
+    if (!match) {
+      out.push(item);
+      continue;
+    }
+    const row = schedule.items.find((r) => match(r.jobType ?? r.label));
+    if (!row) {
+      out.push(item);
+      continue;
+    }
+    const fields = intervalToItemFields(row.normal);
+    if (!fields) continue; // deliberately no reminder for this job on this vehicle
+    out.push({
+      key: item.key,
+      label: item.label,
+      matchKeywords: item.matchKeywords,
+      excludeKeywords: item.excludeKeywords,
+      intervalMiles: fields.intervalMiles,
+      intervalMonths: fields.intervalMonths,
+    });
+  }
+  return out;
+}
+
+export function computeReminders(
+  entries: ServiceEntry[],
+  odometer: number | null,
+  items: MaintenanceItem[] = MAINTENANCE_ITEMS,
+): ReminderResult[] {
+  return items.map((item) => {
     const matches = entries.filter((e) => matchesItem(item, e.title));
     if (matches.length === 0) {
       return { item, status: "never-logged" as const };

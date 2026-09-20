@@ -260,12 +260,36 @@ export default async function AdminCoveragePage({
                     {r.missing.length === 0 ? (
                       <span className="text-[12px] text-slate-600">Nothing outstanding</span>
                     ) : (
-                      <div className="flex flex-wrap gap-1">
-                        {r.missing.slice(0, 3).map((j) => (
+                      <div className="flex flex-col gap-1">
+                        {r.pending.length > 0 && (
+                          <span className="text-[11px] text-amber-400">
+                            {r.pending.length} of {r.missing.length} need numbers only &mdash;
+                            procedure already written
+                          </span>
+                        )}
+                        <div className="flex flex-wrap gap-1">
+                        {[...r.missing]
+                          .sort(
+                            (a, b) =>
+                              Number(r.pending.some((p) => p.job.id === b.id)) -
+                              Number(r.pending.some((p) => p.job.id === a.id)),
+                          )
+                          .slice(0, 3)
+                          .map((j) => (
                           <span
                             key={j.id}
-                            className="rounded border border-slate-800 bg-slate-900/60 px-1.5 py-0.5 text-[11px] text-slate-400"
+                            title={
+                              r.pending.some((p) => p.job.id === j.id)
+                                ? "Procedure already written for this platform. Waiting on verified numbers for this vehicle."
+                                : "No guide written for this job yet."
+                            }
+                            className={
+                              r.pending.some((p) => p.job.id === j.id)
+                                ? "rounded border border-amber-700/70 bg-amber-950/40 px-1.5 py-0.5 text-[11px] text-amber-300"
+                                : "rounded border border-slate-800 bg-slate-900/60 px-1.5 py-0.5 text-[11px] text-slate-400"
+                            }
                           >
+                            {r.pending.some((p) => p.job.id === j.id) ? "\u25c6 " : ""}
                             {j.label}
                           </span>
                         ))}
@@ -274,6 +298,7 @@ export default async function AdminCoveragePage({
                             +{r.missing.length - 3} more
                           </span>
                         )}
+                        </div>
                       </div>
                     )}
                   </TD>

@@ -70,3 +70,7 @@ const findCustom = useCallback(
   (id: string) => entries.find((e) => e.kind === "custom" && e.id === id),
   [entries],
   );
+
+  return { entries, addCatalogVehicle, addCustomVehicle, removeEntry, findCustom, isLoading, error };
+}
+

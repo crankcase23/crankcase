@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Vehicle, RepairGuide } from "@/types/vehicle";
+import { Vehicle, ResolvedGuide } from "@/types/vehicle";
 
 export default function PrintVehicleSpecSheet({
   vehicle,
   repairGuides,
 }: {
   vehicle: Vehicle;
-  repairGuides: RepairGuide[];
+  repairGuides: ResolvedGuide[];
 }) {
   const printedOn = new Date().toLocaleDateString(undefined, {
     year: "numeric",
