@@ -316,7 +316,7 @@ verified: true,
         title: "Fit the new rotor and refit the bracket",
         instructions:
           "Scrub the shipping oil off both faces of the new rotor with brake cleaner until the rag comes away clean. Set it on the hub, hold it with a lug nut, then start both bracket bolts by hand and torque to 170 ft-lb (230 Nm).",
-        torque: [{ fastener: "Caliper bracket bolts to knuckle", value: "" }],
+        torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "" }],
         rotorsOnly: true,
       },
       {
@@ -330,7 +330,7 @@ verified: true,
         title: "Set the caliper back and torque the guide pins",
         instructions:
           "Lower the caliper over the new pads and start both pin bolts by hand. Torque to 74 ft-lb (100 Nm).",
-        torque: [{ fastener: "Caliper guide pin bolts", value: "" }],
+        torque: [{ fastener: "Caliper guide/slide pin bolts (front)", value: "" }],
       },
       {
         number: 12,
@@ -470,7 +470,7 @@ verified: true,
         title: "Reinstall the caliper bracket",
         instructions:
           "Start both bracket bolts by hand, then torque to 148 ft-lb (200 Nm). Clean and re-apply medium-strength thread locker if the originals came out with residue on them.",
-        torque: [{ fastener: "Caliper bracket bolts to knuckle", value: "" }],
+        torque: [{ fastener: "Caliper bracket (adapter) bolts to knuckle", value: "" }],
         rotorsOnly: true,
       },
       {
@@ -478,7 +478,7 @@ verified: true,
         title: "Grease the pins, fit the pads, torque the guide bolts",
         instructions:
           "Clean and re-grease each guide pin with high-temp brake grease, replace any bad boots, fit the new clips and pads, then set the caliper back and torque both pin bolts to 38 ft-lb (52 Nm). That is a low figure and easy to overshoot with a big wrench.",
-        torque: [{ fastener: "Caliper guide pin bolts", value: "" }],
+        torque: [{ fastener: "Caliper guide/slide pin bolts (rear)", value: "" }],
       },
       {
         number: 12,
