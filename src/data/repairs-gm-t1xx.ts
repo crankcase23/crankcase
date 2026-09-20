@@ -134,9 +134,10 @@ provenance: { source: "open-labor-project", confidence: "high" },
 },
 {
 fastener: "Spin-on oil filter",
-value: "22 ft-lb (30 Nm)",
-notes: "Reference torque if using a filter wrench — most techs simply hand-tighten plus 3/4 turn past gasket contact instead of using a torque wrench on a spin-on filter.",
-provenance: { source: "open-labor-project", confidence: "high" },
+value: "1 full turn past gasket contact (roughly 10 Nm)",
+notes:
+"Oil the new gasket, hand-spin the filter until the gasket touches, then one full turn more. That IS the spec - GM bulletin 22-NA-009 (Sept 2022) replaced the older three-quarter-turn instruction, and a spin-on filter is not a torque-wrench fastener. Do NOT use the 22 ft-lb (30 Nm) figure that circulates for this filter: it is roughly three times GM's own number and will crush the gasket. The 41 ft-lb figure some torque tables carry is the filter ADAPTER fitting, a different part entirely.",
+provenance: { source: "curated" },
 },
 ],
 },
@@ -157,9 +158,10 @@ notes: "Same 5.3L EcoTec3 (L84) engine as the Chevrolet Silverado 1500 — this 
 },
 {
 fastener: "Spin-on oil filter",
-value: "22 ft-lb (30 Nm)",
-notes: "Reference torque if using a filter wrench — most techs simply hand-tighten plus 3/4 turn past gasket contact instead of using a torque wrench on a spin-on filter. Same platform-twin sourcing note as the drain plug above.",
-},
+value: "1 full turn past gasket contact (roughly 10 Nm)",
+notes:
+"Oil the new gasket, hand-spin the filter until the gasket touches, then one full turn more. That IS the spec - GM bulletin 22-NA-009 (Sept 2022) replaced the older three-quarter-turn instruction, and a spin-on filter is not a torque-wrench fastener. Do NOT use the 22 ft-lb (30 Nm) figure that circulates for this filter: it is roughly three times GM's own number and will crush the gasket. The 41 ft-lb figure some torque tables carry is the filter ADAPTER fitting, a different part entirely.",
+provenance: { source: "curated" },},
 ],
 },
 },
