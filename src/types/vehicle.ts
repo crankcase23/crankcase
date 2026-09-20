@@ -317,6 +317,16 @@ export interface Vehicle {
    * guides written directly against its id.
    */
   keys?: VehicleKeys;
+  /**
+   * Rear brake type. Omitted means disc, which is the common case.
+   *
+   * This exists because the job is the same job either way - remove the
+   * friction material, fit new, adjust - but the READER needs the right word.
+   * A Tacoma owner told to replace his rear "pads" will go looking for a
+   * caliper he does not have. Set this to "drum" and the coverage report and
+   * the guide catalog both say "shoes" instead.
+   */
+  rearBrakes?: "disc" | "drum";
   image?: string;
   specs: SpecItem[];
   fluids: FluidCapacity[];
