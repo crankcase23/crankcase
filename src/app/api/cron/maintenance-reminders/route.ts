@@ -4,7 +4,8 @@ import { db } from "@/db";
 import { users, garageEntries, reminderNotifications } from "@/db/schema";
 import { listServiceEntries } from "@/lib/serviceEntriesDb";
 import { getOdometer } from "@/lib/odometerDb";
-import { computeReminders } from "@/lib/reminders";
+import { computeReminders, maintenanceItemsFor } from "@/lib/reminders";
+import { getVehicleById } from "@/data/vehicles";
 import { sendEmail } from "@/lib/email";
 import { makeUnsubscribeToken } from "@/lib/unsubscribeToken";
 
@@ -43,7 +44,11 @@ listServiceEntries(vehicle.id),
 getOdometer(vehicle.id),
 db.select().from(reminderNotifications).where(eq(reminderNotifications.garageEntryId, vehicle.id)),
 ]);
-const results = computeReminders(entries, odometer);
+// Same intervals the vehicle's own page shows: the factory schedule where
+// we hold it, the generic table where we don't. A custom garage entry has no
+// catalog record, so it keeps the generic set.
+const catalogVehicle = vehicle.kind === "catalog" && vehicle.vehicleId ? getVehicleById(vehicle.vehicleId) : undefined;
+const results = computeReminders(entries, odometer, maintenanceItemsFor(catalogVehicle));
 const dueResults = results.filter((r) => r.status === "overdue" || r.status === "due-soon");
 
 for (const result of dueResults) {
