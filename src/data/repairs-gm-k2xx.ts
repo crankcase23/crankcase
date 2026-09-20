@@ -37,6 +37,25 @@ import { RepairGuide } from "@/types/vehicle";
 // equipped trims to D3S HID. If bulb numbers are ever added to the fuse and
 // bulb guide, it needs splitting with years: [2014, 2015] and [2016, 2018].
 //
+// HOW THE 2018 SIERRA FIGURES WERE SOURCED - read this before adding another.
+//
+// They were NOT copied across from the Silverado because the trucks look alike.
+// Every figure was researched against Sierra-specific sources first and only
+// then compared: the GMC Sierra 2014-2018 torque table for brakes, lug nuts and
+// driveline plugs, two GM TechLink battery tables, and a Sierra-specific fluid
+// lookup for the capacities. They came back identical to the Silverado, which
+// is the expected answer for a badge twin - but it was the answer, not the
+// assumption.
+//
+// That order mattered. The same pass caught a real error in the T1XX guides,
+// which were printing 22 ft-lb for a spin-on oil filter against GM's own
+// roughly 10 Nm, and it corrected the reason this file gives for rejecting a
+// Group 48 battery. Copying figures across on the strength of a shared platform
+// would have propagated both instead of finding them.
+//
+// So: no shortcut here, and please do not add one. A twin declaration was
+// considered and rejected for exactly this reason - see the fitment doc.
+//
 // See claude/guide-fitment-rules-2026-09-19.md.
 // ---------------------------------------------------------------------------
 
@@ -132,8 +151,30 @@ verified: true,
       },
       {
         fastener: "Oil filter",
-        value: "Hand-tight plus three quarters of a turn after the gasket touches",
-        notes: "No torque wrench. Wipe a film of fresh oil on the new gasket first or it will grab and tear.",
+        value: "Hand-tight plus one full turn after the gasket touches",
+        notes: "No torque wrench - the turn count IS the spec. GM bulletin 22-NA-009 (Sept 2022) revised this from three quarters of a turn to one full turn, to stop filters weeping at the gasket. Wipe a film of fresh oil on the new gasket first or it will grab and tear. Ignore any table giving this filter a 22 ft-lb or 41 ft-lb figure: the first is roughly three times GM number, the second is the filter adapter fitting, not the filter.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-oil-change",
+verified: true,
+    parts: [
+      "8 qt dexos1 0W-20 full synthetic",
+      "ACDelco PF63 spin-on oil filter (or equivalent)",
+      "Drain plug washer if yours is the crush-washer type",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil drain plug",
+        value: "18 ft-lb (25 Nm)",
+        notes:
+          "Two sources agree on 18 ft-lb across the 4.3, 5.3 and 6.2. This is a low figure into an aluminum pan - a stripped pan is a far bigger job than a weeping plug, so do not lean on it.",
+      },
+      {
+        fastener: "Oil filter",
+        value: "Hand-tight plus one full turn after the gasket touches",
+        notes: "No torque wrench - the turn count IS the spec. GM bulletin 22-NA-009 (Sept 2022) revised this from three quarters of a turn to one full turn, to stop filters weeping at the gasket. Wipe a film of fresh oil on the new gasket first or it will grab and tear. Ignore any table giving this filter a 22 ft-lb or 41 ft-lb figure: the first is roughly three times GM number, the second is the filter adapter fitting, not the filter.",
       },
     ],
 },
@@ -220,7 +261,20 @@ verified: true,
         fastener: "Wheel lug nuts",
         value: "140 ft-lb (190 Nm)",
         notes:
-          "Three sources agree, and the figure has held across every printed Silverado 1500 owner's manual. Star pattern, in two passes.",
+          "Three sources agree, and the figure has held across every printed K2XX 1500 owner's manual. Star pattern, in two passes.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-tire-rotation",
+verified: true,
+    parts: ["Replacement lug nuts if any are swollen or rounded"],
+    torqueSpecs: [
+      {
+        fastener: "Wheel lug nuts",
+        value: "140 ft-lb (190 Nm)",
+        notes:
+          "Three sources agree, and the figure has held across every printed K2XX 1500 owner's manual. Star pattern, in two passes.",
       },
     ],
 },
@@ -345,6 +399,32 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-front-brake-pads",
+verified: true,
+    parts: [
+      "Front brake pad set",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New guide pin boots if the old ones are torn or hardened",
+      "Front brake rotors, pair - only if replacing rotors",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper guide/slide pin bolts (front)",
+        value: "74 ft-lb (100 Nm)",
+        notes:
+          "JD9 brake code, which is the standard and effectively only 1500 brake package for 2014-2018. Two independent sources agree. This is much higher than the rear - do not carry the rear figure forward.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "170 ft-lb (230 Nm)",
+        notes:
+          "Rotors only. JD9 code. Beware the J95/J96 heavy-brake column in the same tables - it lists 221 ft-lb, roughly 50 percent over spec for a 1500 and a real over-torque.",
+      },
+      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-front-brake-pads",
 verified: true,
     parts: [
       "Front brake pad set",
@@ -517,6 +597,32 @@ verified: true,
       { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
     ],
 },
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-rear-brake-pads",
+verified: true,
+    parts: [
+      "Rear brake pad set",
+      "Brake cleaner",
+      "High-temp brake/caliper grease",
+      "New guide pin boots if the old ones are torn or hardened",
+      "Rear brake rotors, pair - only if replacing rotors",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Caliper guide/slide pin bolts (rear)",
+        value: "38 ft-lb (52 Nm)",
+        notes:
+          "JD9 brake code. Two independent sources agree. About half the front figure - the two are not interchangeable.",
+      },
+      {
+        fastener: "Caliper bracket (adapter) bolts to knuckle",
+        value: "148 ft-lb (200 Nm)",
+        notes:
+          "Rotors only. JD9 code, corroborated three ways. Ignore the J95/J96 column in the same tables - those are heavy-brake figures and far too high for a 1500.",
+      },
+      { fastener: "Wheel lug nuts", value: "140 ft-lb (190 Nm)" },
+    ],
+},
 },
 },
 {
@@ -524,7 +630,7 @@ verified: true,
     title: "Battery Replacement",
     jobType: "battery",
     summary:
-      "Group 94R (H7) under the hood on the driver's side. The trap here is at the parts counter, not on the truck: half the retailers will also offer you a Group 48, which is the auxiliary battery for dual-battery trucks and will sit loose in this tray.",
+      "Group 94R (H7) under the hood on the driver's side. The trap here is at the parts counter, not on the truck: half the retailers will also offer you a Group 48, which is the row for the 4.3L V6 and the diesel, not your V8, and will sit loose in this tray.",
     difficulty: "Easy",
     estTime: "30 min",
     tier: "free",
@@ -549,7 +655,7 @@ verified: true,
         number: 1,
         title: "Confirm the group size before you buy",
         instructions:
-          "This truck takes a Group 94R, also called H7, 720 CCA from the factory. Several big retailers list a Group 48 (H6) as an alternate fit - that is the auxiliary battery for trucks built with the dual-battery option, not the primary. A 48 is physically shorter than a 94R and will move around in this tray no matter how you clamp it. If the counter hands you a 48, hand it back.",
+          "This truck takes a Group 94R, also called H7, 800 CCA from the factory. Several big retailers list a Group 48 (H6) as an alternate fit. Two GM TechLink battery tables put the V8 gas trucks (RPO L83/L86) in the 94R row and the 4.3L V6 and diesel in the 48 row - so a 48 is the right battery for a different truck, not a second battery for yours. On the dual-battery trucks GM notes the auxiliary battery is simply another 94R. A 48 is physically shorter than a 94R and will move around in this tray no matter how you clamp it. If the counter hands you a 48, hand it back.",
       },
       {
         number: 2,
@@ -604,7 +710,27 @@ figures: {
 id: "silverado-2018-battery",
 verified: true,
     parts: [
-      "Group 94R (H7) battery, 720 CCA minimum",
+      "Group 94R (H7) battery, 800 CCA minimum",
+      "Battery terminal protectant spray or felt washers",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Battery hold-down clamp bolt",
+        value: "13 ft-lb (18 Nm)",
+        notes: "Reference figure from a single published procedure. Snug is what matters - the clamp only has to stop the battery moving.",
+      },
+      {
+        fastener: "Battery terminal clamp nuts",
+        value: "11 ft-lb (15 Nm)",
+        notes: "Reference figure. Lead is soft; over-tightening deforms the post and guarantees a bad connection later.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-battery",
+verified: true,
+    parts: [
+      "Group 94R (H7) battery, 800 CCA minimum",
       "Battery terminal protectant spray or felt washers",
     ],
     torqueSpecs: [
@@ -684,6 +810,12 @@ verified: true,
     parts: ["Engine air filter (panel type)"],
     torqueSpecs: [],
 },
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-engine-air-filter",
+verified: true,
+    parts: ["Engine air filter (panel type)"],
+    torqueSpecs: [],
+},
 },
 },
 {
@@ -738,6 +870,12 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-cabin-air-filter",
+verified: true,
+    parts: ["Cabin air filter (GM 23281440 or equivalent)"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-cabin-air-filter",
 verified: true,
     parts: ["Cabin air filter (GM 23281440 or equivalent)"],
     torqueSpecs: [],
@@ -797,6 +935,12 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-wiper-blades",
+verified: true,
+    parts: ["Front wiper blade pair - check length for your build, driver and passenger sides differ"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-wiper-blades",
 verified: true,
     parts: ["Front wiper blade pair - check length for your build, driver and passenger sides differ"],
     torqueSpecs: [],
@@ -877,6 +1021,22 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-coolant",
+verified: true,
+    parts: [
+      "2 gallons of DEX-COOL 50/50 premix, or 1 gallon of concentrate plus distilled water",
+      "Distilled water - never tap water",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Radiator drain petcock",
+        value: "Hand-tight only",
+        notes:
+          "It is a plastic fitting. Snug it by hand and stop - putting a wrench on it and cracking the neck turns a fluid change into a radiator replacement.",
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-coolant",
 verified: true,
     parts: [
       "2 gallons of DEX-COOL 50/50 premix, or 1 gallon of concentrate plus distilled water",
@@ -1026,7 +1186,54 @@ verified: true,
       {
         fastener: "Rear axle cover bolts",
         value: "20 ft-lb (27 Nm)",
-        notes: "Star pattern. Community figure citing service data rather than a scanned manual page - treat as a reference.",
+        notes: "Star pattern. SOURCES CONFLICT and neither is a scanned manual page: a Sierra-specific torque table gives 15 ft-lb (20 Nm) followed by a further 20 degrees, while community service-data postings give a flat 20 ft-lb. Bolt-grade math on a 5/16-18 brackets both, so neither will hurt the axle - but treat this as a reference figure, not a spec. If you have a real FSM page, trust it over this.",
+      },
+      {
+        fastener: "Rear axle fill plug",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure from the same source as the cover bolts.",
+      },
+      {
+        fastener: "Transfer case drain and fill plugs",
+        value: "13 ft-lb (18 Nm)",
+        notes:
+          "This is the weakest number in the guide. One source specific to this generation says 13 ft-lb; an older-generation source says 15. Anything in that range is fine, and erring low is the safe direction into an aluminum case.",
+      },
+      {
+        fastener: "Front differential drain and fill plugs",
+        value: "24 ft-lb (33 Nm)",
+        notes: "Reference figure.",
+      },
+    ],
+    variantParts: [
+      {
+        text: "Rear axle: 4.2 pints (2.1 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-8-6"],
+      },
+      {
+        text: "Rear axle: 5.5 pints (2.75 qt) of 75W-85 synthetic axle lubricant, GM 19300457",
+        onlyFor: ["axle-9-5"],
+      },
+      {
+        text: "Do NOT buy limited-slip friction modifier - the G80 must not have it",
+        onlyFor: ["g80-yes"],
+      },
+    ],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-driveline-fluid",
+verified: true,
+    parts: [
+      "Front differential: 1.5 qt of 75W-90 synthetic GL-5",
+      "Transfer case: 1.6 qt of DEXRON-VI ATF",
+      "Rear axle cover gasket or RTV sealant",
+      "Shop towels - gear oil gets everywhere",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Rear axle cover bolts",
+        value: "20 ft-lb (27 Nm)",
+        notes: "Star pattern. SOURCES CONFLICT and neither is a scanned manual page: a Sierra-specific torque table gives 15 ft-lb (20 Nm) followed by a further 20 degrees, while community service-data postings give a flat 20 ft-lb. Bolt-grade math on a 5/16-18 brackets both, so neither will hurt the axle - but treat this as a reference figure, not a spec. If you have a real FSM page, trust it over this.",
       },
       {
         fastener: "Rear axle fill plug",
@@ -1145,6 +1352,19 @@ verified: true,
       },
     ],
 },
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-serpentine-belt",
+verified: true,
+    parts: ["Serpentine belt - match by your exact engine and accessory package"],
+    torqueSpecs: [
+      {
+        fastener: "None removed in this job",
+        value: "No fastener is loosened or retightened",
+        notes:
+          "The tensioner is only levered aside to slip the belt off and back on; nothing is unbolted. Replacing the tensioner itself is a different job with its own torque figures.",
+      },
+    ],
+},
 },
 },
 {
@@ -1212,6 +1432,17 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-fluid-checks",
+verified: true,
+    parts: [
+      "dexos1 0W-20 for topping up oil",
+      "DEX-COOL 50/50 premix",
+      "Washer fluid",
+      "DOT 3 brake fluid, only if you actually need it",
+    ],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-fluid-checks",
 verified: true,
     parts: [
       "dexos1 0W-20 for topping up oil",
@@ -1289,6 +1520,15 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-fuse-bulb",
+verified: true,
+    parts: [
+      "Assorted blade fuses matching the amperage you are replacing",
+      "Replacement bulb of the correct type for the fixture",
+    ],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-fuse-bulb",
 verified: true,
     parts: [
       "Assorted blade fuses matching the amperage you are replacing",
@@ -1388,6 +1628,22 @@ verified: true,
       },
     ],
 },
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-o2-sensor",
+verified: true,
+    parts: [
+      "Oxygen sensor for the specific position the code names",
+      "Anti-seize, only if the new sensor does not arrive with it pre-applied",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oxygen sensor",
+        value: "~31 ft-lb (42 Nm)",
+        notes:
+          "Curated reference value, not a figure we have traced to the factory manual for this truck. Confirm against your service manual before final tightening. Over-torquing into a hot exhaust bung is how the next person ends up drilling it out.",
+      },
+    ],
+},
 },
 },
 {
@@ -1446,6 +1702,12 @@ verified: true,
 figures: {
 "2018-chevrolet-silverado-1500-5.3l": {
 id: "silverado-2018-key-fob-battery",
+verified: true,
+    parts: ["CR2032 coin cell - check the old one, some fobs take a CR2025"],
+    torqueSpecs: [],
+},
+"2018-gmc-sierra-1500-5.3l": {
+id: "sierra-2018-key-fob-battery",
 verified: true,
     parts: ["CR2032 coin cell - check the old one, some fobs take a CR2025"],
     torqueSpecs: [],
