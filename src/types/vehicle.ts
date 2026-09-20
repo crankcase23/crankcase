@@ -205,9 +205,20 @@ export interface RepairGuide {
   estTime: string;
   tier: ContentTier;
   tools: Tool[];
-  parts: string[];
+  /**
+   * Required on a guide bound to one vehicleId. Omitted on a shared guide,
+   * where the parts list is per-vehicle and lives in figures - the part that
+   * fits a Silverado is described differently from the one that fits a Sierra
+   * even when it is the same box off the same shelf.
+   */
+  parts?: string[];
   safety: string[];
-  torqueSpecs: TorqueSpec[];
+  /**
+   * Same rule as parts. Omitted on a shared guide, because a torque figure is
+   * the single most dangerous thing in this codebase to inherit by accident.
+   * See GuideFigures.
+   */
+  torqueSpecs?: TorqueSpec[];
   steps: RepairStep[];
   /**
    * Set on the small number of approved jobs that genuinely have no torqued
@@ -265,7 +276,11 @@ export interface RepairGuide {
  * this type is how that distinction stays in the compiler instead of in
  * somebody's memory.
  */
-export type ResolvedGuide = RepairGuide & { vehicleId: string };
+export type ResolvedGuide = RepairGuide & {
+  vehicleId: string;
+  parts: string[];
+  torqueSpecs: TorqueSpec[];
+};
 
 /**
  * What makes two vehicles "the same" for the purpose of reusing a procedure.
