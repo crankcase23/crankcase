@@ -20,6 +20,14 @@ export interface MaintenanceItem {
   intervalMonths?: number;
   matchKeywords: string[];
   excludeKeywords?: string[];
+  /**
+   * Set only when the interval above is NOT the manufacturer's. A vehicle
+   * whose schedule we hold but whose row for this job we could not source
+   * keeps the generic rule-of-thumb figure and carries this line alongside
+   * it, so the reader is never shown a number that looks factory when it
+   * isn't. Undefined means the figure needs no caveat.
+   */
+  sourceNote?: string;
 }
 
 export const MAINTENANCE_ITEMS: MaintenanceItem[] = [
@@ -113,7 +121,11 @@ const OVERRIDE_BY_KEY: Record<string, (labelOrJob: string) => boolean> = {
   "engine-air-filter": (k) => k === "engine-air-filter",
   "cabin-air-filter": (k) => k === "cabin-air-filter",
   "coolant-flush": (k) => k === "coolant",
-  "transmission-fluid": (k) => k === "Automatic transmission fluid and filter",
+  // GM labels this row "...and filter"; Jeep just "Automatic transmission
+  // fluid". Matching only GM's wording meant the Jeep row was never found and
+  // the generic 60,000 miles was shown as if nobody had ever checked.
+  "transmission-fluid": (k) =>
+    k === "Automatic transmission fluid and filter" || k === "Automatic transmission fluid",
 };
 
 function intervalToItemFields(rule: IntervalRule): Pick<MaintenanceItem, "intervalMiles" | "intervalMonths"> | null {
@@ -138,9 +150,21 @@ function intervalToItemFields(rule: IntervalRule): Pick<MaintenanceItem, "interv
 }
 
 /**
+ * The caveat shown against a generic figure we are keeping for want of a
+ * sourced one. Short on purpose - this sits under a row on a phone. The
+ * schedule row's own note carries the detail when it has one.
+ */
+function unsourcedNote(make: string, rowNote?: string): string {
+  const head = `${make} publishes no interval for this that we could source, so this is a rule of thumb, not a factory figure.`;
+  return rowNote ? `${head} ${rowNote}` : head;
+}
+
+/**
  * The reminder set for one vehicle: the generic table, with real factory
- * intervals substituted in wherever we hold that vehicle's schedule, and rows
- * dropped entirely where the manufacturer publishes no interval at all.
+ * intervals substituted in wherever we hold that vehicle's schedule, rows
+ * dropped entirely where the manufacturer publishes no interval at all, and
+ * the generic figure kept but plainly captioned where we simply could not
+ * source that vehicle's row.
  */
 export function maintenanceItemsFor(vehicle: Vehicle | null | undefined): MaintenanceItem[] {
   const schedule = vehicle ? getServiceSchedule(vehicle) : null;
@@ -156,6 +180,16 @@ export function maintenanceItemsFor(vehicle: Vehicle | null | undefined): Mainte
     const row = schedule.items.find((r) => match(r.jobType ?? r.label));
     if (!row) {
       out.push(item);
+      continue;
+    }
+    // "unknown" is not "the manufacturer says nothing" - it is "we could not
+    // read it". Dropping the reminder would silently remove a service people
+    // genuinely ask about, so the generic figure stays and says what it is.
+    // "none" is different: that IS a sourced fact, and it keeps dropping the
+    // row rather than nagging about a service the manufacturer never
+    // scheduled.
+    if (row.normal.kind === "unknown") {
+      out.push({ ...item, sourceNote: unsourcedNote(vehicle?.make ?? "The manufacturer", row.note) });
       continue;
     }
     const fields = intervalToItemFields(row.normal);

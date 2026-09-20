@@ -138,11 +138,20 @@ export default function MaintenanceReminders({
       {visible.length > 0 && (
         <ul className="mb-3 divide-y divide-slate-800 overflow-hidden rounded-xl border border-slate-800">
           {visible.map((r) => (
-            <li key={r.item.key} className="flex items-center justify-between gap-3 bg-slate-900 px-4 py-3 text-sm">
-              <span className="text-slate-200">{r.item.label}</span>
-              <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
-                {statusLabel(r)}
-              </span>
+            <li key={r.item.key} className="bg-slate-900 px-4 py-3 text-sm">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-slate-200">{r.item.label}</span>
+                <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
+                  {statusLabel(r)}
+                </span>
+              </div>
+              {/* Only set where we are showing a generic figure for a vehicle
+                  whose own row we could not source. Saying so beside the
+                  number is the whole point - an uncaptioned rule of thumb on a
+                  page that otherwise prints factory figures reads as factory. */}
+              {r.item.sourceNote ? (
+                <p className="mt-1.5 max-w-prose text-xs leading-relaxed text-amber-300/80">{r.item.sourceNote}</p>
+              ) : null}
             </li>
           ))}
         </ul>

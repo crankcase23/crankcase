@@ -57,7 +57,11 @@ if (prior && prior.status === result.status) continue;
 
 const vehicleName = [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(" ") || "Your vehicle";
 const statusLabel = result.status === "overdue" ? "Overdue" : "Due soon";
-digestLines.push("<li><strong>" + vehicleName + "</strong> -- " + result.item.label + " (" + statusLabel + ")</li>");
+// An unsourced figure has to carry its caveat here too. The email is where
+// somebody books the work without ever opening the page, so a bare mileage
+// in it is the one place the number can do real harm unchallenged.
+const caveat = result.item.sourceNote ? "<br /><em>" + result.item.sourceNote + "</em>" : "";
+digestLines.push("<li><strong>" + vehicleName + "</strong> -- " + result.item.label + " (" + statusLabel + ")" + caveat + "</li>");
 
 await db
 .insert(reminderNotifications)
