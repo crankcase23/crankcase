@@ -42,8 +42,29 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Everything except static assets, PWA icons/manifest, and favicon —
-    // those aren't sensitive and gating them just breaks icon loading.
-    "/((?!_next/static|_next/image|favicon.ico|icons/|manifest.json).*)",
+    // Everything except static assets, PWA icons/manifest, favicon, and the
+    // machine-readable report endpoint.
+    //
+    // WHY /api/admin/report IS EXEMPT — this is a deliberate hole, so it needs
+    // a reason on the record.
+    //
+    // The gate above reads the Authorization header and requires "Basic ".
+    // The report endpoint reads the SAME header and requires "Bearer ". A
+    // request can only carry one Authorization header, so with the endpoint
+    // behind this gate it is unreachable: every scheduled request 401s here
+    // before its own auth ever runs.
+    //
+    // It is exempted rather than dual-gated because what protects it is
+    // stronger than what protects everything else. This gate is one shared
+    // password, typed by a human, compared with ===. That endpoint requires a
+    // 32-character random token, compared with timingSafeEqual over SHA-256
+    // digests so neither its value nor its length leaks through response
+    // timing, and it fails closed when the token is unset or under 24 chars.
+    // It is also read-only, has no write verbs, and strips reporter emails
+    // from its payload.
+    //
+    // If that endpoint ever grows a write verb, or its token check is
+    // loosened, this exemption must be revisited at the same time.
+    "/((?!_next/static|_next/image|favicon.ico|icons/|manifest.json|api/admin/report).*)",
   ],
 };
