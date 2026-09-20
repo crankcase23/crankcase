@@ -2003,7 +2003,13 @@ for (const v of vehicles) {
 for (const g of repairs) {
 const vid = g.vehicleId;
 if (vid) {
-if (vid === v.id) out.push({ ...g, vehicleId: vid });
+if (vid === v.id)
+out.push({
+...g,
+vehicleId: vid,
+parts: g.parts || [],
+torqueSpecs: g.torqueSpecs || [],
+});
 continue;
 }
 if (!g.fitment || !matchesFitment(g.fitment, v)) continue;
