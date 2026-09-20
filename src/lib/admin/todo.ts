@@ -11,7 +11,7 @@ import {
   contentBlocks,
 } from "@/db/schema";
 import { getGuideSummary, listGuideRecords } from "./guides";
-import { listVehicles } from "@/lib/data";
+import { listVehicles, isUnverifiedVehicle } from "@/lib/data";
 
 // ---------------------------------------------------------------------------
 // The To-Do page has two halves, and the split is the whole design.
@@ -218,9 +218,7 @@ export async function getBuildQueue(): Promise<BuildSignal[]> {
   }
 
   // --- data provenance ------------------------------------------------------
-  const handTypedVehicles = vehicles.filter(
-    (v) => v.fluids.length > 0 && !v.fluids.some((f) => f.provenance?.source === "open-labor-project")
-  );
+  const handTypedVehicles = vehicles.filter(isUnverifiedVehicle);
   if (handTypedVehicles.length > 0) {
     signals.push({
       id: "hand-typed-fluids",

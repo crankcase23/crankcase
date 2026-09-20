@@ -117,6 +117,21 @@ export function TierBadge({ tier }: { tier: "free" | "premium" }) {
   );
 }
 
+// Marks a vehicle whose figures are all hand-typed reference numbers with
+// nothing sourced behind them (see isUnverifiedVehicle in lib/data). Amber,
+// not red: the data is not known to be wrong, it is known to be unconfirmed,
+// and a reader deserves to be told which of the two they are looking at.
+export function UnverifiedBadge() {
+  return (
+    <span
+      className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-semibold text-amber-400"
+      title="Every figure on this vehicle is a hand-typed reference number. None of it has been confirmed against a citable source yet."
+    >
+      Unverified
+    </span>
+  );
+}
+
 export function DifficultyBadge({ difficulty }: { difficulty: string }) {
   const styles: Record<string, string> = {
     Easy: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",

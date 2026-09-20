@@ -165,3 +165,32 @@ export function catalogMatchLooksExact(decoded: DecodedVin, vehicle: Vehicle): b
   }
   return true;
 }
+
+// ---------------------------------------------------------------------------
+// "Unverified" = what the build notes call a skeleton: a catalog entry whose
+// numbers are all hand-typed reference figures, with nothing sourced behind
+// them. Every fluid, torque and capacity on it was written by a person from
+// general knowledge of the platform, not pulled from a source that can be
+// cited back.
+//
+// The test is the fluid block, because that is the part a skeleton always
+// ships with -- a new entry gets specs and fluids first and its guides
+// later, so fluid provenance is the earliest honest signal of whether
+// anything on the page has been verified.
+//
+// A vehicle with NO fluids at all is not called unverified here. It is not
+// making a claim yet, and the admin coverage page already flags it as
+// missing data. This label is for a page that shows a reader real-looking
+// numbers, so the reader learns where they came from.
+//
+// One definition, three callers: this page badge and the two admin signals
+// (getBuildQueue's hand-typed-fluids and the guide console's coverage
+// issues). They must not be allowed to drift -- the whole point is that
+// what Andy sees in the admin area and what a reader sees on the page are
+// the same claim.
+export function isUnverifiedVehicle(vehicle: Vehicle): boolean {
+  return (
+    vehicle.fluids.length > 0 &&
+    !vehicle.fluids.some((f) => f.provenance?.source === "open-labor-project")
+  );
+}

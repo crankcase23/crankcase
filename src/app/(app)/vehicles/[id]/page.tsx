@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { findVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
-import { SpecTable, FluidTable, TierBadge } from "@/components/tables";
+import { findVehicle, isUnverifiedVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
+import { SpecTable, FluidTable, TierBadge, UnverifiedBadge } from "@/components/tables";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
@@ -39,6 +39,12 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
   const repairGuides = listRepairsForVehicle(vehicle.id);
 
+  // Andy's call, 2026-09-20: keep adding skeleton entries to the catalog, but
+  // say on the page which ones they are. An entry with no sourced data behind
+  // it still shows a reader full-looking capacity and torque tables, and
+  // without this they have no way to tell it apart from a verified one.
+  const unverified = isUnverifiedVehicle(vehicle);
+
   // Per-user VIN, surfaced in Vehicle Specs below -- added 2026-09-19
   // alongside the cab/trim-mismatch fix so a catalog match's real-world
   // VIN is visible on the page, not just stored. This page is shared
@@ -71,6 +77,11 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
           <p className="mt-1 text-slate-400">
             {vehicle.engine} &middot; {vehicle.drivetrain} &middot; {vehicle.transmission}
           </p>
+          {unverified && (
+            <div className="mt-3">
+              <UnverifiedBadge />
+            </div>
+          )}
         </div>
         <Link
           href={`/vehicles/${vehicle.id}/spec-sheet/print`}
@@ -81,8 +92,18 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         </Link>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6 space-y-3">
         <DataDisclaimer />
+        {unverified && (
+          <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+            <span className="font-semibold">Nothing on this vehicle is sourced yet.</span>{" "}
+            Every capacity, spec and torque figure below is a hand-typed reference
+            number, written from general knowledge of the platform rather than
+            pulled from a source we can cite back to you. Treat it as a starting
+            point and confirm against the factory service manual before you fill
+            anything or torque anything.
+          </div>
+        )}
       </div>
 
       <section className="mb-8">
@@ -98,6 +119,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         <div className="mb-3 flex items-center gap-2">
           <h2 className="text-lg font-semibold text-slate-100">Fluid Capacities</h2>
           <TierBadge tier="free" />
+          {unverified && <UnverifiedBadge />}
         </div>
         <FluidTable fluids={vehicle.fluids} />
       </section>

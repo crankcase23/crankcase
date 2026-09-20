@@ -1,4 +1,4 @@
-import { allRepairs, listVehicles, findVehicle } from "@/lib/data";
+import { allRepairs, listVehicles, findVehicle, isUnverifiedVehicle } from "@/lib/data";
 import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
 
 // ---------------------------------------------------------------------------
@@ -223,8 +223,10 @@ export function getCatalogDataIssues(): VehicleDataIssue[] {
     if (guides.length === 0) issues.push("No repair guides");
     else if (!guides.some((g) => g.tier === "free")) issues.push("No free guide (breaks the freemium hook)");
 
-    const hasRealFluidData = v.fluids.some((f) => f.provenance?.source === "open-labor-project");
-    if (v.fluids.length > 0 && !hasRealFluidData) issues.push("All fluid data is hand-typed, none sourced");
+    // Same test the vehicle page uses to show its "Unverified" badge, so the
+    // console and the public page never disagree about which entries are
+    // skeletons.
+    if (isUnverifiedVehicle(v)) issues.push("All fluid data is hand-typed, none sourced");
 
     if (issues.length > 0) {
       out.push({ vehicleId: v.id, label: `${v.year} ${v.make} ${v.model}`, issues });
