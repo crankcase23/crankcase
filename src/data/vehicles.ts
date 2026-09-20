@@ -611,7 +611,82 @@ capacity: "Fill to the reservoir",
 spec: "All-season washer fluid",
 },
 ],
-}
+},
+{
+id: "2020-ford-f250-super-duty-6.7l",
+keys: { platform: "ford-superduty-t3hd", engine: "ford-powerstroke-6.7-scorpion", driveline: "ford-superduty-4wd" },
+year: 2020,
+make: "Ford",
+model: "F-250 Super Duty",
+trim: "XL Crew Cab (4WD)",
+engine: "6.7L Power Stroke V8 Turbo Diesel",
+drivetrain: "4WD",
+transmission: "10-speed automatic (10R140)",
+specs: [
+{ label: "Engine", value: "6.7L Power Stroke V8 Turbo Diesel, 475 hp / 1,050 lb-ft" },
+{ label: "Drivetrain", value: "4WD" },
+{ label: "Transmission", value: "10-speed automatic (10R140)" },
+{ label: "Curb weight", value: "~7,500 lb" },
+{ label: "Fuel tank", value: "34.4 gal (48.2 gal optional)" },
+{ label: "Recommended fuel", value: "Ultra-low sulfur diesel (ULSD), B20 biodiesel blend compatible" },
+{ label: "Battery", value: "Dual Group 31 (diesel dual-battery setup), ~950 CCA each" },
+{ label: "Wheel lug nut torque", value: "165 ft-lb (224 Nm)" },
+{ label: "Front tire size (XL)", value: "LT245/75R17E" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "13.0 qt (12.3 L) with filter change",
+spec: "10W-30 full synthetic diesel engine oil, API CK-4 / Ford WSS-M2C171-F1",
+notes: "Cartridge-style filter housing at the front of the engine, not a spin-on canister. Much larger sump than this truck's gas V8 engine options -- don't reuse a gas-engine oil-change kit. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+provenance: { source: "curated" },
+},
+{
+name: "Diesel Exhaust Fluid (DEF)",
+capacity: "~5.0 gal (19 L) tank",
+spec: "ISO 22241 DEF (32.5% urea solution)",
+notes: "Separate fill neck and gauge from the diesel fuel tank, usually under the hood or next to the fuel filler. Never put DEF in the fuel tank or diesel in the DEF tank -- either one can cause serious, expensive damage. Consumption runs roughly 2-3% of diesel fuel used.",
+},
+{
+name: "Engine Coolant",
+capacity: "~26.7 qt (25.3 L) system capacity",
+spec: "Motorcraft Super Duty Gold Engine Coolant, OAT, 50/50 premix",
+notes: "Curated reference figure, not yet independently verified against a factory source for this specific truck. Diesel Super Duty trucks can run a different coolant spec than this file's gas-engine Fords -- confirm against your underhood label before topping off or flushing.",
+},
+{
+name: "Automatic Transmission Fluid (10R140)",
+capacity: "~13-17 qt for a pan drain-and-fill (service fill), varies by pan and filter design",
+spec: "Motorcraft Mercon ULV (ultra-low viscosity ATF) -- unconfirmed for this specific heavy-duty transmission",
+notes: "The Super Duty's 10R140 is a heavier-duty relative of the 10R80 used in lighter Ford trucks and SUVs and may call for a different fluid spec. Reference figure only -- confirm against your owner's manual before a service.",
+},
+{
+name: "Front Differential Fluid (4WD)",
+capacity: "~3.0 pt (1.4 L)",
+spec: "SAE 75W-140 synthetic gear oil",
+},
+{
+name: "Rear Differential Fluid",
+capacity: "~6-8 pt (2.8-3.8 L), depending on 10.5-inch or 11.5-inch AAM axle",
+spec: "SAE 75W-140 synthetic gear oil (+ friction modifier if limited-slip)",
+notes: "Super Duty rear axle size varies with GVWR package and engine -- confirm which axle you have (stamped tag on the axle tube) before buying gear oil, the same way this file's 1500-series trucks need their axle confirmed by bolt count.",
+},
+{
+name: "Transfer Case Fluid (4WD)",
+capacity: "~3.4 qt (3.2 L)",
+spec: "Motorcraft Mercon LV",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~9.4 qt (8.9 L) reservoir",
+spec: "All-season washer fluid (winter blend below freezing)",
+},
+],
+  }
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
