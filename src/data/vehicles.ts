@@ -996,6 +996,7 @@ trim: "TRD Off-Road Double Cab (4x4)",
 engine: "3.5L V6 (2GR-FKS)",
 drivetrain: "4WD",
 transmission: "6-speed automatic",
+rearBrakes: "drum",
 specs: [
 { label: "Engine", value: "3.5L V6, 278 hp / 265 lb-ft" },
 { label: "Drivetrain", value: "4WD" },
