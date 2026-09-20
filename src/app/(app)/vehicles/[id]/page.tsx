@@ -7,6 +7,7 @@ import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
 import GuideGroups from "@/components/GuideGroups";
+import ServiceSchedule from "@/components/ServiceSchedule";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
 import { auth } from "@/auth";
@@ -98,6 +99,8 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         </div>
         <FluidTable fluids={vehicle.fluids} />
       </section>
+
+      <ServiceSchedule vehicle={vehicle} guides={repairGuides} />
 
       <MaintenanceReminders vehicleId={vehicle.id} />
 
