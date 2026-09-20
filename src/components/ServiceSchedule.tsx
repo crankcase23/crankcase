@@ -47,6 +47,12 @@ export default function ServiceSchedule({
       normal: m.normal.filter((i) => !recurring.has(i.label)),
     }))
     .filter((m) => m.normal.length > 0 || m.severeOnly.length > 0);
+  // Not every vehicle puts a "severe only" row on the grid. The Jeep's single
+  // severe rule belongs to a monitor-governed job, which is deliberately kept
+  // off the mileage grid, so that page renders no marked rows at all. A legend
+  // pointing at a marker the reader cannot find reads as a missing row, so it
+  // only claims one when one is actually rendered.
+  const hasSevereOnly = milestones.some((m) => m.severeOnly.length > 0);
   const byJob = new Map<string, ResolvedGuide>();
   for (const g of guides) if (g.jobType) byJob.set(g.jobType, g);
 
@@ -120,8 +126,8 @@ export default function ServiceSchedule({
           </h3>
           <p className="mb-3 max-w-3xl text-[13px] text-slate-500">
             These are the rows people get told a number for anyway. The manufacturer
-            either lets the truck decide, schedules them by time, or does not schedule
-            them at all.
+            either lets the vehicle decide, schedules them by time, or does not
+            schedule them at all.
           </p>
           <dl className="space-y-3">
             {offGrid.map((item) => (
@@ -149,8 +155,14 @@ export default function ServiceSchedule({
       )}
 
       <p className="mt-3 max-w-3xl text-[12px] text-slate-500">
-        Rows marked <span className="text-amber-300/80">severe only</span> apply if you
-        work the vehicle: {schedule.severeDefinition}
+        {hasSevereOnly ? (
+          <>
+            Rows marked <span className="text-amber-300/80">severe only</span> apply if
+            you work the vehicle: {schedule.severeDefinition}
+          </>
+        ) : (
+          <>Severe service on this vehicle means: {schedule.severeDefinition}</>
+        )}
       </p>
     </section>
   );
