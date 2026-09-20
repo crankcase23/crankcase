@@ -32,7 +32,21 @@ export default function ServiceSchedule({
   const schedule = getServiceSchedule(vehicle);
   if (!schedule) return null;
 
-  const milestones = milestonesFor(schedule, 8);
+  // The job that recurs at EVERY service - tire rotation on all three of these
+  // schedules - is pulled out and stated once. Left in the grid it repeats in
+  // every card and buries the thing the reader came for, which is what is
+  // special about 30,000 or 100,000 miles.
+  const everyService = schedule.items.filter(
+    (i) => i.normal.kind === "miles" && i.normal.miles === schedule.gridStep,
+  );
+  const recurring = new Set(everyService.map((i) => i.label));
+
+  const milestones = milestonesFor(schedule, 999)
+    .map((m) => ({
+      ...m,
+      normal: m.normal.filter((i) => !recurring.has(i.label)),
+    }))
+    .filter((m) => m.normal.length > 0 || m.severeOnly.length > 0);
   const byJob = new Map<string, ResolvedGuide>();
   for (const g of guides) if (g.jobType) byJob.set(g.jobType, g);
 
@@ -62,6 +76,18 @@ export default function ServiceSchedule({
         What the manufacturer actually asks for, on their own mileage grid &mdash; not a
         quick-lube chain&rsquo;s version of it. Source: {schedule.sourceLabel}.
       </p>
+
+      {everyService.length > 0 && (
+        <p className="mb-4 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2 text-sm text-slate-300">
+          <span className="font-semibold text-slate-100">
+            Every {schedule.gridStep.toLocaleString("en-US")} miles:
+          </span>{" "}
+          {everyService.map((i) => i.label).join(", ")}
+          <span className="ml-2 text-[12px] text-slate-500">
+            &mdash; the interval the rest of the schedule is built on
+          </span>
+        </p>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {milestones.map((m) => (
