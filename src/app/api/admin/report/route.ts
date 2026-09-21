@@ -9,6 +9,7 @@ import {
   type FeedbackRow,
 } from "@/lib/admin/todo";
 import { recordError } from "@/lib/errors";
+import { getWebAnalytics } from "@/lib/vercelAnalytics";
 
 // ---------------------------------------------------------------------------
 // Machine-readable to-do queue, for the scheduled morning report.
@@ -83,14 +84,31 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Unauthorized." }, { status: 401, headers: NO_STORE });
     }
 
-    const [summary, newReports, triagedReports, counts, signals, tasks] = await Promise.all([
-      getTodoSummary(),
-      listFeedback("new", 50),
-      listFeedback("triaged", 50),
-      getFeedbackCounts(),
-      getBuildQueue(),
-      listTasks(false),
-    ]);
+    const [summary, newReports, triagedReports, counts, signals, tasks, analytics] =
+      await Promise.all([
+        getTodoSummary(),
+        listFeedback("new", 50),
+        listFeedback("triaged", 50),
+        getFeedbackCounts(),
+        getBuildQueue(),
+        listTasks(false),
+        // Belt and braces: getWebAnalytics() is written not to throw, but it
+        // is the only call in here that leaves the building, and a rejected
+        // promise in this Promise.all would 500 the whole queue.
+        getWebAnalytics().catch(() => ({ data: null, error: "network_error" as const })),
+      ]);
+
+    // Traffic is a nice-to-have on a queue endpoint, so a failure to read it
+    // is worth a warning row but must never take the report down with it. A
+    // missing token isn't a fault - that's just the feature switched off.
+    if (analytics.error && analytics.error !== "not_configured") {
+      await recordError({
+        source: "api/admin/report",
+        error: new Error(`web analytics unavailable: ${analytics.error}`),
+        level: "warning",
+        path: "/api/admin/report",
+      });
+    }
 
     return NextResponse.json(
       {
@@ -105,6 +123,9 @@ export async function GET(request: Request) {
         },
         buildQueue: signals,
         openTasks: tasks,
+        // null means "we couldn't ask" - not "nobody visited". See
+        // src/lib/vercelAnalytics.ts; this is never zero-filled.
+        analytics: analytics.data,
       },
       { headers: NO_STORE },
     );
