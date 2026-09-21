@@ -48,8 +48,28 @@ export async function addServiceEntry(
   return mapRow(created);
 }
 
-export async function deleteServiceEntry(userId: string, id: string): Promise<void> {
+/**
+ * Delete one entry from one vehicle's service log.
+ *
+ * Scoped by GARAGE ENTRY, not by user, and that is the whole point.
+ *
+ * This used to match on `id AND userId`, which was sound only while userId
+ * was NOT NULL. As of the 2026-09-20 migration it is nullable: when an
+ * account is deleted, its rows keep the history and drop the user reference
+ * to null. A row with a null userId matches no `userId = $1` predicate, so
+ * the old query would have quietly made orphaned history undeletable -- and
+ * any later "fix" that relaxed the predicate to let those rows through would
+ * have made them deletable by ANYONE. That is the trapdoor this signature
+ * closes: there is no longer a userId here to get wrong.
+ *
+ * The caller passes a garageEntryId it has already resolved through
+ * resolveGarageEntryId(), which only ever returns an entry owned by the
+ * signed-in user. Ownership of the vehicle is therefore proven before this
+ * function is reached, and the delete cannot reach a row on someone else's
+ * vehicle no matter what entry id is supplied.
+ */
+export async function deleteServiceEntry(garageEntryId: string, id: string): Promise<void> {
   await db
     .delete(serviceEntries)
-    .where(and(eq(serviceEntries.id, id), eq(serviceEntries.userId, userId)));
+    .where(and(eq(serviceEntries.id, id), eq(serviceEntries.garageEntryId, garageEntryId)));
 }

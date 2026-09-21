@@ -71,9 +71,18 @@ export const garageEntries = pgTable("garage_entries", {
 // (crankcase:service-history:<vehicleId>) -- one vehicle's service log.
 export const serviceEntries = pgTable("service_entries", {
       id: text("id").primaryKey(),
-      userId: text("user_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      // Nullable, ON DELETE SET NULL -- deliberately NOT cascade. Deleting a
+      // user account must not destroy the maintenance history attached to a
+      // vehicle. The history belongs to the vehicle; this column only records
+      // who happened to log it. See migrations/2026-09-20-decouple-history-from-users.sql.
+      //
+      // Because a row can now carry a null userId, userId is no longer a safe
+      // thing to authorize a delete against -- see deleteServiceEntry, which
+      // derives authorization through garageEntryId instead.
+      userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
+      // Unchanged on purpose: NOT NULL and CASCADE. A deleted VEHICLE should
+      // still take its own history with it -- that is an owner throwing a
+      // record away, not an account disappearing out from under it.
       garageEntryId: text("garage_entry_id")
       .notNull()
       .references(() => garageEntries.id, { onDelete: "cascade" }),
@@ -93,9 +102,9 @@ export const odometerReadings = pgTable(
             garageEntryId: text("garage_entry_id")
             .notNull()
             .references(() => garageEntries.id, { onDelete: "cascade" }),
-            userId: text("user_id")
-            .notNull()
-            .references(() => users.id, { onDelete: "cascade" }),
+            // Same reasoning as service_entries above: the reading survives
+            // the account, and dies with the vehicle.
+            userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
             miles: integer("miles").notNull(),
             updatedAt: timestamp("updated_at").notNull().defaultNow(),
       },
