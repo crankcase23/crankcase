@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Vehicle, ResolvedGuide } from "@/types/vehicle";
-import { isUnverified } from "@/lib/provenance";
+import { isUnverified, sourcingShape, UNVERIFIED_GROUP_NOTE } from "@/lib/provenance";
 
 /**
  * The paper version of the badge. A dagger rather than a coloured pill, because
@@ -11,6 +11,14 @@ import { isUnverified } from "@/lib/provenance";
  */
 function PrintUnverifiedMark() {
   return <span className="ml-1 font-sans text-xs font-bold text-slate-700">&dagger;</span>;
+}
+
+/**
+ * The paper version of the one-line note. Printed under the heading of a table
+ * in which nothing is sourced, in place of a dagger on every single row.
+ */
+function PrintUnverifiedSectionNote() {
+  return <p className="mb-2 text-xs italic text-slate-600">{UNVERIFIED_GROUP_NOTE}</p>;
 }
 
 export default function PrintVehicleSpecSheet({
@@ -27,6 +35,13 @@ export default function PrintVehicleSpecSheet({
   });
 
   const torqueSections = repairGuides.filter((g) => g.torqueSpecs.length > 0);
+
+  // Worked out once, because the dagger footnote at the bottom of the sheet
+  // must only appear when a dagger was actually printed somewhere above it.
+  const fluidShape = sourcingShape(vehicle.fluids);
+  const torqueShapes = new Map(torqueSections.map((g) => [g.id, sourcingShape(g.torqueSpecs)]));
+  const anyDaggers =
+    fluidShape === "mixed" || [...torqueShapes.values()].some((shape) => shape === "mixed");
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10 print:px-0 print:py-0">
@@ -80,6 +95,7 @@ export default function PrintVehicleSpecSheet({
             <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-slate-700">
               Fluid Capacities
             </h2>
+            {fluidShape === "all" && <PrintUnverifiedSectionNote />}
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="border-b-2 border-slate-900 text-left">
@@ -94,7 +110,7 @@ export default function PrintVehicleSpecSheet({
                     <td className="py-2 pr-4 font-medium">{f.name}</td>
                     <td className="py-2 pr-4">
                       {f.capacity}
-                      {isUnverified(f.provenance) && <PrintUnverifiedMark />}
+                      {fluidShape === "mixed" && isUnverified(f.provenance) && <PrintUnverifiedMark />}
                     </td>
                     <td className="py-2 text-slate-600">
                       {f.spec}
@@ -111,6 +127,7 @@ export default function PrintVehicleSpecSheet({
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-slate-700">
                 Torque Specs — {guide.title}
               </h2>
+              {torqueShapes.get(guide.id) === "all" && <PrintUnverifiedSectionNote />}
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="border-b-2 border-slate-900 text-left">
@@ -124,7 +141,9 @@ export default function PrintVehicleSpecSheet({
                       <td className="py-2 pr-4 font-medium">{t.fastener}</td>
                       <td className="py-2 font-mono">
                         {t.value}
-                        {isUnverified(t.provenance) && <PrintUnverifiedMark />}
+                        {torqueShapes.get(guide.id) === "mixed" && isUnverified(t.provenance) && (
+                          <PrintUnverifiedMark />
+                        )}
                         {t.notes && <div className="mt-0.5 font-sans text-xs text-slate-500">{t.notes}</div>}
                       </td>
                     </tr>
@@ -134,12 +153,14 @@ export default function PrintVehicleSpecSheet({
             </section>
           ))}
 
-          <p className="mt-8 text-xs text-slate-500">
-            &dagger; marks a figure with no source recorded — check it against your factory
-            service manual before you use it.
-          </p>
+          {anyDaggers && (
+            <p className="mt-8 text-xs text-slate-500">
+              &dagger; marks a figure with no source recorded — check it against your factory
+              service manual before you use it.
+            </p>
+          )}
 
-          <p className="mt-2 text-xs text-slate-500">
+          <p className={`${anyDaggers ? "mt-2" : "mt-8"} text-xs text-slate-500`}>
             Reference figures only — always confirm against your vehicle&apos;s factory
             service manual or door-jamb/build sticker before finalizing a fluid fill or
             torque a fastener. Crankcase Garage covers routine maintenance only; for engine,

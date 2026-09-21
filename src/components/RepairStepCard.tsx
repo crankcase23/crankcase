@@ -1,10 +1,55 @@
 import Image from "next/image";
-import { RepairStep } from "@/types/vehicle";
+import { RepairStep, TorqueSpec } from "@/types/vehicle";
 import {
   isUnverified,
+  sourcingShape,
   UNVERIFIED_EXPLANATION,
+  UNVERIFIED_GROUP_NOTE,
   UNVERIFIED_LABEL,
 } from "@/lib/provenance";
+
+/**
+ * The torque figures attached to one step. Same rule as the tables: if none of
+ * the chips on this step is sourced, say it once underneath them instead of
+ * hanging a tag off every chip.
+ */
+function StepTorqueChips({ torque }: { torque: TorqueSpec[] }) {
+  const shape = sourcingShape(torque);
+  return (
+    <div className="mt-3">
+      <div className="flex flex-wrap gap-2">
+        {torque.map((t) => {
+          const flagged = shape === "mixed" && isUnverified(t.provenance);
+          return (
+            <span
+              key={t.fastener}
+              title={flagged ? UNVERIFIED_EXPLANATION : undefined}
+              className={`rounded-full border px-3 py-1 text-xs font-mono ${
+                flagged
+                  ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+                  : "border-orange-500/30 bg-orange-500/10 text-orange-300"
+              }`}
+            >
+              {t.fastener}: {t.value}
+              {flagged && (
+                <span className="ml-1.5 font-sans font-semibold uppercase tracking-wide text-[10px] text-amber-400">
+                  {UNVERIFIED_LABEL}
+                </span>
+              )}
+            </span>
+          );
+        })}
+      </div>
+      {shape === "all" && (
+        <p className="mt-2 text-xs text-slate-400">
+          <span className="font-semibold uppercase tracking-wide text-amber-400">{UNVERIFIED_LABEL}</span>
+          {" — "}
+          {UNVERIFIED_GROUP_NOTE}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function RepairStepCard({ step }: { step: RepairStep }) {
   return (
@@ -36,31 +81,7 @@ export default function RepairStepCard({ step }: { step: RepairStep }) {
             </div>
           )}
 
-          {step.torque && step.torque.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {step.torque.map((t) => {
-                const unsourced = isUnverified(t.provenance);
-                return (
-                  <span
-                    key={t.fastener}
-                    title={unsourced ? UNVERIFIED_EXPLANATION : undefined}
-                    className={`rounded-full border px-3 py-1 text-xs font-mono ${
-                      unsourced
-                        ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
-                        : "border-orange-500/30 bg-orange-500/10 text-orange-300"
-                    }`}
-                  >
-                    {t.fastener}: {t.value}
-                    {unsourced && (
-                      <span className="ml-1.5 font-sans font-semibold uppercase tracking-wide text-[10px] text-amber-400">
-                        {UNVERIFIED_LABEL}
-                      </span>
-                    )}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+          {step.torque && step.torque.length > 0 && <StepTorqueChips torque={step.torque} />}
         </div>
       </div>
     </div>

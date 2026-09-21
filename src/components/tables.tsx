@@ -1,7 +1,9 @@
 import { FluidCapacity, SpecItem, TorqueSpec, Tool } from "@/types/vehicle";
 import {
   isUnverified,
+  sourcingShape,
   UNVERIFIED_EXPLANATION,
+  UNVERIFIED_GROUP_NOTE,
   UNVERIFIED_LABEL,
 } from "@/lib/provenance";
 
@@ -9,6 +11,9 @@ import {
  * Marks a figure nobody has sourced yet. Deliberately quiet — amber, not red.
  * The number is probably right; what it is missing is a record of who checked
  * it, and the reader deserves to know which of the two they are holding.
+ *
+ * Only ever rendered on a MIXED table, where it is the thing telling the two
+ * apart. A table with nothing sourced gets UnverifiedTableNote instead.
  */
 export function UnverifiedBadge() {
   return (
@@ -18,6 +23,20 @@ export function UnverifiedBadge() {
     >
       {UNVERIFIED_LABEL}
     </span>
+  );
+}
+
+/**
+ * Said once, above a table in which nothing carries a source. Replaces the
+ * per-row badge in that case rather than adding to it.
+ */
+export function UnverifiedTableNote() {
+  return (
+    <p className="mb-2 text-xs text-slate-400">
+      <span className="font-semibold uppercase tracking-wide text-amber-400">{UNVERIFIED_LABEL}</span>
+      {" — "}
+      {UNVERIFIED_GROUP_NOTE}
+    </p>
   );
 }
 
@@ -35,69 +54,77 @@ export function SpecTable({ specs }: { specs: SpecItem[] }) {
 }
 
 export function FluidTable({ fluids }: { fluids: FluidCapacity[] }) {
+  const shape = sourcingShape(fluids);
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-800">
-      <table className="w-full min-w-[600px] table-fixed divide-y divide-slate-800 text-sm">
-        <colgroup>
-          <col className="w-[26%]" />
-          <col className="w-[30%]" />
-          <col className="w-[44%]" />
-        </colgroup>
-        <thead className="bg-slate-900">
-          <tr>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Fluid</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Capacity</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Spec</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-800 bg-slate-950">
-          {fluids.map((f) => (
-            <tr key={f.name}>
-              <td className="px-4 py-3 font-medium text-slate-100">{f.name}</td>
-              <td className="px-4 py-3 text-slate-200 break-words">
-                {f.capacity}
-                {isUnverified(f.provenance) && <UnverifiedBadge />}
-              </td>
-              <td className="px-4 py-3 text-slate-400 break-words">
-                {f.spec}
-                {f.notes && <div className="mt-1 text-xs text-slate-500">{f.notes}</div>}
-              </td>
+    <>
+      {shape === "all" && <UnverifiedTableNote />}
+      <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <table className="w-full min-w-[600px] table-fixed divide-y divide-slate-800 text-sm">
+          <colgroup>
+            <col className="w-[26%]" />
+            <col className="w-[30%]" />
+            <col className="w-[44%]" />
+          </colgroup>
+          <thead className="bg-slate-900">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Fluid</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Capacity</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Spec</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-slate-800 bg-slate-950">
+            {fluids.map((f) => (
+              <tr key={f.name}>
+                <td className="px-4 py-3 font-medium text-slate-100">{f.name}</td>
+                <td className="px-4 py-3 text-slate-200 break-words">
+                  {f.capacity}
+                  {shape === "mixed" && isUnverified(f.provenance) && <UnverifiedBadge />}
+                </td>
+                <td className="px-4 py-3 text-slate-400 break-words">
+                  {f.spec}
+                  {f.notes && <div className="mt-1 text-xs text-slate-500">{f.notes}</div>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 
 export function TorqueTable({ specs }: { specs: TorqueSpec[] }) {
+  const shape = sourcingShape(specs);
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-800">
-      <table className="w-full table-fixed divide-y divide-slate-800 text-sm">
-        <colgroup>
-          <col className="w-[40%]" />
-          <col className="w-[60%]" />
-        </colgroup>
-        <thead className="bg-slate-900">
-          <tr>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Fastener</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Torque</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-800 bg-slate-950">
-          {specs.map((t) => (
-            <tr key={t.fastener}>
-              <td className="px-4 py-3 font-medium text-slate-100 break-words">{t.fastener}</td>
-              <td className="px-4 py-3 text-slate-200 break-words">
-                <span className="font-mono">{t.value}</span>
-                {isUnverified(t.provenance) && <UnverifiedBadge />}
-                {t.notes && <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>}
-              </td>
+    <>
+      {shape === "all" && <UnverifiedTableNote />}
+      <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <table className="w-full table-fixed divide-y divide-slate-800 text-sm">
+          <colgroup>
+            <col className="w-[40%]" />
+            <col className="w-[60%]" />
+          </colgroup>
+          <thead className="bg-slate-900">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Fastener</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Torque</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-slate-800 bg-slate-950">
+            {specs.map((t) => (
+              <tr key={t.fastener}>
+                <td className="px-4 py-3 font-medium text-slate-100 break-words">{t.fastener}</td>
+                <td className="px-4 py-3 text-slate-200 break-words">
+                  <span className="font-mono">{t.value}</span>
+                  {shape === "mixed" && isUnverified(t.provenance) && <UnverifiedBadge />}
+                  {t.notes && <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 
