@@ -1,5 +1,10 @@
 import Image from "next/image";
 import { RepairStep } from "@/types/vehicle";
+import {
+  isUnverified,
+  UNVERIFIED_EXPLANATION,
+  UNVERIFIED_LABEL,
+} from "@/lib/provenance";
 
 export default function RepairStepCard({ step }: { step: RepairStep }) {
   return (
@@ -33,14 +38,27 @@ export default function RepairStepCard({ step }: { step: RepairStep }) {
 
           {step.torque && step.torque.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {step.torque.map((t) => (
-                <span
-                  key={t.fastener}
-                  className="rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-mono text-orange-300"
-                >
-                  {t.fastener}: {t.value}
-                </span>
-              ))}
+              {step.torque.map((t) => {
+                const unsourced = isUnverified(t.provenance);
+                return (
+                  <span
+                    key={t.fastener}
+                    title={unsourced ? UNVERIFIED_EXPLANATION : undefined}
+                    className={`rounded-full border px-3 py-1 text-xs font-mono ${
+                      unsourced
+                        ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+                        : "border-orange-500/30 bg-orange-500/10 text-orange-300"
+                    }`}
+                  >
+                    {t.fastener}: {t.value}
+                    {unsourced && (
+                      <span className="ml-1.5 font-sans font-semibold uppercase tracking-wide text-[10px] text-amber-400">
+                        {UNVERIFIED_LABEL}
+                      </span>
+                    )}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>

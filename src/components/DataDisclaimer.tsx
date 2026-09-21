@@ -9,7 +9,9 @@ export default function DataDisclaimer({ compact = false }: { compact?: boolean 
       Capacities, torque values, and steps here are general starting points and
       can vary by trim, options, and model-year running changes. Always confirm
       against your vehicle&apos;s factory service manual or door-jamb/build sticker
-      before you finalize a fluid fill or torque a fastener. Crankcase Garage covers
+      before you finalize a fluid fill or torque a fastener. Anything tagged{" "}
+      <span className="font-semibold">Unverified</span> has no source recorded behind it
+      at all — treat those with extra suspicion. Crankcase Garage covers
       routine maintenance — oil changes, brakes, fluids, filters, and the like —
       not engine, transmission, or other major repair work; for anything beyond
       that, see a professional mechanic.

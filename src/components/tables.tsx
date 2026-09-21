@@ -1,4 +1,25 @@
 import { FluidCapacity, SpecItem, TorqueSpec, Tool } from "@/types/vehicle";
+import {
+  isUnverified,
+  UNVERIFIED_EXPLANATION,
+  UNVERIFIED_LABEL,
+} from "@/lib/provenance";
+
+/**
+ * Marks a figure nobody has sourced yet. Deliberately quiet — amber, not red.
+ * The number is probably right; what it is missing is a record of who checked
+ * it, and the reader deserves to know which of the two they are holding.
+ */
+export function UnverifiedBadge() {
+  return (
+    <span
+      title={UNVERIFIED_EXPLANATION}
+      className="ml-2 inline-flex shrink-0 items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-amber-400 font-sans"
+    >
+      {UNVERIFIED_LABEL}
+    </span>
+  );
+}
 
 export function SpecTable({ specs }: { specs: SpecItem[] }) {
   return (
@@ -33,7 +54,10 @@ export function FluidTable({ fluids }: { fluids: FluidCapacity[] }) {
           {fluids.map((f) => (
             <tr key={f.name}>
               <td className="px-4 py-3 font-medium text-slate-100">{f.name}</td>
-              <td className="px-4 py-3 text-slate-200 break-words">{f.capacity}</td>
+              <td className="px-4 py-3 text-slate-200 break-words">
+                {f.capacity}
+                {isUnverified(f.provenance) && <UnverifiedBadge />}
+              </td>
               <td className="px-4 py-3 text-slate-400 break-words">
                 {f.spec}
                 {f.notes && <div className="mt-1 text-xs text-slate-500">{f.notes}</div>}
@@ -66,6 +90,7 @@ export function TorqueTable({ specs }: { specs: TorqueSpec[] }) {
               <td className="px-4 py-3 font-medium text-slate-100 break-words">{t.fastener}</td>
               <td className="px-4 py-3 text-slate-200 break-words">
                 <span className="font-mono">{t.value}</span>
+                {isUnverified(t.provenance) && <UnverifiedBadge />}
                 {t.notes && <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>}
               </td>
             </tr>

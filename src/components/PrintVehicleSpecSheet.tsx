@@ -2,6 +2,16 @@
 
 import Link from "next/link";
 import { Vehicle, ResolvedGuide } from "@/types/vehicle";
+import { isUnverified } from "@/lib/provenance";
+
+/**
+ * The paper version of the badge. A dagger rather than a coloured pill, because
+ * this sheet gets printed in black and white and taped to a toolbox door, where
+ * an amber tint is just grey.
+ */
+function PrintUnverifiedMark() {
+  return <span className="ml-1 font-sans text-xs font-bold text-slate-700">&dagger;</span>;
+}
 
 export default function PrintVehicleSpecSheet({
   vehicle,
@@ -82,7 +92,10 @@ export default function PrintVehicleSpecSheet({
                 {vehicle.fluids.map((f) => (
                   <tr key={f.name} className="border-b border-slate-300 align-top">
                     <td className="py-2 pr-4 font-medium">{f.name}</td>
-                    <td className="py-2 pr-4">{f.capacity}</td>
+                    <td className="py-2 pr-4">
+                      {f.capacity}
+                      {isUnverified(f.provenance) && <PrintUnverifiedMark />}
+                    </td>
                     <td className="py-2 text-slate-600">
                       {f.spec}
                       {f.notes && <div className="mt-0.5 text-xs text-slate-500">{f.notes}</div>}
@@ -111,6 +124,7 @@ export default function PrintVehicleSpecSheet({
                       <td className="py-2 pr-4 font-medium">{t.fastener}</td>
                       <td className="py-2 font-mono">
                         {t.value}
+                        {isUnverified(t.provenance) && <PrintUnverifiedMark />}
                         {t.notes && <div className="mt-0.5 font-sans text-xs text-slate-500">{t.notes}</div>}
                       </td>
                     </tr>
@@ -121,6 +135,11 @@ export default function PrintVehicleSpecSheet({
           ))}
 
           <p className="mt-8 text-xs text-slate-500">
+            &dagger; marks a figure with no source recorded — check it against your factory
+            service manual before you use it.
+          </p>
+
+          <p className="mt-2 text-xs text-slate-500">
             Reference figures only — always confirm against your vehicle&apos;s factory
             service manual or door-jamb/build sticker before finalizing a fluid fill or
             torque a fastener. Crankcase Garage covers routine maintenance only; for engine,
