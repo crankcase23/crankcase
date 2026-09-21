@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { useServiceHistory } from "@/lib/serviceHistory";
 import { useOdometer } from "@/lib/odometer";
-import { computeReminders, ReminderResult, ReminderStatus } from "@/lib/reminders";
+import {
+  computeReminders,
+  type MaintenanceItem,
+  type ReminderResult,
+  type ReminderStatus,
+} from "@/lib/reminders";
 
 const STATUS_STYLES: Record<ReminderStatus, string> = {
   overdue: "bg-rose-500/15 text-rose-300",
@@ -46,13 +51,26 @@ function statusLabel(r: ReminderResult): string {
   }
 }
 
-export default function MaintenanceReminders({ vehicleId }: { vehicleId: string }) {
+// `items` comes from the server as maintenanceItemsFor(vehicle), so a vehicle
+// whose factory schedule we hold is reminded on the manufacturer's own
+// intervals instead of the generic table. Left undefined (a custom garage
+// vehicle, which has no catalog entry), computeReminders falls back to the
+// generic rule-of-thumb set.
+export default function MaintenanceReminders({
+  vehicleId,
+  items,
+  hasFactorySchedule,
+}: {
+  vehicleId: string;
+  items?: MaintenanceItem[];
+  hasFactorySchedule?: boolean;
+}) {
   const { entries } = useServiceHistory(vehicleId);
   const { odometer, setOdometer } = useOdometer(vehicleId);
   const [odoInput, setOdoInput] = useState("");
   const [showAll, setShowAll] = useState(false);
 
-  const results = computeReminders(entries, odometer)
+  const results = computeReminders(entries, odometer, items)
     .slice()
     .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
 
@@ -75,8 +93,18 @@ export default function MaintenanceReminders({ vehicleId }: { vehicleId: string 
         <h2 className="text-lg font-semibold text-slate-100">Maintenance Reminders</h2>
       </div>
       <p className="mb-4 text-sm text-slate-500">
-        Rule-of-thumb intervals based on your logged Service History — not a
-        substitute for your owner&apos;s manual&apos;s actual schedule.
+        {hasFactorySchedule ? (
+          <>
+            Tracked against your logged Service History. Where the Factory Service
+            Schedule above publishes an interval, these use the manufacturer&apos;s own
+            figure; the rest are rule-of-thumb.
+          </>
+        ) : (
+          <>
+            Rule-of-thumb intervals based on your logged Service History — not a
+            substitute for your owner&apos;s manual&apos;s actual schedule.
+          </>
+        )}
       </p>
 
       <form onSubmit={handleOdoSubmit} className="mb-4 flex flex-wrap items-end gap-3">
@@ -110,11 +138,20 @@ export default function MaintenanceReminders({ vehicleId }: { vehicleId: string 
       {visible.length > 0 && (
         <ul className="mb-3 divide-y divide-slate-800 overflow-hidden rounded-xl border border-slate-800">
           {visible.map((r) => (
-            <li key={r.item.key} className="flex items-center justify-between gap-3 bg-slate-900 px-4 py-3 text-sm">
-              <span className="text-slate-200">{r.item.label}</span>
-              <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
-                {statusLabel(r)}
-              </span>
+            <li key={r.item.key} className="bg-slate-900 px-4 py-3 text-sm">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-slate-200">{r.item.label}</span>
+                <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
+                  {statusLabel(r)}
+                </span>
+              </div>
+              {/* Only set where we are showing a generic figure for a vehicle
+                  whose own row we could not source. Saying so beside the
+                  number is the whole point - an uncaptioned rule of thumb on a
+                  page that otherwise prints factory figures reads as factory. */}
+              {r.item.sourceNote ? (
+                <p className="mt-1.5 max-w-prose text-xs leading-relaxed text-amber-300/80">{r.item.sourceNote}</p>
+              ) : null}
             </li>
           ))}
         </ul>

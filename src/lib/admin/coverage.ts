@@ -26,6 +26,11 @@ export interface JobType {
   label: string;
   /** Why this job might not apply to every vehicle. Shown in the UI. */
   appliesTo: (v: Vehicle) => boolean;
+  /**
+   * Overrides the label for one vehicle. Same job, different word: a drum-
+   * braked truck needs "Rear Brake Shoes", not "Rear Brake Pads".
+   */
+  labelFor?: (v: Vehicle) => string;
   /** Set when a job is universal, so the UI can explain exclusions honestly. */
   exclusionNote?: string;
 }
@@ -56,6 +61,18 @@ export function hasIntegratedPcv(v: Vehicle): boolean {
   return /ecotec3/i.test(v.engine);
 }
 
+/**
+ * True when the rear brakes are drums rather than discs.
+ *
+ * Reads the vehicle's own declared rearBrakes field rather than guessing from
+ * free text, because there is no free text to guess from - nothing in the
+ * engine or drivetrain string tells you what is at the back. Omitted means
+ * disc, which is the common case.
+ */
+export function hasRearDrums(v: Vehicle): boolean {
+  return v.rearBrakes === "drum";
+}
+
 export function isDiesel(v: Vehicle): boolean {
   return /diesel|duramax|powerstroke|power stroke|ecodiesel|cummins|tdi/i.test(v.engine);
 }
@@ -76,7 +93,12 @@ export const JOB_CATALOG: JobType[] = [
   { id: "oil-change", label: "Engine Oil & Filter Change", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
   { id: "tire-rotation", label: "Tire Rotation", appliesTo: () => true },
   { id: "brake-pads-front", label: "Front Brake Pads", appliesTo: () => true },
-  { id: "brake-pads-rear", label: "Rear Brake Pads", appliesTo: () => true },
+  {
+    id: "brake-pads-rear",
+    label: "Rear Brake Pads",
+    labelFor: (v) => (hasRearDrums(v) ? "Rear Brake Shoes" : "Rear Brake Pads"),
+    appliesTo: () => true,
+  },
   { id: "battery", label: "Battery Replacement", appliesTo: () => true },
   { id: "engine-air-filter", label: "Engine Air Filter", appliesTo: (v) => !isElectric(v), exclusionNote: "Not applicable to EVs" },
   { id: "cabin-air-filter", label: "Cabin Air Filter", appliesTo: () => true },
@@ -160,8 +182,13 @@ export function getVehicleCoverage(vehicle: Vehicle, guides: RepairGuide[]): Veh
   const byJob = new Map<string, RepairGuide>();
   for (const g of mine) if (g.jobType) byJob.set(g.jobType, g);
 
-  const applicable = JOB_CATALOG.filter((j) => j.appliesTo(vehicle));
-  const notApplicable = JOB_CATALOG.filter((j) => !j.appliesTo(vehicle));
+  // Resolve any per-vehicle label override once, here, where the vehicle is
+  // known. Everything downstream keeps reading job.label and gets the right
+  // word without needing to know why.
+  const resolve = (j: JobType): JobType =>
+    j.labelFor ? { ...j, label: j.labelFor(vehicle) } : j;
+  const applicable = JOB_CATALOG.filter((j) => j.appliesTo(vehicle)).map(resolve);
+  const notApplicable = JOB_CATALOG.filter((j) => !j.appliesTo(vehicle)).map(resolve);
 
   const pendingByJob = new Map<string, string>();
   for (const p of pendingFor(vehicle.id)) {
