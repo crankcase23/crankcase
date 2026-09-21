@@ -809,13 +809,15 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "22 ft-lb (30 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "30 ft-lb (40 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter housing cap",
         value: "18 ft-lb (25 Nm)",
-        notes: "Housing is plastic -- do not overtighten, snug + spec torque only. Curated reference figure.",
+        notes: "Housing is plastic -- do not overtighten, snug + spec torque only. For cartridge-type filters.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
     ],
     steps: [
@@ -850,7 +852,7 @@ image: "/steps/generic-cleanup.svg",
         title: "Install the new filter and reassemble",
         instructions: "Fit the new filter element into the cap, lightly oil the new O-ring, and thread the cap back in by hand before torquing it. Reinstall the drain plug with a new gasket and torque it to spec.",
         image: "/steps/oil-filter-install.svg",
-        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (25 Nm)" }, { fastener: "Oil pan drain plug", value: "22 ft-lb (30 Nm)" }],
+        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (25 Nm)" }, { fastener: "Oil pan drain plug", value: "30 ft-lb (40 Nm)" }],
       },
       {
         number: 6,
