@@ -815,8 +815,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil filter housing cap",
         value: "18 ft-lb (25 Nm)",
-        notes: "Housing is plastic -- do not overtighten, snug + spec torque only. For cartridge-type filters.",
-        provenance: { source: "open-labor-project", confidence: "high" },
+        notes: "Housing is plastic -- do not overtighten, snug + spec torque only. For cartridge-type filters. Hand-cited reference figure; Open Labor Project is not a valid source for filter fasteners and its tag has been removed from this entry. Still needs a Toyota service-manual citation.",
+        provenance: { source: "curated" },
       },
     ],
     steps: [
