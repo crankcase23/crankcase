@@ -3130,6 +3130,65 @@ spec: "All-season washer fluid",
 },
 ],
 }
+,
+{
+id: "2019-ford-edge-2.0l",
+keys: { platform: "ford-cd4", engine: "ford-ecoboost-2.0l-i4", driveline: "ford-cd4-awd" },
+year: 2019,
+make: "Ford",
+model: "Edge",
+trim: "SEL AWD",
+engine: "2.0L EcoBoost I4 (turbo)",
+drivetrain: "AWD",
+transmission: "8-speed automatic (8F35)",
+specs: [
+{ label: "Engine", value: "2.0L EcoBoost I4 (turbo), 250 hp / 275 lb-ft" },
+{ label: "Drivetrain", value: "AWD" },
+{ label: "Transmission", value: "8-speed automatic (8F35)" },
+{ label: "Curb weight", value: "~4,150 lb" },
+{ label: "Fuel tank", value: "18.5 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 96R, ~650 CCA" },
+{ label: "Wheel lug nut torque", value: "150 ft-lb (203 Nm)" },
+{ label: "Front tire size (SEL)", value: "245/60R18" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "5.7 qt (5.4 L) with filter change",
+spec: "Motorcraft 5W-30 full synthetic, API SN",
+notes: "Spin-on canister filter, not a cartridge -- a standard filter wrench or strap tool works. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+provenance: { source: "curated" },
+},
+{
+name: "Engine Coolant",
+capacity: "~11.1 qt (10.5 L) system capacity",
+spec: "Motorcraft Orange (Ford orange OAT), extended-life, 50/50 premix",
+},
+{
+name: "Automatic Transmission Fluid (8F35)",
+capacity: "~4-4.5 qt (3.8-4.3 L) for a pan drain-and-fill (service fill)",
+spec: "Motorcraft Mercon ULV full synthetic ATF",
+notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan.",
+},
+{
+name: "Rear Drive Unit Fluid (AWD)",
+capacity: "~0.8 qt (0.75 L), estimate",
+spec: "Motorcraft AWD rear drive unit fluid -- unconfirmed for this specific application",
+notes: "Curated reference figure only -- not yet confirmed against a factory source.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 4",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~7.0 qt (6.6 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
