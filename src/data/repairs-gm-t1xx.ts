@@ -192,8 +192,8 @@ torqueSpecs: [
 {
 fastener: "Oil pan drain plug",
 value: "18 ft-lb (25 Nm)",
-provenance: { source: "open-labor-project", confidence: "high" },
-notes: "Same 5.3L EcoTec3 (L84) engine as the Chevrolet Silverado 1500 — this figure is carried over from that vehicle's real Open Labor Project data (high confidence) since GM uses the identical fastener/torque spec across both trucks. Use new crush washer. Not yet independently pulled from Open Labor Project under the Sierra's own make/model.",
+provenance: { source: "curated" },
+notes: "Same 5.3L EcoTec3 (L84) engine as the Chevrolet Silverado 1500, and GM uses the identical drain plug fastener and torque across both trucks, so this figure is carried over from the Silverado by hand. It has never been pulled from Open Labor Project under the Sierra's own make/model, so it is recorded as a hand-cited figure rather than a sourced one. Use new crush washer.",
 },
 {
 fastener: "Spin-on oil filter",
