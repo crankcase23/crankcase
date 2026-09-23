@@ -48,6 +48,11 @@ export const toyotaRav4Guides: RepairGuide[] = [
       { name: "Wheel chocks" },
       { name: "Tire pressure gauge", note: "Needed for the TPMS step, not optional" },
     ],
+    parts: [
+      "None — this is a no-parts service",
+      "Optional: replacement valve caps",
+      "Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
+    ],
     safety: [
       "Never work under a vehicle supported only by a jack. Toyota's own lift-and-support page says exactly this.",
       "The vehicle must be unloaded before raising it.",
@@ -125,6 +130,7 @@ export const toyotaRav4Guides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "10-15 min",
+    noFasteners: true,
     tools: [
       { name: "Your hands", note: "Genuinely no tools on this airbox - two metal spring latches" },
       { name: "Shop vacuum or rag", note: "Optional, for cleaning debris out of the lower housing" },
@@ -180,6 +186,7 @@ export const toyotaRav4Guides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "15-20 min",
+    noFasteners: true,
     tools: [
       { name: "Your hands", note: "No tools needed" },
       { name: "Phone camera", note: "Photograph the old filter's arrow before you pull it - cheap insurance" },
@@ -233,6 +240,7 @@ export const toyotaRav4Guides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "10-15 min",
+    noFasteners: true,
     tools: [
       { name: "Your hands", note: "No tools" },
       { name: "Folded towel", note: "Lay it on the glass in case an arm snaps back" },
@@ -289,6 +297,7 @@ export const toyotaRav4Guides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "15-20 min",
+    noFasteners: true,
     tools: [
       { name: "Clean rag" },
       { name: "Funnel", note: "Small one, for washer fluid and coolant top-offs" },
