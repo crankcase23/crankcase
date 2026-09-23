@@ -55,6 +55,11 @@ export const toyotaTacomaGuides: RepairGuide[] = [
       { name: "Wheel chocks" },
       { name: "Tire pressure gauge" },
     ],
+    parts: [
+      "None — this is a no-parts service",
+      "Optional: replacement valve caps",
+      "Optional: anti-seize is NOT recommended on lug studs — it changes the effective clamp load at a given torque",
+    ],
     safety: [
       "Never work under a vehicle supported only by a jack. The FSM calls for rigid racks.",
       "Never jack up a heavily loaded truck - unload the bed first.",
@@ -710,6 +715,7 @@ export const toyotaTacomaGuides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "10-15 min",
+    noFasteners: true,
     tools: [
       { name: "Your hands", note: "No tools - two metal latches" },
       { name: "Shop vacuum or rag", note: "Optional, for the lower housing" },
@@ -764,6 +770,7 @@ export const toyotaTacomaGuides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "15-20 min",
+    noFasteners: true,
     tools: [
       { name: "Your hands", note: "No tools" },
       { name: "Phone camera", note: "Photograph the old filter's arrow before it comes out" },
@@ -818,6 +825,7 @@ export const toyotaTacomaGuides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "10 min",
+    noFasteners: true,
     tools: [
       { name: "Your hands", note: "No tools" },
       { name: "Folded towel", note: "On the glass, in case an arm snaps back" },
@@ -967,6 +975,7 @@ export const toyotaTacomaGuides: RepairGuide[] = [
     difficulty: "Easy",
     tier: "premium",
     estTime: "15-20 min",
+    noFasteners: true,
     tools: [
       { name: "Clean rag" },
       { name: "Funnel" },
