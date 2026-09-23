@@ -3189,6 +3189,60 @@ spec: "All-season washer fluid",
 },
 ],
 }
+,
+{
+id: "2019-ford-fusion-2.5l",
+keys: { platform: "ford-cd4", engine: "ford-duratec-2.5l-i4", driveline: "ford-cd4-fwd" },
+year: 2019,
+make: "Ford",
+model: "Fusion",
+trim: "SE (FWD)",
+engine: "2.5L Duratec I4 (Ti-VCT)",
+drivetrain: "FWD",
+transmission: "6-speed automatic (6F35)",
+specs: [
+{ label: "Engine", value: "2.5L Duratec I4 (Ti-VCT), 175 hp / 175 lb-ft" },
+{ label: "Drivetrain", value: "FWD" },
+{ label: "Transmission", value: "6-speed automatic (6F35)" },
+{ label: "Curb weight", value: "~3,375 lb" },
+{ label: "Fuel tank", value: "16.5 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 96R, ~590 CCA" },
+{ label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm)" },
+{ label: "Front tire size (SE)", value: "225/50R17" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "5.7 qt (5.4 L) with filter change",
+spec: "Motorcraft 5W-20 full synthetic blend, API SN",
+notes: "Cartridge-style filter housing, not a spin-on canister. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+provenance: { source: "curated" },
+},
+{
+name: "Engine Coolant",
+capacity: "~9.7 qt (9.2 L) system capacity",
+spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix",
+notes: "Curated reference figure -- Ford has used more than one coolant spec across this era's engines and model years, see the F-150/Escape/Explorer/Bronco/Edge entries in this file for how easily this gets mixed up. Confirm against your underhood label.",
+},
+{
+name: "Automatic Transmission Fluid (6F35)",
+capacity: "~4-4.5 qt (3.8-4.3 L) for a pan drain-and-fill (service fill)",
+spec: "Motorcraft Mercon LV full synthetic ATF",
+notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~4.5 qt (4.3 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
