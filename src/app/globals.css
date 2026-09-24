@@ -35,6 +35,14 @@ body {
   background-size: 32px 32px;
 }
 
+/* Tighter version for the inside of a data sheet. */
+.cg-grid-fine {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
 /* Elevated graphite panel: a slight top-down gradient, a hairline border, a
    one-pixel inner highlight along the top edge (the "machined" seam), and a
    soft drop shadow so it lifts off the navy page. */
