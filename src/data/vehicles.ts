@@ -3243,6 +3243,60 @@ spec: "All-season washer fluid",
 },
 ],
 }
+,
+{
+id: "2016-ford-focus-2.0l",
+keys: { platform: "ford-c1-focus", engine: "ford-duratec-2.0l-gdi-i4", driveline: "ford-focus-fwd" },
+year: 2016,
+make: "Ford",
+model: "Focus",
+trim: "SE (FWD)",
+engine: "2.0L Duratec I4 (Ti-VCT, GDI)",
+drivetrain: "FWD",
+transmission: "6-speed automatic (PowerShift dual-clutch, DPS6)",
+specs: [
+{ label: "Engine", value: "2.0L Duratec I4 (Ti-VCT, GDI), 160 hp / 146 lb-ft" },
+{ label: "Drivetrain", value: "FWD" },
+{ label: "Transmission", value: "6-speed automatic (PowerShift dual-clutch, DPS6)" },
+{ label: "Curb weight", value: "~2,960 lb" },
+{ label: "Fuel tank", value: "12.4 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 96R, ~590 CCA" },
+{ label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm)" },
+{ label: "Front tire size (SE)", value: "215/55R17" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "5.5 qt (5.2 L) with filter change",
+spec: "5W-20 full synthetic, Ford spec WSS-M2C930-A, API SN or higher",
+notes: "Spin-on canister filter (Motorcraft FL-910-S or equivalent), not a cartridge. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+provenance: { source: "curated" },
+},
+{
+name: "Engine Coolant",
+capacity: "~6.5 qt (6.1 L) system capacity",
+spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix",
+notes: "Curated reference figure, not yet independently verified against a factory source for this specific vehicle -- Ford has used more than one coolant spec/color across different platforms and model years (see the F-150/Escape/Explorer entries in this file for how easily this gets mixed up). Confirm against your underhood label before topping off or flushing.",
+},
+{
+name: "Transmission Fluid (PowerShift 6-speed dual-clutch, DPS6)",
+capacity: "Sealed unit -- Ford specifies no routine consumer drain-and-fill interval for this dry-clutch DCT",
+spec: "Motorcraft WSS-M2C936-A DCT fluid (dealer/service tool required)",
+notes: "This is a dry-clutch dual-clutch transmission, not a conventional torque-converter automatic -- there's no dipstick and no owner-serviceable fluid change. Shift hesitation, shudder, or a dash warning calls for dealer diagnostic service, not a DIY fluid swap.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~3.4 qt (3.2 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
