@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createHash, timingSafeEqual } from "node:crypto";
+import { bearerAccepted } from "@/lib/integrations/bearerAuth";
 import {
   listFeedback,
   getFeedbackCounts,
@@ -34,21 +34,16 @@ const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
 /**
  * Constant-time bearer check.
  *
- * Both sides are hashed first so the comparison is over two fixed-length
- * buffers - a raw timingSafeEqual on the tokens themselves throws on a length
- * mismatch, and guarding that with an early length check leaks the token's
- * length to anyone willing to time the 401s.
+ * The implementation now lives in src/lib/integrations/bearerAuth.ts so the
+ * ops snapshot route uses the exact same code. Behaviour here is unchanged:
+ * fail closed when ADMIN_REPORT_TOKEN is unset or under 24 characters,
+ * Bearer only, SHA-256 both sides then timingSafeEqual so neither the value
+ * nor the length leaks through response timing. Only ADMIN_REPORT_TOKEN
+ * opens this route - the snapshot token is a different secret and is never
+ * consulted here.
  */
 function tokenAccepted(header: string | null): boolean {
-  const expected = process.env.ADMIN_REPORT_TOKEN;
-
-  // Fail closed. An unset or trivially short token means the endpoint is
-  // closed, never open - a misconfiguration must not publish the inbox.
-  if (!expected || expected.length < 24) return false;
-  if (!header || !header.startsWith("Bearer ")) return false;
-
-  const digest = (value: string) => createHash("sha256").update(value, "utf8").digest();
-  return timingSafeEqual(digest(header.slice(7)), digest(expected));
+  return bearerAccepted(header, { expected: process.env.ADMIN_REPORT_TOKEN, minLength: 24 });
 }
 
 /**

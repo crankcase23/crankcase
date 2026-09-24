@@ -37,6 +37,10 @@ export const EVENT_TYPES = {
   CONTENT_PUBLISHED: "content.published",
   ADMIN_ACTION: "admin.action",
   SYSTEM_ERROR: "system.error",
+  // A machine-to-machine read of an integration endpoint. Recorded per call
+  // so every external consumer of operational data leaves an auditable row -
+  // see src/lib/integrations/access.ts. Never carries a credential.
+  INTEGRATION_ACCESS: "integration.access",
 } as const;
 
 export type EventType = (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
@@ -57,6 +61,7 @@ export const EVENT_LABELS: Record<string, string> = {
   "content.published": "Content published",
   "admin.action": "Admin action",
   "system.error": "System error",
+  "integration.access": "Integration read",
 };
 
 interface RecordEventInput {

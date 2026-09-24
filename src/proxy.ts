@@ -65,6 +65,16 @@ export const config = {
     //
     // If that endpoint ever grows a write verb, or its token check is
     // loosened, this exemption must be revisited at the same time.
-    "/((?!_next/static|_next/image|favicon.ico|icons/|manifest.json|api/admin/report).*)",
+    //
+    // WHY /api/integrations/ops/snapshot IS ALSO EXEMPT - same collision, same
+    // reasoning, kept as its own literal so the hole is exactly one route
+    // wide and not a prefix. It is GET-only, guarded by its own
+    // OPS_SNAPSHOT_TOKEN (32+ chars, same constant-time check via
+    // src/lib/integrations/bearerAuth.ts), rate-limited, access-logged, and
+    // returns a sanitized, versioned payload with no admin notes or user
+    // ids. See src/app/api/integrations/ops/snapshot/route.ts. The same
+    // revisit rule applies: any write verb or looser check on that route
+    // means this line changes too.
+    "/((?!_next/static|_next/image|favicon.ico|icons/|manifest.json|api/admin/report|api/integrations/ops/snapshot).*)",
   ],
 };
