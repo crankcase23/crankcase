@@ -92,16 +92,22 @@ function buildDataRows(vehicle: Vehicle): DataRow[] {
   return rows.filter((r): r is DataRow => Boolean(r));
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
+function Eyebrow({ children, as: Tag = "p" }: { children: React.ReactNode; as?: "p" | "h2" }) {
   return (
-    <p className="flex items-center gap-3">
+    <Tag className="flex items-center gap-3">
       <span className="h-px w-8 shrink-0 bg-orange-500" aria-hidden />
       <span className="text-xs font-extrabold uppercase tracking-[0.22em] text-orange-400" style={display}>
         {children}
       </span>
-    </p>
+    </Tag>
   );
 }
+
+// One focus ring for every link that looks like a button. Keyboard users get
+// the same orange the mouse users see on hover.
+const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400";
+const BTN_PRIMARY = `rounded-lg bg-orange-500 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-black/40 hover:bg-orange-400 ${FOCUS}`;
+const BTN_SECONDARY = `rounded-lg border border-slate-600 bg-slate-900/50 px-6 py-3 font-semibold text-slate-200 hover:border-slate-400 hover:text-white ${FOCUS}`;
 
 function StepTile({
   n,
@@ -172,7 +178,7 @@ export default function MarketingHome() {
       <section className="relative isolate overflow-hidden">
         <HeroBackdrop />
 
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-4 pt-10 pb-12 sm:pt-16 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pb-20">
+        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pt-9 pb-10 sm:gap-10 sm:pt-16 sm:pb-12 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pb-20">
           {/* ---- left: the pitch */}
           <div>
             <Eyebrow>Your ride. Your garage. Your wrenches.</Eyebrow>
@@ -204,20 +210,20 @@ export default function MarketingHome() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
                 href="/signup"
-                className="rounded-lg bg-orange-500 px-6 py-3 text-base font-semibold text-slate-950 shadow-lg shadow-black/40 hover:bg-orange-400"
+                className={`${BTN_PRIMARY} text-base`}
               >
                 Add your vehicle — free
               </Link>
               <Link
                 href="/how-it-works"
-                className="rounded-lg border border-slate-600 bg-slate-900/50 px-6 py-3 text-base font-semibold text-slate-200 hover:border-slate-400 hover:text-white"
+                className={`${BTN_SECONDARY} text-base`}
               >
                 See how it works
               </Link>
             </div>
-            <p className="mt-3 text-sm text-slate-500">
+            <p className="mt-3 text-sm text-slate-400">
               Specs and fluid capacities are always free. One free guide per vehicle.{" "}
-              <Link href="/login" className="text-slate-400 underline-offset-4 hover:text-white hover:underline">
+              <Link href="/login" className={`text-slate-300 underline-offset-4 hover:text-white hover:underline ${FOCUS}`}>
                 Already have a garage? Log in.
               </Link>
             </p>
@@ -265,11 +271,9 @@ export default function MarketingHome() {
                 <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-slate-950/50 px-5 py-3">
                   <div className="flex items-center gap-2.5">
                     <CrankcaseMark className="h-5 w-5" />
-                    <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300" style={display}>
-                      What a guide looks like
-                    </span>
+                    <Stamp className="whitespace-nowrap text-slate-300">What a guide looks like</Stamp>
                   </div>
-                  <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-300">
+                  <span className="shrink-0 whitespace-nowrap rounded-full border border-slate-600 bg-slate-800/70 px-2.5 py-0.5 text-xs font-medium text-slate-200">
                     {guide.tier === "free" ? "Free guide" : "Guide"}
                   </span>
                 </div>
@@ -281,18 +285,18 @@ export default function MarketingHome() {
                   <div className="mt-2 text-2xl font-extrabold uppercase leading-tight text-slate-50" style={display}>
                     {guide.title}
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-slate-300">
+                  <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-slate-100">
                     <span className="flex items-center gap-1.5">
                       <IconGauge className="h-4 w-4 text-slate-500" />
-                      <span className="text-slate-500">Difficulty</span> {guide.difficulty}
+                      <span className="text-slate-400">Difficulty</span> {guide.difficulty}
                     </span>
                     <span className="flex items-center gap-1.5">
                       <IconClock className="h-4 w-4 text-slate-500" />
-                      <span className="text-slate-500">Time</span> {guide.estTime}
+                      <span className="text-slate-400">Time</span> {guide.estTime}
                     </span>
                     <span className="flex items-center gap-1.5">
                       <IconSteps className="h-4 w-4 text-slate-500" />
-                      <span className="text-slate-500">Steps</span> {guide.steps.length}
+                      <span className="text-slate-400">Steps</span> {guide.steps.length}
                     </span>
                   </div>
 
@@ -315,7 +319,7 @@ export default function MarketingHome() {
                         <span className="text-slate-500">{icon}</span>
                         <div>
                           <div className="font-mono text-lg font-semibold leading-none text-slate-100">{n}</div>
-                          <div className="mt-1 text-xs text-slate-500">{label}</div>
+                          <div className="mt-1 text-xs text-slate-400">{label}</div>
                         </div>
                       </li>
                     ))}
@@ -361,7 +365,7 @@ export default function MarketingHome() {
                     </div>
                   )}
 
-                  <p className="mt-4 text-xs text-slate-500">
+                  <p className="mt-4 text-xs text-slate-400">
                     Pulled live from this vehicle&apos;s actual guide. Every vehicle in the catalog gets
                     its own figures.
                   </p>
@@ -402,7 +406,7 @@ export default function MarketingHome() {
           aria-hidden
           className="cg-grid pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_right,transparent,rgba(0,0,0,0.9)_45%)]"
         />
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
+        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
           <div>
             <Eyebrow>The jobs you can actually do in a driveway</Eyebrow>
             <h2 className="mt-3 max-w-xl text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
@@ -417,10 +421,10 @@ export default function MarketingHome() {
             </div>
           </div>
 
-          <div className="cg-panel rounded-xl">
-            <div className="flex items-center justify-between border-b border-slate-800 px-5 py-3">
-              <Stamp>Service board · routine maintenance</Stamp>
-              <Stamp>{jobs.length} job types</Stamp>
+          <div className="cg-panel rounded-2xl">
+            <div className="flex flex-col gap-2 border-b border-slate-800 bg-slate-950/50 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+              <Stamp className="whitespace-nowrap">Service board · routine maintenance</Stamp>
+              <Stamp className="whitespace-nowrap">{jobs.length} job types</Stamp>
             </div>
             <ul className="flex flex-wrap gap-2 p-5">
               {jobs.map((id) => (
@@ -443,7 +447,7 @@ export default function MarketingHome() {
           catalog entry. */}
       {vehicle && dataRows.length > 0 && (
         <section className="relative border-b border-slate-800 bg-slate-950">
-          <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:py-16 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
+          <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
             <div>
               <Eyebrow>Know your ride</Eyebrow>
               <h2 className="mt-3 max-w-xl text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
@@ -477,13 +481,10 @@ export default function MarketingHome() {
               </ul>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/signup"
-                  className="rounded-lg bg-orange-500 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-black/40 hover:bg-orange-400"
-                >
+                <Link href="/signup" className={BTN_PRIMARY}>
                   Add your vehicle — free
                 </Link>
-                <span className="text-sm text-slate-500">Specs and fluid capacities are free for every vehicle.</span>
+                <span className="text-sm text-slate-400">Specs and fluid capacities are free for every vehicle.</span>
               </div>
             </div>
 
@@ -527,7 +528,7 @@ export default function MarketingHome() {
                 ))}
               </dl>
 
-              <div className="border-t border-slate-800 bg-slate-950/40 px-5 py-3 text-xs text-slate-500 sm:px-6">
+              <div className="border-t border-slate-800 bg-slate-950/40 px-5 py-3 text-xs text-slate-400 sm:px-6">
                 Pulled live from this vehicle&apos;s catalog entry. The full sheet on the vehicle page
                 adds every fluid, the tire sizes and the part-specific notes.
               </div>
@@ -539,9 +540,9 @@ export default function MarketingHome() {
       {/* ------------------------------------------------------ reassurance:
           open layout on a brushed graphite band, not three more boxes */}
       <section className="cg-brushed border-b border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:py-16">
-          <Eyebrow>Built for first-timers. Written like a service manual.</Eyebrow>
-          <div className="mt-8 grid gap-8 md:grid-cols-3 md:gap-10">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+          <Eyebrow as="h2">Built for first-timers. Written like a service manual.</Eyebrow>
+          <div className="mt-7 grid gap-6 sm:mt-8 sm:gap-8 md:grid-cols-3 md:gap-10">
             {[
               {
                 icon: <IconClipboardCheck className="h-5 w-5" />,
@@ -574,7 +575,7 @@ export default function MarketingHome() {
       </section>
 
       {/* ------------------------------------------------------ closing CTA */}
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:py-20">
         <div className="cg-panel relative overflow-hidden rounded-2xl p-8 sm:p-10">
           <div className="cg-grid absolute inset-0 opacity-60 [mask-image:linear-gradient(to_left,rgba(0,0,0,0.8),transparent_70%)]" aria-hidden />
           <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-orange-500/[0.08] blur-3xl" aria-hidden />
@@ -589,16 +590,10 @@ export default function MarketingHome() {
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-3">
-              <Link
-                href="/signup"
-                className="rounded-lg bg-orange-500 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-black/40 hover:bg-orange-400"
-              >
+              <Link href="/signup" className={BTN_PRIMARY}>
                 Get started free
               </Link>
-              <Link
-                href="/pricing"
-                className="rounded-lg border border-slate-600 bg-slate-950/40 px-6 py-3 font-semibold text-slate-200 hover:border-slate-400"
-              >
+              <Link href="/pricing" className={BTN_SECONDARY}>
                 Pricing
               </Link>
             </div>
