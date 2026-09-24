@@ -5,7 +5,10 @@ import { JOB_LABELS } from "@/lib/admin/coverage";
 import type { JobTypeId, Vehicle } from "@/types/vehicle";
 import CrankcaseMark from "@/components/CrankcaseMark";
 import {
+  DrawerTexture,
   HeroBackdrop,
+  IconArrowRight,
+  IconBolt,
   IconBox,
   IconCar,
   IconClipboard,
@@ -13,6 +16,7 @@ import {
   IconClock,
   IconGauge,
   IconHex,
+  IconPlay,
   IconShield,
   IconSteps,
   IconTarget,
@@ -109,27 +113,14 @@ const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visi
 const BTN_PRIMARY = `rounded-lg bg-orange-500 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-black/40 hover:bg-orange-400 ${FOCUS}`;
 const BTN_SECONDARY = `rounded-lg border border-slate-600 bg-slate-900/50 px-6 py-3 font-semibold text-slate-200 hover:border-slate-400 hover:text-white ${FOCUS}`;
 
-function StepTile({
-  n,
-  icon,
-  active = false,
-}: {
-  n: string;
-  icon: React.ReactNode;
-  active?: boolean;
-}) {
+/** The orange number square on the three-step rail. Decorative: the <ol> carries the order. */
+function StepNumber({ n }: { n: string }) {
   return (
-    <div className="relative shrink-0" aria-hidden>
-      <div
-        className={`cg-panel flex h-12 w-12 items-center justify-center rounded-lg ${
-          active ? "text-orange-400" : "text-slate-200"
-        }`}
-      >
-        {icon}
-      </div>
-      <div className="absolute -left-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded bg-orange-500 font-mono text-[11px] font-bold text-slate-950">
-        {n}
-      </div>
+    <div
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-orange-500 font-sans text-lg font-extrabold text-slate-950 shadow-md shadow-black/40"
+      aria-hidden
+    >
+      {n}
     </div>
   );
 }
@@ -168,32 +159,34 @@ export default function MarketingHome() {
 
   const steps = [
     { n: "1", icon: <IconCar className="h-6 w-6" />, title: "Your exact vehicle", body: "Year, make, model, engine — or drop in the VIN." },
-    { n: "2", icon: <IconClipboard className="h-6 w-6" />, title: "Pick the job", body: "Oil change, brakes, filters, wipers, fluids and more." },
-    { n: "3", icon: <IconWrench className="h-6 w-6" />, title: "Do it right", body: "Tools, parts, torque specs, safety notes. Step by step." },
+    { n: "2", icon: <IconWrench className="h-6 w-6" />, title: "Pick the job", body: "Oil change, brakes, filters, wipers, fluids and more." },
+    { n: "3", icon: <IconClipboardCheck className="h-6 w-6" />, title: "Do it right", body: "Tools, parts, torque specs, safety notes. Step by step." },
   ];
 
   return (
     <>
       {/* ------------------------------------------------------ first screen */}
       <section className="relative isolate overflow-hidden">
-        <HeroBackdrop />
+        {/* the scene: backdrop, headline, guide card. The steps rail and the
+            proof strip are bands below it, so the floor ends where they begin. */}
+        <div className="relative">
+          <HeroBackdrop />
 
-        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pt-9 pb-10 sm:gap-10 sm:pt-16 sm:pb-12 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14 lg:pb-20">
+          <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pt-9 pb-8 sm:gap-10 sm:pt-14 sm:pb-10 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-12 lg:pb-7 lg:pt-8">
           {/* ---- left: the pitch */}
-          <div>
+          <div className="lg:self-center lg:pb-4">
             <Eyebrow>Your ride. Your garage. Your wrenches.</Eyebrow>
 
             <h1
-              className="mt-3 text-5xl font-extrabold uppercase leading-[0.92] tracking-tight text-slate-50 sm:text-6xl lg:text-[4rem]"
+              className="mt-3 text-[3.4rem] font-extrabold uppercase leading-[0.9] tracking-tight text-slate-50 sm:text-6xl lg:text-[4.5rem] 2xl:text-[5rem]"
               style={display}
             >
               Fix your own car.
-              <span className="block text-slate-400">
+              <span className="block text-orange-500">
                 Right numbers,
                 <br /> right order.
               </span>
             </h1>
-            <div className="mt-3.5 h-[3px] w-14 bg-orange-500" aria-hidden />
 
             <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
               Tell Crankcase your year, make, model and engine. Pick the job. You get the tools,
@@ -208,16 +201,13 @@ export default function MarketingHome() {
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Link
-                href="/signup"
-                className={`${BTN_PRIMARY} text-base`}
-              >
+              <Link href="/signup" className={`${BTN_PRIMARY} inline-flex items-center gap-2.5 text-base`}>
+                <IconCar className="h-5 w-5" />
                 Add your vehicle — free
+                <IconArrowRight className="h-4 w-4" />
               </Link>
-              <Link
-                href="/how-it-works"
-                className={`${BTN_SECONDARY} text-base`}
-              >
+              <Link href="/how-it-works" className={`${BTN_SECONDARY} inline-flex items-center gap-2.5 text-base`}>
+                <IconPlay className="h-5 w-5 text-orange-400" />
                 See how it works
               </Link>
             </div>
@@ -228,30 +218,6 @@ export default function MarketingHome() {
               </Link>
             </p>
 
-            {/* ---- the three steps, in the first screen on purpose. A rail on
-                desktop (vehicle -> job -> wrench), a stacked list on mobile. */}
-            <ol className="relative mt-8 grid gap-5 sm:grid-cols-3 sm:gap-6">
-              {/* connector: vertical on the mobile stack; on the desktop rail
-                  the chevrons between tiles carry the sequence */}
-              <div className="absolute left-6 top-6 bottom-6 w-px bg-slate-800 sm:hidden" aria-hidden />
-              {steps.map((s, i) => (
-                <li key={s.n} className="relative flex gap-3 sm:flex-col sm:gap-3">
-                  <StepTile n={s.n} icon={s.icon} active={i === 0} />
-                  <div className="pt-1 sm:pt-0">
-                    <div className="font-semibold text-slate-100">{s.title}</div>
-                    <p className="mt-1 text-sm text-slate-400">{s.body}</p>
-                  </div>
-                  {i < steps.length - 1 && (
-                    <span
-                      className="absolute -right-4 top-3 hidden text-lg leading-none text-slate-600 sm:block"
-                      aria-hidden
-                    >
-                      ›
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ol>
           </div>
 
           {/* ---- right: a real guide, not a mockup. Laid out like a page from
@@ -259,14 +225,16 @@ export default function MarketingHome() {
           {guide && vehicle && (
             <aside
               aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-              className="relative"
+              className="relative lg:max-w-[34rem] lg:justify-self-end"
             >
-              {/* a second sheet behind the card, for depth */}
+              {/* the card sits ON the floor: a contact shadow under it, and a
+                  second sheet behind it */}
+              <div aria-hidden className="absolute inset-x-8 -bottom-3 h-8 rounded-[100%] bg-black/70 blur-xl" />
               <div
                 aria-hidden
-                className="absolute inset-0 translate-x-2.5 translate-y-2.5 rounded-2xl border border-slate-800/70 bg-slate-950/50"
+                className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border border-slate-700/60 bg-slate-950/70"
               />
-              <div className="cg-panel relative overflow-hidden rounded-2xl">
+              <div className="cg-panel relative overflow-hidden rounded-2xl shadow-[0_40px_60px_-30px_rgba(0,0,0,0.9)]">
                 {/* header bar */}
                 <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-slate-950/50 px-5 py-3">
                   <div className="flex items-center gap-2.5">
@@ -278,7 +246,7 @@ export default function MarketingHome() {
                   </span>
                 </div>
 
-                <div className="p-5 sm:p-6">
+                <div className="p-5">
                   <Stamp>
                     {vehicle.year} {vehicle.make} {vehicle.model} · {vehicle.engine}
                   </Stamp>
@@ -300,34 +268,25 @@ export default function MarketingHome() {
                     </span>
                   </div>
 
-                  {/* what's in the guide, as a spec strip */}
-                  <ul className="-mx-5 mt-5 grid grid-cols-2 border-y border-slate-800 sm:-mx-6 sm:grid-cols-4">
+                  {/* what's in the guide: four boxed tiles, icon on top */}
+                  <ul className="mt-4 grid grid-cols-4 gap-2">
                     {[
-                      ["Tools", guide.tools.length, <IconWrench key="t" className="h-4 w-4" />],
-                      ["Parts", guide.parts?.length ?? 0, <IconBox key="p" className="h-4 w-4" />],
-                      ["Safety notes", guide.safety.length, <IconShield key="s" className="h-4 w-4" />],
-                      ["Torque figures", guide.torqueSpecs?.length ?? 0, <IconHex key="q" className="h-4 w-4" />],
-                    ].map(([label, n, icon], i) => (
-                      <li
-                        key={String(label)}
-                        className={`flex items-center gap-3 px-5 py-3 sm:px-4 ${
-                          i % 2 === 1 ? "border-l border-slate-800" : ""
-                        } ${i >= 2 ? "border-t border-slate-800 sm:border-t-0" : ""} ${
-                          i > 0 ? "sm:border-l" : ""
-                        }`}
-                      >
-                        <span className="text-slate-500">{icon}</span>
-                        <div>
-                          <div className="font-mono text-lg font-semibold leading-none text-slate-100">{n}</div>
-                          <div className="mt-1 text-xs text-slate-400">{label}</div>
-                        </div>
+                      ["Tools", guide.tools.length, <IconWrench key="t" className="h-5 w-5" />],
+                      ["Parts", guide.parts?.length ?? 0, <IconBox key="p" className="h-5 w-5" />],
+                      ["Safety notes", guide.safety.length, <IconShield key="s" className="h-5 w-5" />],
+                      ["Torque figures", guide.torqueSpecs?.length ?? 0, <IconHex key="q" className="h-5 w-5" />],
+                    ].map(([label, n, icon]) => (
+                      <li key={String(label)} className="cg-well flex flex-col items-center rounded-lg px-1 py-2.5 text-center">
+                        <span className="text-slate-200">{icon}</span>
+                        <span className="mt-1.5 text-[11px] leading-tight text-slate-400">{label}</span>
+                        <span className="mt-1 font-mono text-lg font-semibold leading-none text-slate-50">{n}</span>
                       </li>
                     ))}
                   </ul>
 
                   {/* the proof point */}
                   {guide.torqueSpecs && guide.torqueSpecs.length > 0 && (
-                    <div className="cg-well mt-5 rounded-lg border-l-2 border-l-orange-500 p-4">
+                    <div className="cg-well mt-4 rounded-lg border-l-2 border-l-orange-500 p-4">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                         <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-200" style={display}>
                           Torque specs
@@ -349,23 +308,24 @@ export default function MarketingHome() {
 
                   {/* step indicator */}
                   {guide.steps[0] && (
-                    <div className="cg-well mt-4 rounded-lg p-3.5">
-                      <div className="flex items-center justify-between gap-3">
-                        <Stamp>Step 1 of {guide.steps.length}</Stamp>
-                        <div className="flex flex-1 justify-end gap-1" aria-hidden>
-                          {guide.steps.slice(0, 12).map((s, i) => (
-                            <span
-                              key={s.number}
-                              className={`h-1 w-3 rounded-sm ${i === 0 ? "bg-orange-500" : "bg-slate-800"}`}
-                            />
-                          ))}
-                        </div>
+                    <div className="cg-well mt-3 flex items-center gap-3 rounded-lg p-3">
+                      <div
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 font-sans text-sm font-extrabold text-slate-950"
+                        aria-hidden
+                      >
+                        1
                       </div>
-                      <div className="mt-2 font-medium text-slate-200">{guide.steps[0].title}</div>
+                      <div className="min-w-0 flex-1">
+                        <Stamp>Step 1 of {guide.steps.length}</Stamp>
+                        <div className="mt-1 font-medium leading-snug text-slate-200">{guide.steps[0].title}</div>
+                      </div>
+                      <span className="text-xl leading-none text-slate-500" aria-hidden>
+                        ›
+                      </span>
                     </div>
                   )}
 
-                  <p className="mt-4 text-xs text-slate-400">
+                  <p className="mt-3 text-xs text-slate-400">
                     Pulled live from this vehicle&apos;s actual guide. Every vehicle in the catalog gets
                     its own figures.
                   </p>
@@ -373,39 +333,60 @@ export default function MarketingHome() {
               </div>
             </aside>
           )}
+          </div>
+        </div>
+
+        {/* ---- the three steps, still on the first screen, as a rail along
+            the bottom of the bay: vehicle -> job -> wrench */}
+        <div className="cg-seam relative border-b border-slate-800 bg-slate-950/95">
+          <ol className="mx-auto grid max-w-6xl divide-y divide-slate-800 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {steps.map((s) => (
+              <li key={s.n} className="flex items-start gap-4 py-4 sm:px-5 sm:first:pl-0 sm:last:pr-0">
+                <StepNumber n={s.n} />
+                <span className="mt-2 hidden shrink-0 text-slate-300 sm:block" aria-hidden>
+                  {s.icon}
+                </span>
+                <div className="min-w-0">
+                  <div className="text-lg font-semibold leading-tight text-slate-50">{s.title}</div>
+                  <p className="mt-1 text-sm text-slate-400">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
 
         {/* ---- proof strip: real counts, derived from the catalog. Reads as a
             spec plate along the bottom of the bay. */}
-        <div className="cg-seam relative border-b border-slate-800 bg-slate-900/60">
+        <div className="relative border-b border-slate-800 bg-slate-900/60">
           <div className="mx-auto grid max-w-6xl grid-cols-2 divide-x divide-slate-800 px-4 sm:grid-cols-4">
-            <div className="py-4 pr-4 sm:pr-6">
-              <div className="font-mono text-xl font-semibold text-slate-100">{vehicles.length}</div>
-              <div className="mt-1 text-xs text-slate-400">vehicles in the catalog</div>
-            </div>
-            <div className="py-4 pl-4 sm:px-6">
-              <div className="font-mono text-xl font-semibold text-slate-100">{guides.length}</div>
-              <div className="mt-1 text-xs text-slate-400">step-by-step guides</div>
-            </div>
-            <div className="border-t border-slate-800 py-4 pr-4 sm:border-t-0 sm:px-6">
-              <div className="font-mono text-xl font-semibold text-slate-100">ft-lb + Nm</div>
-              <div className="mt-1 text-xs text-slate-400">torque on every fastener</div>
-            </div>
-            <div className="border-t border-slate-800 py-4 pl-4 sm:border-t-0 sm:pl-6">
-              <div className="font-mono text-xl font-semibold text-slate-100">Free</div>
-              <div className="mt-1 text-xs text-slate-400">to start — no card to look around</div>
-            </div>
+            {[
+              [<IconCar key="i" className="h-6 w-6" />, vehicles.length, "vehicles in the catalog"],
+              [<IconClipboard key="i" className="h-6 w-6" />, guides.length, "step-by-step guides"],
+              [<IconWrench key="i" className="h-6 w-6" />, "ft-lb + Nm", "torque on every fastener"],
+              [<IconBolt key="i" className="h-6 w-6" />, "Free", "to start — no card to look around"],
+            ].map(([icon, figure, label], i) => (
+              <div
+                key={String(label)}
+                className={`flex items-center gap-3 py-4 ${i % 2 === 1 ? "pl-4 sm:pl-6" : "pr-4 sm:pr-6"} ${
+                  i >= 2 ? "border-t border-slate-800 sm:border-t-0" : ""
+                } ${i === 2 ? "sm:pl-6" : ""}`}
+              >
+                <span className="shrink-0 text-slate-300">{icon}</span>
+                <div className="min-w-0">
+                  <div className="font-mono text-xl font-semibold leading-none text-slate-100">{figure}</div>
+                  <div className="mt-1 text-xs text-slate-400">{label}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------ jobs covered:
           the service board on the wall of the bay */}
-      <section className="relative border-b border-slate-800">
-        <div
-          aria-hidden
-          className="cg-grid pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_right,transparent,rgba(0,0,0,0.9)_45%)]"
-        />
+      <section className="relative overflow-hidden border-b border-slate-800 bg-[radial-gradient(90%_100%_at_85%_50%,#0d1526_0%,#020617_70%)]">
+        {/* the tool chest behind the service board */}
+        <DrawerTexture className="pointer-events-none absolute inset-y-0 right-0 h-full w-[70%] text-slate-400 opacity-[0.11] [mask-image:linear-gradient(to_right,transparent,rgba(0,0,0,1)_40%)]" />
         <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
           <div>
             <Eyebrow>The jobs you can actually do in a driveway</Eyebrow>
