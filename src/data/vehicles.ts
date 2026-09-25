@@ -3297,6 +3297,65 @@ spec: "All-season washer fluid",
 },
 ],
 }
+,
+{
+id: "2018-ford-mustang-5.0l",
+keys: { platform: "ford-s550-mustang", engine: "ford-coyote-5.0l-gen3", driveline: "ford-mustang-rwd" },
+year: 2018,
+make: "Ford",
+model: "Mustang",
+trim: "GT RWD",
+engine: "5.0L Ti-VCT V8 (Coyote, Gen 3)",
+drivetrain: "RWD",
+transmission: "10-speed automatic (10R80)",
+specs: [
+{ label: "Engine", value: "5.0L Ti-VCT V8 (Coyote, Gen 3), 460 hp / 420 lb-ft" },
+{ label: "Drivetrain", value: "RWD" },
+{ label: "Transmission", value: "10-speed automatic (10R80)" },
+{ label: "Curb weight", value: "~3,750 lb" },
+{ label: "Fuel tank", value: "16.0 gal" },
+{ label: "Recommended fuel", value: "Premium unleaded, 93 octane recommended" },
+{ label: "Battery", value: "Group size 47 (H5), ~590 CCA" },
+{ label: "Wheel lug nut torque", value: "150 ft-lb (203 Nm)" },
+{ label: "Front tire size (GT base)", value: "255/40R19" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "10.0 qt (9.5 L) with filter change",
+spec: "5W-30 full synthetic, Ford spec WSS-M2C946-B1, API SN or higher",
+notes: "Spin-on canister filter (Motorcraft FL-820-S or equivalent), same Coyote 5.0L V8 family as this catalog's F-150. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+},
+{
+name: "Engine Coolant",
+capacity: "~11.5 qt (10.9 L) system capacity",
+spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix",
+notes: "Curated reference figure, not yet independently verified against a factory source for this specific vehicle -- Ford has used more than one coolant spec/color across different platforms and model years. Confirm against your underhood label before topping off or flushing.",
+},
+{
+name: "Transmission Fluid (10-speed automatic, 10R80)",
+capacity: "~4.0 qt (3.8 L) for a pan-drop service fill",
+spec: "Motorcraft Mercon ULV",
+notes: "Ford lists this transmission as filled for life with no factory-mandated drain interval -- a pan-drop service fill is done at the shop's/owner's discretion, not a scheduled maintenance item.",
+},
+{
+name: "Rear Differential Fluid",
+capacity: "~1.5 qt (1.4 L)",
+spec: "SAE 75W-85 synthetic gear oil (+ limited-slip friction modifier on Performance Pack/LSD-equipped cars)",
+notes: "Confirm whether your car has the Torsen limited-slip differential before adding friction modifier -- an open (non-LSD) rear doesn't use it.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 4",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~2.9 qt (2.8 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
