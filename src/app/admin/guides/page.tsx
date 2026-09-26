@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin/rbac";
 import { listGuideRecords, getGuideSummary } from "@/lib/admin/guides";
 import { getTopEventObjects } from "@/lib/admin/metrics";
+import { listAdminTestGuides } from "@/data/admin-test-guides/charger-2016-sxt-multi-job";
 import { parsePeriod, resolvePeriod } from "@/lib/admin/periods";
 import { formatNumber } from "@/lib/admin/format";
 import {
@@ -94,6 +95,20 @@ export default async function AdminGuidesPage({
         description="Every repair guide in the catalog, scored against the publish checklist. Guide content lives in version control — this is the console over it."
         action={<PeriodPicker current={period} basePath="/admin/guides" extraParams={{ filter, sort, dir }} />}
       />
+
+      {/* Unpublished, admin-only guides. Not part of the catalog counts below. */}
+      <div className="mb-5 rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
+        <div className="text-xs font-semibold uppercase tracking-wider text-amber-300">Admin test guides</div>
+        <ul className="mt-1.5 space-y-1">
+          {listAdminTestGuides().map((t) => (
+            <li key={t.slug}>
+              <Link href={`/admin/guides/test/${t.slug}`} className="text-sm text-slate-200 hover:text-orange-300">
+                {t.vehicle.year} {t.vehicle.make} {t.vehicle.model} {t.vehicle.trim} — {t.guide.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {/* --------------------------------------------------------------- KPIs */}
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
