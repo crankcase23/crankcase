@@ -3356,6 +3356,74 @@ spec: "All-season washer fluid",
 },
 ],
 }
+,
+{
+id: "2021-ford-ranger-2.3l",
+keys: { platform: "ford-t6-ranger", engine: "ford-ecoboost-2.3-i4-270hp", driveline: "ford-ranger-4wd" },
+year: 2021,
+make: "Ford",
+model: "Ranger",
+trim: "XLT SuperCrew (4x4)",
+engine: "2.3L EcoBoost Turbo I4",
+drivetrain: "4WD",
+transmission: "10-speed automatic (10R80)",
+specs: [
+{ label: "Engine", value: "2.3L EcoBoost turbo I4, 270 hp / 310 lb-ft" },
+{ label: "Drivetrain", value: "4WD" },
+{ label: "Transmission", value: "10-speed automatic (10R80)" },
+{ label: "Curb weight", value: "~4,440 lb" },
+{ label: "Fuel tank", value: "18.0 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 94R, ~750 CCA" },
+{ label: "Wheel lug nut torque", value: "100 ft-lb (135 Nm)" },
+{ label: "Front tire size (XLT base)", value: "255/65R17 (varies by wheel package -- confirm against door-jamb placard)" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "6.2 qt (5.9 L) with filter change",
+spec: "5W-30 full synthetic, API SN or higher",
+notes: "Spin-on canister-style filter (Motorcraft FL-910S) -- not the cartridge-style filter this catalog uses on the Bronco/Explorer EcoBoost entries, despite sharing the same 2.3L EcoBoost engine family. Reference figure only; confirm against your oil fill cap before buying oil.",
+},
+{
+name: "Engine Coolant",
+capacity: "~10.9 qt (10.3 L) system capacity",
+spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix",
+notes: "Curated reference figure -- Ford has used more than one coolant spec across EcoBoost applications and model years, see the F-150/Escape/Explorer/Bronco entries in this file for how easily this gets mixed up. Confirm against your underhood label.",
+},
+{
+name: "Automatic Transmission Fluid (10R80)",
+capacity: "~4-5 qt (3.8-4.7 L) for a pan drain-and-fill (service fill)",
+spec: "Motorcraft Mercon ULV (ultra-low viscosity ATF)",
+notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan.",
+},
+{
+name: "Front Axle Fluid (4WD)",
+capacity: "~1.4 qt (1.3 L)",
+spec: "SAE 75W-140 synthetic gear oil",
+},
+{
+name: "Rear Axle Fluid",
+capacity: "~1.8 qt (1.7 L)",
+spec: "SAE 75W-140 synthetic gear oil (+ friction modifier if limited-slip)",
+},
+{
+name: "Transfer Case Fluid (4WD)",
+capacity: "~1.5 qt (1.4 L)",
+spec: "Motorcraft Mercon LV",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~6.0 qt (5.7 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
