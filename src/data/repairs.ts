@@ -3193,13 +3193,15 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "30 ft-lb (40 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "27 ft-lb (37 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter housing cap",
         value: "18 ft-lb (25 Nm)",
-        notes: "Curated reference figure. Plastic housing -- torque it, do not muscle it.",
+        notes: "Plastic housing -- torque it, do not muscle it.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
     ],
     steps: [
@@ -3234,7 +3236,7 @@ image: "/steps/generic-cleanup.svg",
         title: "Replace the element and reassemble",
         instructions: "Unscrew the cap with the cap wrench, lift out the old element, and wipe the housing clean. Replace the cap O-rings, lightly oil them, fit the new element, and thread the cap back in by hand before torquing. Fit a new crush washer on the drain plug and torque it to spec.",
         image: "/steps/oil-filter-install.svg",
-        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (25 Nm)" }, { fastener: "Oil pan drain plug", value: "30 ft-lb (40 Nm)" }],
+        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (25 Nm)" }, { fastener: "Oil pan drain plug", value: "27 ft-lb (37 Nm)" }],
       },
       {
         number: 6,
@@ -3288,7 +3290,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "29 ft-lb (39 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle. Replace the aluminum washer every change.",
+        notes: "Replace the aluminum washer every change.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter (spin-on)",
@@ -3382,7 +3385,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "29 ft-lb (39 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle. Replace the aluminum washer every change.",
+        notes: "Replace the aluminum washer every change.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter (spin-on)",
