@@ -2622,9 +2622,9 @@ image: "/steps/generic-cleanup.svg",
       },
       {
         fastener: "Oil filter (spin-on)",
-        value: "16 ft-lb (22 Nm)",
-        notes: "Hand tight plus three-quarters of a turn.",
-        provenance: { source: "open-labor-project", confidence: "high" },
+        value: "3/4 turn clockwise after the gasket contacts the seat — 12 Nm (9 ft-lb)",
+        notes: "Honda states this one as a turn, not a torque figure: spin the filter on until the gasket touches the mounting surface, then 3/4 turn further. The 12 Nm (9 ft-lb) is the cross-check if you do reach for a torque wrench. Source: Honda Vehicle Service Quick Reference Guide (2013 and later). Do not go past it -- over-tightening a spin-on filter rolls the gasket, and that shows up later as oil on the driveway.",
+        provenance: { source: "curated" },
       },
     ],
     steps: [
