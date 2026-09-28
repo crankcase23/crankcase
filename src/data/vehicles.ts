@@ -3424,6 +3424,39 @@ spec: "All-season washer fluid",
 },
 ],
 }
+,
+{
+id: "2021-ford-expedition-3.5l",
+keys: { platform: "ford-u553-expedition", engine: "ford-ecoboost-3.5-twinturbo-v6", driveline: "ford-u553-4wd" },
+year: 2021,
+make: "Ford",
+model: "Expedition",
+trim: "XLT (4x4)",
+engine: "3.5L EcoBoost Twin-Turbo V6",
+drivetrain: "4WD",
+transmission: "10-speed automatic (10R80)",
+specs: [
+{ label: "Engine", value: "3.5L EcoBoost twin-turbo V6, 375 hp / 470 lb-ft" },
+{ label: "Drivetrain", value: "4WD" },
+{ label: "Transmission", value: "10-speed automatic (10R80)" },
+{ label: "Curb weight", value: "~5,690 lb" },
+{ label: "Fuel tank", value: "23.3 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 65, ~800 CCA" },
+{ label: "Wheel lug nut torque", value: "150 ft-lb (203 Nm)" },
+{ label: "Front tire size (XLT)", value: "275/65R18" },
+],
+fluids: [
+{ name: "Engine Oil", capacity: "6.0 qt (5.7 L) with filter change", spec: "5W-30 full synthetic, Ford spec WSS-M2C962-A1", notes: "Cartridge-style filter (Motorcraft FL-500S) -- confirmed via real-world parts cross-reference (this exact filter is sold specifically for '11+ Expedition/F-150 3.5L EcoBoost' kits) rather than assumed from the platform note alone. NOT the same filter as this catalog's own F-150 entry, which is the 5.0L Coyote V8 on a different engine/filter combo. Reference figure only; confirm against your oil fill cap before buying oil." },
+{ name: "Engine Coolant", capacity: "~16.5 qt (15.6 L) system capacity", spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix", notes: "Curated reference figure -- Ford has used more than one coolant spec across EcoBoost applications and model years, see this catalog's F-150/Escape/Explorer/Bronco/Ranger entries for how easily this gets mixed up. Confirm against your underhood label." },
+{ name: "Automatic Transmission Fluid (10R80)", capacity: "~4-5 qt (3.8-4.7 L) for a pan drain-and-fill (service fill)", spec: "Motorcraft Mercon ULV (ultra-low viscosity ATF)", notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan." },
+{ name: "Front Axle Fluid (4WD)", capacity: "~1.4 qt (1.3 L)", spec: "SAE 75W-140 synthetic gear oil" },
+{ name: "Rear Axle Fluid", capacity: "~3.0-3.5 qt (2.8-3.3 L), Ford 9.75-inch axle", spec: "SAE 75W-140 synthetic gear oil (+ friction modifier if limited-slip)" },
+{ name: "Transfer Case Fluid (4WD)", capacity: "~1.5 qt (1.4 L)", spec: "Motorcraft Mercon LV" },
+{ name: "Brake Fluid", capacity: "Fill to MAX line in reservoir", spec: "DOT 3" },
+{ name: "Windshield Washer Fluid", capacity: "~7.4 qt (7.0 L) reservoir", spec: "All-season washer fluid" },
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
