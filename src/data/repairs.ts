@@ -5233,6 +5233,101 @@ image: "/steps/generic-cleanup.svg",
     ],
   },
 
+  {
+    id: "ford-taurus-oil-change",
+    vehicleId: "2016-ford-taurus-3.5l",
+    title: "Engine Oil & Filter Change",
+    jobType: "oil-change",
+    summary: "Drain-and-refill oil service for the 3.5L Duratec Ti-VCT V6, with its cartridge-style oil filter.",
+    difficulty: "Easy",
+    tier: "free",
+    estTime: "40-55 min",
+    tools: [
+      { name: "Oil filter housing wrench", note: "Cartridge cap style, same Cyclone-family housing as this catalog's Expedition entry (Motorcraft FL-500S)" },
+      { name: "Socket set + ratchet", note: "For drain plug and under-engine shield fasteners" },
+      { name: "Torque wrench", note: "Range covering 15-25 ft-lb" },
+      { name: "Drain pan", note: "7+ qt capacity" },
+      { name: "Funnel" },
+      { name: "Jack + 2 jack stands or drive-up ramps" },
+      { name: "Nitrile gloves + safety glasses" },
+    ],
+    parts: [
+      "6.0 qt (5.7 L) 5W-20 full-synthetic-blend engine oil",
+      "Motorcraft FL-500S cartridge oil filter element + housing O-ring",
+      "Drain plug crush washer (replace if not self-sealing)",
+    ],
+    safety: [
+      "Let a hot engine cool for 10-15 min before draining -- hot oil causes burns.",
+      "Use jack stands rated for the vehicle's weight; never work under a vehicle held only by a jack.",
+      "Used oil and filters are hazardous waste -- take them to a recycling/auto parts drop-off, never pour down a drain.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil pan drain plug",
+        value: "20 ft-lb (27 Nm)",
+        notes: "Use new crush washer. Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+      },
+      {
+        fastener: "Oil filter housing cap",
+        value: "18 ft-lb (24 Nm)",
+        notes: "Housing is plastic -- do not overtighten, snug + spec torque only. Curated reference figure.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Warm the engine briefly, then park and secure",
+        instructions: "Run the engine for 2-3 minutes so the oil flows more easily, then shut it off. Park on level ground, set the parking brake, and chock the wheels.",
+        image: "/steps/generic-park-secure.svg",
+      },
+      {
+        number: 2,
+        title: "Raise the vehicle and remove the under-engine shield",
+        instructions: "Support the vehicle on jack stands at the factory lift points (see your owner's manual for their location on the rocker panels). Remove the plastic under-engine shield -- it's held by a mix of push-pin fasteners and bolts along its edge.",
+        image: "/steps/generic-raise-vehicle.svg",
+        warning: "Confirm the vehicle is stable on the stands before reaching underneath.",
+      },
+      {
+        number: 3,
+        title: "Drain the old oil",
+        instructions: "Position the drain pan under the oil pan's drain plug. Loosen the plug with a socket, then finish removing it by hand and let the oil fully drain.",
+        image: "/steps/oil-drain.svg",
+      },
+      {
+        number: 4,
+        title: "Remove and replace the oil filter cartridge",
+        instructions: "The filter housing cap sits at the front of the engine, below the intake manifold. Unscrew it counterclockwise with the housing wrench, lift out the old filter element, and let residual oil drain from the housing before wiping it clean.",
+        image: "/steps/oil-filter-cartridge.svg",
+        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (24 Nm)" }],
+      },
+      {
+        number: 5,
+        title: "Install the new filter and reassemble",
+        instructions: "Fit the new filter element into the cap, lightly oil the new O-ring, and thread the cap back in by hand before torquing it. Reinstall the drain plug with a new crush washer and torque it to spec.",
+        image: "/steps/oil-filter-install.svg",
+        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (24 Nm)" }, { fastener: "Oil pan drain plug", value: "20 ft-lb (27 Nm)" }],
+      },
+      {
+        number: 6,
+        title: "Reinstall the under-shield and lower the vehicle",
+        instructions: "Reattach the under-engine shield fasteners and carefully lower the vehicle back to the ground.",
+        image: "/steps/generic-lower-vehicle.svg",
+      },
+      {
+        number: 7,
+        title: "Refill and check",
+        instructions: "Remove the oil fill cap on top of the engine and add oil in stages, checking the dipstick as you approach 6.0 qt. Start the engine, let it run ~30 seconds, shut it off, and check under the vehicle for leaks at the drain plug and filter cap.",
+        image: "/steps/oil-fill-check.svg",
+      },
+      {
+        number: 8,
+        title: "Final level check and oil-life reset",
+        instructions: "Wait a few minutes for oil to settle, recheck the dipstick, and top off if needed. Reset the oil-change reminder via the dash Information menu. Dispose of the old oil and filter at a recycling center.",
+        image: "/steps/generic-cleanup.svg",
+      },
+    ],
+  },
+
 // ------------------------------------------------- TIRE ROTATION
 // One universal template applied per vehicle. The only vehicle-specific
 // inputs are drivetrain (which decides the cross pattern), lug nut torque,
