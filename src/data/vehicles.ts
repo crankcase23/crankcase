@@ -3457,6 +3457,36 @@ fluids: [
 { name: "Windshield Washer Fluid", capacity: "~7.4 qt (7.0 L) reservoir", spec: "All-season washer fluid" },
 ],
 }
+,
+{
+id: "2016-ford-taurus-3.5l",
+keys: { platform: "ford-d3-taurus", engine: "ford-duratec-3.5l-v6", driveline: "ford-taurus-fwd" },
+year: 2016,
+make: "Ford",
+model: "Taurus",
+trim: "SEL (FWD)",
+engine: "3.5L Duratec Ti-VCT V6",
+drivetrain: "FWD",
+transmission: "6-speed automatic (6F55)",
+specs: [
+{ label: "Engine", value: "3.5L Duratec Ti-VCT V6, 288 hp / 254 lb-ft" },
+{ label: "Drivetrain", value: "FWD" },
+{ label: "Transmission", value: "6-speed automatic (6F55)" },
+{ label: "Curb weight", value: "~3,970 lb" },
+{ label: "Fuel tank", value: "19.0 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 96R, ~590-610 CCA" },
+{ label: "Wheel lug nut torque", value: "100 ft-lb (135 Nm)" },
+{ label: "Front tire size (SEL)", value: "235/55R18" },
+],
+fluids: [
+{ name: "Engine Oil", capacity: "6.0 qt (5.7 L) with filter change", spec: "5W-20 full synthetic blend, Ford spec WSS-M2C945-B1", notes: "Cartridge-style filter housing (Motorcraft FL-500S) -- reasoned from the shared 3.5L Cyclone block architecture this catalog's Expedition entry also uses (same FL-500S), not yet independently confirmed for this specific naturally-aspirated application. Reference figure only; confirm against your oil fill cap before buying oil." },
+{ name: "Engine Coolant", capacity: "~11 qt (10.5 L) system capacity", spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix", notes: "Curated reference figure -- confirm against your underhood label; Ford has used more than one coolant spec across model years on this platform." },
+{ name: "Automatic Transmission Fluid (6F55)", capacity: "~4-5 qt (3.8-4.7 L) for a pan drain-and-fill (service fill)", spec: "Motorcraft Mercon LV", notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan." },
+{ name: "Brake Fluid", capacity: "Fill to MAX line in reservoir", spec: "DOT 3" },
+{ name: "Windshield Washer Fluid", capacity: "~4.5 qt (4.3 L) reservoir", spec: "All-season washer fluid" },
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
