@@ -3487,6 +3487,65 @@ fluids: [
 { name: "Windshield Washer Fluid", capacity: "~4.5 qt (4.3 L) reservoir", spec: "All-season washer fluid" },
 ],
 }
+,
+{
+id: "2021-gmc-terrain-1.5l",
+keys: { platform: "gm-c1xx-equinox", engine: "gm-ecotec-1.5t-le2", driveline: "gm-c1xx-terrain-9t45-awd" },
+year: 2021,
+make: "GMC",
+model: "Terrain",
+trim: "SLE (AWD)",
+engine: "1.5L Turbo I4 (LYX)",
+drivetrain: "AWD",
+transmission: "9-speed automatic (9T45)",
+specs: [
+{ label: "Engine", value: "1.5L turbocharged I4, 170 hp / 203 lb-ft" },
+{ label: "Drivetrain", value: "AWD" },
+{ label: "Transmission", value: "9-speed automatic (9T45)" },
+{ label: "Curb weight", value: "~3,622 lb" },
+{ label: "Fuel tank", value: "15.6 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 89, ~590 CCA" },
+{ label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm)" },
+{ label: "Front tire size (SLE)", value: "225/60R18" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "5.7 qt (5.4 L) with filter change",
+spec: "dexos1 0W-20 full synthetic",
+notes: "Spin-on canister filter, not a cartridge -- a standard filter wrench or strap tool works.",
+provenance: { source: "curated" },
+},
+{
+name: "Engine Coolant",
+capacity: "~6.9 qt (6.5 L) system capacity",
+spec: "GM DEX-COOL (orange), extended-life, 50/50 premix",
+},
+{
+name: "Automatic Transmission Fluid (9-speed)",
+capacity: "~3.5-4 qt (3.3-3.8 L) for a pan drain-and-fill (service fill), estimate",
+spec: "GM DEXRON-HP (GMW16974) full synthetic ATF -- this 9T45 generation supersedes the 6-speed Equinox's DEXRON-VI spec; confirm against a door-jamb/dealer source before finalizing.",
+notes: "Total dry-fill is significantly higher; a pan service only replaces what drains from the pan. Curated estimate, not yet confirmed against a factory source.",
+},
+{
+name: "Rear Differential Fluid (AWD)",
+capacity: "~0.5 qt (0.5 L), estimate",
+spec: "GM AWD rear differential fluid -- unconfirmed for this specific application",
+notes: "Curated reference figure only -- not yet confirmed against a factory source.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~7.4 qt (7.0 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+  }
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
