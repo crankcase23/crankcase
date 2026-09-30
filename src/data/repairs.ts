@@ -5340,6 +5340,100 @@ image: "/steps/generic-cleanup.svg",
     ],
   },
 
+  {
+      id: "gmc-terrain-oil-change",
+      vehicleId: "2021-gmc-terrain-1.5l",
+      title: "Engine Oil & Filter Change",
+      jobType: "oil-change",
+      summary: "Drain-and-refill oil service for the 1.5L turbo four, with a spin-on oil filter.",
+      difficulty: "Easy",
+      tier: "free",
+      estTime: "35-50 min",
+      tools: [
+        { name: "Oil filter wrench", note: "Strap or cap-style for the spin-on filter" },
+        { name: "Socket set + ratchet", note: "For drain plug and under-shield fasteners" },
+        { name: "Torque wrench", note: "Range covering 10-25 ft-lb" },
+        { name: "Drain pan", note: "6+ qt capacity" },
+        { name: "Funnel" },
+        { name: "Jack + 2 jack stands or drive-up ramps" },
+        { name: "Nitrile gloves + safety glasses" },
+      ],
+      parts: [
+        "5.7 qt (5.4 L) 0W-20 full-synthetic engine oil",
+        "ACDelco (or equivalent) spin-on oil filter",
+        "Drain plug crush washer (replace each service)",
+      ],
+      safety: [
+        "Let a hot engine cool for 10-15 min before draining -- hot oil causes burns.",
+        "Use jack stands rated for the vehicle's weight; never work under a vehicle held only by a jack.",
+        "Used oil and filters are hazardous waste -- take them to a recycling/auto parts drop-off, never pour down a drain.",
+      ],
+      torqueSpecs: [
+        {
+          fastener: "Oil pan drain plug",
+          value: "18 ft-lb (25 Nm)",
+          notes: "Curated reference figure, carried over from the Equinox's confirmed value for the same 1.5L LYX engine -- not yet independently pulled via Open Labor Project for this vehicle. Use new crush washer.",
+        },
+        {
+          fastener: "Spin-on oil filter",
+          value: "Hand-tighten per filter instructions (typically 3/4 turn past gasket contact)",
+          notes: "Don't use a torque wrench on a spin-on filter -- follow the printed instructions on the filter itself.",
+        },
+      ],
+      steps: [
+        {
+          number: 1,
+          title: "Warm the engine briefly, then park and secure",
+          instructions: "Run the engine for 2-3 minutes so the oil flows more easily, then shut it off. Park on level ground, set the parking brake, and chock the rear wheels.",
+          image: "/steps/generic-park-secure.svg",
+        },
+        {
+          number: 2,
+          title: "Raise the vehicle and remove the under-engine shield",
+          instructions: "Jack up the front of the vehicle at the factory jack points and support it on jack stands. Remove the plastic under-engine shield if equipped.",
+          image: "/steps/generic-raise-vehicle.svg",
+          warning: "Confirm the vehicle is stable on the stands before reaching underneath.",
+        },
+        {
+          number: 3,
+          title: "Drain the old oil",
+          instructions: "Position the drain pan under the oil pan's drain plug. Loosen the plug with a socket, then finish removing it by hand and let the oil fully drain.",
+          image: "/steps/oil-drain.svg",
+        },
+        {
+          number: 4,
+          title: "Remove the old filter",
+          instructions: "Locate the spin-on filter near the front of the engine block. Use the filter wrench to break it loose, then unscrew it by hand -- have the drain pan positioned underneath, it will spill some oil.",
+          image: "/steps/oil-filter-spinon-remove.svg",
+        },
+        {
+          number: 5,
+          title: "Install the new filter and drain plug",
+          instructions: "Wipe the mounting surface clean, lightly oil the new filter's gasket, and spin it on by hand until snug plus the additional turn specified on the filter. Reinstall the drain plug with a new crush washer and torque it to spec.",
+          image: "/steps/oil-filter-install.svg",
+          torque: [{ fastener: "Oil pan drain plug", value: "18 ft-lb (25 Nm)" }],
+        },
+        {
+          number: 6,
+          title: "Reinstall the under-shield and lower the vehicle",
+          instructions: "Reattach the under-engine shield fasteners and carefully lower the vehicle back to the ground.",
+          image: "/steps/generic-lower-vehicle.svg",
+        },
+        {
+          number: 7,
+          title: "Refill and check",
+          instructions: "Remove the oil fill cap on the valve cover and add oil in stages, checking the dipstick as you approach 5.7 qt. Start the engine, let it run ~30 seconds, shut it off, and check under the vehicle for leaks.",
+          image: "/steps/oil-fill-check.svg",
+        },
+        {
+          number: 8,
+          title: "Final level check and oil-life reset",
+          instructions: "Wait a few minutes for oil to settle, recheck the dipstick, and top off if needed. Reset the oil-life system via the dash Information menu. Dispose of the old oil and filter at a recycling center.",
+          image: "/steps/generic-cleanup.svg",
+        },
+      ],
+    },
+
 // ------------------------------------------------- TIRE ROTATION
 // One universal template applied per vehicle. The only vehicle-specific
 // inputs are drivetrain (which decides the cross pattern), lug nut torque,
