@@ -4620,8 +4620,9 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "20 ft-lb (27 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "18 ft-lb (25 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Spin-on oil filter",
@@ -4715,8 +4716,9 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "20 ft-lb (27 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "21 ft-lb (28 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Spin-on oil filter",
@@ -4811,8 +4813,9 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "20 ft-lb (27 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "21 ft-lb (28 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter housing cap",
@@ -4905,8 +4908,9 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "20 ft-lb (27 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "21 ft-lb (28 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
     ],
     steps: [
@@ -4995,12 +4999,14 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "20 ft-lb (27 Nm)",
-        notes: "Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter (spin-on)",
-        value: "22 ft-lb (30 Nm)",
-        notes: "Reference torque only. In practice most techs seat the gasket by hand and add three-quarters of a turn.",
+        value: "15 ft-lb (21 Nm)",
+        notes: "Hand tight plus 3/4 turn.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
     ],
     steps: [
@@ -5181,8 +5187,9 @@ image: "/steps/generic-cleanup.svg",
     torqueSpecs: [
       {
         fastener: "Oil pan drain plug",
-        value: "20 ft-lb (27 Nm)",
-        notes: "Use new crush washer. Curated reference figure -- not yet pulled from Open Labor Project for this vehicle.",
+        value: "21 ft-lb (28 Nm)",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter housing cap",
