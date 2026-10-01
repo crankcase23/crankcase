@@ -5005,8 +5005,7 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil filter (spin-on)",
         value: "15 ft-lb (21 Nm)",
-        notes: "Hand tight plus 3/4 turn.",
-        provenance: { source: "open-labor-project", confidence: "high" },
+        notes: "Hand tight plus 3/4 turn. Open Labor Project source tag removed -- that source is valid for lug nut and oil drain plug torque only, never a filter fastener. Still needs a Ford/Motorcraft citation for this vehicle; Ford specifies this filter as a turn past gasket contact rather than a torque figure, so follow the turn instruction and treat the figure as a hand-typed cross-check.",
       },
     ],
     steps: [
