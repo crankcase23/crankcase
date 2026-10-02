@@ -1675,7 +1675,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil filter (spin-on)",
         value: "13 ft-lb (18 Nm)",
-        notes: "Reference torque only. In practice most techs seat the gasket by hand and add three-quarters of a turn.",
+        notes: "Confirmed by Open Labor Project -- exact match to this file's existing curated figure. In practice most techs seat the gasket by hand and add three-quarters of a turn.",
+          provenance: { source: "open-labor-project", confidence: "high" },
       },
     ],
     steps: [
@@ -5379,7 +5380,8 @@ image: "/steps/generic-cleanup.svg",
         {
           fastener: "Oil pan drain plug",
           value: "18 ft-lb (25 Nm)",
-          notes: "Curated reference figure, carried over from the Equinox's confirmed value for the same 1.5L LYX engine -- not yet independently pulled via Open Labor Project for this vehicle. Use new crush washer.",
+          notes: "Independently confirmed by Open Labor Project for the Terrain's own 1.5L Turbo (LYX) -- exact match to the Equinox's carried-over figure. Use new crush washer.",
+          provenance: { source: "open-labor-project", confidence: "high" },
         },
         {
           fastener: "Spin-on oil filter",
