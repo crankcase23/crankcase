@@ -3546,6 +3546,65 @@ spec: "All-season washer fluid",
 },
 ],
   }
+,
+  {
+    id: "2021-gmc-acadia-3.6l",
+    keys: { platform: "gm-c1xx-3row", engine: "gm-lgx-3.6", driveline: "gm-c1xx-acadia-9t65-awd" },
+    year: 2021,
+    make: "GMC",
+    model: "Acadia",
+    trim: "SLT AWD (3.6L V6)",
+    engine: "3.6L V6 (LGX)",
+    drivetrain: "AWD",
+    transmission: "9-speed automatic (9T65)",
+    specs: [
+      { label: "Engine", value: "3.6L V6 (LGX), 310 hp / 271 lb-ft" },
+      { label: "Drivetrain", value: "AWD" },
+      { label: "Transmission", value: "9-speed automatic (9T65)" },
+      { label: "Curb weight", value: "~4,234 lb" },
+      { label: "Fuel tank", value: "22.0 gal" },
+      { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+      { label: "Battery", value: "Group size 48 (H6), ~700 CCA" },
+      { label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm)" },
+      { label: "Front tire size (SLT)", value: "235/55R20" },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "6.0 qt (5.7 L) with filter change",
+        spec: "dexos1 5W-30 full synthetic",
+        notes: "Spin-on canister filter (cross-referenced to WIX WL10255 / AMSOIL EAO17 for this 3.6L V6, independently web-confirmed), not a cartridge -- a standard filter wrench or strap tool works. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+        provenance: { source: "curated" },
+      },
+      {
+        name: "Engine Coolant",
+        capacity: "~12.0 qt (11.4 L) system capacity",
+        spec: "GM DEX-COOL (orange), extended-life, 50/50 premix",
+      },
+      {
+        name: "Automatic Transmission Fluid (9T65)",
+        capacity: "~4-5 qt (3.8-4.7 L) for a pan drain-and-fill (service fill)",
+        spec: "GM DEXRON-HP full synthetic ATF",
+        notes: "Total dry-fill is much higher; a fluid/filter service only replaces what drains from the pan.",
+      },
+      {
+        name: "Rear Differential Fluid (AWD)",
+        capacity: "~0.9 qt (0.85 L), estimate",
+        spec: "GM AWD rear differential fluid -- unconfirmed for this specific application",
+        notes: "Curated reference figure only -- not yet confirmed against a factory source.",
+      },
+      {
+        name: "Brake Fluid",
+        capacity: "Fill to MAX line in reservoir",
+        spec: "DOT 3",
+      },
+      {
+        name: "Windshield Washer Fluid",
+        capacity: "~7.5 qt (7.1 L) reservoir",
+        spec: "All-season washer fluid",
+      },
+    ],
+  }
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
