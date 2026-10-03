@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/check-olp-scope.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "test:e2e": "playwright test",
-    "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
+    "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs",
+    "check:data": "node scripts/check-olp-scope.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
