@@ -5536,6 +5536,101 @@ image: "/steps/generic-cleanup.svg",
       },
     ],
   },
+  {
+    id: "gmc-yukon-oil-change",
+    vehicleId: "2021-gmc-yukon-5.3l",
+    title: "Engine Oil & Filter Change",
+    jobType: "oil-change",
+    summary: "Drain-and-refill oil service for the 5.3L EcoTec3 L84 V8, with its spin-on oil filter.",
+    difficulty: "Easy",
+    tier: "free",
+    estTime: "50-65 min",
+    tools: [
+      { name: "Oil filter wrench", note: "Strap or cap-style for the spin-on filter" },
+      { name: "Socket set + ratchet", note: "For the drain plug and the under-shield fasteners" },
+      { name: "Torque wrench", note: "Range covering 15-25 ft-lb" },
+      { name: "Large drain pan", note: "10+ qt capacity -- this engine holds 8 qt" },
+      { name: "Funnel with extension", note: "Full-size SUV ride height makes the reach longer" },
+      { name: "Jack + 2 jack stands or drive-up ramps" },
+      { name: "Nitrile gloves + safety glasses" },
+    ],
+    parts: [
+      "8.0 qt (7.6 L) 0W-20 full-synthetic engine oil meeting GM dexos1",
+      "Spin-on oil filter (ACDelco PF63 or equivalent)",
+      "Drain plug crush washer",
+    ],
+    safety: [
+      "Let a hot engine cool for 10-15 min before draining -- hot oil causes burns.",
+      "Use jack stands rated for the vehicle's weight; never work under a vehicle held only by a jack.",
+      "Used oil and filters are hazardous waste -- take them to a recycling/auto parts drop-off, never pour down a drain.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil pan drain plug",
+        value: "18 ft-lb (25 Nm)",
+        notes: "Curated reference figure -- not yet independently pulled from Open Labor Project for this vehicle. This is the same L84 5.3L V8 as the Tahoe and Suburban (and the Silverado/Sierra pickups it originates from); carried over from that family's confirmed figure, not yet independently verified for the Yukon specifically.",
+      },
+      {
+        fastener: "Oil filter (spin-on)",
+        value: "22 ft-lb (30 Nm)",
+        notes: "Reference torque only -- most techs seat the gasket by hand and add three-quarters of a turn. Carried over from the Tahoe/Suburban twin figure, same reasoning as the drain plug above; not yet independently confirmed for this vehicle.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Warm the engine briefly, then park and secure",
+        instructions: "Run the engine for 2-3 minutes so the oil flows more easily, then shut it off. Park on level ground, set the parking brake, and chock the wheels.",
+        image: "/steps/generic-park-secure.svg",
+      },
+      {
+        number: 2,
+        title: "Raise the vehicle and remove the under-engine shield",
+        instructions: "Support the vehicle on jack stands at the frame's rated lift points. Remove or swing aside the plastic under-engine shield if fitted.",
+        image: "/steps/generic-raise-vehicle.svg",
+        warning: "Confirm the vehicle is stable on the stands before reaching underneath -- this is a heavy, high-riding full-size SUV.",
+      },
+      {
+        number: 3,
+        title: "Drain the old oil",
+        instructions: "Position the drain pan under the oil pan's drain plug. Loosen the plug with a socket, then finish removing it by hand and let the oil fully drain. Expect roughly 8.0 qt.",
+        image: "/steps/oil-drain.svg",
+      },
+      {
+        number: 4,
+        title: "Remove the spin-on filter",
+        instructions: "The filter is on the driver side of the engine, reachable from underneath. Slide the drain pan under it, back it off with the filter wrench, then spin it off by hand -- it will be full of oil, so keep it upright until it clears.",
+        image: "/steps/oil-filter-spinon-remove.svg",
+        warning: "Check that the old filter's rubber gasket came off with it. A gasket left stuck to the engine will double up against the new filter and push oil out under pressure.",
+      },
+      {
+        number: 5,
+        title: "Install the new filter and drain plug",
+        instructions: "Wipe the sealing surface clean, smear a film of fresh oil on the new filter's gasket, and thread it on by hand until the gasket contacts, then about three-quarters of a turn more. Fit a new crush washer on the drain plug and torque it to spec.",
+        image: "/steps/oil-filter-install.svg",
+        torque: [{ fastener: "Oil pan drain plug", value: "18 ft-lb (25 Nm)" }],
+      },
+      {
+        number: 6,
+        title: "Reinstall the under-shield and lower the vehicle",
+        instructions: "Reattach the under-engine shield fasteners (if removed) and carefully lower the vehicle back to the ground.",
+        image: "/steps/generic-lower-vehicle.svg",
+      },
+      {
+        number: 7,
+        title: "Refill and check",
+        instructions: "Remove the oil fill cap and add oil in stages, checking the dipstick as you approach 8.0 qt. Start the engine, let it run ~30 seconds, shut it off, and check underneath for leaks at the drain plug and filter.",
+        image: "/steps/oil-fill-check.svg",
+      },
+      {
+        number: 8,
+        title: "Final level check and oil-life reset",
+        instructions: "Wait a few minutes for oil to settle, recheck the dipstick, and top off if needed. Reset the oil-life monitor from the Driver Information Center. Dispose of the old oil and filter at a recycling drop-off.",
+        image: "/steps/generic-cleanup.svg",
+      },
+    ],
+  },
+
 
 // ------------------------------------------------- TIRE ROTATION
 // One universal template applied per vehicle. The only vehicle-specific
