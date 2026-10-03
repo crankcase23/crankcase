@@ -1675,8 +1675,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil filter (spin-on)",
         value: "13 ft-lb (18 Nm)",
-        notes: "Confirmed by Open Labor Project -- exact match to this file's existing curated figure. In practice most techs seat the gasket by hand and add three-quarters of a turn.",
-          provenance: { source: "open-labor-project", confidence: "high" },
+        notes: "Hand-typed reference figure. Open Labor Project source tag removed -- that source is valid for lug nut and oil drain plug torque only, never a filter fastener. Still needs a Nissan citation for this vehicle; a spin-on filter is normally specified as a turn past gasket contact rather than a torque figure, so seat the gasket by hand and add three-quarters of a turn, and treat the figure as a cross-check.",
+        provenance: { source: "curated" },
       },
     ],
     steps: [
