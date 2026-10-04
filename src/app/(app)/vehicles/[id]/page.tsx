@@ -82,7 +82,30 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   ];
 
   return (
-    <div className="vh-page overflow-x-clip">
+    <div className="vh-page relative isolate overflow-x-clip">
+      {/* Page-long environment: almost subliminal. Existing workshop photo only,
+          blurred and masked into the dark; a couple of amber light blooms;
+          shadow at the foot. Decorative, behind everything. */}
+      <div aria-hidden className="vh-atmos absolute inset-0 z-0 overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/garage/workshop-bench.jpg"
+          alt=""
+          loading="lazy"
+          className="left-[-18%] top-[34%] h-[46rem] w-[78%] max-w-none object-cover opacity-[0.10] blur-[3px] [mask-image:radial-gradient(closest-side,black_20%,transparent_100%)]"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/garage/workshop-bench.jpg"
+          alt=""
+          loading="lazy"
+          className="right-[-22%] top-[66%] h-[44rem] w-[80%] max-w-none -scale-x-100 object-cover opacity-[0.085] blur-[3px] [mask-image:radial-gradient(closest-side,black_20%,transparent_100%)]"
+        />
+        <div className="right-[-10%] top-[24%] h-[34rem] w-[46rem] bg-[radial-gradient(closest-side,rgba(234,138,40,0.13),transparent)]" />
+        <div className="left-[-14%] top-[52%] h-[36rem] w-[44rem] bg-[radial-gradient(closest-side,rgba(200,110,40,0.12),transparent)]" />
+        <div className="right-[-8%] top-[80%] h-[30rem] w-[40rem] bg-[radial-gradient(closest-side,rgba(234,138,40,0.10),transparent)]" />
+        <div className="inset-x-0 bottom-0 h-[22rem] bg-gradient-to-b from-transparent to-black/60" />
+      </div>
       <section className="relative isolate overflow-hidden lg:min-h-[20rem]">
         <VehicleBackdrop vehicleId={vehicle.id} />
         <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
@@ -130,7 +153,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
       <StickyVehicleBar vehicleId={vehicle.id} label={label} />
 
-    <div className="mx-auto max-w-6xl px-4 pb-12 pt-5 sm:pb-14">
+    <div className="relative z-[1] mx-auto max-w-6xl px-4 pb-12 pt-5 sm:pb-14">
       <nav aria-label="Jump to section" className="-mx-4 mb-7 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
         {JUMPS.map((j) => (
           <a

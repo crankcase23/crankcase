@@ -42,10 +42,23 @@ export default function ManufacturerService({
       glow="right"
       opensOn={["maintenance", "factory-schedule"]}
     >
-      <div className={`${PANEL} relative overflow-hidden p-6 sm:p-8`}>
+      <div className={`${PANEL} relative isolate overflow-hidden p-6 sm:p-8`}>
+        {/* faint bench photo bleeding in from the right, heavily graded */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          aria-hidden
+          alt=""
+          src="/images/garage/workshop-bench.jpg"
+          loading="lazy"
+          className="pointer-events-none absolute inset-y-0 right-0 -z-10 h-full w-3/5 max-w-none object-cover opacity-[0.22] [mask-image:linear-gradient(to_right,transparent,black_70%)]"
+        />
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-16 -top-20 h-64 w-96 bg-[radial-gradient(closest-side,rgba(251,146,60,0.14),transparent)]"
+          className="pointer-events-none absolute -right-10 -top-24 -z-10 h-72 w-[30rem] bg-[radial-gradient(closest-side,rgba(251,146,60,0.2),transparent)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_90%_at_18%_45%,rgba(0,0,0,0.55),transparent_75%)]"
         />
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-slate-400">
           Next manufacturer-recommended service
@@ -65,7 +78,7 @@ export default function ManufacturerService({
         ) : stop ? (
           <div className="mt-2">
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <span className="text-6xl font-extrabold leading-none text-orange-400 sm:text-7xl" style={display}>
+              <span className="text-6xl font-extrabold leading-none text-orange-400 drop-shadow-[0_0_26px_rgba(251,146,60,0.28)] sm:text-7xl" style={display}>
                 {stop.miles.toLocaleString("en-US")}
                 <span className="ml-2 text-3xl text-orange-300/80 sm:text-4xl">mi</span>
               </span>

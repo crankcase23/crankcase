@@ -136,20 +136,22 @@ export default function Section({
     };
   }, [id, key, targets]);
 
+  // Light spill: a soft ellipse that fades to nothing well inside its box, so
+  // no edge of the box is ever visible.
   const glowCls =
     glow === "none"
       ? ""
       : glow === "left"
-        ? "bg-[radial-gradient(34rem_14rem_at_8%_0%,rgba(234,138,40,0.10),transparent_72%)]"
-        : "bg-[radial-gradient(34rem_14rem_at_92%_0%,rgba(234,138,40,0.10),transparent_72%)]";
+        ? "bg-[radial-gradient(38rem_13rem_at_14%_50%,rgba(234,138,40,0.15),transparent_100%)]"
+        : "bg-[radial-gradient(38rem_13rem_at_86%_50%,rgba(234,138,40,0.15),transparent_100%)]";
 
   return (
     <section id={id} className="relative mt-12 scroll-mt-32 sm:mt-16" aria-labelledby={`${uid}-h`}>
       {glow !== "none" ? (
-        <div aria-hidden className={`pointer-events-none absolute inset-x-0 -top-10 -z-10 h-72 ${glowCls}`} />
+        <div aria-hidden className={`pointer-events-none absolute -top-28 left-1/2 -z-10 h-[30rem] w-[min(100vw,90rem)] -translate-x-1/2 ${glowCls}`} />
       ) : null}
       <div className={`vh-seam ${open ? "mb-5 sm:mb-6" : "mb-4"}`} aria-hidden />
-      <div className={open ? "" : "vh-panel rounded-2xl"}>
+      <div className={open ? "" : "vh-drawer rounded-2xl"}>
         <h2 id={`${uid}-h`} className="m-0">
           <button
             type="button"
@@ -185,10 +187,10 @@ export default function Section({
               {chip ? <span className="hidden sm:block">{chip}</span> : null}
               <span
                 aria-hidden
-                className={`flex h-11 w-11 items-center justify-center rounded-full border text-slate-200 transition-colors ${
+                className={`flex h-11 w-11 items-center justify-center rounded-full text-slate-200 transition-colors ${
                   open
-                    ? "border-orange-500/50 bg-orange-500/10 text-orange-300"
-                    : "border-white/15 bg-black/30 group-hover:border-white/35"
+                    ? "border border-orange-500/50 bg-orange-500/10 text-orange-300 shadow-[0_0_18px_-4px_rgba(234,138,40,0.45)]"
+                    : "vh-knob group-hover:text-white"
                 }`}
               >
                 <IconChevron open={open} />

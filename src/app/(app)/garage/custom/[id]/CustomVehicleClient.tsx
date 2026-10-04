@@ -153,7 +153,7 @@ export default function CustomVehiclePage() {
         </div>
       </section>
 
-    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+    <div className="mx-auto overflow-x-clip max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
       <div className="grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
         <HubTiles tiles={tiles} />
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">

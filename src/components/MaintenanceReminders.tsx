@@ -121,40 +121,38 @@ export default function MaintenanceReminders({
           </>
         )}
       </p>
-      <form
-        onSubmit={handleOdoSubmit}
-        className={`${PANEL} p-4 sm:p-5`}
-      >
-        <label htmlFor="odo" className="mb-2 block text-sm text-slate-300">
-          Current odometer{" "}
-          <span className="text-slate-500">(optional, sharpens the estimates)</span>
-        </label>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            id="odo"
-            type="number"
-            min={0}
-            inputMode="numeric"
-            value={odoInput}
-            onChange={(e) => setOdoInput(e.target.value)}
-            placeholder={odometer != null ? `Saved: ${odometer.toLocaleString()} mi` : "e.g. 118500"}
-            className="h-12 w-full rounded-lg border border-white/10 bg-black/40 px-4 text-base text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none sm:max-w-xs"
-          />
-          <button
-            type="submit"
-            className="h-12 rounded-lg border border-white/15 bg-white/[0.04] px-6 text-sm font-semibold text-slate-100 hover:border-orange-500 sm:w-auto"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-
-      {attention.length === 0 && !showAll ? (
-        <p className="mt-5 flex items-center gap-2.5 text-sm text-slate-300">
-          <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400" />
-          Nothing needs attention right now, based on what&apos;s logged.
-        </p>
-      ) : null}
+      <div className={`${PANEL} overflow-hidden`}>
+        <form onSubmit={handleOdoSubmit} className="p-4 sm:p-5">
+          <label htmlFor="odo" className="mb-2 block text-sm text-slate-300">
+            Current odometer{" "}
+            <span className="text-slate-500">(optional, sharpens the estimates)</span>
+          </label>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              id="odo"
+              type="number"
+              min={0}
+              inputMode="numeric"
+              value={odoInput}
+              onChange={(e) => setOdoInput(e.target.value)}
+              placeholder={odometer != null ? `Saved: ${odometer.toLocaleString()} mi` : "e.g. 118500"}
+              className="h-12 w-full rounded-lg border border-white/10 bg-black/40 px-4 text-base text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none sm:max-w-xs"
+            />
+            <button
+              type="submit"
+              className="h-12 rounded-lg border border-white/15 bg-white/[0.04] px-6 text-sm font-semibold text-slate-100 hover:border-orange-500 sm:w-auto"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+        {attention.length === 0 && !showAll ? (
+          <p className="flex items-center gap-2.5 border-t border-white/[0.07] bg-black/25 px-4 py-3.5 text-sm text-slate-300 sm:px-5">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.6)]" />
+            Nothing needs attention right now, based on what&apos;s logged.
+          </p>
+        ) : null}
+      </div>
 
       {visible.length > 0 && (
         <ul className={`${PANEL} mt-5 divide-y divide-white/[0.07] overflow-hidden`}>
