@@ -1,13 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { allRepairs, findRepair, findVehicle } from "@/lib/data";
+import { allRepairs, findRepair, findVehicle, listVehicles } from "@/lib/data";
 import { JOB_LABELS } from "@/lib/admin/coverage";
-import type { JobTypeId, Vehicle } from "@/types/vehicle";
-import CrankcaseMark from "@/components/CrankcaseMark";
+import type { JobTypeId } from "@/types/vehicle";
+import { CinematicScene } from "@/components/marketing/Cinematic";
 import {
-  DrawerTexture,
-  HeroBackdrop,
   IconArrowRight,
+  IconBolt,
   IconBox,
   IconCar,
   IconClipboardCheck,
@@ -15,11 +14,9 @@ import {
   IconGauge,
   IconHex,
   IconPlay,
-  IconShield,
   IconSteps,
-  IconTarget,
   IconWrench,
-  Stamp,
+  VehicleLinework,
 } from "@/components/marketing/HomeVisuals";
 
 export const metadata: Metadata = {
@@ -29,33 +26,25 @@ export const metadata: Metadata = {
 };
 
 // ---------------------------------------------------------------------------
-// Homepage. Built for the first ten seconds.
+// Homepage -- visual correction pass against the approved "Website Theme 1"
+// mockup. One job per section, nothing competing with it:
 //
-// A first-time visitor -- very possibly someone who has never changed their
-// own oil -- should be able to answer five questions from the first screen
-// without scrolling or clicking:
+//   hero          one headline, one paragraph, two CTAs, one preview card
+//   steps         vehicle -> job -> do it right
+//   value strip   three plain numbers
+//   guides        routine maintenance, as a quiet list of jobs
+//   close         one more way in
 //
-//   1. Does this know MY car?                 -> "your exact vehicle", step 1
-//   2. Can I pick the job I actually need?    -> step 2, the jobs strip
-//   3. Will it tell me what I need first?     -> tools / parts / fluids / safety
-//   4. Will it walk me through it?            -> "step by step", the preview card
-//   5. Is this for someone like me?           -> "First time? Start with an oil change."
+// The preview card is NOT a mockup: it is rendered from a real guide in
+// src/data, so every number on it is one the site publishes for that vehicle.
+// The stats are counted from the catalog at request time; none is hand-typed.
 //
-// The preview card on the right is NOT a mockup. It is rendered from a real
-// guide in src/data at request time, so every number on it is a number the
-// site actually publishes for that vehicle. Nothing on this page is a
-// placeholder figure -- if the catalog changes, the homepage changes with it.
+// Orange is spent on the primary CTA, the middle headline line, the step
+// numbers, the eyebrow and one highlighted job chip. Nothing else.
 //
-// Visual system: "Modern Performance Garage, restrained edition". Depth comes
-// from graphite panels, seams and a faint drafting grid (globals.css, cg-*),
-// plus one line-drawn vehicle in the hero (HomeVisuals.tsx). Orange is spent
-// on exactly five things: the primary CTA, the section eyebrow, the vehicle-
-// specific torque values, the active step, and the small brand rule under the
-// headline. Everything else is off-white, steel and blue-gray.
-//
-// Voice: confident, automotive, plain. No emojis, no exclamation marks, no
-// "unlock your potential". The display face (Big Shoulders Display, the same
-// one the badge wears) is used for headings only, as signage.
+// The hero has no photograph (HERO_IMAGE in HomeVisuals.tsx is still null --
+// no licensed asset exists). Cinematic.tsx builds the bay out of light
+// instead; a photo can replace it without touching this file.
 // ---------------------------------------------------------------------------
 
 // The guide the hero previews. The Jeep is the original demo vehicle and its
@@ -64,57 +53,23 @@ const PREVIEW_GUIDE_ID = "jeep-grand-cherokee-oil-change";
 
 const display = { fontFamily: "var(--font-display)" } as const;
 
-// ---------------------------------------------------------------------------
-// "Know your ride" data sheet. Every row below is read from the demo vehicle's
-// own catalog entry (specs[] by label, fluids[] by name). A row whose source
-// field is missing is simply not rendered -- the sheet never shows a
-// placeholder. These six were chosen because the catalog carries them for
-// every vehicle (checked 2026-09-24: 49/49 for oil, coolant, brake fluid, fuel
-// tank, octane, lug-nut torque; 48/49 for battery). Factory service intervals
-// exist for three platforms only, so they are deliberately NOT advertised
-// here -- see the vehicle page for those.
-// ---------------------------------------------------------------------------
-type DataRow = { label: string; value: string; sub?: string };
+// One focus ring for every link that looks like a button.
+const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400";
+const BTN_PRIMARY = `rounded-lg bg-orange-500 px-6 py-3.5 font-semibold text-slate-950 shadow-lg shadow-black/50 hover:bg-orange-400 ${FOCUS}`;
+const BTN_SECONDARY = `rounded-lg border border-slate-500/60 bg-slate-950/40 px-6 py-3.5 font-semibold text-slate-100 backdrop-blur-sm hover:border-slate-300 hover:text-white ${FOCUS}`;
 
-function buildDataRows(vehicle: Vehicle): DataRow[] {
-  const spec = (label: string) => vehicle.specs.find((s) => s.label === label)?.value;
-  const fluid = (name: string) => vehicle.fluids.find((f) => f.name === name);
-  const oil = fluid("Engine Oil");
-  const coolant = fluid("Engine Coolant");
-  const brake = fluid("Brake Fluid");
-  const rows: (DataRow | undefined)[] = [
-    oil && { label: "Engine oil", value: oil.capacity, sub: oil.spec },
-    coolant && { label: "Engine coolant", value: coolant.capacity, sub: coolant.spec },
-    spec("Battery") ? { label: "Battery", value: spec("Battery")! } : undefined,
-    spec("Wheel lug nut torque") ? { label: "Wheel lug nut torque", value: spec("Wheel lug nut torque")! } : undefined,
-    brake && { label: "Brake fluid", value: brake.spec, sub: brake.capacity },
-    spec("Fuel tank") ? { label: "Fuel", value: spec("Fuel tank")!, sub: spec("Recommended fuel") } : undefined,
-  ];
-  return rows.filter((r): r is DataRow => Boolean(r));
-}
-
-function Eyebrow({ children, as: Tag = "p" }: { children: React.ReactNode; as?: "p" | "h2" }) {
+function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <Tag className="flex items-center gap-3">
-      <span className="h-px w-8 shrink-0 bg-orange-500" aria-hidden />
-      <span className="text-xs font-extrabold uppercase tracking-[0.22em] text-orange-400" style={display}>
-        {children}
-      </span>
-    </Tag>
+    <p className={`text-[0.8rem] font-extrabold uppercase tracking-[0.2em] text-orange-400 ${className}`} style={display}>
+      {children}
+    </p>
   );
 }
 
-// One focus ring for every link that looks like a button. Keyboard users get
-// the same orange the mouse users see on hover.
-const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400";
-const BTN_PRIMARY = `rounded-lg bg-orange-500 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-black/40 hover:bg-orange-400 ${FOCUS}`;
-const BTN_SECONDARY = `rounded-lg border border-slate-600 bg-slate-900/50 px-6 py-3 font-semibold text-slate-200 hover:border-slate-400 hover:text-white ${FOCUS}`;
-
-/** The orange number square on the three-step rail. Decorative: the <ol> carries the order. */
 function StepNumber({ n }: { n: string }) {
   return (
     <div
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-orange-500 font-sans text-lg font-extrabold text-slate-950 shadow-md shadow-black/40"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500 font-sans text-base font-extrabold text-slate-950"
       aria-hidden
     >
       {n}
@@ -122,557 +77,233 @@ function StepNumber({ n }: { n: string }) {
   );
 }
 
+// Order the jobs the way a beginner's mental list runs.
+const JOB_ORDER: JobTypeId[] = [
+  "oil-change",
+  "brake-pads-front",
+  "battery",
+  "tire-rotation",
+  "coolant",
+  "engine-air-filter",
+  "cabin-air-filter",
+  "wiper-blades",
+];
+
 export default function MarketingHome() {
   const guide = findRepair(PREVIEW_GUIDE_ID);
   const vehicle = guide ? findVehicle(guide.vehicleId) : undefined;
 
-  const dataRows = vehicle ? buildDataRows(vehicle) : [];
-
-  // Compact "Know your ride" preview for the hero's guide/vehicle-data
-  // product-bridge row (Brick 5E.4). Same buildDataRows() output as the full
-  // data sheet further down the page -- no new data, no new source -- minus
-  // "Wheel lug nut torque". Torque is already the guide card's territory in
-  // this pairing (its own tile count + a torque-value well), so dropping it
-  // here keeps the HOW-vs-WHAT split clean instead of showing the same kind
-  // of number in both cards. Takes the first four of what's left: oil,
-  // coolant, battery, brake fluid for the default demo vehicle.
-  const heroDataPreview = dataRows.filter((r) => r.label !== "Wheel lug nut torque").slice(0, 4);
-
   const guides = allRepairs();
-  const jobTypesWithGuides = Array.from(new Set(guides.map((g) => g.jobType))) as JobTypeId[];
-  // Order the strip the way a beginner's mental list runs: the jobs people
-  // actually start with first, the rarer ones last.
-  const JOB_ORDER: JobTypeId[] = [
-    "oil-change",
-    "brake-pads-front",
-    "brake-pads-rear",
-    "engine-air-filter",
-    "cabin-air-filter",
-    "wiper-blades",
-    "battery",
-    "tire-rotation",
-    "coolant",
-    "fluid-checks",
-    "serpentine-belt",
-    "driveline-fluid",
-    "key-fob-battery",
-    "fuse-bulb",
-    "pcv-valve",
-    "spark-plugs",
-    "o2-sensor",
-  ];
-  const jobs = JOB_ORDER.filter((id) => jobTypesWithGuides.includes(id));
+  const withGuides = new Set(guides.map((g) => g.jobType));
+  const jobs = JOB_ORDER.filter((id) => withGuides.has(id)).slice(0, 6);
 
   const steps = [
-    { n: "1", icon: <IconCar className="h-6 w-6" />, title: "Your exact vehicle", body: "Year, make, model, engine — or drop in the VIN." },
-    { n: "2", icon: <IconWrench className="h-6 w-6" />, title: "Pick the job", body: "Oil change, brakes, filters, wipers, fluids and more." },
-    { n: "3", icon: <IconClipboardCheck className="h-6 w-6" />, title: "Do it right", body: "Tools, parts, torque specs, safety notes. Step by step." },
+    { n: "1", icon: <IconCar className="h-7 w-7" />, title: "Your exact vehicle", body: "Year, make, model, engine." },
+    { n: "2", icon: <IconWrench className="h-7 w-7" />, title: "Pick the job", body: "Maintenance, repair or upgrade." },
+    { n: "3", icon: <IconClipboardCheck className="h-7 w-7" />, title: "Do it right", body: "Tools, parts, fluids, torque specs." },
+  ];
+
+  // Counted from the catalog, never typed in.
+  const stats = [
+    { icon: <IconCar className="h-8 w-8" />, value: String(listVehicles().length), label: "vehicles in the catalog" },
+    { icon: <IconClipboardCheck className="h-8 w-8" />, value: String(guides.length), label: "step-by-step guides" },
+    { icon: <IconBolt className="h-8 w-8" />, value: "No fluff", label: "just the right info" },
   ];
 
   return (
     <>
-      {/* ------------------------------------------------------ first screen */}
+      {/* ------------------------------------------------------------ hero */}
       <section className="relative isolate overflow-hidden">
-        {/* the scene: backdrop, headline, guide card. The steps rail is a
-            band below it, so the floor ends where it begins. */}
-        <div className="relative">
-          <HeroBackdrop />
-
-          {/* BRICK 5E.3 -- restructured from a left-copy/right-card two-column
-              grid into a stacked cinematic layout: wide value-prop field over
-              Eleanor, then a centered guide preview below, then the 3-step
-              rail. See the comment on the guide-preview <aside> below for the
-              rest of the reasoning. */}
-          <div className="relative mx-auto max-w-6xl px-4 pt-9 pb-10 sm:pt-14 sm:pb-14 lg:pb-16 lg:pt-8">
-          {/* ---- the pitch: widened from its old ~1.1fr grid-column width
-              (~54% of max-w-6xl, ~622px) to lg:max-w-3xl (768px) so the
-              readability field extends further toward the hero's center and
-              is allowed to sit over Eleanor's rear portion -- her front end
-              (grille/headlights/hood/bumper/wheel) is well clear of this
-              width on the source photo's right-anchored-in-frame nose.
-              Individual lines still wrap at max-w-xl on the paragraphs below,
-              so body copy doesn't stretch to absurd line lengths just
-              because the field around it got wider. */}
-          <div className="max-w-xl lg:max-w-3xl">
-            <Eyebrow>Your ride. Your garage. Your wrenches.</Eyebrow>
-
+        <CinematicScene />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-12 sm:pt-16 lg:min-h-[35rem] lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12 lg:pb-20 lg:pt-14">
+          <div>
+            <Eyebrow>Your ride. Your garage.</Eyebrow>
             <h1
-              className="mt-3 text-[3.4rem] font-extrabold uppercase leading-[0.9] tracking-tight text-slate-50 sm:text-6xl lg:text-[4.5rem] 2xl:text-[5rem]"
+              className="mt-4 text-[3.35rem] font-extrabold uppercase leading-[0.9] tracking-tight text-slate-50 sm:text-7xl lg:text-[5.25rem]"
               style={display}
             >
               Fix your own car.
-              <span className="block text-orange-500">
-                Right numbers,
-                <br /> right order.
-              </span>
+              <span className="block text-orange-500">Right numbers.</span>
+              <span className="block">Right order.</span>
             </h1>
-
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-              Tell Crankcase your year, make, model and engine. Pick the job. You get the tools,
-              parts, fluids, safety notes and torque specs for{" "}
-              <span className="font-semibold text-slate-100">that exact vehicle</span> — then a
-              step-by-step walkthrough from the first bolt to the last.
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
+              Tell Crankcase your year, make, model and engine. Get the exact tools, parts, fluids and
+              torque specs for that job — in the right order.
             </p>
-
-            <p className="mt-3 max-w-xl text-sm text-slate-400 sm:text-base">
-              Never done this before? Start with an oil change. Every guide tells you what you need,
-              how long it takes, and where people get hurt — before you pick up a tool.
-            </p>
-
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Link href="/signup" className={`${BTN_PRIMARY} inline-flex items-center gap-2.5 text-base`}>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link href="/signup" className={`${BTN_PRIMARY} inline-flex items-center justify-center gap-3 text-base`}>
                 <IconCar className="h-5 w-5" />
                 Add your vehicle — free
                 <IconArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/how-it-works" className={`${BTN_SECONDARY} inline-flex items-center gap-2.5 text-base`}>
+              <Link href="/how-it-works" className={`${BTN_SECONDARY} inline-flex items-center justify-center gap-3 text-base`}>
                 <IconPlay className="h-5 w-5 text-orange-400" />
                 See how it works
               </Link>
             </div>
-            <p className="mt-3 text-sm text-slate-400">
-              Specs and fluid capacities are always free. One free guide per vehicle.{" "}
-              <Link href="/login" className={`text-slate-300 underline-offset-4 hover:text-white hover:underline ${FOCUS}`}>
+            <p className="mt-4 text-sm text-slate-400">
+              Specs and fluid capacities are always free.{" "}
+              <Link href="/login" className={`text-slate-200 underline-offset-4 hover:text-white hover:underline ${FOCUS}`}>
                 Already have a garage? Log in.
               </Link>
             </p>
-
           </div>
 
-          {/* ---- product bridge: guide preview (HOW) beside a vehicle-data
-              preview (WHAT). BRICK 5E.4 -- the guide card used to float here
-              alone, centered, reading like a modal dropped under the hero
-              instead of part of the product story. Pairing it with a
-              restrained preview of the existing "Know your ride" data sheet
-              (same buildDataRows() rows already used in that section further
-              down -- see heroDataPreview above; no new data, no new
-              capability) gives an instant HOW-vs-WHAT split, and the two
-              cards bridge the cinematic Eleanor scene above into the 3-step
-              rail below. Single column and centered on mobile/tablet
-              (lg:grid-cols-2 only kicks in at lg:), guide first, vehicle
-              data second, matching their reading order everywhere. The full
-              "Know your ride" section further down the page is untouched --
-              left for a later pass to decide whether it's now redundant. */}
+          {/* the one product card, rendered from the real guide */}
           {guide && vehicle && (
-            <div className="mt-10 grid gap-6 sm:mt-12 lg:mt-16 lg:grid-cols-2 lg:gap-8">
-              {/* left: guide preview -- contents and styling unchanged from
-                  the compact-card pass, only its wrapper/position moved. */}
-              <div>
-                <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-slate-400" style={display}>
-                  Guides · how to do the job
-                </p>
-                <aside
-                  aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-                  className="relative mx-auto w-full max-w-md sm:max-w-lg lg:mx-0 lg:max-w-none"
-                >
-                  {/* the card sits ON the floor: a contact shadow under it, and a
-                      second sheet behind it */}
-                  <div aria-hidden className="absolute inset-x-8 -bottom-3 h-8 rounded-[100%] bg-black/70 blur-xl" />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border border-slate-700/60 bg-slate-950/70"
-                  />
-                  <div className="cg-panel relative overflow-hidden rounded-2xl shadow-[0_40px_60px_-30px_rgba(0,0,0,0.9)]">
-                    {/* header bar */}
-                    <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-slate-950/50 px-5 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <CrankcaseMark className="h-5 w-5" />
-                        <Stamp className="whitespace-nowrap text-slate-300">What a guide looks like</Stamp>
-                      </div>
-                      <span className="shrink-0 whitespace-nowrap rounded-full border border-slate-600 bg-slate-800/70 px-2.5 py-0.5 text-xs font-medium text-slate-200">
-                        {guide.tier === "free" ? "Free guide" : "Guide"}
-                      </span>
+            <aside
+              aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+              className="relative w-full max-w-sm justify-self-start lg:justify-self-end"
+            >
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.95)] backdrop-blur-md">
+                {/* the vehicle, lit: stands in for the photo in the mockup */}
+                <div className="relative h-36 overflow-hidden bg-[radial-gradient(90%_110%_at_60%_0%,#2a3445_0%,#111826_55%,#0a0f18_100%)]">
+                  <div className="absolute -right-6 top-0 h-px w-40 bg-orange-100/80 shadow-[0_0_18px_4px_rgba(253,186,116,0.4)]" />
+                  <VehicleLinework tonal className="absolute -bottom-3 left-1/2 w-[19rem] max-w-none -translate-x-1/2 text-slate-200 opacity-90" />
+                </div>
+                <div className="flex items-start justify-between gap-3 px-5 pt-4">
+                  <div>
+                    <div className="text-lg font-semibold leading-tight text-slate-50">
+                      {vehicle.year} {vehicle.make} {vehicle.model}
                     </div>
-
-                    <div className="p-5">
-                      <Stamp>
-                        {vehicle.year} {vehicle.make} {vehicle.model} · {vehicle.engine}
-                      </Stamp>
-                      <div className="mt-2 text-2xl font-extrabold uppercase leading-tight text-slate-50" style={display}>
-                        {guide.title}
-                      </div>
-                      <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-slate-100">
-                        <span className="flex items-center gap-1.5">
-                          <IconGauge className="h-4 w-4 text-slate-500" />
-                          <span className="text-slate-400">Difficulty</span> {guide.difficulty}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <IconClock className="h-4 w-4 text-slate-500" />
-                          <span className="text-slate-400">Time</span> {guide.estTime}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <IconSteps className="h-4 w-4 text-slate-500" />
-                          <span className="text-slate-400">Steps</span> {guide.steps.length}
-                        </span>
-                      </div>
-
-                      {/* what's in the guide: four boxed tiles, icon on top */}
-                      <ul className="mt-4 grid grid-cols-4 gap-2">
-                        {[
-                          ["Tools", guide.tools.length, <IconWrench key="t" className="h-5 w-5" />],
-                          ["Parts", guide.parts?.length ?? 0, <IconBox key="p" className="h-5 w-5" />],
-                          ["Safety notes", guide.safety.length, <IconShield key="s" className="h-5 w-5" />],
-                          ["Torque figures", guide.torqueSpecs?.length ?? 0, <IconHex key="q" className="h-5 w-5" />],
-                        ].map(([label, n, icon]) => (
-                          <li key={String(label)} className="cg-well flex flex-col items-center rounded-lg px-1 py-2.5 text-center">
-                            <span className="text-slate-200">{icon}</span>
-                            <span className="mt-1.5 text-[11px] leading-tight text-slate-400">{label}</span>
-                            <span className="mt-1 font-mono text-lg font-semibold leading-none text-slate-50">{n}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* the proof point */}
-                      {guide.torqueSpecs && guide.torqueSpecs.length > 0 && (
-                        <div className="cg-well mt-4 rounded-lg border-l-2 border-l-orange-500 p-4">
-                          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                            <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-200" style={display}>
-                              Torque specs
-                            </span>
-                            <Stamp className="text-orange-400">This vehicle — not an average</Stamp>
-                          </div>
-                          <ul className="mt-3 space-y-2">
-                            {guide.torqueSpecs.slice(0, 2).map((t) => (
-                              <li key={t.fastener} className="flex items-baseline gap-2 text-sm">
-                                <IconHex className="h-3.5 w-3.5 shrink-0 self-center text-slate-500" />
-                                <span className="text-slate-300">{t.fastener}</span>
-                                <span className="mb-1 min-w-4 flex-1 border-b border-dotted border-slate-700" aria-hidden />
-                                <span className="shrink-0 font-mono font-semibold text-orange-300">{t.value}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* step indicator -- desktop keeps this preview compact (a
-                          product-preview card, not the full guide), so this
-                          block and the footer note below carry lg:hidden. Mobile
-                          keeps them, same as before this card moved out from
-                          beside the pitch into its own centered row. */}
-                      {guide.steps[0] && (
-                        <div className="cg-well mt-3 flex items-center gap-3 rounded-lg p-3 lg:hidden">
-                          <div
-                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 font-sans text-sm font-extrabold text-slate-950"
-                            aria-hidden
-                          >
-                            1
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <Stamp>Step 1 of {guide.steps.length}</Stamp>
-                            <div className="mt-1 font-medium leading-snug text-slate-200">{guide.steps[0].title}</div>
-                          </div>
-                          <span className="text-xl leading-none text-slate-500" aria-hidden>
-                            ›
-                          </span>
-                        </div>
-                      )}
-
-                      <p className="mt-3 text-xs text-slate-400 lg:hidden">
-                        Pulled live from this vehicle&apos;s actual guide. Every vehicle in the catalog gets
-                        its own figures.
-                      </p>
-                    </div>
+                    <div className="mt-1 text-sm text-slate-400">{vehicle.engine}</div>
                   </div>
-                </aside>
-              </div>
-
-              {/* right: know-your-ride preview -- new for Brick 5E.4, built
-                  from heroDataPreview (a slice of the same dataRows the full
-                  data sheet below uses). Mirrors the guide card's visual
-                  language (same panel/shadow/header treatment) for weight
-                  parity, but its own content shape: value tiles instead of
-                  count tiles (a "count of fluids" tile wouldn't mean
-                  anything), and the highlighted well below expands the top
-                  row's full detail (capacity + spec) rather than repeating
-                  a count like the guide card's torque well does. */}
-              {heroDataPreview.length > 0 && (
-                <div>
-                  <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-slate-400" style={display}>
-                    Know your ride · what your vehicle needs
-                  </p>
-                  <aside
-                    aria-label={`Vehicle data preview: ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-                    className="relative mx-auto w-full max-w-md sm:max-w-lg lg:mx-0 lg:max-w-none"
-                  >
-                    <div aria-hidden className="absolute inset-x-8 -bottom-3 h-8 rounded-[100%] bg-black/70 blur-xl" />
-                    <div
-                      aria-hidden
-                      className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border border-slate-700/60 bg-slate-950/70"
-                    />
-                    <div className="cg-panel relative overflow-hidden rounded-2xl shadow-[0_40px_60px_-30px_rgba(0,0,0,0.9)]">
-                      <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-slate-950/50 px-5 py-3">
-                        <div className="flex items-center gap-2.5">
-                          <CrankcaseMark className="h-5 w-5" />
-                          <Stamp className="whitespace-nowrap text-slate-300">Know your ride</Stamp>
-                        </div>
-                        <span className="shrink-0 whitespace-nowrap rounded-full border border-slate-600 bg-slate-800/70 px-2.5 py-0.5 text-xs font-medium text-slate-200">
-                          Free
-                        </span>
-                      </div>
-
-                      <div className="p-5">
-                        <Stamp>
-                          {vehicle.year} {vehicle.make} {vehicle.model} · {vehicle.engine}
-                        </Stamp>
-                        <div className="mt-2 text-2xl font-extrabold uppercase leading-tight text-slate-50" style={display}>
-                          What this vehicle needs
-                        </div>
-
-                        {/* value tiles, two up -- longer strings (capacities,
-                            battery group sizes) than the guide card's
-                            single-digit counts, so 2x2 gives them room
-                            instead of squeezing four across. */}
-                        <ul className="mt-4 grid grid-cols-2 gap-2">
-                          {heroDataPreview.map((r) => (
-                            <li key={r.label} className="cg-well rounded-lg px-3 py-2.5">
-                              <div className="text-[11px] leading-tight text-slate-400">{r.label}</div>
-                              <div className="mt-1 font-mono text-sm font-semibold leading-snug text-slate-50">{r.value}</div>
-                            </li>
-                          ))}
-                        </ul>
-
-                        {heroDataPreview[0] && (
-                          <div className="cg-well mt-4 rounded-lg border-l-2 border-l-orange-500 p-4">
-                            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-200" style={display}>
-                                {heroDataPreview[0].label}
-                              </span>
-                              <Stamp className="text-orange-400">This vehicle — not a generic spec</Stamp>
-                            </div>
-                            <div className="mt-2 flex flex-wrap items-baseline gap-x-2">
-                              <span className="font-mono text-lg font-semibold text-orange-300">{heroDataPreview[0].value}</span>
-                              {heroDataPreview[0].sub && (
-                                <span className="text-sm text-slate-400">{heroDataPreview[0].sub}</span>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                  <IconArrowRight className="mt-1.5 h-5 w-5 shrink-0 text-slate-300" />
+                </div>
+                <dl className="mt-4 grid grid-cols-3 gap-x-3 border-t border-white/10 px-5 pb-1 pt-4 text-sm">
+                  {[
+                    [<IconGauge key="d" className="h-5 w-5" />, "Difficulty", guide.difficulty],
+                    [<IconClock key="t" className="h-5 w-5" />, "Time", guide.estTime],
+                    [<IconSteps key="s" className="h-5 w-5" />, "Steps", String(guide.steps.length)],
+                  ].map(([icon, k, v]) => (
+                    <div key={String(k)}>
+                      <dt className="flex items-center gap-1.5 text-xs text-slate-400">
+                        <span className="text-slate-300">{icon}</span>
+                        {k}
+                      </dt>
+                      <dd className="mt-1 font-semibold text-slate-50">{v}</dd>
                     </div>
-                  </aside>
-                </div>
-              )}
-            </div>
+                  ))}
+                </dl>
+                <dl className="mt-3 grid grid-cols-2 gap-x-3 border-t border-white/10 px-5 pb-5 pt-4 text-sm">
+                  <div>
+                    <dt className="flex items-center gap-1.5 text-xs text-slate-400">
+                      <IconBox className="h-5 w-5 text-slate-300" /> Tools
+                    </dt>
+                    <dd className="mt-1 font-semibold text-slate-50">{guide.tools.length}</dd>
+                  </div>
+                  <div>
+                    <dt className="flex items-center gap-1.5 text-xs text-slate-400">
+                      <IconHex className="h-5 w-5 text-slate-300" /> Torque specs
+                    </dt>
+                    <dd className="mt-1 font-semibold text-slate-50">
+                      {guide.torqueSpecs && guide.torqueSpecs.length > 0 ? "Yes" : "None"}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </aside>
           )}
-          </div>
         </div>
+      </section>
 
-        {/* ---- the three steps, still on the first screen, as a rail along
-            the bottom of the bay: vehicle -> job -> wrench */}
-        <div className="cg-seam relative border-b border-slate-800 bg-slate-950/95">
-          <ol className="mx-auto grid max-w-6xl divide-y divide-slate-800 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {steps.map((s) => (
-              <li key={s.n} className="flex items-start gap-4 py-4 sm:px-5 sm:first:pl-0 sm:last:pr-0">
-                <StepNumber n={s.n} />
-                <span className="mt-2 hidden shrink-0 text-slate-300 sm:block" aria-hidden>
-                  {s.icon}
+      {/* ------------------------------------------------------ 3 steps */}
+      <section className="border-y border-white/[0.07] bg-[#070b12]">
+        <ol className="mx-auto grid max-w-6xl px-4 sm:grid-cols-3">
+          {steps.map((s, i) => (
+            <li
+              key={s.n}
+              className="relative flex items-center gap-4 border-b border-white/[0.06] py-5 last:border-b-0 sm:border-b-0 sm:px-6 sm:first:pl-0 sm:last:pr-0"
+            >
+              <StepNumber n={s.n} />
+              <span className="hidden shrink-0 text-slate-200 sm:block" aria-hidden>
+                {s.icon}
+              </span>
+              <div className="min-w-0">
+                <div className="text-lg font-semibold leading-tight text-slate-50">{s.title}</div>
+                <p className="mt-0.5 text-sm text-slate-400">{s.body}</p>
+              </div>
+              {i < steps.length - 1 && (
+                <span className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-slate-600 sm:block" aria-hidden>
+                  ›
                 </span>
-                <div className="min-w-0">
-                  <div className="text-lg font-semibold leading-tight text-slate-50">{s.title}</div>
-                  <p className="mt-1 text-sm text-slate-400">{s.body}</p>
-                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ------------------------------------------------------ value strip */}
+      <section className="border-b border-white/[0.07] bg-[#090e16]" aria-label="Crankcase in numbers">
+        <ul className="mx-auto grid max-w-6xl px-4 sm:grid-cols-3 sm:divide-x sm:divide-white/[0.07]">
+          {stats.map((s) => (
+            <li key={s.label} className="flex items-center justify-center gap-4 py-6 sm:px-6">
+              <span className="text-slate-300" aria-hidden>
+                {s.icon}
+              </span>
+              <div>
+                <div className="text-2xl font-bold leading-none text-slate-50">{s.value}</div>
+                <div className="mt-1 text-sm text-slate-400">{s.label}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* ------------------------------------------------------ popular guides */}
+      <section className="relative isolate overflow-hidden bg-[#05080e]">
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(60%_90%_at_88%_70%,rgba(251,146,60,0.10)_0%,transparent_60%)]" />
+          <div className="absolute -bottom-24 right-[-6rem] h-72 w-[40rem] rounded-[100%] bg-orange-500/[0.07] blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#05080e] via-[#05080e]/80 to-transparent" />
+        </div>
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
+          <div>
+            <Eyebrow className="!text-slate-400 !tracking-[0.18em]">Popular guides</Eyebrow>
+            <h2 className="mt-3 text-4xl font-extrabold leading-[0.98] text-slate-50 sm:text-5xl" style={display}>
+              Routine maintenance, done properly.
+            </h2>
+            <p className="mt-4 max-w-sm text-base text-slate-400">
+              Simple, step-by-step guides for the jobs that keep your vehicle running its best.
+            </p>
+            <p className="mt-6 max-w-sm border-l-2 border-slate-700 pl-4 text-sm text-slate-500">
+              Engine, transmission and other major repair work is not what this is for. For those, see a
+              professional mechanic.
+            </p>
+          </div>
+          <ul className="flex flex-wrap gap-3">
+            {jobs.map((id, i) => (
+              <li
+                key={id}
+                className={`rounded-full border px-5 py-2.5 text-[0.95rem] text-slate-100 ${
+                  i === 0 ? "border-orange-500/70 bg-orange-500/10" : "border-white/15 bg-slate-950/60"
+                }`}
+              >
+                {JOB_LABELS[id]}
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
       </section>
 
-      {/* ------------------------------------------------------ jobs covered:
-          the service board on the wall of the bay */}
-      <section className="relative overflow-hidden border-b border-slate-800 bg-[radial-gradient(90%_100%_at_85%_50%,#0d1526_0%,#020617_70%)]">
-        {/* the tool chest behind the service board */}
-        <DrawerTexture className="pointer-events-none absolute inset-y-0 right-0 h-full w-[70%] text-slate-400 opacity-[0.11] [mask-image:linear-gradient(to_right,transparent,rgba(0,0,0,1)_40%)]" />
-        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
+      {/* ------------------------------------------------------ close */}
+      <section className="border-t border-white/[0.07] bg-[#070b12]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <Eyebrow>The jobs you can actually do in a driveway</Eyebrow>
-            <h2 className="mt-3 max-w-xl text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
-              Routine maintenance, done properly. That&apos;s the whole product.
+            <h2 className="text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
+              Add your vehicle. It&apos;s free to look.
             </h2>
-            <div className="mt-6 flex max-w-xl items-start gap-3 border-l-2 border-slate-600 pl-4 text-sm text-slate-400">
-              <p>
-                Engine, transmission and other major repair work is not what this is for, and we say
-                so on the page instead of letting you find out halfway through. For those, see a
-                professional mechanic.
-              </p>
-            </div>
+            <p className="mt-2 max-w-xl text-slate-400">
+              Specs and fluid capacities for every vehicle, plus one full guide, cost nothing.
+            </p>
           </div>
-
-          <div className="cg-panel rounded-2xl">
-            <div className="flex flex-col gap-2 border-b border-slate-800 bg-slate-950/50 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-              <Stamp className="whitespace-nowrap">Service board · routine maintenance</Stamp>
-              <Stamp className="whitespace-nowrap">{jobs.length} job types</Stamp>
-            </div>
-            <ul className="flex flex-wrap gap-2 p-5">
-              {jobs.map((id) => (
-                <li
-                  key={id}
-                  className="flex items-center gap-2 rounded-md border border-slate-700/80 bg-slate-950/60 px-3 py-1.5 text-sm text-slate-200"
-                >
-                  <span className="h-1.5 w-1.5 rounded-sm bg-slate-500" aria-hidden />
-                  {JOB_LABELS[id]}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------ know your ride:
-          the other half of the product. Guides say HOW; this says WHAT. A
-          digital under-hood data sheet, rendered from the demo vehicle's own
-          catalog entry. */}
-      {vehicle && dataRows.length > 0 && (
-        <section className="relative border-b border-slate-800 bg-slate-950">
-          <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
-            <div>
-              <Eyebrow>Know your ride</Eyebrow>
-              <h2 className="mt-3 max-w-xl text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
-                Your vehicle isn&apos;t generic. Neither is its maintenance.
-              </h2>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300">
-                Crankcase keeps the fluids, capacities, specs and maintenance information we support
-                for your exact vehicle in one place — the numbers you would otherwise dig out of a
-                manual, a forum and the underhood label.
-              </p>
-
-              <ul className="mt-6 max-w-xl divide-y divide-slate-800 border-y border-slate-800">
-                <li className="flex items-start gap-3 py-3">
-                  <IconHex className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
-                  <p className="text-sm text-slate-300">
-                    <span className="font-extrabold uppercase tracking-wide text-slate-50" style={display}>
-                      Vehicle data
-                    </span>{" "}
-                    tells you what it needs.
-                  </p>
-                </li>
-                <li className="flex items-start gap-3 py-3">
-                  <IconWrench className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
-                  <p className="text-sm text-slate-300">
-                    <span className="font-extrabold uppercase tracking-wide text-slate-50" style={display}>
-                      Guides
-                    </span>{" "}
-                    show you how to do it.
-                  </p>
-                </li>
-              </ul>
-
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Link href="/signup" className={BTN_PRIMARY}>
-                  Add your vehicle — free
-                </Link>
-                <span className="text-sm text-slate-400">Specs and fluid capacities are free for every vehicle.</span>
-              </div>
-            </div>
-
-            {/* the data sheet */}
-            <div className="cg-panel relative overflow-hidden rounded-2xl" aria-label={`Vehicle data sheet: ${vehicle.year} ${vehicle.make} ${vehicle.model}`} role="region">
-              <div className="flex flex-col gap-2 border-b border-slate-800 bg-slate-950/50 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                <div className="flex items-center gap-2.5">
-                  <CrankcaseMark className="h-5 w-5" />
-                  <Stamp className="whitespace-nowrap text-slate-300">Vehicle data sheet</Stamp>
-                </div>
-                <Stamp className="whitespace-nowrap text-orange-400">One vehicle · its own numbers</Stamp>
-              </div>
-
-              {/* identity */}
-              <div className="cg-grid-fine border-b border-slate-800 px-5 py-5 sm:px-6">
-                <Stamp>{vehicle.year} · {vehicle.make}</Stamp>
-                <div className="mt-1.5 text-3xl font-extrabold uppercase leading-none text-slate-50 sm:text-4xl" style={display}>
-                  {vehicle.model}
-                  {vehicle.trim ? <span className="text-slate-400"> {vehicle.trim}</span> : null}
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                  {vehicle.engine} · {vehicle.transmission} · {vehicle.drivetrain}
-                </p>
-              </div>
-
-              {/* rows: one column on phones, two from sm up */}
-              <dl className="grid sm:grid-cols-2">
-                {dataRows.map((r, i) => (
-                  <div
-                    key={r.label}
-                    className={`px-5 py-4 sm:px-6 ${i > 0 ? "border-t border-slate-800" : ""} ${
-                      i === 1 ? "sm:border-t-0" : ""
-                    } ${i % 2 === 1 ? "sm:border-l sm:border-l-slate-800" : ""}`}
-                  >
-                    <dt className="cg-stamp">{r.label}</dt>
-                    <dd className="mt-1.5 font-mono text-base font-semibold leading-snug text-slate-50 sm:text-[17px]">
-                      {r.value}
-                    </dd>
-                    {r.sub && <dd className="mt-1 text-sm leading-snug text-slate-400">{r.sub}</dd>}
-                  </div>
-                ))}
-              </dl>
-
-              <div className="border-t border-slate-800 bg-slate-950/40 px-5 py-3 text-xs text-slate-400 sm:px-6">
-                Pulled live from this vehicle&apos;s catalog entry. The full sheet on the vehicle page
-                adds every fluid, the tire sizes and the part-specific notes.
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ------------------------------------------------------ reassurance:
-          open layout on a brushed graphite band, not three more boxes */}
-      <section className="cg-brushed border-b border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-          <Eyebrow as="h2">Built for first-timers. Written like a service manual.</Eyebrow>
-          <div className="mt-7 grid gap-6 sm:mt-8 sm:gap-8 md:grid-cols-3 md:gap-10">
-            {[
-              {
-                icon: <IconClipboardCheck className="h-5 w-5" />,
-                title: "You know what you need before you start",
-                body: "Every guide opens with the full tools list, the parts and fluids with quantities, how hard it is, and how long it takes. No mid-job trips to the parts store.",
-              },
-              {
-                icon: <IconTarget className="h-5 w-5" />,
-                title: "The numbers are for your car",
-                body: "Torque specs, fluid capacities and part fitment are per vehicle, never inherited from a lookalike. Where a figure comes from a sourced dataset, the guide says so.",
-              },
-              {
-                icon: <IconShield className="h-5 w-5" />,
-                title: "The dangerous parts are called out",
-                body: "Jack stands, hot oil, plastic housings that crack when over-tightened — the safety notes sit at the top of the guide and again on the step where they matter.",
-              },
-            ].map((c) => (
-              <div key={c.title} className="border-t border-slate-700/80 pt-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/60 text-slate-200">
-                  {c.icon}
-                </div>
-                <h3 className="mt-4 text-xl font-extrabold uppercase leading-tight text-slate-50" style={display}>
-                  {c.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">{c.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------ closing CTA */}
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:py-20">
-        <div className="cg-panel relative overflow-hidden rounded-2xl p-8 sm:p-10">
-          <div className="cg-grid absolute inset-0 opacity-60 [mask-image:linear-gradient(to_left,rgba(0,0,0,0.8),transparent_70%)]" aria-hidden />
-          <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-orange-500/[0.08] blur-3xl" aria-hidden />
-          <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
-                Add your vehicle. It&apos;s free to look.
-              </h2>
-              <p className="mt-2 max-w-xl text-slate-400">
-                Specs and fluid capacities for every vehicle, plus one full guide, cost nothing. Pay
-                only if you want the rest of the guides for that car.
-              </p>
-            </div>
-            <div className="flex shrink-0 flex-wrap gap-3">
-              <Link href="/signup" className={BTN_PRIMARY}>
-                Get started free
-              </Link>
-              <Link href="/pricing" className={BTN_SECONDARY}>
-                Pricing
-              </Link>
-            </div>
+          <div className="flex shrink-0 flex-wrap gap-3">
+            <Link href="/signup" className={BTN_PRIMARY}>
+              Get started free
+            </Link>
+            <Link href="/pricing" className={BTN_SECONDARY}>
+              Pricing
+            </Link>
           </div>
         </div>
       </section>

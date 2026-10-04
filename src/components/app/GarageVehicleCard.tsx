@@ -9,7 +9,7 @@ import { useOdometer } from "@/lib/odometer";
 import { useServiceHistory } from "@/lib/serviceHistory";
 import { computeReminders, maintenanceItemsFor } from "@/lib/reminders";
 import { summarizeGarageStatus } from "@/lib/garageStatus";
-import { IconCar, IconClipboardCheck, IconClock, IconWrench } from "@/components/marketing/HomeVisuals";
+import { VehiclePlate } from "@/components/marketing/Cinematic";
 import { FOCUS, StatusChip, Stamp, display } from "@/components/app/AppKit";
 
 // One vehicle on My Garage. A graphite panel in the approved homepage system:
@@ -66,56 +66,48 @@ export default function GarageVehicleCard(props: Props) {
   else statusLine = { tone: "neutral", text: "Service history and reminders only" };
 
   const tone = {
-    overdue: { icon: "text-orange-400", ring: "border-l-orange-500" },
-    "due-soon": { icon: "text-orange-400", ring: "border-l-orange-500" },
-    ok: { icon: "text-emerald-400", ring: "border-l-emerald-500/70" },
-    neutral: { icon: "text-slate-400", ring: "border-l-slate-600" },
+    overdue: { dot: "bg-orange-500" },
+    "due-soon": { dot: "bg-orange-500" },
+    ok: { dot: "bg-emerald-500" },
+    neutral: { dot: "bg-slate-500" },
   }[statusLine.tone];
 
   return (
-    <article className="cg-panel relative flex h-full flex-col overflow-hidden rounded-2xl transition-colors hover:border-orange-500/50 focus-within:border-orange-500/50">
-      <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-slate-950/50 px-5 py-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-700 bg-slate-900 text-slate-300">
-          <IconCar className="h-5 w-5" />
+    <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.95)] transition-colors hover:border-white/25 focus-within:border-white/25">
+      <VehiclePlate className="h-32">
+        <span className="absolute left-4 top-3">
+          {vehicle ? <StatusChip tone="ready">Specs ready</StatusChip> : <StatusChip>No curated specs yet</StatusChip>}
         </span>
-        {vehicle ? <StatusChip tone="ready">Specs ready</StatusChip> : <StatusChip>No curated specs yet</StatusChip>}
-      </div>
+      </VehiclePlate>
 
-      <div className="cg-grid-fine flex-1 px-5 pb-5 pt-5">
+      <div className="flex-1 px-5 pb-4 pt-4">
         <Stamp>
           {year}
           {make ? ` · ${make}` : ""}
         </Stamp>
-        <h3 className="mt-1.5 text-3xl font-extrabold uppercase leading-none text-slate-50" style={display}>
+        <h3 className="mt-2 text-[1.9rem] font-extrabold uppercase leading-[0.95] text-slate-50" style={display}>
           {model}
           {trim ? <span className="text-slate-400"> {trim}</span> : null}
         </h3>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300">
+        <p className="mt-2.5 text-sm text-slate-300">
           {engine ? <>{engine}</> : <span className="text-slate-500">Engine not set</span>}
         </p>
-        <p className="mt-1 flex items-center gap-1.5 font-mono text-xs text-slate-400">
-          <IconClock className="h-3.5 w-3.5 shrink-0 text-slate-500" />
+        <p className="mt-1 font-mono text-xs text-slate-400">
           {odometer != null ? `${odometer.toLocaleString("en-US")} mi` : "Mileage not set"}
         </p>
 
-        <div className={`cg-well mt-4 flex items-start gap-2.5 rounded-lg border-l-2 p-3 ${tone.ring}`}>
-          <span className={`mt-0.5 shrink-0 ${tone.icon}`}>
-            {statusLine.tone === "ok" || statusLine.tone === "neutral" ? (
-              vehicle ? <IconClipboardCheck className="h-4 w-4" /> : <IconWrench className="h-4 w-4" />
-            ) : (
-              <IconClock className="h-4 w-4" />
-            )}
-          </span>
-          <span className="text-sm leading-snug text-slate-100">{statusLine.text}</span>
-        </div>
+        <p className="mt-4 flex items-start gap-2.5 border-t border-white/[0.07] pt-3 text-sm leading-snug text-slate-100">
+          <span className={`mt-[0.4rem] h-2 w-2 shrink-0 rounded-full ${tone.dot}`} aria-hidden />
+          {statusLine.text}
+        </p>
       </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-slate-800 px-5 py-3">
+      <div className="flex items-center justify-between gap-3 px-5 pb-4">
         <Link
           href={href}
-          className={`text-sm font-semibold text-orange-400 hover:text-orange-300 after:absolute after:inset-0 after:content-[''] ${FOCUS}`}
+          className={`text-sm font-semibold text-slate-50 hover:text-white after:absolute after:inset-0 after:content-[''] ${FOCUS}`}
         >
-          {vehicle ? "Open vehicle" : "Open"} <span aria-hidden>&rarr;</span>
+          {vehicle ? "Open vehicle" : "Open"} <span aria-hidden className="text-orange-400">&rarr;</span>
         </Link>
         <button
           type="button"

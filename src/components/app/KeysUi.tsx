@@ -26,7 +26,7 @@ export function FreeChip() {
 
 export function KeysChip() {
   return (
-    <span className="cg-stamp inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-orange-500/50 px-2.5 py-1.5 text-orange-300">
+    <span className="cg-stamp inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-white/20 bg-slate-950/50 px-2.5 py-1.5 text-slate-300">
       <IconLock className="h-3 w-3" />
       Keys
     </span>
@@ -38,17 +38,17 @@ export function KeysPanel({ vehicleName }: { vehicleName: string }) {
   const price = keysPriceForNthVehicle(next);
   return (
     <section
-      className="cg-panel relative overflow-hidden rounded-2xl border-orange-500/50"
+      className="cg-glass relative overflow-hidden rounded-2xl"
       aria-label="Get the Keys"
     >
       <div className="grid gap-x-10 gap-y-2 p-6 md:grid-cols-2 md:p-8">
         <div>
-          <Stamp className="text-orange-400">Garage Rewards</Stamp>
+          <Stamp>Garage Rewards</Stamp>
           <h2
             className="mt-2 text-3xl font-extrabold uppercase leading-[0.95] text-slate-50 md:text-4xl"
             style={display}
           >
-            Your vehicle is in the garage. Now get the Keys.
+            Your vehicle is in the garage. Now get the <span className="text-orange-500">Keys.</span>
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-300">
             One payment. Permanent access to everything Crankcase Garage does
@@ -58,7 +58,7 @@ export function KeysPanel({ vehicleName }: { vehicleName: string }) {
 
         <div>
           <div className="mt-1 flex items-baseline gap-3 md:mt-0">
-            <span className="font-mono text-5xl font-bold leading-none text-orange-400">
+            <span className="font-mono text-5xl font-bold leading-none text-slate-50">
               ${price}
             </span>
             <span className="text-sm text-slate-400">first vehicle</span>
@@ -71,7 +71,7 @@ export function KeysPanel({ vehicleName }: { vehicleName: string }) {
             {KEYS_LADDER.map((p, i) => (
               <li
                 key={i}
-                className={`cg-well rounded-lg px-2 py-2 text-center ${i === VISUAL_UNLOCKED_COUNT ? "border-orange-500/60" : ""}`}
+                className={`cg-well rounded-lg px-2 py-2 text-center ${i === VISUAL_UNLOCKED_COUNT ? "!border-slate-300/70" : ""}`}
               >
                 <div className="cg-stamp">
                   {i === KEYS_LADDER.length - 1

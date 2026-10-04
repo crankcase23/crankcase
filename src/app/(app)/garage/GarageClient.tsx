@@ -6,6 +6,7 @@ import { findVehicle } from "@/lib/data";
 import { useGarage } from "@/lib/garage";
 import GarageVehicleCard from "@/components/app/GarageVehicleCard";
 import { AppPageHeader, ArrowLink, BTN_PRIMARY, BTN_SECONDARY, Eyebrow, FOCUS, Stamp, display } from "@/components/app/AppKit";
+import { CinematicScene } from "@/components/marketing/Cinematic";
 import { IconArrowRight, IconCar, VehicleLinework } from "@/components/marketing/HomeVisuals";
 
 // My Garage -- the signed-in home. Same product behavior as before (list the
@@ -49,7 +50,10 @@ export default function GarageClient() {
   const count = entries.length;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
+    <>
+      <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
+        <CinematicScene variant="page" />
+        <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:pb-12 sm:pt-16">
       <AppPageHeader
         eyebrow="Your ride. Your garage. Your wrenches."
         title="My Garage"
@@ -68,8 +72,11 @@ export default function GarageClient() {
           </>
         }
       />
+        </div>
+      </section>
 
-      <div className="mt-9">
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+      <div>
         {error ? (
           <section role="alert" className="cg-panel rounded-2xl p-8 text-center sm:p-10">
             <Eyebrow>Couldn&apos;t reach your garage</Eyebrow>
@@ -90,7 +97,7 @@ export default function GarageClient() {
             <SkeletonCard />
           </section>
         ) : count === 0 ? (
-          <section className="cg-panel relative isolate overflow-hidden rounded-2xl">
+          <section className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60">
             <div className="cg-grid pointer-events-none absolute inset-0 -z-10 opacity-70 [mask-image:radial-gradient(ellipse_at_70%_100%,black,transparent_70%)]" aria-hidden />
             <VehicleLinework
               tonal
@@ -130,9 +137,9 @@ export default function GarageClient() {
 
             <Link
               href="/garage/add"
-              className={`group flex min-h-[18rem] flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-700 bg-slate-900/30 p-6 text-center transition-colors hover:border-orange-500/60 hover:bg-slate-900/60 ${FOCUS}`}
+              className={`group flex min-h-[18rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/20 bg-slate-950/40 p-6 text-center transition-colors hover:border-white/40 hover:bg-slate-950/70 ${FOCUS}`}
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-orange-400 group-hover:border-orange-500/60">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-200 group-hover:border-slate-400">
                 <PlusIcon className="h-6 w-6" />
               </span>
               <span className="text-2xl font-extrabold uppercase text-slate-50" style={display}>
@@ -146,8 +153,8 @@ export default function GarageClient() {
         )}
       </div>
 
-      <section className="cg-well mt-10 rounded-2xl p-5 sm:p-6">
-        <h2 className="text-lg font-semibold text-slate-100">Don&apos;t see your vehicle?</h2>
+      <section className="mt-10 border-t border-white/[0.07] pt-6">
+        <h2 className="text-base font-semibold text-slate-200">Don&apos;t see your vehicle?</h2>
         <p className="mt-1 max-w-3xl text-sm text-slate-400">
           This is an early build — full guides only exist for a handful of vehicles so far. You can still add any
           vehicle to log its service history, and decode a VIN for basic year/make/model info.
@@ -158,5 +165,6 @@ export default function GarageClient() {
         </div>
       </section>
     </div>
+    </>
   );
 }

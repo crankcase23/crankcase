@@ -113,3 +113,15 @@ body {
   color: #f8fafc;
 }
 }
+
+/* Translucent dark card for the interior pages: sits IN the scene rather than
+   on it. Hairline white border, a soft top highlight, a deep drop shadow. */
+@layer components {
+.cg-glass {
+  background: linear-gradient(180deg, rgba(14, 20, 32, 0.78) 0%, rgba(7, 11, 18, 0.78) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 30px 60px -30px rgba(0, 0, 0, 0.95);
+}
+}

@@ -37,10 +37,10 @@ function ActionTile({ tile }: { tile: HubTile }) {
   return (
     <Link
       href={tile.href}
-      className={`cg-panel group flex min-h-[9.5rem] flex-col gap-3 rounded-2xl p-5 transition-colors hover:border-orange-500/50 ${FOCUS}`}
+      className={`cg-glass group flex min-h-[9.5rem] flex-col gap-3 rounded-2xl p-5 transition-colors hover:border-white/30 ${FOCUS}`}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="text-orange-400">{TILE_ICON[tile.key]}</span>
+        <span className="text-slate-200">{TILE_ICON[tile.key]}</span>
         {tile.gate === "free" ? <FreeChip /> : <KeysChip />}
       </div>
       <div className="text-3xl font-extrabold uppercase leading-none text-slate-50" style={display}>
@@ -106,7 +106,7 @@ export function HubSidePanels({
 
   return (
     <div className="flex flex-col gap-5">
-      <section className="cg-panel rounded-2xl p-5" aria-labelledby="hub-attention">
+      <section className="cg-glass rounded-2xl p-5" aria-labelledby="hub-attention">
         <h2 id="hub-attention" className="cg-section-title">
           What needs attention
         </h2>
@@ -119,7 +119,7 @@ export function HubSidePanels({
             {rows.map((r) => {
               const row = attentionRow(r);
               return (
-                <li key={r.item.key} className="flex gap-3 border-t border-slate-800 py-3.5">
+                <li key={r.item.key} className="flex gap-3 border-t border-white/[0.07] py-3.5">
                   <span className={`mt-0.5 shrink-0 ${toneClass[row.tone]}`}>
                     {row.tone === "ok" ? <IconCheck className="h-5 w-5" /> : <IconAlert className="h-5 w-5" />}
                   </span>
@@ -134,13 +134,13 @@ export function HubSidePanels({
         )}
         <Link
           href={maintainHref}
-          className={`mt-3 flex w-full items-center justify-center rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:border-slate-400 hover:text-white ${FOCUS}`}
+          className={`mt-3 flex w-full items-center justify-center rounded-lg border border-white/20 bg-slate-950/40 px-4 py-2.5 text-sm font-semibold text-slate-100 hover:border-white/50 hover:text-white ${FOCUS}`}
         >
           See full schedule
         </Link>
       </section>
 
-      <section className="cg-panel rounded-2xl p-5" aria-labelledby="hub-recent">
+      <section className="cg-glass rounded-2xl p-5" aria-labelledby="hub-recent">
         <h2 id="hub-recent" className="cg-section-title">
           Recent work
         </h2>
@@ -156,7 +156,7 @@ export function HubSidePanels({
         ) : (
           <ul className="mt-3">
             {recent.map((e) => (
-              <li key={e.id} className="flex gap-3 border-t border-slate-800 py-3.5">
+              <li key={e.id} className="flex gap-3 border-t border-white/[0.07] py-3.5">
                 <span className="mt-0.5 shrink-0 text-slate-400">
                   <IconWrench className="h-5 w-5" />
                 </span>
@@ -196,7 +196,7 @@ export function HubTiles({ tiles }: { tiles: HubTile[] }) {
 export function OdometerLine({ vehicleId, href }: { vehicleId: string; href: string }) {
   const { odometer } = useOdometer(vehicleId);
   return (
-    <Link href={href} className={`inline-flex items-center gap-1.5 font-mono text-sm text-slate-300 hover:text-orange-300 ${FOCUS}`}>
+    <Link href={href} className={`inline-flex items-center gap-1.5 font-mono text-sm text-slate-300 hover:text-white ${FOCUS}`}>
       <IconClock className="h-4 w-4 text-slate-500" />
       {odometer != null ? `${odometer.toLocaleString("en-US")} mi` : "Mileage not set"}
       <span className="font-sans text-slate-500">· {odometer != null ? "update" : "add mileage"}</span>

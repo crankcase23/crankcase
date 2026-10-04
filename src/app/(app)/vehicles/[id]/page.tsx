@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
 import { SpecTable, FluidTable } from "@/components/tables";
+import { CinematicScene } from "@/components/marketing/Cinematic";
 import { Stamp, display, FOCUS } from "@/components/app/AppKit";
 import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
 import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
@@ -66,7 +67,10 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   ];
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
+    <>
+      <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
+        <CinematicScene variant="band" />
+        <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
       {/* Records the view for admin analytics. Renders nothing. */}
       <ViewTracker type="vehicle.viewed" objectId={vehicle.id} objectType="vehicle" />
 
@@ -75,7 +79,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         Back to garage
       </Link>
 
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+      <div className="mt-4 flex flex-col items-start gap-y-5">
         <div className="min-w-0">
           <Stamp className="text-orange-400">
             {vehicle.year} · {vehicle.make}
@@ -96,7 +100,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
           <Link
             href={`/vehicles/${vehicle.id}/spec-sheet/print`}
             target="_blank"
-            className={`inline-flex items-center gap-1.5 text-sm font-medium text-orange-400 hover:text-orange-300 ${FOCUS}`}
+            className={`inline-flex items-center gap-1.5 text-sm font-medium text-slate-200 hover:text-white ${FOCUS}`}
           >
             <IconPrinter className="h-4 w-4" />
             Print spec sheet <span aria-hidden>&rarr;</span>
@@ -104,7 +108,11 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         </div>
       </div>
 
-      <div className="mt-9 grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
+        </div>
+      </section>
+
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+      <div className="grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
         <HubTiles tiles={tiles} />
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <HubSidePanels vehicleId={vehicle.id} items={items} maintainHref="#maintenance" historyHref="#history" />
@@ -165,5 +173,6 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
           guides carry one. */}
       <FeedbackWidget vehicleId={vehicle.id} />
     </div>
+    </>
   );
 }

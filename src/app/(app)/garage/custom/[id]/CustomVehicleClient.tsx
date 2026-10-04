@@ -11,6 +11,7 @@ import DataDisclaimer from "@/components/DataDisclaimer";
 import { FluidTable } from "@/components/tables";
 import { FluidCapacity } from "@/types/vehicle";
 import { BTN_SECONDARY, FOCUS, Eyebrow, Stamp, display } from "@/components/app/AppKit";
+import { CinematicScene } from "@/components/marketing/Cinematic";
 import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
 import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
 import { IconChevronLeft } from "@/components/app/AppIcons";
@@ -104,7 +105,10 @@ export default function CustomVehiclePage() {
   ];
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
+    <>
+      <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
+        <CinematicScene variant="band" />
+        <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
       {/* Custom vehicles are exactly the ones in the admin demand
           backlog, so their views are the most useful signal we have
           about what to build next. Renders nothing. */}
@@ -115,7 +119,7 @@ export default function CustomVehiclePage() {
         Back to garage
       </Link>
 
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+      <div className="mt-4 flex flex-col items-start gap-y-5">
         <div className="min-w-0">
           <Stamp className="text-orange-400">
             {custom.year ?? "Year unknown"}
@@ -146,7 +150,11 @@ export default function CustomVehiclePage() {
         </div>
       </div>
 
-      <div className="mt-9 grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
+        </div>
+      </section>
+
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+      <div className="grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
         <HubTiles tiles={tiles} />
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <HubSidePanels vehicleId={entry.id} maintainHref="#maintenance" historyHref="#history" />
@@ -216,5 +224,6 @@ export default function CustomVehiclePage() {
         />
       </div>
     </div>
+    </>
   );
 }
