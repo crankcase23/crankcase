@@ -8,21 +8,20 @@ test.describe("marketing site", () => {
     await expect(page.getByText("Your exact vehicle", { exact: true })).toBeVisible();
     await expect(page.getByText("Pick the job", { exact: true })).toBeVisible();
     await expect(page.getByText("Do it right", { exact: true })).toBeVisible();
-    // One primary action in the hero (the same CTA repeats further down the
-    // page, in the vehicle-data section), plus the how-it-works path.
+    // One primary action in the hero plus the how-it-works path.
     await expect(page.getByRole("link", { name: /Add your vehicle/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /See how it works/i })).toBeVisible();
-    // The preview card renders from a real guide with real torque figures.
+    // The one preview card renders from a real guide.
     const preview = page.getByRole("complementary", { name: /Example guide/i });
     await expect(preview).toBeVisible();
-    await expect(preview.getByText(/ft-lb/)).toHaveCount(2);
-    // The vehicle data sheet renders from the demo vehicle's real catalog entry.
-    const sheet = page.getByRole("region", { name: /Vehicle data sheet/i });
-    await expect(sheet).toBeVisible();
-    await expect(sheet.getByText("Engine oil", { exact: true })).toBeVisible();
-    await expect(sheet.getByText(/ft-lb/)).toHaveCount(1);
-    // Scope callout is still on the page.
-    await expect(page.getByText(/see a professional mechanic/i)).toBeVisible();
+    await expect(preview.getByText("Difficulty")).toBeVisible();
+    await expect(preview.getByText("Torque specs")).toBeVisible();
+    // No stats bar between the steps and the guides section.
+    await expect(page.getByLabel("Crankcase in numbers")).toHaveCount(0);
+    // Popular guides section and the scope callout are still on the page.
+    await expect(page.getByRole("heading", { name: /Routine maintenance, done properly/i })).toBeVisible();
+    await expect(page.getByText(/Start with the jobs that keep your vehicle running right/i)).toBeVisible();
+    await expect(page.getByText(/See a professional mechanic/i)).toHaveCount(0);
   });
 
   test("terms page includes a Scope of Service section", async ({ page }) => {
