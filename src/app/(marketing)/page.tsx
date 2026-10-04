@@ -4,7 +4,8 @@ import path from "node:path";
 import type { Metadata } from "next";
 import { allRepairs, findRepair, findVehicle } from "@/lib/data";
 import { JOB_LABELS } from "@/lib/admin/coverage";
-import type { JobTypeId } from "@/types/vehicle";
+import type { JobTypeId, Vehicle } from "@/types/vehicle";
+import CrankcaseMark from "@/components/CrankcaseMark";
 import { CinematicScene, PhotoScene } from "@/components/marketing/Cinematic";
 import {
   IconArrowRight,
@@ -17,6 +18,7 @@ import {
   IconPlay,
   IconSteps,
   IconWrench,
+  Stamp,
 } from "@/components/marketing/HomeVisuals";
 
 export const metadata: Metadata = {
@@ -61,6 +63,35 @@ const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visi
 const BTN_PRIMARY = `rounded-lg bg-orange-500 px-6 py-3.5 font-semibold text-slate-950 shadow-lg shadow-black/50 hover:bg-orange-400 ${FOCUS}`;
 const BTN_SECONDARY = `rounded-lg border border-slate-500/60 bg-slate-950/40 px-6 py-3.5 font-semibold text-slate-100 backdrop-blur-sm hover:border-slate-300 hover:text-white ${FOCUS}`;
 
+// ---------------------------------------------------------------------------
+// "Know your ride" data sheet. Every row below is read from the demo vehicle's
+// own catalog entry (specs[] by label, fluids[] by name). A row whose source
+// field is missing is simply not rendered -- the sheet never shows a
+// placeholder. These six were chosen because the catalog carries them for
+// every vehicle (checked 2026-09-24: 49/49 for oil, coolant, brake fluid, fuel
+// tank, octane, lug-nut torque; 48/49 for battery). Factory service intervals
+// exist for three platforms only, so they are deliberately NOT advertised
+// here -- see the vehicle page for those.
+// ---------------------------------------------------------------------------
+type DataRow = { label: string; value: string; sub?: string };
+
+function buildDataRows(vehicle: Vehicle): DataRow[] {
+  const spec = (label: string) => vehicle.specs.find((s) => s.label === label)?.value;
+  const fluid = (name: string) => vehicle.fluids.find((f) => f.name === name);
+  const oil = fluid("Engine Oil");
+  const coolant = fluid("Engine Coolant");
+  const brake = fluid("Brake Fluid");
+  const rows: (DataRow | undefined)[] = [
+    oil && { label: "Engine oil", value: oil.capacity, sub: oil.spec },
+    coolant && { label: "Engine coolant", value: coolant.capacity, sub: coolant.spec },
+    spec("Battery") ? { label: "Battery", value: spec("Battery")! } : undefined,
+    spec("Wheel lug nut torque") ? { label: "Wheel lug nut torque", value: spec("Wheel lug nut torque")! } : undefined,
+    brake && { label: "Brake fluid", value: brake.spec, sub: brake.capacity },
+    spec("Fuel tank") ? { label: "Fuel", value: spec("Fuel tank")!, sub: spec("Recommended fuel") } : undefined,
+  ];
+  return rows.filter((r): r is DataRow => Boolean(r));
+}
+
 function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <p className={`text-[0.8rem] font-extrabold uppercase tracking-[0.2em] text-orange-400 ${className}`} style={display}>
@@ -95,6 +126,7 @@ const JOB_ORDER: JobTypeId[] = [
 export default function MarketingHome() {
   const guide = findRepair(PREVIEW_GUIDE_ID);
   const vehicle = guide ? findVehicle(guide.vehicleId) : undefined;
+  const dataRows = vehicle ? buildDataRows(vehicle) : [];
 
   const guides = allRepairs();
   const withGuides = new Set(guides.map((g) => g.jobType));
@@ -297,6 +329,102 @@ export default function MarketingHome() {
           </div>
         )}
       </section>
+
+      {/* ------------------------------------------------------ know your ride:
+          the vehicle-data half of the product, restored from the live page and
+          restyled to sit with the photo-driven homepage. Rendered from the
+          demo vehicle's own catalog entry. */}
+      {vehicle && dataRows.length > 0 && (
+        <section className="relative border-t border-white/[0.07] bg-[#070b12]">
+          <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:gap-10 sm:py-16 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
+            <div>
+              <Eyebrow>Know your ride</Eyebrow>
+              <h2 className="mt-3 max-w-xl text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
+                Your vehicle isn&apos;t generic. Neither is its maintenance.
+              </h2>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300">
+                Crankcase keeps the fluids, capacities, specs and maintenance information we support
+                for your exact vehicle in one place — the numbers you would otherwise dig out of a
+                manual, a forum and the underhood label.
+              </p>
+
+              <ul className="mt-6 max-w-xl divide-y divide-white/[0.08] border-y border-white/[0.08]">
+                <li className="flex items-start gap-3 py-3">
+                  <IconHex className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
+                  <p className="text-sm text-slate-300">
+                    <span className="font-extrabold uppercase tracking-wide text-slate-50" style={display}>
+                      Vehicle data
+                    </span>{" "}
+                    tells you what it needs.
+                  </p>
+                </li>
+                <li className="flex items-start gap-3 py-3">
+                  <IconWrench className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
+                  <p className="text-sm text-slate-300">
+                    <span className="font-extrabold uppercase tracking-wide text-slate-50" style={display}>
+                      Guides
+                    </span>{" "}
+                    show you how to do it.
+                  </p>
+                </li>
+              </ul>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <Link href="/signup" className={BTN_PRIMARY}>
+                  Add your vehicle — free
+                </Link>
+                <span className="text-sm text-slate-400">Specs and fluid capacities are free for every vehicle.</span>
+              </div>
+            </div>
+
+            {/* the data sheet */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#0a0f18]/80 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.06)]" aria-label={`Vehicle data sheet: ${vehicle.year} ${vehicle.make} ${vehicle.model}`} role="region">
+              <div className="flex flex-col gap-2 border-b border-white/[0.08] bg-black/20 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                <div className="flex items-center gap-2.5">
+                  <CrankcaseMark className="h-5 w-5" />
+                  <Stamp className="whitespace-nowrap text-slate-300">Vehicle data sheet</Stamp>
+                </div>
+                <Stamp className="whitespace-nowrap text-orange-400">One vehicle · its own numbers</Stamp>
+              </div>
+
+              {/* identity */}
+              <div className="cg-grid-fine border-b border-white/[0.08] px-5 py-5 sm:px-6">
+                <Stamp>{vehicle.year} · {vehicle.make}</Stamp>
+                <div className="mt-1.5 text-3xl font-extrabold uppercase leading-none text-slate-50 sm:text-4xl" style={display}>
+                  {vehicle.model}
+                  {vehicle.trim ? <span className="text-slate-400"> {vehicle.trim}</span> : null}
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-slate-300">
+                  {vehicle.engine} · {vehicle.transmission} · {vehicle.drivetrain}
+                </p>
+              </div>
+
+              {/* rows: one column on phones, two from sm up */}
+              <dl className="grid sm:grid-cols-2">
+                {dataRows.map((r, i) => (
+                  <div
+                    key={r.label}
+                    className={`px-5 py-4 sm:px-6 ${i > 0 ? "border-t border-white/[0.08]" : ""} ${
+                      i === 1 ? "sm:border-t-0" : ""
+                    } ${i % 2 === 1 ? "sm:border-l sm:border-l-white/[0.08]" : ""}`}
+                  >
+                    <dt className="cg-stamp">{r.label}</dt>
+                    <dd className="mt-1.5 font-mono text-base font-semibold leading-snug text-slate-50 sm:text-[17px]">
+                      {r.value}
+                    </dd>
+                    {r.sub && <dd className="mt-1 text-sm leading-snug text-slate-400">{r.sub}</dd>}
+                  </div>
+                ))}
+              </dl>
+
+              <div className="border-t border-white/[0.08] bg-black/20 px-5 py-3 text-xs text-slate-400 sm:px-6">
+                Pulled live from this vehicle&apos;s catalog entry. The full sheet on the vehicle page
+                adds every fluid, the tire sizes and the part-specific notes.
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ------------------------------------------------------ close */}
       <section className="border-t border-white/[0.07] bg-[#070b12]">

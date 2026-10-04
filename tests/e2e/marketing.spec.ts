@@ -20,6 +20,15 @@ test.describe("marketing site", () => {
     await expect(page.getByLabel("Crankcase in numbers")).toHaveCount(0);
     // Popular guides section and the scope callout are still on the page.
     await expect(page.getByRole("heading", { name: /Routine maintenance, done properly/i })).toBeVisible();
+    // "Know your ride" is restored below the maintenance section and renders
+    // from the demo vehicle's real catalog entry.
+    const sheet = page.getByRole("region", { name: /Vehicle data sheet/i });
+    await expect(sheet).toBeVisible();
+    await expect(sheet.getByText("Engine oil", { exact: true })).toBeVisible();
+    await expect(sheet.getByText(/ft-lb/)).toHaveCount(1);
+    const maintY = (await page.getByRole("heading", { name: /Routine maintenance, done properly/i }).boundingBox())!.y;
+    const sheetY = (await sheet.boundingBox())!.y;
+    expect(sheetY).toBeGreaterThan(maintY);
     await expect(page.getByText(/Start with the jobs that keep your vehicle running right/i)).toBeVisible();
     await expect(page.getByText(/See a professional mechanic/i)).toHaveCount(0);
   });
