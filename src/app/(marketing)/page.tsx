@@ -184,9 +184,9 @@ export default function MarketingHome() {
           {guide && vehicle && (
             <aside
               aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-              className="relative w-full max-w-sm justify-self-center max-lg:-mt-10 max-lg:mb-12 lg:mt-44 lg:-mr-20 lg:justify-self-end"
+              className="relative w-full max-w-sm justify-self-center max-lg:-mt-10 max-lg:mb-12 lg:mt-52 lg:-mr-28 lg:justify-self-end"
             >
-              <div className="overflow-hidden rounded-2xl border border-white/[0.14] bg-[#080d15]/55 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-xl">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.14] bg-[#080d15]/48 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-xl">
                 <div className="flex items-start justify-between gap-3 px-4 pt-5">
                   <div>
                     <div className="text-lg font-semibold leading-tight text-slate-50">
