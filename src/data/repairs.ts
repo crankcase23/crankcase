@@ -5475,7 +5475,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "18 ft-lb (25 Nm)",
-        notes: "Curated reference figure -- not yet independently pulled from Open Labor Project for this vehicle. Carried over from the common GM drain-plug standard seen across several related engines in this catalog; confirm before trusting as gospel.",
+        notes: "Confirmed via Open Labor Project (min_confidence=medium) -- exact match to the existing curated figure. OLP returned two engines for this make/model/year (2.5L I4, 3.6L V6); matched the catalogs 3.6L V6 (LGX) exactly.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Spin-on oil filter",
@@ -5568,7 +5569,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "18 ft-lb (25 Nm)",
-        notes: "Curated reference figure -- not yet independently pulled from Open Labor Project for this vehicle. This is the same L84 5.3L V8 as the Tahoe and Suburban (and the Silverado/Sierra pickups it originates from); carried over from that family's confirmed figure, not yet independently verified for the Yukon specifically.",
+        notes: "Confirmed via Open Labor Project (min_confidence=medium) -- exact match to the existing curated figure, independently confirmed under GMC Yukons own make/model for the first time (previously only carried over from the Tahoe/Suburban twin figure). OLP returned three engines for this make/model/year (3.0L I6 Duramax Diesel, 5.3L V8, 6.2L V8); matched the catalogs 5.3L EcoTec3 (L84) exactly.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter (spin-on)",
