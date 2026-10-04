@@ -111,10 +111,9 @@ function StepNumber({ n }: { n: string }) {
 }
 
 const GUIDE_CARDS: { id: JobTypeId; title: string; line: string; photo: string; pos: string; icon: React.ReactNode }[] = [
-  { id: "oil-change", title: "Oil change", line: "Oil, filter and drain plug torque, in order.", photo: "guides-oil.jpg", pos: "78% 60%", icon: <IconGauge className="h-14 w-14" /> },
-  { id: "brake-pads-front", title: "Front brake pads", line: "Pads, hardware and caliper torque specs.", photo: "guide-brakes.jpg", pos: "50% 50%", icon: <IconSteps className="h-14 w-14" /> },
-  { id: "engine-air-filter", title: "Engine air filter", line: "A quick swap, with the right filter for your engine.", photo: "guide-air-filter.jpg", pos: "50% 50%", icon: <IconBox className="h-14 w-14" /> },
-  { id: "tire-rotation", title: "Tire rotation", line: "Pattern, lug nut torque and what to check.", photo: "guide-tires.jpg", pos: "50% 50%", icon: <IconCar className="h-14 w-14" /> },
+  { id: "oil-change", title: "Oil change", line: "Oil, filter and drain plug torque, in order.", photo: "guides-oil.jpg", pos: "50% 55%", icon: <IconGauge className="h-14 w-14" /> },
+  { id: "brake-pads-front", title: "Front brake pads", line: "Pads, hardware and caliper torque specs.", photo: "guide-brakes.jpg", pos: "50% 60%", icon: <IconSteps className="h-14 w-14" /> },
+  { id: "engine-air-filter", title: "Engine air filter", line: "A quick swap, with the right filter for your engine.", photo: "guide-air-filter.jpg", pos: "55% 50%", icon: <IconBox className="h-14 w-14" /> },
 ];
 
 export default function MarketingHome() {
@@ -292,13 +291,13 @@ export default function MarketingHome() {
               Start with the jobs that keep your vehicle running right. More repair coverage is coming.
             </p>
           </div>
-          <ul className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {guideCards.map((g) => (
               <li
                 key={g.id}
                 className="group relative overflow-hidden rounded-xl border border-white/[0.1] bg-[#080d15]/70 shadow-[0_30px_60px_-34px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
-                <div className="relative h-52 overflow-hidden bg-[#0a0f18]">
+                <div className="relative h-56 overflow-hidden bg-[#0a0f18]">
                   {hasPhoto(g.photo) ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={`/images/home/${g.photo}`} alt="" className="h-full w-full object-cover" style={{ objectPosition: g.pos }} loading="lazy" />

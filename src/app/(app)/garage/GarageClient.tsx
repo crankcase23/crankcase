@@ -40,14 +40,21 @@ function SkeletonCard() {
   );
 }
 
-/** Dark workshop backdrop from the real hero photograph: the tool wall, no car. */
-function WorkshopBackdrop({ pos = "18% 28%", scale = "scale-[2.4]" }: { pos?: string; scale?: string }) {
+/**
+ * Photographic backdrop for a panel. Presentation imagery only (see the
+ * "Illustrative" note on vehicle cards); a dark scrim keeps the copy readable.
+ */
+function PanelPhoto({ src, pos = "50% 50%", side = "left" }: { src: string; pos?: string; side?: "left" | "center" }) {
   return (
     <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-[#06090f]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/home/hero-garage.jpg" alt="" className={`absolute inset-0 h-full w-full origin-top-left object-cover opacity-95 ${scale}`} style={{ objectPosition: pos }} loading="lazy" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#06090f]/90 via-[#06090f]/55 to-[#06090f]/15" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#06090f]/80 to-transparent" />
+      <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: pos }} loading="lazy" />
+      {side === "left" ? (
+        <div className="absolute inset-0 bg-gradient-to-r from-[#06090f]/90 via-[#06090f]/55 to-[#06090f]/10" />
+      ) : (
+        <div className="absolute inset-0 bg-[#06090f]/55" />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#06090f]/70 to-transparent" />
     </div>
   );
 }
@@ -95,7 +102,7 @@ export default function GarageClient() {
           </section>
         ) : count === 0 ? (
           <section className="relative isolate overflow-hidden rounded-2xl border border-white/10">
-            <WorkshopBackdrop />
+            <PanelPhoto src="/images/garage/workshop-bench.jpg" pos="50% 45%" />
             <div className="px-6 py-14 sm:px-10 sm:py-20">
               <Eyebrow>No vehicles yet</Eyebrow>
               <h2 className="mt-3 max-w-md text-4xl font-extrabold uppercase leading-[0.95] text-slate-50 sm:text-5xl" style={display}>
@@ -132,7 +139,7 @@ export default function GarageClient() {
               href="/garage/add"
               className={`group relative isolate flex min-h-[22rem] flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-white/[0.12] p-6 text-center transition-colors hover:border-white/30 ${FOCUS}`}
             >
-              <WorkshopBackdrop pos="30% 30%" />
+              <PanelPhoto src="/images/garage/add-vehicle.jpg" pos="45% 60%" side="center" />
               <span className="flex h-14 w-14 items-center justify-center rounded-full border border-orange-500/70 bg-black/30 text-orange-400">
                 <PlusIcon className="h-7 w-7" />
               </span>
@@ -148,7 +155,7 @@ export default function GarageClient() {
             </Link>
 
             <section className="relative isolate flex min-h-[22rem] flex-col justify-center overflow-hidden rounded-2xl border border-white/[0.12] p-7 sm:col-span-2 sm:p-9">
-              <WorkshopBackdrop pos="55% 38%" scale="scale-[2]" />
+              <PanelPhoto src="/images/garage/workshop-bench.jpg" pos="50% 50%" />
               <h2 className="text-2xl font-extrabold text-slate-50" style={display}>
                 Don&apos;t see your vehicle?
               </h2>

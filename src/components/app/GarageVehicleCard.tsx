@@ -78,6 +78,15 @@ export default function GarageVehicleCard(props: Props) {
   const href = vehicle ? `/vehicles/${vehicle.id}` : `/garage/custom/${id}`;
   const label = [year, make, model].filter(Boolean).join(" ");
 
+  // Presentation photography: a catalog vehicle's own file, or a stock-style
+  // image for the make/model of a custom entry. Missing files fall back (onError).
+  const slug = (t?: string) => (t ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const photoSrc = vehicle
+    ? `/images/vehicles/${vehicle.id}.jpg`
+    : custom?.make && custom?.model
+      ? `/images/vehicles/model-${slug(custom.make)}-${slug(custom.model)}.jpg`
+      : null;
+
   const specParts = vehicle ? [trim, engine, vehicle.transmission, vehicle.drivetrain] : [trim, engine];
   const specLine = specParts.filter(Boolean).join(" • ");
 
@@ -97,15 +106,18 @@ export default function GarageVehicleCard(props: Props) {
             {make || "Vehicle"}
           </span>
         </div>
-        {vehicle && !photoFailed && (
+        {photoSrc && !photoFailed && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`/images/vehicles/${vehicle.id}.jpg`}
+            src={photoSrc}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover [object-position:42%_58%]"
             loading="lazy"
             onError={() => setPhotoFailed(true)}
           />
+        )}
+        {photoSrc && !photoFailed && (
+          <span className="absolute bottom-2 left-3 text-[0.65rem] uppercase tracking-wider text-white/75 [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]">Illustrative image</span>
         )}
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#080d15] via-[#080d15]/10 to-transparent" />
         <button

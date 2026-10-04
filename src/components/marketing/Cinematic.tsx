@@ -117,7 +117,7 @@ export function PhotoScene({
 
 /**
  * Workshop backdrop with no vehicle in it: the tool wall and warm practicals
- * from the real hero photograph, cropped past the car and darkened for copy.
+ * (presentation imagery) darkened for copy.
  * Used behind headers and panels that have no vehicle photograph of their own.
  * Client-safe (no filesystem access).
  */
@@ -126,10 +126,10 @@ export function WorkshopScene({ className = "" }: { className?: string }) {
     <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#06090f] ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/home/hero-garage.jpg"
+        src="/images/garage/workshop-bench.jpg"
         alt=""
-        className="absolute inset-0 h-full w-full origin-top-left scale-[1.9] object-cover opacity-90"
-        style={{ objectPosition: "12% 22%" }}
+        className="absolute inset-0 h-full w-full object-cover opacity-90"
+        style={{ objectPosition: "30% 50%" }}
         loading="lazy"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-[#06090f] via-[#06090f]/70 to-[#06090f]/20" />
