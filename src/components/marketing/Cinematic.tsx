@@ -112,11 +112,17 @@ export function PhotoScene({
   src,
   position = "70% 50%",
   copySide = "left",
+  shift = "0%",
+  fit = "cover",
   className = "",
 }: {
   src: string;
   position?: string;
   copySide?: "left" | "none";
+  /** Slide the photo sideways (the edge it uncovers is the page's own black). */
+  shift?: string;
+  /** "right": whole photo, full height, pinned to the right edge (nothing is cropped). */
+  fit?: "cover" | "right";
   className?: string;
 }) {
   return (
@@ -125,20 +131,24 @@ export function PhotoScene({
       <img
         src={src}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        style={{ objectPosition: position }}
+        className={fit === "right" ? "absolute inset-y-0 right-0 h-full w-auto max-w-none" : "absolute inset-0 h-full w-full object-cover"}
+        style={{
+          objectPosition: position,
+          transform: `translateX(${shift})`,
+          ...(fit === "right" ? { maskImage: "linear-gradient(to right, transparent 0%, #000 34%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 34%)" } : null),
+        }}
         fetchPriority="high"
       />
       {/* grade: deepen the blacks, keep the amber */}
-      <div className="absolute inset-0 bg-[#05080e]/25 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-[#05080e]/10 mix-blend-multiply" />
       {/* warm light leaks, screened over the photo */}
-      <div className="absolute -right-24 -top-24 h-[34rem] w-[44rem] bg-[radial-gradient(closest-side,rgba(251,146,60,0.28),transparent)] mix-blend-screen" />
-      <div className="absolute -bottom-32 right-[10%] h-[24rem] w-[52rem] bg-[radial-gradient(closest-side,rgba(251,146,60,0.22),transparent)] mix-blend-screen" />
+      <div className="absolute -right-24 -top-24 h-[34rem] w-[44rem] bg-[radial-gradient(closest-side,rgba(251,146,60,0.12),transparent)] mix-blend-screen" />
+      
       {copySide === "left" && (
-        <div className="absolute inset-0 bg-gradient-to-r from-[#05080e] via-[#05080e]/80 via-[38%] to-transparent to-[78%] max-lg:from-[#05080e]/85 max-lg:via-[#05080e]/55 max-lg:to-[#05080e]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#05080e] via-[#05080e]/65 via-[24%] to-transparent to-[52%]" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#05080e] via-transparent via-[35%] to-[#05080e]/55" />
-      <div className="absolute inset-0 [background:radial-gradient(130%_110%_at_60%_45%,transparent_52%,rgba(2,4,8,0.75)_100%)]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#05080e] via-transparent via-[22%] to-[#05080e]/35" />
+      <div className="absolute inset-0 [background:radial-gradient(130%_110%_at_60%_45%,transparent_52%,rgba(2,4,8,0.55)_100%)]" />
     </div>
   );
 }

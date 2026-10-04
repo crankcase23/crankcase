@@ -121,16 +121,24 @@ export default function MarketingHome() {
       {/* ------------------------------------------------------------ hero:
           the photograph carries the brand; the type sits on it */}
       <section className="relative isolate overflow-hidden">
-        {hasPhoto("hero-garage.jpg") ? (
-          <PhotoScene src="/images/home/hero-garage.jpg" position="72% 45%" />
-        ) : (
+        {/* desktop: the photo is the stage. mobile: a dark room behind the copy,
+            the photo gets its own band below it (see the strip after the copy) */}
+        <div className="max-lg:hidden">
+          {hasPhoto("hero-garage.jpg") ? (
+            <PhotoScene src="/images/home/hero-garage.jpg" position="50% 55%" shift="5%" />
+          ) : (
+            <CinematicScene variant="page" />
+          )}
+        </div>
+        <div className="lg:hidden">
           <CinematicScene variant="page" />
-        )}
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-12 pt-14 sm:pt-20 lg:min-h-[41rem] lg:grid-cols-[minmax(0,1fr)_21.5rem] lg:gap-10 lg:pb-16 lg:pt-12">
-          <div className="max-lg:pt-4">
+        </div>
+
+        <div className="relative mx-auto grid max-w-6xl items-center gap-x-6 gap-y-0 px-4 pt-14 sm:pt-20 lg:min-h-[41rem] lg:grid-cols-[minmax(0,1fr)_18.5rem] lg:pb-16 lg:pt-12">
+          <div className="max-lg:pt-2">
             <Eyebrow>Your ride. Your garage.</Eyebrow>
             <h1
-              className="mt-4 text-[3.5rem] font-extrabold uppercase leading-[0.88] tracking-tight text-slate-50 [text-shadow:0_4px_30px_rgba(0,0,0,0.6)] sm:text-[5rem] lg:text-[6rem]"
+              className="mt-4 text-[3.5rem] font-extrabold uppercase leading-[0.88] tracking-tight text-slate-50 [text-shadow:0_4px_30px_rgba(0,0,0,0.6)] sm:text-[5rem] lg:text-[5.5rem]"
               style={display}
             >
               Fix your own car.
@@ -160,19 +168,30 @@ export default function MarketingHome() {
             </p>
           </div>
 
-          {/* the one product card: a real guide, a real vehicle photo */}
+          {/* mobile only: the garage photo, full bleed, car centred. The card
+              below tucks up into its lower edge. */}
+          {hasPhoto("hero-garage.jpg") && (
+            <div className="relative -mx-4 mt-8 h-64 overflow-hidden sm:h-80 lg:hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/home/hero-garage.jpg" alt="" className="h-full w-full object-cover [object-position:92%_62%]" />
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#05080e] via-transparent via-[28%] to-[#05080e]" />
+            </div>
+          )}
+
+          {/* the one product card: a real guide, a real vehicle photo. On
+              desktop it hangs off the right edge over the car's rear quarter so
+              the face of the car stays clear. */}
           {guide && vehicle && (
             <aside
               aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-              className="relative w-full max-w-sm justify-self-start lg:mt-24 lg:justify-self-end"
+              className="relative w-full max-w-sm justify-self-center max-lg:-mt-10 max-lg:mb-12 lg:mt-36 lg:-mr-24 lg:justify-self-end"
             >
-              <div className="overflow-hidden rounded-2xl border border-white/15 bg-[#080d15]/70 shadow-[0_50px_90px_-30px_rgba(0,0,0,1),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60 backdrop-blur-xl">
+              <div className="overflow-hidden rounded-2xl border border-white/15 bg-[#080d15]/75 shadow-[0_50px_90px_-30px_rgba(0,0,0,1),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60 backdrop-blur-xl">
                 {hasPhoto("card-vehicle.jpg") && (
-                  <div className="relative h-36 overflow-hidden">
+                  <div className="relative h-40 overflow-hidden max-lg:hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/home/card-vehicle.jpg" alt="" className="h-full w-full object-cover" />
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#080d15]/80 via-transparent to-transparent" />
-                    <div aria-hidden className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)]" />
+                    <img src="/images/home/card-vehicle.jpg" alt="" className="h-full w-full object-cover [object-position:50%_58%]" />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#080d15]/70 via-transparent to-transparent" />
                   </div>
                 )}
                 <div className="flex items-start justify-between gap-3 px-5 pt-4">
@@ -184,31 +203,31 @@ export default function MarketingHome() {
                   </div>
                   <IconArrowRight className="mt-1.5 h-5 w-5 shrink-0 text-slate-300" />
                 </div>
-                <dl className="mt-4 grid grid-cols-3 gap-x-3 border-t border-white/10 px-5 pb-1 pt-4 text-sm">
+                <dl className="mt-4 grid grid-cols-3 gap-x-2 border-t border-white/10 px-5 pb-1 pt-4 text-sm">
                   {[
-                    [<IconGauge key="d" className="h-5 w-5" />, "Difficulty", guide.difficulty],
-                    [<IconClock key="t" className="h-5 w-5" />, "Time", guide.estTime],
-                    [<IconSteps key="s" className="h-5 w-5" />, "Steps", String(guide.steps.length)],
+                    [<IconGauge key="d" className="h-4 w-4" />, "Difficulty", guide.difficulty],
+                    [<IconClock key="t" className="h-4 w-4" />, "Time", guide.estTime],
+                    [<IconSteps key="s" className="h-4 w-4" />, "Steps", String(guide.steps.length)],
                   ].map(([icon, k, v]) => (
                     <div key={String(k)}>
-                      <dt className="flex items-center gap-1.5 text-xs text-slate-400">
+                      <dt className="flex items-center gap-1 text-xs text-slate-400">
                         <span className="text-slate-200">{icon}</span>
                         {k}
                       </dt>
-                      <dd className="mt-1 font-semibold text-slate-50">{v}</dd>
+                      <dd className="mt-1 font-semibold leading-tight text-slate-50">{v}</dd>
                     </div>
                   ))}
                 </dl>
                 <dl className="mt-3 grid grid-cols-2 gap-x-3 border-t border-white/10 px-5 pb-5 pt-4 text-sm">
                   <div>
                     <dt className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <IconBox className="h-5 w-5 text-slate-200" /> Tools
+                      <IconBox className="h-4 w-4 text-slate-200" /> Tools
                     </dt>
                     <dd className="mt-1 font-semibold text-slate-50">{guide.tools.length}</dd>
                   </div>
                   <div>
                     <dt className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <IconHex className="h-5 w-5 text-slate-200" /> Torque specs
+                      <IconHex className="h-4 w-4 text-slate-200" /> Torque specs
                     </dt>
                     <dd className="mt-1 font-semibold text-slate-50">
                       {guide.torqueSpecs && guide.torqueSpecs.length > 0 ? "Yes" : "None"}
@@ -249,15 +268,15 @@ export default function MarketingHome() {
 
       {/* ------------------------------------------------------ value strip */}
       <section className="cg-metal-band border-b border-black/60" aria-label="Crankcase in numbers">
-        <ul className="mx-auto grid max-w-6xl px-4 sm:grid-cols-3 sm:divide-x sm:divide-white/[0.08]">
+        <ul className="mx-auto grid max-w-6xl grid-cols-3 divide-x divide-white/[0.08] px-2 sm:px-4">
           {stats.map((s) => (
-            <li key={s.label} className="flex items-center justify-center gap-4 py-5 sm:px-6">
+            <li key={s.label} className="flex flex-col items-center justify-center gap-2 px-1 py-5 text-center sm:flex-row sm:gap-4 sm:px-6 sm:text-left">
               <span className="text-orange-500" aria-hidden>
                 {s.icon}
               </span>
               <div>
-                <div className="text-2xl font-bold leading-none text-slate-50">{s.value}</div>
-                <div className="mt-1 text-sm text-slate-400">{s.label}</div>
+                <div className="text-xl font-bold leading-none text-slate-50 sm:text-2xl">{s.value}</div>
+                <div className="mt-1 text-xs text-slate-400 sm:text-sm">{s.label}</div>
               </div>
             </li>
           ))}
@@ -265,40 +284,53 @@ export default function MarketingHome() {
       </section>
 
       {/* ------------------------------------------------------ popular guides:
-          photograph again, so the page stays in the garage */}
+          the same garage, hood up. Copy and chips stay in the dark left; the
+          car and the drain pan own the right. */}
       <section className="relative isolate overflow-hidden">
-        {hasPhoto("guides-oil.jpg") ? (
-          <PhotoScene src="/images/home/guides-oil.jpg" position="75% 60%" />
-        ) : (
+        <div className="max-lg:hidden">
+          {hasPhoto("guides-oil.jpg") ? (
+            <PhotoScene src="/images/home/guides-oil.jpg" fit="right" />
+          ) : (
+            <CinematicScene variant="page" />
+          )}
+        </div>
+        <div className="lg:hidden">
           <CinematicScene variant="page" />
-        )}
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-14 lg:py-24">
-          <div>
+        </div>
+        <div className="mx-auto max-w-6xl px-4 pt-16 sm:pt-20 lg:flex lg:min-h-[40rem] lg:items-center lg:py-24">
+          <div className="max-w-md">
             <Eyebrow className="!text-slate-300 !tracking-[0.18em]">Popular guides</Eyebrow>
             <h2 className="mt-3 text-4xl font-extrabold leading-[0.98] text-slate-50 [text-shadow:0_4px_24px_rgba(0,0,0,0.7)] sm:text-5xl" style={display}>
               Routine maintenance, done properly.
             </h2>
-            <p className="mt-4 max-w-sm text-base text-slate-200 [text-shadow:0_2px_14px_rgba(0,0,0,0.9)]">
+            <p className="mt-4 text-base text-slate-200 [text-shadow:0_2px_14px_rgba(0,0,0,0.9)]">
               Simple, step-by-step guides for the jobs that keep your vehicle running its best.
             </p>
-            <p className="mt-6 max-w-sm border-l-2 border-white/20 pl-4 text-sm text-slate-300">
+            <ul className="mt-7 flex flex-wrap gap-2.5">
+              {jobs.map((id, i) => (
+                <li
+                  key={id}
+                  className={`rounded-full border px-4 py-2 text-[0.92rem] text-slate-50 backdrop-blur-md ${
+                    i === 0 ? "border-orange-500/80 bg-orange-500/15" : "border-white/20 bg-[#080d15]/65"
+                  }`}
+                >
+                  {JOB_LABELS[id]}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-7 border-l-2 border-white/20 pl-4 text-sm text-slate-300 [text-shadow:0_2px_12px_rgba(0,0,0,0.9)]">
               Engine, transmission and other major repair work is not what this is for. For those, see a
               professional mechanic.
             </p>
           </div>
-          <ul className="flex flex-wrap gap-3">
-            {jobs.map((id, i) => (
-              <li
-                key={id}
-                className={`rounded-full border px-5 py-2.5 text-[0.95rem] text-slate-50 backdrop-blur-md ${
-                  i === 0 ? "border-orange-500/80 bg-orange-500/15" : "border-white/20 bg-[#080d15]/60"
-                }`}
-              >
-                {JOB_LABELS[id]}
-              </li>
-            ))}
-          </ul>
         </div>
+        {hasPhoto("guides-oil.jpg") && (
+          <div className="relative mt-10 h-72 overflow-hidden sm:h-96 lg:hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/home/guides-oil.jpg" alt="" className="h-full w-full object-cover [object-position:50%_92%]" />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#05080e] via-transparent via-[30%] to-[#05080e]" />
+          </div>
+        )}
       </section>
 
       {/* ------------------------------------------------------ close */}
