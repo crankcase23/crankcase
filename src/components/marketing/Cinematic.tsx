@@ -1,4 +1,4 @@
-import { DrawerTexture, FloorPlane, VehicleLinework } from "@/components/marketing/HomeVisuals";
+import { DrawerTexture, FloorPlane } from "@/components/marketing/HomeVisuals";
 
 // ---------------------------------------------------------------------------
 // Cinematic scene layers for the marketing hero and the interior page heads.
@@ -25,7 +25,6 @@ const BOKEH: { x: string; y: string; s: number; o: number; c: string }[] = [
 
 export function CinematicScene({ variant = "hero" }: { variant?: "hero" | "page" | "band" }) {
   const hero = variant === "hero";
-  const band = variant === "band";
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       {/* the room: near-black, cool at the edges, a little warm where the lamps hang */}
@@ -47,28 +46,6 @@ export function CinematicScene({ variant = "hero" }: { variant?: "hero" | "page"
       {/* floor: wet-concrete perspective and a warm pool where the vehicle stands */}
       <FloorPlane className="absolute inset-x-0 bottom-0 h-[44%] w-full text-slate-300 opacity-[0.38]" />
       <div className="absolute -bottom-10 right-[-6rem] h-48 w-[56rem] rounded-[100%] bg-orange-400/[0.24] blur-3xl" />
-
-      {/* the vehicle: tonal drawing, rim-lit, with its own contact shadow */}
-      {hero && (
-        <>
-          <div className="absolute bottom-3 right-[2rem] h-8 w-[44rem] rounded-[100%] bg-black/80 blur-2xl max-sm:hidden" />
-          <VehicleLinework
-            tonal
-            className="absolute bottom-5 right-[1rem] w-[46rem] max-w-none text-slate-200 opacity-[0.8] drop-shadow-[0_0_30px_rgba(251,146,60,0.22)] max-sm:right-[-12rem] max-sm:w-[36rem] max-sm:opacity-[0.35] lg:w-[50rem]"
-          />
-        </>
-      )}
-
-      {/* a shorter band: the same vehicle, smaller, standing at the right edge */}
-      {band && (
-        <>
-          <div className="absolute bottom-3 right-[3rem] h-6 w-[26rem] rounded-[100%] bg-black/80 blur-xl max-sm:hidden" />
-          <VehicleLinework
-            tonal
-            className="absolute bottom-4 right-[2rem] w-[30rem] max-w-none text-slate-200 opacity-[0.7] drop-shadow-[0_0_24px_rgba(251,146,60,0.2)] max-lg:hidden"
-          />
-        </>
-      )}
 
       {/* bokeh */}
       {BOKEH.map((b, i) => (
@@ -134,6 +111,29 @@ export function PhotoScene({
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-[#05080e] via-transparent via-[22%] to-[#05080e]/35" />
       <div className="absolute inset-0 [background:radial-gradient(130%_110%_at_60%_45%,transparent_52%,rgba(2,4,8,0.55)_100%)]" />
+    </div>
+  );
+}
+
+/**
+ * Workshop backdrop with no vehicle in it: the tool wall and warm practicals
+ * (presentation imagery) darkened for copy.
+ * Used behind headers and panels that have no vehicle photograph of their own.
+ * Client-safe (no filesystem access).
+ */
+export function WorkshopScene({ className = "" }: { className?: string }) {
+  return (
+    <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#06090f] ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/garage/workshop-bench.jpg"
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover opacity-90"
+        style={{ objectPosition: "30% 50%" }}
+        loading="lazy"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#06090f] via-[#06090f]/70 to-[#06090f]/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-transparent to-[#06090f]/50" />
     </div>
   );
 }

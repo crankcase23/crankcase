@@ -3,7 +3,6 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
 import { allRepairs, findRepair, findVehicle } from "@/lib/data";
-import { JOB_LABELS } from "@/lib/admin/coverage";
 import type { JobTypeId, Vehicle } from "@/types/vehicle";
 import CrankcaseMark from "@/components/CrankcaseMark";
 import { CinematicScene, PhotoScene } from "@/components/marketing/Cinematic";
@@ -111,16 +110,10 @@ function StepNumber({ n }: { n: string }) {
   );
 }
 
-// Order the jobs the way a beginner's mental list runs.
-const JOB_ORDER: JobTypeId[] = [
-  "oil-change",
-  "brake-pads-front",
-  "battery",
-  "tire-rotation",
-  "coolant",
-  "engine-air-filter",
-  "cabin-air-filter",
-  "wiper-blades",
+const GUIDE_CARDS: { id: JobTypeId; title: string; line: string; photo: string; pos: string; icon: React.ReactNode }[] = [
+  { id: "oil-change", title: "Oil change", line: "Oil, filter and drain plug torque, in order.", photo: "guides-oil.jpg", pos: "50% 55%", icon: <IconGauge className="h-14 w-14" /> },
+  { id: "brake-pads-front", title: "Front brake pads", line: "Pads, hardware and caliper torque specs.", photo: "guide-brakes.jpg", pos: "50% 60%", icon: <IconSteps className="h-14 w-14" /> },
+  { id: "engine-air-filter", title: "Engine air filter", line: "A quick swap, with the right filter for your engine.", photo: "guide-air-filter.jpg", pos: "55% 50%", icon: <IconBox className="h-14 w-14" /> },
 ];
 
 export default function MarketingHome() {
@@ -130,7 +123,8 @@ export default function MarketingHome() {
 
   const guides = allRepairs();
   const withGuides = new Set(guides.map((g) => g.jobType));
-  const jobs = JOB_ORDER.filter((id) => withGuides.has(id)).slice(0, 6);
+  // Cards are limited to jobs the catalog really has guides for.
+  const guideCards = GUIDE_CARDS.filter((c) => withGuides.has(c.id));
 
   const steps = [
     { n: "1", icon: <IconCar className="h-7 w-7" />, title: "Your exact vehicle", body: "Year, make, model, engine." },
@@ -282,52 +276,49 @@ export default function MarketingHome() {
       </section>
 
       {/* ------------------------------------------------------ popular guides:
-          the same garage, hood up. Copy and chips stay in the dark left; the
-          car and the drain pan own the right. */}
-      <section className="relative isolate overflow-hidden">
-        <div className="max-lg:hidden">
-          {hasPhoto("guides-oil.jpg") ? (
-            <PhotoScene src="/images/home/guides-oil.jpg" fit="right" />
-          ) : (
-            <CinematicScene variant="page" />
-          )}
-        </div>
-        <div className="lg:hidden">
-          <CinematicScene variant="page" />
-        </div>
-        <div className="mx-auto max-w-6xl px-4 pt-16 sm:pt-20 lg:flex lg:min-h-[40rem] lg:items-center lg:py-24">
-          <div className="max-w-md">
-            <Eyebrow className="!text-slate-300 !tracking-[0.18em]">Popular guides</Eyebrow>
-            <h2 className="mt-3 text-4xl font-extrabold leading-[0.98] text-slate-50 [text-shadow:0_4px_24px_rgba(0,0,0,0.7)] sm:text-5xl" style={display}>
-              Routine maintenance, done properly.
+          "here is what I can actually do." Only jobs the catalog really has
+          guides for. A card uses its photograph when the file exists and a
+          dark workshop fallback when it does not. */}
+      <section className="relative isolate overflow-hidden border-b border-black/60 bg-[#06090f]">
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_85%_100%,rgba(251,146,60,0.10),transparent),radial-gradient(60%_50%_at_10%_0%,rgba(120,80,40,0.10),transparent)]" />
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
+          <div className="max-w-2xl">
+            <Eyebrow className="!tracking-[0.2em]">Popular guides</Eyebrow>
+            <h2 className="mt-3 text-4xl font-extrabold uppercase leading-[0.98] text-slate-50 sm:text-5xl" style={display}>
+              Keep your ride <span className="text-orange-500">running strong.</span>
             </h2>
-            <p className="mt-4 text-base text-slate-200 [text-shadow:0_2px_14px_rgba(0,0,0,0.9)]">
-              Simple, step-by-step guides for the jobs that keep your vehicle running its best.
-            </p>
-            <ul className="mt-7 flex flex-wrap gap-2.5">
-              {jobs.map((id, i) => (
-                <li
-                  key={id}
-                  className={`rounded-full border px-4 py-2 text-[0.92rem] text-slate-50 backdrop-blur-md ${
-                    i === 0 ? "border-orange-500/80 bg-orange-500/15" : "border-white/20 bg-[#080d15]/65"
-                  }`}
-                >
-                  {JOB_LABELS[id]}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-7 border-l-2 border-white/20 pl-4 text-sm text-slate-300 [text-shadow:0_2px_12px_rgba(0,0,0,0.9)]">
+            <p className="mt-4 text-base text-slate-200 sm:text-lg">
               Start with the jobs that keep your vehicle running right. More repair coverage is coming.
             </p>
           </div>
+          <ul className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {guideCards.map((g) => (
+              <li
+                key={g.id}
+                className="group relative overflow-hidden rounded-xl border border-white/[0.1] bg-[#080d15]/70 shadow-[0_30px_60px_-34px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.06)]"
+              >
+                <div className="relative h-56 overflow-hidden bg-[#0a0f18]">
+                  {hasPhoto(g.photo) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={`/images/home/${g.photo}`} alt="" className="h-full w-full object-cover" style={{ objectPosition: g.pos }} loading="lazy" />
+                  ) : (
+                    <div aria-hidden className="absolute inset-0 bg-[radial-gradient(90%_120%_at_70%_0%,#2a2118_0%,#120f0d_55%,#07090d_100%)]">
+                      <div className="absolute inset-0 opacity-[0.07] [background:repeating-linear-gradient(90deg,#fff_0_1px,transparent_1px_5px)]" />
+                      <div className="absolute inset-0 flex items-center justify-center text-orange-400/60">{g.icon}</div>
+                    </div>
+                  )}
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#080d15] via-[#080d15]/10 to-transparent" />
+                </div>
+                <div className="relative -mt-8 px-5 pb-5">
+                  <h3 className="text-xl font-extrabold uppercase leading-tight text-slate-50" style={display}>
+                    {g.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-300">{g.line}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-        {hasPhoto("guides-oil.jpg") && (
-          <div className="relative mt-10 h-72 overflow-hidden sm:h-96 lg:hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/home/guides-oil.jpg" alt="" className="h-full w-full object-cover [object-position:50%_92%]" />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#05080e] via-transparent via-[30%] to-[#05080e]" />
-          </div>
-        )}
       </section>
 
       {/* ------------------------------------------------------ know your ride:
@@ -340,7 +331,7 @@ export default function MarketingHome() {
             <div>
               <Eyebrow>Know your ride</Eyebrow>
               <h2 className="mt-3 max-w-xl text-3xl font-extrabold uppercase leading-tight text-slate-50 sm:text-4xl" style={display}>
-                Your vehicle isn&apos;t generic. Neither is its maintenance.
+                All your vehicle data <span className="block text-orange-500">in one place.</span>
               </h2>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300">
                 Crankcase keeps the fluids, capacities, specs and maintenance information we support
@@ -348,25 +339,18 @@ export default function MarketingHome() {
                 manual, a forum and the underhood label.
               </p>
 
-              <ul className="mt-6 max-w-xl divide-y divide-white/[0.08] border-y border-white/[0.08]">
-                <li className="flex items-start gap-3 py-3">
-                  <IconHex className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
-                  <p className="text-sm text-slate-300">
-                    <span className="font-extrabold uppercase tracking-wide text-slate-50" style={display}>
-                      Vehicle data
-                    </span>{" "}
-                    tells you what it needs.
-                  </p>
-                </li>
-                <li className="flex items-start gap-3 py-3">
-                  <IconWrench className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
-                  <p className="text-sm text-slate-300">
-                    <span className="font-extrabold uppercase tracking-wide text-slate-50" style={display}>
-                      Guides
-                    </span>{" "}
-                    show you how to do it.
-                  </p>
-                </li>
+              <ul className="mt-7 grid max-w-xl grid-cols-3 gap-4 border-t border-white/[0.08] pt-6">
+                {[
+                  { icon: <IconClipboardCheck className="h-7 w-7" />, t: "Specifications", d: "Engine and drivetrain." },
+                  { icon: <IconGauge className="h-7 w-7" />, t: "Fluid capacities", d: "Oil, coolant, brake fluid." },
+                  { icon: <IconHex className="h-7 w-7" />, t: "Torque specs", d: "For the fasteners that matter." },
+                ].map((f) => (
+                  <li key={f.t}>
+                    <span className="text-orange-400" aria-hidden>{f.icon}</span>
+                    <p className="mt-2 text-sm font-semibold text-slate-50">{f.t}</p>
+                    <p className="mt-0.5 text-[0.8rem] leading-snug text-slate-400">{f.d}</p>
+                  </li>
+                ))}
               </ul>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">

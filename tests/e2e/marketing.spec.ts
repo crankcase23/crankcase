@@ -19,14 +19,14 @@ test.describe("marketing site", () => {
     // No stats bar between the steps and the guides section.
     await expect(page.getByLabel("Crankcase in numbers")).toHaveCount(0);
     // Popular guides section and the scope callout are still on the page.
-    await expect(page.getByRole("heading", { name: /Routine maintenance, done properly/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Keep your ride running strong/i })).toBeVisible();
     // "Know your ride" is restored below the maintenance section and renders
     // from the demo vehicle's real catalog entry.
     const sheet = page.getByRole("region", { name: /Vehicle data sheet/i });
     await expect(sheet).toBeVisible();
     await expect(sheet.getByText("Engine oil", { exact: true })).toBeVisible();
     await expect(sheet.getByText(/ft-lb/)).toHaveCount(1);
-    const maintY = (await page.getByRole("heading", { name: /Routine maintenance, done properly/i }).boundingBox())!.y;
+    const maintY = (await page.getByRole("heading", { name: /Keep your ride running strong/i }).boundingBox())!.y;
     const sheetY = (await sheet.boundingBox())!.y;
     expect(sheetY).toBeGreaterThan(maintY);
     await expect(page.getByText(/Start with the jobs that keep your vehicle running right/i)).toBeVisible();

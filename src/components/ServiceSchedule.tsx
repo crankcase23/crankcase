@@ -6,7 +6,7 @@ import {
   describeInterval,
   type ServiceScheduleItem,
 } from "@/data/service-schedules";
-import { TierBadge } from "@/components/tables";
+import { PANEL } from "@/components/app/Chapter";
 
 // The "what is due at 30,000 miles" view the user report asked for.
 //
@@ -72,19 +72,14 @@ export default function ServiceSchedule({
   };
 
   return (
-    <section className="mt-8">
-      <div className="mb-3 flex items-center gap-2">
-        <h2 className="text-lg font-semibold text-slate-100">Factory Service Schedule</h2>
-        <TierBadge tier="free" />
-      </div>
-
-      <p className="mb-4 max-w-3xl text-sm text-slate-400">
+    <div>
+      <p className="mb-5 max-w-3xl text-sm leading-relaxed text-slate-400">
         What the manufacturer actually asks for, on their own mileage grid &mdash; not a
         quick-lube chain&rsquo;s version of it. Source: {schedule.sourceLabel}.
       </p>
 
       {everyService.length > 0 && (
-        <p className="mb-4 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2 text-sm text-slate-300">
+        <p className="mb-4 rounded-xl border border-white/[0.09] bg-[#080d15]/60 px-4 py-3 text-sm text-slate-300">
           <span className="font-semibold text-slate-100">
             Every {schedule.gridStep.toLocaleString("en-US")} miles:
           </span>{" "}
@@ -99,17 +94,17 @@ export default function ServiceSchedule({
         {milestones.map((m) => (
           <div
             key={m.miles}
-            className="rounded-lg border border-slate-800 bg-slate-900/60 p-3"
+            className={`${PANEL} p-4`}
           >
-            <div className="mb-2 text-sm font-semibold text-slate-100">
+            <div className="mb-2 text-base font-semibold text-slate-50">
               {milesLabel(m.miles)} miles
             </div>
             <ul className="space-y-1 text-[13px]">
-              {m.normal.map((item) => (
-                <li key={item.label}>{rowLabel(item)}</li>
+              {m.normal.map((item, i) => (
+                <li key={`n-${i}-${item.label}`}>{rowLabel(item)}</li>
               ))}
-              {m.severeOnly.map((item) => (
-                <li key={item.label} className="text-amber-300/80">
+              {m.severeOnly.map((item, i) => (
+                <li key={`s-${i}-${item.label}`} className="text-amber-300/80">
                   {item.label}
                   <span className="ml-1 text-[11px] text-amber-500/70">severe only</span>
                 </li>
@@ -120,7 +115,7 @@ export default function ServiceSchedule({
       </div>
 
       {offGrid.length > 0 && (
-        <div className="mt-5 rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+        <div className="mt-5 rounded-xl border border-white/[0.09] bg-[#080d15]/60 p-5">
           <h3 className="mb-1 text-sm font-semibold text-slate-100">
             Not on a mileage
           </h3>
@@ -130,8 +125,8 @@ export default function ServiceSchedule({
             schedule them at all.
           </p>
           <dl className="space-y-3">
-            {offGrid.map((item) => (
-              <div key={item.label}>
+            {offGrid.map((item, i) => (
+              <div key={`${i}-${item.label}`}>
                 <dt className="text-[13px] font-medium text-slate-200">
                   {rowLabel(item)}
                   <span className="ml-2 font-normal text-slate-400">
@@ -164,6 +159,6 @@ export default function ServiceSchedule({
           <>Severe service on this vehicle means: {schedule.severeDefinition}</>
         )}
       </p>
-    </section>
+    </div>
   );
 }

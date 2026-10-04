@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { JobTypeId, RepairGuide } from "@/types/vehicle";
 import { DifficultyBadge, TierBadge } from "@/components/tables";
+import Section from "@/components/app/Section";
+import { display } from "@/components/app/AppKit";
 
 /**
  * Guides are authored one job type at a time across the whole catalog, so the
@@ -55,22 +57,23 @@ function GuideCard({
   return (
     <Link
       href={`/vehicles/${vehicleId}/repairs/${guide.id}`}
-      className="group block rounded-xl border border-slate-800 bg-slate-900 p-5 transition hover:border-orange-500 hover:bg-slate-800/80"
+      className="group flex h-full flex-col vh-panel rounded-2xl p-5 transition hover:-translate-y-0.5 hover:border-orange-500/60"
     >
-      <div className="flex items-center justify-between gap-3">
-        <h4 className="font-semibold text-slate-100">{guide.title}</h4>
-        <div className="flex shrink-0 items-center gap-1.5">
-          <TierBadge tier={guide.tier} />
-          <DifficultyBadge difficulty={guide.difficulty} />
-        </div>
+      <h4
+        className="text-[1.35rem] font-extrabold uppercase leading-[1.02] text-slate-50"
+        style={display}
+      >
+        {guide.title}
+      </h4>
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        <DifficultyBadge difficulty={guide.difficulty} />
+        <TierBadge tier={guide.tier} />
+        <span className="text-xs text-slate-400">{guide.estTime}</span>
       </div>
-      <p className="mt-2 text-sm text-slate-400">{guide.summary}</p>
-      <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-        <span>⏱ {guide.estTime}</span>
-        <span className="font-medium text-orange-400 group-hover:text-orange-300">
-          Open guide &rarr;
-        </span>
-      </div>
+      <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{guide.summary}</p>
+      <span className="mt-4 inline-flex min-h-6 items-center text-sm font-semibold text-orange-400 group-hover:text-orange-300">
+        Open guide &rarr;
+      </span>
     </Link>
   );
 }
@@ -84,14 +87,18 @@ export default function GuideGroups({
 }) {
   if (guides.length === 0) {
     return (
-      <section className="mt-10">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">
-          Repair Guides
-        </h2>
-        <p className="text-sm text-slate-500">
+      <Section
+        id="guides"
+        vehicleId={vehicleId}
+        eyebrow="Do it yourself"
+        title="Repair Guides"
+        summary="No guides for this vehicle yet"
+        glow="none"
+      >
+        <p className="text-sm text-slate-400">
           No repair guides for this vehicle yet.
         </p>
-      </section>
+      </Section>
     );
   }
 
@@ -115,21 +122,20 @@ export default function GuideGroups({
   if (leftovers.length > 0) sections.push({ title: "Other", items: leftovers });
 
   return (
-    <section className="mt-10">
-      <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2 className="text-lg font-semibold text-slate-100">Repair Guides</h2>
-        <span className="text-sm text-slate-500">
-          {guides.length} {guides.length === 1 ? "guide" : "guides"} for this
-          vehicle
-        </span>
-      </div>
-
-      <div className="space-y-8">
+    <Section
+      id="guides"
+      vehicleId={vehicleId}
+      eyebrow="Do it yourself"
+      title="Repair Guides"
+      summary={`${guides.length} ${guides.length === 1 ? "guide" : "guides"} available`}
+      glow="right"
+    >
+      <div className="space-y-10">
         {sections.map((section) => (
           <div key={section.title}>
-            <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-orange-400">
+            <h3 className="mb-4 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-orange-400">
               {section.title}
-              <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[11px] font-medium text-slate-400">
+              <span className="rounded-full bg-white/[0.07] px-2 py-0.5 text-[11px] font-medium tracking-normal text-slate-300">
                 {section.items.length}
               </span>
             </h3>
@@ -145,6 +151,6 @@ export default function GuideGroups({
           </div>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
