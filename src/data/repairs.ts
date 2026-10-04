@@ -5630,6 +5630,100 @@ image: "/steps/generic-cleanup.svg",
       },
     ],
   },
+  {
+    id: "gmc-canyon-oil-change",
+    vehicleId: "2021-gmc-canyon-3.6l",
+    title: "Engine Oil & Filter Change",
+    jobType: "oil-change",
+    summary: "Drain-and-refill oil service for the 3.6L LGZ V6, whose cartridge filter housing sits on top of the engine -- identical powertrain to the Chevrolet Colorado, carried over to this Canyon AT4.",
+    difficulty: "Easy",
+    tier: "free",
+    estTime: "45-60 min",
+    tools: [
+      { name: "Cartridge filter cap socket", note: "The housing cap takes a large cap socket, not a strap wrench" },
+      { name: "Socket set + ratchet", note: "For the drain plug and the splash shield fasteners" },
+      { name: "Torque wrench", note: "Range covering 15-25 ft-lb" },
+      { name: "Drain pan", note: "8+ qt capacity" },
+      { name: "Funnel" },
+      { name: "Jack + 2 jack stands or drive-up ramps" },
+      { name: "Nitrile gloves + safety glasses" },
+    ],
+    parts: [
+      "6.0 qt (5.7 L) 0W-20 full-synthetic engine oil meeting GM dexos1",
+      "ACDelco (or equivalent) cartridge oil filter element + housing O-ring",
+      "Drain plug crush washer",
+    ],
+    safety: [
+      "Let a hot engine cool for 10-15 min before draining -- hot oil causes burns.",
+      "Use jack stands rated for the vehicle's weight; never work under a vehicle held only by a jack.",
+      "Used oil and filters are hazardous waste -- take them to a recycling/auto parts drop-off, never pour down a drain.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil pan drain plug",
+        value: "18 ft-lb (25 Nm)",
+        notes: "Curated reference figure -- not yet independently pulled from Open Labor Project under GMC Canyon's own make/model. This is the same 3.6L LGZ V6 as the Chevrolet Colorado it's badge-engineered from; carried over from that family's confirmed figure. Use new crush washer.",
+      },
+      {
+        fastener: "Oil filter housing cap",
+        value: "18 ft-lb (25 Nm)",
+        notes: "Curated reference figure -- carried over from the Colorado. Per the project's 2026-10-03 Open Labor Project provenance-scope correction, filter-fastener torque is never tagged as OLP-sourced regardless of confidence tier, so this stays curated even though the matching Colorado figure was previously pulled from the API. Housing is plastic -- do not overtighten.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Warm the engine briefly, then park and secure",
+        instructions: "Run the engine for 2-3 minutes so the oil flows more easily, then shut it off. Park on level ground, set the parking brake, and chock the wheels.",
+        image: "/steps/generic-park-secure.svg",
+      },
+      {
+        number: 2,
+        title: "Vent the filter housing cap from above",
+        instructions: "Open the hood and locate the black plastic filter housing on top of the engine. Loosen the cap a quarter turn first -- this lets the housing drain back into the pan before you pull the drain plug, so you are not doing it twice.",
+        image: "/steps/oil-filter-cartridge.svg",
+      },
+      {
+        number: 3,
+        title: "Raise the vehicle and remove the splash shield",
+        instructions: "Support the vehicle on jack stands at the factory lift points. Remove the plastic under-engine splash shield to reach the drain plug.",
+        image: "/steps/generic-raise-vehicle.svg",
+        warning: "Confirm the vehicle is stable on the stands before reaching underneath.",
+      },
+      {
+        number: 4,
+        title: "Drain the old oil",
+        instructions: "Position the drain pan under the oil pan's drain plug. Loosen the plug with a socket, then finish removing it by hand and let the oil fully drain. Expect roughly 6.0 qt.",
+        image: "/steps/oil-drain.svg",
+      },
+      {
+        number: 5,
+        title: "Replace the element and reassemble",
+        instructions: "Back the housing cap the rest of the way out, pull the old element off the cap stem, fit the new one, replace and lightly oil the cap O-ring, and thread the cap back in by hand before torquing. Fit a new crush washer on the drain plug and torque that to spec.",
+        image: "/steps/oil-filter-install.svg",
+        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (25 Nm)" }, { fastener: "Oil pan drain plug", value: "18 ft-lb (25 Nm)" }],
+      },
+      {
+        number: 6,
+        title: "Reinstall the splash shield and lower the vehicle",
+        instructions: "Reattach the splash shield fasteners and carefully lower the vehicle back to the ground.",
+        image: "/steps/generic-lower-vehicle.svg",
+      },
+      {
+        number: 7,
+        title: "Refill and check",
+        instructions: "Remove the oil fill cap and add oil in stages, checking the dipstick as you approach 6.0 qt. Start the engine, let it run ~30 seconds, shut it off, and check underneath for leaks.",
+        image: "/steps/oil-fill-check.svg",
+      },
+      {
+        number: 8,
+        title: "Final level check and oil-life reset",
+        instructions: "Wait a few minutes for oil to settle, recheck the dipstick, and top off if needed. Reset the oil-life monitor from the Driver Information Center. Dispose of the old oil and filter at a recycling drop-off.",
+        image: "/steps/generic-cleanup.svg",
+      },
+    ],
+  },
+
 
 
 // ------------------------------------------------- TIRE ROTATION
