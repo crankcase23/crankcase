@@ -1,3 +1,4 @@
+import { Chapter } from "@/components/app/Chapter";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -122,27 +123,20 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         </div>
       </div>
 
-      <div className="mt-10">
-        <DataDisclaimer />
+      <div id="info" className="scroll-mt-24">
+        <Chapter
+          eyebrow="The numbers"
+          title="Vehicle Specs"
+          chip={<FreeChip />}
+          lede={<DataDisclaimer compact />}
+        >
+          <SpecTable specs={vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs} />
+        </Chapter>
       </div>
 
-      <section id="info" className="mt-12 scroll-mt-24">
-        <div className="mb-4 flex items-center gap-3">
-          <h2 className="cg-section-title">Vehicle Specs</h2>
-          <FreeChip />
-        </div>
-        <div className="max-w-xl">
-          <SpecTable specs={vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs} />
-        </div>
-      </section>
-
-      <section className="mt-10">
-        <div className="mb-4 flex items-center gap-3">
-          <h2 className="cg-section-title">Fluid Capacities</h2>
-          <FreeChip />
-        </div>
+      <Chapter eyebrow="Before you pour" title="Fluid Capacities" chip={<FreeChip />}>
         <FluidTable fluids={vehicle.fluids} />
-      </section>
+      </Chapter>
 
       <div id="maintenance" className="scroll-mt-24">
         <ServiceSchedule vehicle={vehicle} guides={repairGuides} />

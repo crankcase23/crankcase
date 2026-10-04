@@ -7,6 +7,7 @@ import {
   type ServiceScheduleItem,
 } from "@/data/service-schedules";
 import { TierBadge } from "@/components/tables";
+import { Chapter, PANEL } from "@/components/app/Chapter";
 
 // The "what is due at 30,000 miles" view the user report asked for.
 //
@@ -72,19 +73,20 @@ export default function ServiceSchedule({
   };
 
   return (
-    <section className="mt-8">
-      <div className="mb-3 flex items-center gap-2">
-        <h2 className="cg-section-title">Factory Service Schedule</h2>
-        <TierBadge tier="free" />
-      </div>
-
-      <p className="mb-4 max-w-3xl text-sm text-slate-400">
-        What the manufacturer actually asks for, on their own mileage grid &mdash; not a
-        quick-lube chain&rsquo;s version of it. Source: {schedule.sourceLabel}.
-      </p>
+    <Chapter
+      eyebrow="By the book"
+      title="Factory Service Schedule"
+      chip={<TierBadge tier="free" />}
+      lede={
+        <>
+          What the manufacturer actually asks for, on their own mileage grid &mdash; not a
+          quick-lube chain&rsquo;s version of it. Source: {schedule.sourceLabel}.
+        </>
+      }
+    >
 
       {everyService.length > 0 && (
-        <p className="mb-4 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2 text-sm text-slate-300">
+        <p className="mb-4 rounded-xl border border-white/[0.09] bg-[#080d15]/60 px-4 py-3 text-sm text-slate-300">
           <span className="font-semibold text-slate-100">
             Every {schedule.gridStep.toLocaleString("en-US")} miles:
           </span>{" "}
@@ -99,9 +101,9 @@ export default function ServiceSchedule({
         {milestones.map((m) => (
           <div
             key={m.miles}
-            className="rounded-lg border border-slate-800 bg-slate-900/60 p-3"
+            className={`${PANEL} p-4`}
           >
-            <div className="mb-2 text-sm font-semibold text-slate-100">
+            <div className="mb-2 text-base font-semibold text-slate-50">
               {milesLabel(m.miles)} miles
             </div>
             <ul className="space-y-1 text-[13px]">
@@ -120,7 +122,7 @@ export default function ServiceSchedule({
       </div>
 
       {offGrid.length > 0 && (
-        <div className="mt-5 rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+        <div className="mt-5 rounded-xl border border-white/[0.09] bg-[#080d15]/60 p-5">
           <h3 className="mb-1 text-sm font-semibold text-slate-100">
             Not on a mileage
           </h3>
@@ -164,6 +166,6 @@ export default function ServiceSchedule({
           <>Severe service on this vehicle means: {schedule.severeDefinition}</>
         )}
       </p>
-    </section>
+    </Chapter>
   );
 }

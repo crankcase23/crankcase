@@ -4,7 +4,7 @@ import {
   keysPriceForNthVehicle,
 } from "@/lib/keysPricing";
 import { IconLock } from "@/components/app/AppIcons";
-import { display, Stamp } from "@/components/app/AppKit";
+import { display } from "@/components/app/AppKit";
 
 // Visual layer for "Keys" (the per-vehicle unlock). Matches the approved
 // Vehicle Free / Locked mockup (clutch/26 board 3).
@@ -41,46 +41,49 @@ export function KeysPanel({ vehicleName }: { vehicleName: string }) {
       className="cg-glass relative overflow-hidden rounded-2xl"
       aria-label="Get the Keys"
     >
-      <div className="grid gap-x-10 gap-y-2 p-6 md:grid-cols-2 md:p-8">
+      <span
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-500/70 to-transparent"
+      />
+      <div className="grid items-center gap-x-12 gap-y-6 p-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:p-8">
         <div>
-          <Stamp>Garage Rewards</Stamp>
+          <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-orange-400">
+            <IconLock className="h-3.5 w-3.5" />
+            Keys
+          </p>
           <h2
-            className="mt-2 text-3xl font-extrabold uppercase leading-[0.95] text-slate-50 md:text-4xl"
+            className="mt-2 text-[1.9rem] font-extrabold uppercase leading-[0.98] text-slate-50 sm:text-4xl"
             style={display}
           >
             Your vehicle is in the garage. Now get the <span className="text-orange-500">Keys.</span>
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-300">
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-300">
             One payment. Permanent access to everything Crankcase Garage does
             for this {vehicleName}.
           </p>
         </div>
 
         <div>
-          <div className="mt-1 flex items-baseline gap-3 md:mt-0">
-            <span className="font-mono text-5xl font-bold leading-none text-slate-50">
+          <div className="flex items-baseline gap-2.5">
+            <span className="font-mono text-4xl font-bold leading-none text-slate-50">
               ${price}
             </span>
             <span className="text-sm text-slate-400">first vehicle</span>
           </div>
 
           <ol
-            className="mt-4 grid grid-cols-4 gap-2"
-            aria-label="Garage Rewards price ladder"
+            className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-slate-400"
+            aria-label="Price per vehicle"
           >
             {KEYS_LADDER.map((p, i) => (
               <li
                 key={i}
-                className={`cg-well rounded-lg px-2 py-2 text-center ${i === VISUAL_UNLOCKED_COUNT ? "!border-slate-300/70" : ""}`}
+                className={i === VISUAL_UNLOCKED_COUNT ? "text-slate-100" : undefined}
               >
-                <div className="cg-stamp">
-                  {i === KEYS_LADDER.length - 1
-                    ? `${i + 1}th+`
-                    : ["1st", "2nd", "3rd"][i]}
-                </div>
-                <div className="mt-1 font-mono text-base font-semibold text-slate-100">
-                  ${p}
-                </div>
+                <span className="text-slate-500">
+                  {i === KEYS_LADDER.length - 1 ? `${i + 1}th+` : ["1st", "2nd", "3rd"][i]}
+                </span>{" "}
+                <span className="font-mono font-semibold">${p}</span>
               </li>
             ))}
           </ol>
@@ -92,7 +95,7 @@ export function KeysPanel({ vehicleName }: { vehicleName: string }) {
           >
             Get the Keys
           </button>
-          <p className="mt-3 text-xs leading-relaxed text-slate-400">
+          <p className="mt-3 text-xs leading-relaxed text-slate-500">
             Checkout isn&apos;t open yet, so nothing is locked or charged today.
             One payment per vehicle, not a subscription. The free oil-change
             guide stays free either way.

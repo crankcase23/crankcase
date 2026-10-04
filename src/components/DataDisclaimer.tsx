@@ -1,18 +1,15 @@
 export default function DataDisclaimer({ compact = false }: { compact?: boolean }) {
   return (
-    <div
-      className={`rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-100 ${
-        compact ? "px-3 py-2 text-xs" : "px-4 py-3 text-sm"
+    <p
+      className={`border-l-2 border-amber-400/50 pl-3.5 leading-relaxed text-slate-400 ${
+        compact ? "text-xs" : "text-[0.82rem]"
       }`}
     >
-      <span className="font-semibold text-amber-300">Reference figures, not gospel.</span>{" "}
-      Capacities, torque values, and steps here are general starting points and
-      can vary by trim, options, and model-year running changes. Always confirm
-      against your vehicle&apos;s factory service manual or door-jamb/build sticker
-      before you finalize a fluid fill or torque a fastener. Crankcase Garage covers
-      routine maintenance — oil changes, brakes, fluids, filters, and the like —
-      not engine, transmission, or other major repair work; for anything beyond
-      that, see a professional mechanic.
-    </div>
+      <span className="font-semibold text-amber-300/90">Reference figures.</span>{" "}
+      Capacities, torque values and steps are general starting points and can vary by trim, options and
+      model year. Check your factory service information or door-jamb sticker before you fill a fluid or
+      torque a fastener, and use your own judgment. Crankcase covers routine maintenance; for major repair
+      work, see a professional mechanic.
+    </p>
   );
 }
