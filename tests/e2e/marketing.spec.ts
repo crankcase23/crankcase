@@ -16,10 +16,8 @@ test.describe("marketing site", () => {
     await expect(preview).toBeVisible();
     await expect(preview.getByText("Difficulty")).toBeVisible();
     await expect(preview.getByText("Torque specs")).toBeVisible();
-    // The value strip is counted from the catalog, not typed in.
-    const strip = page.getByLabel("Crankcase in numbers");
-    await expect(strip.getByText("vehicles in the catalog")).toBeVisible();
-    await expect(strip.getByText("step-by-step guides")).toBeVisible();
+    // No stats bar between the steps and the guides section.
+    await expect(page.getByLabel("Crankcase in numbers")).toHaveCount(0);
     // Popular guides section and the scope callout are still on the page.
     await expect(page.getByRole("heading", { name: /Routine maintenance, done properly/i })).toBeVisible();
     await expect(page.getByText(/see a professional mechanic/i)).toBeVisible();

@@ -2,13 +2,12 @@ import Link from "next/link";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
-import { allRepairs, findRepair, findVehicle, listVehicles } from "@/lib/data";
+import { allRepairs, findRepair, findVehicle } from "@/lib/data";
 import { JOB_LABELS } from "@/lib/admin/coverage";
 import type { JobTypeId } from "@/types/vehicle";
 import { CinematicScene, PhotoScene } from "@/components/marketing/Cinematic";
 import {
   IconArrowRight,
-  IconBolt,
   IconBox,
   IconCar,
   IconClipboardCheck,
@@ -32,13 +31,11 @@ export const metadata: Metadata = {
 //
 //   hero          one headline, one paragraph, two CTAs, one preview card
 //   steps         vehicle -> job -> do it right
-//   value strip   three plain numbers
 //   guides        routine maintenance, as a quiet list of jobs
 //   close         one more way in
 //
 // The preview card is NOT a mockup: it is rendered from a real guide in
 // src/data, so every number on it is one the site publishes for that vehicle.
-// The stats are counted from the catalog at request time; none is hand-typed.
 //
 // Orange is spent on the primary CTA, the middle headline line, the step
 // numbers, the eyebrow and one highlighted job chip. Nothing else.
@@ -107,13 +104,6 @@ export default function MarketingHome() {
     { n: "1", icon: <IconCar className="h-7 w-7" />, title: "Your exact vehicle", body: "Year, make, model, engine." },
     { n: "2", icon: <IconWrench className="h-7 w-7" />, title: "Pick the job", body: "Maintenance, repair or upgrade." },
     { n: "3", icon: <IconClipboardCheck className="h-7 w-7" />, title: "Do it right", body: "Tools, parts, fluids, torque specs." },
-  ];
-
-  // Counted from the catalog, never typed in.
-  const stats = [
-    { icon: <IconCar className="h-8 w-8" />, value: String(listVehicles().length), label: "vehicles in the catalog" },
-    { icon: <IconClipboardCheck className="h-8 w-8" />, value: String(guides.length), label: "step-by-step guides" },
-    { icon: <IconBolt className="h-8 w-8" />, value: "No fluff", label: "just the right info" },
   ];
 
   return (
@@ -257,23 +247,6 @@ export default function MarketingHome() {
             </li>
           ))}
         </ol>
-      </section>
-
-      {/* ------------------------------------------------------ value strip */}
-      <section className="cg-metal-band border-b border-black/60" aria-label="Crankcase in numbers">
-        <ul className="mx-auto grid max-w-6xl grid-cols-3 divide-x divide-white/[0.08] px-2 sm:px-4">
-          {stats.map((s) => (
-            <li key={s.label} className="flex flex-col items-center justify-center gap-2 px-1 py-5 text-center sm:flex-row sm:gap-4 sm:px-6 sm:text-left">
-              <span className="text-orange-500" aria-hidden>
-                {s.icon}
-              </span>
-              <div>
-                <div className="text-xl font-bold leading-none text-slate-50 sm:text-2xl">{s.value}</div>
-                <div className="mt-1 text-xs text-slate-400 sm:text-sm">{s.label}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
       </section>
 
       {/* ------------------------------------------------------ popular guides:
