@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { JobTypeId, RepairGuide } from "@/types/vehicle";
 import { DifficultyBadge, TierBadge } from "@/components/tables";
-import { Chapter } from "@/components/app/Chapter";
+import Section from "@/components/app/Section";
 import { display } from "@/components/app/AppKit";
 
 /**
@@ -57,7 +57,7 @@ function GuideCard({
   return (
     <Link
       href={`/vehicles/${vehicleId}/repairs/${guide.id}`}
-      className="group flex h-full flex-col rounded-2xl border border-white/[0.09] bg-[#080d15]/70 p-5 shadow-[0_24px_48px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.05)] transition hover:-translate-y-0.5 hover:border-orange-500/60"
+      className="group flex h-full flex-col vh-panel rounded-2xl p-5 transition hover:-translate-y-0.5 hover:border-orange-500/60"
     >
       <h4
         className="text-[1.35rem] font-extrabold uppercase leading-[1.02] text-slate-50"
@@ -87,11 +87,18 @@ export default function GuideGroups({
 }) {
   if (guides.length === 0) {
     return (
-      <Chapter eyebrow="Do it yourself" title="Repair Guides">
+      <Section
+        id="guides"
+        vehicleId={vehicleId}
+        eyebrow="Do it yourself"
+        title="Repair Guides"
+        summary="No guides for this vehicle yet"
+        glow="none"
+      >
         <p className="text-sm text-slate-400">
           No repair guides for this vehicle yet.
         </p>
-      </Chapter>
+      </Section>
     );
   }
 
@@ -115,10 +122,13 @@ export default function GuideGroups({
   if (leftovers.length > 0) sections.push({ title: "Other", items: leftovers });
 
   return (
-    <Chapter
+    <Section
+      id="guides"
+      vehicleId={vehicleId}
       eyebrow="Do it yourself"
       title="Repair Guides"
-      lede={`${guides.length} ${guides.length === 1 ? "guide" : "guides"} for this vehicle`}
+      summary={`${guides.length} ${guides.length === 1 ? "guide" : "guides"} available`}
+      glow="right"
     >
       <div className="space-y-10">
         {sections.map((section) => (
@@ -141,6 +151,6 @@ export default function GuideGroups({
           </div>
         ))}
       </div>
-    </Chapter>
+    </Section>
   );
 }

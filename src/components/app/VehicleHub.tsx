@@ -37,10 +37,10 @@ function ActionTile({ tile }: { tile: HubTile }) {
   return (
     <Link
       href={tile.href}
-      className={`cg-glass group flex min-h-[9.5rem] flex-col gap-3 rounded-2xl p-5 transition-colors hover:border-white/30 ${FOCUS}`}
+      className={`vh-panel group relative flex min-h-[9.5rem] flex-col gap-3 overflow-hidden rounded-2xl p-5 transition hover:-translate-y-0.5 hover:border-white/25 ${FOCUS}`}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="text-slate-200">{TILE_ICON[tile.key]}</span>
+        <span className="text-orange-300/90 drop-shadow-[0_0_10px_rgba(251,146,60,0.35)]">{TILE_ICON[tile.key]}</span>
         {tile.gate === "free" ? <FreeChip /> : <KeysChip />}
       </div>
       <div className="text-3xl font-extrabold uppercase leading-none text-slate-50" style={display}>
@@ -106,7 +106,7 @@ export function HubSidePanels({
 
   return (
     <div className="flex flex-col gap-5">
-      <section className="cg-glass rounded-2xl p-5" aria-labelledby="hub-attention">
+      <section className="vh-panel rounded-2xl p-5" aria-labelledby="hub-attention">
         <h2 id="hub-attention" className="cg-section-title">
           What needs attention
         </h2>
@@ -134,13 +134,13 @@ export function HubSidePanels({
         )}
         <Link
           href={maintainHref}
-          className={`mt-3 flex w-full items-center justify-center rounded-lg border border-white/20 bg-slate-950/40 px-4 py-2.5 text-sm font-semibold text-slate-100 hover:border-white/50 hover:text-white ${FOCUS}`}
+          className={`mt-3 flex w-full items-center justify-center rounded-lg border border-white/20 bg-black/30 px-4 py-2.5 text-sm font-semibold text-slate-100 hover:border-white/50 hover:text-white ${FOCUS}`}
         >
           See full schedule
         </Link>
       </section>
 
-      <section className="cg-glass rounded-2xl p-5" aria-labelledby="hub-recent">
+      <section className="vh-panel rounded-2xl p-5" aria-labelledby="hub-recent">
         <h2 id="hub-recent" className="cg-section-title">
           Recent work
         </h2>
@@ -180,7 +180,7 @@ export function HubSidePanels({
 export function HubTiles({ tiles }: { tiles: HubTile[] }) {
   return (
     <section aria-labelledby="hub-today">
-      <h2 id="hub-today" className="cg-section-title !text-3xl sm:!text-4xl">
+      <h2 id="hub-today" className="cg-section-title !text-[2.4rem] sm:!text-[3.1rem]">
         What are we doing today?
       </h2>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">

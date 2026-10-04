@@ -1,4 +1,7 @@
-import { Chapter } from "@/components/app/Chapter";
+import Section from "@/components/app/Section";
+import StickyVehicleBar from "@/components/app/StickyVehicleBar";
+import ManufacturerService from "@/components/ManufacturerService";
+import { buildNextServiceData } from "@/lib/nextService";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -67,9 +70,20 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
     { key: "info", title: "Vehicle info", body: "Specs, fluids and capacities.", href: "#info", gate: "free" },
   ];
 
+  const label = `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? ` ${vehicle.trim}` : ""}`;
+  const schedule = getServiceSchedule(vehicle);
+  const specRows = vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs;
+  const JUMPS = [
+    { href: "#info", label: "Specs" },
+    { href: "#fluids", label: "Fluids" },
+    { href: "#maintenance", label: "Service" },
+    { href: "#guides", label: "Guides" },
+    { href: "#history", label: "History" },
+  ];
+
   return (
-    <>
-      <section className="relative isolate overflow-hidden border-b border-white/[0.06] lg:min-h-[20rem]">
+    <div className="vh-page overflow-x-clip">
+      <section className="relative isolate overflow-hidden lg:min-h-[20rem]">
         <VehicleBackdrop vehicleId={vehicle.id} />
         <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
       {/* Records the view for admin analytics. Renders nothing. */}
@@ -110,63 +124,95 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
       </div>
 
         </div>
+        {/* seam: the photo header melts into the warm-black page */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#0b0908]" />
       </section>
 
-    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+      <StickyVehicleBar vehicleId={vehicle.id} label={label} />
+
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-5 sm:pb-14">
+      <nav aria-label="Jump to section" className="-mx-4 mb-7 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
+        {JUMPS.map((j) => (
+          <a
+            key={j.href}
+            href={j.href}
+            className={`inline-flex min-h-9 shrink-0 items-center rounded-full border border-white/12 bg-black/35 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-slate-300 backdrop-blur hover:border-white/35 hover:text-white ${FOCUS}`}
+          >
+            {j.label}
+          </a>
+        ))}
+      </nav>
+
       <div className="grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
         <HubTiles tiles={tiles} />
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <HubSidePanels vehicleId={vehicle.id} items={items} maintainHref="#maintenance" historyHref="#history" />
         </div>
         <div className="lg:col-start-1 lg:row-start-2">
-          <KeysPanel vehicleName={`${vehicle.model}`} />
+          <KeysPanel vehicleName={`${vehicle.model}`} backdrop={<VehicleBackdrop vehicleId={vehicle.id} />} />
         </div>
       </div>
 
-      <div id="info" className="scroll-mt-24">
-        <Chapter
-          eyebrow="The numbers"
-          title="Vehicle Specs"
-          chip={<FreeChip />}
-          lede={<DataDisclaimer compact />}
-        >
-          <SpecTable specs={vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs} />
-        </Chapter>
-      </div>
+      <Section
+        id="info"
+        vehicleId={vehicle.id}
+        eyebrow="The numbers"
+        title="Vehicle Specs"
+        summary={`${specRows.length} specs available`}
+        defaultOpen
+        glow="left"
+        chip={<FreeChip />}
+      >
+        <div className="grid gap-x-12 gap-y-6 lg:grid-cols-[17rem_minmax(0,1fr)]">
+          <div className="lg:pt-1">
+            <DataDisclaimer compact />
+          </div>
+          <SpecTable specs={specRows} />
+        </div>
+      </Section>
 
-      <Chapter eyebrow="Before you pour" title="Fluid Capacities" chip={<FreeChip />}>
+      <Section
+        id="fluids"
+        vehicleId={vehicle.id}
+        eyebrow="Before you pour"
+        title="Fluid Capacities"
+        summary={`${vehicle.fluids.length} ${vehicle.fluids.length === 1 ? "capacity" : "capacities"}`}
+        glow="right"
+        chip={<FreeChip />}
+      >
         <FluidTable fluids={vehicle.fluids} />
-      </Chapter>
+      </Section>
 
-      <div id="maintenance" className="scroll-mt-24">
-        <ServiceSchedule vehicle={vehicle} guides={repairGuides} />
+      <div id="maintenance" className="scroll-mt-32">
+        {schedule ? (
+          <ManufacturerService
+            vehicleId={vehicle.id}
+            data={buildNextServiceData(schedule)}
+            sourceLabel={schedule.sourceLabel}
+            fullSchedule={<ServiceSchedule vehicle={vehicle} guides={repairGuides} />}
+          />
+        ) : null}
 
         {/* Reminders run on this vehicle's factory intervals wherever we hold
             its schedule -- otherwise the panel would contradict the Factory
-            Service Schedule directly above it. */}
+            Service Schedule. */}
         <MaintenanceReminders
           vehicleId={vehicle.id}
           items={items}
-          hasFactorySchedule={getServiceSchedule(vehicle) !== null}
+          hasFactorySchedule={schedule !== null}
         />
       </div>
 
-      <div id="guides" className="scroll-mt-24">
-        <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
-      </div>
+      <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
 
-      <div id="history" className="scroll-mt-24">
-        <ServiceHistory
-          vehicleId={vehicle.id}
-          vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-          guideTitles={repairGuides.map((g) => g.title)}
-        />
-      </div>
+      <ServiceHistory
+        vehicleId={vehicle.id}
+        vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+        guideTitles={repairGuides.map((g) => g.title)}
+      />
 
-      {/* Fluid capacities and specs live on this page -- same reason the
-          guides carry one. */}
       <FeedbackWidget vehicleId={vehicle.id} />
     </div>
-    </>
+    </div>
   );
 }

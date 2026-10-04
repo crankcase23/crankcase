@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useServiceHistory } from "@/lib/serviceHistory";
 import { TierBadge } from "@/components/tables";
-import { Chapter, PANEL } from "@/components/app/Chapter";
+import Section from "@/components/app/Section";
+import { PANEL } from "@/components/app/Chapter";
 import { IconPrinter } from "@/components/app/AppIcons";
 
 const GENERIC_JOBS = [
@@ -32,7 +33,9 @@ export default function ServiceHistory({
 }) {
   const { entries, addEntry, deleteEntry } = useServiceHistory(vehicleId);
 
-  const jobOptions = [...guideTitles, ...GENERIC_JOBS];
+  // De-duplicated: a guide called "Tire Rotation" and the generic "Tire Rotation"
+  // are one job, one chip, one React key.
+  const jobOptions = [...new Set([...guideTitles, ...GENERIC_JOBS])];
 
   const [date, setDate] = useState("");
   const [mileage, setMileage] = useState("");
@@ -40,6 +43,8 @@ export default function ServiceHistory({
   const [customChecked, setCustomChecked] = useState(false);
   const [customTitle, setCustomTitle] = useState("");
   const [notes, setNotes] = useState("");
+  // Phones: the form stays tucked behind one obvious button. md+ shows it open.
+  const [formOpen, setFormOpen] = useState(false);
 
   function toggleJob(option: string) {
     setSelectedJobs((prev) =>
@@ -66,6 +71,7 @@ export default function ServiceHistory({
     setCustomChecked(false);
     setCustomTitle("");
     setNotes("");
+    setFormOpen(false);
   }
 
   function handleDelete(id: string) {
@@ -73,15 +79,22 @@ export default function ServiceHistory({
   }
 
   const guideOpts = guideTitles;
-  const otherOpts = GENERIC_JOBS.filter((j) => !guideTitles.includes(j));
+  const otherOpts = jobOptions.filter((j) => !guideTitles.includes(j));
 
   return (
-    <Chapter
+    <Section
+      id="history"
+      vehicleId={vehicleId}
       eyebrow="Your record"
       title="Service History"
+      summary={entries.length === 0 ? "No records yet" : `${entries.length} ${entries.length === 1 ? "record" : "records"}`}
       chip={<TierBadge tier="premium" />}
-      lede="Log what you've done, in your own words and miles. It saves to your account and follows you across devices. Keys checkout isn't open yet, so nothing here is locked."
+      glow="left"
     >
+      <p className="mb-5 max-w-2xl text-[0.95rem] leading-relaxed text-slate-400">
+        Log what you&apos;ve done, in your own words and miles. It saves to your account and follows you across devices.
+        Keys checkout isn&apos;t open yet, so nothing here is locked.
+      </p>
       {entries.length === 0 ? (
         <p className={`${PANEL} mb-6 px-5 py-6 text-sm text-slate-400`}>
           No service logged yet — add the first entry below.
@@ -110,7 +123,20 @@ export default function ServiceHistory({
         </ul>
       )}
 
-      <form onSubmit={handleAdd} className={`${PANEL} grid gap-5 p-5 sm:grid-cols-2 sm:p-6`}>
+      <button
+        type="button"
+        aria-expanded={formOpen}
+        aria-controls="sh-form"
+        onClick={() => setFormOpen((v) => !v)}
+        className="h-12 w-full rounded-lg bg-orange-500 px-6 text-base font-semibold text-slate-950 hover:bg-orange-400 md:hidden"
+      >
+        {formOpen ? "Close" : "Log a job"}
+      </button>
+      <form
+        id="sh-form"
+        onSubmit={handleAdd}
+        className={`${PANEL} mt-4 gap-5 p-5 sm:grid-cols-2 sm:p-6 md:mt-0 ${formOpen ? "grid" : "hidden md:grid"}`}
+      >
         <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-400 sm:col-span-2">
           Log a job
         </h3>
@@ -228,6 +254,6 @@ export default function ServiceHistory({
         </div>
       </form>
       <p className="mt-3 text-xs text-slate-500">Logging for: {vehicleLabel}</p>
-    </Chapter>
+    </Section>
   );
 }

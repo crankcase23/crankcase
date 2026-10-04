@@ -35,13 +35,15 @@ test.describe("garage — add your own vehicle", () => {
     await expect(page.getByRole("heading", { name: "Maintenance Reminders" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Service History" })).toBeVisible();
 
-    // Log an entry using only the generic job checklist (no guide titles for a custom vehicle).
+    // Service History is a collapsed chapter by default; open it, then log an entry
+    // using only the generic job chips (no guide titles for a custom vehicle).
+    await page.getByRole("button", { name: /Service History/ }).click();
     await page.fill("#sh-date", "2026-01-15");
     await page.fill("#sh-mileage", "42000");
     await page.getByText("Tire Rotation", { exact: true }).click();
     await page.getByRole("button", { name: "Add entry" }).click();
 
-    const row = page.getByRole("row").filter({ hasText: "42,000 mi" });
+    const row = page.getByRole("listitem").filter({ hasText: "42,000 mi" });
     await expect(row).toBeVisible();
     await expect(row.getByText("Tire Rotation")).toBeVisible();
   });

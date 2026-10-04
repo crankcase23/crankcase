@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useServiceHistory } from "@/lib/serviceHistory";
 import { useOdometer } from "@/lib/odometer";
-import { Chapter, PANEL } from "@/components/app/Chapter";
+import Section from "@/components/app/Section";
+import { PANEL } from "@/components/app/Chapter";
 import {
   computeReminders,
   type MaintenanceItem,
@@ -89,14 +90,28 @@ export default function MaintenanceReminders({
   }
 
   return (
-    <Chapter
+    <Section
+      id="reminders"
+      vehicleId={vehicleId}
       eyebrow="Keep ahead of it"
       title="Maintenance Reminders"
-      lede={
-        hasFactorySchedule ? (
+      summary={
+        entries.length === 0
+          ? "Log a service to start tracking"
+          : attention.length === 0
+            ? "Nothing due right now"
+            : `${attention.length} ${attention.length === 1 ? "item needs" : "items need"} attention`
+      }
+      attention={attention.length > 0}
+      defaultOpen
+      glow="left"
+      opensOn={["odo", "maintenance"]}
+    >
+      <p className="mb-5 max-w-2xl text-[0.95rem] leading-relaxed text-slate-400">
+        {hasFactorySchedule ? (
           <>
             Tracked against your logged Service History. Where the Factory Service
-            Schedule above publishes an interval, these use the manufacturer&apos;s own
+            Schedule publishes an interval, these use the manufacturer&apos;s own
             figure; the rest are rule-of-thumb.
           </>
         ) : (
@@ -104,9 +119,8 @@ export default function MaintenanceReminders({
             Rule-of-thumb intervals based on your logged Service History — not a
             substitute for your owner&apos;s manual&apos;s actual schedule.
           </>
-        )
-      }
-    >
+        )}
+      </p>
       <form
         onSubmit={handleOdoSubmit}
         className={`${PANEL} p-4 sm:p-5`}
@@ -173,6 +187,6 @@ export default function MaintenanceReminders({
           {showAll ? "Show only what needs attention" : `Show all ${results.length} tracked intervals`}
         </button>
       )}
-    </Chapter>
+    </Section>
   );
 }
