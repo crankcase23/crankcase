@@ -11,7 +11,7 @@ import DataDisclaimer from "@/components/DataDisclaimer";
 import { FluidTable } from "@/components/tables";
 import { FluidCapacity } from "@/types/vehicle";
 import { BTN_SECONDARY, FOCUS, Eyebrow, Stamp, display } from "@/components/app/AppKit";
-import { CinematicScene } from "@/components/marketing/Cinematic";
+import { WorkshopScene } from "@/components/marketing/Cinematic";
 import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
 import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
 import { IconChevronLeft } from "@/components/app/AppIcons";
@@ -107,7 +107,7 @@ export default function CustomVehiclePage() {
   return (
     <>
       <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
-        <CinematicScene variant="band" />
+        <WorkshopScene />
         <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
       {/* Custom vehicles are exactly the ones in the admin demand
           backlog, so their views are the most useful signal we have

@@ -5,9 +5,9 @@ import { mutate as globalMutate } from "swr";
 import { findVehicle } from "@/lib/data";
 import { useGarage } from "@/lib/garage";
 import GarageVehicleCard from "@/components/app/GarageVehicleCard";
-import { AppPageHeader, ArrowLink, BTN_PRIMARY, BTN_SECONDARY, Eyebrow, FOCUS, Stamp, display } from "@/components/app/AppKit";
-import { CinematicScene } from "@/components/marketing/Cinematic";
-import { IconArrowRight, IconCar, VehicleLinework } from "@/components/marketing/HomeVisuals";
+import { BTN_PRIMARY, BTN_SECONDARY, Eyebrow, FOCUS, display } from "@/components/app/AppKit";
+import { PhotoScene } from "@/components/marketing/Cinematic";
+import { IconArrowRight, IconCar } from "@/components/marketing/HomeVisuals";
 
 // My Garage -- the signed-in home. Same product behavior as before (list the
 // user's vehicles, add, remove, fall through to the VIN lookup); the
@@ -28,18 +28,26 @@ function PlusIcon({ className }: { className?: string }) {
 
 function SkeletonCard() {
   return (
-    <div className="cg-panel overflow-hidden rounded-2xl" aria-hidden>
-      <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/50 px-5 py-3">
-        <div className="h-9 w-9 rounded-md bg-slate-800/80 motion-safe:animate-pulse" />
-        <div className="h-6 w-24 rounded-full bg-slate-800/80 motion-safe:animate-pulse" />
-      </div>
+    <div className="overflow-hidden rounded-2xl border border-white/[0.1] bg-[#080d15]/80" aria-hidden>
+      <div className="h-48 bg-white/[0.04] motion-safe:animate-pulse" />
       <div className="space-y-3 px-5 py-5">
-        <div className="h-3 w-24 rounded bg-slate-800/80 motion-safe:animate-pulse" />
-        <div className="h-8 w-3/4 rounded bg-slate-800/80 motion-safe:animate-pulse" />
-        <div className="h-3 w-1/2 rounded bg-slate-800/80 motion-safe:animate-pulse" />
-        <div className="cg-well h-12 rounded-lg" />
+        <div className="h-3 w-12 rounded bg-white/[0.06]" />
+        <div className="h-8 w-3/4 rounded bg-white/[0.06]" />
+        <div className="h-3 w-1/2 rounded bg-white/[0.06]" />
+        <div className="h-12 rounded-lg bg-white/[0.06]" />
       </div>
-      <div className="h-[49px] border-t border-slate-800" />
+    </div>
+  );
+}
+
+/** Dark workshop backdrop from the real hero photograph: the tool wall, no car. */
+function WorkshopBackdrop({ pos = "18% 28%", scale = "scale-[2.4]" }: { pos?: string; scale?: string }) {
+  return (
+    <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-[#06090f]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/home/hero-garage.jpg" alt="" className={`absolute inset-0 h-full w-full origin-top-left object-cover opacity-95 ${scale}`} style={{ objectPosition: pos }} loading="lazy" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#06090f]/90 via-[#06090f]/55 to-[#06090f]/15" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#06090f]/80 to-transparent" />
     </div>
   );
 }
@@ -52,26 +60,15 @@ export default function GarageClient() {
   return (
     <>
       <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
-        <CinematicScene variant="page" />
-        <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:pb-12 sm:pt-16">
-      <AppPageHeader
-        eyebrow="Your ride. Your garage. Your wrenches."
-        title="My Garage"
-        lede="Pick a vehicle to see its fluid capacities, specs, and step-by-step repair guides with tools and torque values."
-        actions={
-          <>
-            {!isLoading && !error && count > 0 ? (
-              <Stamp>
-                {count} {count === 1 ? "vehicle" : "vehicles"}
-              </Stamp>
-            ) : null}
-            <Link href="/garage/add" className={BTN_PRIMARY}>
-              <PlusIcon className="h-4 w-4" />
-              Add a vehicle
-            </Link>
-          </>
-        }
-      />
+        <PhotoScene src="/images/home/hero-garage.jpg" position="50% 40%" shift="12%" />
+        <div className="mx-auto max-w-6xl px-4 pb-12 pt-12 sm:pb-16 sm:pt-16">
+          <Eyebrow>Your ride. Your garage.</Eyebrow>
+          <h1 className="mt-3 text-6xl font-extrabold uppercase leading-[0.92] text-slate-50 sm:text-7xl" style={display}>
+            My <span className="text-orange-500">Garage</span>
+          </h1>
+          <p className="mt-4 max-w-md text-base text-slate-200 sm:text-lg">
+            All your vehicles in one place. Check specs, guides, service history, and keep track of what&apos;s next.
+          </p>
         </div>
       </section>
 
@@ -97,25 +94,21 @@ export default function GarageClient() {
             <SkeletonCard />
           </section>
         ) : count === 0 ? (
-          <section className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60">
-            <div className="cg-grid pointer-events-none absolute inset-0 -z-10 opacity-70 [mask-image:radial-gradient(ellipse_at_70%_100%,black,transparent_70%)]" aria-hidden />
-            <VehicleLinework
-              tonal
-              className="pointer-events-none absolute -bottom-6 -right-10 -z-10 w-[34rem] max-w-none text-slate-300 opacity-[0.18] sm:right-0 sm:opacity-[0.28]"
-            />
-            <div className="px-6 py-12 sm:px-10 sm:py-16">
+          <section className="relative isolate overflow-hidden rounded-2xl border border-white/10">
+            <WorkshopBackdrop />
+            <div className="px-6 py-14 sm:px-10 sm:py-20">
               <Eyebrow>No vehicles yet</Eyebrow>
               <h2 className="mt-3 max-w-md text-4xl font-extrabold uppercase leading-[0.95] text-slate-50 sm:text-5xl" style={display}>
                 Your garage is empty
               </h2>
-              <p className="mt-4 max-w-md text-slate-300">
+              <p className="mt-4 max-w-md text-slate-200">
                 Add a vehicle to start seeing its specs, fluid capacities, and repair guides — or to just track service
                 history.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Link href="/garage/add" className={BTN_PRIMARY}>
                   <IconCar className="h-5 w-5" />
-                  + Add your first vehicle
+                  Add your first vehicle
                   <IconArrowRight className="h-4 w-4" />
                 </Link>
                 <Link href="/decode" className={BTN_SECONDARY}>
@@ -137,33 +130,45 @@ export default function GarageClient() {
 
             <Link
               href="/garage/add"
-              className={`group flex min-h-[18rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/20 bg-slate-950/40 p-6 text-center transition-colors hover:border-white/40 hover:bg-slate-950/70 ${FOCUS}`}
+              className={`group relative isolate flex min-h-[22rem] flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-white/[0.12] p-6 text-center transition-colors hover:border-white/30 ${FOCUS}`}
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-200 group-hover:border-slate-400">
-                <PlusIcon className="h-6 w-6" />
+              <WorkshopBackdrop pos="30% 30%" />
+              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-orange-500/70 bg-black/30 text-orange-400">
+                <PlusIcon className="h-7 w-7" />
               </span>
-              <span className="text-2xl font-extrabold uppercase text-slate-50" style={display}>
+              <span className="text-3xl font-extrabold text-slate-50" style={display}>
                 Add a vehicle
               </span>
-              <span className="max-w-[16rem] text-sm text-slate-400">
-                Enter a VIN or pick year, make and model. Your garage is free and unlimited.
+              <span className="max-w-[16rem] text-sm text-slate-200">
+                Enter a VIN or select manually to add a new vehicle to your garage.
+              </span>
+              <span className="mt-1 rounded-lg border border-white/25 bg-black/30 px-5 py-2 text-sm font-semibold text-slate-50 group-hover:border-white/50">
+                Add a vehicle <span aria-hidden>&rarr;</span>
               </span>
             </Link>
+
+            <section className="relative isolate flex min-h-[22rem] flex-col justify-center overflow-hidden rounded-2xl border border-white/[0.12] p-7 sm:col-span-2 sm:p-9">
+              <WorkshopBackdrop pos="55% 38%" scale="scale-[2]" />
+              <h2 className="text-2xl font-extrabold text-slate-50" style={display}>
+                Don&apos;t see your vehicle?
+              </h2>
+              <p className="mt-3 max-w-md text-slate-200">
+                We&apos;re constantly adding vehicles and guides. Add yours now so it&apos;s already in your garage as
+                coverage expands.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/garage/add" className={BTN_PRIMARY}>
+                  Add a vehicle <span aria-hidden>&rarr;</span>
+                </Link>
+                <Link href="/decode" className={BTN_SECONDARY}>
+                  Try the VIN lookup <span aria-hidden>&rarr;</span>
+                </Link>
+              </div>
+            </section>
           </section>
         )}
       </div>
 
-      <section className="mt-10 border-t border-white/[0.07] pt-6">
-        <h2 className="text-base font-semibold text-slate-200">Don&apos;t see your vehicle?</h2>
-        <p className="mt-1 max-w-3xl text-sm text-slate-400">
-          This is an early build — full guides only exist for a handful of vehicles so far. You can still add any
-          vehicle to log its service history, and decode a VIN for basic year/make/model info.
-        </p>
-        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-          <ArrowLink href="/garage/add">Add a vehicle</ArrowLink>
-          <ArrowLink href="/decode">Try the VIN lookup</ArrowLink>
-        </div>
-      </section>
     </div>
     </>
   );

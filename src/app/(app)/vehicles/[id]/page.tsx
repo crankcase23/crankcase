@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
 import { SpecTable, FluidTable } from "@/components/tables";
-import { CinematicScene } from "@/components/marketing/Cinematic";
+import VehicleBackdrop from "@/components/app/VehicleBackdrop";
 import { Stamp, display, FOCUS } from "@/components/app/AppKit";
 import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
 import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
@@ -68,8 +68,8 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
-        <CinematicScene variant="band" />
+      <section className="relative isolate overflow-hidden border-b border-white/[0.06] lg:min-h-[20rem]">
+        <VehicleBackdrop vehicleId={vehicle.id} />
         <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
       {/* Records the view for admin analytics. Renders nothing. */}
       <ViewTracker type="vehicle.viewed" objectId={vehicle.id} objectType="vehicle" />

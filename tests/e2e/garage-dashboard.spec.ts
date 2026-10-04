@@ -12,7 +12,7 @@ test.describe("My Garage dashboard", () => {
     await page.goto("/garage");
     await expect(page.getByRole("heading", { name: "My Garage" })).toBeVisible();
     await expect(page.getByText("Your garage is empty")).toBeVisible();
-    await expect(page.getByRole("link", { name: "+ Add your first vehicle" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Add your first vehicle/ })).toBeVisible();
 
     const add = await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2018-honda-civic-1.5t" } });
     expect(add.ok()).toBeTruthy();
@@ -21,18 +21,21 @@ test.describe("My Garage dashboard", () => {
 
     await page.goto("/garage");
     await expect(page.getByText("Your garage is empty")).toHaveCount(0);
-    await expect(page.getByText("2 vehicles")).toBeVisible();
     await expect(page.getByText("48,800 mi")).toBeVisible();
-    await expect(page.getByText("Specs ready")).toBeVisible();
-    await expect(page.getByText("No curated specs yet")).toBeVisible();
-    await expect(page.getByText(/Specs, fluids and \d+ guides? ready/)).toBeVisible();
+    // Owner-facing status, not developer language.
+    await expect(page.getByText("Guides available")).toBeVisible();
+    await expect(page.getByText("Added to your garage")).toBeVisible();
+    await expect(page.getByText("Specs & guides coming soon")).toBeVisible();
+    await expect(page.getByText(/NO GUIDE DATA|ADDED, NO/i)).toHaveCount(0);
 
-    // The whole card is reachable through one link, and the Add card is the last tile.
+    // The whole card is reachable through one link; the Add tile and the
+    // "Don't see your vehicle?" panel close the grid.
     await page.getByRole("link", { name: /Open vehicle/ }).click();
     await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
     await page.goto("/garage");
     const tiles = page.getByRole("region", { name: "Your vehicles" }).locator("> *");
-    await expect(tiles.last()).toContainText("Add a vehicle");
+    await expect(tiles.last()).toContainText("Don't see your vehicle?");
+    await expect(tiles.nth(-2)).toContainText("Add a vehicle");
 
     await page.getByRole("button", { name: /Remove 2018 Honda Civic from garage/ }).click();
     await expect(page.getByText("Civic")).toHaveCount(0);
@@ -42,7 +45,7 @@ test.describe("My Garage dashboard", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2018-honda-civic-1.5t" } });
     await page.goto("/garage");
-    await expect(page.getByText("Specs ready")).toBeVisible();
+    await expect(page.getByText("Guides available")).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(0);
   });
