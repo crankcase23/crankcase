@@ -101,3 +101,44 @@ export function VehiclePlate({ className = "h-32", children }: { className?: str
     </div>
   );
 }
+
+/**
+ * Photographic scene: a full-bleed photograph under layered grading. The photo
+ * does the work; the overlays only (1) keep the left third dark enough for the
+ * headline, (2) pull the bottom into the next band, and (3) add warm light
+ * leaks and a vignette so the picture sits IN the page instead of on it.
+ */
+export function PhotoScene({
+  src,
+  position = "70% 50%",
+  copySide = "left",
+  className = "",
+}: {
+  src: string;
+  position?: string;
+  copySide?: "left" | "none";
+  className?: string;
+}) {
+  return (
+    <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#05080e] ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ objectPosition: position }}
+        fetchPriority="high"
+      />
+      {/* grade: deepen the blacks, keep the amber */}
+      <div className="absolute inset-0 bg-[#05080e]/25 mix-blend-multiply" />
+      {/* warm light leaks, screened over the photo */}
+      <div className="absolute -right-24 -top-24 h-[34rem] w-[44rem] bg-[radial-gradient(closest-side,rgba(251,146,60,0.28),transparent)] mix-blend-screen" />
+      <div className="absolute -bottom-32 right-[10%] h-[24rem] w-[52rem] bg-[radial-gradient(closest-side,rgba(251,146,60,0.22),transparent)] mix-blend-screen" />
+      {copySide === "left" && (
+        <div className="absolute inset-0 bg-gradient-to-r from-[#05080e] via-[#05080e]/80 via-[38%] to-transparent to-[78%] max-lg:from-[#05080e]/85 max-lg:via-[#05080e]/55 max-lg:to-[#05080e]/20" />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#05080e] via-transparent via-[35%] to-[#05080e]/55" />
+      <div className="absolute inset-0 [background:radial-gradient(130%_110%_at_60%_45%,transparent_52%,rgba(2,4,8,0.75)_100%)]" />
+    </div>
+  );
+}

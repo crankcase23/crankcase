@@ -125,3 +125,15 @@ body {
     0 30px 60px -30px rgba(0, 0, 0, 0.95);
 }
 }
+
+/* Dark brushed-metal band for the steps and value strip: a faint top light
+   line, a lit-from-above gradient, a hard black bottom seam. */
+@layer components {
+.cg-metal-band {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 38%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 4px),
+    #0a0f18;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+}

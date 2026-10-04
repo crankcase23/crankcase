@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import { allRepairs, findRepair, findVehicle, listVehicles } from "@/lib/data";
 import { JOB_LABELS } from "@/lib/admin/coverage";
 import type { JobTypeId } from "@/types/vehicle";
-import { CinematicScene } from "@/components/marketing/Cinematic";
+import { CinematicScene, PhotoScene } from "@/components/marketing/Cinematic";
 import {
   IconArrowRight,
   IconBolt,
@@ -16,7 +18,6 @@ import {
   IconPlay,
   IconSteps,
   IconWrench,
-  VehicleLinework,
 } from "@/components/marketing/HomeVisuals";
 
 export const metadata: Metadata = {
@@ -47,9 +48,14 @@ export const metadata: Metadata = {
 // instead; a photo can replace it without touching this file.
 // ---------------------------------------------------------------------------
 
-// The guide the hero previews. The Jeep is the original demo vehicle and its
+// The guide the hero previews. The 2021 Accord is the everyday-car demo and its
 // free oil-change guide carries real, sourced figures.
-const PREVIEW_GUIDE_ID = "jeep-grand-cherokee-oil-change";
+const PREVIEW_GUIDE_ID = "honda-accord-oil-change";
+
+// The three photographs live in public/images/home/ (hero-garage.jpg,
+// card-vehicle.jpg, guides-oil.jpg). Until a photo is there, its slot falls back
+// to the lit-room scene (no drawn vehicle) instead of showing a broken image.
+const hasPhoto = (name: string) => existsSync(path.join(process.cwd(), "public", "images", "home", name));
 
 const display = { fontFamily: "var(--font-display)" } as const;
 
@@ -112,55 +118,63 @@ export default function MarketingHome() {
 
   return (
     <>
-      {/* ------------------------------------------------------------ hero */}
+      {/* ------------------------------------------------------------ hero:
+          the photograph carries the brand; the type sits on it */}
       <section className="relative isolate overflow-hidden">
-        <CinematicScene />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-12 sm:pt-16 lg:min-h-[35rem] lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12 lg:pb-20 lg:pt-14">
-          <div>
+        {hasPhoto("hero-garage.jpg") ? (
+          <PhotoScene src="/images/home/hero-garage.jpg" position="72% 45%" />
+        ) : (
+          <CinematicScene variant="page" />
+        )}
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-12 pt-14 sm:pt-20 lg:min-h-[41rem] lg:grid-cols-[minmax(0,1fr)_21.5rem] lg:gap-10 lg:pb-16 lg:pt-12">
+          <div className="max-lg:pt-4">
             <Eyebrow>Your ride. Your garage.</Eyebrow>
             <h1
-              className="mt-4 text-[3.35rem] font-extrabold uppercase leading-[0.9] tracking-tight text-slate-50 sm:text-7xl lg:text-[5.25rem]"
+              className="mt-4 text-[3.5rem] font-extrabold uppercase leading-[0.88] tracking-tight text-slate-50 [text-shadow:0_4px_30px_rgba(0,0,0,0.6)] sm:text-[5rem] lg:text-[6rem]"
               style={display}
             >
               Fix your own car.
               <span className="block text-orange-500">Right numbers.</span>
               <span className="block">Right order.</span>
             </h1>
-            <p className="mt-6 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
+            <p className="mt-6 max-w-md text-base leading-relaxed text-slate-100 [text-shadow:0_2px_16px_rgba(0,0,0,0.8)] sm:text-lg">
               Tell Crankcase your year, make, model and engine. Get the exact tools, parts, fluids and
               torque specs for that job — in the right order.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/signup" className={`${BTN_PRIMARY} inline-flex items-center justify-center gap-3 text-base`}>
+              <Link href="/signup" className={`${BTN_PRIMARY} inline-flex items-center justify-center gap-3 text-[1.05rem]`}>
                 <IconCar className="h-5 w-5" />
                 Add your vehicle — free
                 <IconArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/how-it-works" className={`${BTN_SECONDARY} inline-flex items-center justify-center gap-3 text-base`}>
+              <Link href="/how-it-works" className={`${BTN_SECONDARY} inline-flex items-center justify-center gap-3 text-[1.05rem]`}>
                 <IconPlay className="h-5 w-5 text-orange-400" />
                 See how it works
               </Link>
             </div>
-            <p className="mt-4 text-sm text-slate-400">
+            <p className="mt-4 text-sm text-slate-300 [text-shadow:0_2px_12px_rgba(0,0,0,0.9)]">
               Specs and fluid capacities are always free.{" "}
-              <Link href="/login" className={`text-slate-200 underline-offset-4 hover:text-white hover:underline ${FOCUS}`}>
+              <Link href="/login" className={`text-slate-100 underline-offset-4 hover:text-white hover:underline ${FOCUS}`}>
                 Already have a garage? Log in.
               </Link>
             </p>
           </div>
 
-          {/* the one product card, rendered from the real guide */}
+          {/* the one product card: a real guide, a real vehicle photo */}
           {guide && vehicle && (
             <aside
               aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-              className="relative w-full max-w-sm justify-self-start lg:justify-self-end"
+              className="relative w-full max-w-sm justify-self-start lg:mt-24 lg:justify-self-end"
             >
-              <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.95)] backdrop-blur-md">
-                {/* the vehicle, lit: stands in for the photo in the mockup */}
-                <div className="relative h-36 overflow-hidden bg-[radial-gradient(90%_110%_at_60%_0%,#2a3445_0%,#111826_55%,#0a0f18_100%)]">
-                  <div className="absolute -right-6 top-0 h-px w-40 bg-orange-100/80 shadow-[0_0_18px_4px_rgba(253,186,116,0.4)]" />
-                  <VehicleLinework tonal className="absolute -bottom-3 left-1/2 w-[19rem] max-w-none -translate-x-1/2 text-slate-200 opacity-90" />
-                </div>
+              <div className="overflow-hidden rounded-2xl border border-white/15 bg-[#080d15]/70 shadow-[0_50px_90px_-30px_rgba(0,0,0,1),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60 backdrop-blur-xl">
+                {hasPhoto("card-vehicle.jpg") && (
+                  <div className="relative h-36 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/home/card-vehicle.jpg" alt="" className="h-full w-full object-cover" />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#080d15]/80 via-transparent to-transparent" />
+                    <div aria-hidden className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)]" />
+                  </div>
+                )}
                 <div className="flex items-start justify-between gap-3 px-5 pt-4">
                   <div>
                     <div className="text-lg font-semibold leading-tight text-slate-50">
@@ -178,7 +192,7 @@ export default function MarketingHome() {
                   ].map(([icon, k, v]) => (
                     <div key={String(k)}>
                       <dt className="flex items-center gap-1.5 text-xs text-slate-400">
-                        <span className="text-slate-300">{icon}</span>
+                        <span className="text-slate-200">{icon}</span>
                         {k}
                       </dt>
                       <dd className="mt-1 font-semibold text-slate-50">{v}</dd>
@@ -188,13 +202,13 @@ export default function MarketingHome() {
                 <dl className="mt-3 grid grid-cols-2 gap-x-3 border-t border-white/10 px-5 pb-5 pt-4 text-sm">
                   <div>
                     <dt className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <IconBox className="h-5 w-5 text-slate-300" /> Tools
+                      <IconBox className="h-5 w-5 text-slate-200" /> Tools
                     </dt>
                     <dd className="mt-1 font-semibold text-slate-50">{guide.tools.length}</dd>
                   </div>
                   <div>
                     <dt className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <IconHex className="h-5 w-5 text-slate-300" /> Torque specs
+                      <IconHex className="h-5 w-5 text-slate-200" /> Torque specs
                     </dt>
                     <dd className="mt-1 font-semibold text-slate-50">
                       {guide.torqueSpecs && guide.torqueSpecs.length > 0 ? "Yes" : "None"}
@@ -208,23 +222,23 @@ export default function MarketingHome() {
       </section>
 
       {/* ------------------------------------------------------ 3 steps */}
-      <section className="border-y border-white/[0.07] bg-[#070b12]">
+      <section className="cg-metal-band border-y border-black/60">
         <ol className="mx-auto grid max-w-6xl px-4 sm:grid-cols-3">
           {steps.map((s, i) => (
             <li
               key={s.n}
-              className="relative flex items-center gap-4 border-b border-white/[0.06] py-5 last:border-b-0 sm:border-b-0 sm:px-6 sm:first:pl-0 sm:last:pr-0"
+              className="relative flex items-center gap-4 border-b border-white/[0.06] py-4 last:border-b-0 sm:border-b-0 sm:px-6 sm:first:pl-0 sm:last:pr-0"
             >
               <StepNumber n={s.n} />
-              <span className="hidden shrink-0 text-slate-200 sm:block" aria-hidden>
+              <span className="hidden shrink-0 text-slate-50 sm:block" aria-hidden>
                 {s.icon}
               </span>
               <div className="min-w-0">
-                <div className="text-lg font-semibold leading-tight text-slate-50">{s.title}</div>
+                <div className="text-[1.1rem] font-semibold leading-tight text-slate-50">{s.title}</div>
                 <p className="mt-0.5 text-sm text-slate-400">{s.body}</p>
               </div>
               {i < steps.length - 1 && (
-                <span className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-slate-600 sm:block" aria-hidden>
+                <span className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-xl text-slate-500 sm:block" aria-hidden>
                   ›
                 </span>
               )}
@@ -234,11 +248,11 @@ export default function MarketingHome() {
       </section>
 
       {/* ------------------------------------------------------ value strip */}
-      <section className="border-b border-white/[0.07] bg-[#090e16]" aria-label="Crankcase in numbers">
-        <ul className="mx-auto grid max-w-6xl px-4 sm:grid-cols-3 sm:divide-x sm:divide-white/[0.07]">
+      <section className="cg-metal-band border-b border-black/60" aria-label="Crankcase in numbers">
+        <ul className="mx-auto grid max-w-6xl px-4 sm:grid-cols-3 sm:divide-x sm:divide-white/[0.08]">
           {stats.map((s) => (
-            <li key={s.label} className="flex items-center justify-center gap-4 py-6 sm:px-6">
-              <span className="text-slate-300" aria-hidden>
+            <li key={s.label} className="flex items-center justify-center gap-4 py-5 sm:px-6">
+              <span className="text-orange-500" aria-hidden>
                 {s.icon}
               </span>
               <div>
@@ -250,23 +264,24 @@ export default function MarketingHome() {
         </ul>
       </section>
 
-      {/* ------------------------------------------------------ popular guides */}
-      <section className="relative isolate overflow-hidden bg-[#05080e]">
-        <div aria-hidden className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(60%_90%_at_88%_70%,rgba(251,146,60,0.10)_0%,transparent_60%)]" />
-          <div className="absolute -bottom-24 right-[-6rem] h-72 w-[40rem] rounded-[100%] bg-orange-500/[0.07] blur-3xl" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#05080e] via-[#05080e]/80 to-transparent" />
-        </div>
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
+      {/* ------------------------------------------------------ popular guides:
+          photograph again, so the page stays in the garage */}
+      <section className="relative isolate overflow-hidden">
+        {hasPhoto("guides-oil.jpg") ? (
+          <PhotoScene src="/images/home/guides-oil.jpg" position="75% 60%" />
+        ) : (
+          <CinematicScene variant="page" />
+        )}
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-14 lg:py-24">
           <div>
-            <Eyebrow className="!text-slate-400 !tracking-[0.18em]">Popular guides</Eyebrow>
-            <h2 className="mt-3 text-4xl font-extrabold leading-[0.98] text-slate-50 sm:text-5xl" style={display}>
+            <Eyebrow className="!text-slate-300 !tracking-[0.18em]">Popular guides</Eyebrow>
+            <h2 className="mt-3 text-4xl font-extrabold leading-[0.98] text-slate-50 [text-shadow:0_4px_24px_rgba(0,0,0,0.7)] sm:text-5xl" style={display}>
               Routine maintenance, done properly.
             </h2>
-            <p className="mt-4 max-w-sm text-base text-slate-400">
+            <p className="mt-4 max-w-sm text-base text-slate-200 [text-shadow:0_2px_14px_rgba(0,0,0,0.9)]">
               Simple, step-by-step guides for the jobs that keep your vehicle running its best.
             </p>
-            <p className="mt-6 max-w-sm border-l-2 border-slate-700 pl-4 text-sm text-slate-500">
+            <p className="mt-6 max-w-sm border-l-2 border-white/20 pl-4 text-sm text-slate-300">
               Engine, transmission and other major repair work is not what this is for. For those, see a
               professional mechanic.
             </p>
@@ -275,8 +290,8 @@ export default function MarketingHome() {
             {jobs.map((id, i) => (
               <li
                 key={id}
-                className={`rounded-full border px-5 py-2.5 text-[0.95rem] text-slate-100 ${
-                  i === 0 ? "border-orange-500/70 bg-orange-500/10" : "border-white/15 bg-slate-950/60"
+                className={`rounded-full border px-5 py-2.5 text-[0.95rem] text-slate-50 backdrop-blur-md ${
+                  i === 0 ? "border-orange-500/80 bg-orange-500/15" : "border-white/20 bg-[#080d15]/60"
                 }`}
               >
                 {JOB_LABELS[id]}
