@@ -73,7 +73,7 @@ export default function ServiceHistory({
   return (
     <section className="mt-10">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-semibold text-slate-100">Service History</h2>
+        <h2 className="cg-section-title">Service History</h2>
         <TierBadge tier="premium" />
       </div>
 

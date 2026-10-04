@@ -10,6 +10,11 @@ import MaintenanceReminders from "@/components/MaintenanceReminders";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import { FluidTable } from "@/components/tables";
 import { FluidCapacity } from "@/types/vehicle";
+import { BTN_SECONDARY, FOCUS, Eyebrow, Stamp, display } from "@/components/app/AppKit";
+import { CinematicScene } from "@/components/marketing/Cinematic";
+import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
+import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
+import { IconChevronLeft } from "@/components/app/AppIcons";
 
 // Auto-populate: as soon as this page mounts, ask the server whether we
 // have real data for this exact make/model/year (curated catalog match,
@@ -67,106 +72,158 @@ export default function CustomVehiclePage() {
   if (isLoading) return null;
 
   if (!entry || entry.kind !== "custom" || !custom) {
-        return (
-                <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-                        <h1 className="text-xl font-bold text-slate-50">Vehicle not found</h1>
-                        <p className="mt-2 text-sm text-slate-400">
-                                  This vehicle isn&apos;t in your garage on this browser — it may have
-                                  been removed, or this link was opened somewhere else. Garage data
-                                  lives only in the browser that added it, for now.
-                        </p>
-                        <Link href="/garage" className="mt-4 inline-block text-sm font-medium text-orange-400 hover:text-orange-300">
-                                  &larr; Back to garage
-                        </Link>
-                </div>
-              );
-  }
-  
-    const label = [custom.year, custom.make, custom.model].filter(Boolean).join(" ") || "Your vehicle";
-  
-    async function handleRemove() {
-          await removeEntry(entry!.id);
-          router.push("/garage");
-    }
-  
     return (
-          <div className="mx-auto max-w-5xl px-4 py-10">
-                {/* Custom vehicles are exactly the ones in the admin demand
-                    backlog, so their views are the most useful signal we have
-                    about what to build next. Renders nothing. */}
-                <ViewTracker type="vehicle.viewed" objectId={entry!.id} objectType="garage_entry" />
-                <Link href="/garage" className="text-sm text-slate-400 hover:text-slate-200">
-                        &larr; Back to garage
-                </Link>
-          
-                <div className="mt-3 mb-6 flex flex-wrap items-start justify-between gap-4">
-                        <div>
-                                  <div className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-                                    {custom.year ?? "Year unknown"} {custom.make ?? ""}
-                                  </div>
-                                  <h1 className="text-3xl font-bold text-slate-50">
-                                    {custom.model ?? "Unnamed vehicle"}{" "}
-                                              <span className="text-slate-400 font-normal">{custom.trim}</span>
-                                  </h1>
-                          {(custom.engine || custom.vin) && (
-                        <p className="mt-1 text-slate-400">
-                          {[custom.engine, custom.vin && `VIN ${custom.vin}`].filter(Boolean).join(" · ")}
-                        </p>
-                                  )}
-                        </div>
-                        <button
-                                    type="button"
-                                    onClick={handleRemove}
-                                    className="shrink-0 rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-400 hover:border-rose-500/50 hover:text-rose-400"
-                                  >
-                                  Remove from garage
-                        </button>
-                </div>
-          
-            {lookup.status === "catalog" && (
-                    <div className="mb-8 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
-                              <span className="font-semibold">Good news — we have full curated data for this exact vehicle.</span>{" "}
-                              <Link href={`/vehicles/${lookup.vehicleId}`} className="font-medium underline hover:text-emerald-200">
-                                          View its specs, fluids, and guides
-                              </Link>
-                              .
-                    </div>
-                )}
-          
-            {lookup.status === "ok" && (
-                    <div className="mb-8 space-y-4">
-                              <DataDisclaimer compact />
-                              <div>
-                                          <h2 className="mb-2 text-lg font-semibold text-slate-100">Fluid Capacities</h2>
-                                          <FluidTable fluids={lookup.fluids} />
-                                          <p className="mt-2 text-xs text-slate-500">
-                                                        Sourced from Open Labor Project{lookup.confidence ? ` · confidence: ${lookup.confidence}` : ""}. Torque
-                                                        specs for this vehicle aren&apos;t available yet — check back as our data coverage grows.
-                                          </p>
-                              </div>
-                    </div>
-                )}
-          
-            {(lookup.status === "pending" ||
-                      lookup.status === "not_found" ||
-                      lookup.status === "unavailable" ||
-                      lookup.status === "error") && (
-                    <div className="mb-8 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-                              <span className="font-semibold">We&apos;re working on getting full data for this car.</span>{" "}
-                              We don&apos;t have specs, fluid capacities, or torque values pulled in for this one yet — go by your
-                              owner&apos;s manual or factory service manual for now. You can still log service history and get generic
-                              maintenance-interval reminders below.
-                    </div>
-                )}
-          
-                <MaintenanceReminders vehicleId={entry.id} />
-          
-                <ServiceHistory
-                          vehicleId={entry.id}
-                          vehicleLabel={label}
-                          guideTitles={[]}
-                          printHref={`/garage/custom/${entry.id}/service-history/print`}
-                        />
+      <div className="mx-auto max-w-2xl px-4 py-16">
+        <section className="cg-panel rounded-2xl p-8 text-center sm:p-10">
+          <Eyebrow>Not in this garage</Eyebrow>
+          <h1 className="mt-3 text-4xl font-extrabold uppercase leading-[0.95] text-slate-50" style={display}>
+            Vehicle not found
+          </h1>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-slate-400">
+            This vehicle isn&apos;t in your garage on this browser — it may have been removed, or this link was opened
+            somewhere else. Garage data lives only in the browser that added it, for now.
+          </p>
+          <Link href="/garage" className={`mt-6 ${BTN_SECONDARY}`}>
+            &larr; Back to garage
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
+  const label = [custom.year, custom.make, custom.model].filter(Boolean).join(" ") || "Your vehicle";
+
+  async function handleRemove() {
+    await removeEntry(entry!.id);
+    router.push("/garage");
+  }
+
+  const tiles: HubTile[] = [
+    { key: "maintain", title: "Maintain it", body: "Reminders based on what you've logged.", href: "#maintenance", gate: "keys" },
+    { key: "history", title: "Service history", body: "Your log of jobs, mileage and notes. User-recorded Crankcase Service History.", href: "#history", gate: "keys" },
+    { key: "info", title: "Vehicle info", body: "What we know about this vehicle so far.", href: "#info", gate: "free" },
+  ];
+
+  return (
+    <>
+      <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
+        <CinematicScene variant="band" />
+        <div className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:pb-16">
+      {/* Custom vehicles are exactly the ones in the admin demand
+          backlog, so their views are the most useful signal we have
+          about what to build next. Renders nothing. */}
+      <ViewTracker type="vehicle.viewed" objectId={entry.id} objectType="garage_entry" />
+
+      <Link href="/garage" className={`inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 ${FOCUS}`}>
+        <IconChevronLeft className="h-4 w-4" />
+        Back to garage
+      </Link>
+
+      <div className="mt-4 flex flex-col items-start gap-y-5">
+        <div className="min-w-0">
+          <Stamp className="text-orange-400">
+            {custom.year ?? "Year unknown"}
+            {custom.make ? ` · ${custom.make}` : ""}
+          </Stamp>
+          <h1 className="mt-2 text-5xl font-extrabold uppercase leading-[0.95] tracking-tight text-slate-50 sm:text-6xl" style={display}>
+            {custom.model ?? "Unnamed vehicle"}
+            {custom.trim ? <span className="text-slate-400"> {custom.trim}</span> : null}
+          </h1>
+          {(custom.engine || custom.vin) && (
+            <p className="mt-3 text-slate-300 [overflow-wrap:anywhere]">
+              {[custom.engine, custom.vin && `VIN ${custom.vin}`].filter(Boolean).join(" · ")}
+            </p>
+          )}
+          <div className="mt-2">
+            <OdometerLine vehicleId={entry.id} href="#odo" />
           </div>
-        );
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <FreeChip />
+          <button
+            type="button"
+            onClick={handleRemove}
+            className={`shrink-0 rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-400 hover:border-rose-500/50 hover:text-rose-400 ${FOCUS}`}
+          >
+            Remove from garage
+          </button>
+        </div>
+      </div>
+
+        </div>
+      </section>
+
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+      <div className="grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
+        <HubTiles tiles={tiles} />
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <HubSidePanels vehicleId={entry.id} maintainHref="#maintenance" historyHref="#history" />
+        </div>
+        <div className="lg:col-start-1 lg:row-start-2">
+          <KeysPanel vehicleName={custom.model ?? "vehicle"} />
+        </div>
+      </div>
+
+      <div id="info" className="mt-12 scroll-mt-24">
+        {lookup.status === "catalog" && (
+          <div className="cg-well rounded-xl border-l-2 border-l-emerald-500/70 px-4 py-3 text-sm text-emerald-300">
+            <span className="font-semibold">Good news — we have full curated data for this exact vehicle.</span>{" "}
+            <Link href={`/vehicles/${lookup.vehicleId}`} className="font-medium underline hover:text-emerald-200">
+              View its specs, fluids, and guides
+            </Link>
+            .
+          </div>
+        )}
+
+        {lookup.status === "ok" && (
+          <div className="space-y-4">
+            <DataDisclaimer compact />
+            <div>
+              <div className="mb-4 flex items-center gap-3">
+                <h2 className="cg-section-title">Fluid Capacities</h2>
+                <FreeChip />
+              </div>
+              <FluidTable fluids={lookup.fluids} />
+              <p className="mt-2 text-xs text-slate-500">
+                Sourced from Open Labor Project{lookup.confidence ? ` · confidence: ${lookup.confidence}` : ""}. Torque
+                specs for this vehicle aren&apos;t available yet — check back as our data coverage grows.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {lookup.status === "loading" && (
+          <div className="cg-well rounded-xl px-4 py-3 text-sm text-slate-400" aria-busy="true">
+            Checking what we have on this vehicle&hellip;
+          </div>
+        )}
+
+        {(lookup.status === "pending" ||
+          lookup.status === "not_found" ||
+          lookup.status === "unavailable" ||
+          lookup.status === "error") && (
+          <div className="cg-well rounded-xl border-l-2 border-l-amber-500/70 px-4 py-3 text-sm leading-relaxed text-slate-300">
+            <span className="font-semibold text-amber-300">We&apos;re working on getting full data for this car.</span>{" "}
+            We don&apos;t have specs, fluid capacities, or torque values pulled in for this one yet — go by your
+            owner&apos;s manual or factory service manual for now. You can still log service history and get generic
+            maintenance-interval reminders below.
+          </div>
+        )}
+      </div>
+
+      <div id="maintenance" className="scroll-mt-24">
+        <MaintenanceReminders vehicleId={entry.id} />
+      </div>
+
+      <div id="history" className="scroll-mt-24">
+        <ServiceHistory
+          vehicleId={entry.id}
+          vehicleLabel={label}
+          guideTitles={[]}
+          printHref={`/garage/custom/${entry.id}/service-history/print`}
+        />
+      </div>
+    </div>
+    </>
+  );
 }

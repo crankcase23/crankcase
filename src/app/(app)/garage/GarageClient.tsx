@@ -1,142 +1,170 @@
 "use client";
 
 import Link from "next/link";
+import { mutate as globalMutate } from "swr";
 import { findVehicle } from "@/lib/data";
 import { useGarage } from "@/lib/garage";
-import VehicleCard from "@/components/VehicleCard";
+import GarageVehicleCard from "@/components/app/GarageVehicleCard";
+import { AppPageHeader, ArrowLink, BTN_PRIMARY, BTN_SECONDARY, Eyebrow, FOCUS, Stamp, display } from "@/components/app/AppKit";
+import { CinematicScene } from "@/components/marketing/Cinematic";
+import { IconArrowRight, IconCar, VehicleLinework } from "@/components/marketing/HomeVisuals";
 
-export default function GaragePage() {
-  const { entries, removeEntry } = useGarage();
+// My Garage -- the signed-in home. Same product behavior as before (list the
+// user's vehicles, add, remove, fall through to the VIN lookup); the
+// presentation is the approved homepage system, laid out per the Garage
+// mockup: identity header, a grid of vehicle panels, the "Add a vehicle" card
+// always last. Empty, loading and error states are written in plain garage
+// language and never blame the user.
 
-  const catalogEntries = entries.filter((e) => e.kind === "catalog");
-  const customEntries = entries.filter((e) => e.kind === "custom");
+const GARAGE_KEY = "/api/garage";
+
+function PlusIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden>
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+function SkeletonCard() {
+  return (
+    <div className="cg-panel overflow-hidden rounded-2xl" aria-hidden>
+      <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/50 px-5 py-3">
+        <div className="h-9 w-9 rounded-md bg-slate-800/80 motion-safe:animate-pulse" />
+        <div className="h-6 w-24 rounded-full bg-slate-800/80 motion-safe:animate-pulse" />
+      </div>
+      <div className="space-y-3 px-5 py-5">
+        <div className="h-3 w-24 rounded bg-slate-800/80 motion-safe:animate-pulse" />
+        <div className="h-8 w-3/4 rounded bg-slate-800/80 motion-safe:animate-pulse" />
+        <div className="h-3 w-1/2 rounded bg-slate-800/80 motion-safe:animate-pulse" />
+        <div className="cg-well h-12 rounded-lg" />
+      </div>
+      <div className="h-[49px] border-t border-slate-800" />
+    </div>
+  );
+}
+
+export default function GarageClient() {
+  const { entries, removeEntry, isLoading, error } = useGarage();
+
+  const count = entries.length;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
-      <section className="mb-8 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-50">Your Garage</h1>
-          <p className="mt-2 max-w-2xl text-slate-400">
-            Pick a vehicle to see its fluid capacities, specs, and step-by-step
-            repair guides with tools and torque values.
-          </p>
+    <>
+      <section className="relative isolate overflow-hidden border-b border-white/[0.06]">
+        <CinematicScene variant="page" />
+        <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:pb-12 sm:pt-16">
+      <AppPageHeader
+        eyebrow="Your ride. Your garage. Your wrenches."
+        title="My Garage"
+        lede="Pick a vehicle to see its fluid capacities, specs, and step-by-step repair guides with tools and torque values."
+        actions={
+          <>
+            {!isLoading && !error && count > 0 ? (
+              <Stamp>
+                {count} {count === 1 ? "vehicle" : "vehicles"}
+              </Stamp>
+            ) : null}
+            <Link href="/garage/add" className={BTN_PRIMARY}>
+              <PlusIcon className="h-4 w-4" />
+              Add a vehicle
+            </Link>
+          </>
+        }
+      />
         </div>
-        <Link
-          href="/garage/add"
-          className="shrink-0 rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-orange-400"
-        >
-          + Add a vehicle
-        </Link>
       </section>
 
-      {entries.length === 0 ? (
-        <section className="rounded-xl border border-dashed border-slate-700 bg-slate-900/40 p-8 text-center">
-          <h2 className="font-semibold text-slate-100">Your garage is empty</h2>
-          <p className="mx-auto mt-1 max-w-sm text-sm text-slate-400">
-            Add a vehicle to start seeing its specs, fluid capacities, and repair
-            guides — or to just track service history.
-          </p>
-          <Link
-            href="/garage/add"
-            className="mt-4 inline-flex items-center gap-1 rounded-lg bg-orange-500 px-4 py-2 font-semibold text-slate-950 hover:bg-orange-400"
-          >
-            + Add your first vehicle
-          </Link>
-        </section>
-      ) : (
-        <>
-          {catalogEntries.length > 0 && (
-            <section className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {catalogEntries.map((e) => {
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-9 sm:pb-14">
+      <div>
+        {error ? (
+          <section role="alert" className="cg-panel rounded-2xl p-8 text-center sm:p-10">
+            <Eyebrow>Couldn&apos;t reach your garage</Eyebrow>
+            <h2 className="mt-3 text-2xl font-extrabold uppercase text-slate-50" style={display}>
+              Your vehicles didn&apos;t load
+            </h2>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-slate-400">
+              That&apos;s on our end, not yours. Nothing was changed or removed. Give it another go.
+            </p>
+            <button type="button" onClick={() => globalMutate(GARAGE_KEY)} className={`mt-5 ${BTN_SECONDARY}`}>
+              Try again
+            </button>
+          </section>
+        ) : isLoading ? (
+          <section aria-label="Loading your garage" aria-busy="true" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </section>
+        ) : count === 0 ? (
+          <section className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60">
+            <div className="cg-grid pointer-events-none absolute inset-0 -z-10 opacity-70 [mask-image:radial-gradient(ellipse_at_70%_100%,black,transparent_70%)]" aria-hidden />
+            <VehicleLinework
+              tonal
+              className="pointer-events-none absolute -bottom-6 -right-10 -z-10 w-[34rem] max-w-none text-slate-300 opacity-[0.18] sm:right-0 sm:opacity-[0.28]"
+            />
+            <div className="px-6 py-12 sm:px-10 sm:py-16">
+              <Eyebrow>No vehicles yet</Eyebrow>
+              <h2 className="mt-3 max-w-md text-4xl font-extrabold uppercase leading-[0.95] text-slate-50 sm:text-5xl" style={display}>
+                Your garage is empty
+              </h2>
+              <p className="mt-4 max-w-md text-slate-300">
+                Add a vehicle to start seeing its specs, fluid capacities, and repair guides — or to just track service
+                history.
+              </p>
+              <div className="mt-7 flex flex-wrap items-center gap-3">
+                <Link href="/garage/add" className={BTN_PRIMARY}>
+                  <IconCar className="h-5 w-5" />
+                  + Add your first vehicle
+                  <IconArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/decode" className={BTN_SECONDARY}>
+                  Try the VIN lookup
+                </Link>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <section aria-label="Your vehicles" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {entries.map((e) => {
+              if (e.kind === "catalog") {
                 const vehicle = findVehicle(e.id);
                 if (!vehicle) return null;
-                return (
-                  <div key={e.id} className="relative">
-                    <VehicleCard vehicle={vehicle} />
-                    <button
-                      type="button"
-                      onClick={() => removeEntry(e.id)}
-                      aria-label={`Remove ${vehicle.year} ${vehicle.make} ${vehicle.model} from garage`}
-                      title="Remove from garage"
-                      className="absolute right-3 top-3 rounded-full bg-slate-950/80 px-2 py-1 text-xs text-slate-400 hover:text-rose-400"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                );
-              })}
-            </section>
-          )}
+                return <GarageVehicleCard key={e.id} id={e.id} kind="catalog" vehicle={vehicle} onRemove={() => removeEntry(e.id)} />;
+              }
+              return <GarageVehicleCard key={e.id} id={e.id} kind="custom" custom={e.custom} onRemove={() => removeEntry(e.id)} />;
+            })}
 
-          {customEntries.length > 0 && (
-            <section className="mb-8">
-              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
-                Added, no guide data yet
-              </h2>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {customEntries.map((e) => (
-                  <div key={e.id} className="relative">
-                    <Link
-                      href={`/garage/custom/${e.id}`}
-                      className="group block rounded-xl border border-slate-800 bg-slate-900 p-5 transition hover:border-orange-500 hover:bg-slate-800/80"
-                    >
-                      <div className="text-xs uppercase tracking-wide text-slate-500 font-semibold">
-                        {e.kind === "custom" ? e.custom.year ?? "Year unknown" : ""}
-                      </div>
-                      <div className="mt-1 text-xl font-bold text-slate-100">
-                        {e.kind === "custom"
-                          ? [e.custom.make, e.custom.model].filter(Boolean).join(" ") || "Unnamed vehicle"
-                          : ""}
-                      </div>
-                      <div className="text-sm text-slate-400">
-                        {e.kind === "custom" ? e.custom.trim : ""}
-                      </div>
-                      <div className="mt-3 inline-block rounded-full bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-400">
-                        No curated specs yet
-                      </div>
-                      <div className="mt-4 text-sm font-medium text-orange-400 group-hover:text-orange-300">
-                        Open &rarr;
-                      </div>
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => removeEntry(e.id)}
-                      aria-label="Remove vehicle from garage"
-                      title="Remove from garage"
-                      className="absolute right-3 top-3 rounded-full bg-slate-950/80 px-2 py-1 text-xs text-slate-400 hover:text-rose-400"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-        </>
-      )}
+            <Link
+              href="/garage/add"
+              className={`group flex min-h-[18rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/20 bg-slate-950/40 p-6 text-center transition-colors hover:border-white/40 hover:bg-slate-950/70 ${FOCUS}`}
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-200 group-hover:border-slate-400">
+                <PlusIcon className="h-6 w-6" />
+              </span>
+              <span className="text-2xl font-extrabold uppercase text-slate-50" style={display}>
+                Add a vehicle
+              </span>
+              <span className="max-w-[16rem] text-sm text-slate-400">
+                Enter a VIN or pick year, make and model. Your garage is free and unlimited.
+              </span>
+            </Link>
+          </section>
+        )}
+      </div>
 
-      <section className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
-        <h2 className="font-semibold text-slate-100">Don&apos;t see your vehicle?</h2>
-        <p className="mt-1 text-sm text-slate-400">
-          This is an early build — full guides only exist for a handful of
-          vehicles so far. You can still add any vehicle to log its service
-          history, and decode a VIN for basic year/make/model info.
+      <section className="mt-10 border-t border-white/[0.07] pt-6">
+        <h2 className="text-base font-semibold text-slate-200">Don&apos;t see your vehicle?</h2>
+        <p className="mt-1 max-w-3xl text-sm text-slate-400">
+          This is an early build — full guides only exist for a handful of vehicles so far. You can still add any
+          vehicle to log its service history, and decode a VIN for basic year/make/model info.
         </p>
-        <div className="mt-3 flex flex-wrap gap-4">
-          <Link
-            href="/garage/add"
-            className="inline-flex items-center gap-1 text-sm font-medium text-orange-400 hover:text-orange-300"
-          >
-            Add a vehicle &rarr;
-          </Link>
-          <Link
-            href="/decode"
-            className="inline-flex items-center gap-1 text-sm font-medium text-orange-400 hover:text-orange-300"
-          >
-            Try the VIN lookup &rarr;
-          </Link>
+        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+          <ArrowLink href="/garage/add">Add a vehicle</ArrowLink>
+          <ArrowLink href="/decode">Try the VIN lookup</ArrowLink>
         </div>
       </section>
     </div>
+    </>
   );
 }

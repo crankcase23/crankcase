@@ -88,6 +88,21 @@ export function CinematicScene({ variant = "hero" }: { variant?: "hero" | "page"
 }
 
 /**
+ * A lit plate with the vehicle standing on it: the stand-in for the vehicle
+ * photograph in the mockup's cards. Same drawing and light as the hero.
+ */
+export function VehiclePlate({ className = "h-32", children }: { className?: string; children?: React.ReactNode }) {
+  return (
+    <div className={`relative overflow-hidden bg-[radial-gradient(90%_120%_at_62%_0%,#2b3547_0%,#121a28_55%,#0a0f18_100%)] ${className}`}>
+      <div aria-hidden className="absolute -right-6 top-0 h-px w-40 bg-orange-100/80 shadow-[0_0_18px_4px_rgba(253,186,116,0.4)]" />
+      <div aria-hidden className="absolute inset-x-6 bottom-1 h-5 rounded-[100%] bg-black/70 blur-lg" />
+      <VehicleLinework tonal className="absolute -bottom-3 left-1/2 w-[17rem] max-w-none -translate-x-1/2 text-slate-200 opacity-90" />
+      {children}
+    </div>
+  );
+}
+
+/**
  * Photographic scene: a full-bleed photograph under layered grading. The photo
  * does the work; the overlays only (1) keep the left third dark enough for the
  * headline, (2) pull the bottom into the next band, and (3) add warm light

@@ -74,7 +74,7 @@ export default function ServiceSchedule({
   return (
     <section className="mt-8">
       <div className="mb-3 flex items-center gap-2">
-        <h2 className="text-lg font-semibold text-slate-100">Factory Service Schedule</h2>
+        <h2 className="cg-section-title">Factory Service Schedule</h2>
         <TierBadge tier="free" />
       </div>
 
