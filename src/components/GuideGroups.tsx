@@ -85,7 +85,7 @@ export default function GuideGroups({
   if (guides.length === 0) {
     return (
       <section className="mt-10">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">
+        <h2 className="cg-section-title mb-3">
           Repair Guides
         </h2>
         <p className="text-sm text-slate-500">
@@ -117,7 +117,7 @@ export default function GuideGroups({
   return (
     <section className="mt-10">
       <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2 className="text-lg font-semibold text-slate-100">Repair Guides</h2>
+        <h2 className="cg-section-title">Repair Guides</h2>
         <span className="text-sm text-slate-500">
           {guides.length} {guides.length === 1 ? "guide" : "guides"} for this
           vehicle

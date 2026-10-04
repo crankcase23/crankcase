@@ -99,3 +99,17 @@ body {
     background: #fff;
   }
 }
+
+/* Section heading used inside signed-in pages: the display face as signage,
+   same voice as the homepage's section titles. Heading text only. */
+@layer components {
+.cg-section-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.625rem;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #f8fafc;
+}
+}

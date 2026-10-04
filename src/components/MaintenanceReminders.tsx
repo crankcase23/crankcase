@@ -90,7 +90,7 @@ export default function MaintenanceReminders({
   return (
     <section className="mt-10">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-semibold text-slate-100">Maintenance Reminders</h2>
+        <h2 className="cg-section-title">Maintenance Reminders</h2>
       </div>
       <p className="mb-4 text-sm text-slate-500">
         {hasFactorySchedule ? (

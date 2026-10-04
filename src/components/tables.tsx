@@ -2,11 +2,11 @@ import { FluidCapacity, SpecItem, TorqueSpec, Tool } from "@/types/vehicle";
 
 export function SpecTable({ specs }: { specs: SpecItem[] }) {
   return (
-    <dl className="divide-y divide-slate-800 rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+    <dl className="cg-panel divide-y divide-slate-800 overflow-hidden rounded-2xl">
       {specs.map((s) => (
         <div key={s.label} className="flex justify-between gap-4 px-4 py-3 text-sm">
-          <dt className="text-slate-400">{s.label}</dt>
-          <dd className="text-right font-medium text-slate-100">{s.value}</dd>
+          <dt className="cg-stamp self-center">{s.label}</dt>
+          <dd className="text-right font-mono font-semibold text-slate-100">{s.value}</dd>
         </div>
       ))}
     </dl>
@@ -15,25 +15,25 @@ export function SpecTable({ specs }: { specs: SpecItem[] }) {
 
 export function FluidTable({ fluids }: { fluids: FluidCapacity[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-800">
+    <div className="cg-panel overflow-x-auto rounded-2xl">
       <table className="w-full min-w-[600px] table-fixed divide-y divide-slate-800 text-sm">
         <colgroup>
           <col className="w-[26%]" />
           <col className="w-[30%]" />
           <col className="w-[44%]" />
         </colgroup>
-        <thead className="bg-slate-900">
+        <thead className="bg-slate-950/50">
           <tr>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Fluid</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Capacity</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Spec</th>
+            <th className="cg-stamp px-4 py-3 text-left font-normal">Fluid</th>
+            <th className="cg-stamp px-4 py-3 text-left font-normal">Capacity</th>
+            <th className="cg-stamp px-4 py-3 text-left font-normal">Spec</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-800 bg-slate-950">
+        <tbody className="divide-y divide-slate-800">
           {fluids.map((f) => (
             <tr key={f.name}>
               <td className="px-4 py-3 font-medium text-slate-100">{f.name}</td>
-              <td className="px-4 py-3 text-slate-200 break-words">{f.capacity}</td>
+              <td className="px-4 py-3 font-mono text-slate-100 break-words">{f.capacity}</td>
               <td className="px-4 py-3 text-slate-400 break-words">
                 {f.spec}
                 {f.notes && <div className="mt-1 text-xs text-slate-500">{f.notes}</div>}

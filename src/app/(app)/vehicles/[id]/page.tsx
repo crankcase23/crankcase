@@ -2,7 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { findVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
-import { SpecTable, FluidTable, TierBadge } from "@/components/tables";
+import { SpecTable, FluidTable } from "@/components/tables";
+import { Stamp, display, FOCUS } from "@/components/app/AppKit";
+import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
+import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
+import { IconChevronLeft, IconPrinter } from "@/components/app/AppIcons";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ServiceHistory from "@/components/ServiceHistory";
 import MaintenanceReminders from "@/components/MaintenanceReminders";
@@ -52,74 +56,110 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
       if (entry && entry.kind === "catalog") vin = entry.vin;
   }
 
+  const items = maintenanceItemsFor(vehicle);
+
+  const tiles: HubTile[] = [
+    { key: "maintain", title: "Maintain it", body: "Schedule, reminders, fluids and capacities.", href: "#maintenance", gate: "keys" },
+    { key: "fix", title: "Fix something", body: "Step-by-step guides with tools, parts and torque specifications.", href: "#guides", gate: "keys" },
+    { key: "history", title: "Service history", body: "Your log of jobs, mileage and notes. User-recorded Crankcase Service History.", href: "#history", gate: "keys" },
+    { key: "info", title: "Vehicle info", body: "Specs, fluids and capacities.", href: "#info", gate: "free" },
+  ];
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
       {/* Records the view for admin analytics. Renders nothing. */}
       <ViewTracker type="vehicle.viewed" objectId={vehicle.id} objectType="vehicle" />
-      <Link href="/garage" className="text-sm text-slate-400 hover:text-slate-200">
-        &larr; Back to garage
+
+      <Link href="/garage" className={`inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 ${FOCUS}`}>
+        <IconChevronLeft className="h-4 w-4" />
+        Back to garage
       </Link>
 
-      <div className="mt-3 mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-            {vehicle.year} {vehicle.make}
-          </div>
-          <h1 className="text-3xl font-bold text-slate-50">
-            {vehicle.model} <span className="text-slate-400 font-normal">{vehicle.trim}</span>
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+        <div className="min-w-0">
+          <Stamp className="text-orange-400">
+            {vehicle.year} · {vehicle.make}
+          </Stamp>
+          <h1 className="mt-2 text-5xl font-extrabold uppercase leading-[0.95] tracking-tight text-slate-50 sm:text-6xl" style={display}>
+            {vehicle.model}
+            {vehicle.trim ? <span className="text-slate-400"> {vehicle.trim}</span> : null}
           </h1>
-          <p className="mt-1 text-slate-400">
+          <p className="mt-3 text-slate-300">
             {vehicle.engine} &middot; {vehicle.drivetrain} &middot; {vehicle.transmission}
           </p>
+          <div className="mt-2">
+            <OdometerLine vehicleId={vehicle.id} href="#odo" />
+          </div>
         </div>
-        <Link
-          href={`/vehicles/${vehicle.id}/spec-sheet/print`}
-          target="_blank"
-          className="shrink-0 text-sm font-medium text-orange-400 hover:text-orange-300"
-        >
-          🖨 Print spec sheet &rarr;
-        </Link>
+        <div className="flex flex-wrap items-center gap-4">
+          <FreeChip />
+          <Link
+            href={`/vehicles/${vehicle.id}/spec-sheet/print`}
+            target="_blank"
+            className={`inline-flex items-center gap-1.5 text-sm font-medium text-orange-400 hover:text-orange-300 ${FOCUS}`}
+          >
+            <IconPrinter className="h-4 w-4" />
+            Print spec sheet <span aria-hidden>&rarr;</span>
+          </Link>
+        </div>
       </div>
 
-      <div className="mb-6">
+      <div className="mt-9 grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
+        <HubTiles tiles={tiles} />
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <HubSidePanels vehicleId={vehicle.id} items={items} maintainHref="#maintenance" historyHref="#history" />
+        </div>
+        <div className="lg:col-start-1 lg:row-start-2">
+          <KeysPanel vehicleName={`${vehicle.model}`} />
+        </div>
+      </div>
+
+      <div className="mt-10">
         <DataDisclaimer />
       </div>
 
-      <section className="mb-8">
-        <div className="mb-3 flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-slate-100">Vehicle Specs</h2>
-          <TierBadge tier="free" />
+      <section id="info" className="mt-12 scroll-mt-24">
+        <div className="mb-4 flex items-center gap-3">
+          <h2 className="cg-section-title">Vehicle Specs</h2>
+          <FreeChip />
         </div>
         <div className="max-w-xl">
-<SpecTable specs={vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs} />        </div>
+          <SpecTable specs={vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs} />
+        </div>
       </section>
 
-      <section>
-        <div className="mb-3 flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-slate-100">Fluid Capacities</h2>
-          <TierBadge tier="free" />
+      <section className="mt-10">
+        <div className="mb-4 flex items-center gap-3">
+          <h2 className="cg-section-title">Fluid Capacities</h2>
+          <FreeChip />
         </div>
         <FluidTable fluids={vehicle.fluids} />
       </section>
 
-      <ServiceSchedule vehicle={vehicle} guides={repairGuides} />
+      <div id="maintenance" className="scroll-mt-24">
+        <ServiceSchedule vehicle={vehicle} guides={repairGuides} />
 
-      {/* Reminders run on this vehicle's factory intervals wherever we hold
-          its schedule -- otherwise the panel would contradict the Factory
-          Service Schedule directly above it. */}
-      <MaintenanceReminders
-        vehicleId={vehicle.id}
-        items={maintenanceItemsFor(vehicle)}
-        hasFactorySchedule={getServiceSchedule(vehicle) !== null}
-      />
+        {/* Reminders run on this vehicle's factory intervals wherever we hold
+            its schedule -- otherwise the panel would contradict the Factory
+            Service Schedule directly above it. */}
+        <MaintenanceReminders
+          vehicleId={vehicle.id}
+          items={items}
+          hasFactorySchedule={getServiceSchedule(vehicle) !== null}
+        />
+      </div>
 
-      <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
+      <div id="guides" className="scroll-mt-24">
+        <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
+      </div>
 
-      <ServiceHistory
-        vehicleId={vehicle.id}
-        vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-        guideTitles={repairGuides.map((g) => g.title)}
-      />
+      <div id="history" className="scroll-mt-24">
+        <ServiceHistory
+          vehicleId={vehicle.id}
+          vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+          guideTitles={repairGuides.map((g) => g.title)}
+        />
+      </div>
 
       {/* Fluid capacities and specs live on this page -- same reason the
           guides carry one. */}

@@ -1,11 +1,11 @@
 export default function DataDisclaimer({ compact = false }: { compact?: boolean }) {
   return (
     <div
-      className={`rounded-lg border border-amber-300 bg-amber-50 text-amber-900 ${
+      className={`rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-100 ${
         compact ? "px-3 py-2 text-xs" : "px-4 py-3 text-sm"
       }`}
     >
-      <span className="font-semibold">Reference figures, not gospel.</span>{" "}
+      <span className="font-semibold text-amber-300">Reference figures, not gospel.</span>{" "}
       Capacities, torque values, and steps here are general starting points and
       can vary by trim, options, and model-year running changes. Always confirm
       against your vehicle&apos;s factory service manual or door-jamb/build sticker
