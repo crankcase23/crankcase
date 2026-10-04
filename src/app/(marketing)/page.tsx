@@ -134,7 +134,7 @@ export default function MarketingHome() {
           <CinematicScene variant="page" />
         </div>
 
-        <div className="relative mx-auto grid max-w-6xl items-center gap-x-6 gap-y-0 px-4 pt-14 sm:pt-20 lg:min-h-[41rem] lg:grid-cols-[minmax(0,1fr)_18.5rem] lg:pb-16 lg:pt-12">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-x-6 gap-y-0 px-4 pt-14 sm:pt-20 lg:min-h-[41rem] lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:pb-16 lg:pt-12">
           <div className="max-lg:pt-2">
             <Eyebrow>Your ride. Your garage.</Eyebrow>
             <h1
@@ -178,23 +178,16 @@ export default function MarketingHome() {
             </div>
           )}
 
-          {/* the one product card: a real guide, a real vehicle photo. On
-              desktop it hangs off the right edge over the car's rear quarter so
-              the face of the car stays clear. */}
+          {/* the one product card: a compact specs panel for a real guide. No
+              photo of its own; the hero Accord is the only vehicle image. On
+              desktop it hangs over the car's rear quarter so the face stays clear. */}
           {guide && vehicle && (
             <aside
               aria-label={`Example guide: ${guide.title} for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-              className="relative w-full max-w-sm justify-self-center max-lg:-mt-10 max-lg:mb-12 lg:mt-36 lg:-mr-24 lg:justify-self-end"
+              className="relative w-full max-w-sm justify-self-center max-lg:-mt-10 max-lg:mb-12 lg:mt-44 lg:-mr-20 lg:justify-self-end"
             >
-              <div className="overflow-hidden rounded-2xl border border-white/15 bg-[#080d15]/75 shadow-[0_50px_90px_-30px_rgba(0,0,0,1),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/60 backdrop-blur-xl">
-                {hasPhoto("card-vehicle.jpg") && (
-                  <div className="relative h-40 overflow-hidden max-lg:hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/home/card-vehicle.jpg" alt="" className="h-full w-full object-cover [object-position:50%_58%]" />
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#080d15]/70 via-transparent to-transparent" />
-                  </div>
-                )}
-                <div className="flex items-start justify-between gap-3 px-5 pt-4">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.14] bg-[#080d15]/55 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-xl">
+                <div className="flex items-start justify-between gap-3 px-4 pt-5">
                   <div>
                     <div className="text-lg font-semibold leading-tight text-slate-50">
                       {vehicle.year} {vehicle.make} {vehicle.model}
@@ -203,7 +196,7 @@ export default function MarketingHome() {
                   </div>
                   <IconArrowRight className="mt-1.5 h-5 w-5 shrink-0 text-slate-300" />
                 </div>
-                <dl className="mt-4 grid grid-cols-3 gap-x-2 border-t border-white/10 px-5 pb-1 pt-4 text-sm">
+                <dl className="mt-4 grid grid-cols-3 gap-x-2 border-t border-white/10 px-4 pb-1 pt-4 text-sm">
                   {[
                     [<IconGauge key="d" className="h-4 w-4" />, "Difficulty", guide.difficulty],
                     [<IconClock key="t" className="h-4 w-4" />, "Time", guide.estTime],
@@ -214,11 +207,11 @@ export default function MarketingHome() {
                         <span className="text-slate-200">{icon}</span>
                         {k}
                       </dt>
-                      <dd className="mt-1 font-semibold leading-tight text-slate-50">{v}</dd>
+                      <dd className="mt-1 whitespace-nowrap font-semibold leading-tight text-slate-50">{v}</dd>
                     </div>
                   ))}
                 </dl>
-                <dl className="mt-3 grid grid-cols-2 gap-x-3 border-t border-white/10 px-5 pb-5 pt-4 text-sm">
+                <dl className="mt-3 grid grid-cols-2 gap-x-3 border-t border-white/10 px-4 pb-5 pt-4 text-sm">
                   <div>
                     <dt className="flex items-center gap-1.5 text-xs text-slate-400">
                       <IconBox className="h-4 w-4 text-slate-200" /> Tools
