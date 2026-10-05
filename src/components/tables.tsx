@@ -1,6 +1,46 @@
 import { FluidCapacity, SpecItem, TorqueSpec, Tool } from "@/types/vehicle";
 import { PANEL } from "@/components/app/Chapter";
 import { IconLock } from "@/components/app/AppIcons";
+import {
+  isUnverified,
+  sourcingShape,
+  UNVERIFIED_EXPLANATION,
+  UNVERIFIED_GROUP_NOTE,
+  UNVERIFIED_LABEL,
+} from "@/lib/provenance";
+
+/**
+ * Marks a figure nobody has sourced yet. Deliberately quiet — amber, not red.
+ * The number is probably right; what it is missing is a record of who checked
+ * it, and the reader deserves to know which of the two they are holding.
+ *
+ * Only ever rendered on a MIXED table, where it is the thing telling the two
+ * apart. A table with nothing sourced gets UnverifiedTableNote instead.
+ */
+export function UnverifiedBadge() {
+  return (
+    <span
+      title={UNVERIFIED_EXPLANATION}
+      className="ml-2 inline-flex shrink-0 items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-amber-400 font-sans"
+    >
+      {UNVERIFIED_LABEL}
+    </span>
+  );
+}
+
+/**
+ * Said once, above a table in which nothing carries a source. Replaces the
+ * per-row badge in that case rather than adding to it.
+ */
+export function UnverifiedTableNote() {
+  return (
+    <p className="mb-2 text-xs text-slate-400">
+      <span className="font-semibold uppercase tracking-wide text-amber-400">{UNVERIFIED_LABEL}</span>
+      {" — "}
+      {UNVERIFIED_GROUP_NOTE}
+    </p>
+  );
+}
 
 export function SpecTable({ specs }: { specs: SpecItem[] }) {
   return (
@@ -19,56 +59,68 @@ export function SpecTable({ specs }: { specs: SpecItem[] }) {
 
 export function FluidTable({ fluids }: { fluids: FluidCapacity[] }) {
   const cols = "sm:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1.3fr)] sm:gap-x-8";
+  const shape = sourcingShape(fluids);
   return (
-    <div className={`${PANEL} overflow-hidden`}>
-      <div className={`hidden border-b border-white/[0.08] px-6 py-3 sm:grid ${cols}`}>
-        <span className="cg-stamp">Fluid</span>
-        <span className="cg-stamp">Capacity</span>
-        <span className="cg-stamp">Spec</span>
+    <>
+      {shape === "all" && <UnverifiedTableNote />}
+      <div className={`${PANEL} overflow-hidden`}>
+        <div className={`hidden border-b border-white/[0.08] px-6 py-3 sm:grid ${cols}`}>
+          <span className="cg-stamp">Fluid</span>
+          <span className="cg-stamp">Capacity</span>
+          <span className="cg-stamp">Spec</span>
+        </div>
+        <ul>
+          {fluids.map((f) => (
+            <li key={f.name} className={`grid gap-y-1 border-b border-white/[0.06] px-5 py-4 last:border-b-0 sm:px-6 ${cols}`}>
+              <span className="font-semibold text-slate-50">{f.name}</span>
+              <span className="font-mono text-[0.95rem] text-slate-100 break-words">
+                {f.capacity}
+                {shape === "mixed" && isUnverified(f.provenance) && <UnverifiedBadge />}
+              </span>
+              <span className="text-sm leading-relaxed text-slate-300 break-words">
+                {f.spec}
+                {f.notes && <span className="mt-1 block text-[0.8rem] leading-relaxed text-slate-500">{f.notes}</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul>
-        {fluids.map((f) => (
-          <li key={f.name} className={`grid gap-y-1 border-b border-white/[0.06] px-5 py-4 last:border-b-0 sm:px-6 ${cols}`}>
-            <span className="font-semibold text-slate-50">{f.name}</span>
-            <span className="font-mono text-[0.95rem] text-slate-100 break-words">{f.capacity}</span>
-            <span className="text-sm leading-relaxed text-slate-300 break-words">
-              {f.spec}
-              {f.notes && <span className="mt-1 block text-[0.8rem] leading-relaxed text-slate-500">{f.notes}</span>}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 }
 
 export function TorqueTable({ specs }: { specs: TorqueSpec[] }) {
+  const shape = sourcingShape(specs);
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-800">
-      <table className="w-full table-fixed divide-y divide-slate-800 text-sm">
-        <colgroup>
-          <col className="w-[40%]" />
-          <col className="w-[60%]" />
-        </colgroup>
-        <thead className="bg-slate-900">
-          <tr>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Fastener</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-300">Torque</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-800 bg-slate-950">
-          {specs.map((t) => (
-            <tr key={t.fastener}>
-              <td className="px-4 py-3 font-medium text-slate-100 break-words">{t.fastener}</td>
-              <td className="px-4 py-3 text-slate-200 break-words">
-                <span className="font-mono">{t.value}</span>
-                {t.notes && <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>}
-              </td>
+    <>
+      {shape === "all" && <UnverifiedTableNote />}
+      <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <table className="w-full table-fixed divide-y divide-slate-800 text-sm">
+          <colgroup>
+            <col className="w-[40%]" />
+            <col className="w-[60%]" />
+          </colgroup>
+          <thead className="bg-slate-900">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Fastener</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">Torque</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-slate-800 bg-slate-950">
+            {specs.map((t) => (
+              <tr key={t.fastener}>
+                <td className="px-4 py-3 font-medium text-slate-100 break-words">{t.fastener}</td>
+                <td className="px-4 py-3 text-slate-200 break-words">
+                  <span className="font-mono">{t.value}</span>
+                  {shape === "mixed" && isUnverified(t.provenance) && <UnverifiedBadge />}
+                  {t.notes && <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

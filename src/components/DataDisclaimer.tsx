@@ -8,8 +8,10 @@ export default function DataDisclaimer({ compact = false }: { compact?: boolean 
       <span className="font-semibold text-amber-300/90">Reference figures.</span>{" "}
       Capacities, torque values and steps are general starting points and can vary by trim, options and
       model year. Check your factory service information or door-jamb sticker before you fill a fluid or
-      torque a fastener, and use your own judgment. Crankcase covers routine maintenance; for major repair
-      work, see a professional mechanic.
+      torque a fastener, and use your own judgment. Anything marked{" "}
+      <span className="font-semibold">Unverified</span> has no source recorded behind it at all — treat
+      those with extra suspicion. Crankcase covers routine maintenance; for major repair work, see a
+      professional mechanic.
     </p>
   );
 }
