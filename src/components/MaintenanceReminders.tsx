@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useServiceHistory } from "@/lib/serviceHistory";
 import { useOdometer } from "@/lib/odometer";
+import Section from "@/components/app/Section";
+import { PANEL } from "@/components/app/Chapter";
 import {
   computeReminders,
   type MaintenanceItem,
@@ -11,11 +13,11 @@ import {
 } from "@/lib/reminders";
 
 const STATUS_STYLES: Record<ReminderStatus, string> = {
-  overdue: "bg-rose-500/15 text-rose-300",
-  "due-soon": "bg-amber-500/15 text-amber-300",
-  ok: "bg-emerald-500/15 text-emerald-300",
-  unknown: "bg-slate-800 text-slate-400",
-  "never-logged": "bg-slate-800 text-slate-500",
+  overdue: "border-rose-400/30 bg-rose-500/15 text-rose-200",
+  "due-soon": "border-amber-400/30 bg-amber-500/15 text-amber-200",
+  ok: "border-emerald-400/25 bg-emerald-500/10 text-emerald-300",
+  unknown: "border-white/10 bg-white/5 text-slate-300",
+  "never-logged": "border-white/10 bg-white/[0.03] text-slate-400",
 };
 
 const STATUS_ORDER: Record<ReminderStatus, number> = {
@@ -88,15 +90,28 @@ export default function MaintenanceReminders({
   }
 
   return (
-    <section className="mt-10">
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-semibold text-slate-100">Maintenance Reminders</h2>
-      </div>
-      <p className="mb-4 text-sm text-slate-500">
+    <Section
+      id="reminders"
+      vehicleId={vehicleId}
+      eyebrow="Keep ahead of it"
+      title="Maintenance Reminders"
+      summary={
+        entries.length === 0
+          ? "Log a service to start tracking"
+          : attention.length === 0
+            ? "Nothing due right now"
+            : `${attention.length} ${attention.length === 1 ? "item needs" : "items need"} attention`
+      }
+      attention={attention.length > 0}
+      defaultOpen
+      glow="left"
+      opensOn={["odo", "maintenance"]}
+    >
+      <p className="mb-5 max-w-2xl text-[0.95rem] leading-relaxed text-slate-400">
         {hasFactorySchedule ? (
           <>
             Tracked against your logged Service History. Where the Factory Service
-            Schedule above publishes an interval, these use the manufacturer&apos;s own
+            Schedule publishes an interval, these use the manufacturer&apos;s own
             figure; the rest are rule-of-thumb.
           </>
         ) : (
@@ -106,42 +121,46 @@ export default function MaintenanceReminders({
           </>
         )}
       </p>
-
-      <form onSubmit={handleOdoSubmit} className="mb-4 flex flex-wrap items-end gap-3">
-        <div>
-          <label htmlFor="odo" className="mb-1 block text-xs text-slate-400">
-            Current odometer (optional, sharpens the estimates)
+      <div className={`${PANEL} overflow-hidden`}>
+        <form onSubmit={handleOdoSubmit} className="p-4 sm:p-5">
+          <label htmlFor="odo" className="mb-2 block text-sm text-slate-300">
+            Current odometer{" "}
+            <span className="text-slate-500">(optional, sharpens the estimates)</span>
           </label>
-          <input
-            id="odo"
-            type="number"
-            min={0}
-            inputMode="numeric"
-            value={odoInput}
-            onChange={(e) => setOdoInput(e.target.value)}
-            placeholder={odometer != null ? `Saved: ${odometer.toLocaleString()} mi` : "e.g. 118500"}
-            className="w-52 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
-          />
-        </div>
-        <button
-          type="submit"
-          className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-medium text-slate-200 hover:border-orange-500"
-        >
-          Save
-        </button>
-      </form>
-
-      {attention.length === 0 && !showAll ? (
-        <p className="mb-3 text-sm text-emerald-400">Nothing needs attention right now, based on what&apos;s logged.</p>
-      ) : null}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              id="odo"
+              type="number"
+              min={0}
+              inputMode="numeric"
+              value={odoInput}
+              onChange={(e) => setOdoInput(e.target.value)}
+              placeholder={odometer != null ? `Saved: ${odometer.toLocaleString()} mi` : "e.g. 118500"}
+              className="h-12 w-full rounded-lg border border-white/10 bg-black/40 px-4 text-base text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none sm:max-w-xs"
+            />
+            <button
+              type="submit"
+              className="h-12 rounded-lg border border-white/15 bg-white/[0.04] px-6 text-sm font-semibold text-slate-100 hover:border-orange-500 sm:w-auto"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+        {attention.length === 0 && !showAll ? (
+          <p className="flex items-center gap-2.5 border-t border-white/[0.07] bg-black/25 px-4 py-3.5 text-sm text-slate-300 sm:px-5">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.6)]" />
+            Nothing needs attention right now, based on what&apos;s logged.
+          </p>
+        ) : null}
+      </div>
 
       {visible.length > 0 && (
-        <ul className="mb-3 divide-y divide-slate-800 overflow-hidden rounded-xl border border-slate-800">
+        <ul className={`${PANEL} mt-5 divide-y divide-white/[0.07] overflow-hidden`}>
           {visible.map((r) => (
-            <li key={r.item.key} className="bg-slate-900 px-4 py-3 text-sm">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-slate-200">{r.item.label}</span>
-                <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
+            <li key={r.item.key} className="px-4 py-3.5 sm:px-5">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <span className="text-[0.95rem] font-medium text-slate-100">{r.item.label}</span>
+                <span className={`w-fit shrink-0 rounded-full border px-3 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
                   {statusLabel(r)}
                 </span>
               </div>
@@ -150,7 +169,7 @@ export default function MaintenanceReminders({
                   number is the whole point - an uncaptioned rule of thumb on a
                   page that otherwise prints factory figures reads as factory. */}
               {r.item.sourceNote ? (
-                <p className="mt-1.5 max-w-prose text-xs leading-relaxed text-amber-300/80">{r.item.sourceNote}</p>
+                <p className="mt-2 max-w-prose text-xs leading-relaxed text-amber-300/80">{r.item.sourceNote}</p>
               ) : null}
             </li>
           ))}
@@ -161,11 +180,11 @@ export default function MaintenanceReminders({
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="text-sm font-medium text-orange-400 hover:text-orange-300"
+          className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-orange-400 hover:text-orange-300"
         >
           {showAll ? "Show only what needs attention" : `Show all ${results.length} tracked intervals`}
         </button>
       )}
-    </section>
+    </Section>
   );
 }

@@ -22,7 +22,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <SiteHeader isAuthed isAdmin={isAdmin} />
       <main className="flex-1">{children}</main>
       <footer className="border-t border-slate-800 py-6">
-        <div className="mx-auto max-w-5xl px-4 text-xs text-slate-500">
+        <div className="mx-auto max-w-6xl px-4 text-xs text-slate-500">
           Crankcase Garage is a personal reference tool. Specs and torque values are
           general starting points, not a replacement for your factory service
           manual. Work safely — use jack stands, eye protection, and your own
