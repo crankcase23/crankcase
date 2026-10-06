@@ -5818,6 +5818,103 @@ image: "/steps/generic-cleanup.svg",
       },
     ],
   },
+  {
+    id: "dodge-charger-oil-change",
+    vehicleId: "2020-dodge-charger-3.6l",
+    title: "Engine Oil & Filter Change",
+    jobType: "oil-change",
+    summary: "Drain-and-refill oil service for the 3.6L Pentastar V6, with its cartridge-style oil filter housing.",
+    difficulty: "Easy",
+    tier: "free",
+    estTime: "35-50 min",
+    tools: [
+      { name: "Oil filter housing wrench", note: "Cartridge cap style, ~74mm or similar hex/flute pattern" },
+      { name: "Socket set + ratchet", note: "For drain plug and under-tray fasteners" },
+      { name: "Torque wrench", note: "Range covering 15-25 ft-lb" },
+      { name: "Drain pan", note: "7+ qt capacity" },
+      { name: "Funnel" },
+      { name: "Jack + 2 jack stands or drive-up ramps" },
+      { name: "Nitrile gloves + safety glasses" },
+    ],
+    parts: [
+      "6.0 qt (5.7 L) 5W-20 full-synthetic engine oil, API SN",
+      "Mopar (or equivalent) cartridge oil filter element + housing O-ring",
+      "Drain plug crush washer (replace if not self-sealing)",
+    ],
+    safety: [
+      "Let a hot engine cool 10-15 min before draining -- hot oil causes burns.",
+      "Use jack stands rated for the car's weight; never work under a vehicle held only by a jack.",
+      "Used oil and filters are hazardous waste -- take them to a recycling/auto parts drop-off, never pour down a drain.",
+    ],
+    torqueSpecs: [
+      {
+        fastener: "Oil pan drain plug",
+        value: "20 ft-lb (27 Nm)",
+        notes: "Use new crush washer. Curated carryover from this catalog's other 3.6L Pentastar entries (Grand Cherokee, Wrangler, Cherokee, Compass -- several OLP-confirmed under their own make/model) -- not yet independently pulled from Open Labor Project under Dodge Charger's own make/model. Confirm against your service manual before torquing.",
+      },
+      {
+        fastener: "Oil filter housing cap",
+        value: "18 ft-lb (24 Nm)",
+        notes: "Curated carryover from the same Pentastar family. Housing is plastic -- do not overtighten, snug + spec torque only.",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Warm the engine briefly, then park and secure",
+        instructions: "Run the engine for 2-3 minutes so the oil flows more easily, then shut it off. Park on level ground, set the parking brake, and chock the rear wheels.",
+        image: "/steps/generic-park-secure.svg",
+      },
+      {
+        number: 2,
+        title: "Raise the vehicle and remove the under-engine shield",
+        instructions: "Jack up the front of the car at the factory jack points and support it on jack stands. Remove the plastic under-engine shield -- it's held by a mix of push-pin fasteners and bolts along its edge.",
+        image: "/steps/generic-raise-vehicle.svg",
+        warning: "Confirm the vehicle is stable on the stands before reaching underneath.",
+      },
+      {
+        number: 3,
+        title: "Drain the old oil",
+        instructions: "Position the drain pan under the oil pan's drain plug. Loosen the plug with a socket, then finish removing it by hand and let the oil fully drain.",
+        image: "/steps/oil-drain.svg",
+      },
+      {
+        number: 4,
+        title: "Remove and replace the oil filter cartridge",
+        instructions: "The filter housing cap sits on top of the engine near the front, under a plastic cover. Unscrew the cap counterclockwise with the housing wrench, lift out the old filter element, and let residual oil drain from the housing before wiping it clean.",
+        image: "/steps/oil-filter-cartridge.svg",
+        torque: [{ fastener: "Oil filter housing cap", value: "18 ft-lb (24 Nm)" }],
+      },
+      {
+        number: 5,
+        title: "Install the new filter and reassemble",
+        instructions: "Fit the new filter element into the cap, lightly oil the new O-ring, and thread the cap back in by hand before torquing it. Reinstall the drain plug with a new crush washer and torque it to spec.",
+        image: "/steps/oil-filter-install.svg",
+        torque: [
+          { fastener: "Oil filter housing cap", value: "18 ft-lb (24 Nm)" },
+          { fastener: "Oil pan drain plug", value: "20 ft-lb (27 Nm)" },
+        ],
+      },
+      {
+        number: 6,
+        title: "Reinstall the under-shield and lower the vehicle",
+        instructions: "Reattach the under-engine shield fasteners and carefully lower the car back to the ground.",
+        image: "/steps/generic-lower-vehicle.svg",
+      },
+      {
+        number: 7,
+        title: "Refill and check",
+        instructions: "Remove the oil fill cap on the valve cover and add oil in stages, checking the dipstick as you approach 6.0 qt. Start the engine, let it run about 30 seconds, shut it off, and check underneath for leaks at the drain plug and filter cap.",
+        image: "/steps/oil-fill-check.svg",
+      },
+      {
+        number: 8,
+        title: "Final level check and oil-life reset",
+        instructions: "Wait a few minutes for the oil to settle, recheck the dipstick, and top off if needed. Reset the oil-change reminder via the Uconnect menu, then recycle the old oil and filter.",
+        image: "/steps/generic-cleanup.svg",
+      },
+    ],
+  },
 
 
 
