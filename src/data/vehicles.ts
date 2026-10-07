@@ -3841,6 +3841,53 @@ spec: "All-season washer fluid",
         notes: "Reference figure only; confirm against the axle tag before buying fluid.",
       },
     ],
+  },
+  {
+    id: "2020-dodge-challenger-3.6l",
+    keys: { platform: "chrysler-lx-la", engine: "chrysler-pentastar-3.6-gen3", driveline: "chrysler-lx-rwd" },
+    year: 2020,
+    make: "Dodge",
+    model: "Challenger",
+    trim: "SXT",
+    engine: "3.6L Pentastar V6, 303 hp / 268 lb-ft",
+    drivetrain: "RWD",
+    transmission: "8-speed automatic (845RE, ZF-sourced TorqueFlite 8)",
+    specs: [
+      { label: "Engine", value: "3.6L Pentastar V6 (Gen III), 303 hp / 268 lb-ft -- a genuinely higher-output tune than this catalog's Charger SXT RWD (292 hp / 260 lb-ft) despite sharing the same base engine family; confirmed via two independent spec sources, not a typo." },
+      { label: "Drivetrain", value: "RWD (AWD optional on this generation)" },
+      { label: "Transmission", value: "8-speed automatic (845RE, ZF-sourced TorqueFlite 8 -- same unit as this catalog's Charger and 300)" },
+      { label: "Curb weight", value: "~3,858 lb (SXT RWD)" },
+      { label: "Fuel tank", value: "18.5 gal" },
+      { label: "Battery", value: "Group H6/94R -- mounted in the trunk, driver's side, near the spare-tire well, not under the hood. Same LX-platform quirk as this catalog's Charger." },
+      { label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm)" },
+      { label: "Front tire size (SXT, 18-in wheel package)", value: "235/55R18" },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "6.0 qt (5.7 L) with filter change",
+        spec: "5W-20 full synthetic, API SN, Chrysler Mopar MS-6395",
+        notes: "Cartridge-style filter housing, same family as this catalog's other 3.6L Pentastar entries (Grand Cherokee, Wrangler, Cherokee, Compass, Charger). Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+      },
+      {
+        name: "Engine Coolant",
+        capacity: "~11.5 qt (10.9 L) system capacity",
+        spec: "Mopar OAT antifreeze/coolant (orange), 50/50 premix",
+        notes: "Reference figure only.",
+      },
+      {
+        name: "Automatic Transmission Fluid (845RE 8-speed)",
+        capacity: "~5.5-6.0 qt (5.2-5.7 L) for a pan drain-and-fill (service fill)",
+        spec: "ZF Lifeguard 8 -- NOT Mopar ATF+4",
+        notes: "This 8-speed is ZF-sourced (shared architecture with some BMW/Audi/Jaguar transmissions); it takes ZF's own fluid, unlike the ATF+4 used in older Chrysler automatics. Using ATF+4 here would be a real mistake, not just a suboptimal choice. Same transmission as this catalog's Charger. Reference figure only; total dry-fill is higher than a pan service recovers.",
+      },
+      {
+        name: "Rear Differential Fluid",
+        capacity: "~1.5 pt (0.7 L)",
+        spec: "SAE 75W-140 synthetic gear oil (plus friction modifier if limited-slip / Super Track Pak)",
+        notes: "Reference figure only; confirm against the axle tag before buying fluid.",
+      },
+    ],
   }
 ];
 
