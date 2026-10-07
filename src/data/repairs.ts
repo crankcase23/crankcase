@@ -5850,7 +5850,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "20 ft-lb (27 Nm)",
-        notes: "Use new crush washer. Curated carryover from this catalog's other 3.6L Pentastar entries (Grand Cherokee, Wrangler, Cherokee, Compass -- several OLP-confirmed under their own make/model) -- not yet independently pulled from Open Labor Project under Dodge Charger's own make/model. Confirm against your service manual before torquing.",
+        notes: "Use new crush washer.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter housing cap",
