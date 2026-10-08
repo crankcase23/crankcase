@@ -3859,7 +3859,7 @@ spec: "All-season washer fluid",
       { label: "Curb weight", value: "~3,858 lb (SXT RWD)" },
       { label: "Fuel tank", value: "18.5 gal" },
       { label: "Battery", value: "Group H6/94R -- mounted in the trunk, driver's side, near the spare-tire well, not under the hood. Same LX-platform quirk as this catalog's Charger." },
-      { label: "Wheel lug nut torque", value: "111 ft-lb (150 Nm) -- corrected 2026-10-07, same day this vehicle was added: initially carried the wrong truck figure (130 ft-lb / 176 Nm) copied from this catalog's Charger entry before that entry's own Open Labor Project-driven correction landed moments earlier in this same session. See the Charger entry for the OLP cross-check." },
+      { label: "Wheel lug nut torque", value: "105 ft-lb (142 Nm) -- corrected 2026-10-08: Open Labor Project data pulled under the Challenger's own make/model (142.4 Nm / 105 lb-ft, high confidence, consistent across all 62 job entries carrying a lug-nut spec) shows a genuine divergence from this catalog's Charger (111 ft-lb / 150 Nm), despite the two sharing the same LX platform, engine, and transmission. This entry previously carried the Charger's figure on the assumption the twins matched exactly on this spec too -- they don't. Treat platform-mates as close, not identical, the same lesson this vehicle's own hp/torque divergence already taught." },
       { label: "Front tire size (SXT, 18-in wheel package)", value: "235/55R18" },
     ],
     fluids: [
