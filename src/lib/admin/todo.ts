@@ -229,7 +229,7 @@ export async function getBuildQueue(): Promise<BuildSignal[]> {
       title: "Vehicles with no sourced fluid data",
       detail: `Every fluid figure is hand-typed on: ${handTypedVehicles
         .map((v) => `${v.year} ${v.make} ${v.model}`)
-        .join(", ")}. Backfill from Open Labor Project to get real provenance.`,
+        .join(", ")}. Source these from the factory service manual or owner's manual for each vehicle — Open Labor Project must not be used for capacities.`,
       count: handTypedVehicles.length,
       href: "/admin/vehicles",
     });
