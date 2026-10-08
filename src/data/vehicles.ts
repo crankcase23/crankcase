@@ -3888,6 +3888,63 @@ spec: "All-season washer fluid",
         notes: "Reference figure only; confirm against the axle tag before buying fluid.",
       },
     ],
+  },
+  {
+    id: "2021-dodge-durango-3.6l",
+    keys: { platform: "dodge-durango-wd", engine: "chrysler-pentastar-3.6-gen3", driveline: "dodge-durango-rwd" },
+    year: 2021,
+    make: "Dodge",
+    model: "Durango",
+    trim: "SXT",
+    engine: "3.6L Pentastar V6, 293 hp / 260 lb-ft",
+    drivetrain: "RWD",
+    transmission: "8-speed automatic (850RE, ZF-sourced TorqueFlite 8)",
+    specs: [
+      { label: "Engine", value: "3.6L Pentastar V6 (Gen III), 293 hp / 260 lb-ft" },
+      { label: "Drivetrain", value: "RWD (AWD optional on this generation)" },
+      { label: "Transmission", value: "8-speed automatic (850RE, ZF-sourced TorqueFlite 8) -- per this trim's own spec page; this catalog's Grand Cherokee entry lists the related 845RE code for its V6, and whether the Durango's V6 genuinely uses a different RE variant than Grand Cherokee's hasn't been independently cross-checked trans-by-trans. Flagged, not assumed." },
+      { label: "Curb weight", value: "~4,689 lb (SXT RWD)" },
+      { label: "Fuel tank", value: "~25 gal" },
+      { label: "Battery", value: "Group 48 (H6) or 94R (H7) depending on start-stop equipment, 650-800 CCA -- mounted under the front passenger seat (lift the seat cushion/trapdoor), NOT under the hood. A well-documented WK/WD-platform quirk shared with this catalog's Jeep Grand Cherokee; the under-hood port is a jump-start terminal only, not the battery itself." },
+      { label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm) -- carried over from this catalog's existing Grand Cherokee entry (same WK/WD-family platform), but NOT independently confirmed for the Durango. Flag: this exact figure is also the one already under suspicion catalog-wide (see the 2026-10-07 lug-nut audit note) as a possible mis-copied Ram HD truck spec rather than a real WK/WD SUV figure. Needs its own Open Labor Project cross-check before being trusted either way." },
+      { label: "Front tire size (SXT)", value: "265/60R18" },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "6.0 qt (5.7 L) with filter change",
+        spec: "0W-20 full synthetic, Chrysler Mopar MS-6395",
+        notes: "Cartridge-style filter housing in the engine valley (Mopar MO-349 element), not a spin-on canister -- same family as this catalog's other 3.6L Pentastar entries (Grand Cherokee, Wrangler, Cherokee, Compass, Charger, Challenger). Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+      },
+      {
+        name: "Engine Coolant",
+        capacity: "~14.0 qt (13.2 L) system capacity",
+        spec: "Mopar OAT antifreeze/coolant (orange/yellow), 50/50 premix",
+        notes: "Capacity is an estimate scaled up from this catalog's other Pentastar-family vehicles (Grand Cherokee ~12.9 qt, Charger/Challenger ~11.5 qt) for the Durango's larger, heavier 3-row body -- not yet independently confirmed against a factory source for this specific vehicle.",
+      },
+      {
+        name: "Automatic Transmission Fluid (850RE 8-speed)",
+        capacity: "~5.5-6.0 qt (5.2-5.7 L) for a pan drain-and-fill (service fill)",
+        spec: "ZF Lifeguard 8 -- NOT Mopar ATF+4",
+        notes: "Same ZF-sourced 8-speed family as this catalog's Charger/Challenger (845RE) and Grand Cherokee; takes ZF's own fluid, unlike the ATF+4 used in older Chrysler automatics. Total dry-fill is roughly 9 qt (8.5 L per a published service-interval reference); a pan service only replaces what drains out.",
+      },
+      {
+        name: "Rear Differential Fluid",
+        capacity: "~1.2 qt (1.1 L)",
+        spec: "SAE 75W-140 synthetic gear oil (plus friction modifier if limited-slip / Super Track Pak)",
+        notes: "Capacity from a published service-interval reference; exact gear-oil spec carried over from this catalog's Charger/Challenger entries (same engine/driveline family) and not yet independently confirmed for the Durango's own axle. Confirm against the axle tag before buying fluid.",
+      },
+      {
+        name: "Brake Fluid",
+        capacity: "Fill to MAX line in reservoir",
+        spec: "DOT 3",
+      },
+      {
+        name: "Windshield Washer Fluid",
+        capacity: "~7.0 qt (6.6 L) reservoir",
+        spec: "All-season washer fluid",
+      },
+    ],
   }
 ];
 
