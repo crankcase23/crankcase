@@ -3945,6 +3945,38 @@ spec: "All-season washer fluid",
         spec: "All-season washer fluid",
       },
     ],
+  },
+  {
+    id: "2017-dodge-journey-3.6l",
+    keys: { platform: "dodge-journey-jc", engine: "chrysler-pentastar-3.6-gen2", driveline: "dodge-journey-fwd" },
+    year: 2017,
+    make: "Dodge",
+    model: "Journey",
+    trim: "SXT",
+    engine: "3.6L Pentastar V6, 283 hp / 260 lb-ft",
+    drivetrain: "FWD",
+    transmission: "6-speed automatic (62TE) -- Chrysler's own FWD-transaxle 6-speed, shared with the minivan/Avenger/200 family, NOT the ZF-sourced 845RE/850RE 8-speeds used in this catalog's Charger/Challenger/Durango.",
+    specs: [
+      { label: "Engine", value: "3.6L Pentastar V6, 283 hp / 260 lb-ft" },
+      { label: "Drivetrain", value: "FWD (AWD optional on this generation; AWD-specific driveline fluids are out of scope here)" },
+      { label: "Transmission", value: "6-speed automatic (62TE) -- a genuinely different unit from the ZF-sourced 845RE/850RE 8-speeds in this catalog's Charger/Challenger/Durango. Takes Mopar ATF+4, not ZF Lifeguard 8 -- flagged explicitly so a reader doesn't grab the wrong fluid on the strength of a shared Chrysler Pentastar badge alone." },
+      { label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm) -- curated estimate for this FWD unibody platform. The Journey has no real platform-mate elsewhere in this catalog to cross-check against, and this figure is deliberately NOT carried over from the Ram HD truck figure already flagged catalog-wide as suspect (see the 2026-10-07 lug-nut audit note). Needs its own independent Open Labor Project cross-check before being trusted as more than a reasonable estimate." },
+      { label: "Tire size (SXT)", value: "225/65R17" },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "6.0 qt (5.7 L) with filter change",
+        spec: "0W-20 full synthetic, Chrysler Mopar MS-6395",
+        notes: "Cartridge-style filter housing in the engine valley (Mopar MO-349 element), not a spin-on canister -- same family as this catalog's other 3.6L Pentastar entries. One genuine open question, not glossed over: this Journey's 283 hp/260 lb-ft rating matches the earlier (Gen II) Pentastar used throughout the Journey's production run, not the Gen III revision in this catalog's Charger/Challenger/Durango entries (293-303 hp) -- given its own distinct engine key for that reason rather than assumed identical hardware. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+      },
+      {
+        name: "Transmission Fluid (62TE 6-speed)",
+        capacity: "~8.5-9.0 qt (8.0-8.5 L) for a pan drain-and-fill (service fill); full dry-fill is higher",
+        spec: "Mopar ATF+4 -- NOT ZF Lifeguard 8",
+        notes: "The 62TE is a Chrysler-built FWD transaxle (shared with the Town & Country/Grand Caravan/Avenger/200 family), a different unit entirely from the ZF-sourced 8-speeds in this catalog's newer Pentastar entries -- takes the older Mopar ATF+4 fluid, not ZF's own. A pan service only replaces what drains out, not the full dry-fill amount.",
+      },
+    ],
   }
 ];
 
