@@ -6046,7 +6046,8 @@ image: "/steps/generic-cleanup.svg",
       {
         fastener: "Oil pan drain plug",
         value: "20 ft-lb (27 Nm)",
-        notes: "Curated carryover from this catalog's other 3.6L Pentastar entries (Grand Cherokee, Wrangler, Cherokee, Compass, Charger, Challenger -- several OLP-confirmed under their own make/model) -- not yet independently pulled from Open Labor Project under Dodge Durango's own make/model. Confirm against your service manual before torquing.",
+        notes: "Confirmed real, independently pulled from Open Labor Project under Dodge Durango's own make/model (3.6L V6 Pentastar, exact engine match), high confidence -- an exact match to the figure already carried over from this catalog's other 3.6L Pentastar entries.",
+        provenance: { source: "open-labor-project", confidence: "high" },
       },
       {
         fastener: "Oil filter housing cap",
