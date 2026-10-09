@@ -4,8 +4,8 @@
 
 Every test is labeled `RECONSTRUCTED TEST`. These are NEW tests derived from surviving documented behavior. **The lost 158 / 94 / 90 (plus 27 photo / 76 artwork) suites are not restored and their counts are not a target.**
 
-Last full run: **138 tests, 137 pass, 0 fail, 1 skipped** (`npm test`, Node v22.22.0).
-Test titles registered: 138.
+Last full run: **144 tests, 143 pass, 0 fail, 1 skipped** (`npm run factory:test` at the repo root, Node v22.22.0).
+Test titles registered: 144.
 
 ## Coverage of the C-3 minimum list and the C-4 additions
 | required area | tests |
@@ -170,9 +170,10 @@ Derived from: quarantine rules (C-3 §1); recovered hash freeze (C-2 master inde
 - the banner text is exact
 - fixture registry equals the recovered applications.json
 
-### tests/recovered-integration.test.mjs (7)
+### tests/recovered-integration.test.mjs (8)
 Derived from: RECOVERED src/lib/guideVisuals.ts run unmodified against reconstructed output
 
+- the recovered resolver can be bundled (esbuild present, recovered tree intact) unless explicitly opted out
 - recovered resolver loads unmodified and exposes its public API
 - a reconstructed, human-signed, QA-passed approval is ACCEPTED by the recovered resolver (SYNTHETIC fixture)
 - the same record WITHOUT Andy's sign-off is refused as 'not verified' (no human, nothing shown)
@@ -180,6 +181,15 @@ Derived from: RECOVERED src/lib/guideVisuals.ts run unmodified against reconstru
 - the recovered resolver independently refuses each tampering of a reconstructed record (reconstruction and recovered rules agree)
 - callouts shown without a passing overlay QA are refused by the recovered resolver
 - the recovered Charger registry is empty, so step 10 shows nothing (consistent with the proving run)
+
+### tests/restored-integrity.test.mjs (5)
+Derived from: n/a
+
+- every file in RESTORED-FILES.SHA256 matches its recorded SHA256
+- RESTORED-FILES.SHA256 covers every restored script, manifest and contract file (no unlisted file)
+- live src/ contract files equal their frozen recovered/ copies byte for byte
+- live visual scripts and sources equal their frozen recovered/ copies byte for byte
+- editing a restored file together with its own list line is still caught by the frozen recovered/ copy
 
 ### tests/step10-canonical.test.mjs (15)
 Derived from: C-5: one regression family per resolved Step 10 conflict + legacy-source oracle

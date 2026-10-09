@@ -3,11 +3,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { loadRecoveredResolver } from "../integration/recovered-resolver.mjs";
+import { loadRecoveredResolver, allowNoResolver } from "../integration/recovered-resolver.mjs";
 import { newRun, driveToQaPending, passQA, passAll, independentQA, INDEPENDENT_REVIEWER, APPLICATION, GUIDE_ID } from "./support/fixtures.mjs";
 
 const R = await loadRecoveredResolver();
 const skip = R.available ? false : `SKIPPED (not passed): ${R.reason}`;
+// A missing/blocked resolver must FAIL by default; skipping is an explicit opt-out (GF_ALLOW_NO_ESBUILD=1).
+test("RECONSTRUCTED TEST: the recovered resolver can be bundled (esbuild present, recovered tree intact) unless explicitly opted out", { skip: allowNoResolver() ? "SKIPPED by GF_ALLOW_NO_ESBUILD=1" : false }, () => {
+  assert.equal(R.available, true, `recovered resolver unavailable: ${R.reason}`);
+});
 const set = { guideId: GUIDE_ID, application: APPLICATION, steps: {} };
 const guide = { id: GUIDE_ID };
 

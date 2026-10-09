@@ -117,7 +117,7 @@
       "status": "BLOCKED"
     },
     {
-      "detail": "no generator output: no candidate.png + candidate.claims.json in /home/claude/guide-factory-reconstructed-v1/charger-step10/drop. No generated Step 10 image survives; V3/V4 artwork and the draft PNG are lost. Run is not in a state that allows a generation request.",
+      "detail": "no generator output: no candidate.png + candidate.claims.json in charger-step10/drop. No generated Step 10 image survives; V3/V4 artwork and the draft PNG are lost. Run is not in a state that allows a generation request.",
       "evidenceTag": "UNKNOWN (lost)",
       "stage": "5 generator abstraction / generation capture",
       "status": "BLOCKED"

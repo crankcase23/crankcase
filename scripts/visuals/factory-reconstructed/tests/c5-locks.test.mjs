@@ -10,7 +10,7 @@ import { ScriptedGenerator, runGeneration } from "../src/actors.mjs";
 import { INDEPENDENT_IDENTITY, GENERATED_ASSET_CLASS, RIGHTS_BASIS } from "../src/enums.mjs";
 import { newRun, driveToQaPending, passQA, independentQA, passAll, INDEPENDENT_REVIEWER, goodOutput, goodAttestation, synthPng, fixtureEPBody } from "./support/fixtures.mjs";
 import { forge, rechain } from "./support/attacks.mjs";
-import { loadRecoveredResolver } from "../integration/recovered-resolver.mjs";
+import { loadRecoveredResolver, allowNoResolver } from "../integration/recovered-resolver.mjs";
 
 const T = (n, s) => `RECONSTRUCTED TEST [C-5 LOCK ${n}]: ${s}`;
 const AUTH = { approvedBy: "andy", approvedOn: "2026-10-04" };
@@ -86,7 +86,7 @@ test(T(3, "generated output ownership: project asset subject to the provider's u
 });
 
 test(T(3, "the RECOVERED resolver still accepts the record (it requires generated-original and no ownership assertion) — the ownership posture does not break recovered rules"), async () => {
-  const R = await loadRecoveredResolver(); if (!R.available) return;
+  const R = await loadRecoveredResolver(); if (!R.available) { assert.ok(allowNoResolver(), `recovered resolver unavailable: ${R.reason}`); return; }
   const run = await approved("rr"); const entry = structuredClone(JSON.parse(fs.readFileSync(abs(run.dir, LAYOUT.registryPreview), "utf8")).entry);
   const set = { guideId: "admin-test-charger-2016-sxt-multi-job", application: entry.application, steps: {} };
   assert.equal(R.visualRefusal(set, entry, { id: "admin-test-charger-2016-sxt-multi-job" }, entry.application), null);

@@ -5,6 +5,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { runStep10Proving, draftEPFromSpec } from "../charger-step10/run-proving.mjs";
+import { allowNoResolver } from "../integration/recovered-resolver.mjs";
 import { makeClock } from "./support/fixtures.mjs";
 import { parseVisualSpecPrompt } from "../src/spec-intake.mjs";
 import { verifyRun } from "../src/verify.mjs";
@@ -52,7 +53,7 @@ test("RECONSTRUCTED TEST: Step 10 — surviving sources conflict and the conflic
 test("RECONSTRUCTED TEST: Step 10 — event log + directory of the blocked run verify clean, and the recovered resolver integrates (shows nothing)", async () => {
   const dir = out(); const r = await runStep10Proving({ outDir: dir, clock: makeClock() });
   assert.deepEqual(verifyRun(path.join(dir, "step-10-intake-duct")).problems, []);
-  assert.ok(["PASS", "NOT_RUN"].includes(byStage(r, "13").status));
+  assert.ok((allowNoResolver() ? ["PASS", "NOT_RUN"] : ["PASS"]).includes(byStage(r, "13").status), `stage 13 was ${byStage(r, "13").status}`);
 });
 
 test("RECONSTRUCTED TEST: Step 10 — deterministic repeated execution (identical report bytes)", async () => {

@@ -15,7 +15,7 @@ Fixture only. Nothing published, nothing integrated, nothing fabricated. Produce
 | 3 evidence ledger | **BLOCKED** | INFERRED | ledger candidates derived from the prompt, all marked not-established (omit); hero/target existence+location are NOT established |
 | 3b EP sufficiency (objective gate) | **BLOCKED** | VERIFIED FROM DOCUMENTATION (rule) + reconstructed code | EP INSUFFICIENT: EP_NO_REFERENCES, EP_HERO_NOT_ESTABLISHED (15 problems) |
 | 4 visual contract compile/lock | **BLOCKED** | reconstructed code | refused WRONG_STATE: WRONG_STATE: compileContract not allowed in phase EP_INSUFFICIENT (needs EP_SUFFICIENT) |
-| 5 generator abstraction / generation capture | **BLOCKED** | UNKNOWN (lost) | no generator output: no candidate.png + candidate.claims.json in /home/claude/guide-factory-reconstructed-v1/charger-step10/drop. No generated Step 10 image survives; V3/V4 artwork and the draft PNG are lost. Run is not in a state that allows a generation request. |
+| 5 generator abstraction / generation capture | **BLOCKED** | UNKNOWN (lost) | no generator output: no candidate.png + candidate.claims.json in charger-step10/drop. No generated Step 10 image survives; V3/V4 artwork and the draft PNG are lost. Run is not in a state that allows a generation request. |
 | 6 provenance checks | **BLOCKED** | n/a | no candidate to check. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10. |
 | 7 no-source-pixels / generator attestation | **BLOCKED** | n/a | no candidate attestation exists. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10. |
 | 8 admission/rejection gate | **BLOCKED** | n/a | no candidate to admit. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10. |

@@ -1,4 +1,4 @@
-27bf3bd0d97b073b77aa4bc7cfb6f39736cdb35c649a17c13bcec0c53234fce0  ./README-RECOVERED.md
+4bf0e6f287a40fab00a8db594056e06d4bfc18486ec403866410d1c383e64ed9  ./README-RECOVERED.md
 a71ebdfbe7700d89e247874dad31b8dee77b8801b9a9832ffeafac90205b3a9d  ./doc-derived/step-10-handoff-prompt.txt
 cfd68d57acefbe5de8482bb75e8c044753345d1ef5063bb0eba991257a10da20  ./scripts-visuals/lib.mjs
 647055828ddb31040a9da39962575a3467e134d892bca0191323ec4687f935b2  ./src/data/admin-test-guides/charger-2016-sxt-multi-job.ts

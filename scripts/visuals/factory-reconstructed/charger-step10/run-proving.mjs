@@ -13,7 +13,7 @@ import { FileDropGenerator, ActorUnavailable } from "../src/actors.mjs";
 import { verifyRun } from "../src/verify.mjs";
 import { Refused } from "../src/store.mjs";
 import { RECONSTRUCTION_BANNER } from "../src/enums.mjs";
-import { loadRecoveredResolver } from "../integration/recovered-resolver.mjs";
+import { loadRecoveredResolver, findEsbuild, allowNoResolver } from "../integration/recovered-resolver.mjs";
 import { CONFLICTS } from "./conflicts.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -92,7 +92,7 @@ export async function runStep10Proving({ outDir, clock }) {
   stage("4 visual contract compile/lock", vcStatus, "reconstructed code", vcDetail);
 
   let genDetail;
-  try { await new FileDropGenerator(path.join(here, "drop")).generate({}); genDetail = "UNEXPECTED: a candidate exists"; } catch (e) { genDetail = e instanceof ActorUnavailable ? `no generator output: ${e.message}` : String(e); }
+  try { await new FileDropGenerator(path.join(here, "drop"), "charger-step10/drop").generate({}); genDetail = "UNEXPECTED: a candidate exists"; } catch (e) { genDetail = e instanceof ActorUnavailable ? `no generator output: ${e.message}` : String(e); }
   stage("5 generator abstraction / generation capture", "BLOCKED", "UNKNOWN (lost)", `${genDetail}. No generated Step 10 image survives; V3/V4 artwork and the draft PNG are lost. Run is not in a state that allows a generation request.`);
   for (const [n, d] of [["6 provenance checks", "no candidate to check"], ["7 no-source-pixels / generator attestation", "no candidate attestation exists"], ["8 admission/rejection gate", "no candidate to admit"], ["9 normalization", "no admitted candidate"], ["10 QA (CG-QA-v1.0 content + overlay)", "no admitted candidate and no independent QA result"], ["11 final artifact / manifest", "nothing admitted; no AA can exist"]])
     stage(n, "BLOCKED", "n/a", `${d}. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.`);
@@ -114,6 +114,8 @@ export async function runStep10Proving({ outDir, clock }) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  // Never overwrite the committed baseline with a degraded run: the recovered-resolver stage needs esbuild (declared devDependency).
+  if (!findEsbuild() && !allowNoResolver()) { console.error("esbuild not found: refusing to write a degraded proving run. Run `npm install`, or set GF_ALLOW_NO_ESBUILD=1 to run without stage 13."); process.exit(2); }
   let t = Date.parse("2026-10-04T12:00:00.000Z");
   const r = await runStep10Proving({ outDir: path.join(here, "output"), clock: () => new Date((t += 1000)).toISOString() });
   for (const s of r.stages) console.log(`${s.status.padEnd(19)} ${s.stage}`);

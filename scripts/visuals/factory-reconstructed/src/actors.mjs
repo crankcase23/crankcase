@@ -15,10 +15,11 @@ export class UnavailableGenerator {
 
 /** Reads a candidate a HUMAN/OTHER SYSTEM dropped in a folder: candidate.png + candidate.claims.json. Does not invent claims. */
 export class FileDropGenerator {
-  constructor(dropDir) { this.dropDir = dropDir; }
+  /** `label` is the stable, repo-relative name used in messages/reports (never an absolute path). */
+  constructor(dropDir, label = null) { this.dropDir = dropDir; this.label = label ?? path.basename(dropDir); }
   async generate(req) {
     const png = path.join(this.dropDir, "candidate.png"), claims = path.join(this.dropDir, "candidate.claims.json");
-    if (!fs.existsSync(png) || !fs.existsSync(claims)) throw new ActorUnavailable(`no candidate.png + candidate.claims.json in ${this.dropDir}`);
+    if (!fs.existsSync(png) || !fs.existsSync(claims)) throw new ActorUnavailable(`no candidate.png + candidate.claims.json in ${this.label}`);
     return { ...JSON.parse(fs.readFileSync(claims, "utf8")), bytes: fs.readFileSync(png), mediaType: "png", deltaRef: req.deltaRef ?? undefined };
   }
 }

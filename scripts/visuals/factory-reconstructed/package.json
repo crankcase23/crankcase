@@ -3,7 +3,7 @@
   "version": "0.0.0-reconstructed",
   "private": true,
   "type": "module",
-  "description": "RECONSTRUCTED from surviving evidence. NOT the lost original Guide Factory. Quarantined; not integrated into Crankcase.",
+  "description": "RECONSTRUCTED from surviving evidence. NOT the lost original Guide Factory. Carried in the Crankcase repo for review (branch claude/guide-factory-recovery); not wired into the app or deployed.",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "prove:charger-step10": "node charger-step10/run-proving.mjs"

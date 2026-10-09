@@ -2,6 +2,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { Refused, snapshot } from "../src/store.mjs";
 import { POLICIES, DEFAULT_POLICY, resolvePolicy } from "../src/policy.mjs";
 import { ScriptedGenerator, runGeneration } from "../src/actors.mjs";
@@ -216,7 +218,7 @@ test("RECONSTRUCTED TEST: a contract with no callouts has overlay gates 'na' and
 });
 
 test("RECONSTRUCTED TEST: vehicleVerified is an objective registry match — an unregistered application is refused at approval", async () => {
-  const run = new FactoryRun({ dir: fs.mkdtempSync("/tmp/gfr1-reg-") + "/v", visualId: "synthetic-fixture", application: APPLICATION, guideId: GUIDE_ID, registry: {}, clock: makeClock() });
+  const run = new FactoryRun({ dir: fs.mkdtempSync(path.join(os.tmpdir(), "gfr1-reg-")) + "/v", visualId: "synthetic-fixture", application: APPLICATION, guideId: GUIDE_ID, registry: {}, clock: makeClock() });
   run.init(); await driveToQaPending(run); passAll(run); run.admit(); run.normalize();
   refused(() => run.approve({ step: 99, presentation: { alt: "a", caption: "c" } }), "GATES_FAILED");
 });

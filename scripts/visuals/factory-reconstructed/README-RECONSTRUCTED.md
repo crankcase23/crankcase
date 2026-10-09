@@ -2,7 +2,7 @@
 
 # guide-factory-reconstructed-v1 (quarantined)
 
-Branch/workspace designation: `guide-factory-reconstructed-v1`. Created 2026-10-04 (Crankcase C-3). Local-only git repo, no remote.
+Branch/workspace designation: `guide-factory-reconstructed-v1`. Created 2026-10-04 (Crankcase C-3). Originally a local-only repo (C-3/C-5). Now carried in the Crankcase repo on branch `claude/guide-factory-recovery` (see `RECOVERY.md`); not merged to `main`, not deployed.
 
 ## Status labels used everywhere
 
@@ -15,10 +15,10 @@ Branch/workspace designation: `guide-factory-reconstructed-v1`. Created 2026-10-
 | **UNRESOLVED** | Evidence conflicts or is missing; exposed as an explicit policy/config switch or left unimplemented (see docs/UNRESOLVED-DECISIONS.md) |
 
 ## Quarantine rules
-- `recovered/` is read-only (chmod a-w) and hash-checked on every test run. No code here writes into it.
+- `recovered/` is hash-checked on every test run (`SHA256SUMS.txt`). The read-only bit is not tracked by git, so it is only asserted with `GF_ENFORCE_READONLY=1` on a locked copy. No code here writes into it.
 - Nothing here imports from, patches, or is wired into Crankcase `main`. No registry or `public/` is ever written; approvals produce a **preview** only (`registry-entry.preview.json`).
 - The old 158 / 94 / 90 suites are gone and are NOT claimed. The tests here are new (`RECONSTRUCTED TEST`).
-- Integration against Crankcase is gated on live GitHub access (still blocked).
+- Crankcase integration is limited to the recovered contract layer files and scripts listed in `../RESTORED-FILES.SHA256`, enforced by `tests/restored-integrity.test.mjs`. The factory itself still writes no registry and no `public/`. Redactions are logged in `REDACTION-LOG.md`.
 
 ## C-4 locks (Andy, 2026-10-04)
 1. **Cycle policy**: `ARCHITECTURE_V1` is canonical; a provenance-rejected generation does NOT consume a correction cycle. `BRICK_C_REPORT` and per-field overrides are rejected alternatives: they need `allowNonCanonical`, are recorded in `policy.json`, and can never be approved.
@@ -33,10 +33,11 @@ Step 10 canonicalization: `docs/STEP10-CANONICAL-SPEC.md` (PROPOSED, pending And
 
 ## Run
 ```
-npm test                       # deterministic, no network; needs Node >= 22
-npm run prove:charger-step10   # Charger #001 Step 10 proving run (expected: principled BLOCK)
+npm run factory:test           # (repo root) deterministic, no network; needs Node >= 22
+npm run factory:prove-step10   # (repo root) Charger #001 Step 10 proving run (expected: principled BLOCK)
+# standalone copy of this folder: npm test / npm run prove:charger-step10
 ```
-The recovered-resolver integration tests need `esbuild` (set `ESBUILD_PATH`); without it they report SKIPPED, not pass.
+The recovered-resolver integration tests need `esbuild` (a root devDependency; or set `ESBUILD_PATH`). Without it they FAIL, and `factory:prove-step10` refuses to write a degraded run. Opt out explicitly with `GF_ALLOW_NO_ESBUILD=1`.
 
 ## Layout
 `recovered/` originals (read-only) · `src/` reconstructed pipeline · `tests/` reconstructed tests · `integration/` harness that runs the recovered resolver · `charger-step10/` proving run + committed output · `docs/` architecture map, provenance map, test inventory, unresolved decisions, differences, proving-run report.

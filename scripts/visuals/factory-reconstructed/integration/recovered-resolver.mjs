@@ -11,9 +11,13 @@ import { createHash } from "node:crypto";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.join(here, "..", "recovered");
 
+/** The integration tests need the recovered resolver bundled. Missing esbuild (or a failed integrity check) FAILS them unless GF_ALLOW_NO_ESBUILD=1 is set explicitly. */
+export const allowNoResolver = () => process.env.GF_ALLOW_NO_ESBUILD === "1";
+
 export function findEsbuild() {
   const req = createRequire(import.meta.url);
-  const cands = [process.env.ESBUILD_PATH, "esbuild", "/home/claude/work/crankcase-main/node_modules/esbuild", "/home/claude/work/charger/node_modules/esbuild", "/home/claude/work/sim/node_modules/esbuild"].filter(Boolean);
+  // esbuild is a declared devDependency of the repo root (cleanup pass 2026-10-09); ESBUILD_PATH is an explicit override only.
+  const cands = [process.env.ESBUILD_PATH, "esbuild"].filter(Boolean);
   for (const c of cands) { try { return req(c); } catch { /* next */ } }
   return null;
 }
