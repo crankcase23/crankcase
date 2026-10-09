@@ -1,0 +1,51 @@
+{
+  "application": {
+    "engine": "3.6L Pentastar V6",
+    "make": "Dodge",
+    "model": "Charger",
+    "trim": "SXT",
+    "year": 2016
+  },
+  "contentHash": "13402e87ebb5694ed4b873f11c58cb2f6d87fa15b7ee20e994469a9a05c79eff",
+  "createdAt": "2026-10-04T12:00:01.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "template-author"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "TPL-2016-dodge-charger-sxt-3.6l-pentastar-v6-v1",
+  "neverCosmeticKeywords": [
+    "hardware",
+    "connector",
+    "clamp",
+    "release",
+    "fastener",
+    "bolt",
+    "screw",
+    "latch",
+    "tab"
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [],
+  "schema": "guide-factory.product-template",
+  "schemaVersion": "reconstructed-1",
+  "visualId": "template"
+}

@@ -1,0 +1,10 @@
+27bf3bd0d97b073b77aa4bc7cfb6f39736cdb35c649a17c13bcec0c53234fce0  ./README-RECOVERED.md
+a71ebdfbe7700d89e247874dad31b8dee77b8801b9a9832ffeafac90205b3a9d  ./doc-derived/step-10-handoff-prompt.txt
+cfd68d57acefbe5de8482bb75e8c044753345d1ef5063bb0eba991257a10da20  ./scripts-visuals/lib.mjs
+647055828ddb31040a9da39962575a3467e134d892bca0191323ec4687f935b2  ./src/data/admin-test-guides/charger-2016-sxt-multi-job.ts
+e01deafba579ba660c76f0042edf7eb3b7e255da8ce302bc6dd393fd921306b8  ./src/data/guide-visuals/charger-2016-sxt-multi-job.ts
+4c98e9ec41842432e5deb710fb7ecfe509ae3c80c2af4c90bed8328cea911dee  ./src/data/guide-visuals/charger-2016-sxt-multi-job.visuals.json
+5f0131d8d743746f744a0b0306b6011d1d415eb8c2ba2d4800856af51e56750e  ./src/lib/guideVisuals.ts
+32303ced6cfe3bfb82af0c739dfcc318fea81251e8618c8fc440e217ffd8d86f  ./src/types/guideVisuals.ts
+8917f3f6d6c3465c34a49e692e15c0398bddfb48c98bdabaebce9830610a8b7c  ./visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json
+6dcbc9720f17f34365a0b13d30c7616d711e4d2a50d9ec85964671862e1aa38a  ./visual-sources/applications.json

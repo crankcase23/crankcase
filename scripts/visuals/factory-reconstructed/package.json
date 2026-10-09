@@ -1,0 +1,11 @@
+{
+  "name": "guide-factory-reconstructed-v1",
+  "version": "0.0.0-reconstructed",
+  "private": true,
+  "type": "module",
+  "description": "RECONSTRUCTED from surviving evidence. NOT the lost original Guide Factory. Quarantined; not integrated into Crankcase.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "prove:charger-step10": "node charger-step10/run-proving.mjs"
+  }
+}

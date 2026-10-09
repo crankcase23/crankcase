@@ -1,0 +1,47 @@
+{
+  "_status": "PENDING - no raw source yet. The pipeline refuses this manifest until every field below is real.",
+  "_needs": "Under-hood Power Distribution Center with the cover off, cavity 37 (10A RED mini fuse) legible.",
+  "_calloutTargetsFromStepText": [
+    "Cavity 37 — 10A RED mini fuse"
+  ],
+  "id": "step-04-pdc-f37",
+  "step": 4,
+  "guideId": "admin-test-charger-2016-sxt-multi-job",
+  "registryFile": "charger-2016-sxt-multi-job.visuals.json",
+  "application": {
+    "year": 2016,
+    "make": "Dodge",
+    "model": "Charger",
+    "trim": "SXT",
+    "engine": "3.6L Pentastar V6"
+  },
+  "component": "Front Power Distribution Center, cavity 37",
+  "alt": "",
+  "caption": "",
+  "raw": {
+    "file": "raw/step-04-pdc-f37.jpg",
+    "sourceType": "",
+    "source": "",
+    "sourceRef": "",
+    "license": {
+      "status": "unknown",
+      "terms": ""
+    },
+    "capturedOn": ""
+  },
+  "verification": {
+    "status": "pending",
+    "vehicleEvidence": "",
+    "verifiedBy": "",
+    "verifiedOn": "",
+    "technicalReviewBy": "",
+    "technicalReviewOn": "",
+    "technicalReviewNotes": "",
+    "uncertainty": "none"
+  },
+  "treatment": {
+    "brightness": 1,
+    "contrast": 1
+  },
+  "callouts": []
+}

@@ -1,0 +1,50 @@
+{
+  "_status": "PENDING - no raw source yet. The pipeline refuses this manifest until every field below is real.",
+  "_needs": "Air-inlet system from the throttle body back to the air-cleaner housing, all clamps and the connector in view.",
+  "_calloutTargetsFromStepText": [
+    "IAT electrical connector",
+    "Clamp at the throttle body",
+    "Clamp at the air-cleaner housing",
+    "Retaining grommet"
+  ],
+  "id": "step-10-intake-duct",
+  "step": 10,
+  "guideId": "admin-test-charger-2016-sxt-multi-job",
+  "registryFile": "charger-2016-sxt-multi-job.visuals.json",
+  "application": {
+    "year": 2016,
+    "make": "Dodge",
+    "model": "Charger",
+    "trim": "SXT",
+    "engine": "3.6L Pentastar V6"
+  },
+  "component": "Air inlet duct, IAT connector, clamps, grommet",
+  "alt": "",
+  "caption": "",
+  "raw": {
+    "file": "raw/step-10-intake-duct.jpg",
+    "sourceType": "",
+    "source": "",
+    "sourceRef": "",
+    "license": {
+      "status": "unknown",
+      "terms": ""
+    },
+    "capturedOn": ""
+  },
+  "verification": {
+    "status": "pending",
+    "vehicleEvidence": "",
+    "verifiedBy": "",
+    "verifiedOn": "",
+    "technicalReviewBy": "",
+    "technicalReviewOn": "",
+    "technicalReviewNotes": "",
+    "uncertainty": "none"
+  },
+  "treatment": {
+    "brightness": 1,
+    "contrast": 1
+  },
+  "callouts": []
+}

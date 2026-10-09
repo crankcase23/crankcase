@@ -1,0 +1,199 @@
+{
+  "banner": "THIS GUIDE FACTORY IMPLEMENTATION IS RECONSTRUCTED FROM SURVIVING EVIDENCE. IT IS NOT THE LOST ORIGINAL IMPLEMENTATION.",
+  "conflicts": [
+    {
+      "id": "U-10a",
+      "sources": [
+        "guide step 10 text (recovered)",
+        "Step 10 handoff prompt (doc)"
+      ],
+      "status": "UNRESOLVED -> NEEDS_ANDY",
+      "what": "Guide step 10 text names hose grommet + resonator, but the Step 10 prompt lists them under MUST NOT SHOW"
+    },
+    {
+      "id": "U-10b",
+      "manifestTargets": [
+        "IAT electrical connector",
+        "Clamp at the throttle body",
+        "Clamp at the air-cleaner housing",
+        "Retaining grommet"
+      ],
+      "slotTargets": [
+        "IAT connector",
+        "Throttle-body clamp",
+        "Air-box clamp",
+        "Intake hose"
+      ],
+      "sources": [
+        "manifest._calloutTargetsFromStepText",
+        "slot calloutTargets",
+        "handoff prompt"
+      ],
+      "status": "UNRESOLVED -> NEEDS_ANDY",
+      "what": "Older Step 10 manifest lists 'Retaining grommet' as a callout target; the handoff prompt excludes the grommet; the shot-list slot has no grommet but adds 'Intake hose'"
+    }
+  ],
+  "fixture": "Charger #001 Step 10 (proving fixture only; nothing published)",
+  "promptSha256": "a71ebdfbe7700d89e247874dad31b8dee77b8801b9a9832ffeafac90205b3a9d",
+  "stages": [
+    {
+      "detail": "6 surviving Step 10 inputs match SHA256SUMS",
+      "evidenceTag": "RECOVERED",
+      "stage": "0 recovered inputs intact",
+      "status": "PASS"
+    },
+    {
+      "detail": "parsed handoff prompt: 6 ranked must-show, 8 may-simplify, 16 must-not-show, no-text=true, clear space [{\"band\":\"top\",\"fromPct\":3,\"toPct\":17},{\"band\":\"bottom\",\"fromPct\":83,\"toPct\":97}], 16:10 >= 1600x1000",
+      "evidenceTag": "RECOVERED-FROM-DOCUMENTATION",
+      "stage": "1 visual specification intake",
+      "status": "PASS"
+    },
+    {
+      "conflicts": [
+        {
+          "id": "U-10a",
+          "sources": [
+            "guide step 10 text (recovered)",
+            "Step 10 handoff prompt (doc)"
+          ],
+          "status": "UNRESOLVED -> NEEDS_ANDY",
+          "what": "Guide step 10 text names hose grommet + resonator, but the Step 10 prompt lists them under MUST NOT SHOW"
+        },
+        {
+          "id": "U-10b",
+          "manifestTargets": [
+            "IAT electrical connector",
+            "Clamp at the throttle body",
+            "Clamp at the air-cleaner housing",
+            "Retaining grommet"
+          ],
+          "slotTargets": [
+            "IAT connector",
+            "Throttle-body clamp",
+            "Air-box clamp",
+            "Intake hose"
+          ],
+          "sources": [
+            "manifest._calloutTargetsFromStepText",
+            "slot calloutTargets",
+            "handoff prompt"
+          ],
+          "status": "UNRESOLVED -> NEEDS_ANDY",
+          "what": "Older Step 10 manifest lists 'Retaining grommet' as a callout target; the handoff prompt excludes the grommet; the shot-list slot has no grommet but adds 'Intake hose'"
+        }
+      ],
+      "detail": "2 headline conflict(s) detected by the diagnostic; the full 9-row Step 10 source-conflict table (docs/STEP10-CONFLICT-TABLE.md, charger-step10/conflicts.mjs) is OPEN for Andy/Hermes; none resolved here",
+      "evidenceTag": "RECONSTRUCTED diagnostic",
+      "stage": "1b cross-source consistency (diagnostic)",
+      "status": "PASS_WITH_CONFLICTS"
+    },
+    {
+      "detail": "0 reference items survive for Step 10 (the older manifest's raw.source/sourceRef are empty; the V3 spec and its reference list are lost). Nothing was invented.",
+      "evidenceTag": "UNKNOWN (lost)",
+      "referencesRecovered": 0,
+      "stage": "2 reference evidence intake",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "ledger candidates derived from the prompt, all marked not-established (omit); hero/target existence+location are NOT established",
+      "evidenceTag": "INFERRED",
+      "stage": "3 evidence ledger",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "EP INSUFFICIENT: EP_NO_REFERENCES, EP_HERO_NOT_ESTABLISHED (15 problems)",
+      "evidenceTag": "VERIFIED FROM DOCUMENTATION (rule) + reconstructed code",
+      "problemCodes": [
+        "EP_NO_REFERENCES",
+        "EP_HERO_NOT_ESTABLISHED"
+      ],
+      "stage": "3b EP sufficiency (objective gate)",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "refused WRONG_STATE: WRONG_STATE: compileContract not allowed in phase EP_INSUFFICIENT (needs EP_SUFFICIENT)",
+      "evidenceTag": "reconstructed code",
+      "stage": "4 visual contract compile/lock",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "no generator output: no candidate.png + candidate.claims.json in /home/claude/guide-factory-reconstructed-v1/charger-step10/drop. No generated Step 10 image survives; V3/V4 artwork and the draft PNG are lost. Run is not in a state that allows a generation request.",
+      "evidenceTag": "UNKNOWN (lost)",
+      "stage": "5 generator abstraction / generation capture",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "no candidate to check. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.",
+      "evidenceTag": "n/a",
+      "stage": "6 provenance checks",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "no candidate attestation exists. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.",
+      "evidenceTag": "n/a",
+      "stage": "7 no-source-pixels / generator attestation",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "no candidate to admit. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.",
+      "evidenceTag": "n/a",
+      "stage": "8 admission/rejection gate",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "no admitted candidate. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.",
+      "evidenceTag": "n/a",
+      "stage": "9 normalization",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "no admitted candidate and no independent QA result. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.",
+      "evidenceTag": "n/a",
+      "stage": "10 QA (CG-QA-v1.0 content + overlay)",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "nothing admitted; no AA can exist. Stage logic is exercised on SYNTHETIC fixtures in tests/, never on Step 10.",
+      "evidenceTag": "n/a",
+      "stage": "11 final artifact / manifest",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "2 events, 2 objects, problems=0",
+      "evidenceTag": "reconstructed code",
+      "stage": "12 event log + directory integrity",
+      "status": "PASS"
+    },
+    {
+      "detail": "recovered resolver bundles and runs; recovered registry holds 0 visuals; resolveStepVisuals(step 10) -> 0 visuals (shows nothing, as the recovered design requires). Accepting a reconstructed record is proven on SYNTHETIC fixtures in tests/recovered-integration.test.mjs.",
+      "evidenceTag": "RECOVERED code (unmodified)",
+      "stage": "13 recovered visual-contract layer integration",
+      "status": "PASS"
+    }
+  ],
+  "verdict": {
+    "stagesBlocked": [
+      "2 reference evidence intake",
+      "3 evidence ledger",
+      "3b EP sufficiency (objective gate)",
+      "4 visual contract compile/lock",
+      "5 generator abstraction / generation capture",
+      "6 provenance checks",
+      "7 no-source-pixels / generator attestation",
+      "8 admission/rejection gate",
+      "9 normalization",
+      "10 QA (CG-QA-v1.0 content + overlay)",
+      "11 final artifact / manifest"
+    ],
+    "stagesFail": [],
+    "stagesPass": [
+      "0 recovered inputs intact",
+      "1 visual specification intake",
+      "1b cross-source consistency (diagnostic)",
+      "12 event log + directory integrity",
+      "13 recovered visual-contract layer integration"
+    ],
+    "step10Passes": false,
+    "why": "Stages 2-11 are BLOCKED by missing evidence/artwork. The factory correctly refuses to proceed; it was not forced green."
+  }
+}

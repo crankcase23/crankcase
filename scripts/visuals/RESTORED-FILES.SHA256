@@ -1,0 +1,13 @@
+358bab3a7bc00fbd4d460c7436c76ac261c3d265a471a3e9820cc614b998bf7c  scripts/visuals/build-visual.mjs
+09e7b8f2d869207f2939678fba86a66bc1c024e3e2fd291f18ee08e39ac71d55  scripts/visuals/check.mjs
+cfd68d57acefbe5de8482bb75e8c044753345d1ef5063bb0eba991257a10da20  scripts/visuals/lib.mjs
+6dcbc9720f17f34365a0b13d30c7616d711e4d2a50d9ec85964671862e1aa38a  visual-sources/applications.json
+31a958a4c0488ba9ac544030468c92726ec1661edf231896924458a962c61753  visual-sources/2016-dodge-charger-sxt-36/step-02-engine-cover.manifest.json
+0d5a1d20cbc51f6abe9db030023a4d18d0d07d6faf0363c92ab7b30f30e105c5  visual-sources/2016-dodge-charger-sxt-36/step-04-pdc-f37.manifest.json
+8917f3f6d6c3465c34a49e692e15c0398bddfb48c98bdabaebce9830610a8b7c  visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json
+1debb7065d864b8c9195bb6bb2f3a98454e6d5afffdf06fd29b1507fe4cd5cf2  visual-sources/2016-dodge-charger-sxt-36/step-11-routing.manifest.json
+b64f10997ef0372d53ab22399a973c39265c96fc58b8c577e8b17d805d17be1b  visual-sources/2016-dodge-charger-sxt-36/step-15-coils.manifest.json
+10a5012c437d9831aaae02fa9f87b2a21f297e2f5ca562162520bbb19355e945  visual-sources/2016-dodge-charger-sxt-36/step-33-pcv-valve.manifest.json
+32303ced6cfe3bfb82af0c739dfcc318fea81251e8618c8fc440e217ffd8d86f  src/types/guideVisuals.ts
+5f0131d8d743746f744a0b0306b6011d1d415eb8c2ba2d4800856af51e56750e  src/lib/guideVisuals.ts
+e01deafba579ba660c76f0042edf7eb3b7e255da8ce302bc6dd393fd921306b8  src/data/guide-visuals/charger-2016-sxt-multi-job.ts

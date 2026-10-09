@@ -1,0 +1,17 @@
+{
+  "canonical": true,
+  "policy": {
+    "canonical": true,
+    "locked": "Andy C-4 decision 1 (2026-10-04)",
+    "name": "ARCHITECTURE_V1",
+    "provenanceRejection": "no-cycle-burn-resubmit",
+    "provenanceRetryCap": 3,
+    "provisional": false,
+    "retryCapLabel": "NEW reconstructed behavior (Andy C-4 lock #3) — NOT recovered original behavior",
+    "source": "VD architecture doc §3",
+    "substantiveProvenanceRejection": "needs-andy"
+  },
+  "reconstructed": true,
+  "retryCapLabel": "metadata retry cap = NEW reconstructed behavior (Andy C-4 lock #3), NOT recovered original behavior",
+  "schema": "guide-factory.run-policy"
+}

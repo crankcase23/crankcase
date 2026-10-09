@@ -1,0 +1,653 @@
+{
+  "banner": "**THIS GUIDE FACTORY IMPLEMENTATION IS RECONSTRUCTED FROM SURVIVING EVIDENCE. IT IS NOT THE LOST ORIGINAL IMPLEMENTATION.**",
+  "items": [
+    {
+      "id": "A-01",
+      "status": "AVAILABLE",
+      "what": "Guide step 10 text (five actions) and step 2 (engine cover)",
+      "where": "recovered/src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+      "caveat": "Recovered code. It is the canonical step text, but see CF-01…CF-08 for where other sources disagree with it."
+    },
+    {
+      "id": "A-02",
+      "status": "AVAILABLE",
+      "what": "Step 10 image prompt (spec for a text-only generated raster)",
+      "where": "recovered/doc-derived/step-10-handoff-prompt.txt",
+      "caveat": "DOCUMENTATION-DERIVED: the original prompt file is lost; this is the text a report quoted. It is a SPEC, not evidence about the car."
+    },
+    {
+      "id": "A-03",
+      "status": "AVAILABLE",
+      "what": "Old Step 10 manifest (PENDING — empty photo-route skeleton)",
+      "where": "recovered/visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+      "caveat": "Contains no source, licence or verification; useful only for its callout list and component string."
+    },
+    {
+      "id": "A-04",
+      "status": "AVAILABLE",
+      "what": "Shot-list slot for step 10 and the recovered (empty) Charger visuals registry",
+      "where": "recovered/src/data/guide-visuals/charger-2016-sxt-multi-job.ts and recovered/src/data/guide-visuals/charger-2016-sxt-multi-job.visuals.json",
+      "caveat": "Registry holds 0 visuals; step 10 shows nothing today."
+    },
+    {
+      "id": "A-05",
+      "status": "AVAILABLE",
+      "what": "Recovered contract layer (types, resolver rules, callout rules) and vehicle registry",
+      "where": "recovered/src/types/guideVisuals.ts, recovered/src/lib/guideVisuals.ts, recovered/scripts-visuals/lib.mjs, recovered/visual-sources/applications.json",
+      "caveat": "Unmodified; hashes verified against SHA256SUMS before every harness run (C-4)."
+    },
+    {
+      "id": "A-06",
+      "status": "AVAILABLE",
+      "what": "The reconstructed factory itself (pipeline, canonical policy, independent-review path, replay verifier) and its tests",
+      "where": "src/, tests/",
+      "caveat": "RECONSTRUCTED, not the lost original. Proven on SYNTHETIC fixtures only."
+    },
+    {
+      "id": "M-01",
+      "status": "MISSING",
+      "what": "At least ONE real reference item for the intake system (OEM figure/text, parts-catalog entry, third-party guide, or an Andy-supplied photo), each with kind, source, sourceRef that lets a reviewer re-open it, rights, and what it establishes",
+      "suppliedBy": "Andy (or claude-research from a source Andy approves)",
+      "acceptance": "referenceProblems() clean for every item; usage is reference-only or corroborating-text (never an image input); ids unique",
+      "blocks": {
+        "stage": "2 reference evidence intake / EP sufficiency",
+        "codes": [
+          "EP_NO_REFERENCES"
+        ]
+      },
+      "absentProof": "recovered manifest raw.source/sourceRef are empty; V3 spec lost"
+    },
+    {
+      "id": "M-02",
+      "status": "MISSING",
+      "what": "ESTABLISHED ledger rows (existence + location, each citing a real reference id) for every hero/target element that survives the conflict decisions: under the C-5 proposed contract: intake hose/resonator assembly, throttle-body clamp, air-cleaner-housing clamp, IAT connector, retaining grommet, throttle body, air-cleaner housing (canonical EP skeleton: charger-step10/canonical-step10.mjs canonicalEPSkeleton). The IAT connector's position appears only in the old prompt, with no evidence behind it",
+      "suppliedBy": "claude-research, from M-01",
+      "acceptance": "sufficiencyProblems() empty: every hero/target has established existence and location",
+      "blocks": {
+        "stage": "3b EP sufficiency (objective gate)",
+        "codes": [
+          "EP_HERO_NOT_ESTABLISHED"
+        ]
+      },
+      "absentProof": "every ledger row in the draft EP is not-established (asserted by tests/charger-step10.test.mjs)"
+    },
+    {
+      "id": "M-03",
+      "status": "MISSING",
+      "what": "Only if a decision lets the image SHOW them: established fine-detail evidence for clamp fastener position / head type and for the connector's release-mechanism geometry",
+      "suppliedBy": "claude-research, from M-01",
+      "acceptance": "ledger rows for SAFETY_CRITICAL attributes are established with evidence, or render stays omit/occlude (LEDGER_SAFETY_SHOWN otherwise)",
+      "blocks": {
+        "stage": "3 evidence ledger",
+        "codes": [
+          "LEDGER_SAFETY_SHOWN",
+          "LEDGER_UNSUPPORTED_DRAWN"
+        ]
+      },
+      "absentProof": "no evidence exists for any of these attributes"
+    },
+    {
+      "id": "M-04",
+      "status": "MISSING",
+      "what": "The original Step 10 reference list / V3 artwork spec named by the shot list",
+      "suppliedBy": "Andy (if it exists anywhere, e.g. in the live repo or an older export)",
+      "acceptance": "file present at the path the shot list names; its references can then satisfy M-01",
+      "blocks": {
+        "stage": "2 reference evidence intake",
+        "codes": [
+          "EP_NO_REFERENCES"
+        ]
+      },
+      "absentProof": "visual-sources/.../artwork/step-10-intake-duct.v3.spec.md is not in the recovered tree",
+      "file": "recovered/visual-sources/2016-dodge-charger-sxt-36/artwork/step-10-intake-duct.v3.spec.md"
+    },
+    {
+      "id": "M-05",
+      "status": "MISSING",
+      "what": "A generated candidate: candidate.png (16:10, >= 1600x1000, PNG) plus candidate.claims.json (generator system/model/provider, attestation flags, empty imageInputs, contractAck, licence terms)",
+      "suppliedBy": "an image generator run by Andy/Hermes against the LOCKED contract's prompt — never by Claude fabricating one",
+      "acceptance": "checkGeneration() ok: attestation by image-generator, no image inputs, valid PNG, 16:10, hash and prompt match",
+      "blocks": {
+        "stage": "5 generator capture / 6-8 provenance and admission",
+        "codes": [
+          "ACTOR_UNAVAILABLE"
+        ]
+      },
+      "absentProof": "no charger-step10/drop/candidate.png",
+      "file": "charger-step10/drop/candidate.png"
+    },
+    {
+      "id": "M-06",
+      "status": "MISSING",
+      "what": "The generation provider's usage-rights terms for the provider/model actually used (U-15 decided in C-5: project asset subject to those rights)",
+      "suppliedBy": "Andy",
+      "acceptance": "license.terms.summary non-empty; ownershipAsserted false; assetClass/rightsBasis as canonical (GR_LICENSE_TERMS / GR_OWNERSHIP_CLAIM / GR_ASSET_CLASS otherwise)",
+      "blocks": {
+        "stage": "6 provenance checks",
+        "codes": [
+          "GR_LICENSE_TERMS"
+        ]
+      },
+      "absentProof": "no generator has been run"
+    },
+    {
+      "id": "M-07",
+      "status": "MISSING",
+      "what": "INDEPENDENT final QA of the candidate by Hermes / ChatGPT / GPT-5.6 Sol, plus an optional internal claude-qa pass first",
+      "suppliedBy": "Hermes / ChatGPT / GPT-5.6 Sol (independent); claude-qa (internal)",
+      "acceptance": "submitIndependentReview accepts reviewer {actor: hermes, model matching GPT/ChatGPT, system matching Hermes/ChatGPT/OpenAI, rawResponseSha256} with no Claude-family names; verdict computed by code; an internal Claude PASS never admits",
+      "blocks": {
+        "stage": "10 QA / admission",
+        "codes": [
+          "QR_SELF_QA_NOT_INDEPENDENT"
+        ]
+      },
+      "absentProof": "no candidate exists to review"
+    },
+    {
+      "id": "M-08",
+      "status": "MISSING",
+      "what": "Callout geometry (target and labelAt in image coordinates) for each final callout, and an independent overlay QA PASS_OVERLAY",
+      "suppliedBy": "overlay tool/Andy for geometry; Hermes for overlay QA",
+      "acceptance": "each callout has label/target/labelAt; overlayCheck by hermes returns PASS_OVERLAY (max 3 rounds)",
+      "blocks": {
+        "stage": "10 QA (overlay) / approval",
+        "codes": [
+          "GATE_overlayQaPass",
+          "GATE_calloutsVerified"
+        ]
+      },
+      "absentProof": "no image exists, so no coordinates can exist"
+    },
+    {
+      "id": "M-09",
+      "status": "MISSING",
+      "what": "Alt text and caption for the finished image",
+      "suppliedBy": "Andy (or drafted by Claude and approved by Andy)",
+      "acceptance": "both non-empty; caption carries 'Simplified illustration' (appended automatically if absent)",
+      "blocks": {
+        "stage": "11 final artifact / manifest",
+        "codes": [
+          "PRESENTATION"
+        ]
+      },
+      "absentProof": "not written"
+    },
+    {
+      "id": "M-10",
+      "status": "MISSING",
+      "what": "Andy's final sign-off {approvedBy: andy, approvedOn: YYYY-MM-DD}",
+      "suppliedBy": "Andy",
+      "acceptance": "provenance.status becomes 'verified' (otherwise the recovered resolver refuses with 'not verified' and nothing is shown)",
+      "blocks": {
+        "stage": "11 final artifact / manifest",
+        "codes": [
+          "not verified"
+        ]
+      },
+      "absentProof": "no approval exists"
+    },
+    {
+      "id": "M-11",
+      "status": "MISSING",
+      "what": "Live Crankcase main (guide registry, current Phase 1, current visuals registry) for integration",
+      "suppliedBy": "GitHub access (add_repo) — outside the proving run",
+      "acceptance": "gh api repo read returns 200",
+      "blocks": {
+        "stage": "integration (NOT part of the proving run)",
+        "codes": [
+          "GITHUB_403"
+        ]
+      },
+      "absentProof": "gh api returns 403 for crankcase23/crankcase"
+    },
+    {
+      "id": "M-12",
+      "status": "MISSING",
+      "what": "Vehicle-specific verification of the eight facts the C-5 canonical contract refuses to assume (VV-01 grommet identity; VV-02 assembly composition; VV-03 air-box = air-cleaner housing; VV-04 clamp style/tightening side/head; VV-05 connector location/type/release; VV-06 guide sequence completeness; VV-07 attached breather/snorkel; VV-08 single-viewpoint adequacy)",
+      "suppliedBy": "Andy, from OEM service documentation or a physical 2016 Charger SXT 3.6L; recorded as reference evidence + ledger rows",
+      "acceptance": "each VV becomes established ledger rows citing a real reference (or the contract is amended where the evidence disagrees)",
+      "blocks": {
+        "stage": "3 evidence ledger / 4 contract lock",
+        "codes": [
+          "EP_HERO_NOT_ESTABLISHED"
+        ]
+      },
+      "absentProof": "no reference evidence exists (docs/STEP10-CANONICAL-SPEC.md §VV)"
+    },
+    {
+      "id": "C-01",
+      "status": "CONFLICTING",
+      "what": "What the hero part is and what it is called",
+      "conflicts": [
+        "CF-01",
+        "CF-03"
+      ],
+      "blocks": {
+        "stage": "1b cross-source consistency / EP elements",
+        "codes": []
+      }
+    },
+    {
+      "id": "C-02",
+      "status": "CONFLICTING",
+      "what": "Grommet and resonator: required by step text, banned by the prompt",
+      "conflicts": [
+        "CF-02",
+        "CF-03",
+        "CF-05"
+      ],
+      "blocks": {
+        "stage": "EP elements / VC mustNotDepict",
+        "codes": []
+      }
+    },
+    {
+      "id": "C-03",
+      "status": "CONFLICTING",
+      "what": "Callout target list, order and wording",
+      "conflicts": [
+        "CF-04",
+        "CF-06"
+      ],
+      "blocks": {
+        "stage": "VC callouts",
+        "codes": []
+      }
+    },
+    {
+      "id": "C-04",
+      "status": "CONFLICTING",
+      "what": "Clamp and connector detail vs the actions the guide asks for",
+      "conflicts": [
+        "CF-07",
+        "CF-08"
+      ],
+      "blocks": {
+        "stage": "3 evidence ledger (safety-critical attributes)",
+        "codes": []
+      }
+    },
+    {
+      "id": "C-05",
+      "status": "CONFLICTING",
+      "what": "Production route (photo vs vector vs generated raster)",
+      "conflicts": [
+        "CF-09"
+      ],
+      "blocks": {
+        "stage": "everything downstream of the route",
+        "codes": []
+      }
+    },
+    {
+      "id": "D-01",
+      "status": "REQUIRES_HUMAN_DECISION",
+      "what": "Resolve CF-01…CF-09: C-5 proposes ONE resolution per row (docs/STEP10-CANONICAL-SPEC.md). Until Andy/Hermes accept it the recovered originals are unchanged and no ledger/contract is written",
+      "decider": "Andy / Hermes",
+      "blocks": {
+        "stage": "EP authoring",
+        "codes": []
+      }
+    },
+    {
+      "id": "D-02",
+      "status": "REQUIRES_HUMAN_DECISION",
+      "what": "Accept the C-5 proposed production route for CF-09 (text-only generated raster through the Guide Factory; photo and vector rejected)",
+      "decider": "Andy / Hermes",
+      "blocks": {
+        "stage": "everything",
+        "codes": []
+      }
+    },
+    {
+      "id": "D-03",
+      "status": "REQUIRES_HUMAN_DECISION",
+      "what": "Accept (or amend) the C-5 PROPOSED canonical Step 10 contract (docs/STEP10-CANONICAL-SPEC.md) as the answer to CF-01…CF-09 — in particular the three places where it overrides old visual wording because the guide text is the mechanical anchor: grommet shown (CF-02), resonator part of the hero (CF-03), clamp tightening point + connector visible (CF-07/08)",
+      "decider": "Andy / Hermes",
+      "blocks": {
+        "stage": "EP authoring",
+        "codes": []
+      }
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "CF-01",
+      "topic": "What the step / hero part is called",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "step(10, P4, \"Remove intake duct\","
+        },
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Remove the intake hose/resonator assembly."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "Step: \"Remove the air intake hose.\""
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"component\": \"Air inlet duct, IAT connector, clamps, grommet\""
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "\"Intake hose\","
+        }
+      ],
+      "contradiction": "Four different names for the hero part: 'intake duct' (guide title), 'intake hose/resonator assembly' (guide action), 'air intake hose' (prompt), 'Air inlet duct … grommet' (manifest), 'Intake hose' (shot list). The prompt's own hero is a single hose, the guide's removal target is a hose/resonator ASSEMBLY.",
+      "decisionRequired": "Pick the one canonical customer-facing name for the hero part, and say whether it is a hose, a duct, or a hose+resonator assembly. (Feeds CF-03.)"
+    },
+    {
+      "id": "CF-02",
+      "topic": "Retaining grommet — required by the step, banned by the prompt, split between manifest and shot list",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Release the intake assembly from its retaining grommet."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "engine cover, hose grommet, resonator, any second or red locking feature on the connector"
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"Retaining grommet\""
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "Every callout target below is a component the step's own text names; none is added by us."
+        }
+      ],
+      "contradiction": "The guide's fourth action is to release the assembly from its retaining grommet, and the old manifest lists 'Retaining grommet' as a callout target. The prompt lists 'hose grommet' under MUST NOT SHOW (leave out entirely, do not substitute). The shot list has no grommet target at all, although its own header says every target is a component the step text names. An image that obeys the prompt cannot show, let alone call out, the part the guide's action 4 acts on. (Guide step 2 also says 'retaining grommets', plural, for the engine cover — a different part.)",
+      "decisionRequired": "Decide: is the step-10 grommet shown (and called out), or is action 4 left un-illustrated? If shown, the prompt's MUST NOT SHOW must be amended and evidence for the grommet must exist. If not shown, the manifest's callout target must be dropped."
+    },
+    {
+      "id": "CF-03",
+      "topic": "Resonator — named in the step text, banned by the prompt",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Remove the intake hose/resonator assembly."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "MUST NOT SHOW (leave these out entirely, do not substitute): engine cover, hose grommet, resonator,"
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "No seam, joint or ring between the two sections."
+        }
+      ],
+      "contradiction": "The guide's last action removes a 'hose/resonator assembly'; the prompt requires the hero to be ONE hose with no seam and forbids the resonator entirely.",
+      "decisionRequired": "Decide whether the resonator is part of the pictured assembly. This must be settled together with CF-01 (what the hero is) before any evidence ledger row for the hero can be written."
+    },
+    {
+      "id": "CF-04",
+      "topic": "Callout target set and order (manifest vs shot list vs step text vs callout spec)",
+      "positions": [
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"IAT electrical connector\","
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"Clamp at the throttle body\","
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"Clamp at the air-cleaner housing\","
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "\"IAT connector\","
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "\"Air-box clamp\","
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "Four actions on one assembly: IAT clip, two clamps, then lift the hose out."
+        },
+        {
+          "source": "CALLOUT_SPEC",
+          "file": "src/types/guideVisuals.ts",
+          "quote": "Components the step text itself names, in the order they should be called out."
+        }
+      ],
+      "contradiction": "Manifest targets: IAT electrical connector / Clamp at the throttle body / Clamp at the air-cleaner housing / Retaining grommet (no hose). Shot-list targets: IAT connector / Throttle-body clamp / Air-box clamp / Intake hose (no grommet). The recovered callout spec says targets are components the step text names, in the step text's order — the step text names five things (IAT connector, throttle-body clamp, air-cleaner-housing clamp, retaining grommet, intake hose/resonator assembly). The two lists agree on three, disagree on the fourth and omit the fifth/fourth respectively, and use different wording for the same targets.",
+      "decisionRequired": "Decide the final callout list (count ≤ 6 per the callout rules), its order, and the exact label wording. Until then no callout geometry can be requested."
+    },
+    {
+      "id": "CF-05",
+      "topic": "Number of actions illustrated",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Disconnect the IAT electrical connector. Loosen the clamp at the throttle body. Loosen the clamp at the air-cleaner housing. Release the intake assembly from its retaining grommet. Remove the intake hose/resonator assembly."
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "Four actions on one assembly: IAT clip, two clamps, then lift the hose out."
+        }
+      ],
+      "contradiction": "The guide step has five actions; the shot list's rationale counts four and omits the grommet release. It also calls the connector an 'IAT clip' where the guide says 'IAT electrical connector'.",
+      "decisionRequired": "Confirm the number of actions the single image must support (four or five) — a restatement of CF-02 for the shot list's 'why'."
+    },
+    {
+      "id": "CF-06",
+      "topic": "'Air-cleaner housing' vs 'air box'",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Loosen the clamp at the air-cleaner housing."
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"_needs\": \"Air-inlet system from the throttle body back to the air-cleaner housing, all clamps and the connector in view.\""
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "Air box: a low rounded box with a ribbed lid and an inlet collar on its engine-side end"
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "\"Air-box clamp\","
+        }
+      ],
+      "contradiction": "Guide and manifest say 'air-cleaner housing'; prompt and shot list say 'air box'. Nothing surviving says they are the same component or fixes the customer-facing label.",
+      "decisionRequired": "Confirm they are the same component and fix ONE label (the label is shown on the image and in the legend)."
+    },
+    {
+      "id": "CF-07",
+      "topic": "Clamps — step says loosen them, prompt forbids drawing the loosening hardware",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Loosen the clamp at the throttle body."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "Do NOT show the screw, screw head, screw housing, or any tightening hardware"
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "all clamps and the connector in view"
+        }
+      ],
+      "contradiction": "The action is loosening a clamp; the prompt requires plain smooth bands with the tightening side turned away, so the part a reader must act on is hidden, while the manifest asks for all clamps 'in view'.",
+      "decisionRequired": "Decide whether clamp hardware may be shown (needs fastener-position / fastener-head-type evidence — a safety-critical ledger attribute) or the callout is allowed to point at a band whose loosening point is not visible."
+    },
+    {
+      "id": "CF-08",
+      "topic": "IAT connector — 'disconnect' vs 'no release/locking features'; 'partly hidden' vs 'in view' vs a callout that must touch it",
+      "positions": [
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "Disconnect the IAT electrical connector."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "Plain block only: no release tab, no pins, no colours, no locking features."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "partly hidden behind the hose edge"
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "all clamps and the connector in view"
+        },
+        {
+          "source": "CALLOUT_SPEC",
+          "file": "scripts-visuals/lib.mjs",
+          "quote": "someone must confirm each arrow points at its component"
+        }
+      ],
+      "contradiction": "The step has the reader disconnect the connector; the prompt draws it with no release feature at all and partly hidden. The manifest wants it in view and the callout rules require a reviewer to confirm each arrow lands on the component it names, which a partly hidden, featureless block makes unverifiable.",
+      "decisionRequired": "Decide the minimum visibility of the connector and whether any release feature may be drawn (needs release-mechanism-geometry evidence if so). Where it sits on the hose is also stated only by the prompt — see MISSING evidence M-02."
+    },
+    {
+      "id": "CF-09",
+      "topic": "How the image is produced — photo vs vector artwork vs text-only generated raster",
+      "positions": [
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"file\": \"raw/step-10-intake-duct.jpg\""
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "The pipeline refuses this manifest until every field below is real."
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "Original Crankcase artwork (vector), engine cover already removed:"
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "see visual-sources/.../artwork/step-10-intake-duct.v3.spec.md."
+        },
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "Text-only prompt: do not use, request or trace any reference image."
+        }
+      ],
+      "contradiction": "Three incompatible production routes, each governed by a different recovered rule set: a raw photograph with source/licence/verification (manifest), original vector artwork with a no-source-pixels attestation (shot list), and a text-only generated raster with a generator attestation (prompt; the route the reconstructed factory implements). The shot list's controlling spec (v3.spec.md) is not among the recovered files.",
+      "decisionRequired": "Choose the route for Step 10. The reconstructed factory implements ONLY the generated-raster route; choosing photo or vector means different gates and, for vector, a lost spec."
+    }
+  ],
+  "agreements": [
+    {
+      "id": "AG-01",
+      "topic": "Vehicle",
+      "positions": [
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "2016 Dodge Charger SXT with the 3.6L Pentastar V6"
+        },
+        {
+          "source": "MANIFEST",
+          "file": "visual-sources/2016-dodge-charger-sxt-36/step-10-intake-duct.manifest.json",
+          "quote": "\"engine\": \"3.6L Pentastar V6\""
+        }
+      ],
+      "note": "Same application as recovered visual-sources/applications.json (asserted in tests)."
+    },
+    {
+      "id": "AG-02",
+      "topic": "Engine cover is already off",
+      "positions": [
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "engine cover already removed"
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "engine cover already removed"
+        },
+        {
+          "source": "GUIDE",
+          "file": "src/data/admin-test-guides/charger-2016-sxt-multi-job.ts",
+          "quote": "remove the decorative engine cover"
+        }
+      ],
+      "note": "Step 2 removes the cover; step 10 follows."
+    },
+    {
+      "id": "AG-03",
+      "topic": "Labels/callouts are applied later in software, not drawn in the image",
+      "positions": [
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "Labels will be added later in software."
+        },
+        {
+          "source": "CALLOUT_SPEC",
+          "file": "src/types/guideVisuals.ts",
+          "quote": "Shown on the image AND in the legend"
+        }
+      ],
+      "note": "Prompt's NO TEXT rule and the callout overlay do not conflict."
+    },
+    {
+      "id": "AG-04",
+      "topic": "Output form",
+      "positions": [
+        {
+          "source": "PROMPT",
+          "file": "doc-derived/step-10-handoff-prompt.txt",
+          "quote": "deliver 1600x1000 px or larger at 16:10"
+        },
+        {
+          "source": "SHOTLIST",
+          "file": "src/data/guide-visuals/charger-2016-sxt-multi-job.ts",
+          "quote": "step-10-intake-duct.png"
+        }
+      ],
+      "note": "PNG at 16:10; the reconstruction normalizes to exactly 1600x1000."
+    }
+  ]
+}

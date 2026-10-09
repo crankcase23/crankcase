@@ -1,0 +1,23 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: The engine bay of a 2016 Dodge Charger SXT with the 3.6L Pentastar V6, engine cover already removed, shown so a home mechanic can see WHICH parts a step touches. Step: "Remove the air intake hose."
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Front-elevated view, about 50-55 degrees above horizontal, centred at the front of the bay, looking rearward, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: ONE factory air intake hose running as a single assembly from the throttle body (left of centre, engine side) to the air box (right-front of the bay). Rigid molded section at the throttle-body end flowing smoothly into a corrugated (ribbed) section that runs toward the air box. No seam, joint or ring between the two sections.
+2. A plain screw-type hose clamp band on the hose end at the throttle body, and another on the hose end at the air-box inlet. Draw them as plain smooth metal bands only. Do NOT show the screw, screw head, screw housing, or any tightening hardware: rotate the clamp so that side faces away from the viewer.
+3. A small, plain rounded electrical connector block with a short lead sitting low on the hose near the throttle-body end, partly hidden behind the hose edge. Plain block only: no release tab, no pins, no colours, no locking features.
+4. Throttle body: a plain silver cylinder with a round flange at the engine end of the hose. No bolts, actuator, connector or wiring on it.
+5. Air box: a low rounded box with a ribbed lid and an inlet collar on its engine-side end, at the front-right of the bay. Plain front and rear faces. The hose enters the inlet from the left.
+6. Intake plenum: a plain simplified mass behind and above the hose.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): cowl trough across the top edge, radiator-support cover across the bottom edge, inner fender walls at left and right, strut-tower caps as plain domes, a plain engine-top mass, a plain coolant reservoir, a plain washer-fluid bottle, and one plain de-emphasized box at left for the battery/power-distribution box. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): engine cover, hose grommet, resonator, any second or red locking feature on the connector, breather hose, fresh-air snorkel, wipers, hood hinges or struts, wiring looms, coolant hoses, ABS unit, oil cap or dipstick, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

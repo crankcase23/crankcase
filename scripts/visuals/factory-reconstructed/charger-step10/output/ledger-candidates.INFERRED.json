@@ -1,0 +1,372 @@
+{
+  "elements": [
+    {
+      "criticality": "procedure",
+      "id": "intake-hose",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "id": "clamp-throttle-body",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "id": "clamp-air-box",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "id": "iat-connector",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "id": "throttle-body",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "id": "air-box",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "id": "intake-plenum",
+      "role": "target"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-cowl-trough-across-the-top-edge",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-radiator-support-cover-across-the-bottom",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-inner-fender-walls-at-left-and-right",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-strut-tower-caps-as-plain-domes",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-a-plain-engine-top-mass",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-a-plain-coolant-reservoir",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-a-plain-washer-fluid-bottle",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "ctx-one-plain-de-emphasized-box-at-left-for-",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-engine-cover",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-hose-grommet",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-resonator",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-any-second-or-red-locking-feature-on-the",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-breather-hose",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-fresh-air-snorkel",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-wipers",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-hood-hinges-or-struts",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-wiring-looms",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-coolant-hoses",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-abs-unit",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-oil-cap-or-dipstick",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-engine-badges",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-logos",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-brand-marks",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "excl-licence-plates",
+      "role": "context"
+    }
+  ],
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "intake-hose",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "intake-hose",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "clamp-throttle-body",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "clamp-throttle-body",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "clamp-air-box",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "clamp-air-box",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "iat-connector",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "iat-connector",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "throttle-body",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "throttle-body",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "air-box",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "air-box",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "intake-plenum",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "intake-plenum",
+      "note": "RECONSTRUCTION DRAFT: no reference evidence survives for this fact; NOT established",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-engine-cover",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-hose-grommet",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-resonator",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-any-second-or-red-locking-feature-on-the",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-breather-hose",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-fresh-air-snorkel",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-wipers",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-hood-hinges-or-struts",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-wiring-looms",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-coolant-hoses",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-abs-unit",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-oil-cap-or-dipstick",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-engine-badges",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-logos",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-brand-marks",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "excl-licence-plates",
+      "note": "excluded by the Step 10 handoff prompt (documentation), not by an evidence finding",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "tag": "INFERRED from the handoff prompt; every fact below is NOT established (no evidence survives)"
+}

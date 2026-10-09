@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test:e2e": "playwright test",
+    "visuals:check": "node scripts/visuals/check.mjs",
+    "factory:test": "node --test scripts/visuals/factory-reconstructed/tests/*.test.mjs",
+    "factory:prove-step10": "node scripts/visuals/factory-reconstructed/charger-step10/run-proving.mjs",
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
   },
   "dependencies": {
