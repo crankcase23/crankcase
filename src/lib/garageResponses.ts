@@ -13,11 +13,6 @@ export function blockedResponse(b: Blocked) {
         },
         { status: 409 },
       );
-    case "same-model-other-vin":
-      return NextResponse.json(
-        { code: "SAME_MODEL_OTHER_VIN", error: "Your garage already has this model under a different VIN. Holding two of the same model isn't supported yet." },
-        { status: 409 },
-      );
     default:
       return NextResponse.json({ code: "VIN_ALREADY_SET", error: "This vehicle already has a VIN, and a VIN can't be changed." }, { status: 409 });
   }

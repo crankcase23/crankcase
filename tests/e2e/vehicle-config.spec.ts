@@ -441,3 +441,77 @@ test.describe("16. All 16 BMW categories open for every configuration", () => {
     });
   }
 });
+
+test.describe("16. Two cars of the same year/make/model coexist", () => {
+  const CIVIC = "2018-honda-civic-1.5t";
+  const cfg = { transmission: "cvt", drivetrain: "fwd" };
+
+  test("different VINs are separate cars with separate history, config, edit and delete; legacy ids keep working", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    const a = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICA"), config: cfg } })).json();
+    const b = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICB"), config: { transmission: "manual", drivetrain: "fwd" } } })).json();
+    expect(a.created).toBe(true); expect(b.created).toBe(true);
+    // the oldest keeps the plain id every old link/record uses; the extra car gets its own
+    expect(a.entry.id).toBe(CIVIC);
+    expect(b.entry.id).toMatch(new RegExp(`^${CIVIC.replace(/\./g, "\\.")}~[0-9a-f-]{36}$`));
+    expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='${CIVIC}'`)).toBe("2");
+
+    // each car has its own Service History
+    const post = (id: string, title: string) => page.request.post(`/api/garage/${encodeURIComponent(id)}/service`, { data: { date: "2026-01-15", mileage: 1000, title } });
+    expect((await post(a.entry.id, "Oil change A")).ok()).toBeTruthy();
+    expect((await post(b.entry.id, "Brake pads B")).ok()).toBeTruthy();
+    const histA = (await (await page.request.get(`/api/garage/${encodeURIComponent(a.entry.id)}/service`)).json()).entries.map((e: { title: string }) => e.title);
+    const histB = (await (await page.request.get(`/api/garage/${encodeURIComponent(b.entry.id)}/service`)).json()).entries.map((e: { title: string }) => e.title);
+    expect(histA).toEqual(["Oil change A"]);
+    expect(histB).toEqual(["Brake pads B"]);
+
+    // each car's page loads under its own id and shows its own history
+    await page.goto(`/vehicles/${encodeURIComponent(b.entry.id)}`);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
+    await page.goto(`/vehicles/${CIVIC}`);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
+
+    // editing one car's configuration leaves the other alone
+    expect((await page.request.patch(`/api/garage/${encodeURIComponent(b.entry.id)}`, { data: { transmission: "automatic" } })).ok()).toBeTruthy();
+    const list = (await (await page.request.get("/api/garage")).json()).entries as { id: string; config: { transmission: string } }[];
+    expect(list.find((e) => e.id === a.entry.id)!.config.transmission).toBe("cvt");
+    expect(list.find((e) => e.id === b.entry.id)!.config.transmission).toBe("automatic");
+
+    // the same VIN again is the same car; it is not duplicated
+    const again = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: sql(`select vin from garage_entries where id='${b.entry.id.split("~")[1]}'`), config: cfg } })).json();
+    expect(again.created).toBe(false); expect(again.entry.id).toBe(b.entry.id);
+
+    // removing the extra car removes only that car (and its history), the first car is untouched
+    expect((await page.request.delete(`/api/garage/${encodeURIComponent(b.entry.id)}`)).ok()).toBeTruthy();
+    expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='${CIVIC}'`)).toBe("1");
+    const left = (await (await page.request.get(`/api/garage/${encodeURIComponent(a.entry.id)}/service`)).json()).entries;
+    expect(left).toHaveLength(1);
+  });
+
+  test("an older record without a VIN is completed by the first VIN; the next different VIN is a new car; another customer's id never resolves", async ({ page, browser }) => {
+    const email = await signUpNewUser(page);
+    // an older record that predates the VIN rule (seeded directly: the API no longer creates VIN-less rows)
+    sql(`insert into garage_entries (id,user_id,kind,vehicle_id,transmission,drivetrain,config_confirmed_at) values (gen_random_uuid()::text,'${userIdFor(email)}','catalog','${CIVIC}','cvt','fwd',now())`);
+    await page.request.post(`/api/garage/${CIVIC}/service`, { data: { date: "2026-02-01", mileage: 500, title: "Legacy history" } });
+    const first = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICC"), config: cfg } })).json();
+    expect(first.created).toBe(false);          // completed the existing record, did not create a second one
+    expect(first.entry.id).toBe(CIVIC);
+    const hist = (await (await page.request.get(`/api/garage/${CIVIC}/service`)).json()).entries;
+    expect(hist).toHaveLength(1);                // history stayed with the record
+    const second = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICD"), config: cfg } })).json();
+    expect(second.created).toBe(true);
+    expect(second.entry.id).toContain("~");
+    expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='${CIVIC}'`)).toBe("2");
+
+    // a different customer cannot read, edit or delete this customer's extra car by its id
+    const ctx = await browser.newContext();
+    const other = await ctx.newPage();
+    await signUpNewUser(other);
+    const sid = encodeURIComponent(second.entry.id);
+    expect((await (await other.request.get(`/api/garage/${sid}/service`)).json()).entries).toEqual([]);
+    expect((await other.request.patch(`/api/garage/${sid}`, { data: { transmission: "manual" } })).status()).toBe(404);
+    await other.request.delete(`/api/garage/${sid}`);
+    expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='${CIVIC}'`)).toBe("2");
+    await ctx.close();
+  });
+});

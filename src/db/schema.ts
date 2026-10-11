@@ -75,11 +75,12 @@ export const garageEntries = pgTable("garage_entries", {
       configConfirmedAt: timestamp("config_confirmed_at"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (table) => ({
-      // One garage row per catalog vehicle per customer, and one row per VIN per customer. The migration creates
-      // these only when the live table has no duplicates yet; the app also checks before inserting.
-      catalogOncePerUser: uniqueIndex("garage_entries_user_catalog_vehicle_uq")
+      // One row per VIN per customer, and one VIN-less catalog row per model per customer (a legacy / unconfirmed record).
+      // Several cars of the same year/make/model are allowed as long as their VINs differ, so there is NO plain
+      // one-row-per-model rule. The migration creates these only when the live table has no duplicates yet.
+      catalogNoVinOncePerUser: uniqueIndex("garage_entries_user_catalog_novin_uq")
         .on(table.userId, table.vehicleId)
-        .where(sql`${table.kind} = 'catalog'`),
+        .where(sql`${table.kind} = 'catalog' and ${table.vin} is null`),
       vinOncePerUser: uniqueIndex("garage_entries_user_vin_uq")
         .on(table.userId, table.vin)
         .where(sql`${table.vin} is not null`),

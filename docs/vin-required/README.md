@@ -16,8 +16,16 @@ Stacked on Vehicle Configuration V1 (PR #42). Merge #42 first; the diff after th
 - The canonical identity is `canonicalVin()` (upper-case VIN). Accounts relate to a vehicle through their own `garage_entries` rows; the VIN names the vehicle. No new table or migration is needed now. When the transfer workflow is built, a canonical `vehicles` table and an `ownership` relation can replace the case-insensitive VIN match in `vinHeldByAnotherAccount()` / `ownRowForVin()`, which are the only two places that know.
 - Same VIN already in the customer's own garage: the existing row is returned (no duplicate), in any spelling.
 - VIN held by another account: `409 VIN_CLAIM_REQUIRED`, body is exactly `{code, error}` with a generic message. It never says whose, which vehicle, or whether the other record is current or historical. Nothing is created, shared or granted, and nothing is recorded against the other account. It is a pending/claim-required answer, not a ruling that the VIN can never be added: once the other account no longer holds it, the VIN adds normally. The ownership-claim/transfer workflow itself (seller/buyer handoff, one active controlling owner, $5 credit for private sales, read-only history for the previous owner) is separate future work and is **not** implemented here.
-- Same catalog model with a different VIN: `409 SAME_MODEL_OTHER_VIN`. One garage still holds one row per model (existing rule), so a second car of the same model cannot be added yet.
-- Known property: the 409 does tell a person that a VIN already exists on the platform. That is inherent to "claim required" and is limited to that one bit. Rate limiting the endpoint is a follow-up (no rate-limit infrastructure exists in the app today).
+- Same catalog model with a different VIN: a second car. Crankcase allows unlimited vehicles; each VIN is its own garage row with its own Service History, odometer, configuration and unlock identity. The customer's oldest car of a model keeps the plain id (`<catalogId>`), additional cars use `<catalogId>~<rowId>`. A VIN-less older record of that model is completed by the first VIN rather than duplicated.
+- Known property: the 409 does tell a person that a VIN already exists on the platform. That is inherent to "claim required" and is limited to that one bit. It is rate limited (next section).
+
+## Probe protection (`src/lib/vinGuard.ts`)
+Free, no new service or table: counts are rows in the existing `app_events` table (`vin.attempt`, `vin.collision`). The VIN is never stored there; the network address (`x-forwarded-for`) is stored only as a salted hash.
+- Every add and every VIN completion that passes the format rules is counted before the lookup; a collision (the generic claim-required answer) is counted separately.
+- Limits (rolling): 5 collisions/hour and 10/day per account; 20 attempts/hour per account; 150 attempts/hour per address (loose on purpose: carrier and office networks share addresses).
+- Over a limit the answer is `429 {code:"VIN_RATE_LIMITED", error}` with `Retry-After`. It says nothing about the VIN and is identical for held and free VINs, so the limit cannot be used to tell them apart. Malformed VINs are refused earlier and cost no budget.
+- Windows are evaluated on the database clock (the column is a timestamp without time zone).
+- Not covered: many accounts on many addresses (account creation is not throttled here); a parallel burst can slip a few extra attempts past the counters (no lock); `x-forwarded-for` is trustworthy on Vercel (the platform sets it) but only as trustworthy as the proxy anywhere else. The structural fix is the verified-claim workflow plus an edge/CAPTCHA limit, both separate work.
 
 ## Photo scan (`src/lib/vinOcr.ts`, `src/components/vin/VinField.tsx`)
 - **Free, in the browser.** Open-source Tesseract (tesseract.js, Apache-2.0) with its English model, served from our own `/ocr` folder (copied from `node_modules` by `scripts/ocr/copy-assets.mjs`, run by `predev`/`prebuild`; output git-ignored). No paid API, no CDN, no third party request.
@@ -36,4 +44,4 @@ Stacked on Vehicle Configuration V1 (PR #42). Merge #42 first; the diff after th
 - OCR accuracy on real dash plates, door-jamb stickers and registration paper in real light is **not proven**: tests use clean synthetic photos. The check digit, highlighting and confirmation are the safety net, and typing always works. Tesseract can itself pick 0 for an O; the check digit usually catches that.
 - No camera hardware is driven in tests; the camera button's file input and the mobile viewport are.
 - NHTSA is mocked in browser tests (unreachable from the build sandbox).
-- No rate limiting on the add/collision path yet.
+- Probe protection (below) is per account and per address; an attacker with many accounts on many addresses can still probe slowly.

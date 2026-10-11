@@ -150,3 +150,17 @@ test("server: every add validates the VIN first, no other code inserts a garage 
 test("only text is a VIN: numbers, arrays and objects that stringify to 17 characters are refused", () => {
   for (const v of [12345678901234567, [GOOD], { toString: () => GOOD }, null, undefined, true]) assert.equal(vin.validateVin(v).ok, false);
 });
+
+test("probe protection: every VIN lookup is guarded first, collisions are counted, and the VIN itself is never stored", () => {
+  const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
+  assert.ok(route.indexOf("guardVinAttempt(request") < route.indexOf("addCatalogEntry(userId"), "catalog add is guarded before the lookup");
+  assert.ok(route.indexOf("guardVinAttempt(request", route.indexOf("addCatalogEntry(userId")) < route.indexOf("addCustomEntry(userId"), "custom add is guarded before the lookup");
+  assert.equal((route.match(/noteVinCollision\(/g) ?? []).length, 2);
+  const comp = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/vin/route.ts"), "utf8");
+  assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId") && /noteVinCollision\(/.test(comp), "completion is guarded too");
+  const g = fs.readFileSync(path.join(ROOT, "src/lib/vinGuard.ts"), "utf8");
+  assert.ok(/VIN_RATE_LIMITED/.test(g) && /Retry-After/.test(g));
+  assert.ok(!/metadata:\s*\{[^}]*vin\b/i.test(g), "no VIN in stored metadata");
+  assert.ok(/createHash\("sha256"\)/.test(g), "network address stored only as a salted hash");
+  assert.ok(!/another (customer|user|owner|account)/i.test(g.split("NextResponse.json(")[1] ?? ""), "the 429 body names no one");
+});

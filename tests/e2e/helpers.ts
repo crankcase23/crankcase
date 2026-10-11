@@ -5,7 +5,13 @@ import { Page, expect } from "@playwright/test";
 // a session. Each e2e test that touches the garage signs up its own
 // throwaway account here so tests stay isolated from each other's data
 // instead of sharing one seeded user.
-export async function signUpNewUser(page: Page): Promise<string> {
+// Every browser context in the suite gets its own network address (x-forwarded-for), the way real customers do. Without
+// this all local traffic shares one address and the per-address VIN-attempt budget (src/lib/vinGuard.ts) would be spent
+// by the suite itself. Pass an address to put several accounts behind the same one on purpose.
+export const randomIp = () => `10.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${1 + Math.floor(Math.random() * 254)}`;
+
+export async function signUpNewUser(page: Page, ip: string = randomIp()): Promise<string> {
+  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": ip });
   const email = `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
   await page.goto("/signup");
   await page.getByLabel("Email").fill(email);

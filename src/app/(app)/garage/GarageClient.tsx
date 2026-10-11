@@ -1,5 +1,6 @@
 "use client";
 
+import { catalogIdOf } from "@/lib/garageId";
 import Link from "next/link";
 import { mutate as globalMutate } from "swr";
 import { findVehicle } from "@/lib/data";
@@ -128,7 +129,7 @@ export default function GarageClient() {
           <section aria-label="Your vehicles" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {entries.map((e) => {
               if (e.kind === "catalog") {
-                const vehicle = findVehicle(e.id);
+                const vehicle = findVehicle(catalogIdOf(e.id));
                 if (!vehicle) return null;
                 return <GarageVehicleCard key={e.id} id={e.id} kind="catalog" vehicle={vehicle} config={e.config} vin={e.vin} onRemove={() => removeEntry(e.id)} />;
               }

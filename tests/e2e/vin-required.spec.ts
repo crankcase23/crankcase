@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { signUpNewUser, validVin } from "./helpers";
+import { randomIp, signUpNewUser, validVin } from "./helpers";
 
 // VIN-required garage + photo VIN scanning, in a real browser on a production build and a THROWAWAY Postgres.
 // NHTSA is unreachable from the sandbox, so its vPIC response is mocked at the network layer. The photo scan itself is real:
@@ -86,13 +86,64 @@ test.describe("A VIN is required by the server, not just the screen", () => {
     expect(countFor(email)).toBe(0);
   });
 
-  test("a second car of a model already in the garage, under a different VIN, is refused clearly (not silently merged)", async ({ page }) => {
+  test("two cars of the same year/make/model with different VINs coexist, each with its own history, VIN and removal", async ({ page }) => {
     const email = await signUpNewUser(page);
-    expect((await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).ok()).toBeTruthy();
-    const r = await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }));
-    expect(r.status()).toBe(409);
-    expect((await r.json()).code).toBe("SAME_MODEL_OTHER_VIN");
+    const v1 = validVin("1HG");
+    const v2 = validVin("1HG");
+    const a = await (await post(page, catalog(v1, CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).json();
+    const b = await (await post(page, catalog(v2, CIVIC, { transmission: "manual", drivetrain: "fwd" }))).json();
+    expect(a.created).toBe(true); expect(b.created).toBe(true);
+    expect(a.entry.id).toBe(CIVIC);                 // oldest keeps the plain legacy id
+    expect(b.entry.id).toContain("~");               // the second car has its own id
+    expect(countFor(email)).toBe(2);
+    expect(sql(`select count(distinct vin) from garage_entries where user_id='${uidOf(email)}'`)).toBe("2");
+
+    // separate Service History and odometer
+    const enc = encodeURIComponent;
+    await page.request.post(`/api/garage/${enc(a.entry.id)}/service`, { data: { date: "2026-01-01", mileage: 10, title: "Car A job" } });
+    await page.request.post(`/api/garage/${enc(b.entry.id)}/service`, { data: { date: "2026-01-02", mileage: 20, title: "Car B job" } });
+    await page.request.put(`/api/garage/${enc(b.entry.id)}/odometer`, { data: { value: 777 } });
+    const titles = async (id: string) => (await (await page.request.get(`/api/garage/${enc(id)}/service`)).json()).entries.map((e: { title: string }) => e.title);
+    expect(await titles(a.entry.id)).toEqual(["Car A job"]);
+    expect(await titles(b.entry.id)).toEqual(["Car B job"]);
+    const odoA = await (await page.request.get(`/api/garage/${enc(a.entry.id)}/odometer`)).json();
+    expect(JSON.stringify(odoA)).not.toContain("777");
+
+    // the garage lists both, and each car's page opens
+    await page.goto("/garage");
+    await expect(page.getByRole("button", { name: /^Remove .*Civic.* from garage$/ })).toHaveCount(2);
+    await expect(page.locator(`a[href="/vehicles/${CIVIC}"]`).first()).toBeVisible();
+    await expect(page.locator(`a[href="/vehicles/${b.entry.id}"]`).first()).toBeVisible();
+    await page.goto(`/vehicles/${enc(b.entry.id)}`);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
+
+    // the same VIN again is the same car; a lowercase spelling too
+    const again = await (await post(page, catalog(v2.toLowerCase(), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).json();
+    expect(again.created).toBe(false); expect(again.entry.id).toBe(b.entry.id);
+    expect(countFor(email)).toBe(2);
+
+    // removing one car leaves the other (and its history) alone
+    expect((await page.request.delete(`/api/garage/${enc(b.entry.id)}`)).ok()).toBeTruthy();
     expect(countFor(email)).toBe(1);
+    expect(await titles(a.entry.id)).toEqual(["Car A job"]);
+  });
+
+  test("an older VIN-less record is completed by the first VIN (history kept); the next different VIN is a second car", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    sql(`insert into garage_entries (id,user_id,kind,vehicle_id) values (gen_random_uuid()::text,'${uidOf(email)}','catalog','${CIVIC}')`);
+    const enc = encodeURIComponent;
+    // the older record already has history under the plain id
+    sql(`insert into service_entries (id,user_id,garage_entry_id,date,mileage,title) select gen_random_uuid()::text,user_id,id,'2026-01-01',5,'Old job' from garage_entries where user_id='${uidOf(email)}'`);
+    const v1 = validVin("1HG");
+    const first = await (await post(page, catalog(v1, CIVIC))).json();
+    expect(first.created).toBe(false);
+    expect(first.entry.id).toBe(CIVIC);
+    expect(countFor(email)).toBe(1);
+    expect((await (await page.request.get(`/api/garage/${CIVIC}/service`)).json()).entries).toHaveLength(1);
+    const second = await (await post(page, catalog(validVin("1HG"), CIVIC))).json();
+    expect(second.created).toBe(true);
+    expect(countFor(email)).toBe(2);
+    expect((await (await page.request.get(`/api/garage/${enc(second.entry.id)}/service`)).json()).entries).toHaveLength(0);
   });
 });
 
@@ -401,5 +452,92 @@ test.describe("Photo VIN scan on a phone-sized screen", () => {
     await expect(page).toHaveURL(/\/garage\/custom\//);
     expect(sql(`select vin,transmission,drivetrain from garage_entries where user_id='${uidOf(email)}'`)).toBe(`${CLEAN_VIN}|automatic|unknown`);
     await shot(page, "27-mobile-journey-saved");
+  });
+});
+
+// ----------------------------------------------------------------------- probe protection (enumeration / ownership probing)
+test.describe("VIN probing is rate limited and the limit reveals nothing", () => {
+  const retryAfter = (r: { headers(): Record<string, string> }) => Number(r.headers()["retry-after"]);
+
+  test("repeated collisions run out of budget: 5 generic 409s, then a plain 429; the holder is untouched", async ({ page, browser }) => {
+    const holderEmail = await signUpNewUser(page);
+    const held: string[] = [];
+    for (let i = 0; i < 7; i++) {
+      const v = validVin("1HG");
+      held.push(v);
+      expect((await post(page, catalog(v, CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).ok()).toBeTruthy();
+    }
+    const ctx = await browser.newContext();
+    const probe = await ctx.newPage();
+    const probeEmail = await signUpNewUser(probe);
+    const statuses: number[] = [];
+    let last429: Awaited<ReturnType<typeof post>> | null = null;
+    for (const v of held) {
+      const r = await post(probe, catalog(v, CIVIC, { transmission: "cvt", drivetrain: "fwd" }));
+      statuses.push(r.status());
+      if (r.status() === 429) last429 = r;
+      if (r.status() === 409) expect(Object.keys(await r.json()).sort()).toEqual(["code", "error"]);
+    }
+    expect(statuses).toEqual([409, 409, 409, 409, 409, 429, 429]);
+    // the 429 says when to come back and nothing about the VIN, the holder or anyone's vehicles
+    expect(retryAfter(last429!)).toBeGreaterThan(0);
+    const body = await last429!.text();
+    expect(JSON.parse(body)).toEqual({ code: "VIN_RATE_LIMITED", error: expect.any(String) });
+    for (const secret of [held[0], holderEmail, probeEmail, "Civic", "garage_entry", uidOf(holderEmail)]) expect(body).not.toContain(secret);
+    // once limited, even a VIN nobody holds gets the same plain answer: the limit cannot be used to tell held from free
+    const free = await post(probe, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }));
+    expect(free.status()).toBe(429);
+    expect(await free.text()).toBe(body);
+    // nothing was created or granted to the prober; the holder still has all seven
+    expect(countFor(probeEmail)).toBe(0);
+    expect(countFor(holderEmail)).toBe(7);
+    // the holder's own use is not affected by someone else probing
+    expect((await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).ok()).toBeTruthy();
+    // the VIN is never written to the abuse bookkeeping
+    expect(sql(`select count(*) from app_events where type like 'vin.%' and (metadata::text ilike '%${held[0]}%' or object_id ilike '%${held[0]}%')`)).toBe("0");
+    await ctx.close();
+  });
+
+  test("an account has a budget of VIN attempts per hour, whatever the outcome", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    const out: number[] = [];
+    for (let i = 0; i < 22; i++) out.push((await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).status());
+    expect(out.slice(0, 20).every((s) => s === 200)).toBeTruthy();
+    expect(out.slice(20)).toEqual([429, 429]);
+    expect(countFor(email)).toBe(20);
+    // malformed VINs are refused before any lookup and cost no budget (they reveal nothing)
+    const bad = await post(page, catalog("NOTAVIN", CIVIC));
+    expect(bad.status()).toBe(400);
+  });
+
+  test("the same network address shares a budget across accounts", async ({ browser }) => {
+    test.setTimeout(240_000);
+    const ip = randomIp();
+    const statuses: number[] = [];
+    for (let u = 0; u < 8; u++) {
+      const ctx = await browser.newContext();
+      const pg = await ctx.newPage();
+      await signUpNewUser(pg, ip);
+      // 19 attempts each: under the 20-per-account budget, but 8 x 19 = 152 is over the 150-per-address budget
+      for (let i = 0; i < 19; i++) statuses.push((await post(pg, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).status());
+      await ctx.close();
+    }
+    expect(statuses.filter((s) => s === 200)).toHaveLength(150);
+    expect(statuses.filter((s) => s === 429)).toHaveLength(2);
+    expect(statuses.slice(-2).every((s) => s === 429)).toBeTruthy();
+  });
+
+  test("VIN completion is limited the same way and answers generically", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    sql(`insert into garage_entries (id,user_id,kind,vehicle_id) values (gen_random_uuid()::text,'${uidOf(email)}','catalog','${JEEP}')`);
+    const out: number[] = [];
+    for (let i = 0; i < 22; i++) {
+      const r = await page.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: validVin("1J4") } });
+      out.push(r.status());
+      if (r.status() === 429) expect(Object.keys(await r.json()).sort()).toEqual(["code", "error"]);
+    }
+    expect(out[0]).toBe(200);              // the first valid VIN completes the record
+    expect(out[1]).toBe(409);              // a different VIN cannot replace it
+    expect(out.slice(20)).toEqual([429, 429]);
   });
 });
