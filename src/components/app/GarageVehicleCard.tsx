@@ -76,7 +76,7 @@ export default function GarageVehicleCard(props: Props) {
   const model = vehicle ? vehicle.model : [custom?.model].filter(Boolean).join(" ") || (make ? "" : "Unnamed vehicle");
   const trim = vehicle ? vehicle.trim : custom?.trim;
   const engine = vehicle ? vehicle.engine : custom?.engine;
-  const href = vehicle ? `/vehicles/${vehicle.id}` : `/garage/custom/${id}`;
+  const href = vehicle ? `/vehicles/${id}` : `/garage/custom/${id}`;
   const label = [year, make, model].filter(Boolean).join(" ");
 
   // Presentation photography: a catalog vehicle's own file, or a stock-style

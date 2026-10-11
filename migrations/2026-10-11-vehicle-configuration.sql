@@ -16,11 +16,19 @@
 -- steps that depend on the build stay restricted). No row is rewritten, no
 -- data is deleted, nothing is defaulted.
 --
--- It also adds two partial UNIQUE indexes that stop duplicate garage rows
--- (one catalog row per vehicle per customer, one row per VIN per customer).
--- Each index is created ONLY if the live table has no duplicates for it yet;
--- if it does, the migration says so with a NOTICE and skips that index (the app
--- still prevents new duplicates in code). It never deletes or merges rows.
+-- It also adds two partial UNIQUE indexes against accidental duplicates:
+--   garage_entries_user_vin_uq            one row per VIN per customer
+--   garage_entries_user_catalog_novin_uq  one catalog row per model per customer,
+--                                         only for rows that have NO VIN (a legacy / unconfirmed record)
+-- Each is created ONLY if the live table has no duplicates for it yet; if it does,
+-- the migration says so with a NOTICE and skips it (the app still prevents new
+-- duplicates in code). It never deletes or merges rows.
+--
+-- Customers may own any number of vehicles, including several of the same
+-- year/make/model with different VINs, so there is deliberately NO plain
+-- one-row-per-model rule: rows with different VINs coexist. The migration drops
+-- garage_entries_user_catalog_vehicle_uq (the plain one-per-model index) if an
+-- earlier draft of this file created it.
 --
 -- HOW TO RUN IT (Neon SQL panel, via Vercel -> Storage -> Query):
 --   1. Turn the "Read-only" toggle OFF.
@@ -38,8 +46,8 @@
 
 DO $$
 DECLARE
-  dup_catalog integer;
   dup_vin integer;
+  dup_novin integer;
 BEGIN
   ALTER TABLE garage_entries ADD COLUMN IF NOT EXISTS transmission text;
   ALTER TABLE garage_entries ADD COLUMN IF NOT EXISTS drivetrain text;
@@ -54,14 +62,17 @@ BEGIN
       CHECK (drivetrain IS NULL OR drivetrain IN ('fwd','rwd','awd','4wd','2wd','unknown'));
   END IF;
 
-  SELECT count(*) INTO dup_catalog FROM (
-    SELECT 1 FROM garage_entries WHERE kind = 'catalog'
+  -- Same-model cars are allowed; remove the one-per-model index if an earlier draft made it.
+  DROP INDEX IF EXISTS garage_entries_user_catalog_vehicle_uq;
+
+  SELECT count(*) INTO dup_novin FROM (
+    SELECT 1 FROM garage_entries WHERE kind = 'catalog' AND vin IS NULL
     GROUP BY user_id, vehicle_id HAVING count(*) > 1) d;
-  IF dup_catalog = 0 THEN
-    CREATE UNIQUE INDEX IF NOT EXISTS garage_entries_user_catalog_vehicle_uq
-      ON garage_entries (user_id, vehicle_id) WHERE kind = 'catalog';
+  IF dup_novin = 0 THEN
+    CREATE UNIQUE INDEX IF NOT EXISTS garage_entries_user_catalog_novin_uq
+      ON garage_entries (user_id, vehicle_id) WHERE kind = 'catalog' AND vin IS NULL;
   ELSE
-    RAISE NOTICE 'SKIPPED garage_entries_user_catalog_vehicle_uq: % customer/vehicle pairs already have duplicate catalog rows. Nothing was changed; resolve them by hand, then re-run.', dup_catalog;
+    RAISE NOTICE 'SKIPPED garage_entries_user_catalog_novin_uq: % customer/vehicle pairs already have more than one catalog row without a VIN. Nothing was changed; resolve them by hand, then re-run.', dup_novin;
   END IF;
 
   SELECT count(*) INTO dup_vin FROM (

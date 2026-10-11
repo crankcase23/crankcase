@@ -1,8 +1,9 @@
-import { and, eq, or } from "drizzle-orm";
+import { and, asc, eq, isNull, or } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
 import { garageEntries } from "@/db/schema";
 import { GarageEntry } from "@/types/garage";
+import { catalogIdOf, composeGarageId, rowIdOf } from "@/lib/garageId";
 import { normalizeConfig, type AxisChoice, type TransmissionChoice, type DrivetrainChoice } from "@/lib/vehicleConfig";
 
 // Server-side data access for garage entries -- the DB-backed replacement for
@@ -31,7 +32,8 @@ function configOf(row: GarageEntryRow) {
   });
 }
 
-function mapRow(row: GarageEntryRow): GarageEntry {
+/** `isOldest`: this is the customer's oldest row for its catalog vehicle, so it keeps the plain legacy id (see garageId.ts). */
+function mapRow(row: GarageEntryRow, isOldest = true): GarageEntry {
   if (row.kind === "custom") {
     return {
       id: row.id,
@@ -49,7 +51,7 @@ function mapRow(row: GarageEntryRow): GarageEntry {
     };
   }
   return {
-    id: row.vehicleId ?? row.id,
+    id: row.vehicleId ? (isOldest ? row.vehicleId : composeGarageId(row.vehicleId, row.id)) : row.id,
     kind: "catalog",
     addedAt: row.createdAt.toISOString(),
     vin: row.vin ?? undefined,
@@ -97,8 +99,53 @@ export async function listGarageEntries(userId: string): Promise<GarageEntry[]> 
   const rows = await db
   .select()
   .from(garageEntries)
-  .where(eq(garageEntries.userId, userId));
-  return rows.map(mapRow);
+  .where(eq(garageEntries.userId, userId))
+  .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id));
+  const seen = new Set<string>();
+  return rows.map((row) => {
+    if (row.kind !== "catalog" || !row.vehicleId) return mapRow(row);
+    const first = !seen.has(row.vehicleId);
+    seen.add(row.vehicleId);
+    return mapRow(row, first);
+  });
+}
+
+/** Map one row to its client entry, working out whether it is the customer's oldest car of that model. */
+async function entryFor(row: GarageEntryRow): Promise<GarageEntry> {
+  if (row.kind !== "catalog" || !row.vehicleId) return mapRow(row);
+  const oldest = (
+    await db
+      .select({ id: garageEntries.id })
+      .from(garageEntries)
+      .where(and(eq(garageEntries.userId, row.userId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, row.vehicleId)))
+      .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id))
+      .limit(1)
+  )[0];
+  return mapRow(row, !oldest || oldest.id === row.id);
+}
+
+/**
+ * The customer's own row for a client-facing garage id, or null. A plain id means "the oldest row with this catalog
+ * vehicleId, or the row with this id" (every id that existed before same-model cars); "<catalogId>~<rowId>" names one
+ * specific additional car. Always scoped to the customer: another customer's row is never returned.
+ */
+export async function findOwnRow(userId: string, id: string): Promise<GarageEntryRow | null> {
+  const rowId = rowIdOf(id);
+  if (rowId) {
+    const hit = await db
+      .select()
+      .from(garageEntries)
+      .where(and(eq(garageEntries.userId, userId), eq(garageEntries.id, rowId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, catalogIdOf(id))))
+      .limit(1);
+    return hit[0] ?? null;
+  }
+  const hit = await db
+    .select()
+    .from(garageEntries)
+    .where(and(eq(garageEntries.userId, userId), or(eq(garageEntries.id, id), eq(garageEntries.vehicleId, id))))
+    .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id))
+    .limit(1);
+  return hit[0] ?? null;
 }
 
 // Idempotent -- matches the old client-side "already in garage? skip" check, but enforced server-side too (and by a
@@ -112,26 +159,46 @@ export async function addCatalogEntry(
   vin: string | undefined,
   config: ConfigInput,
   ): Promise<AddResult> {
-  const find = () =>
+  try {
+    return await addCatalogOnce(userId, vehicleId, vin, config);
+  } catch (e) {
+    // Another request completed the same record at the same moment; decide again from the fresh state.
+    if (!(e instanceof VinRace)) throw e;
+    return addCatalogOnce(userId, vehicleId, vin, config);
+  }
+}
+
+async function addCatalogOnce(
+  userId: string,
+  vehicleId: string,
+  vin: string | undefined,
+  config: ConfigInput,
+  ): Promise<AddResult> {
+  const rowsOfModel = () =>
     db
     .select()
     .from(garageEntries)
-    .where(
-      and(
-        eq(garageEntries.userId, userId),
-        eq(garageEntries.kind, "catalog"),
-        eq(garageEntries.vehicleId, vehicleId),
-        ),
-      )
-    .limit(1);
+    .where(and(eq(garageEntries.userId, userId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, vehicleId)))
+    .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id));
+  const rowForVin = async (v: string) =>
+    (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), eq(garageEntries.vin, v))).limit(1))[0];
 
-  const existing = (await find())[0];
-  if (existing) return updateExisting(existing, vin, config);
-
-  // A VIN already on one of this customer's other rows must not be attached twice (unique per customer).
-  const vinTaken = vin
-    ? (await db.select({ id: garageEntries.id }).from(garageEntries).where(and(eq(garageEntries.userId, userId), eq(garageEntries.vin, vin))).limit(1))[0]
-    : undefined;
+  // Customers may own any number of cars, including several of the same year/make/model. The VIN is what tells two
+  // cars apart:
+  //  - this VIN is already in the garage: it is the same car, return it (nothing duplicated);
+  //  - a new VIN and an older record of this model that has no VIN yet: the VIN completes that record (its history and
+  //    unlock identity stay with it);
+  //  - otherwise a new VIN is a new car, with its own Service History.
+  // An add with no VIN (older flow) stays idempotent per model.
+  if (vin) {
+    const same = await rowForVin(vin);
+    if (same) return updateExisting(same, undefined, config);
+    const blank = (await rowsOfModel()).find((r) => !r.vin);
+    if (blank) return updateExisting(blank, vin, config);
+  } else {
+    const first = (await rowsOfModel())[0];
+    if (first) return updateExisting(first, undefined, config);
+  }
 
   try {
     const [created] = await db
@@ -141,19 +208,19 @@ export async function addCatalogEntry(
       userId,
       kind: "catalog",
       vehicleId,
-      vin: vinTaken ? undefined : vin,
+      vin,
       transmission: config.transmission,
       drivetrain: config.drivetrain,
       configConfirmedAt: new Date(),
     })
     .returning();
-    return { entry: mapRow(created), created: true, configKept: false };
+    return { entry: await entryFor(created), created: true, configKept: false };
   } catch (e) {
-    // Two requests raced; the unique index let one win. Return the winner rather than failing the customer.
+    // Two requests raced on the same VIN; the unique index let one win. Return the winner rather than failing the customer.
     if (!isUniqueViolation(e)) throw e;
-    const winner = (await find())[0];
+    const winner = vin ? await rowForVin(vin) : (await rowsOfModel())[0];
     if (!winner) throw e;
-    return updateExisting(winner, vin, config);
+    return updateExisting(winner, undefined, config);
   }
 }
 
@@ -163,10 +230,19 @@ async function updateExisting(existing: GarageEntryRow, vin: string | undefined,
     const taken = (await db.select({ id: garageEntries.id }).from(garageEntries).where(and(eq(garageEntries.userId, existing.userId), eq(garageEntries.vin, vin))).limit(1))[0];
     if (!taken) set.vin = vin;
   }
-  if (Object.keys(set).length === 0) return { entry: mapRow(existing), created: false, configKept: differs };
-  const [updated] = await db.update(garageEntries).set(set).where(eq(garageEntries.id, existing.id)).returning();
-  return { entry: mapRow(updated), created: false, configKept: differs };
+  if (Object.keys(set).length === 0) return { entry: await entryFor(existing), created: false, configKept: differs };
+  // A VIN is only ever written onto a row that still has none: if a concurrent request completed this record first,
+  // we must not overwrite its VIN (the VIN is the car's identity). The caller re-evaluates from the fresh state.
+  const [updated] = await db
+    .update(garageEntries)
+    .set(set)
+    .where(set.vin ? and(eq(garageEntries.id, existing.id), isNull(garageEntries.vin)) : eq(garageEntries.id, existing.id))
+    .returning();
+  if (!updated) throw new VinRace();
+  return { entry: await entryFor(updated), created: false, configKept: differs };
 }
+
+class VinRace extends Error {}
 
 export async function addCustomEntry(
   userId: string,
@@ -220,25 +296,19 @@ export async function updateGarageConfig(
   if (change.drivetrain !== undefined) set.drivetrain = change.drivetrain;
   if (Object.keys(set).length === 0) return null;
   set.configConfirmedAt = new Date();
-  const rows = await db
-  .update(garageEntries)
-  .set(set)
-  .where(and(eq(garageEntries.userId, userId), or(eq(garageEntries.id, id), eq(garageEntries.vehicleId, id))))
-  .returning();
-  return rows[0] ? mapRow(rows[0]) : null;
+  const own = await findOwnRow(userId, id);
+  if (!own) return null;
+  const [updated] = await db.update(garageEntries).set(set).where(and(eq(garageEntries.id, own.id), eq(garageEntries.userId, userId))).returning();
+  return updated ? await entryFor(updated) : null;
 }
 
 // `id` here is the client-facing id -- either a catalog vehicleId or a
 // custom entry's row id (see the note above) -- so match on either column.
 export async function removeGarageEntry(userId: string, id: string): Promise<void> {
-  await db
-  .delete(garageEntries)
-  .where(
-    and(
-      eq(garageEntries.userId, userId),
-      or(eq(garageEntries.id, id), eq(garageEntries.vehicleId, id)),
-      ),
-    );
+  // Exactly one car: a plain id removes the oldest row of that model, a composite id removes that specific row.
+  const own = await findOwnRow(userId, id);
+  if (!own) return;
+  await db.delete(garageEntries).where(and(eq(garageEntries.id, own.id), eq(garageEntries.userId, userId)));
 }
 
 // Service history and odometer are keyed by the same "vehicleId" concept the
@@ -252,18 +322,9 @@ export async function resolveGarageEntryId(
   vehicleId: string,
   opts: { create: boolean },
   ): Promise<string | null> {
-  const rows = await db
-  .select({ id: garageEntries.id })
-  .from(garageEntries)
-  .where(
-    and(
-      eq(garageEntries.userId, userId),
-      or(eq(garageEntries.id, vehicleId), eq(garageEntries.vehicleId, vehicleId)),
-      ),
-    )
-  .limit(1);
-  if (rows[0]) return rows[0].id;
-  if (!opts.create) return null;
+  const own = await findOwnRow(userId, vehicleId);
+  if (own) return own.id;
+  if (!opts.create || rowIdOf(vehicleId)) return null;
 
 const [created] = await db
   .insert(garageEntries)

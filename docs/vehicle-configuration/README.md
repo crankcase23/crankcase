@@ -7,7 +7,7 @@ VIN lookup -> **Confirm Your Ride** -> save. The customer confirms transmission 
 - `garage_entries.transmission` / `drivetrain`: a kind (`automatic|manual|cvt|dct`, `fwd|rwd|awd|4wd|2wd`), `"unknown"` (Not sure) or NULL (never asked), plus `config_confirmed_at`.
 - Options come from `Vehicle.configSpec` (only the BMW 328i has one today), else a generic family (Jeep 2WD/4WD; others FWD/RWD/AWD/4WD). A VIN or catalog entry may *preselect*, never save.
 - Adds never overwrite an axis that is already set. Only `PATCH /api/garage/[id]` (Edit Configuration) changes a saved choice.
-- Dedupe by (user, catalog vehicle) and by (user, VIN), with unique indexes and race handling.
+- Dedupe by (user, VIN), plus one VIN-less catalog row per model, with unique indexes and race handling. Same year/make/model cars with different VINs coexist (plain id = oldest car, extra cars `catalogId~rowId`).
 
 ## Guide applicability (`src/lib/guideConfig.ts`)
 Per tagged item: confirmed in scope -> shown; confirmed out of scope -> hidden; not confirmed -> restricted. A guide whose `evidenceFor` excludes the confirmed build is **unavailable** (one "NOT AVAILABLE" step, no tools/parts/torque, Wrench Mode disabled). Blocked steps and universal warnings are never removed. Steps renumber and "step N" references are re-pointed. Wrench Mode sessions end when the saved configuration changes.
@@ -24,7 +24,7 @@ Per tagged item: confirmed in scope -> shown; confirmed out of scope -> hidden; 
 1. Pre-check: run `migrations/2026-10-11-vehicle-configuration-VERIFY.sql` (read-only). Expect 0 columns / 0 constraints / 0 indexes, and 0 duplicate rows. Note the total row count N. If either duplicate count is not 0, stop; the migration would skip that unique index (it prints a NOTICE and changes nothing) and the pairs should be resolved by hand first.
 2. Optional safety net: a Neon branch or restore point right before step 3, if your plan includes one.
 3. Run `migrations/2026-10-11-vehicle-configuration.sql` (one DO block, one transaction, safe to run twice).
-4. Post-check: run VERIFY again: 3 columns, 2 constraints, 2 indexes, row count still N; then the commented query: 0 rows with a saved choice.
+4. Post-check: run VERIFY again: 3 columns, 2 constraints, 2 indexes (VIN, and one VIN-less row per model; the plain one-per-model index must not exist), row count still N; then the commented query: 0 rows with a saved choice.
 5. Merge/deploy.
 6. Smoke test: sign in; /garage loads; the existing 328i shows "Confirm transmission & drivetrain"; open it, Edit Configuration -> Automatic + Standard RWD -> save; garage card reads "Automatic · RWD"; open the oil-change guide (no xDrive/manual wording). Add a throwaway vehicle through VIN lookup -> Confirm Your Ride, then remove it.
 

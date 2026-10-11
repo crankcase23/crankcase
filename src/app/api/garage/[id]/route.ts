@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUserId } from "@/lib/apiAuth";
 import { removeGarageEntry, updateGarageConfig } from "@/lib/garageEntries";
+import { catalogIdOf } from "@/lib/garageId";
 import { findVehicle } from "@/lib/data";
 import { parsePartialConfig } from "@/lib/vehicleConfig";
 
@@ -21,7 +22,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const body = await request.json().catch(() => null);
-  const cfg = parsePartialConfig(body, findVehicle(id));
+  const cfg = parsePartialConfig(body, findVehicle(catalogIdOf(id)));
   if (!cfg.ok) return NextResponse.json({ error: cfg.error }, { status: 400 });
 
   const entry = await updateGarageConfig(userId, id, cfg.value);

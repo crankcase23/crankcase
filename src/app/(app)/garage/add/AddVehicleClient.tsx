@@ -94,7 +94,7 @@ async function confirmAdd(choice: ConfigChoice) {
 }
 function doneAdding(outcome: { id: string }) {
   if (!confirming) return;
-  router.push(confirming.kind === "catalog" ? `/vehicles/${confirming.vehicle.id}` : `/garage/custom/${outcome.id}`);
+  router.push(confirming.kind === "catalog" ? `/vehicles/${outcome.id}` : `/garage/custom/${outcome.id}`);
 }
 
 function handleAddDecodedAsCustom() {
