@@ -24,7 +24,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "sensor connector junction box detail (Exact box shape; door hinge and plug design are not established)",
@@ -44,12 +44,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "55f495622ce8f07eb4941326fb06893e8a644a7ad31c28a73823fe3b5c02708e"
+  "sourcePromptSha256": "553763b20eb1ce96c6b9e593d8634828dea20a7f9f538c2a4330a644a512ab36"
 }

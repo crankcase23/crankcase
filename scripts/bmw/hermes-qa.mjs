@@ -282,12 +282,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   } else if (cmd === "gen-kit") {
     const runs = path.resolve(need("runs")), out = path.resolve(need("out"));
     const rows = [];
-    const FIRST = "oil-drain-plug-access"; // most valuable guide, both hero facts established by 2+ hosts: run this one first
-    for (const id of fs.readdirSync(runs).filter((d) => fs.existsSync(path.join(runs, d, "template.json"))).sort((a, b) => (b === FIRST) - (a === FIRST) || a.localeCompare(b))) {
+    const FIRST = ["oil-drain-hatch-locate", "oil-drain-plug-identify", "oil-drain-plug-loosen"]; // the oil-change set, most valuable guide: run these first, in this order
+    const rank = (x) => { const i = FIRST.indexOf(x); return i < 0 ? 99 : i; };
+    for (const id of fs.readdirSync(runs).filter((d) => fs.existsSync(path.join(runs, d, "template.json"))).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b))) {
       const r = writeGenKit(await openRun({ dir: path.join(runs, id), visualId: id }), out);
       rows.push({ visualId: id, ok: r.ok, ...(r.ok ? { promptSha256: r.promptSha256 } : { skipped: r.message }) });
     }
-    fs.writeFileSync(path.join(out, "INDEX.md"), `# Generation kits\n\nOne folder per visual. Follow INSTRUCTIONS.md in each. The first one is the pilot: do it end to end, including the independent review, before spending effort on the rest. "<runs dir>" in the instructions is docs/bmw-e90/image-evidence/output.\n\n${rows.filter((x) => x.ok).map((x, i) => `${i + 1}. ${x.visualId}`).join("\n")}\n\nSkipped (evidence not sufficient yet): ${rows.filter((x) => !x.ok).map((x) => x.visualId).join(", ") || "none"}\n`);
+    fs.writeFileSync(path.join(out, "INDEX.md"), `# Generation kits\n\nOne folder per visual. Follow INSTRUCTIONS.md in each. The first three are the oil-change set and the pilot: do the first end to end, including the independent review, before spending effort on the rest. "<runs dir>" in the instructions is docs/bmw-e90/image-evidence/output.\n\n${rows.filter((x) => x.ok).map((x, i) => `${i + 1}. ${x.visualId}`).join("\n")}\n\nSkipped (evidence not sufficient yet): ${rows.filter((x) => !x.ok).map((x) => x.visualId).join(", ") || "none"}\n`);
     show({ ok: true, kits: rows.filter((x) => x.ok).length, skipped: rows.filter((x) => !x.ok).length });
   }
   else if (cmd === "import") show(importReview(await runFor(), { rawText: fs.readFileSync(path.resolve(need("response")), "utf8"), packetDir: arg("packet") ? path.resolve(arg("packet")) : null, model: arg("model"), system: arg("system") }));

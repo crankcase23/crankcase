@@ -441,7 +441,8 @@
       },
       "gapFillNotes": [
         "oil-filler-cap placement on the cover is only roughly established (top of cover); do not rely on exact spot."
-      ]
+      ],
+      "imageType": "LOCATE"
     }
   ]
 }

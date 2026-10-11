@@ -489,7 +489,8 @@
       "gapFillNotes": [
         "washer-fluid-filler-cap location NOT established (only youcanic, passenger side near strut tower); OEM manual text gives item list without positions; no second source found.",
         "Brake reservoir existence sources are E92 M3 and generic E9x/3-series articles, not an E90-specific page."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "brake-reservoir-access-cover",
@@ -648,7 +649,8 @@
       },
       "gapFillNotes": [
         "Fastener count conflicts across sources (3, 4, 6); show no number."
-      ]
+      ],
+      "imageType": "LOCATE"
     }
   ]
 }

@@ -801,7 +801,8 @@
       },
       "gapFillNotes": [
         "Belt rib count 6PK1990 only from RealOEM."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "tensioner-bolt-and-release",
@@ -973,7 +974,8 @@
       },
       "gapFillNotes": [
         "Fastener head: FCP says E14 external Torx; BimmerWorld and RealOEM say M11x65 Torx screw."
-      ]
+      ],
+      "imageType": "IDENTIFY"
     }
   ]
 }

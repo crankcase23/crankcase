@@ -28,7 +28,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "guide screw fasteners (Head type and exact position are only single-sourced)",
@@ -47,12 +47,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "bfbe84f19bbadf74047fb225b34f4e307f6e133b466773c36b4621cc9c496fee"
+  "sourcePromptSha256": "32fbf4461f1eee20eb6c07de56cf77930c46c09c7eebe2ed2dcbbe6d2be696e4"
 }

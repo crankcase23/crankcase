@@ -1,6 +1,6 @@
 # Generate: brake-reservoir-access-cover
 
-Prompt sha256: `78492617e4ea97df520070be039b73f703a9bb31dc4e8071a3a1be25110b8ad4` (the factory records this; do not edit the prompt).
+Prompt sha256: `ac56cb388208eac13d5c128b967a365369ae6ee7ddfaea0fdd60bbfa3d7d9558` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

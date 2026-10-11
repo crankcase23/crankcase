@@ -20,7 +20,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "sill jack pad detail (Exact distance from wheels and pad dimensions are not established. Rear-centre and front-centre jack points are in conflict and must not be shown as approved)",
@@ -39,12 +39,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "1acb06ff0ab7cde2807403204d4b10901aab8eb57824212b4753a66a6cef9f0a"
+  "sourcePromptSha256": "95cf57df179148e9facc9df11a81bd7e187a1f43d05a150d824534266900fc2e"
 }

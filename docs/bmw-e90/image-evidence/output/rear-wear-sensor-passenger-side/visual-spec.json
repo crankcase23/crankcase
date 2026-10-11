@@ -24,7 +24,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "sensor connector behind arch cover detail (Plug shape and cover outline are not established)",
@@ -43,12 +43,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "ce573bfee1af3ec836ebe22350619f82b1065b40ed1811f13bf1791b106c7d19"
+  "sourcePromptSha256": "24384c7013f846e0b92ace3635cefe227c2c4c6d75973dfbb9b78c6fa62354f5"
 }

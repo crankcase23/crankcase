@@ -1,6 +1,6 @@
 # Generate: wheel-bolts-and-metal-valve-stem
 
-Prompt sha256: `e41b7eba050474f10ed2831f750f9d6487c8f87c8f5843bb92da0e261214665c` (the factory records this; do not edit the prompt).
+Prompt sha256: `2a6ea76768cfcc5b43a3f63e7ad1abb584749e2f5524fc2cff57ba7b4013d6f0` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

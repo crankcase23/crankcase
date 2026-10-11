@@ -1,6 +1,6 @@
 # Generate: accessory-drive-components
 
-Prompt sha256: `09bb405df30b7ec927023a623e69254cf8815b3fff4ca2e2b6ebc46e5a111e8e` (the factory records this; do not edit the prompt).
+Prompt sha256: `bed2842a906d8450aea85c09dbaeb5666a7ea28e14d6f1a55524d664302058e5` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

@@ -28,7 +28,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "cover fastener points detail (Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified)",
@@ -47,12 +47,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "78492617e4ea97df520070be039b73f703a9bb31dc4e8071a3a1be25110b8ad4"
+  "sourcePromptSha256": "ac56cb388208eac13d5c128b967a365369ae6ee7ddfaea0fdd60bbfa3d7d9558"
 }

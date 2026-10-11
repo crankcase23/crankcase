@@ -401,7 +401,8 @@
         "maf-connector-clip location NOT established: only bimmerpost implies the sensor is on the airbox sensor side.",
         "snorkel-retention-tabs existence and location NOT established: only bavmods describes two tabs.",
         "youcanic says airbox has two Torx screws: different style from the N52 guides."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "airbox-halves-and-element",
@@ -499,7 +500,8 @@
       "gapFillNotes": [
         "airbox-housing-screws location NOT established (no source gives positions).",
         "filter-element-gasket existence and location NOT established: only bavmods mentions the gasket."
-      ]
+      ],
+      "imageType": "IDENTIFY"
     }
   ]
 }

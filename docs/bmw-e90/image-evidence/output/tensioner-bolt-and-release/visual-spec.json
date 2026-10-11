@@ -28,7 +28,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "tensioner assembly detail (Lock-pin hole position/size and arm geometry not established)",
@@ -47,12 +47,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "a733ab1c2a2b02d3eefb416409f512abe7568b0a2fd254f746566788c17f2fbf"
+  "sourcePromptSha256": "c78237ae84d5ef0281daa910ca999876cf6a03f29b30e0e6df8b35d7aea677d5"
 }

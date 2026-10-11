@@ -1,6 +1,6 @@
 # Generate: bank2-precat-shield-screws
 
-Prompt sha256: `643583cd7ca1d92677e28a52db4bf4af838fdeeba7b1e45eb59d0b0392e97065` (the factory records this; do not edit the prompt).
+Prompt sha256: `f4a358738faab4f0a6d02a8199d781e46e67e99793cd6b9a71e4e17369422312` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

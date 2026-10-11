@@ -1,6 +1,6 @@
 # Generate: precat-sensor-connectors-engine-bay
 
-Prompt sha256: `04f3459a4e162dbe9cf55b901725af48129082ebbdec3de1e27ca383666d54c9` (the factory records this; do not edit the prompt).
+Prompt sha256: `3900097ca50e3c8722f10bd5fea446806a55b44aa0286b4a97a31b001e60ffe8` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

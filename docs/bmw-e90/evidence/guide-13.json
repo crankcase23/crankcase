@@ -360,7 +360,8 @@
       },
       "gapFillNotes": [
         "BimmerWorld's pad listing is described as E92 coupe only while its fitment list includes E90; the E90 sedan part number is 51717123311 per Bimmerforums. Safe to depict a small rectangular plastic block under the sill near each wheel."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "wheel-bolts-and-metal-valve-stem",
@@ -513,7 +514,8 @@
       "gapFillNotes": [
         "BimmerWorld sells a '17mm M12x1.5 black lug NUT' with E90 fitment, but RealOEM and Koleso show E90 uses wheel BOLTS; ignore the nut wording.",
         "RealOEM wheel diagram is for alloy style 154; bolt count applies to all E90 wheels (5x120)."
-      ]
+      ],
+      "imageType": "IDENTIFY"
     },
     {
       "id": "tpms-reset-controls",
@@ -621,7 +623,8 @@
       },
       "gapFillNotes": [
         "Whether this car has iDrive is not known from the VIN; show the stalk as primary and the menu as the alternative. Menu names differ between sources (Settings>TPM vs Vehicle Info>Vehicle Status)."
-      ]
+      ],
+      "imageType": "LOCATE"
     }
   ]
 }

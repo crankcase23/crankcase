@@ -70,6 +70,7 @@ export function validateEvidence(dir) {
       if (visualIds.has(v.id)) err(no, `${where}: duplicate id across guides`);
       visualIds.add(v.id);
       if (!v.viewpoint) err(no, `${where}: no viewpoint`);
+      if (!["LOCATE", "IDENTIFY", "DO"].includes(v.imageType)) err(no, `${where}: imageType must be LOCATE, IDENTIFY or DO`);
       if (!Array.isArray(v.evidenceSteps) || !v.evidenceSteps.length || v.evidenceSteps.some((n) => !Number.isInteger(n) || n < 1 || n > nSteps)) err(no, `${where}: evidenceSteps out of range 1..${nSteps}`);
       const ids = new Set();
       for (const e of v.elements ?? []) {

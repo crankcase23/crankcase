@@ -30,6 +30,7 @@ const { FileDropGenerator, ActorUnavailable } = await import(path.join(FACT, "sr
 const { verifyRun } = await import(path.join(FACT, "src/verify.mjs"));
 const { Refused } = await import(path.join(FACT, "src/store.mjs"));
 const { stable } = await import(path.join(FACT, "src/canon.mjs"));
+const { STANDARD, TYPES, framingLine, CLEAR_SPACE_LINE, overlaySpec, referenceSha256 } = await import(path.join(ROOT, "scripts/bmw/visual-standard.mjs"));
 
 export const APPLICATION = { year: 2010, make: "BMW", model: "328i", trim: "Sedan (E90)", engine: "3.0L inline-6 (engine code not confirmed)" };
 export const VEHICLE_SLUG = "bmw-2010-328i";
@@ -49,6 +50,7 @@ const VIEWPOINTS = {
   trunk: "View into the open trunk from behind and slightly above, mild perspective.",
   "exterior-front": "Front three-quarter view of the front end of the car, mild perspective.",
   dashboard: "Driver's-eye view of the instrument cluster and steering column area, mild perspective.",
+  "part-end-on": "End-on view straight along the axis of the part, against a plain simplified surface; no ground, horizon or body edges visible.",
 };
 const ATTR_PHRASE = {
   existence: "whether it is present", location: "its exact position", orientation: "its orientation", relationship: "how it relates to neighbouring parts",
@@ -184,6 +186,7 @@ export function buildEP(v) {
 /** Deterministic Step-10-format prompt rendered from the structured visual (no free-hand text). */
 export function buildPrompt(v, built = buildEP(v)) {
   if (!VIEWPOINTS[v.viewpoint]) throw new Error(`visual ${v.id}: unknown viewpoint ${v.viewpoint}`);
+  if (!TYPES[v.imageType]) throw new Error(`visual ${v.id}: imageType must be LOCATE, IDENTIFY or DO (got ${v.imageType})`);
   const { ep } = built;
   const stepTitle = ep.canonicalStep.actions[0];
   const hero = v.elements.filter((e) => e.role === "hero");
@@ -194,7 +197,7 @@ export function buildPrompt(v, built = buildEP(v)) {
   lines.push("");
   lines.push(`SUBJECT: ${oneLine(v.title)}, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "${oneLine(stepTitle)}".`);
   lines.push("");
-  lines.push(`FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). ${VIEWPOINTS[v.viewpoint]} Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.`);
+  lines.push(`FRAMING: ${framingLine(v.imageType, VIEWPOINTS[v.viewpoint])}`);
   lines.push("");
   lines.push("MUST SHOW (clearly, in this order of importance):");
   ranked.forEach((e, i) => {
@@ -208,14 +211,14 @@ export function buildPrompt(v, built = buildEP(v)) {
     return r && r.render !== "omit";
   }).map((e) => human(e.id));
   lines.push("");
-  lines.push(`MAY SHOW, SIMPLIFIED AND DIM (background only): ${may.length ? may.join(", ") : "a plain dark ground plane"}. Keep every one of these generic and low-contrast. Never invent detail on them.`);
-  const mustNot = [...built.exclusions.map((m) => `${human(m.of)}${m.of === m.element ? "" : " detail"} (${noComma(m.reason)})`), "wrench or socket", "hands", "people", "engine badges", "logos", "brand marks", "licence plates"];
+  lines.push(`MAY SHOW, SIMPLIFIED AND DIM (background only): ${may.length ? may.join(", ") : "a plain light neutral ground plane"}. Keep every one of these generic and low-contrast. Never invent detail on them.`);
+  const mustNot = [...built.exclusions.map((m) => `${human(m.of)}${m.of === m.element ? "" : " detail"} (${noComma(m.reason)})`), ...(TYPES[v.imageType].tools ? [] : ["wrench or socket"]), "hands", "people", "engine badges", "logos", "brand marks", "licence plates"];
   lines.push("");
   lines.push(`MUST NOT SHOW (leave these out entirely, do not substitute): ${mustNot.join(", ")}.`);
   lines.push("");
-  lines.push("NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.");
+  lines.push("NO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.");
   lines.push("");
-  lines.push("CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.");
+  lines.push(CLEAR_SPACE_LINE);
   lines.push("");
   lines.push("Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.");
   return lines.join("\n") + "\n";
@@ -227,7 +230,7 @@ export async function runAll({ out = DEFAULT_OUT, only = null } = {}) {
   let t = Date.parse("2026-10-10T12:00:00.000Z");
   const clock = () => new Date((t += 1000)).toISOString();
   const visuals = loadVisuals().filter((v) => !only || only.includes(v.id));
-  const report = { application: APPLICATION, certified: false, rule: "see header of scripts/bmw/pipeline-visuals.mjs", visuals: [], gaps: [] };
+  const report = { application: APPLICATION, visualStandard: { id: STANDARD.id, scope: STANDARD.scope, referenceSha256: referenceSha256() }, certified: false, rule: "see header of scripts/bmw/pipeline-visuals.mjs", visuals: [], gaps: [] };
   for (const v of visuals) {
     const guideId = guideIdOf(v.guideNo);
     const stages = [];
@@ -251,6 +254,7 @@ export async function runAll({ out = DEFAULT_OUT, only = null } = {}) {
       if (run.state.phase === "VC_LOCKED") {
         const prompt = run.requestGeneration({ promptText }).prompt;
         fs.writeFileSync(path.join(dir, "generation-prompt.txt"), prompt);
+        fs.writeFileSync(path.join(dir, "overlay.spec.json"), JSON.stringify(overlaySpec(v, { stepNumber: v.evidenceSteps[0] }), null, 2) + "\n");
         stage("4b generation request", "PASS", `prompt built from the locked contract (${prompt.length} chars)`);
         try { await new FileDropGenerator(path.join(out, "drop"), "no-drop-dir").generate({}); stage("5 image generation", "FAIL", "unexpected candidate"); }
         catch (e) { stage("5 image generation", "BLOCKED", e instanceof ActorUnavailable ? "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost." : String(e)); }
@@ -262,17 +266,18 @@ export async function runAll({ out = DEFAULT_OUT, only = null } = {}) {
     const vr = verifyRun(dir);
     stage("12 event log + directory integrity", vr.ok ? "PASS" : "FAIL", `${vr.events} events, ${vr.objects} objects, problems=${vr.problems.length}`);
     if (!ev.sufficient) fs.writeFileSync(path.join(dir, "spec-prompt.PROVISIONAL.txt"), promptText);
-    report.visuals.push({ visualId: v.id, guide: v.guideNo, guideName: v.guideName, evidenceSteps: v.evidenceSteps, phase: run.state.phase, stages, certified: false, imageProduced: false });
+    report.visuals.push({ visualId: v.id, imageType: v.imageType, guide: v.guideNo, guideName: v.guideName, evidenceSteps: v.evidenceSteps, phase: run.state.phase, stages, certified: false, imageProduced: false });
     if (built.deficits.length) report.gaps.push({ visualId: v.id, guide: v.guideNo, deficits: built.deficits });
   }
   const by = (p) => report.visuals.filter((x) => x.phase === p).length;
-  report.summary = { visuals: report.visuals.length, contractLocked: by("GEN_REQUESTED"), evidenceInsufficient: by("EP_INSUFFICIENT"), certified: 0, imagesProduced: 0 };
+  const typeCount = (t) => visuals.filter((x) => x.imageType === t).length;
+  report.summary = { byType: { LOCATE: typeCount("LOCATE"), IDENTIFY: typeCount("IDENTIFY"), DO: typeCount("DO") }, visuals: report.visuals.length, contractLocked: by("GEN_REQUESTED"), evidenceInsufficient: by("EP_INSUFFICIENT"), certified: 0, imagesProduced: 0 };
   fs.writeFileSync(path.join(out, "PIPELINE-REPORT.json"), stable(report));
   const md = ["# BMW 328i (E90) image coverage", "", "GENERATED by `npm run bmw:pipeline`. No image exists and nothing is certified. `contract locked` means the evidence packet passed the evidence rule and the generation prompt is ready; it does not mean an image exists.", "",
-    `Visuals: ${report.summary.visuals}. Contract locked: ${report.summary.contractLocked}. Evidence-insufficient: ${report.summary.evidenceInsufficient}. Images produced: 0. Certified: 0.`, "", "| Guide | Visual | Status | Missing hero/target facts |", "|---|---|---|---|"];
+    `Visuals: ${report.summary.visuals}. Contract locked: ${report.summary.contractLocked}. Evidence-insufficient: ${report.summary.evidenceInsufficient}. Images produced: 0. Certified: 0.`, "", "| Guide | Visual | Type | Status | Missing hero/target facts |", "|---|---|---|---|---|"];
   for (const v of report.visuals) {
     const gap = report.gaps.find((g) => g.visualId === v.visualId);
-    md.push(`| ${v.guide} ${v.guideName} | ${v.visualId} | ${v.phase === "GEN_REQUESTED" ? "contract locked" : "evidence insufficient"} | ${gap ? gap.deficits.map((d) => `${d.element}/${d.attribute}`).join("; ") : ""} |`);
+    md.push(`| ${v.guide} ${v.guideName} | ${v.visualId} | ${v.imageType} | ${v.phase === "GEN_REQUESTED" ? "contract locked" : "evidence insufficient"} | ${gap ? gap.deficits.map((d) => `${d.element}/${d.attribute}`).join("; ") : ""} |`);
   }
   fs.writeFileSync(path.join(out, "COVERAGE.md"), md.join("\n") + "\n");
   return report;

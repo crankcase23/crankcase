@@ -24,7 +24,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "blade release tab detail (Exact tab shape; position and the plastic cover outline are not established by any source)",
@@ -44,12 +44,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "b665e1c8efee73182e7f4d25ced52a88f5da7a58afb0056f534f2d18436794c0"
+  "sourcePromptSha256": "72e1df8838e06fc4489a23ed1fcc85646c966bed799d95653c0d3be0134895d3"
 }

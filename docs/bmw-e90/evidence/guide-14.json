@@ -351,7 +351,8 @@
       "gapFillNotes": [
         "Sources disagree on attachment style: hook (YouCanic), retention peg (BAVMods), 'side pin' for an E9x M3 (WiperBladesUSA); exact hook/peg shape not established, draw it generically.",
         "Shared hosts for blade-release-tab existence: three hosts agree on a press/pinch tab, though shapes differ."
-      ]
+      ],
+      "imageType": "IDENTIFY"
     }
   ]
 }

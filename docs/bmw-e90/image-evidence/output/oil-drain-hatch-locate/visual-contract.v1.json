@@ -1,0 +1,152 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "dd25f0c9591c608b62e512a2290052349744bc771b697b80b8f40aca96e03d05",
+  "createdAt": "2026-10-10T12:04:22.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-oil-drain-hatch-locate-v1",
+  "maySimplify": [
+    {
+      "element": "undertray-panel"
+    },
+    {
+      "element": "front-bumper-and-grille"
+    },
+    {
+      "element": "suspension-and-subframe"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "access-hatch",
+      "id": "MD-access-hatch",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "front-bumper-and-grille",
+      "id": "MN-excl-front-bumper-and-grille",
+      "reason": "No source establishes the lower front styling for this car; left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "front-bumper-and-grille"
+      }
+    },
+    {
+      "element": "suspension-and-subframe",
+      "id": "MN-excl-suspension-and-subframe",
+      "reason": "No source establishes the surrounding chassis layout; left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "suspension-and-subframe"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-oil-drain-hatch-locate-v1",
+      "sha256": "ee80d932c986663cae25107a5ad33fc5ba827fb2961f40ce92e01ed7d3ae9fc0"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "1761412ce8cd88f294cfea7d1e734572e13b9669124289683eb3bbc9009c7eac"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "afd552d1d72e9c75377803e571266efdde83f311889a02edd7a83b02540b3e08"
+  },
+  "suppress": [
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "access-hatch",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "access-hatch",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "undertray-panel",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "front-bumper-and-grille",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "suspension-and-subframe",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "oil-drain-hatch-locate"
+}

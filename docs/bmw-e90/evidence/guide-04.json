@@ -611,7 +611,8 @@
       },
       "gapFillNotes": [
         "Bavmods covers only bank 2 sensor 1; the tab on the bank 1 plug is inferred from Pelican."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "bank2-precat-shield-screws",
@@ -758,7 +759,8 @@
         "strut-brace-and-large-heat-shield: only the E86 Z4 post (z4-forum) mentions a strut brace and aluminum shield; Bavmods mentions only a metal bracket; Pelican mentions neither. Not established for E90; the picture should omit or show generically.",
         "Pelican says the bank 2 sensor is behind the ignition harness, not a shield; Bavmods and Z4-forum say shield/bracket with two E8 screws.",
         "Turner lists the bank 2 pre-cat probe as mounted in the rear downpipe before the cat (integrated manifold)."
-      ]
+      ],
+      "imageType": "IDENTIFY"
     },
     {
       "id": "postcat-connector-bracket-underside",
@@ -882,7 +884,8 @@
       },
       "gapFillNotes": [
         "postcat-connector-bracket: only Pelican states the bracket at the bottom of the transmission bell housing; RealOEM 18_0610 lists lambda probe holders (one automatic-only) but no location; z4-forum E85 thread is speculative. Not established (existence and location)."
-      ]
+      ],
+      "imageType": "LOCATE"
     }
   ]
 }

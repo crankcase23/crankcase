@@ -6,6 +6,7 @@
   "primarySourceFound": true,
   "summary": "Second pass closed most prior gaps. PRIMARY (BMW owner's manuals, reproduced on third-party hosts; MY2011 E90/E94/328i xDrive editions, the 2010 edition at manualslib could not be read with the available tools): approved viscosity classes are SAE 0W-40, 0W-30, 5W-40 and 5W-30; gasoline approvals are BMW High Performance SAE 5W-30, BMW Longlife-01 and Longlife-01 FE (LL-04 is listed only for diesel); engine data table for the 328i shows 2,996 cc / 230 hp (US N52B30 class engine); electronic oil-level check path and conditions; add at most 1 US qt only after the display asks, within 125 miles. This resolves the earlier LL-01 vs LL-04 / viscosity conflicts. STILL SECONDARY ONLY (2+ independent sources, no BMW document found): total capacity (about 6.9 US qt / 6.5 L), 25 Nm for both the filter-housing cap and drain plug (18 lb-ft), 86 mm 16-flute cap tool (BMW special tool 83 30 0 493 936), filter kit 11427566327, large cap O-ring 11428683168, drain plug 11137535106 and crush washer 07119963151. The access-hatch conflict is resolved: E90 sources describe a coin/screwdriver half-turn cover; the 'three screws' recollection comes from an E60 N52 thread. Drain-plug orientation (straight down vs sideways spray) is still conflicted and the guide tells the owner to angle the pan. The filter kit is reported to include both cap O-rings and one copper crush washer.",
   "variantDependencies": [
+    "Oil pan variant: Turner lists separate engine oil pans for manual (11137553164) and automatic (11137552414) cars; the RealOEM 328i diagram shows only the manual pan (S205A = No). This car is an automatic (S205), so plug position and orientation on ITS pan are not established; keep the pan a plain generic mass.",
     "Engine: BMW owner's manual engine table (2011 E94 manual, 328i column) lists 2,996 cc and 230 hp, and Wikipedia lists the US/Canada 328i/328xi as N52B30 (2007-2013). A SULEV N51 variant (some US states) exists; a retailer listing and an aftermarket filter listing cover 'N51/N52' together, but N51 oil capacity and cap/plug differences were NOT found. Confirm engine code from the engine cover/underhood label or VIN decode.",
     "Drivetrain: xDrive (328xi) capacity, undertray and drain orientation were NOT found for E90. RWD assumed from the unconfirmed VIN decode.",
     "Transmission type does not change the oil service; no source gave a transmission-dependent engine oil quantity for E90.",
@@ -550,7 +551,8 @@
       },
       "gapFillNotes": [
         "bavmods describes a BC-button/Oil-menu route that differs from the manual's button 1 / button 2 wording; the picture should follow the BMW manual."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "side-jack-pad",
@@ -638,7 +640,8 @@
           "kind": "oem-text",
           "establishes": "Owner's manual p.244: jacking points exist 'at the positions shown in the illustration' (illustration not in text)."
         }
-      }
+      },
+      "imageType": "LOCATE"
     },
     {
       "id": "filter-cap-o-ring-positions",
@@ -769,178 +772,8 @@
       },
       "gapFillNotes": [
         "The catalog lists only one O-ring (the large one) as a separate part; the small green stem O-ring is part of the element/cartridge set and is documented only by forum/guide text."
-      ]
-    },
-    {
-      "id": "oil-drain-plug-access",
-      "title": "Oil drain plug and the undertray access hatch",
-      "evidenceSteps": [
-        4,
-        5
       ],
-      "viewpoint": "underside",
-      "elements": [
-        {
-          "id": "drain-plug",
-          "role": "hero",
-          "criticality": "critical",
-          "describe": "The engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape."
-        },
-        {
-          "id": "access-hatch",
-          "role": "target",
-          "criticality": "critical",
-          "describe": "The small access hatch in the lower undertray near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it."
-        },
-        {
-          "id": "oil-pan",
-          "role": "context",
-          "criticality": "cosmetic",
-          "describe": "The oil pan as a plain simplified mass around the plug."
-        },
-        {
-          "id": "hatch-fasteners",
-          "role": "context",
-          "criticality": "procedure",
-          "describe": "Whatever holds the access hatch closed (screws or a coin-operated catch; sources conflict)."
-        },
-        {
-          "id": "engine-cover",
-          "role": "context",
-          "criticality": "cosmetic",
-          "describe": "The plastic engine (ignition coil) cover; RealOEM and Turner list one for the E90 N52, but its exact shape and fit are not established."
-        }
-      ],
-      "facts": [
-        {
-          "element": "drain-plug",
-          "attribute": "existence",
-          "urls": [
-            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
-            "https://www.1addicts.com/forums/showthread.php?p=6151834",
-            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
-          ]
-        },
-        {
-          "element": "drain-plug",
-          "attribute": "location",
-          "urls": [
-            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
-            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
-          ]
-        },
-        {
-          "element": "drain-plug",
-          "attribute": "orientation",
-          "urls": [],
-          "note": "Sources conflict: slightly left of centre facing right vs vertical vs oil exits sideways."
-        },
-        {
-          "element": "drain-plug",
-          "attribute": "fastener-head-type",
-          "urls": [],
-          "note": "Only the 17 mm socket size is established, not the head shape."
-        },
-        {
-          "element": "access-hatch",
-          "attribute": "existence",
-          "urls": [
-            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
-            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
-          ]
-        },
-        {
-          "element": "access-hatch",
-          "attribute": "location",
-          "urls": [
-            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
-            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
-          ]
-        },
-        {
-          "element": "access-hatch",
-          "attribute": "fastener-position",
-          "urls": [],
-          "note": "Conflict: three screws vs coin-operated catch."
-        },
-        {
-          "element": "hatch-fasteners",
-          "attribute": "existence",
-          "urls": [
-            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
-            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
-          ],
-          "note": "Both say the hatch is held closed by something (5series.net poster: three screws; team-bhp E90 DIY: opened with a coin, 'just behind the front-center jack point'); the TYPE of fastener conflicts, so draw a plain closed panel with no specific fastener."
-        },
-        {
-          "element": "engine-cover",
-          "attribute": "existence",
-          "urls": [
-            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
-            "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=11283613"
-          ],
-          "note": "Corrected: an ignition-coil cover (beauty cover) exists on the N52 per RealOEM (11127575032) and Turner; its shape is not established, so it stays out of the picture."
-        },
-        {
-          "element": "oil-pan",
-          "attribute": "existence",
-          "urls": [
-            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834"
-          ],
-          "note": "RealOEM 328i oil pan diagram: oil pan 11137553164, screw plug M12x1.5 with gasket ring A12x17-CU."
-        }
-      ],
-      "mustNotDepict": [
-        {
-          "element": "hatch-fasteners",
-          "reason": "Sources conflict on how the hatch is fastened."
-        },
-        {
-          "element": "engine-cover",
-          "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture."
-        }
-      ],
-      "sources": {
-        "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653": {
-          "kind": "third-party-guide",
-          "establishes": "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
-        },
-        "https://www.1addicts.com/forums/showthread.php?p=6151834": {
-          "kind": "third-party-guide",
-          "establishes": "N52 DIY: remove the oil filter housing cap with a cap wrench, drop in new cartridge with two O-rings, refit until marks align."
-        },
-        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html": {
-          "kind": "third-party-guide",
-          "establishes": "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
-        },
-        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477": {
-          "kind": "third-party-guide",
-          "establishes": "17mm plug with copper crush washer; oil exits sideways."
-        },
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737": {
-          "kind": "parts-catalog",
-          "establishes": "RealOEM 328i cylinder head cover diagram: valve cover 11127552281, ignition coil covering 11127575032, oil filler cap 11128655331; no acoustic cover listed."
-        },
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834": {
-          "kind": "parts-catalog",
-          "establishes": "RealOEM 328i oil pan diagram: oil pan 11137553164, screw plug M12x1.5 11137553918, gasket ring 07119963151."
-        },
-        "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw": {
-          "kind": "parts-catalog",
-          "establishes": "Genuine BMW Engine Beauty Cover (ignition coil covering) 11127575032 listed for E90 with N52/N52N engines."
-        },
-        "https://g42.bimmerpost.com/forums/showthread.php?p=11283613": {
-          "kind": "third-party-guide",
-          "establishes": "E90 (2006 330i) thread: the plastic engine cover pops up, held by plugs, snapping onto the valve cover with rubber grommets."
-        }
-      },
-      "gapFillNotes": [
-        "The input claims no source places an engine cover on the N52. That is wrong: RealOEM (328i) lists an ignition coil covering 11127575032 and Turner lists the engine beauty cover for E90 N52. The N52 DOES have a plastic engine cover over the ignition coils/valve cover; it can be drawn (plain black plastic cover on top of the engine). It is not visible in an underside view anyway.",
-        "hatch-fasteners: sources conflict (three screws vs coin-operated); also bmwtuning.co mentions a plastic drain-plug cover turned 180 degrees by finger/screwdriver. Keep the hatch plain with no visible fastener type.",
-        "RealOEM oil-pan diagram lists the screw plug as M12x1.5 with a 12x17 copper ring, while bimmerpost says 17 mm head, consistent with a 17 mm wrench size on an M12 plug."
-      ]
+      "imageType": "IDENTIFY"
     },
     {
       "id": "oil-filter-cap",
@@ -1054,7 +887,360 @@
         "The input says no source places an engine cover on the N52; RealOEM and Turner show one exists (ignition coil covering / engine beauty cover). Treat the earlier 'must not be drawn' note as wrong, though the cover must be shown removed or omitted around the filter cap if it would hide it.",
         "filter-cap location: top/front of engine is supported, but driver vs passenger side is still unestablished; draw the cap generically near the front of the engine top.",
         "bmwtuning.co (viewed) says the oil filler cap sits on top of the engine cover; this is not reflected in RealOEM, which lists the oil filler cap on the cylinder head cover diagram, so the filler-cap mounting is uncertain."
-      ]
+      ],
+      "imageType": "LOCATE"
+    },
+    {
+      "id": "oil-drain-hatch-locate",
+      "title": "Oil drain: where the undertray access hatch is",
+      "imageType": "LOCATE",
+      "evidenceSteps": [
+        4
+      ],
+      "viewpoint": "underside",
+      "elements": [
+        {
+          "id": "access-hatch",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline."
+        },
+        {
+          "id": "undertray-panel",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The lower undertray around the hatch, drawn as a plain simplified flat mass."
+        },
+        {
+          "id": "front-bumper-and-grille",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "Front bumper, grille and lower valance styling."
+        },
+        {
+          "id": "suspension-and-subframe",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "Suspension arms, subframe and crossmembers around the undertray."
+        }
+      ],
+      "facts": [
+        {
+          "element": "access-hatch",
+          "attribute": "existence",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "element": "access-hatch",
+          "attribute": "location",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        },
+        {
+          "element": "access-hatch",
+          "attribute": "fine-detail-geometry",
+          "urls": [],
+          "note": "Not established: one poster describes a triangular panel, others a small removable panel."
+        },
+        {
+          "element": "access-hatch",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "Conflict: three screws vs coin-operated catch."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "front-bumper-and-grille",
+          "reason": "No source establishes the lower front styling for this car; left out."
+        },
+        {
+          "element": "suspension-and-subframe",
+          "reason": "No source establishes the surrounding chassis layout; left out."
+        }
+      ],
+      "sources": {
+        "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653": {
+          "kind": "third-party-guide",
+          "establishes": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477": {
+          "kind": "third-party-guide",
+          "establishes": "17 mm plug with copper crush washer; oil exits sideways."
+        }
+      }
+    },
+    {
+      "id": "oil-drain-plug-identify",
+      "title": "Oil drain: this is the engine oil drain plug",
+      "imageType": "IDENTIFY",
+      "evidenceSteps": [
+        5
+      ],
+      "viewpoint": "part-end-on",
+      "elements": [
+        {
+          "id": "drain-plug",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head."
+        },
+        {
+          "id": "crush-washer",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface."
+        },
+        {
+          "id": "oil-pan-surface",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The oil pan surface around the plug, drawn as a plain simplified matte aluminium-grey surface."
+        },
+        {
+          "id": "pan-bolts-and-ribs",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "Oil pan perimeter screws, casting ribs and nearby bolts."
+        }
+      ],
+      "facts": [
+        {
+          "element": "drain-plug",
+          "attribute": "existence",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "location",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/",
+            "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "orientation",
+          "urls": [],
+          "note": "Not established for this car: sources conflict (straight down vs facing right vs sideways) and the automatic pan is not catalogued. Oil pan variant: Turner lists separate engine oil pans for manual (11137553164) and automatic (11137552414) cars; the RealOEM 328i diagram shows only the manual pan (S205A = No). This car is an automatic (S205), so plug position and orientation on ITS pan are not established; keep the pan a plain generic mass."
+        },
+        {
+          "element": "crush-washer",
+          "attribute": "existence",
+          "urls": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834",
+            "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/"
+          ]
+        },
+        {
+          "element": "crush-washer",
+          "attribute": "location",
+          "urls": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834"
+          ]
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "pan-bolts-and-ribs",
+          "reason": "Pan fasteners and rib layout are not established for the automatic pan; left out."
+        }
+      ],
+      "sources": {
+        "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653": {
+          "kind": "third-party-guide",
+          "establishes": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477": {
+          "kind": "third-party-guide",
+          "establishes": "17 mm plug with copper crush washer; oil exits sideways."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM 328i oil pan diagram: screw plug M12x1.5 (11137553918) with gasket ring A12x17-CU (07119963151). The diagram lists only the manual-transmission pan 11137553164 (S205A = No); no automatic pan is shown."
+        },
+        "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/": {
+          "kind": "parts-catalog",
+          "establishes": "Turner: engine oil drain plug is a classic 17 mm external male hex head, M12x1.5x16, sold with its crush washer; fitment table lists E90 328i N52."
+        },
+        "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/": {
+          "kind": "parts-catalog",
+          "establishes": "ECS: genuine screw plug 11137535106 for the oil change or a damaged hex head; fitment table lists E90 328i N52; crush washer sold separately."
+        },
+        "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010": {
+          "kind": "third-party-guide",
+          "establishes": "Haynes (X3 2003-2010, engine code not named): sump plug on the base of the engine, 17 mm spanner or socket, replace the plug washer."
+        },
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1211-bmw-oil-pans-and-baffles/m-151-genuine-bmw": {
+          "kind": "parts-catalog",
+          "establishes": "Turner lists a separate engine oil pan for automatic transmission (11137552414) distinct from the manual-transmission pan (11137553164), same chassis and engines."
+        }
+      }
+    },
+    {
+      "id": "oil-drain-plug-loosen",
+      "title": "Oil drain: loosening the drain plug with a 17 mm socket",
+      "imageType": "DO",
+      "evidenceSteps": [
+        5
+      ],
+      "viewpoint": "part-end-on",
+      "elements": [
+        {
+          "id": "drain-plug",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The engine oil drain plug seen end-on, a short external hex head with a copper-coloured crush washer, with the socket fitted over its head."
+        },
+        {
+          "id": "tool-socket-and-ratchet",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "A plain chrome 17 mm socket fitted over the plug head, on a plain ratchet whose handle extends away from the plug; no markings or engraving."
+        },
+        {
+          "id": "oil-pan-surface",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The oil pan surface around the plug, drawn as a plain simplified matte aluminium-grey surface."
+        },
+        {
+          "id": "pan-bolts-and-ribs",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "Oil pan perimeter screws, casting ribs and nearby bolts."
+        }
+      ],
+      "facts": [
+        {
+          "element": "drain-plug",
+          "attribute": "existence",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "location",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/",
+            "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "orientation",
+          "urls": [],
+          "note": "Not established for this car. Oil pan variant: Turner lists separate engine oil pans for manual (11137553164) and automatic (11137552414) cars; the RealOEM 328i diagram shows only the manual pan (S205A = No). This car is an automatic (S205), so plug position and orientation on ITS pan are not established; keep the pan a plain generic mass."
+        },
+        {
+          "element": "tool-socket-and-ratchet",
+          "attribute": "existence",
+          "urls": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+            "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010"
+          ]
+        },
+        {
+          "element": "tool-socket-and-ratchet",
+          "attribute": "location",
+          "urls": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/",
+            "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010"
+          ]
+        },
+        {
+          "element": "tool-socket-and-ratchet",
+          "attribute": "fine-detail-geometry",
+          "urls": [],
+          "note": "Only one thread says 1/2 inch drive; others are silent."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "pan-bolts-and-ribs",
+          "reason": "Pan fasteners and rib layout are not established for the automatic pan; left out."
+        }
+      ],
+      "sources": {
+        "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653": {
+          "kind": "third-party-guide",
+          "establishes": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477": {
+          "kind": "third-party-guide",
+          "establishes": "17 mm plug with copper crush washer; oil exits sideways."
+        },
+        "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/": {
+          "kind": "parts-catalog",
+          "establishes": "Turner: engine oil drain plug is a classic 17 mm external male hex head, M12x1.5x16, sold with its crush washer; fitment table lists E90 328i N52."
+        },
+        "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/": {
+          "kind": "parts-catalog",
+          "establishes": "ECS: genuine screw plug 11137535106 for the oil change or a damaged hex head; fitment table lists E90 328i N52; crush washer sold separately."
+        },
+        "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010": {
+          "kind": "third-party-guide",
+          "establishes": "Haynes (X3 2003-2010, engine code not named): sump plug on the base of the engine, 17 mm spanner or socket, replace the plug washer."
+        },
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1211-bmw-oil-pans-and-baffles/m-151-genuine-bmw": {
+          "kind": "parts-catalog",
+          "establishes": "Turner lists a separate engine oil pan for automatic transmission (11137552414) distinct from the manual-transmission pan (11137553164), same chassis and engines."
+        }
+      }
+    }
+  ],
+  "withdrawnVisuals": [
+    {
+      "id": "oil-drain-plug-access",
+      "title": "Oil drain plug and the undertray access hatch",
+      "reason": "Split into LOCATE / IDENTIFY / DO per visual standard CG-VS-1.0 (oil-drain-hatch-locate, oil-drain-plug-identify, oil-drain-plug-loosen). The old contract also described the hatch as a plain rectangle, a shape no source establishes."
     }
   ]
 }

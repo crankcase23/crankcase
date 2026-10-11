@@ -1,6 +1,6 @@
 # Generate: cowl-microfilter-cover
 
-Prompt sha256: `2267f6f67861f79df4f5fa4a6cb7f0c5516c8b1895eb78bf3213f83a3a1fd520` (the factory records this; do not edit the prompt).
+Prompt sha256: `ca7064ecfc0259206273dece4fc7b71699ff9c197714918135ac9cd1dc039c60` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

@@ -23,7 +23,7 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 | 13 | Tire Rotation | safety-critical | no | NEEDS_EVIDENCE | 8 | 2 | 4 | 2 | 3 | 3 |
 | 14 | Wiper Blades | standard | no | NEEDS_EVIDENCE | 9 | 0 | 6 | 0 | 2 | 1 |
 | 15 | Differential / Transfer Case Fluid | safety-critical | yes | NEEDS_EVIDENCE | 13 | 6 | 8 | 1 | 5 | 2 |
-| 16 | Engine Oil & Filter Change | safety-critical | yes | NEEDS_EVIDENCE | 10 | 18 | 4 | 1 | 2 | 5 |
+| 16 | Engine Oil & Filter Change | safety-critical | yes | NEEDS_EVIDENCE | 10 | 18 | 4 | 1 | 2 | 7 |
 
 ## 1. Front Brake Pads — BUILDABLE_WITH_OWNER_CHECKS (NEEDS_EVIDENCE)
 

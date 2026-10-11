@@ -1,0 +1,164 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "6115560cb8f46f6d104dec87b6df47b254f13a0c3e4ce5ec8a5445beec4fddd6",
+  "createdAt": "2026-10-10T12:04:31.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-oil-drain-plug-identify-v1",
+  "maySimplify": [
+    {
+      "element": "oil-pan-surface"
+    },
+    {
+      "element": "pan-bolts-and-ribs"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "drain-plug",
+      "id": "MD-drain-plug",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-5",
+            "ref-6"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "crush-washer",
+      "id": "MD-crush-washer",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-2",
+            "ref-7",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "pan-bolts-and-ribs",
+      "id": "MN-excl-pan-bolts-and-ribs",
+      "reason": "Pan fasteners and rib layout are not established for the automatic pan; left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "pan-bolts-and-ribs"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-oil-drain-plug-identify-v1",
+      "sha256": "ceeb8cd34f0741690d31b1468eac2e619814b072590d19a27c877bbe93c61146"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "1b6f820e3e7b96302ceb6711b006fe1498bdac766f2f74827ced8268cfebb237"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "9dc34b6381ac793e965fd12bf27d235c746139ba245e15e1755d392fdebb46fe"
+  },
+  "suppress": [
+    {
+      "attribute": "orientation",
+      "element": "drain-plug",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-pan-surface",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "pan-bolts-and-ribs",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "oil-drain-plug-identify"
+}

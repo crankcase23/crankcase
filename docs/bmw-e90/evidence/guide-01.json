@@ -881,7 +881,8 @@
           "kind": "third-party-guide",
           "establishes": "Caps, spring, caliper support."
         }
-      }
+      },
+      "imageType": "IDENTIFY"
     },
     {
       "id": "front-wear-sensor-driver-side",
@@ -1007,7 +1008,8 @@
           "kind": "third-party-guide",
           "establishes": "Bimmerpost thread: front sensor plug box behind the strut, rear sensor junction box behind the wheel liner."
         }
-      }
+      },
+      "imageType": "LOCATE"
     }
   ]
 }

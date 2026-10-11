@@ -11,7 +11,7 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "4aa65518eef2a698425d508ac8b97fc04232251144c110c563cbec6e54d8dfc1",
+  "contentHash": "20e3ff7fda5bd1a11305422265df045586109ec3ba86fefa4ebdefd19db58ee9",
   "createdAt": "2026-10-10T12:00:15.000Z",
   "createdBy": {
     "actor": "factory-code",
@@ -140,11 +140,6 @@
         "band": "top",
         "fromPct": 3,
         "toPct": 17
-      },
-      {
-        "band": "bottom",
-        "fromPct": 83,
-        "toPct": 97
       }
     ]
   },
@@ -169,7 +164,7 @@
   "schemaVersion": "reconstructed-1",
   "specRef": {
     "sourceKind": "documentation-derived-prompt",
-    "sourcePromptSha256": "55f495622ce8f07eb4941326fb06893e8a644a7ad31c28a73823fe3b5c02708e"
+    "sourcePromptSha256": "553763b20eb1ce96c6b9e593d8634828dea20a7f9f538c2a4330a644a512ab36"
   },
   "suppress": [
     {

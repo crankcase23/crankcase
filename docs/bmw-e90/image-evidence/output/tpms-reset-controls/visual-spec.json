@@ -24,7 +24,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "idrive reset tpm menu detail (Exact on-screen layout and menu wording are not consistent across sources)",
@@ -43,12 +43,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "0bf5bc1ed7ce44c08448ec68bd4af5c38f32640b982e74811171ddb595442072"
+  "sourcePromptSha256": "2b5409687635985fcb038f6a3b24c00a8c11a62e66c70dd2f3fde509d071b8c6"
 }

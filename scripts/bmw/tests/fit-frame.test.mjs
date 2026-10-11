@@ -44,14 +44,14 @@ test("an image already exactly 16:10 and large enough needs no padding", () => {
   assert.deepEqual(r.record.pad, { left: 0, right: 0, top: 0, bottom: 0 });
 });
 
-test("refused: square, portrait, too small, JPEG, busy edges, not-dark edges", () => {
+test("refused: square, portrait, too small, JPEG, busy edges; plain light ground accepted", () => {
   assert.equal(fitToFrame(img(1024, 1024)).code, "RATIO_TOO_FAR");
   assert.equal(fitToFrame(img(1024, 1536)).code, "RATIO_TOO_FAR");
   assert.equal(fitToFrame(img(1280, 800)).code, "TOO_SMALL");
   assert.equal(fitToFrame(Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 0])).code, "NOT_PNG");
   assert.equal(fitToFrame(img(1536, 1024, { edge: true })).code, "BORDER_NOT_PLAIN");
-  const bright = Buffer.alloc(1536 * 1024 * 3, 200);
-  assert.equal(fitToFrame(encodePng({ width: 1536, height: 1024, channels: 3, pixels: bright })).code, "BORDER_NOT_PLAIN", "light plain edge is not the dark ground the prompt asks for");
+  const light = Buffer.alloc(1536 * 1024 * 3, 235);
+  assert.ok(fitToFrame(encodePng({ width: 1536, height: 1024, channels: 3, pixels: light })).ok, "a plain LIGHT neutral ground (CG-VS-1.0) is accepted");
 });
 
 test("fitting is deterministic", () => {

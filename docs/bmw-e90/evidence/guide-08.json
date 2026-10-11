@@ -782,7 +782,8 @@
       },
       "gapFillNotes": [
         "youcanic does not say 'cap' explicitly as a separate item; cap-on-tank rests on owner manual wording plus Pelican."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "radiator-drain-plugs-underside",
@@ -918,7 +919,8 @@
       "gapFillNotes": [
         "right-drain-plug location NOT established: only Pelican says some E90s have a second plug on the right; Pelican radiator comments suggest the OEM radiator has just the driver-side plug and the passenger-side plug is an aftermarket (Nissens) feature, though RealOEM lists qty 2 (may include the second plug for variants). Do not show a right plug as standard.",
         "Colour of the plug disagrees: red (5series thread) vs blue (bimmerpost)."
-      ]
+      ],
+      "imageType": "LOCATE"
     }
   ]
 }

@@ -32,7 +32,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "anti rattle spring clip detail (Exact bend shape; orientation and routing are not established)",
@@ -53,12 +53,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "0bbb8f31941a0d01fe3426f2e433ca866346f47636f2c890674782cd3e16aa43"
+  "sourcePromptSha256": "00ff3319239b5b91dd268baee5c023dc1c70a92335f33a08607797897d23cb45"
 }

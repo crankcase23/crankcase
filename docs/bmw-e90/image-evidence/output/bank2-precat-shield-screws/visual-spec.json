@@ -24,7 +24,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "shield e8 screws detail (Exact positions and orientation are not established; do not mark them on a specific edge of the shield)",
@@ -45,12 +45,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "643583cd7ca1d92677e28a52db4bf4af838fdeeba7b1e45eb59d0b0392e97065"
+  "sourcePromptSha256": "f4a358738faab4f0a6d02a8199d781e46e67e99793cd6b9a71e4e17369422312"
 }

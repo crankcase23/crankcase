@@ -875,7 +875,8 @@
         "positive-terminal-cover existence NOT established for E90: RealOEM 61_1946 has an unlabeled 'Cover' (61126938508, qty 2) and YouCanic/other pages say terminals are 'possibly covered' generically; the E82 1addicts post remains the only explicit source.",
         "vent-hose location NOT established for E90: RealOEM 61_1987 lists a hose, elbow and 10.5 mm grommet and a general page says vented by a plastic tube to outside, but no source gives its route in the trunk.",
         "RealOEM 61_1987 lists 'Rollover protection' (61217549425), a cover item over the battery that may be what covers the positive side; unconfirmed."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "engine-bay-jump-terminal",
@@ -953,7 +954,8 @@
           "kind": "third-party-photo",
           "establishes": "E90 owner thread: red cap covers the positive jump terminal in the engine bay."
         }
-      }
+      },
+      "imageType": "LOCATE"
     }
   ]
 }

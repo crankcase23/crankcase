@@ -39,12 +39,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "7ed52ee1bd6024a79e1d296a93e03443f8622b1d4862d6e560265b5a86be805a"
+  "sourcePromptSha256": "81febfe3921f06876bf47d94a2310c2e68293b5562f62540fd96f02b59d7446f"
 }

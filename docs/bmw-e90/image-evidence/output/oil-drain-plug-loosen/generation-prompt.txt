@@ -1,0 +1,19 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Oil drain: loosening the drain plug with a 17 mm socket, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Drain the sump".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). End-on view straight along the axis of the part, against a plain simplified surface; no ground, horizon or body edges visible. DO image: tight close-up of the hero part with the listed tool in working position, no hands. If an element's orientation is listed as not established, view it end-on with no ground, horizon, body edge or gravity cue. Style (CG-VS-1.0): clean, realistic 3D technical illustration; light neutral studio background (soft white to light grey); matte materials, soft light, soft contact shadows; tight component framing; minimal unnecessary detail. Realism applies to materials and lighting only: it does NOT license invented detail, so every part not listed below stays a plain generic shape. No orange or other saturated accent colours anywhere (a copper-coloured part may be copper); highlights and arrows are added later as an editable overlay.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: The engine oil drain plug seen end-on, a short external hex head with a copper-coloured crush washer, with the socket fitted over its head. Do NOT depict its orientation: keep it a plain generic shape.
+2. A plain chrome 17 mm socket fitted over the plug head, on a plain ratchet whose handle extends away from the plug; no markings or engraving. Do NOT depict its fine detail: keep it a plain generic shape.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): oil pan surface. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): pan bolts and ribs (Pan fasteners and rib layout are not established for the automatic pan; left out), hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep one horizontal band plain and uncluttered (light neutral background only): the top 3%-17% of the height, across the full width. The step banner and labels are added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

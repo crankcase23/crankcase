@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "1c1e557f5464adb7bef430e4c694c6f2f6a0982c5ce3e747c88892d73c8ffd03",
-  "createdAt": "2026-10-10T12:04:22.000Z",
+  "contentHash": "e979009c1d579cf0fa82072513124a1c312a91cd65c54ac7bb004f437dce3ec0",
+  "createdAt": "2026-10-10T12:04:13.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -87,11 +87,6 @@
         "band": "top",
         "fromPct": 3,
         "toPct": 17
-      },
-      {
-        "band": "bottom",
-        "fromPct": 83,
-        "toPct": 97
       }
     ]
   },
@@ -105,18 +100,18 @@
   "refs": [
     {
       "id": "EP-oil-filter-cap-v1",
-      "sha256": "f1ae488fa966bcf941c2d71758b82a38d421c925ecfae8454159b53e85eadb7c"
+      "sha256": "8980ed0112b07ccc63f2fcb55334ce90300607772e7fff29d2ca63b207f31272"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "1761412ce8cd88f294cfea7d1e734572e13b9669124289683eb3bbc9009c7eac"
+      "sha256": "d6a086ef9f8338942e7afec2ef99e528016bc860ae2981cb8090d13c66876483"
     }
   ],
   "schema": "guide-factory.visual-contract",
   "schemaVersion": "reconstructed-1",
   "specRef": {
     "sourceKind": "documentation-derived-prompt",
-    "sourcePromptSha256": "7ed52ee1bd6024a79e1d296a93e03443f8622b1d4862d6e560265b5a86be805a"
+    "sourcePromptSha256": "81febfe3921f06876bf47d94a2310c2e68293b5562f62540fd96f02b59d7446f"
   },
   "suppress": [
     {

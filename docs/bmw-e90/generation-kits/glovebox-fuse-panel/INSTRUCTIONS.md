@@ -1,6 +1,6 @@
 # Generate: glovebox-fuse-panel
 
-Prompt sha256: `72fbd1e422be39e03b5eed2bb8c57b8a55f5c14d299dccd0892e621d91069889` (the factory records this; do not edit the prompt).
+Prompt sha256: `99d14afecb201bc72c6ad25235d69f3a39175d2c0edac8ea90367784d741be27` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

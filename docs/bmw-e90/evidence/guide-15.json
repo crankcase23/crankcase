@@ -571,7 +571,8 @@
       },
       "gapFillNotes": [
         "fill-drain-plug location NOT established: bimmersport, bavmods, m3post, z4-forum, 5series.net threads, the BMW TIS pdf and bimmerpost threads were all fetched and none states which face/side of the 188L housing the plug is on (only that it is reached from underneath the rear of the car, with little room because of the lower braces/reinforcement plate). Web search budget ran out before a RealOEM-diagram or photo-description source could be found. Draw the plug generically on the housing."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "rear-diff-fill-level",
@@ -700,7 +701,8 @@
       },
       "gapFillNotes": [
         "fill-opening location unresolved (see above); search budget ran out."
-      ]
+      ],
+      "imageType": "DO"
     }
   ]
 }

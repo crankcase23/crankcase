@@ -751,7 +751,8 @@
       },
       "gapFillNotes": [
         "YouCanic's FAQ says to remove the whole glove box for full access, while its steps and the other sources only remove the cover. Exact position of the two fasteners on the cover is not stated anywhere (keep generic)."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "wheel-arch-liner-access",
@@ -882,7 +883,8 @@
       },
       "gapFillNotes": [
         "Screw count and head type conflict across sources (9 screws+1 nut vs 3 vs two lower front; 8 mm vs 10 mm nut; T20 applies to the headlight bulb cover, not the liner). Keep screws generic."
-      ]
+      ],
+      "imageType": "LOCATE"
     }
   ],
   "withdrawnVisuals": [

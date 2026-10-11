@@ -1,6 +1,6 @@
 # Generate: oil-filter-cap
 
-Prompt sha256: `7ed52ee1bd6024a79e1d296a93e03443f8622b1d4862d6e560265b5a86be805a` (the factory records this; do not edit the prompt).
+Prompt sha256: `81febfe3921f06876bf47d94a2310c2e68293b5562f62540fd96f02b59d7446f` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

@@ -28,7 +28,7 @@
     }
   ],
   "maySimplify": [
-    "a plain dark ground plane"
+    "a plain light neutral ground plane"
   ],
   "mustNotShow": [
     "fuse panel detail (Fuse positions; numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions)",
@@ -48,12 +48,7 @@
       "band": "top",
       "fromPct": 3,
       "toPct": 17
-    },
-    {
-      "band": "bottom",
-      "fromPct": 83,
-      "toPct": 97
     }
   ],
-  "sourcePromptSha256": "72fbd1e422be39e03b5eed2bb8c57b8a55f5c14d299dccd0892e621d91069889"
+  "sourcePromptSha256": "99d14afecb201bc72c6ad25235d69f3a39175d2c0edac8ea90367784d741be27"
 }

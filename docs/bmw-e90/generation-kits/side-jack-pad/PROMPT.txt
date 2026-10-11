@@ -2,7 +2,7 @@ Create ONE clean, polished, instructional illustration for a DIY car-repair guid
 
 SUBJECT: Where the factory side jack pad sits and how to support it, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Lift and support the car".
 
-FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). View into the wheel well with the wheel removed, from the side at hub height, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). View into the wheel well with the wheel removed, from the side at hub height, mild perspective. LOCATE image: wide enough that a mechanic can find the part. Show the hero in its simplified surrounding structure, the hero taking roughly 15-30% of the frame width, the surroundings plain and simplified. Style (CG-VS-1.0): clean, realistic 3D technical illustration; light neutral studio background (soft white to light grey); matte materials, soft light, soft contact shadows; tight component framing; minimal unnecessary detail. Realism applies to materials and lighting only: it does NOT license invented detail, so every part not listed below stays a plain generic shape. No orange or other saturated accent colours anywhere (a copper-coloured part may be copper); highlights and arrows are added later as an editable overlay.
 
 MUST SHOW (clearly, in this order of importance):
 1. HERO: A small rectangular plastic pad along the lower side of the body near a wheel; a hollow rectangle that is the lift and stand point. Do NOT depict its fine detail: keep it a plain generic shape.
@@ -11,8 +11,8 @@ MAY SHOW, SIMPLIFIED AND DIM (background only): wheel and tire. Keep every one o
 
 MUST NOT SHOW (leave these out entirely, do not substitute): side jack pad rectangle detail (Exact distance from the wheel arch; the pad's notch or arrow markings and the front-centre jack point geometry are not established), jack pad adapter puck (Shown only as an optional accessory; not as factory equipment), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
 
-NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+NO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.
 
-CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+CLEAR SPACE: keep one horizontal band plain and uncluttered (light neutral background only): the top 3%-17% of the height, across the full width. The step banner and labels are added later in software.
 
 Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

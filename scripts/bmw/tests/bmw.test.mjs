@@ -164,3 +164,37 @@ test("withdrawn visuals are not proposed and carry a reason", async () => {
     assert.ok(g.withdrawnVisuals.some((v) => v.id === id && v.reason.length > 20));
   }
 });
+
+test("visual standard CG-VS-1.0: every visual has a type, prompts follow the type rules, overlay is editable vector and never invents positions", async () => {
+  const { runAll, loadVisuals, buildPrompt } = await import(path.join(ROOT, "scripts/bmw/pipeline-visuals.mjs"));
+  const { renderOverlaySvg, overlaySpec, TYPES, STANDARD } = await import(path.join(ROOT, "scripts/bmw/visual-standard.mjs"));
+  const vs = loadVisuals();
+  assert.ok(vs.every((v) => TYPES[v.imageType]), "every visual has LOCATE/IDENTIFY/DO");
+  const by = Object.fromEntries(vs.map((v) => [v.id, v]));
+  const loc = buildPrompt(by["oil-drain-hatch-locate"]), idn = buildPrompt(by["oil-drain-plug-identify"]), doo = buildPrompt(by["oil-drain-plug-loosen"]);
+  for (const p of [loc, idn, doo]) {
+    assert.match(p, /light neutral studio background/);
+    assert.ok(!/dark graphite/i.test(p), "old dark style gone");
+    assert.match(p, /highlight outlines, banners/, "no baked highlights or banners");
+    assert.match(p, /top 3%-17% of the height/);
+  }
+  assert.match(loc, /wrench or socket/, "LOCATE excludes tools");
+  assert.match(idn, /wrench or socket/, "IDENTIFY excludes tools");
+  assert.ok(!/wrench or socket/.test(doo) && /17 mm socket/.test(doo), "DO shows its listed tool only");
+  assert.match(idn, /Do NOT depict its orientation/);
+  assert.ok(!/rectangular/.test(loc), "hatch shape is not asserted");
+  // overlay: empty regions draw nothing but the banner; regions render as editable vector
+  const spec = overlaySpec(by["oil-drain-hatch-locate"], { stepNumber: 4 });
+  assert.equal(spec.highlights[0].region, null);
+  const empty = renderOverlaySvg(spec);
+  assert.ok(!/class="highlight"/.test(empty) && /LOCATE/.test(empty) && /<text/.test(empty));
+  spec.highlights[0].region = [0.4, 0.4, 0.2, 0.2]; spec.highlights[0].arrowFrom = [0.8, 0.3]; spec.highlights[0].label = "HATCH";
+  const full = renderOverlaySvg(spec);
+  assert.match(full, /class="highlight" data-element="access-hatch"/);
+  assert.ok(full.includes(STANDARD.palette.orange) && !/<image/.test(full), "vector only, orange from the standard");
+  // pipeline writes the stamp and an overlay spec per locked contract
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), "bmw-vs-"));
+  const r = await runAll({ out, only: ["oil-drain-plug-loosen"] });
+  assert.equal(r.visualStandard.id, "CG-VS-1.0");
+  assert.ok(fs.existsSync(path.join(out, "oil-drain-plug-loosen", "overlay.spec.json")));
+});

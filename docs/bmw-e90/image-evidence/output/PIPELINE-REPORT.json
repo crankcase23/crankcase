@@ -234,11 +234,21 @@
   ],
   "rule": "see header of scripts/bmw/pipeline-visuals.mjs",
   "summary": {
+    "byType": {
+      "DO": 2,
+      "IDENTIFY": 10,
+      "LOCATE": 23
+    },
     "certified": 0,
-    "contractLocked": 25,
+    "contractLocked": 27,
     "evidenceInsufficient": 8,
     "imagesProduced": 0,
-    "visuals": 33
+    "visuals": 35
+  },
+  "visualStandard": {
+    "id": "CG-VS-1.0",
+    "referenceSha256": "dec0ad25225c092ce562970f1e46fc5bd86924cb88ba45e58d2f02604451590e",
+    "scope": "STYLE ONLY. BMW mechanical accuracy of the reference illustration was not certified."
   },
   "visuals": [
     {
@@ -253,6 +263,7 @@
       "guide": 1,
       "guideName": "Front Brake Pads",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -277,7 +288,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2408 chars)",
+          "detail": "prompt built from the locked contract (3018 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -334,6 +345,7 @@
       "guide": 1,
       "guideName": "Front Brake Pads",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -358,7 +370,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2088 chars)",
+          "detail": "prompt built from the locked contract (2665 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -414,6 +426,7 @@
       "guide": 2,
       "guideName": "Fuse & Bulb Replacement",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -438,7 +451,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2301 chars)",
+          "detail": "prompt built from the locked contract (2878 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -495,6 +508,7 @@
       "guide": 2,
       "guideName": "Fuse & Bulb Replacement",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -519,7 +533,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2085 chars)",
+          "detail": "prompt built from the locked contract (2653 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -576,6 +590,7 @@
       "guide": 4,
       "guideName": "Oxygen Sensor",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -600,7 +615,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2468 chars)",
+          "detail": "prompt built from the locked contract (3036 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -656,6 +671,7 @@
       "guide": 4,
       "guideName": "Oxygen Sensor",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -680,7 +696,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2273 chars)",
+          "detail": "prompt built from the locked contract (2883 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -735,6 +751,7 @@
       "guide": 4,
       "guideName": "Oxygen Sensor",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -778,6 +795,7 @@
       "guide": 5,
       "guideName": "Rear Brake Pads",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -802,7 +820,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1959 chars)",
+          "detail": "prompt built from the locked contract (2569 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -858,6 +876,7 @@
       "guide": 5,
       "guideName": "Rear Brake Pads",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -882,7 +901,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1985 chars)",
+          "detail": "prompt built from the locked contract (2562 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -940,6 +959,7 @@
       "guide": 6,
       "guideName": "Serpentine Belt",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -964,7 +984,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2323 chars)",
+          "detail": "prompt built from the locked contract (2891 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1020,6 +1040,7 @@
       "guide": 6,
       "guideName": "Serpentine Belt",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1044,7 +1065,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2166 chars)",
+          "detail": "prompt built from the locked contract (2776 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1103,6 +1124,7 @@
       "guide": 7,
       "guideName": "Battery Replacement",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1127,7 +1149,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2188 chars)",
+          "detail": "prompt built from the locked contract (2756 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1183,6 +1205,7 @@
       "guide": 7,
       "guideName": "Battery Replacement",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1207,7 +1230,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1753 chars)",
+          "detail": "prompt built from the locked contract (2321 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1268,6 +1291,7 @@
       "guide": 8,
       "guideName": "Coolant Flush & Fill",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1292,7 +1316,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2122 chars)",
+          "detail": "prompt built from the locked contract (2690 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1349,6 +1373,7 @@
       "guide": 8,
       "guideName": "Coolant Flush & Fill",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -1393,6 +1418,7 @@
       "guide": 9,
       "guideName": "Fluid Checks & Top-Offs",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -1434,6 +1460,7 @@
       "guide": 9,
       "guideName": "Fluid Checks & Top-Offs",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1458,7 +1485,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2160 chars)",
+          "detail": "prompt built from the locked contract (2737 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1514,6 +1541,7 @@
       "guide": 10,
       "guideName": "Cabin Air Filter",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1538,7 +1566,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2016 chars)",
+          "detail": "prompt built from the locked contract (2584 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1594,6 +1622,7 @@
       "guide": 10,
       "guideName": "Cabin Air Filter",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -1637,6 +1666,7 @@
       "guide": 11,
       "guideName": "PCV / Crankcase Ventilation — Inspection & Diagnosis",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1661,7 +1691,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2218 chars)",
+          "detail": "prompt built from the locked contract (2786 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1720,6 +1750,7 @@
       "guide": 12,
       "guideName": "Engine Air Filter",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -1762,6 +1793,7 @@
       "guide": 12,
       "guideName": "Engine Air Filter",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -1803,6 +1835,7 @@
       "guide": 13,
       "guideName": "Tire Rotation",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1827,7 +1860,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1895 chars)",
+          "detail": "prompt built from the locked contract (2472 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1884,6 +1917,7 @@
       "guide": 13,
       "guideName": "Tire Rotation",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1908,7 +1942,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1919 chars)",
+          "detail": "prompt built from the locked contract (2520 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1963,6 +1997,7 @@
       "guide": 13,
       "guideName": "Tire Rotation",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -1987,7 +2022,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1920 chars)",
+          "detail": "prompt built from the locked contract (2497 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2044,6 +2079,7 @@
       "guide": 14,
       "guideName": "Wiper Blades",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -2068,7 +2104,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2020 chars)",
+          "detail": "prompt built from the locked contract (2630 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2126,6 +2162,7 @@
       "guide": 15,
       "guideName": "Differential / Transfer Case Fluid",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
@@ -2168,10 +2205,11 @@
       "guide": 15,
       "guideName": "Differential / Transfer Case Fluid",
       "imageProduced": false,
+      "imageType": "DO",
       "phase": "EP_INSUFFICIENT",
       "stages": [
         {
-          "detail": "2 must-show, 9 must-not-show",
+          "detail": "2 must-show, 8 must-not-show",
           "stage": "1 visual spec intake",
           "status": "PASS"
         },
@@ -2209,6 +2247,7 @@
       "guide": 16,
       "guideName": "Engine Oil & Filter Change",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -2233,7 +2272,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2264 chars)",
+          "detail": "prompt built from the locked contract (2832 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2288,6 +2327,7 @@
       "guide": 16,
       "guideName": "Engine Oil & Filter Change",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -2312,7 +2352,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1983 chars)",
+          "detail": "prompt built from the locked contract (2551 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2368,6 +2408,7 @@
       "guide": 16,
       "guideName": "Engine Oil & Filter Change",
       "imageProduced": false,
+      "imageType": "IDENTIFY",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -2392,7 +2433,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1980 chars)",
+          "detail": "prompt built from the locked contract (2581 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2442,86 +2483,6 @@
     {
       "certified": false,
       "evidenceSteps": [
-        4,
-        5
-      ],
-      "guide": 16,
-      "guideName": "Engine Oil & Filter Change",
-      "imageProduced": false,
-      "phase": "GEN_REQUESTED",
-      "stages": [
-        {
-          "detail": "2 must-show, 9 must-not-show",
-          "stage": "1 visual spec intake",
-          "status": "PASS"
-        },
-        {
-          "detail": "8 reference(s); 7 established / 5 not-established ledger rows",
-          "stage": "2-3 reference intake and ledger",
-          "status": "PASS"
-        },
-        {
-          "detail": "every hero/target has established existence and location",
-          "problemCodes": [],
-          "stage": "3b EP sufficiency (objective gate)",
-          "status": "PASS"
-        },
-        {
-          "detail": "visual contract locked",
-          "stage": "4 visual contract compile/lock",
-          "status": "PASS"
-        },
-        {
-          "detail": "prompt built from the locked contract (2156 chars)",
-          "stage": "4b generation request",
-          "status": "PASS"
-        },
-        {
-          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
-          "stage": "5 image generation",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "6 provenance checks",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "7 no-source-pixels attestation",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "8 admission gate",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "9 normalization",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "10 independent QA (Hermes) + overlay QA",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "11 owner sign-off and approved artifact",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "5 events, 3 objects, problems=0",
-          "stage": "12 event log + directory integrity",
-          "status": "PASS"
-        }
-      ],
-      "visualId": "oil-drain-plug-access"
-    },
-    {
-      "certified": false,
-      "evidenceSteps": [
         3,
         6,
         8
@@ -2529,6 +2490,7 @@
       "guide": 16,
       "guideName": "Engine Oil & Filter Change",
       "imageProduced": false,
+      "imageType": "LOCATE",
       "phase": "GEN_REQUESTED",
       "stages": [
         {
@@ -2553,7 +2515,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (1741 chars)",
+          "detail": "prompt built from the locked contract (2309 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2599,6 +2561,246 @@
         }
       ],
       "visualId": "oil-filter-cap"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "imageType": "LOCATE",
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "1 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "3 reference(s); 2 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2505 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "oil-drain-hatch-locate"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        5
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "imageType": "IDENTIFY",
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 8 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "7 reference(s); 5 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2551 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "oil-drain-plug-identify"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        5
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "imageType": "DO",
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 7 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "6 reference(s); 5 established / 4 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2629 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "oil-drain-plug-loosen"
     }
   ]
 }

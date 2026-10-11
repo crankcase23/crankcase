@@ -318,7 +318,8 @@
       },
       "gapFillNotes": [
         "Screw count conflicts (3, 4, 6); exact positions not established beyond 'near windshield ends/ducts plus front edge'."
-      ]
+      ],
+      "imageType": "LOCATE"
     },
     {
       "id": "microfilter-element-retention-tabs",
@@ -427,7 +428,8 @@
       "gapFillNotes": [
         "element-retention-tabs location NOT established: bavmods only says three tabs (placement in images), bimmerpost says 'unclip'.",
         "bavmods is weak on element position."
-      ]
+      ],
+      "imageType": "IDENTIFY"
     }
   ]
 }

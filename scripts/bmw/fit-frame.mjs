@@ -9,8 +9,8 @@
 //   * input must be PNG (8-bit, non-interlaced), not animated. Export the ChatGPT image as PNG.
 //   * 1:1 pixel scale: the native pixels are copied unchanged into the canvas (verified after the fact).
 //   * padding only on the short axis, at most MAX_PAD (12%) of the canvas side; wider ratios (square, portrait) are refused: regenerate landscape.
-//   * the native edges that touch the padding must be plain (low variance, dark). Otherwise content touches the edge and
-//     padding would smear it: refused. The prompt's clear-space bands and dark graphite ground make this hold for good images.
+//   * the native edges that touch the padding must be plain (low variance; any brightness, since the CG-VS-1.0 ground is light
+//     neutral). Otherwise content touches the edge and padding would smear it: refused.
 //   * the native image must already be large enough: after fitting, the canvas must be >= 1600x1000 (upscaling is not allowed).
 // The native file's hash, dimensions, C2PA presence and every operation are written to a fit record that travels with the
 // candidate into the QA packet, so the reviewer and the owner can see exactly what was done.
@@ -29,7 +29,6 @@ const { FRAME } = await import(path.join(FACT, "src/enums.mjs"));
 export const MAX_PAD = 0.12;
 const STRIP = 6; // px of native edge sampled for the plainness check
 const MAX_STD = 20; // per-channel standard deviation allowed along a padded edge
-const MAX_LUMA = 110; // padded edges must be dark (prompt: dark graphite context)
 
 const refuse = (code, message) => ({ ok: false, code, message });
 const luma = (p, o, ch) => (ch >= 3 ? 0.2126 * p[o] + 0.7152 * p[o + 1] + 0.0722 * p[o + 2] : p[o]);
@@ -68,7 +67,7 @@ export function fitToFrame(bytes) {
   for (const s of sides) {
     const st = edgeStats(img, s);
     edges[s] = { mean: Math.round(st.mean * 10) / 10, std: Math.round(st.std * 10) / 10 };
-    if (st.std > MAX_STD || st.mean > MAX_LUMA) return refuse("BORDER_NOT_PLAIN", `the ${s} edge of the image is not a plain dark background (mean ${st.mean.toFixed(0)}, std ${st.std.toFixed(0)}); padding would smear content. Regenerate with more empty margin`);
+    if (st.std > MAX_STD) return refuse("BORDER_NOT_PLAIN", `the ${s} edge of the image is not a plain background (mean ${st.mean.toFixed(0)}, std ${st.std.toFixed(0)}); padding would smear content. Regenerate with more empty margin`);
   }
   // build the canvas: native pixels 1:1 in the middle, edge pixels replicated into the padding
   const out = Buffer.alloc(Wc * Hc * ch);

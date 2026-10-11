@@ -1,0 +1,20 @@
+{
+  "schema": "cg-visual-standard-record.v1",
+  "id": "CG-VS-1.0",
+  "approvedBy": "owner, in session, 2026-10-10",
+  "scope": "STYLE ONLY; BMW mechanical accuracy of the reference was not certified and was rejected as an accuracy reference",
+  "referenceImage": "docs/bmw-e90/visual-standard/reference/oil-drain-style-reference.png",
+  "referenceSha256": "dec0ad25225c092ce562970f1e46fc5bd86924cb88ba45e58d2f02604451590e",
+  "imageTypes": [
+    "LOCATE",
+    "IDENTIFY",
+    "DO"
+  ],
+  "review": "docs/bmw-e90/visual-standard/STYLE-REFERENCE-REVIEW.md",
+  "enforcedBy": [
+    "scripts/bmw/visual-standard.mjs",
+    "scripts/bmw/pipeline-visuals.mjs",
+    "scripts/bmw/validate-evidence.mjs"
+  ],
+  "factoryCodeModified": false
+}
