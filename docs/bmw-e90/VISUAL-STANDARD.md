@@ -24,6 +24,13 @@ Current counts are in `image-evidence/output/PIPELINE-REPORT.json` (`summary.byT
 ## Applying it to the rest without blindly regenerating
 No BMW image exists yet, so nothing is regenerated. Every one of the 35 contracts got a type and a re-rendered prompt; contracts that were evidence-insufficient stay blocked (list in `image-evidence/output/COVERAGE.md`). Visuals that would show a hand or a tool must list the tool as an element with evidence; today only the two DO visuals do.
 
+## Compact prompts, margins and the intake chain (current)
+- The full evidence/contract prompt stays internal (`spec-prompt.full.txt`, parsed into the locked contract). What is sent to ChatGPT is a short compact prompt (`generation-prompt.txt`, factory-hashed): look, view, hero and "Do NOT depict" attributes, background-only parts, leave-out list, layout (8% plain margin left/right/bottom, plain 3-17% top band), no text. Critical constraints are never dropped to save length.
+- The exact submitted text is recorded: the `intake` command requires `--attest`, writes `submittedPromptSha256` into the claims, the factory refuses a mismatch (`PROMPT_MISMATCH`), and the QA packet shows the prompt.
+- IDENTIFY images show the hero plus a small isolated patch of surface floating on plain ground (a full-frame surface cannot satisfy the margin rule; found when attempt 1 failed `BORDER_NOT_PLAIN`).
+- `fit-frame` pads, never stretches, and encodes the candidate at a zlib level whose bytes differ from the normaliser output (the normaliser refuses a byte-identical candidate; permanent regression tests cover this and pixel survival).
+- Chain: `intake` (fit + claims + packet) -> independent review `import` -> `finish` (admit + normalise) -> `overlay-set` / `overlay-render` / `overlay-export` -> independent `overlay-import` (OVERLAY_PASSED) -> owner `sign-off` (APPROVED). Only `sign-off` makes anything certified, and only with the owner's own words.
+
 ## Not done yet (honest list)
-- The factory's own overlay QA stage is not wired to the overlay spec. The spec is the editable source; hooking it into the factory means a factory change, which needs your approval because the factory files are hash-locked.
-- No image has been generated, reviewed by Hermes or approved.
+- Reviewer and generator are both ChatGPT (separate chats): the factory's check passes, true independence is weak.
+- Nothing is certified. `oil-drain-hatch-locate` is OVERLAY_PASSED and waits for owner sign-off.

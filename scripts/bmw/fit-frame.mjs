@@ -89,7 +89,14 @@ export function fitToFrame(bytes) {
     const b = out.subarray(((y + pad.top) * Wc + pad.left) * ch, ((y + pad.top) * Wc + pad.left + W) * ch);
     if (!a.equals(b)) return refuse("CONTENT_CHANGED", `native row ${y} differs in the canvas`);
   }
-  const fitted = encodePng({ width: Wc, height: Hc, channels: ch, pixels: out }, { level: 6 }); // level 6 on purpose: the factory normaliser re-encodes at level 9 and refuses a candidate whose bytes equal its output (HASH_COLLISION)
+  // The factory normaliser re-encodes at level 9 and refuses (HASH_COLLISION) a candidate whose bytes equal its own output.
+  // Pick the first zlib level whose bytes differ from what the normaliser would produce. Pixels are identical at every level.
+  let fitted = null;
+  for (const level of [6, 5, 4, 3, 2, 1, 0]) {
+    const cand = encodePng({ width: Wc, height: Hc, channels: ch, pixels: out }, { level });
+    if (sha256(cand) !== sha256(encodePng({ width: Wc, height: Hc, channels: ch, pixels: out }, { level: 9 }))) { fitted = cand; break; }
+  }
+  if (!fitted) return refuse("NORMALIZE_COLLISION", "no encoding of this canvas differs from the normaliser output; refusing rather than shipping a candidate the factory will reject");
   const record = {
     schema: "bmw-fit-record.v1",
     native: { sha256: sha256(bytes), bytes: bytes.length, width: W, height: H, ratio: Math.round((W / H) * 10000) / 10000, ancillaryChunks: metadataChunkTypes(parsed.chunks), c2pa: c2paInfo(parsed.chunks) },

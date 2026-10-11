@@ -1,0 +1,4 @@
+{"overlaySha256": "0a204fd0bf81711426f230f13a0c09a7d5dc0fa83b0d8064f5c6ea6b0ea3ab85",
+ "results": [
+  {"callout": "drain plug", "result": "FAIL", "note": "Orange box includes the hex head and substantial portions of the copper crush washer and surrounding surface. Not tightly fitted to the drain plug."},
+  {"callout": "crush washer", "result": "FAIL", "note": "Orange box covers only a narrow section of the washer on the left, excluding most of the visible copper ring. Does not enclose the target component."}]}

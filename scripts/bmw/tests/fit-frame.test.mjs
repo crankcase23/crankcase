@@ -68,3 +68,28 @@ test("native just under the 1600x1000 minimum is padded up to it, never upscaled
   assert.equal(r.record.contentPixelsUnchanged, true);
   assert.equal(fitToFrame(img(1400, 875)).code, "TOO_SMALL", "more than MAX_PAD short is still refused");
 });
+
+// ---- permanent regression: NORMALIZE_HASH_COLLISION (found 2026-10-10 on the first real image) ----
+// The factory normaliser re-encodes at zlib level 9 and refuses a candidate byte-identical to its own output.
+// A fitted candidate must therefore never equal normalizeRaster(candidate).bytes, and must survive finish unchanged in pixels.
+function flat(w, h) { return encodePng({ width: w, height: h, channels: 3, pixels: Buffer.alloc(w * h * 3, 245) }); }
+
+for (const [name, native] of [["textured 1586x992", img(1586, 992)], ["flat (maximally compressible) 1600x1000", flat(1600, 1000)], ["flat 1586x992", flat(1586, 992)]]) {
+  test(`REGRESSION collision: ${name} fits, then normalises without HASH_COLLISION and with identical pixels`, () => {
+    const r = fitToFrame(native);
+    assert.ok(r.ok, JSON.stringify(r));
+    const n = normalizeRaster(r.bytes); // throws NormalizationRefused HASH_COLLISION if bytes collide
+    assert.notEqual(n.normalized.sha256, r.record.fitted.sha256, "candidate and normalised hashes are distinct");
+    assert.equal(n.downscaled, false, "exact 1600x1000 candidate is not resampled");
+    // pixel survival: native -> fitted (offset by pad only) -> normalised, byte-for-byte per pixel
+    const src = decodePng(native), fit = decodePng(r.bytes), norm = decodePng(n.bytes);
+    assert.deepEqual([norm.width, norm.height], [1600, 1000]);
+    assert.ok(Buffer.from(fit.pixels).equals(Buffer.from(norm.pixels)), "normaliser did not change a single pixel");
+    const { left, top } = r.record.pad;
+    for (let y = 0; y < src.height; y++) {
+      const a = src.pixels.subarray(y * src.width * 3, (y + 1) * src.width * 3);
+      const o = ((y + top) * norm.width + left) * 3;
+      assert.ok(Buffer.from(a).equals(Buffer.from(norm.pixels.subarray(o, o + src.width * 3))), `native row ${y} survives unchanged`);
+    }
+  });
+}

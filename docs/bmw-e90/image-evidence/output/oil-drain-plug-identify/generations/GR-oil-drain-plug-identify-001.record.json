@@ -1,0 +1,79 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "artifact": {
+    "bytes": 2028626,
+    "c2pa": {
+      "present": false
+    },
+    "file": "generations/GR-oil-drain-plug-identify-001.png",
+    "height": 1000,
+    "mediaType": "png",
+    "metadataChunks": [],
+    "sha256": "f164587109e55fa77df8e58dd6920363874ad7a23647a51428811f29c6cae539",
+    "width": 1600
+  },
+  "attestation": {
+    "attestedBy": "image-generator",
+    "attestedOn": "2026-10-11",
+    "generatedFromTextOnly": true,
+    "noBakedText": true,
+    "noReferenceImageInputs": true,
+    "noThirdPartyCompositing": true,
+    "noTracing": true,
+    "statement": "Generated in a fresh ChatGPT chat by pasting the run's generation-prompt.txt as text; no uploads. Baked-text claim is the generator's statement and is checked by the independent reviewer."
+  },
+  "contentHash": "476b4fe8ed2475ebe228dc1c1831a19ed495ef43aca362f97d4ea203b5238361",
+  "contractAck": {
+    "mustNotDepictAcknowledged": true
+  },
+  "createdAt": "2026-10-11T06:52:24.176Z",
+  "createdBy": {
+    "actor": "image-generator",
+    "role": "generator",
+    "system": "ChatGPT image generation"
+  },
+  "cycle": 1,
+  "generator": {
+    "model": "ChatGPT image generation (model name not shown in UI)",
+    "provider": "OpenAI",
+    "system": "ChatGPT image generation"
+  },
+  "id": "GR-oil-drain-plug-identify-001",
+  "imageInputs": [],
+  "inputHashes": [],
+  "license": {
+    "assetClass": "Redline Origin / Crankcase project asset, subject to the generation provider's applicable usage rights",
+    "model": "ChatGPT image generation (model name not shown in UI)",
+    "ownershipAsserted": false,
+    "provider": "OpenAI",
+    "rightsBasis": "provider-granted rights only; no ownership claim beyond the rights the provider actually grants",
+    "status": "generated-original",
+    "terms": {
+      "summary": "OpenAI ChatGPT usage terms: output rights per the provider terms; C2PA manifest recorded from the native file."
+    }
+  },
+  "promptFile": "generations/prompts/GR-oil-drain-plug-identify-001.prompt.txt",
+  "promptSha256": "c0755e7b7a5f4bae7ddc8fa8492c11725bee829e12320f18e2a808085772b9c5",
+  "providerProvenance": {
+    "c2pa": {
+      "present": false
+    },
+    "generationId": "6acb3166-bf68-83e8-8bfe-031eeecdb588",
+    "requestId": "6acb3166-bf68-83e8-8bfe-031eeecdb588"
+  },
+  "refs": [
+    {
+      "id": "VC-oil-drain-plug-identify-v1",
+      "sha256": "4e14248e3cf698afe8eca61248536f6cc0a27cfd2d558e03def94c8395666285"
+    }
+  ],
+  "schema": "guide-factory.generation-record",
+  "schemaVersion": "reconstructed-1",
+  "visualId": "oil-drain-plug-identify"
+}

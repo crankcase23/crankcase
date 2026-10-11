@@ -1,6 +1,6 @@
 # BMW 328i (E90, VIN WBAPH7C58AA175760): guide status, 2026-10-10
 
-Certified guides: **0 of 16**. Usable uncertified drafts (admin-only): **16 of 16** (guide 3 has no visuals by design). No image is certified; one ChatGPT candidate exists (oil-drain-hatch-locate), unreviewed and not in the repo.
+Certified guides: **0 of 16**. Usable uncertified drafts (admin-only): **16 of 16** (guide 3 has no visuals by design). No image is certified. Two ChatGPT-generated images exist in the repo and are NOT certified: `oil-drain-hatch-locate` (OVERLAY_PASSED, waiting for owner sign-off) and `oil-drain-plug-identify` (image QA passed and normalized; overlay QA failed 3x, factory phase NEEDS_ANDY, see `image-intake/overlay-qa/oil-drain-plug-identify/FINDING.md`). Guide 16 (Engine Oil & Filter Change) is the only guide with images in progress; the other 15 are unchanged.
 
 | # | Guide | Status | Steps | Torque rows (verified) | Visuals | Open missing-evidence items |
 |---|---|---|---|---|---|---|

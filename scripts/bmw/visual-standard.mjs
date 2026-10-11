@@ -42,7 +42,7 @@ export const TYPES = {
   },
   IDENTIFY: {
     title: "This is it",
-    framing: "IDENTIFY image: tight close-up of the hero part filling roughly 40-60% of the frame on a plain simplified surface. If an element's orientation is listed as not established, view it end-on with no ground, horizon, body edge or gravity cue.",
+    framing: "IDENTIFY image: tight close-up of the hero part filling roughly 40-60% of the frame. The hero and only a small patch of the surface it sits in form one isolated object floating on the plain light background; the patch ends well inside the frame and never reaches the left, right or bottom edge. If an element's orientation is listed as not established, view it end-on with no ground, horizon, body edge or gravity cue.",
     tools: false,
   },
   DO: {
@@ -85,10 +85,16 @@ export function renderOverlaySvg(spec, W = 1600, H = 1000) {
   out.push(`<text x="${Math.round(H * 0.085)}" y="${Math.round(H * 0.12)}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="${Math.round(H * 0.095)}" fill="${p.text}">${esc(b.step)}</text>`);
   out.push(`<text x="${Math.round(H * 0.2)}" y="${Math.round(H * 0.075)}" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="${Math.round(H * 0.052)}" fill="${p.text}">${esc(b.tag)}</text>`);
   out.push(`<text x="${Math.round(H * 0.2)}" y="${Math.round(H * 0.13)}" font-family="Arial, Helvetica, sans-serif" font-size="${Math.round(H * 0.034)}" fill="${p.text}">${esc(b.subtitle)}</text></g>`);
+  const pills = [];
   for (const h of spec.highlights ?? []) {
     if (!h.region) continue; // no invented positions: nothing is drawn until the region is set
     const [x, y, w, hh] = h.region.map((n, i) => Math.round(n * (i % 2 ? H : W)));
-    out.push(`<g class="highlight" data-element="${esc(h.element)}"><rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="${Math.round(Math.min(w, hh) * 0.12)}" fill="none" stroke="${p.highlight}" stroke-width="6"/>`);
+    // shape "ring": an annulus for a part that sits concentric with another (e.g. a washer around a plug head). `region` is the outer
+    // ellipse's bounding box, `inner` the inner ellipse's; the band between them is the part. A rectangle cannot isolate such a part.
+    if (h.shape === "ring" && h.inner) {
+      const [ix, iy, iw, ih] = h.inner.map((n, i) => Math.round(n * (i % 2 ? H : W)));
+      out.push(`<g class="highlight" data-element="${esc(h.element)}" data-shape="ring"><ellipse cx="${x + w / 2}" cy="${y + hh / 2}" rx="${w / 2}" ry="${hh / 2}" fill="none" stroke="${p.highlight}" stroke-width="6"/><ellipse cx="${ix + iw / 2}" cy="${iy + ih / 2}" rx="${iw / 2}" ry="${ih / 2}" fill="none" stroke="${p.highlight}" stroke-width="6"/>`);
+    } else out.push(`<g class="highlight" data-element="${esc(h.element)}"><rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="${Math.round(Math.min(w, hh) * 0.12)}" fill="none" stroke="${p.highlight}" stroke-width="6"/>`);
     if (h.arrowFrom) {
       const [ax, ay] = [Math.round(h.arrowFrom[0] * W), Math.round(h.arrowFrom[1] * H)];
       const [tx, ty] = [x + w / 2, y + hh / 2];
@@ -97,7 +103,28 @@ export function renderOverlaySvg(spec, W = 1600, H = 1000) {
       const l = [ex - Math.cos(ang - 0.45) * len, ey - Math.sin(ang - 0.45) * len], r = [ex - Math.cos(ang + 0.45) * len, ey - Math.sin(ang + 0.45) * len];
       out.push(`<line x1="${ax}" y1="${ay}" x2="${Math.round(ex)}" y2="${Math.round(ey)}" stroke="${p.highlight}" stroke-width="8" stroke-linecap="round"/><polygon points="${Math.round(ex)},${Math.round(ey)} ${Math.round(l[0])},${Math.round(l[1])} ${Math.round(r[0])},${Math.round(r[1])}" fill="${p.highlight}"/>`);
     }
-    if (h.label) out.push(`<text x="${x}" y="${Math.max(24, y - 12)}" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="30" fill="${p.highlight}">${esc(h.label)}</text>`);
+    if (h.label) {
+      // Label pill: dark ground + white text so it reads on any image. Default spot is just above the box; `labelAt` [x,y] (fractions) places it
+      // on clear ground with a connector to the box. Pills never overlap each other or the banner (stacked/shifted until clear).
+      const pw = Math.round(String(h.label).length * 17 + 28), ph = 44;
+      let lx = h.labelAt ? Math.round(h.labelAt[0] * W) : x, ly = h.labelAt ? Math.round(h.labelAt[1] * H) : y - ph - 10;
+      const bannerR = { x: 0, y: 0, w: Math.round(W * 0.62), h: Math.round(H * 0.17) };
+      const hit = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+      lx = Math.min(Math.max(lx, 8), W - pw - 8); ly = Math.min(Math.max(ly, 8), H - ph - 8);
+      for (let i = 0; i < 40; i++) {
+        const r = { x: lx, y: ly, w: pw, h: ph };
+        if (hit(r, bannerR)) { ly = bannerR.h + 8; continue; }
+        const other = pills.find((q) => hit(r, q));
+        if (other) { ly = other.y + other.h + 8; if (ly > H - ph - 8) ly = Math.max(8, other.y - ph - 8); continue; }
+        break;
+      }
+      pills.push({ x: lx, y: ly, w: pw, h: ph });
+      if (h.labelAt) {
+        const cx = Math.min(Math.max(lx + pw / 2, x), x + w), cy = ly < y ? y : ly > y + hh ? y + hh : Math.min(Math.max(ly + ph / 2, y), y + hh);
+        out.push(`<line x1="${Math.round(lx + pw / 2)}" y1="${ly < y ? ly + ph : ly}" x2="${Math.round(cx)}" y2="${Math.round(cy)}" stroke="${p.highlight}" stroke-width="4"/>`);
+      }
+      out.push(`<rect x="${lx}" y="${ly}" width="${pw}" height="${ph}" rx="8" fill="${p.banner}" opacity="0.92"/><text x="${lx + 14}" y="${ly + 30}" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="26" fill="${p.text}">${esc(h.label)}</text>`);
+    }
     out.push("</g>");
   }
   out.push("</svg>");

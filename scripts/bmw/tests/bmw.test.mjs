@@ -142,7 +142,17 @@ test("pipeline: every visual is run; contract-locked ones stop at the generation
   const files = [];
   (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { if (e.isDirectory()) walk(path.join(d, e.name)); else files.push(e.name); } })(tmp);
   assert.ok(!files.some((f) => /\.(png|jpe?g|webp|svg)$/i.test(f)), "no image may exist");
-  assert.equal(fs.readFileSync(path.join(tmp, "PIPELINE-REPORT.json"), "utf8"), fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"), "committed run record is stale: run npm run bmw:pipeline");
+  // The committed report also records runs that already hold a real generated image (in-flight runs are preserved, never rebuilt),
+  // so compare only the visuals that are still pure contract-locked/blocked; in-flight ones must be in a legal post-image phase and never certified.
+  const committed = JSON.parse(fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"));
+  const inFlightIds = new Set(committed.visuals.filter((v) => v.imageProduced).map((v) => v.visualId));
+  for (const v of committed.visuals.filter((x) => inFlightIds.has(x.visualId))) {
+    assert.ok(["GEN_ACCEPTED", "QA_PASSED", "NORMALIZED", "OVERLAY_PASSED", "NEEDS_ANDY"].includes(v.phase), `in-flight ${v.visualId} in unexpected phase ${v.phase}`);
+    assert.equal(v.certified, false, `${v.visualId} must not be recorded as certified before owner sign-off`);
+  }
+  const sortKeys = (_k, v) => (v && typeof v === "object" && !Array.isArray(v) ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, v[k]])) : v);
+  const strip = (rep) => JSON.stringify({ visuals: rep.visuals.filter((v) => !inFlightIds.has(v.visualId)), gaps: rep.gaps.filter((g) => !inFlightIds.has(g.visualId)), standard: rep.visualStandard }, sortKeys);
+  assert.equal(strip(r), strip(committed), "committed run record is stale: run npm run bmw:pipeline");
 });
 
 test("PCV guide stays inspection/diagnosis only: no valve-cover job, no torque, no standalone valve replacement", async () => {

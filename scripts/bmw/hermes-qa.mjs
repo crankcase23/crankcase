@@ -312,7 +312,7 @@ export function finish(run) {
 // ---- OVERLAY QA: callouts are real contract callouts; the reviewer judges the editable overlay composited on the NORMALIZED image ----
 const overlayPaths = (run) => ({ spec: path.join(run.dir, "overlay.spec.json"), svg: path.join(run.dir, "overlay.svg"), composite: path.join(run.dir, "overlay-preview.png") });
 
-export function overlaySet(run, { element, region, label }) {
+export function overlaySet(run, { element, region, label, labelAt, ring }) {
   const { spec } = overlayPaths(run);
   const o = JSON.parse(fs.readFileSync(spec, "utf8"));
   const h = o.highlights.find((x) => x.element === element);
@@ -320,6 +320,8 @@ export function overlaySet(run, { element, region, label }) {
   const r = String(region).split(",").map(Number);
   if (r.length !== 4 || r.some((n) => !Number.isFinite(n) || n < 0 || n > 1) || r[0] + r[2] > 1 || r[1] + r[3] > 1 || r[2] <= 0 || r[3] <= 0) return fail("BAD_REGION", "region must be x,y,w,h as fractions of the image, inside 0..1");
   h.region = r; if (label) h.label = label;
+  if (ring) { const ri = String(ring).split(",").map(Number); if (ri.length !== 4 || ri.some((n) => !Number.isFinite(n) || n < 0 || n > 1) || ri[0] < r[0] || ri[1] < r[1] || ri[0] + ri[2] > r[0] + r[2] || ri[1] + ri[3] > r[1] + r[3]) return fail("BAD_RING", "ring inner x,y,w,h must lie inside the outer region"); h.shape = "ring"; h.inner = ri; } else { delete h.shape; delete h.inner; }
+  if (labelAt) { const la = String(labelAt).split(",").map(Number); if (la.length !== 2 || la.some((n) => !Number.isFinite(n) || n < 0 || n > 1)) return fail("BAD_LABEL_AT", "label-at must be x,y fractions inside 0..1"); h.labelAt = la; }
   fs.writeFileSync(spec, JSON.stringify(o, null, 2) + "\n");
   return { ok: true, highlight: h };
 }
@@ -422,7 +424,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   } else if (cmd === "intake") {
     show(await intake(await runFor(), { native: path.resolve(need("native")), chat: need("chat"), model: arg("model"), system: arg("system"), attest: rest.includes("--attest"), intakeRoot: path.resolve(arg("intake") ?? path.join(ROOT, "docs/bmw-e90/image-intake")) }));
   } else if (cmd === "finish") show(finish(await runFor()));
-  else if (cmd === "overlay-set") show(overlaySet(await runFor(), { element: need("element"), region: need("region"), label: arg("label") }));
+  else if (cmd === "overlay-set") show(overlaySet(await runFor(), { element: need("element"), region: need("region"), label: arg("label"), labelAt: arg("label-at"), ring: arg("ring-inner") }));
   else if (cmd === "overlay-render") show(await overlayRender(await runFor()));
   else if (cmd === "overlay-export") { const r = overlayPacket(await runFor()); if (r.ok) { const o = path.resolve(need("out")); fs.mkdirSync(o, { recursive: true }); fs.writeFileSync(path.join(o, "OVERLAY-QA-PACKET.md"), r.text); fs.copyFileSync(r.composite, path.join(o, "overlay-preview.png")); show({ ok: true, dir: o }); } else show(r); }
   else if (cmd === "overlay-import") show(overlayImport(await runFor(), { rawText: fs.readFileSync(path.resolve(need("response")), "utf8"), model: arg("model"), system: arg("system") }));
