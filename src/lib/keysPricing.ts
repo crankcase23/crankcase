@@ -3,10 +3,9 @@
 //   $15 floor. Unlock is permanent per vehicle; re-acquiring the same VIN
 //   restores access.
 //
-// PRESENTATION ONLY. This is the published price ladder as a pure function so
-// the screens can show it. It does not know what any user has unlocked, it
-// enforces nothing, and it is not the server-side price calculation (that does
-// not exist yet and must not be inferred from this file).
+// This file is the single source of the ladder. The pure functions below do not know what any user has unlocked.
+// The SERVER price a customer is actually charged is computed in src/lib/keysEntitlements.ts (nextUnlockPrice), from the
+// customer's own purchased entitlements, using keysPriceCentsForNthVehicle() below; the browser never supplies a price.
 
 export const KEYS_LADDER: readonly number[] = [20, 18, 16, 15];
 
@@ -14,6 +13,11 @@ export const KEYS_LADDER: readonly number[] = [20, 18, 16, 15];
 export function keysPriceForNthVehicle(n: number): number {
   const i = Math.max(1, Math.floor(n)) - 1;
   return KEYS_LADDER[Math.min(i, KEYS_LADDER.length - 1)];
+}
+
+/** Same ladder in cents, for server pricing and the purchase record. */
+export function keysPriceCentsForNthVehicle(n: number): number {
+  return keysPriceForNthVehicle(n) * 100;
 }
 
 /**

@@ -16,6 +16,7 @@ import {
       primaryKey,
       jsonb,
       uniqueIndex,
+      check,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
@@ -336,6 +337,35 @@ export const purchases = pgTable("purchases", {
       providerRef: text("provider_ref"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// Permanent, VIN-linked Get the Keys entitlements (PR-A). One row per (account, canonical VIN).
+//
+// Deliberately NOT keyed to garage_entries and with NO foreign key to it: removing a vehicle from a garage (or re-adding
+// it later) never creates, changes or deletes an entitlement, so a paid unlock survives delete / re-add of the same VIN.
+// It belongs to the ACCOUNT + VIN, so another account holding the same VIN gets nothing from it, and a transfer never
+// copies it (a recipient pays their own rung; a returning former owner finds theirs still here).
+// Rows go away only with the account itself (privacy deletion) or an explicit revoke (revoked_at), never as a side effect.
+export const vinEntitlements = pgTable(
+      "vin_entitlements",
+      {
+            id: text("id").primaryKey(),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            vin: text("vin").notNull(), // canonical (upper-case) VIN, see canonicalVin() in src/lib/vin.ts
+            source: text("source").notNull(), // "purchase" | "gift"
+            rung: integer("rung"), // which Garage Rewards rung this purchase was priced at (1-based); null for gifts
+            priceCents: integer("price_cents"), // what the server priced it at when granted; null for gifts
+            purchaseId: text("purchase_id").references(() => purchases.id, { onDelete: "set null" }),
+            grantedAt: timestamp("granted_at").notNull().defaultNow(),
+            revokedAt: timestamp("revoked_at"), // refund / admin revoke; row kept for the audit trail
+      },
+      (table) => ({
+            onePerAccountVin: uniqueIndex("vin_entitlements_user_vin_uq").on(table.userId, table.vin),
+            sourceKnown: check("vin_entitlements_source_chk", sql`${table.source} in ('purchase','gift')`),
+      }),
+      );
+
 
 // A recurring plan. Nothing sells subscriptions today; MRR/churn in
 // /admin/revenue are computed from this table and read zero until it fills.
