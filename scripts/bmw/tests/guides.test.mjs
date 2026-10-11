@@ -105,7 +105,7 @@ test("all 16 categories: vehicle applicability is the VIN-decoded 2010 BMW 328i 
     assert.ok(guide.tools.length > 0 && guide.parts.length > 0 && guide.safety.length > 0, `${guide.id}: tools/parts/safety missing`);
     guide.steps.forEach((s, i) => { assert.equal(s.number, i + 1, `${guide.id}: step numbering`); assert.ok(s.title.trim() && s.instructions.trim(), `${guide.id} step ${i + 1} empty`); });
     // every torque row either prints a number or the house VERIFY warning; none is blank
-    for (const t of guide.torqueSpecs) assert.ok(/\d/.test(t.value) || /VERIFY EXACT TORQUE/.test(t.value), `${guide.id}: blank torque ${t.fastener}`);
+    for (const t of guide.torqueSpecs) assert.ok(/\d/.test(t.value) || /VERIFY EXACT TORQUE|^Not a torque value: /.test(t.value), `${guide.id}: blank torque ${t.fastener}`);
   }
 });
 
@@ -113,6 +113,21 @@ test("images never gate rendering: no BMW draft step carries an image path, and 
   for (const { guide } of bmwDraftGuides) for (const s of guide.steps) assert.ok(!s.image, `${guide.id} step ${s.number} has an image dependency`);
   const reg = fs.readFileSync(path.join(ROOT, "src/lib/guideVisuals.ts"), "utf8");
   assert.ok(!/bmw/i.test(reg.split("\n").find((l) => l.includes("const REGISTRY")) ?? ""), "REGISTRY (hash-locked) must not be edited to enable the hatch image");
+});
+
+test("rows that are not torque figures say so, and real unknown torques keep the VERIFY warning", () => {
+  const rows = bmwDraftGuides.flatMap(({ guide }) => guide.torqueSpecs.map((t) => ({ g: guide.id, ...t })));
+  const nt = rows.filter((t) => t.value.startsWith("Not a torque value: "));
+  assert.equal(nt.length, 7, "expected exactly the 7 reviewed non-torque rows");
+  for (const t of nt) assert.ok(!/\d/.test(t.value), `${t.g}: label carries a number`);
+  // genuinely unknown, safety-relevant torques must still shout
+  const must = [["serpentine-belt", /idler/i], ["rear-brake-pads", /caliper guide/i], ["battery", /terminal/i], ["differential-fluid", /differential plug/i]];
+  for (const [slug, re] of must) {
+    const guide = bySlug(slug);
+    const hit = guide.torqueSpecs.filter((t) => re.test(t.fastener) && !/xDrive/i.test(t.fastener));
+    assert.ok(hit.length, `${slug}: row ${re} missing`);
+    for (const t of hit) if (!/\d+\s*Nm/.test(t.value)) assert.match(t.value, /VERIFY EXACT TORQUE/, `${slug}: ${t.fastener} lost its warning`);
+  }
 });
 
 test("a CONFLICT torque never leaks either candidate number into the guide", () => {

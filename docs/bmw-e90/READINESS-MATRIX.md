@@ -7,19 +7,19 @@ Vehicle: 2010 BMW 328i sedan, VIN WBAPH7C58AA175760 (probable RWD automatic N52)
 |---|---|---|---|---|---|---|---|---|
 | 1 | Front Brake Pads | WORKING | 25 | pass (desktop, phone, small-phone) | 5 / 1 | none | none | 9 |
 | 2 | Fuse & Bulb Replacement | WORKING, with blocked steps | 21 | pass (desktop, phone, small-phone) | 0 / 1 | Engine-bay fuses; Xenon low-beam bulb | none | 9 |
-| 3 | Key Fob Battery | WORKING | 10 | pass (desktop, phone, small-phone) | 0 / 1 | none | none | 6 |
+| 3 | Key Fob Battery | WORKING | 10 | pass (desktop, phone, small-phone) | 0 / 0 (+1 not a torque) | none | none | 6 |
 | 4 | Oxygen Sensor | WORKING | 15 | pass (desktop, phone, small-phone) | 1 / 2 | none | none | 8 |
 | 5 | Rear Brake Pads | WORKING | 22 | pass (desktop, phone, small-phone) | 4 / 3 | none | none | 9 |
 | 6 | Serpentine Belt | WORKING, with blocked steps | 15 | pass (desktop, phone, small-phone) | 1 / 3 | Replace the idler pulley | none | 8 |
 | 7 | Battery Replacement | WORKING | 20 | pass (desktop, phone, small-phone) | 0 / 3 | none | none | 7 |
-| 8 | Coolant Flush & Fill | WORKING | 19 | pass (desktop, phone, small-phone) | 1 / 4 | none | none | 8 |
-| 9 | Fluid Checks & Top-Offs | WORKING | 14 | pass (desktop, phone, small-phone) | 0 / 2 | none | none | 8 |
+| 8 | Coolant Flush & Fill | WORKING | 19 | pass (desktop, phone, small-phone) | 1 / 3 (+1 not a torque) | none | none | 8 |
+| 9 | Fluid Checks & Top-Offs | WORKING | 14 | pass (desktop, phone, small-phone) | 0 / 1 (+1 not a torque) | none | none | 8 |
 | 10 | Cabin Air Filter | WORKING | 11 | pass (desktop, phone, small-phone) | 0 / 1 | none | none | 8 |
 | 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | WORKING | 13 | pass (desktop, phone, small-phone) | 0 / 0 | none | none | 6 |
 | 12 | Engine Air Filter | WORKING | 13 | pass (desktop, phone, small-phone) | 0 / 1 | none | none | 8 |
-| 13 | Tire Rotation | WORKING | 15 | pass (desktop, phone, small-phone) | 1 / 1 | none | none | 7 |
-| 14 | Wiper Blades | WORKING | 8 | pass (desktop, phone, small-phone) | 0 / 1 | none | none | 8 |
-| 15 | Differential / Transfer Case Fluid | WORKING | 11 | pass (desktop, phone, small-phone) | 1 / 3 | none | transfer case / front differential (xDrive only) | 7 |
+| 13 | Tire Rotation | WORKING | 15 | pass (desktop, phone, small-phone) | 1 / 0 (+1 not a torque) | none | none | 7 |
+| 14 | Wiper Blades | WORKING | 8 | pass (desktop, phone, small-phone) | 0 / 0 (+1 not a torque) | none | none | 8 |
+| 15 | Differential / Transfer Case Fluid | WORKING | 11 | pass (desktop, phone, small-phone) | 1 / 1 (+2 not a torque) | none | transfer case / front differential (xDrive only) | 7 |
 | 16 | Engine Oil & Filter Change | WORKING | 16 | pass (desktop, phone, small-phone) | 2 / 0 | none | none | 11 |
 
 Browser receipt: 53/53 runs passed (48 guide x viewport, 5 error-state), 2026-10-11T07:51:13.456Z.

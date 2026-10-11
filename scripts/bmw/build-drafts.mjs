@@ -24,6 +24,17 @@ const OUT_TS = path.join(ROOT, "src/data/admin-test-guides/bmw-2010-328i-drafts.
 const OUT_MD = path.join(ROOT, "docs/bmw-e90/EVIDENCE-SUMMARY.md");
 
 const V_TORQUE = "⚠ VERIFY EXACT TORQUE BEFORE SERVICE";
+export const NOT_A_TORQUE_PREFIX = "Not a torque value: ";
+// Ledger rows that are not torque figures. Keyed by guide + fastener text; a stale entry throws (see buildGuide).
+const NOT_A_TORQUE = [
+  { g: 3, re: /^None applicable/i, value: `${NOT_A_TORQUE_PREFIX}nothing to tighten`, notes: "This job has no torqued fasteners." },
+  { g: 8, re: /^Expansion tank cap/i, value: `${NOT_A_TORQUE_PREFIX}turn until it clicks`, notes: "The owner's manual describes this cap as closing with an audible click. No torque figure applies." },
+  { g: 9, re: /^Coolant expansion tank cap/i, value: `${NOT_A_TORQUE_PREFIX}turn until it clicks`, notes: "The owner's manual describes this cap as closing with an audible click. No torque figure applies." },
+  { g: 13, re: /^Tire pressures/i, value: `${NOT_A_TORQUE_PREFIX}tire pressure`, notes: "Use the pressures on the door-jamb placard. The figures in the evidence file come from one third-party table and are not shown here." },
+  { g: 14, re: /^Wiper arm nut/i, value: `${NOT_A_TORQUE_PREFIX}not touched in this job`, notes: "A blade swap does not disturb the arm nut." },
+  { g: 15, re: /^xDrive transfer case plugs/i, value: `${NOT_A_TORQUE_PREFIX}xDrive only`, notes: "Not applicable if this car is rear-wheel drive. Confirm the drivetrain before skipping." },
+  { g: 15, re: /^xDrive front differential plug/i, value: `${NOT_A_TORQUE_PREFIX}xDrive only`, notes: "Not applicable if this car is rear-wheel drive. Confirm the drivetrain before skipping." },
+];
 
 // Editorial metadata the research files do not carry. Difficulty and time are the author's estimates, not sourced facts.
 const META = {
@@ -213,8 +224,16 @@ function buildGuide(g) {
   for (const d of DISPOSITION.filter((x) => x.g === g.guide)) {
     if (!g.steps.some((s) => d.re.test(s.title))) throw new Error(`DISPOSITION for guide ${g.guide} (${d.re}) matches no ledger step: table is stale.`);
   }
+  for (const r of NOT_A_TORQUE.filter((x) => x.g === g.guide)) {
+    if (!g.torque.some((t) => r.re.test(t.fastener))) throw new Error(`NOT_A_TORQUE for guide ${g.guide} (${r.re}) matches no ledger torque row: table is stale.`);
+  }
   const torque = g.torque.map((t) => {
     const st = norm(t.status);
+    // Rows that are not a torque figure at all (nothing to tighten, a click-type cap, a tire pressure, a part this car lacks)
+    // must not shout "VERIFY EXACT TORQUE": that would send a reader hunting for a spec that does not exist.
+    // The label never carries a number and never turns an unknown torque into a known one.
+    const nt = NOT_A_TORQUE.find((r) => r.g === g.guide && r.re.test(t.fastener));
+    if (nt) return { fastener: t.fastener, value: nt.value, notes: nt.notes };
     const ok = PRINTABLE.has(st) && t.value && /\d/.test(t.value) && !/no torque|not found|missing/i.test(t.value);
     return ok
       ? {

@@ -56,6 +56,7 @@ test("a torque number is printed only when its evidence is VERIFIED or VERIFIED_
     guide.torqueSpecs.forEach((t, i) => {
       const src = ev.torque[i];
       const verified = /^\s*verified/i.test(src.status) && !/conflict|missing/i.test(src.status);
+      if (t.value.startsWith("Not a torque value: ")) { assert.ok(!/\d/.test(t.value), `${guide.id}: non-torque label must carry no number`); return; }
       if (t.value.includes("VERIFY EXACT TORQUE")) { warned++; assert.ok(!verified || !/\d/.test(src.value ?? "") || /no torque|not found|missing/i.test(src.value ?? ""), `${guide.id}: verified torque hidden unexpectedly`); }
       else { numeric++; assert.ok(verified, `${guide.id}: ${t.fastener} printed a number without VERIFIED/VERIFIED_SECONDARY evidence`); assert.equal(t.value, src.value); }
     });
