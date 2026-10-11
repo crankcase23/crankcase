@@ -16,6 +16,7 @@
 //        node scripts/bmw/build-drafts.mjs --check  exit 1 if the committed outputs are stale
 import fs from "node:fs";
 import path from "node:path";
+import { denied } from "./customer-deny.mjs";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -23,6 +24,7 @@ const EVID = path.join(ROOT, "docs/bmw-e90/evidence");
 const OUT_TS = path.join(ROOT, "src/data/admin-test-guides/bmw-2010-328i-drafts.ts");
 const OUT_CUSTOMER = path.join(ROOT, "src/data/repairs-bmw-e90.ts");
 const OUT_MD = path.join(ROOT, "docs/bmw-e90/EVIDENCE-SUMMARY.md");
+const OUT_REPORT = path.join(ROOT, "docs/bmw-e90/CUSTOMER-SCRUB-REPORT.md");
 
 const V_TORQUE = "⚠ VERIFY EXACT TORQUE BEFORE SERVICE";
 export const NOT_A_TORQUE_PREFIX = "Not a torque value: ";
@@ -191,6 +193,57 @@ function configSteps(deps) {
 const files = fs.readdirSync(EVID).filter((f) => /^guide-\d\d\.json$/.test(f)).sort();
 const guides = files.map((f) => JSON.parse(fs.readFileSync(path.join(EVID, f), "utf8")));
 
+// ---- cross-references (both copies) ----
+// The evidence ledgers refer to their own steps ("go to step 7") and to other guides ("see guide 16") by LEDGER number. The built guide adds
+// "Before you start" steps, splits long steps and drops inapplicable ones, so those numbers went stale. Every reference is re-pointed at the
+// number the reader actually sees, and a guide number becomes the guide's name. A step reference that cannot be resolved drops its sentence.
+const GUIDE_NAME = new Map(guides.map((x) => [x.guide, x.name]));
+// Ledger sentences that are wrong once built, fixed before the numbers are re-pointed. Each must match (stale guard below).
+const LEDGER_TEXT_FIXES = [
+  { g: 2, from: "step 8 records what retailer guides describe and is not recommended", to: "this guide blocks that step (step 8)" },
+];
+const LEDGER_FIXES_USED = new Set();
+export const CHANGES = []; // every sentence the build rewrote or dropped, for docs/bmw-e90/CUSTOMER-SCRUB-REPORT.md
+const SENT_SPLIT = /(?<=[.!?\]])\s+(?=[A-Z⚠⛔\[])/;
+const STEP_REF = /\b([Ss]teps?) (\d{1,2})(?:(\s*(?:to|-|–)\s*|\s+(?:and|or)\s+)(\d{1,2}))?\b/g;
+function relinkText(text, ctx, field) {
+  let t = String(text);
+  for (const f of LEDGER_TEXT_FIXES) if (f.g === ctx.g && t.includes(f.from)) { t = t.split(f.from).join(f.to); LEDGER_FIXES_USED.add(f); }
+  t = t.replace(/\bguide (\d{1,2})\b/g, (m, n) => {
+    const name = GUIDE_NAME.get(Number(n));
+    if (!name) throw new Error(`guide ${ctx.g}: ${field} refers to ${m}, which does not exist`);
+    return `the ${name} guide`;
+  });
+  const out = [];
+  for (const sent of t.split(SENT_SPLIT)) {
+    let missing = false;
+    const fixed = sent.replace(STEP_REF, (m, word, a, sep, b) => {
+      const A = ctx.map.get(Number(a)), B = b ? ctx.map.get(Number(b)) : null;
+      if (!A || (b && !B)) { missing = true; return m; }
+      if (!b) return `${word} ${A.first}`;
+      if (/\b(and|or)\b/.test(sep)) return `${word} ${A.first} ${sep.trim()} ${B.first}`;
+      return `${word} ${A.first}${/to/.test(sep) ? " to " : "-"}${B.last}`;
+    });
+    if (missing) { CHANGES.push({ job: ctx.job, field, kind: "dropped (points at a step this guide does not contain)", before: sent }); continue; }
+    if (fixed !== sent) CHANGES.push({ job: ctx.job, field, kind: "step number re-pointed", before: sent, after: fixed });
+    out.push(fixed);
+  }
+  return out.join(" ");
+}
+function relinkGuide(res, map, job) {
+  const ctx = { g: res.no, map, job };
+  const r = (t, field) => (t == null ? t : relinkText(t, ctx, field));
+  return {
+    ...res,
+    summary: r(res.summary, "summary"),
+    tools: res.tools.map((t, i) => ({ ...t, name: r(t.name, `tool ${i + 1}`) })),
+    parts: res.parts.map((p, i) => r(p, `part ${i + 1}`)),
+    safety: res.safety.map((s, i) => r(s, `safety ${i + 1}`)),
+    torque: res.torque.map((t, i) => ({ ...t, fastener: r(t.fastener, `torque ${i + 1}`), notes: r(t.notes, `torque ${i + 1} notes`) })),
+    steps: res.steps.map((s, i) => ({ ...s, instructions: r(s.instructions, `step ${i + 1}`), ...(s.warning ? { warning: r(s.warning, `step ${i + 1} warning`) } : {}) })),
+  };
+}
+
 function counts(g) {
   const all = [...g.tools, ...g.parts, ...g.fluids, ...g.torque, ...g.steps];
   const c = { verified: 0, secondary: 0, single: 0, conflict: 0, missing: 0 };
@@ -205,7 +258,10 @@ function buildGuide(g) {
   const steps = [];
   if (g.variantDependencies?.length) steps.push(...configSteps(g.variantDependencies));
   const inapplicable = [];
-  for (const s of g.steps) {
+  const ledgerMap = new Map(); // ledger step number -> { first, last } displayed step numbers
+  for (const [idx, s] of g.steps.entries()) {
+    if (s.n !== idx + 1) throw new Error(`guide ${g.guide}: ledger step numbers are not 1..N in order (step ${idx + 1} has n=${s.n})`);
+    const start = steps.length;
     const st = norm(s.status);
     const disp = dispositionFor(g.guide, s.title);
     if ((st === "conflict" || st === "missing") && !disp) throw new Error(`guide ${g.guide} step "${s.title}" is ${st} in the ledger but has no DISPOSITION (BLOCKED / INAPPLICABLE / ACCEPTED). Decide it in build-drafts.mjs.`);
@@ -216,11 +272,13 @@ function buildGuide(g) {
         instructions: `This step is blocked: it cannot be done safely from this guide. ${disp.reason} ${disp.instead}`,
         warning: "⛔ BLOCKED — unresolved safety-critical item. Do not perform this procedure from this guide.",
       });
+      ledgerMap.set(s.n, { first: start + 1, last: steps.length });
       continue;
     }
     const warn = [...(s.warnings ?? [])];
     if (st !== "verified") warn.push(STEP_WARN[st] ?? STEP_WARN.single);
     steps.push(...splitLong({ title: s.title, instructions: s.instruction, warning: warn.length ? warn.join(" ") : undefined }));
+    ledgerMap.set(s.n, { first: start + 1, last: steps.length });
   }
   for (const d of DISPOSITION.filter((x) => x.g === g.guide)) {
     if (!g.steps.some((s) => d.re.test(s.title))) throw new Error(`DISPOSITION for guide ${g.guide} (${d.re}) matches no ledger step: table is stale.`);
@@ -258,7 +316,7 @@ function buildGuide(g) {
     ...g.parts.map((p) => `${p.item}${p.partNumber ? ` — ${p.partNumber}` : ""}${tagOf(norm(p.status)) ? ` ${tagOf(norm(p.status))}` : ""}`),
     ...g.fluids.map((f) => `Fluid: ${f.item} — ${f.spec}${f.capacity ? `, ${f.capacity}` : ""}${tagOf(norm(f.status)) ? ` ${tagOf(norm(f.status))}` : ""}`),
   ];
-  return {
+  return relinkGuide({
     no: g.guide,
     id: `admin-draft-bmw-2010-328i-${m.slug}`,
     slug: m.slug,
@@ -278,10 +336,11 @@ function buildGuide(g) {
     torque,
     steps,
     noFasteners: NO_FASTENERS.has(g.guide),
-  };
+  }, ledgerMap, m.job);
 }
 
 const built = guides.map(buildGuide);
+for (const f of LEDGER_TEXT_FIXES) if (!LEDGER_FIXES_USED.has(f)) throw new Error(`LEDGER_TEXT_FIXES for guide ${f.g} ("${f.from}") matched nothing: table is stale.`);
 
 function ts() {
   const L = [];
@@ -350,6 +409,119 @@ const dropOwn = (t) => String(t).split(/(?<=[.)])\s+(?=[A-Z])/).filter((x) => !O
 // Everywhere else (parts, fluids, torque names, tools, safety) nothing may disappear: only wording changes.
 const soft0 = (t) => String(t);
 const soft = (t) => String(t).replace(/\bthis VIN\b/g, "this car");
+
+// ---- owner-specific and internal text -> removed or made generic (CUSTOMER copy only; the admin review drafts keep the full research text) ----
+// The research ran on one owner's car. Its VIN decode, what the owner said it has and its build month are facts about THAT car, not about the
+// next customer's 328i; internal build/research instructions mean nothing to a reader. Rules apply per sentence:
+//   REWRITE: the sentence carries a real check or fact, so only the owner-specific part changes ("owner states automatic" -> "check whether yours is an automatic").
+//            Nothing is invented: a rewrite turns an assertion about the owner's car into the same check for the reader's car.
+//   DROP:    the sentence is only about the owner's decode or internal process.
+// Every change is listed in docs/bmw-e90/CUSTOMER-SCRUB-REPORT.md. A rule that matches nothing throws (stale guard), and anything in
+// customer-deny.mjs that survives throws too.
+const SCRUB_PRE = [/\s*\[Decoded[^\]]*\]/g]; // "[Decoded from the owner's VIN by one free decoder ... Treat as probable.]"
+const SCRUB_REWRITE = [
+  // --- how a check is confirmed / what the guide assumes
+  [/HOW THE USER CONFIRMS:/, "To confirm:"],
+  [/Use the halogen H7 \/ fog H8 paths; the xenon D1 path is probably not this car\./, "Check which headlight type your car has: halogen (the H7 and fog H8 paths) or xenon (D1S, a blocked step in this guide)."],
+  [/Xenon or adaptive \(not expected\):/, "Xenon or adaptive:"],
+  [/PRIMARY \(probable for this car\): standard key, no Comfort Access\./, "PRIMARY: standard key, no Comfort Access."],
+  [/Tire size and run-flat status are not coded, so the guide branches on what the user reads from the sidewalls\./, "Tire size and run-flat status vary by car, so the guide branches on what you read from the sidewalls."],
+  [/Label stays UNRESOLVED as a name but is not a procedure variable\./, "The engine label is not settled, but it does not change this procedure."],
+  [/Do not publish or rely on the idler pulley torque until conflict resolved\./, "Do not rely on any idler pulley torque figure: sources conflict, so none is shown here."],
+  // --- drive / transmission: the owner's answers become the reader's checks
+  [/Transmission: owner states automatic \(RealOEM decode does not show it\)\./, "Transmission: check whether your car is an automatic or a manual."],
+  [/Drive: owner states rear-wheel drive \(PH73 type code\); xDrive not applicable\./, "Drive: check whether your car is rear-wheel drive or xDrive."],
+  [/This car is an automatic \(owner-stated\), so if the fan shroud comes out, expect/, "If your car is an automatic and the fan shroud comes out, expect"],
+  [/Drive: owner states rear-wheel drive;/, "Drive:"],
+  [/Transmission \(owner states automatic\): irrelevant to this job\./, "Transmission: irrelevant to this job."],
+  [/Transmission: the owner supplied automatic and the VIN option list shows S205A; the catalog lists/, "Transmission: for an automatic (S205A) the catalog lists"],
+  [/Drive: rear-wheel drive \(PH73 type code, NHTSA\/decoder\), so/, "Drive: if your car is rear-wheel drive (not xDrive),"],
+  [/; the NHTSA decode and bimmer\.work agree on a 328i \(not xi\)\./, "; check whether your car is rear-wheel drive or xDrive."],
+  [/Transmission \(decoded automatic S205A, probable not proven\):/, "Transmission (automatic S205A or manual):"],
+  [/; NHTSA's VIN decoder gives displacement 3\.0 L, 6 cyl and no engine model/, ""],
+  [/; VIN positions 4-6 \(PH7\) match the catalog type code PH73/, ""],
+  [/; this is a 328i \(NHTSA decode and catalog show no front axle\)/, "; this guide is for the rear-wheel-drive 328i"],
+  [/No LSD option in the VIN decode, no LSD variant/, "No LSD variant"],
+  [/RWD assumed from the unconfirmed VIN decode\./, "This guide assumes rear-wheel drive; check yours."],
+  [/The VIN decode and the parts catalog show a rear-wheel-drive 328i\./, "This guide is for the rear-wheel-drive 328i."],
+  [/is catalog-level inference from the VIN decode, not proven for the VIN\./, "is a catalog-level inference, not proven."],
+  [/This car is an automatic \(S205\), so the part numbers are now catalog-backed, but plug position and orientation on ITS pan are NOT established/, "For an automatic (S205) the part numbers are catalog-backed, but plug position and orientation on its pan are NOT established"],
+  // --- build date / option codes of the owner's car -> conditions the reader can check
+  [/RealOEM item for this car from 09\/2009/, "RealOEM item for cars built from 09/2009"],
+  [/, the style the VIN decode lists/, ""],
+  [/Drive and build date \(the VIN decode, bimmer\.work and RealOEM; probable, not proven\): rear-wheel drive \(PH73 type code\), start of production 09\/2009\./, "Drive and build date: check whether your car is rear-wheel drive or xDrive and when it was built; some part numbers below depend on both."],
+  [/Consequences used here:/, "Part numbers used here assume a rear-wheel-drive car built in the date range shown:"],
+  [/; the VIN decode shows no sport\/M brake option/, ""],
+  [/match the parts to this car \(VIN decode, probable not proven: ([^)]*)\)/, "match the parts to your car (these numbers fit: $1; if yours differs, get the right ones by VIN)"],
+  [/so this 09\/2009 car is on the newest glove-box layout/, "so a 2010 car is on the newest glove-box layout"],
+  [/^This 09\/2009 car is on the newest glove-box layout/, "A 2010 car is on the newest glove-box layout"],
+  [/which maker the car has is not decoded and only changes cover part numbers/, "which maker your car has only changes cover part numbers"],
+  [/\s*\(the decode shows no M package option\)/, ""],
+  [/do not apply to the decoded halogen car/, "do not apply to cars with halogen headlights"],
+  [/so a 09\/2009 build might carry the older all-bulb lamp/, "so a car built before 03/2010 might carry the older all-bulb lamp"],
+  [/^A 09\/2009 build may carry an older all-bulb lamp/, "A car built before 03/2010 may carry an older all-bulb lamp"],
+  [/\s*\(09\/2009 build\)/, ""],
+  [/Whether the adapter applies to a 09\/2009 build is unresolved/, "Whether the adapter applies to every build date is unresolved"],
+  [/this car is catalogued as N52N \(09\/2009 selection\) and is expected to be the plastic design/, "a later N52 is expected to be the plastic design"],
+  [/^Build date: the VIN decode gives start of production 2009-09-07[^.]*\./, "Build date: wiper sets split at 09/2009 (BMW parts catalog, Turner, Bimmerworld and Oximo agree on the 09/2009 split), so a car built before 09/2009 needs the older set 61610427668."],
+  [/; not coded on this car per the decode\./, "."],
+  // --- battery option codes
+  [/For a probable 80 Ah \(B080\) car,/, "For an 80 Ah car,"],
+  [/^The VIN option list ends in B080, the BMW coding code for an 80 Ah battery, so an 80 Ah flooded battery is the probable original \(not proven\); an 80 Ah-class/, "An 80 Ah-class"],
+  [/^The 80 Ah conclusion rests on one decoder's truncated trailing code; the label/, "The label"],
+  [/VO code B080 \(80 Ah\) \/ A080 \(80 Ah AGM\) naming is from coding forums/, "VO code naming (B080 for 80 Ah, A080 for 80 Ah AGM) is from coding forums"],
+  [/are not shown by the decode; they do not change the battery location/, "do not change the battery location"],
+  [/\s*\(not decoded\)/, ""],
+  [/\s*\(not decoded on this car\), so the grommet is probably not on this car/, ", so the grommet applies only if your car has that option"],
+  [/only with S146A \(not expected on this car\)/, "only with S146A"],
+  [/If the car is automatic \(probable, see the build checks above\),/, "If the car is automatic,"],
+  [/Screw count and head size on THIS car are/, "Screw count and head size on this model are"],
+  // --- fluid checks
+  [/S217A is not in the VIN option list \(absence is an inference\), so the non-active reservoir is expected\./, "Cars without S217A (active steering) use the non-active reservoir."],
+  [/; S502A is not coded on this car per the decode, so the base reservoir is expected and its capacity is not published\./, "; without S502A the base reservoir applies, and its capacity is not published."],
+  [/Do not publish it as a BMW specification\./, "Do not treat it as a BMW specification."],
+  [/^Do not publish a number\./, "No torque number is confirmed for this step."],
+  [/^Do not publish a total capacity figure or a coolant specification code as verified: no BMW document was found for them\./, "No BMW document was found for a total capacity figure or a coolant specification code, so treat any figure here as unverified."],
+  [/, so primary:false/, ", so it is not confirmed from a BMW document"],
+  [/the bulb they pull out/, "the bulb you pull out"],
+  [/Confirm engine code from the engine cover\/underhood label or VIN decode\./, "Confirm the engine code from the engine cover or underhood label."],
+  [/ \(RealOEM E90N \/ bimmer\.work N52K vs N52N labels differ\)/, ""],
+  [/Engine label unresolved between decoders \(N52K per bimmer\.work, N52N per RealOEM\)\./, "Engine label differs between sources (N52K vs N52N)."],
+  [/, which matches the bimmer\.work decode;/, ";"],
+  [/\s*No 328i LSD option code was found in the VIN decode\./, ""],
+  [/RESOLVED to hydraulic/, "hydraulic"],
+  [/RESOLVED for ordering/, "settled for ordering"],
+  [/RESOLVED to 'open, probable'/, "probably open"],
+  [/^Label unresolved as a name, not a procedure variable\./, "The engine label is not settled, but it does not change this procedure."],
+  [/the owner should compare with the oil-cap label or manual/, "compare with the oil-cap label or your manual"],
+  [/^Owner must confirm head type\./, "Confirm the head type."],
+  // --- wording
+  [/tell the user to compare/, "tell you to compare"],
+  [/so the user must follow the chart/, "so you must follow the chart"],
+  [/\s*\((?:see specs|see the specs)\)/, ""],
+];
+const SCRUB_DROP = [
+  /DECODED CONFIG/, /\bdecod(e|ed|er|ers|es|ing)\b/i,
+  /^B080 = BATTERIE_80AH/, /^This car is a sedan per NHTSA/, /^Keep the pan a plain generic mass/, /^Treat as probable/,
+];
+const SCRUB_USED = new Map();
+const DENY_HITS = [];
+const used = (rule) => SCRUB_USED.set(rule, (SCRUB_USED.get(rule) ?? 0) + 1);
+function scrubText(text, job, field) {
+  let t = plain(stripUrls(String(text))); // rules are written against the emitted (plain-language) wording
+  for (const re of SCRUB_PRE) { const n = t.replace(re, ""); if (n !== t) used(re); t = n; }
+  t = t.replace(/\.\s+\.(?=\s|$)/g, ".").replace(/([^.])\.\.(?=\s|$)/g, "$1.");
+  const out = [];
+  for (const sent of t.split(SENT_SPLIT)) {
+    let s = sent;
+    for (const rule of SCRUB_REWRITE) { const n = s.replace(rule[0], rule[1]); if (n !== s) { used(rule); s = n; } }
+    if (s !== sent) CHANGES.push({ job, field, kind: "rewritten", before: sent, after: s });
+    const drop = SCRUB_DROP.find((re) => re.test(s));
+    if (drop) { used(drop); CHANGES.push({ job, field, kind: "removed", before: sent }); continue; }
+    out.push(s);
+  }
+  return out.join(" ").replace(/\.\s+\.(?=\s|$)/g, ".").replace(/([^.])\.\.(?=\s|$)/g, "$1.");
+}
 const CUSTOMER_LEAD = "Incomplete guide: not yet verified against BMW service data. The build checks below were researched on one 2010 328i sedan, so check your own car.";
 function customerGuide(g) {
   const blocked = g.steps.filter((x) => x.title.startsWith(BLOCK_PREFIX)).length;
@@ -358,7 +530,7 @@ function customerGuide(g) {
     ...(blocked ? [`⛔ ${blocked} step${blocked > 1 ? "s are" : " is"} BLOCKED in this guide. Do not do a blocked step from this guide: have a BMW-qualified shop do it.`] : []),
     ...g.safety,
   ];
-  const out = {
+  const base = {
     ...g,
     id: `bmw-2010-328i-${g.slug}`,
     title: g.title.replace(" (DRAFT)", ""),
@@ -370,9 +542,22 @@ function customerGuide(g) {
     torque: g.torque.map((t) => ({ ...t, fastener: soft(t.fastener), notes: soft(t.notes) })),
     steps: g.steps.map((x) => ({ ...x, instructions: dropOwn(soft0(x.instructions)), ...(x.warning ? { warning: soft(x.warning) } : {}) })),
   };
-  if (out.steps.some((x, i) => !x.instructions.trim() || x.title !== g.steps[i].title) || out.parts.length !== g.parts.length || out.torque.length !== g.torque.length || out.tools.length !== g.tools.length) throw new Error(`customer guide ${g.slug}: anonymising lost content`);
+  const j = g.job, sc = (t, f) => scrubText(t, j, f);
+  const out = {
+    ...base,
+    summary: sc(base.summary, "summary"),
+    safety: base.safety.map((x, i) => sc(x, `safety ${i + 1}`)),
+    tools: base.tools.map((t, i) => ({ ...t, name: sc(t.name, `tool ${i + 1}`) })),
+    parts: base.parts.map((p, i) => sc(p, `part ${i + 1}`)),
+    torque: base.torque.map((t, i) => ({ ...t, fastener: sc(t.fastener, `torque ${i + 1}`), notes: sc(t.notes, `torque ${i + 1} notes`) })),
+    steps: base.steps.map((x, i) => ({ ...x, instructions: sc(x.instructions, `step ${i + 1}`), ...(x.warning ? { warning: sc(x.warning, `step ${i + 1} warning`) } : {}) })),
+  };
+  const blank = [out.summary, ...out.safety, ...out.tools.map((t) => t.name), ...out.parts, ...out.torque.map((t) => t.fastener), ...out.torque.map((t) => t.notes), ...out.steps.map((x) => x.instructions)].some((x) => !String(x).trim());
+  if (blank || out.steps.some((x, i) => x.title !== g.steps[i].title) || out.safety.length !== base.safety.length || out.parts.length !== g.parts.length || out.torque.length !== g.torque.length || out.tools.length !== g.tools.length) throw new Error(`customer guide ${g.slug}: cleaning lost content (a field went empty or an item vanished)`);
   const all = JSON.stringify(out);
   if (OWN_ID.test(all) || /\b[A-HJ-NPR-Z0-9]{17}\b/.test(all)) throw new Error(`customer guide ${g.slug} still contains a VIN`);
+  const fields = [["summary", out.summary], ...out.safety.map((x, i) => [`safety ${i + 1}`, x]), ...out.tools.map((t, i) => [`tool ${i + 1}`, t.name]), ...out.parts.map((x, i) => [`part ${i + 1}`, x]), ...out.torque.flatMap((t, i) => [[`torque ${i + 1}`, t.fastener], [`torque ${i + 1} notes`, t.notes]]), ...out.steps.flatMap((x, i) => [[`step ${i + 1} (${x.title})`, x.instructions], [`step ${i + 1} warning`, x.warning ?? ""]])];
+  for (const [f, text] of fields) { const hit = denied(plain(stripUrls(text))); if (hit.length) DENY_HITS.push(`customer guide ${g.slug} ${f} still has ${hit.map((h) => `${h.rule}: "${h.match}" in: ${String(text).slice(0, 200)}`).join("; ")}`); }
   return out;
 }
 function customerTs() {
@@ -411,6 +596,10 @@ function customerTs() {
   }
   L.push("];");
   L.push("");
+  if (DENY_HITS.length) throw new Error(`customer copy still has owner-specific or internal text:\n${DENY_HITS.join("\n")}`);
+  const staleRules = [...SCRUB_PRE, ...SCRUB_REWRITE, ...SCRUB_DROP].filter((r) => !SCRUB_USED.has(r));
+  if (staleRules.length) throw new Error(`customer scrub rules matched nothing (table is stale):\n${staleRules.map((r) => String(Array.isArray(r) ? r[0] : r)).join("\n")}`);
+  for (const rule of []) if (!SCRUB_USED.has(rule)) throw new Error(`customer scrub rule ${String(Array.isArray(rule) ? rule[0] : rule)} matched nothing: table is stale. Remove it or update it to the new ledger text.`);
   return L.join("\n");
 }
 
@@ -466,7 +655,29 @@ function md() {
 }
 
 
-const outputs = [[OUT_TS, ts()], [OUT_CUSTOMER, customerTs()], [OUT_MD, md()]];
+
+function reportMd() {
+  const L = ["# Customer copy: what the build removed, rewrote or re-pointed", "",
+    "GENERATED by `scripts/bmw/build-drafts.mjs`. Do not edit by hand.", "",
+    "The research was done on one owner's car. This file lists every sentence the build changed so a reviewer can check that nothing verified and broadly useful was lost.",
+    "- **removed**: only about the owner's VIN decode or internal process (customer copy only).",
+    "- **rewritten**: an assertion about the owner's car became the same check for the reader's car (customer copy only). No fact was added.",
+    "- **step number re-pointed / dropped**: the ledger's own step and guide numbers were stale once \"Before you start\" steps were added (both copies).", ""];
+  const kinds = ["removed", "rewritten", "step number re-pointed"];
+  const order = (k) => { const i = kinds.indexOf(k); return i < 0 ? kinds.length : i; };
+  const tally = {}; for (const c of CHANGES) tally[c.kind] = (tally[c.kind] ?? 0) + 1;
+  L.push("Totals: " + Object.entries(tally).map(([k, v]) => `${v} ${k}`).join(", "), "");
+  const jobs = [...new Set(CHANGES.map((c) => c.job))];
+  for (const job of jobs) {
+    L.push(`## ${job}`, "");
+    for (const c of CHANGES.filter((x) => x.job === job).sort((a, b) => order(a.kind) - order(b.kind))) {
+      L.push(`- **${c.kind}** (${c.field}): ${JSON.stringify(c.before)}${c.after !== undefined ? `\n  - now: ${JSON.stringify(c.after)}` : ""}`);
+    }
+    L.push("");
+  }
+  return L.join("\n");
+}
+const outputs = [[OUT_TS, ts()], [OUT_CUSTOMER, customerTs()], [OUT_REPORT, reportMd()], [OUT_MD, md()]];
 if (process.argv.includes("--check")) {
   let stale = 0;
   for (const [p, content] of outputs) {
