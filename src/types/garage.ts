@@ -7,6 +7,8 @@
 // maintenance reminders, just no specs/torque/guides until we add real data
 // for that vehicle.
 
+import type { VehicleConfig } from "@/lib/vehicleConfig";
+
 export interface CustomVehicleInfo {
   vin?: string;
   year?: string;
@@ -21,5 +23,8 @@ export type GarageEntry =
 // (added 2026-09-19 alongside the VIN cab/trim-mismatch fix) -- lets a
 // future audit see which real-world VIN a catalog match was derived from,
 // which the app previously threw away entirely.
-| { id: string; kind: "catalog"; addedAt: string; vin?: string }
-| { id: string; kind: "custom"; addedAt: string; custom: CustomVehicleInfo };
+//
+// config is the customer's confirmed transmission and drivetrain (see src/lib/vehicleConfig.ts). Always present:
+// an entry that predates the feature, or one never confirmed, simply has null axes ("never asked").
+| { id: string; kind: "catalog"; addedAt: string; vin?: string; config: VehicleConfig }
+| { id: string; kind: "custom"; addedAt: string; custom: CustomVehicleInfo; config: VehicleConfig };

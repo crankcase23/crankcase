@@ -9,6 +9,9 @@ import { isPreview, isSellable } from "@/lib/guideAccess";
 import DataDisclaimer from "@/components/DataDisclaimer";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
+import { getViewerVehicle } from "@/lib/viewerConfig";
+import { resolveGuideForConfig } from "@/lib/guideConfig";
+import GuideConfigNotice from "@/components/config/GuideConfigNotice";
 
 export function generateStaticParams() {
   return allRepairs().map((r) => ({ id: r.vehicleId, repairId: r.id }));
@@ -32,8 +35,16 @@ export default async function RepairGuidePage(
 ) {
   const { id, repairId } = await props.params;
   const vehicle = findVehicle(id);
-  const guide = findRepair(repairId);
-  if (!vehicle || !guide || guide.vehicleId !== vehicle.id) notFound();
+  const authored = findRepair(repairId);
+  if (!vehicle || !authored || authored.vehicleId !== vehicle.id) notFound();
+
+  // The guide this customer is shown: the authored guide resolved against THEIR saved transmission/drivetrain.
+  // A guide that does not depend on the build comes back with its content unchanged.
+  const { config, inGarage } = await getViewerVehicle(vehicle.id);
+  const guide = resolveGuideForConfig(authored, config, vehicle.make);
+  const configNotice = (
+    <GuideConfigNotice resolution={guide.configResolution} config={config} make={vehicle.make} vehicleId={vehicle.id} inGarage={inGarage} />
+  );
 
   const previewBanner = isPreview(guide) && (
     <div
@@ -57,6 +68,7 @@ export default async function RepairGuidePage(
         <div className="mt-4">
           <DataDisclaimer />
         </div>
+        {configNotice}
         <GuideWithServiceSave
           guide={guide}
           vehicle={vehicle}
@@ -107,6 +119,7 @@ export default async function RepairGuidePage(
       <div className="mt-6">
         <DataDisclaimer />
       </div>
+      {configNotice}
 
       <GuideBody guide={guide} />
 

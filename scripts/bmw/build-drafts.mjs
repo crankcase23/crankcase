@@ -17,6 +17,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { denied } from "./customer-deny.mjs";
+import { GUIDE_CONFIG, NEUTRAL_REWRITE, NEUTRAL_DROP, OUT_RE, STEP_OVERRIDES, LEAD_OVERRIDES } from "./config-axes.mjs";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -257,6 +258,7 @@ function buildGuide(g) {
   const c = counts(g);
   const steps = [];
   if (g.variantDependencies?.length) steps.push(...configSteps(g.variantDependencies));
+  const leadCount = steps.length;
   const inapplicable = [];
   const ledgerMap = new Map(); // ledger step number -> { first, last } displayed step numbers
   for (const [idx, s] of g.steps.entries()) {
@@ -336,6 +338,8 @@ function buildGuide(g) {
     torque,
     steps,
     noFasteners: NO_FASTENERS.has(g.guide),
+    leadCount,
+    ledger: g.guide,
   }, ledgerMap, m.job);
 }
 
@@ -522,6 +526,130 @@ function scrubText(text, job, field) {
   }
   return out.join(" ").replace(/\.\s+\.(?=\s|$)/g, ".").replace(/([^.])\.\.(?=\s|$)/g, "$1.");
 }
+
+// ---- Vehicle Configuration V1: customer copy is built for the researched build (see config-axes.mjs) ----
+const NEUTRAL_USED = new Set();
+const KIND_RW = "rewritten (resolved by saved configuration)";
+const KIND_RM = "removed (resolved by saved configuration)";
+const PART_NO = /\b\d{7,}\b/;
+/** Rewrites, then removes, wording about builds the guide does not cover. Returns the text and whether an auto-removed sentence carried a part number or a caution marker. */
+function neutralize(text, job, field) {
+  const out = []; let lost = false;
+  for (const sent of String(text).split(SENT_SPLIT)) {
+    let s = sent;
+    for (const rule of NEUTRAL_REWRITE) { const n = s.replace(rule[0], rule[1]); if (n !== s) { NEUTRAL_USED.add(rule); s = n; } }
+    if (s !== sent) CHANGES.push({ job, field, kind: KIND_RW, before: sent, after: s });
+    const drop = NEUTRAL_DROP.find((re) => re.test(s));
+    if (drop) { NEUTRAL_USED.add(drop); CHANGES.push({ job, field, kind: KIND_RM, before: sent }); continue; }
+    if (OUT_RE.test(s)) {
+      if (PART_NO.test(s) || /^[⚠⛔]/.test(s)) lost = true;
+      CHANGES.push({ job, field, kind: KIND_RM, before: sent });
+      continue;
+    }
+    out.push(s);
+  }
+  return { text: out.join(" "), lost };
+}
+function shiftRefs(text, from, delta) {
+  if (text == null || !delta) return text;
+  const sh = (n) => (Number(n) > from ? Number(n) + delta : Number(n));
+  return String(text).replace(STEP_REF, (m, word, a, sep, b) => (b ? `${word} ${sh(a)}${sep}${sh(b)}` : `${word} ${sh(a)}`));
+}
+function configure(out, g) {
+  const job = g.job, num = g.ledger, cfg = GUIDE_CONFIG[num] ?? {};
+  const must = (cond, msg) => { if (!cond) throw new Error(`customer guide ${g.slug}: ${msg}`); };
+  const clean = (t, field, { row = false } = {}) => {
+    const r = neutralize(t, job, field);
+    must(!r.lost || (row && !r.text.trim()), `${field}: removing out-of-build wording would lose a part number or caution (${String(t).slice(0, 120)}). Add a NEUTRAL_REWRITE rule that keeps it.`);
+    return r.text;
+  };
+  // 1. wholesale replacements of research-note steps
+  const used = new Set();
+  let steps = out.steps.map((x, i) => {
+    const ov = STEP_OVERRIDES.find((o) => o.g === num && o.title === x.title);
+    if (!ov) return x;
+    must(ov.must.test(x.instructions), `STEP_OVERRIDES for "${ov.title}" no longer matches the ledger text`);
+    used.add(ov);
+    CHANGES.push({ job, field: `step ${i + 1}`, kind: "rewritten (customer wording)", before: x.instructions, after: ov.instructions });
+    return { ...x, instructions: ov.instructions };
+  });
+  for (const o of STEP_OVERRIDES.filter((o) => o.g === num)) must(used.has(o), `STEP_OVERRIDES "${o.title}" matched no step`);
+
+  // 2. the "Before you start" checks: keep what is still a real check, regroup, drop the "your build is unconfirmed" framing
+  const oldLead = g.leadCount;
+  const procedure = steps.slice(oldLead);
+  // The research notes behind the build checks stay in the ledger. The customer gets a short, practical check written from them.
+  const leadOv = LEAD_OVERRIDES[num];
+  must(Boolean(leadOv) === (oldLead > 0), `LEAD_OVERRIDES must exist exactly for guides that have build checks (guide ${num})`);
+  let lead = [];
+  if (leadOv) {
+    const src = steps.slice(0, oldLead).map((x) => x.instructions).join(" ");
+    must(leadOv.must.test(src), `LEAD_OVERRIDES ${num} no longer matches the ledger's build notes`);
+    const sents = leadOv.text.split(SENT_SPLIT);
+    const groups = [[]]; let len = 0;
+    for (const it of sents) { if (groups[groups.length - 1].length && len + it.length > 780) { groups.push([]); len = 0; } groups[groups.length - 1].push(it); len += it.length; }
+    CHANGES.push({ job, field: "before you start", kind: "rewritten (customer wording)", before: src, after: leadOv.text });
+    lead = groups.map((gr, i) => ({
+      title: groups.length === 1 ? "Before you start: check your car" : `Before you start: check your car (${i + 1} of ${groups.length})`,
+      instructions: gr.join(" "),
+      ...(i === 0 ? { warning: "⚠ Check each item against your car before buying parts." } : {}),
+    }));
+  }
+  const delta = lead.length - oldLead;
+
+  // 3. every other field
+  const ruleUsed = new Set();
+  const useRule = (rules, text) => { const r = rules?.find((x) => x.re.test(text)); if (r) ruleUsed.add(r); return r?.forConfig; };
+  const procSteps = procedure.map((x, i) => {
+    const blocked = x.title.startsWith(BLOCK_PREFIX);
+    let instr = x.instructions, warn = x.warning;
+    if (!blocked) {
+      instr = clean(x.instructions, `step ${oldLead + i + 1}`);
+      must(instr.trim(), `step "${x.title}" became empty after removing out-of-build wording`);
+      if (warn) { warn = clean(warn, `step ${oldLead + i + 1} warning`); }
+    }
+    const fc = blocked ? undefined : (cfg.allSteps ?? useRule(cfg.steps, x.title));
+    return { ...x, instructions: shiftRefs(instr, oldLead, delta), ...(warn ? { warning: shiftRefs(warn, oldLead, delta) } : {}), ...(fc ? { forConfig: fc } : {}) };
+  });
+  const rows = (list, textOf, rules, all, field) => {
+    const keep = [];
+    list.forEach((it, i) => {
+      const t = clean(textOf(it), `${field} ${i + 1}`, { row: true });
+      if (!t.trim()) { CHANGES.push({ job, field: `${field} ${i + 1}`, kind: "row removed (belongs to a build this guide does not cover)", before: textOf(it) }); return; }
+      keep.push({ it, t, fc: all ?? useRule(rules, t) });
+    });
+    return keep;
+  };
+  const partRows = rows(out.parts, (x) => x, cfg.parts, cfg.allParts, "part");
+  const toolRows = rows(out.tools, (x) => x.name, cfg.tools, undefined, "tool");
+  const torqueRows = out.torque.map((x, i) => {
+    const f = clean(x.fastener, `torque ${i + 1}`, { row: true });
+    if (!f.trim()) { CHANGES.push({ job, field: `torque ${i + 1}`, kind: "row removed (belongs to a build this guide does not cover)", before: x.fastener }); return null; }
+    const n = clean(x.notes, `torque ${i + 1} notes`);
+    must(n.trim(), `torque "${f}" notes became empty`);
+    const fc = cfg.allTorque ?? useRule(cfg.torque, f);
+    return { ...x, fastener: f, notes: n, ...(fc ? { forConfig: fc } : {}) };
+  }).filter(Boolean);
+  const summary = clean(out.summary, "summary"), safety = out.safety.map((x, i) => clean(x, `safety ${i + 1}`)).filter((x) => x.trim());
+  must(summary.trim() && safety.length, "summary or safety went empty");
+  for (const k of ["parts", "tools", "torque", "steps"]) for (const r of cfg[k] ?? []) must(ruleUsed.has(r), `GUIDE_CONFIG ${num}.${k} rule ${r.re} matched nothing: table is stale`);
+
+  const configParts = partRows.filter((r) => r.fc).map((r) => ({ text: shiftRefs(r.t, oldLead, delta), forConfig: r.fc }));
+  return {
+    ...out,
+    summary: shiftRefs(summary, oldLead, delta),
+    safety: safety.map((x) => shiftRefs(x, oldLead, delta)),
+    tools: toolRows.map((r) => ({ ...r.it, name: shiftRefs(r.t, oldLead, delta), ...(r.fc ? { forConfig: r.fc } : {}) })),
+    parts: partRows.filter((r) => !r.fc).map((r) => shiftRefs(r.t, oldLead, delta)),
+    configParts,
+    torque: torqueRows.map((x) => ({ ...x, notes: shiftRefs(x.notes, oldLead, delta) })),
+    steps: [...lead, ...procSteps],
+    evidenceFor: cfg.evidenceFor,
+    evidenceNote: cfg.evidenceNote,
+    leadCount: lead.length,
+  };
+}
+
 const CUSTOMER_LEAD = "Incomplete guide: not yet verified against BMW service data. The build checks below were researched on one 2010 328i sedan, so check your own car.";
 function customerGuide(g) {
   const blocked = g.steps.filter((x) => x.title.startsWith(BLOCK_PREFIX)).length;
@@ -552,11 +680,14 @@ function customerGuide(g) {
     torque: base.torque.map((t, i) => ({ ...t, fastener: sc(t.fastener, `torque ${i + 1}`), notes: sc(t.notes, `torque ${i + 1} notes`) })),
     steps: base.steps.map((x, i) => ({ ...x, instructions: sc(x.instructions, `step ${i + 1}`), ...(x.warning ? { warning: sc(x.warning, `step ${i + 1} warning`) } : {}) })),
   };
-  const blank = [out.summary, ...out.safety, ...out.tools.map((t) => t.name), ...out.parts, ...out.torque.map((t) => t.fastener), ...out.torque.map((t) => t.notes), ...out.steps.map((x) => x.instructions)].some((x) => !String(x).trim());
-  if (blank || out.steps.some((x, i) => x.title !== g.steps[i].title) || out.safety.length !== base.safety.length || out.parts.length !== g.parts.length || out.torque.length !== g.torque.length || out.tools.length !== g.tools.length) throw new Error(`customer guide ${g.slug}: cleaning lost content (a field went empty or an item vanished)`);
+  const cfgd = configure(out, g);
+  const blank = [cfgd.summary, ...cfgd.safety, ...cfgd.tools.map((t) => t.name), ...cfgd.parts, ...cfgd.configParts.map((p) => p.text), ...cfgd.torque.map((t) => t.fastener), ...cfgd.torque.map((t) => t.notes), ...cfgd.steps.map((x) => x.instructions)].some((x) => !String(x).trim());
+  const proc = (arr, lead) => arr.slice(lead);
+  if (blank || JSON.stringify(proc(cfgd.steps, cfgd.leadCount).map((x) => x.title)) !== JSON.stringify(proc(g.steps, g.leadCount).map((x) => x.title))) throw new Error(`customer guide ${g.slug}: cleaning lost content (a field went empty or a procedure step vanished)`);
+  Object.assign(out, cfgd);
   const all = JSON.stringify(out);
   if (OWN_ID.test(all) || /\b[A-HJ-NPR-Z0-9]{17}\b/.test(all)) throw new Error(`customer guide ${g.slug} still contains a VIN`);
-  const fields = [["summary", out.summary], ...out.safety.map((x, i) => [`safety ${i + 1}`, x]), ...out.tools.map((t, i) => [`tool ${i + 1}`, t.name]), ...out.parts.map((x, i) => [`part ${i + 1}`, x]), ...out.torque.flatMap((t, i) => [[`torque ${i + 1}`, t.fastener], [`torque ${i + 1} notes`, t.notes]]), ...out.steps.flatMap((x, i) => [[`step ${i + 1} (${x.title})`, x.instructions], [`step ${i + 1} warning`, x.warning ?? ""]])];
+  const fields = [["summary", out.summary], ...out.safety.map((x, i) => [`safety ${i + 1}`, x]), ...out.tools.map((t, i) => [`tool ${i + 1}`, t.name]), ...out.parts.map((x, i) => [`part ${i + 1}`, x]), ...out.configParts.map((x, i) => [`config part ${i + 1}`, x.text]), ...out.torque.flatMap((t, i) => [[`torque ${i + 1}`, t.fastener], [`torque ${i + 1} notes`, t.notes]]), ...out.steps.flatMap((x, i) => [[`step ${i + 1} (${x.title})`, x.instructions], [`step ${i + 1} warning`, x.warning ?? ""]])];
   for (const [f, text] of fields) { const hit = denied(plain(stripUrls(text))); if (hit.length) DENY_HITS.push(`customer guide ${g.slug} ${f} still has ${hit.map((h) => `${h.rule}: "${h.match}" in: ${String(text).slice(0, 200)}`).join("; ")}`); }
   return out;
 }
@@ -585,12 +716,15 @@ function customerTs() {
     L.push("    preview: true,");
     L.push("    wrenchMode: true,");
     if (g.noFasteners) L.push("    noFasteners: true,");
-    L.push("    tools: [" + g.tools.map((t) => `{ name: ${q(t.name)}${t.note ? `, note: ${q(t.note)}` : ""} }`).join(", ") + "],");
+    const fcs = (fc) => `, forConfig: ${JSON.stringify(fc)}`;
+    if (g.evidenceFor) { L.push(`    evidenceFor: ${JSON.stringify(g.evidenceFor)},`); L.push(`    evidenceNote: ${q(g.evidenceNote)},`); }
+    L.push("    tools: [" + g.tools.map((t) => `{ name: ${q(t.name)}${t.note ? `, note: ${q(t.note)}` : ""}${t.forConfig ? fcs(t.forConfig) : ""} }`).join(", ") + "],");
     L.push("    parts: [" + g.parts.map(q).join(", ") + "],");
+    if (g.configParts.length) L.push("    configParts: [" + g.configParts.map((p) => `{ text: ${q(p.text)}${fcs(p.forConfig)} }`).join(", ") + "],");
     L.push("    safety: [" + g.safety.map(q).join(", ") + "],");
-    L.push("    torqueSpecs: [" + g.torque.map((t) => `{ fastener: ${q(t.fastener)}, value: ${q(t.value)}, notes: ${q(t.notes)} }`).join(", ") + "],");
+    L.push("    torqueSpecs: [" + g.torque.map((t) => `{ fastener: ${q(t.fastener)}, value: ${q(t.value)}, notes: ${q(t.notes)}${t.forConfig ? fcs(t.forConfig) : ""} }`).join(", ") + "],");
     L.push("    steps: [");
-    g.steps.forEach((s, i) => L.push(`      { number: ${i + 1}, title: ${q(s.title)}, instructions: ${q(s.instructions)}${s.warning ? `, warning: ${q(s.warning)}` : ""} },`));
+    g.steps.forEach((s, i) => L.push(`      { number: ${i + 1}, title: ${q(s.title)}, instructions: ${q(s.instructions)}${s.warning ? `, warning: ${q(s.warning)}` : ""}${s.forConfig ? fcs(s.forConfig) : ""} },`));
     L.push("    ],");
     L.push("  },");
   }
@@ -598,6 +732,8 @@ function customerTs() {
   L.push("");
   if (DENY_HITS.length) throw new Error(`customer copy still has owner-specific or internal text:\n${DENY_HITS.join("\n")}`);
   const staleRules = [...SCRUB_PRE, ...SCRUB_REWRITE, ...SCRUB_DROP].filter((r) => !SCRUB_USED.has(r));
+  const staleCfg = [...NEUTRAL_REWRITE, ...NEUTRAL_DROP].filter((r) => !NEUTRAL_USED.has(r));
+  if (staleCfg.length) throw new Error(`configuration rules matched nothing (table is stale):\n${staleCfg.map((r) => String(Array.isArray(r) ? r[0] : r)).join("\n")}`);
   if (staleRules.length) throw new Error(`customer scrub rules matched nothing (table is stale):\n${staleRules.map((r) => String(Array.isArray(r) ? r[0] : r)).join("\n")}`);
   for (const rule of []) if (!SCRUB_USED.has(rule)) throw new Error(`customer scrub rule ${String(Array.isArray(rule) ? rule[0] : rule)} matched nothing: table is stale. Remove it or update it to the new ledger text.`);
   return L.join("\n");

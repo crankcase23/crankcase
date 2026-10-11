@@ -15,7 +15,9 @@ import {
       timestamp,
       primaryKey,
       jsonb,
+      uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
       id: text("id").primaryKey(),
@@ -64,8 +66,24 @@ export const garageEntries = pgTable("garage_entries", {
       trim: text("trim"),
       engine: text("engine"),
       vin: text("vin"),
+      // Vehicle configuration (migrations/2026-10-11-vehicle-configuration.sql). The customer's own confirmed
+      // choices; guide content that depends on the build is resolved against these. Values are the kinds in
+      // src/lib/vehicleConfig.ts ("automatic", "rwd", ...) or "unknown" (the customer chose Not sure).
+      // NULL means never asked, which is every entry that predates the feature. A later VIN lookup never writes these.
+      transmission: text("transmission"),
+      drivetrain: text("drivetrain"),
+      configConfirmedAt: timestamp("config_confirmed_at"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+}, (table) => ({
+      // One garage row per catalog vehicle per customer, and one row per VIN per customer. The migration creates
+      // these only when the live table has no duplicates yet; the app also checks before inserting.
+      catalogOncePerUser: uniqueIndex("garage_entries_user_catalog_vehicle_uq")
+        .on(table.userId, table.vehicleId)
+        .where(sql`${table.kind} = 'catalog'`),
+      vinOncePerUser: uniqueIndex("garage_entries_user_vin_uq")
+        .on(table.userId, table.vin)
+        .where(sql`${table.vin} is not null`),
+}));
 
 // garageEntryId here plays the same role the old localStorage keys did
 // (crankcase:service-history:<vehicleId>) -- one vehicle's service log.

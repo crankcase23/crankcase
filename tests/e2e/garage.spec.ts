@@ -1,5 +1,21 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { signUpNewUser } from "./helpers";
+
+// Every add now goes through Confirm Your Ride; these tests answer "Not sure" so they stay about the garage itself.
+async function confirmNotSure(page: Page) {
+  await expect(page.getByTestId("confirm-your-ride")).toBeVisible();
+  await page.getByRole("radiogroup", { name: "Transmission" }).getByText("Not sure", { exact: true }).click();
+  await page.getByRole("radiogroup", { name: "Drivetrain" }).getByText("Not sure", { exact: true }).click();
+  await page.getByRole("button", { name: /and add to garage$/ }).click();
+}
+
+async function fillForm(page: Page, year: string, make: string, model: string) {
+  await page.goto("/garage/add");
+  await page.getByLabel("Year").fill(year);
+  await page.getByLabel("Make").fill(make);
+  await page.getByLabel("Model").fill(model);
+  await page.getByRole("button", { name: "Continue: confirm your ride" }).click();
+}
 
 test.describe("garage — add your own vehicle", () => {
   // Each test signs up its own account so garage state doesn't leak between
@@ -12,10 +28,11 @@ test.describe("garage — add your own vehicle", () => {
     await page.goto("/garage");
     await expect(page.getByText("Your garage is empty")).toBeVisible();
 
-    await page.getByRole("link", { name: "+ Add your first vehicle" }).click();
+    await page.getByRole("link", { name: "Add your first vehicle" }).click();
     await expect(page).toHaveURL(/\/garage\/add$/);
 
-    await page.getByRole("button", { name: /Jeep Grand Cherokee/i }).click();
+    await fillForm(page, "2014", "Jeep", "Grand Cherokee");
+    await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l$/);
 
     await page.goto("/garage");
@@ -24,14 +41,11 @@ test.describe("garage — add your own vehicle", () => {
   });
 
   test("can add a custom vehicle we don't have data for and still log service history", async ({ page }) => {
-    await page.goto("/garage/add");
-    await page.getByLabel("Year").fill("2016");
-    await page.getByLabel("Make").fill("Toyota");
-    await page.getByLabel("Model").fill("Tacoma");
-    await page.getByRole("button", { name: "Add to garage", exact: true }).click();
+    await fillForm(page, "2016", "Toyota", "Tacoma");
+    await confirmNotSure(page);
 
     await expect(page).toHaveURL(/\/garage\/custom\//);
-    await expect(page.getByText(/No curated data for this vehicle yet/i)).toBeVisible();
+    await expect(page.getByText(/We don.t have specs, fluid capacities, or torque values pulled in for this one yet/i)).toBeVisible();
     await expect(page.getByRole("heading", { name: "Maintenance Reminders" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Service History" })).toBeVisible();
 
@@ -43,14 +57,14 @@ test.describe("garage — add your own vehicle", () => {
     await page.getByText("Tire Rotation", { exact: true }).click();
     await page.getByRole("button", { name: "Add entry" }).click();
 
-    const row = page.getByRole("listitem").filter({ hasText: "42,000 mi" });
+    const row = page.getByRole("listitem").filter({ hasText: "42,000 mi" }).last();
     await expect(row).toBeVisible();
     await expect(row.getByText("Tire Rotation")).toBeVisible();
   });
 
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
-    await page.goto("/garage/add");
-    await page.getByRole("button", { name: /Civic/i }).click();
+    await fillForm(page, "2018", "Honda", "Civic");
+    await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
 
     await page.goto("/garage");

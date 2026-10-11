@@ -3,14 +3,17 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { matchCatalogVehicles, catalogMatchLooksExact } from "@/lib/data";
+import { matchCatalogVehicles, catalogMatchLooksExact, findVehicle } from "@/lib/data";
+import type { Vehicle } from "@/types/vehicle";
+import type { CustomVehicleInfo } from "@/types/garage";
+import ConfirmYourRide from "@/components/config/ConfirmYourRide";
 import {
   VEHICLE_MAKES,
   findMakeByName,
   getVehicleModels,
   listModelYears,
 } from "@/lib/vpicBrowse";
-import { useGarage } from "@/lib/garage";
+import { useGarage, type ConfigChoice } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
 
 export default function AddVehiclePage() {
@@ -58,13 +61,43 @@ setDecoding(false);
 }
 }
 
-async function handleAddMatch() {
-if (!pickedMatchId) return;
-await addCatalogVehicle(pickedMatchId, decoded?.vin);
-router.push(`/vehicles/${pickedMatchId}`);
+// Nothing is saved from the buttons below. They open Confirm Your Ride (step 2 of 2), and the vehicle is added only
+// when the customer confirms transmission and drivetrain there (or says Not sure).
+type Confirming =
+  | { kind: "catalog"; vehicle: Vehicle; vin?: string; label: string; decoded?: DecodedVin | null; mileage?: string }
+  | { kind: "custom"; info: CustomVehicleInfo; label: string; make?: string; decoded?: DecodedVin | null; mileage?: string };
+const [confirming, setConfirming] = useState<Confirming | null>(null);
+
+function handleAddMatch() {
+  if (!pickedMatchId) return;
+  const vehicle = findVehicle(pickedMatchId);
+  if (!vehicle) return;
+  setConfirming({
+    kind: "catalog",
+    vehicle,
+    vin: decoded?.vin,
+    decoded,
+    label: `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? " " + vehicle.trim : ""}`,
+  });
 }
 
-async function handleAddDecodedAsCustom() {
+async function confirmAdd(choice: ConfigChoice) {
+  if (!confirming) throw new Error("Nothing to add.");
+  if (confirming.kind === "catalog") {
+    const outcome = await addCatalogVehicle(confirming.vehicle.id, confirming.vin, choice);
+    if (outcome.created && confirming.mileage) await saveStartMileage(confirming.vehicle.id, confirming.mileage);
+    return outcome;
+  }
+  const outcome = await addCustomVehicle(confirming.info, choice);
+  if (outcome.created && confirming.mileage) await saveStartMileage(outcome.id, confirming.mileage);
+  return outcome;
+}
+function doneAdding(outcome: { id: string }) {
+  if (!confirming) return;
+  router.push(confirming.kind === "catalog" ? `/vehicles/${confirming.vehicle.id}` : `/garage/custom/${outcome.id}`);
+}
+
+function handleAddDecodedAsCustom() {
 if (!decoded) return;
 const engine = [
 decoded.displacementL ? `${decoded.displacementL}L` : null,
@@ -72,15 +105,20 @@ decoded.engineCylinders ? `${decoded.engineCylinders}-cyl` : null,
 ]
 .filter(Boolean)
 .join(" ");
-const id = await addCustomVehicle({
+setConfirming({
+kind: "custom",
+decoded,
+make: decoded.make,
+label: [decoded.year, decoded.make, decoded.model, decoded.trim].filter(Boolean).join(" "),
+info: {
 vin: decoded.vin,
 year: decoded.year,
 make: decoded.make,
 model: decoded.model,
 trim: decoded.trim,
 engine: engine || undefined,
+},
 });
-router.push(`/garage/custom/${id}`);
 }
 
   // --- Manual entry: dropdown pickers (2026-09-18). Andy asked for dropdowns
@@ -97,8 +135,7 @@ router.push(`/garage/custom/${id}`);
   const [startMileage, setStartMileage] = useState("");
   const [models, setModels] = useState<string[]>([]);
   const [loadingModels, setLoadingModels] = useState(false);
-  const [savingCustom, setSavingCustom] = useState(false);
-
+  
   const years = useMemo(() => listModelYears(), []);
   const selectedMake = useMemo(() => findMakeByName(make), [make]);
 
@@ -143,8 +180,8 @@ router.push(`/garage/custom/${id}`);
 
   // Optional. Reminders read the odometer to sharpen their estimates, so
   // capturing it at add time means they are useful without a second visit.
-  async function saveStartMileage(vehicleId: string) {
-    const miles = Number(startMileage.replace(/[^0-9]/g, ""));
+  async function saveStartMileage(vehicleId: string, raw: string) {
+    const miles = Number(raw.replace(/[^0-9]/g, ""));
     if (!Number.isFinite(miles) || miles <= 0) return;
     await fetch(`/api/garage/${vehicleId}/odometer`, {
       method: "PUT",
@@ -153,35 +190,55 @@ router.push(`/garage/custom/${id}`);
     }).catch(() => {});
   }
 
-  async function handleAddCustom(e: React.FormEvent) {
+  function handleAddCustom(e: React.FormEvent) {
     e.preventDefault();
     if (!year || !make || !model) return;
-    setSavingCustom(true);
-    try {
-      // If the picks land on a vehicle we actually have curated data for, send
-      // them to the real page rather than a bare custom entry.
-      const exact =
-        catalogMatches.find((v) => v.engine === engine) ??
-        (catalogMatches.length === 1 ? catalogMatches[0] : undefined);
-      if (exact) {
-        await addCatalogVehicle(exact.id);
-        await saveStartMileage(exact.id);
-        router.push(`/vehicles/${exact.id}`);
-        return;
-      }
-      const id = await addCustomVehicle({
+    // If the picks land on a vehicle we actually have curated data for, send
+    // them to the real page rather than a bare custom entry. Either way the
+    // customer confirms transmission and drivetrain before anything is saved.
+    const exact =
+      catalogMatches.find((v) => v.engine === engine) ??
+      (catalogMatches.length === 1 ? catalogMatches[0] : undefined);
+    if (exact) {
+      setConfirming({
+        kind: "catalog",
+        vehicle: exact,
+        mileage: startMileage,
+        label: `${exact.year} ${exact.make} ${exact.model}${exact.trim ? " " + exact.trim : ""}`,
+      });
+      return;
+    }
+    setConfirming({
+      kind: "custom",
+      make,
+      mileage: startMileage,
+      label: [year, make, model, trim.trim()].filter(Boolean).join(" "),
+      info: {
         year: year || undefined,
         make: make || undefined,
         model: model || undefined,
         trim: trim.trim() || undefined,
         engine: engine.trim() || undefined,
-      });
-      await saveStartMileage(id);
-      router.push(`/garage/custom/${id}`);
-    } finally {
-      setSavingCustom(false);
-    }
+      },
+    });
   }
+
+if (confirming) {
+return (
+<div className="mx-auto max-w-3xl px-4 py-10">
+<h1 className="text-3xl font-bold text-slate-50">Add a vehicle</h1>
+<ConfirmYourRide
+label={confirming.label}
+make={confirming.kind === "catalog" ? confirming.vehicle.make : confirming.make}
+vehicle={confirming.kind === "catalog" ? confirming.vehicle : undefined}
+decoded={confirming.decoded}
+onConfirm={confirmAdd}
+onDone={doneAdding}
+onCancel={() => setConfirming(null)}
+/>
+</div>
+);
+}
 
 return (
 <div className="mx-auto max-w-3xl px-4 py-10">
@@ -481,10 +538,10 @@ service history and get maintenance reminders.
   </p>
   <button
     type="submit"
-    disabled={!year || !make || !model || savingCustom}
+    disabled={!year || !make || !model}
     className="rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-50 sm:col-span-2"
   >
-    {savingCustom ? "Adding…" : "+ Add to garage"}
+    Continue: confirm your ride
   </button>
 </form>
 </section>

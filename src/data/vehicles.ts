@@ -3992,25 +3992,22 @@ spec: "All-season washer fluid",
     make: "BMW",
     model: "328i",
     trim: "Sedan (E90)",
-    engine: "3.0L naturally aspirated inline-6 (engine code not confirmed -- see specs)",
-    drivetrain: "Not confirmed (parts-catalog evidence points to rear-wheel drive; xDrive not ruled out)",
-    transmission: "Not confirmed (6-speed manual and automatic both exist on this model)",
+    engine: "3.0L inline-six",
+    drivetrain: "Not confirmed",
+    transmission: "Not confirmed",
+    // What this model/year really came in. Confirm Your Ride offers exactly these (plus Not sure): the 2010 328i sedan was sold
+    // with a 6-speed manual or a 6-speed automatic, rear-wheel drive or xDrive. See src/lib/vehicleConfig.ts.
+    configSpec: { transmission: ["automatic", "manual"], drivetrain: ["rwd", "awd"] },
     specs: [
       {
         label: "Engine",
         value:
           "3.0L naturally aspirated inline-6, gasoline, ~230 hp (NHTSA VIN decode). The VIN does not say which engine code: US 328i cars are normally the N52, but a SULEV-emissions variant (N51) was sold in some states. Check the emissions label under the hood before buying engine parts.",
       },
-      {
-        label: "Drivetrain",
-        value:
-          "Not confirmed from the VIN. A parts-catalog lookup for this VIN shows a rear differential and no front differential or transfer case, which points to rear-wheel drive, but that is an inference. A trunk-lid 'xDrive' badge or a front driveshaft under the car would mean otherwise.",
-      },
-      {
-        label: "Transmission",
-        value:
-          "Not confirmed from the VIN. Look at the pedals and shifter: a clutch pedal means the 6-speed manual, otherwise it is an automatic.",
-      },
+      // These two rows show the customer's own confirmed answer (see SpecItem.configAxis). The value below is only
+      // what a viewer with nothing confirmed sees.
+      { label: "Drivetrain", value: "Not confirmed yet. Use Edit Configuration to confirm it.", configAxis: "drivetrain" },
+      { label: "Transmission", value: "Not confirmed yet. Use Edit Configuration to confirm it.", configAxis: "transmission" },
       {
         label: "Battery",
         value:
@@ -4043,11 +4040,12 @@ spec: "All-season washer fluid",
           "The water pump is electric and the system must be bled using the accelerator-pedal procedure after refilling. Do not buy a single capacity figure from this line; read the Capacities page of your owner's manual.",
       },
       {
-        name: "Rear Axle Fluid (rear-wheel-drive cars only)",
+        name: "Rear Axle Fluid",
         capacity: "Not confirmed -- sources disagree (roughly 1.0-1.2 L)",
         spec: "BMW synthetic final-drive oil (SAF-XO, 75W-90 GL-5) for an open differential",
         notes:
-          "Applies only if the car is confirmed rear-wheel drive with an open differential. One plug is both drain and fill (14 mm hex, ~60 Nm / 44 ft-lb); fill to the bottom edge of the hole.",
+          "One plug is both drain and fill (14 mm hex, ~60 Nm / 44 ft-lb); fill to the bottom edge of the hole. The capacity and plug torque are not confirmed.",
+        forConfig: { drivetrain: ["rwd"] },
       },
       {
         name: "Brake Fluid",

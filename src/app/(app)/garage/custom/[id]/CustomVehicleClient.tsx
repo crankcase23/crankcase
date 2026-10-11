@@ -15,6 +15,8 @@ import { WorkshopScene } from "@/components/marketing/Cinematic";
 import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/components/app/VehicleHub";
 import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
 import { IconChevronLeft } from "@/components/app/AppIcons";
+import VehicleConfigPanel from "@/components/config/VehicleConfigPanel";
+import { summaryParts } from "@/lib/vehicleConfig";
 
 // Auto-populate: as soon as this page mounts, ask the server whether we
 // have real data for this exact make/model/year (curated catalog match,
@@ -131,9 +133,10 @@ export default function CustomVehiclePage() {
           </h1>
           {(custom.engine || custom.vin) && (
             <p className="mt-3 text-slate-300 [overflow-wrap:anywhere]">
-              {[custom.engine, custom.vin && `VIN ${custom.vin}`].filter(Boolean).join(" · ")}
+              {[custom.engine, ...summaryParts(entry.config, custom.make), custom.vin && `VIN ${custom.vin}`].filter(Boolean).join(" · ")}
             </p>
           )}
+          <VehicleConfigPanel vehicleId={entry.id} make={custom.make} initial={entry.config} />
           <div className="mt-2">
             <OdometerLine vehicleId={entry.id} href="#odo" />
           </div>

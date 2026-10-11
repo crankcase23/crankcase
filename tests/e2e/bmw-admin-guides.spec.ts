@@ -202,10 +202,13 @@ for (const vp of [
       expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
     });
 
-    for (const { slug, guide } of bmwDraftGuides) {
+    for (const { slug, guide: adminDraft } of bmwDraftGuides) {
       test(`${slug}: customer page, preview labelling, Wrench Mode, restricted steps, completion, recovery`, async ({ page }) => {
         test.setTimeout(150_000);
         await signUpNew(page);
+        // The owner's build: with Automatic + RWD confirmed, every step of every guide applies (nothing is hidden or restricted).
+        const added = await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CAR, config: { transmission: "automatic", drivetrain: "rwd" } } });
+        expect(added.ok()).toBeTruthy();
         const errors: string[] = [];
         page.on("pageerror", (e) => errors.push(e.message));
         const res = await page.goto(`/vehicles/${CAR}/repairs/${slug}`);
@@ -217,6 +220,10 @@ for (const vp of [
         expect(body).toContain("Preview guide.");
         expect(body).toContain("not part of a paid Get the Keys unlock");
         expect(body).not.toMatch(/Premium guide\.|will require unlocking|Draft for owner testing|WBAPH7C58AA175760|A175760|admin-draft/);
+        // The customer copy is the shorter, practical one (the admin draft keeps the full research text and lead steps).
+        const guide = getRepairsForVehicle(CAR).find((g) => g.id === slug)!;
+        expect(guide, `customer guide ${slug}`).toBeTruthy();
+        expect(guide.steps.filter((x) => x.title.startsWith(BLOCK)).length).toBe(adminDraft.steps.filter((x) => x.title.startsWith(BLOCK)).length);
         const blockedTitles = guide.steps.filter((s) => s.title.startsWith(BLOCK)).length;
         if (blockedTitles) expect(body).toContain("BLOCKED in this guide");
         expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);

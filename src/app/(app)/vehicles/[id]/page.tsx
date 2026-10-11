@@ -21,8 +21,10 @@ import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
 import { maintenanceItemsFor } from "@/lib/reminders";
 import { getServiceSchedule } from "@/data/service-schedules";
-import { auth } from "@/auth";
-import { listGarageEntries } from "@/lib/garageEntries";
+import { getViewerVehicle } from "@/lib/viewerConfig";
+import { specRowsForConfig, fluidsForConfig, summaryLine } from "@/lib/vehicleConfig";
+import { resolveGuideForConfig } from "@/lib/guideConfig";
+import VehicleConfigPanel from "@/components/config/VehicleConfigPanel";
 
 export function generateStaticParams() {
   return listVehicles().map((v) => ({ id: v.id }));
@@ -53,13 +55,12 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   // VIN is visible on the page, not just stored. This page is shared
   // across every user who has this catalog vehicle, so the VIN has to
   // come from THIS viewer's own garage entry, not the catalog record.
-  const session = await auth();
-  let vin: string | undefined;
-  if (session?.user?.id) {
-      const entries = await listGarageEntries(session.user.id);
-      const entry = entries.find((e) => e.kind === "catalog" && e.id === vehicle.id);
-      if (entry && entry.kind === "catalog") vin = entry.vin;
-  }
+  const { config, vin, inGarage } = await getViewerVehicle(vehicle.id);
+
+  // How this customer's saved configuration affects each guide (all guides stay listed: every category is accounted for).
+  const guideStatuses = Object.fromEntries(
+    repairGuides.map((g) => [g.id, resolveGuideForConfig(g, config, vehicle.make).configResolution.status])
+  );
 
   const items = maintenanceItemsFor(vehicle);
 
@@ -72,7 +73,9 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
   const label = `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? ` ${vehicle.trim}` : ""}`;
   const schedule = getServiceSchedule(vehicle);
-  const specRows = vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs;
+  const vehicleSpecs = specRowsForConfig(vehicle, config);
+  const vehicleFluids = fluidsForConfig(vehicle, config);
+  const specRows = vin ? [{ label: "VIN", value: vin }, ...vehicleSpecs] : vehicleSpecs;
   const JUMPS = [
     { href: "#info", label: "Specs" },
     { href: "#fluids", label: "Fluids" },
@@ -127,8 +130,9 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
             {vehicle.trim ? <span className="text-slate-400"> {vehicle.trim}</span> : null}
           </h1>
           <p className="mt-3 text-slate-300">
-            {vehicle.engine} &middot; {vehicle.drivetrain} &middot; {vehicle.transmission}
+            {[vehicle.engine, ...summaryLine(vehicle, config)].join(" · ")}
           </p>
+          {inGarage && <VehicleConfigPanel vehicleId={vehicle.id} make={vehicle.make} vehicle={vehicle} initial={config} />}
           <div className="mt-2">
             <OdometerLine vehicleId={vehicle.id} href="#odo" />
           </div>
@@ -199,11 +203,11 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         vehicleId={vehicle.id}
         eyebrow="Before you pour"
         title="Fluid Capacities"
-        summary={`${vehicle.fluids.length} ${vehicle.fluids.length === 1 ? "capacity" : "capacities"}`}
+        summary={`${vehicleFluids.length} ${vehicleFluids.length === 1 ? "capacity" : "capacities"}`}
         glow="right"
         chip={<FreeChip />}
       >
-        <FluidTable fluids={vehicle.fluids} />
+        <FluidTable fluids={vehicleFluids} />
       </Section>
 
       <div id="maintenance" className="scroll-mt-32">
@@ -226,7 +230,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         />
       </div>
 
-      <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
+      <GuideGroups vehicleId={vehicle.id} guides={repairGuides} statuses={guideStatuses} />
 
       <ServiceHistory
         vehicleId={vehicle.id}

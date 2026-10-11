@@ -10,6 +10,7 @@ import { useServiceHistory } from "@/lib/serviceHistory";
 import { computeReminders, maintenanceItemsFor } from "@/lib/reminders";
 import { summarizeGarageStatus } from "@/lib/garageStatus";
 import { FOCUS, display } from "@/components/app/AppKit";
+import { configState, summaryLine, summaryParts, type VehicleConfig } from "@/lib/vehicleConfig";
 
 // One vehicle on My Garage, laid out per the approved Garage mockup: a large
 // photograph, year / make+model, the trim-engine-transmission-drivetrain line,
@@ -26,8 +27,8 @@ import { FOCUS, display } from "@/components/app/AppKit";
 // really has (#info, #guides, #history, #maintenance), catalog vehicles only.
 
 type Props =
-  | { id: string; kind: "catalog"; vehicle: Vehicle; onRemove: () => void }
-  | { id: string; kind: "custom"; custom: CustomVehicleInfo; onRemove: () => void };
+  | { id: string; kind: "catalog"; vehicle: Vehicle; config: VehicleConfig; onRemove: () => void }
+  | { id: string; kind: "custom"; custom: CustomVehicleInfo; config: VehicleConfig; onRemove: () => void };
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -87,8 +88,11 @@ export default function GarageVehicleCard(props: Props) {
       ? `/images/vehicles/model-${slug(custom.make)}-${slug(custom.model)}.jpg`
       : null;
 
-  const specParts = vehicle ? [trim, engine, vehicle.transmission, vehicle.drivetrain] : [trim, engine];
-  const specLine = specParts.filter(Boolean).join(" • ");
+  // Transmission and drivetrain come from what the customer confirmed (see summaryLine). Anything not confirmed is left
+  // off the card and replaced by one short prompt below, not by a paragraph of uncertainty.
+  const specParts = vehicle ? [trim, engine, ...summaryLine(vehicle, props.config)] : [trim, engine, ...summaryParts(props.config, make)];
+  const specLine = specParts.filter(Boolean).join(" · ");
+  const needsConfig = configState(props.config) !== "confirmed";
 
   const supported = Boolean(vehicle) && guideCount > 0;
   const statusTitle = supported ? "Guides available" : vehicle ? "Specs available" : "Added to your garage";
@@ -140,6 +144,11 @@ export default function GarageVehicleCard(props: Props) {
           <p className="mt-2 text-sm leading-snug text-slate-300">{specLine}</p>
         ) : (
           <p className="mt-2 text-sm text-slate-500">Engine not set</p>
+        )}
+        {needsConfig && (
+          <Link href={`${href}#vehicle-config`} className={`mt-1.5 inline-block text-xs font-semibold text-amber-300 hover:text-amber-200 ${FOCUS}`}>
+            Confirm transmission &amp; drivetrain
+          </Link>
         )}
 
         <div className="mt-4 flex items-start gap-2.5 text-sm">

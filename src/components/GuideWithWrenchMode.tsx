@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import GuideBody from "@/components/GuideBody";
 import GuideOverview from "@/components/GuideOverview";
 import type { BreadcrumbItem } from "@/components/GuideOverview";
@@ -8,6 +9,9 @@ import ExitWrenchDialog from "@/components/ExitWrenchDialog";
 import WrenchMode from "@/components/WrenchMode";
 import { GRAPHITE_VARS } from "@/components/guideTheme";
 import { buildWrenchPlan } from "@/lib/wrenchSteps";
+import { useVehicleConfig } from "@/lib/garage";
+import { configKey } from "@/lib/vehicleConfig";
+import type { ConfigResolvedGuide } from "@/lib/guideConfig";
 import type { WrenchCompletionConfig } from "@/lib/wrenchSteps";
 import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
 
@@ -16,6 +20,11 @@ import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
  * this in place of <GuideBody guide={guide} />, passing the SAME canonical
  * guide and vehicle objects. The Full Guide sections (GuideBody) are the
  * unchanged shared component, re-skinned only through the graphite variables.
+ *
+ * CONFIGURATION. The guide arrives already resolved for the customer's saved transmission/drivetrain (see
+ * resolveGuideForConfig), stamped with the configuration key it was resolved under. A session belongs to that key:
+ * if the saved configuration changes while a session exists (Edit Configuration here or in another tab or device), the
+ * session is ended and the page refreshes, so nobody carries on with steps written for the old build.
  *
  * SESSION LIFECYCLE (client-side, in memory only: a reload clears it).
  *   no session      -> "START WRENCH MODE" (begins at step 1)
@@ -42,8 +51,24 @@ export default function GuideWithWrenchMode({
   breadcrumb?: BreadcrumbItem[];
   completion?: WrenchCompletionConfig;
 }) {
-  const [session, setSession] = useState<{ index: number } | null>(null);
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  // The configuration this guide was resolved under, and what the customer's garage says now (revalidated on focus).
+  const guideKey = (guide as Partial<ConfigResolvedGuide>).configResolution?.key ?? null;
+  const dependsOnConfig = (guide as Partial<ConfigResolvedGuide>).configResolution?.status !== undefined && (guide as Partial<ConfigResolvedGuide>).configResolution?.status !== "none";
+  const { config: liveConfig, ready: liveReady } = useVehicleConfig(vehicle.id);
+  const liveKey = liveReady && liveConfig ? configKey(liveConfig) : null;
+  const stale = dependsOnConfig && guideKey !== null && liveKey !== null && liveKey !== guideKey;
+  useEffect(() => {
+    if (stale) router.refresh();
+  }, [stale, router]);
+
+  const [rawSession, setSession] = useState<{ index: number; key: string | null } | null>(null);
+  // A session only counts while it was started under the configuration the page is showing now.
+  const sessionValid = rawSession !== null && rawSession.key === guideKey && !stale;
+  const session = sessionValid ? rawSession : null;
+  const endedByConfigChange = rawSession !== null && !sessionValid;
+  const [openRaw, setOpen] = useState(false);
+  const open = openRaw && sessionValid;
   const [confirmExit, setConfirmExit] = useState(false);
   const primaryRef = useRef<HTMLButtonElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -57,9 +82,9 @@ export default function GuideWithWrenchMode({
   );
 
   const start = useCallback(() => {
-    setSession({ index: 0 });
+    setSession({ index: 0, key: guideKey });
     setOpen(true);
-  }, []);
+  }, [guideKey]);
 
   const resume = useCallback(() => {
     setOpen(true);
@@ -68,7 +93,7 @@ export default function GuideWithWrenchMode({
   // Position reports from Wrench Mode. Functional update so an unchanged
   // index does not create a new session object.
   const onIndexChange = useCallback((i: number) => {
-    setSession((s) => (s && s.index !== i ? { index: i } : s));
+    setSession((s) => (s && s.index !== i ? { ...s, index: i } : s));
   }, []);
 
   // "← Overall Guide": leave the overlay, keep the session.
@@ -93,6 +118,11 @@ export default function GuideWithWrenchMode({
 
   return (
     <div style={GRAPHITE_VARS} className="mt-4">
+      {endedByConfigChange && (
+        <div role="status" data-testid="wrench-session-ended" className="mb-3 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+          Your vehicle configuration changed, so the Wrench Mode session in progress was ended. Start again to get the steps for your current configuration.
+        </div>
+      )}
       <div inert={open || confirmExit}>
         <GuideOverview
           guide={guide}
@@ -113,6 +143,11 @@ export default function GuideWithWrenchMode({
           onStart={start}
           onResume={resume}
           onExit={() => setConfirmExit(true)}
+          startDisabledReason={
+            (guide as Partial<ConfigResolvedGuide>).configResolution?.status === "unavailable"
+              ? "This guide has no verified procedure for your configuration."
+              : undefined
+          }
         />
         <div ref={bodyRef} className="mt-2">
           <GuideBody guide={guide} />

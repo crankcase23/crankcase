@@ -54,6 +54,7 @@ export default function GuideOverview({
   onStart,
   onResume,
   onExit,
+  startDisabledReason,
 }: {
   guide: ResolvedGuide;
   vehicle: Vehicle;
@@ -64,6 +65,8 @@ export default function GuideOverview({
   onStart: () => void;
   onResume: () => void;
   onExit: () => void;
+  /** Set when the guide has no procedure for this customer's configuration: Wrench Mode cannot start. */
+  startDisabledReason?: string;
 }) {
   const overview = useMemo(() => deriveOverview(guide), [guide]);
   const [showFull, setShowFull] = useState(false);
@@ -258,10 +261,12 @@ export default function GuideOverview({
                   ref={primaryRef}
                   type="button"
                   onClick={session ? onResume : onStart}
-                  className="flex min-h-[64px] items-center justify-center gap-3 whitespace-nowrap rounded-2xl border border-orange-300/60 bg-gradient-to-b from-orange-400 to-orange-500 px-6 text-base sm:text-lg font-extrabold uppercase tracking-wide text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_3px_0_rgba(0,0,0,0.6)] active:translate-y-px"
+                  disabled={Boolean(startDisabledReason) && !session}
+                  title={startDisabledReason}
+                  className="flex min-h-[64px] disabled:cursor-not-allowed disabled:opacity-40 items-center justify-center gap-3 whitespace-nowrap rounded-2xl border border-orange-300/60 bg-gradient-to-b from-orange-400 to-orange-500 px-6 text-base sm:text-lg font-extrabold uppercase tracking-wide text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_3px_0_rgba(0,0,0,0.6)] active:translate-y-px"
                 >
                   <PlayIcon className="h-5 w-5" />
-                  <span>{session ? "Resume Wrench Mode" : "Start Wrench Mode"}</span>
+                  <span>{session ? "Resume Wrench Mode" : startDisabledReason ? "Not available for your configuration" : "Start Wrench Mode"}</span>
                 </button>
                 {session && (
                   <button

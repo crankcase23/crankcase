@@ -18,7 +18,8 @@
     "bmw:video": "node scripts/bmw/video-evidence.mjs",
     "bmw:test": "node --test scripts/bmw/tests/*.test.mjs",
     "bmw:preview": "node scripts/bmw/preview/run.mjs",
-    "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
+    "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs",
+    "config:test": "node --test scripts/config/tests/*.test.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
