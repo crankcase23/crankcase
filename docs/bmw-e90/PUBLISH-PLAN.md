@@ -42,3 +42,36 @@ Date: 2026-10-11. Branch `claude/bmw-guide-build`, PR #38. **Nothing is merged, 
 
 - Wrench Mode customer completion is tested against the catalog vehicle with a signed-in user; a signed-out save fails and the sheet says so without ending the job.
 - The 3 failing `garage.spec.ts` tests (stale selectors in `/garage/add`) were not touched.
+
+## Merge gate (state at 4523531, 2026-10-11)
+
+| Check | State |
+|---|---|
+| Remote branch HEAD | `claude/bmw-guide-build` = `4523531` = local HEAD |
+| PR #38 | open, not draft, `mergeable: true`, `mergeable_state: clean`, base `main` (`dd1f749`), 17 commits, 0 review comments, no requested reviewers |
+| Production-check status | Vercel status `success` on `4523531` ("Deployment has completed"). The repo has no GitHub Actions workflows, so Vercel is the only check |
+| Branch protection | `main` reports `protected: true`. The session token cannot read the rules (`Resource not accessible by integration`), so required reviews, status checks and merge-method restrictions are **unverified from here**. If a rule blocks the API merge, the merge call returns the exact refusal and I will report it instead of working around it |
+| Merge method | Repo allows merge commit, squash and rebase. Earlier owner-approved merges (#35, #36, #37) used merge commits; I will use a merge commit unless told otherwise |
+| Shared files in the diff | `src/types/vehicle.ts`, `src/components/tables.tsx`, `GuideGroups.tsx`, `src/data/repairs.ts`, the customer repair page, `package.json` (OWNER-REVIEW path: adds the `bmw:preview` script) |
+| Preview-only and unsellable | `customer.test.mjs`: all 16 `preview: true`, `isSellable()` false for every one, Wrench Mode opt-in on exactly these 16, no other vehicle's guide carries either flag |
+| Restrictions | Blocked steps (engine-bay fuses, xenon bulb, idler pulley) and every unverified torque (VERIFY, no number) are asserted identical to the admin drafts, on the unit and real-route tests |
+| Customer Wrench Mode + Service History | 32 guide x viewport real-route runs: walk, blocked steps, completion sheet really saves a Service History entry (read back through the API), recovery |
+| BMW tests | `bmw:test` 62/62; customer e2e 39/39; admin e2e 37/37; preflight PASS |
+
+### The three existing failures in `tests/e2e/garage.spec.ts` (not caused by this PR)
+
+None of these tests, `/garage`, or `/garage/add` is touched by this branch. They fail because the spec is stale against UI changes made on 2026-09-19 (spec last edited 2026-10-04 without re-running against them):
+
+1. `starts empty and can add a catalog vehicle`: expects a link named "+ Add your first vehicle"; the link now reads "Add your first vehicle" (no plus), and `/garage/add` no longer has catalog vehicle buttons (it is VIN-decode-led since commit `e596585`).
+2. `can add a custom vehicle we don't have data for…`: expects a button named exactly "Add to garage"; it now reads "+ Add to garage".
+3. `removing a vehicle takes it out of the garage`: depends on the same removed catalog button ("Civic") on `/garage/add`.
+
+Fix is a selector update in the spec, a separate change from this PR.
+
+### After the owner says "merge PR #38"
+
+1. Re-verify remote HEAD is still `4523531` and the PR is still `mergeable: clean`. If the head moved, stop and report.
+2. Merge through the GitHub REST API only (never a push to `main`).
+3. Find the production deployment for the new `main` SHA; wait for the Vercel status `success`.
+4. Smoke test the live site: `/vehicles/2010-bmw-328i-3.0l` lists 16 guides badged Preview; one guide opens with the Preview banner; Wrench Mode starts and walks; a blocked step shows BLOCKED (fuse-bulb, serpentine-belt); an existing vehicle's guide page is unchanged. Do not save a Service History entry on the live site unless the owner asks.
+5. Report the merge SHA, deployment status, live URLs and results. Rollback: a revert PR (new branch), then the same flow.
