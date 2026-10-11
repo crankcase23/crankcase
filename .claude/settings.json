@@ -1,6 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
+    "defaultMode": "acceptEdits",
     "allow": [
       "Bash(git status*)",
       "Bash(git diff*)",
@@ -39,7 +40,25 @@
       "Bash(npx --no-install eslint)",
       "Bash(npx --no-install next typegen)",
       "Bash(npx --no-install next build)",
-      "Bash(node --test scripts/visuals/factory-reconstructed/tests/*.test.mjs)"
+      "Bash(node --test scripts/visuals/factory-reconstructed/tests/*.test.mjs)",
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(wc *)",
+      "Bash(sort *)",
+      "Bash(cut *)",
+      "Bash(diff *)",
+      "Bash(pwd)",
+      "Bash(echo *)",
+      "Bash(date)",
+      "Bash(which *)",
+      "Bash(true)",
+      "Bash(sleep *)",
+      "Bash(cd *)",
+      "Bash(mkdir -p *)"
     ],
     "ask": [
       "Bash(gh pr merge*)",
@@ -102,7 +121,6 @@
       "Bash(gh repo*)",
       "Bash(gh secret*)",
       "Bash(gh auth*)",
-      "Bash(gh api *--input*)",
       "Bash(gh api *--hostname*)",
       "Bash(gh api *=@.env*)",
       "Bash(gh api *-X DELETE*)",
@@ -117,7 +135,27 @@
       "Edit(./.env*)",
       "Write(./.env*)",
       "Edit(./.claude/**)",
-      "Write(./.claude/**)"
+      "Write(./.claude/**)",
+      "Bash(git reset*)",
+      "Bash(git -C * reset*)",
+      "Bash(git -C * clean*)",
+      "Bash(git -C * rebase*)",
+      "Bash(git filter-*)",
+      "Bash(git update-ref*)",
+      "Bash(git symbolic-ref*)",
+      "Bash(git gc*)",
+      "Bash(git prune*)",
+      "Bash(git remote add*)",
+      "Bash(git remote set-url*)",
+      "Bash(git remote remove*)",
+      "Bash(git -c *)",
+      "Bash(git -C * push*)",
+      "Bash(env)",
+      "Bash(printenv*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Bash(rm -rf .git*)",
+      "Bash(rm -rf .claude*)"
     ]
   },
   "hooks": {
