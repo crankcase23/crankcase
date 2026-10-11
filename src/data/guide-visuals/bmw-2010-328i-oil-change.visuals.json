@@ -1,0 +1,169 @@
+{
+  "visuals": [
+    {
+      "step": 4,
+      "id": "oil-drain-hatch-locate",
+      "src": "/guide-visuals/2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed/oil-drain-hatch-locate.png",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Illustration showing the engine oil drain access hatch in the lower undertray of a 2010 BMW 328i (E90).",
+      "caption": "Locate the oil drain access hatch beneath the front of the vehicle. Simplified illustration",
+      "application": {
+        "engine": "3.0L inline-6 (engine code not confirmed)",
+        "make": "BMW",
+        "model": "328i",
+        "trim": "Sedan (E90)",
+        "year": 2010
+      },
+      "provenance": {
+        "status": "verified",
+        "sourceType": "generated-raster",
+        "source": "ChatGPT image generation / ChatGPT image generation (model name not shown in UI)",
+        "sourceRef": "visual-sources/oil-drain-hatch-locate/GR-oil-drain-hatch-locate-001",
+        "license": {
+          "status": "generated-original",
+          "terms": "OpenAI ChatGPT usage terms: output rights per the provider terms; C2PA manifest recorded from the native file."
+        },
+        "component": "access-hatch",
+        "vehicleEvidence": "objective match of the application against the registry (applications.json)",
+        "verifiedBy": "andy",
+        "verifiedOn": "2026-10-11",
+        "technicalReviewBy": "hermes",
+        "technicalReviewOn": "2026-10-11",
+        "calloutsVerified": true,
+        "rawSha256": "ec5003b63e9c6f0e8897313b955b865ef342bb06432b75b51be544b3b1b471f6",
+        "finalSha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+        "treatment": {
+          "version": "cc-visual-1",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 1000
+          },
+          "rawSize": {
+            "w": 1600,
+            "h": 1000
+          },
+          "ops": [
+            "decode",
+            "resize-to-frame",
+            "strip-metadata",
+            "png-encode"
+          ],
+          "brightness": 1,
+          "contrast": 1
+        },
+        "generatedRaster": {
+          "factoryDir": "visual-sources/oil-drain-hatch-locate",
+          "visualId": "oil-drain-hatch-locate",
+          "epRef": {
+            "id": "EP-oil-drain-hatch-locate-v1",
+            "sha256": "4a9202c63419e4ce022f96f9b35b992c0d8bea06018d3bf456cc85ee912bd296"
+          },
+          "vcRef": {
+            "id": "VC-oil-drain-hatch-locate-v1",
+            "sha256": "51a322ec90ceedb68413cafe04cee870b0f603a71738e45dd6480112668db24a"
+          },
+          "grRef": {
+            "id": "GR-oil-drain-hatch-locate-001",
+            "sha256": "7c408fe37d61c9378f0a19b9199ba9420641228c9bd4f0096230317175d5b7af"
+          },
+          "qrRef": {
+            "id": "QR-oil-drain-hatch-locate-001",
+            "sha256": "ad73a88b63bb37feb964a4e412c9f9fea5404a3358b665c494fd11a59eebc9b7"
+          },
+          "overlayQrRef": {
+            "id": "QR-oil-drain-hatch-locate-002",
+            "sha256": "aa83632fb62696d9ca8bdc3e9f7729f6372999dfbac7079e5055e105be332899"
+          },
+          "templateRef": {
+            "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+            "sha256": "aee8bacf8aee991a11ce74ed551ec75a9cd2cd4ba8eb0e459765f3de3446409e"
+          },
+          "eventsSeq": 11,
+          "eventsHeadSha256": "51d7cb481e69c1c4686002f4f0ecf10ca877636ac1dc7de4760cb871b4ac8e47",
+          "generator": {
+            "model": "ChatGPT image generation (model name not shown in UI)",
+            "provider": "OpenAI",
+            "system": "ChatGPT image generation"
+          },
+          "license": {
+            "assetClass": "Redline Origin / Crankcase project asset, subject to the generation provider's applicable usage rights",
+            "model": "ChatGPT image generation (model name not shown in UI)",
+            "ownershipAsserted": false,
+            "provider": "OpenAI",
+            "rightsBasis": "provider-granted rights only; no ownership claim beyond the rights the provider actually grants",
+            "status": "generated-original",
+            "terms": {
+              "summary": "OpenAI ChatGPT usage terms: output rights per the provider terms; C2PA manifest recorded from the native file."
+            }
+          },
+          "promptSha256": "840c0534fe50f1fca2ad9289d4452a99f5ed2fca68b51b044fcde977d565c63b",
+          "imageInputs": [],
+          "attestation": {
+            "attestedBy": "image-generator",
+            "attestedOn": "2026-10-11",
+            "generatedFromTextOnly": true,
+            "noBakedText": true,
+            "noReferenceImageInputs": true,
+            "noThirdPartyCompositing": true,
+            "noTracing": true,
+            "statement": "Generated in a fresh ChatGPT chat by pasting the run's generation-prompt.txt as text; no uploads. Baked-text claim is the generator's statement and is checked by the independent reviewer."
+          },
+          "providerProvenance": {
+            "c2pa": {
+              "present": false
+            },
+            "generationId": "6acb2d18-3f14-83e8-89de-d4a28dac6c70",
+            "requestId": "6acb2d18-3f14-83e8-89de-d4a28dac6c70"
+          },
+          "sourceArtifact": {
+            "mediaType": "png",
+            "sha256": "ec5003b63e9c6f0e8897313b955b865ef342bb06432b75b51be544b3b1b471f6",
+            "bytes": 1271666,
+            "width": 1600,
+            "height": 1000,
+            "metadataChunks": [],
+            "file": "generations/GR-oil-drain-hatch-locate-001.png",
+            "c2pa": {
+              "present": false
+            }
+          },
+          "normalizedArtifact": {
+            "mediaType": "png",
+            "sha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+            "bytes": 1250999,
+            "width": 1600,
+            "height": 1000,
+            "metadataChunks": [],
+            "normalizer": {
+              "version": "reconstructed-normalizer-1",
+              "tool": "reconstructed-png-box-downscale (node zlib)",
+              "ops": [
+                "decode",
+                "resize-to-frame",
+                "strip-metadata",
+                "png-encode"
+              ]
+            }
+          },
+          "qa": {
+            "stage": "content",
+            "reviewClass": "independent",
+            "verdict": "PASS_FOR_OVERLAY_QA",
+            "rubricVersion": "CG-QA-v1.0",
+            "reviewer": {
+              "actor": "hermes",
+              "system": "ChatGPT web review chat 6acb2e86"
+            },
+            "provenanceValidated": true,
+            "recordedOn": "2026-10-11",
+            "overlayVerdict": "PASS_OVERLAY"
+          },
+          "customerDisclosure": "Simplified illustration"
+        }
+      }
+    }
+  ]
+}

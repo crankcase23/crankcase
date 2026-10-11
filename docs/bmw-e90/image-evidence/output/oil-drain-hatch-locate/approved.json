@@ -1,0 +1,94 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "artifact": {
+    "file": "/guide-visuals/2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed/oil-drain-hatch-locate.png",
+    "height": 1000,
+    "mediaType": "png",
+    "sha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+    "treatment": {
+      "ops": [
+        "decode",
+        "resize-to-frame",
+        "strip-metadata",
+        "png-encode"
+      ],
+      "version": "cc-visual-1"
+    },
+    "width": 1600
+  },
+  "authority": {
+    "andyFinal": "required",
+    "approvedBy": "andy",
+    "approvedOn": "2026-10-11"
+  },
+  "callouts": [
+    {
+      "element": "access-hatch",
+      "label": "access hatch",
+      "required": true
+    }
+  ],
+  "calloutsVerified": {
+    "by": "hermes",
+    "on": "2026-10-11"
+  },
+  "contentHash": "4a5aae80cc331c9286bf962834bfb18ee561d4a5dfe27c15d30cbd4a8dacb84b",
+  "createdAt": "2026-10-11T07:03:58.616Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "artifact-assembler"
+  },
+  "gates": {
+    "calloutsVerified": true,
+    "contentQaPass": true,
+    "contractLocked": true,
+    "evidenceSufficient": true,
+    "hashesConsistent": true,
+    "independentFinalReview": true,
+    "overlayQaPass": true,
+    "provenanceValid": true,
+    "reviewerIndependent": true,
+    "vehicleVerified": true
+  },
+  "id": "AA-oil-drain-hatch-locate",
+  "publishedTo": null,
+  "refs": [
+    {
+      "id": "EP-oil-drain-hatch-locate-v1",
+      "sha256": "4a9202c63419e4ce022f96f9b35b992c0d8bea06018d3bf456cc85ee912bd296"
+    },
+    {
+      "id": "VC-oil-drain-hatch-locate-v1",
+      "sha256": "51a322ec90ceedb68413cafe04cee870b0f603a71738e45dd6480112668db24a"
+    },
+    {
+      "id": "GR-oil-drain-hatch-locate-001",
+      "sha256": "7c408fe37d61c9378f0a19b9199ba9420641228c9bd4f0096230317175d5b7af"
+    },
+    {
+      "id": "QR-oil-drain-hatch-locate-001",
+      "sha256": "ad73a88b63bb37feb964a4e412c9f9fea5404a3358b665c494fd11a59eebc9b7"
+    },
+    {
+      "id": "QR-oil-drain-hatch-locate-002",
+      "sha256": "aa83632fb62696d9ca8bdc3e9f7729f6372999dfbac7079e5055e105be332899"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "aee8bacf8aee991a11ce74ed551ec75a9cd2cd4ba8eb0e459765f3de3446409e"
+    }
+  ],
+  "registryEntryRef": {
+    "file": "registry-entry.preview.json",
+    "sha256": "da391c7299d7b21097523e33e9615f4acd65791cc3d8af7df5c83463600154a1"
+  },
+  "schema": "guide-factory.approved-artifact",
+  "schemaVersion": "reconstructed-1",
+  "visualId": "oil-drain-hatch-locate"
+}
