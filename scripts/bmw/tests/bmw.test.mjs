@@ -100,7 +100,8 @@ test("drafts are isolated from the customer catalog", () => {
     }
   })("src");
   assert.deepEqual(hits, [], "admin-test-guides imported outside /admin");
-  for (const f of fs.readdirSync(path.join(ROOT, "src/data")).filter((x) => /^repairs.*\.ts$/.test(x))) {
+  // Policy change (owner, 2026-10-11): the 16 BMW guides ARE public now, through ONE generated file. Nothing else under repairs*.ts may name the car.
+  for (const f of fs.readdirSync(path.join(ROOT, "src/data")).filter((x) => /^repairs.*\.ts$/.test(x) && x !== "repairs-bmw-e90.ts")) {
     assert.ok(!/2010-bmw-328i/.test(fs.readFileSync(path.join(ROOT, "src/data", f), "utf8")), `${f} references the BMW vehicle: a guide would be live`);
   }
   const vehicles = fs.readFileSync(path.join(ROOT, "src/data/vehicles.ts"), "utf8");

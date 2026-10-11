@@ -14,6 +14,7 @@ import { gmK2xxGuides } from "./repairs-gm-k2xx";
 import { gmT1xxGuides } from "./repairs-gm-t1xx";
 import { toyotaRav4Guides } from "./repairs-toyota-rav4";
 import { toyotaTacomaGuides } from "./repairs-toyota-tacoma";
+import { bmwE90Guides } from "./repairs-bmw-e90";
 
 // Step images are original schematic illustrations (public/steps/*.svg) —
 // not photos from any manual — meant to show *what* to do, not stand in for
@@ -7432,6 +7433,7 @@ image: "/steps/generic-cleanup.svg",
 ...gmT1xxGuides,
   ...toyotaRav4Guides,
   ...toyotaTacomaGuides,
+  ...bmwE90Guides,
 ];
 
 // There was briefly an alias map here pointing a separate "Work Truck Regular

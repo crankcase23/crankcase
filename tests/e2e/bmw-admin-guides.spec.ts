@@ -174,12 +174,90 @@ test.describe("real admin route: access control is unchanged", () => {
     for (const { slug } of bmwDraftGuides) await expect(page.locator(`a[href="/admin/guides/test/${slug}"]`)).toHaveCount(1);
   });
 
-  test("the customer side never exposes a BMW draft", async ({ page }) => {
+  test("the customer page never exposes the ADMIN draft copies or the admin review route", async ({ page }) => {
     await signUpNew(page);
     const res = await page.goto("/vehicles/2010-bmw-328i-3.0l");
     expect(res?.status()).toBeLessThan(500);
     const html = await page.content();
     expect(html).not.toContain("admin-draft-bmw");
     expect(html).not.toContain("/admin/guides/test/bmw");
+  });
+});
+
+// ---- CUSTOMER routes (owner decision 2026-10-11: all 16 BMW guides are in the public catalog, clearly marked incomplete).
+const CAR = "2010-bmw-328i-3.0l";
+for (const vp of [
+  { name: "desktop", use: { viewport: { width: 1280, height: 900 } } },
+  { name: "phone", use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
+]) {
+  test.describe(`customer routes, ${vp.name}`, () => {
+    test.use(vp.use);
+
+    test("vehicle page lists all 16 BMW guides, each linking to its own guide page", async ({ page }) => {
+      await signUpNew(page);
+      await page.goto(`/vehicles/${CAR}`);
+      await expect(page.getByRole("heading", { level: 1 })).toContainText("328i");
+      for (const { slug } of bmwDraftGuides) await expect(page.locator(`a[href="/vehicles/${CAR}/repairs/${slug}"]`), slug).toHaveCount(1);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
+    });
+
+    for (const { slug, guide } of bmwDraftGuides) {
+      test(`${slug}: customer page, incomplete labelling, every step, restricted steps`, async ({ page }) => {
+        test.setTimeout(120_000);
+        await signUpNew(page);
+        const errors: string[] = [];
+        page.on("pageerror", (e) => errors.push(e.message));
+        const res = await page.goto(`/vehicles/${CAR}/repairs/${slug}`);
+        expect(res?.status()).toBe(200);
+        // not the admin page, not a draft
+        await expect(page.getByText("Admin test guide — not published")).toHaveCount(0);
+        const body = await page.locator("body").innerText();
+        expect(body).toContain("Incomplete guide: not yet verified against BMW service data.");
+        expect(body).toContain("not yet verified against BMW repair data");
+        expect(body).not.toMatch(/Draft for owner testing|WBAPH7C58AA175760|A175760|admin-draft/);
+        expect(body).toMatch(/torque/i);
+        const blockedTitles = guide.steps.filter((s) => s.title.startsWith(BLOCK)).length;
+        if (blockedTitles) expect(body).toContain("BLOCKED in this guide");
+        expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
+
+        // The customer page renders the FULL guide (Wrench Mode is wired on the admin route only). Every step must be present, in order,
+        // each with its warning, and blocked steps must stay blocked.
+        let at = 0;
+        for (const st of guide.steps) {
+          const i = body.indexOf(st.title.slice(0, 60), at);
+          expect(i, `step "${st.title.slice(0, 50)}" missing or out of order`).toBeGreaterThanOrEqual(0);
+          at = i;
+        }
+        expect((body.match(/This step is blocked/g) ?? []).length).toBe(blockedTitles);
+        for (const st of guide.steps.filter((x) => x.warning)) expect(body).toContain(st.warning!.slice(0, 40));
+        for (const t of guide.torqueSpecs) expect(body).toContain(t.fastener.slice(0, 30));
+        expect(await page.evaluate(() => [...document.querySelectorAll("main *")].filter((e) => e.getBoundingClientRect().right > window.innerWidth + 1).length), "elements past the right edge").toBe(0);
+        expect(errors, "page errors").toEqual([]);
+      });
+    }
+  });
+}
+
+test.describe("customer routes: access and navigation", () => {
+  test("an unknown BMW guide id is a 404; another vehicle's id under the BMW is a 404", async ({ page }) => {
+    await signUpNew(page);
+    expect((await page.goto(`/vehicles/${CAR}/repairs/bmw-2010-328i-nope`))?.status()).toBe(404);
+    expect((await page.goto(`/vehicles/2014-jeep-grand-cherokee-3.6l/repairs/bmw-2010-328i-oil-change`))?.status()).toBe(404);
+  });
+
+  test("the admin-only review route still refuses a normal customer", async ({ page }) => {
+    await signUpNew(page);
+    await page.goto("/admin/guides/test/bmw-2010-328i-oil-change");
+    await expect(page).not.toHaveURL(/\/admin/);
+  });
+
+  test("the back link returns to the BMW vehicle page and the Jeep vehicle page is unchanged", async ({ page }) => {
+    await signUpNew(page);
+    await page.goto(`/vehicles/${CAR}/repairs/bmw-2010-328i-oil-change`);
+    await page.getByRole("link", { name: /Back to 2010 BMW 328i/ }).click();
+    await expect(page).toHaveURL(new RegExp(`/vehicles/${CAR.replace(".", "\\.")}$`));
+    await page.goto("/vehicles/2014-jeep-grand-cherokee-3.6l");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Grand Cherokee/i);
+    await expect(page.locator('a[href*="/repairs/bmw-"]')).toHaveCount(0);
   });
 });
