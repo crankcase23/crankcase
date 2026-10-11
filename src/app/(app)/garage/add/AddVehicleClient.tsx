@@ -15,6 +15,7 @@ import {
 } from "@/lib/vpicBrowse";
 import { useGarage, type ConfigChoice } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
+import VinField from "@/components/vin/VinField";
 
 export default function AddVehiclePage() {
 const router = useRouter();
@@ -23,7 +24,6 @@ const { addCatalogVehicle, addCustomVehicle } = useGarage();
 // claude/crankcase-v1-build-notes.md) — decoding now checks the real
 // catalog first, so a matching vehicle routes to its real specs/guides
 // instead of always creating a bare custom entry.
-const [vin, setVin] = useState("");
 const [decoding, setDecoding] = useState(false);
 const [decodeError, setDecodeError] = useState<string | null>(null);
 const [decoded, setDecoded] = useState<DecodedVin | null>(null);
@@ -31,18 +31,14 @@ const [pickedMatchId, setPickedMatchId] = useState<string | null>(null);
 
 const matches = decoded ? matchCatalogVehicles(decoded) : [];  const exactMatch = decoded && matches.length === 1 ? catalogMatchLooksExact(decoded, matches[0]) : true;
 
-async function handleDecode(e: React.FormEvent) {
-e.preventDefault();
+async function handleDecode(vin: string) {
 setDecodeError(null);
 setDecoded(null);
 setPickedMatchId(null);
-if (vin.trim().length !== 17) {
-setDecodeError("VINs are 17 characters — double-check and try again.");
-return;
-}
 setDecoding(true);
 try {
-const result = await decodeVin(vin);
+// `vin` already passed the format and check-digit rules and, if it came from a photo, the customer confirmed it.
+const result = { ...(await decodeVin(vin)), vin };
 if (!result.make || !result.model || !result.year) {
 setDecodeError(
 "Couldn't get a clean read on that VIN — double-check it, or add your vehicle manually below."
@@ -64,18 +60,18 @@ setDecoding(false);
 // Nothing is saved from the buttons below. They open Confirm Your Ride (step 2 of 2), and the vehicle is added only
 // when the customer confirms transmission and drivetrain there (or says Not sure).
 type Confirming =
-  | { kind: "catalog"; vehicle: Vehicle; vin?: string; label: string; decoded?: DecodedVin | null; mileage?: string }
-  | { kind: "custom"; info: CustomVehicleInfo; label: string; make?: string; decoded?: DecodedVin | null; mileage?: string };
+  | { kind: "catalog"; vehicle: Vehicle; vin: string; label: string; decoded?: DecodedVin | null }
+  | { kind: "custom"; info: CustomVehicleInfo & { vin: string }; label: string; make?: string; decoded?: DecodedVin | null };
 const [confirming, setConfirming] = useState<Confirming | null>(null);
 
 function handleAddMatch() {
-  if (!pickedMatchId) return;
+  if (!pickedMatchId || !decoded) return;
   const vehicle = findVehicle(pickedMatchId);
   if (!vehicle) return;
   setConfirming({
     kind: "catalog",
     vehicle,
-    vin: decoded?.vin,
+    vin: decoded.vin,
     decoded,
     label: `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? " " + vehicle.trim : ""}`,
   });
@@ -84,13 +80,9 @@ function handleAddMatch() {
 async function confirmAdd(choice: ConfigChoice) {
   if (!confirming) throw new Error("Nothing to add.");
   if (confirming.kind === "catalog") {
-    const outcome = await addCatalogVehicle(confirming.vehicle.id, confirming.vin, choice);
-    if (outcome.created && confirming.mileage) await saveStartMileage(confirming.vehicle.id, confirming.mileage);
-    return outcome;
+    return addCatalogVehicle(confirming.vehicle.id, confirming.vin, choice);
   }
-  const outcome = await addCustomVehicle(confirming.info, choice);
-  if (outcome.created && confirming.mileage) await saveStartMileage(outcome.id, confirming.mileage);
-  return outcome;
+  return addCustomVehicle(confirming.info, choice);
 }
 function doneAdding(outcome: { id: string }) {
   if (!confirming) return;
@@ -132,7 +124,6 @@ engine: engine || undefined,
   const [model, setModel] = useState("");
   const [trim, setTrim] = useState("");
   const [engine, setEngine] = useState("");
-  const [startMileage, setStartMileage] = useState("");
   const [models, setModels] = useState<string[]>([]);
   const [loadingModels, setLoadingModels] = useState(false);
   
@@ -178,48 +169,21 @@ engine: engine || undefined,
     "w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none disabled:opacity-40";
   const labelClass = "mb-1 block text-xs text-slate-400";
 
-  // Optional. Reminders read the odometer to sharpen their estimates, so
-  // capturing it at add time means they are useful without a second visit.
-  async function saveStartMileage(vehicleId: string, raw: string) {
-    const miles = Number(raw.replace(/[^0-9]/g, ""));
-    if (!Number.isFinite(miles) || miles <= 0) return;
-    await fetch(`/api/garage/${vehicleId}/odometer`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ value: miles }),
-    }).catch(() => {});
-  }
-
+  // Browsing never creates a garage vehicle. Picking a year/make/model only shows what we have; a VIN is what puts a
+  // vehicle in the garage (the VIN lookup above, then Confirm Your Ride).
+  type Browsed = { label: string; vehicle?: Vehicle };
+  const [browsed, setBrowsed] = useState<Browsed | null>(null);
   function handleAddCustom(e: React.FormEvent) {
     e.preventDefault();
     if (!year || !make || !model) return;
-    // If the picks land on a vehicle we actually have curated data for, send
-    // them to the real page rather than a bare custom entry. Either way the
-    // customer confirms transmission and drivetrain before anything is saved.
     const exact =
       catalogMatches.find((v) => v.engine === engine) ??
       (catalogMatches.length === 1 ? catalogMatches[0] : undefined);
-    if (exact) {
-      setConfirming({
-        kind: "catalog",
-        vehicle: exact,
-        mileage: startMileage,
-        label: `${exact.year} ${exact.make} ${exact.model}${exact.trim ? " " + exact.trim : ""}`,
-      });
-      return;
-    }
-    setConfirming({
-      kind: "custom",
-      make,
-      mileage: startMileage,
-      label: [year, make, model, trim.trim()].filter(Boolean).join(" "),
-      info: {
-        year: year || undefined,
-        make: make || undefined,
-        model: model || undefined,
-        trim: trim.trim() || undefined,
-        engine: engine.trim() || undefined,
-      },
+    setBrowsed({
+      label: exact
+        ? `${exact.year} ${exact.make} ${exact.model}${exact.trim ? " " + exact.trim : ""}`
+        : [year, make, model, trim.trim()].filter(Boolean).join(" "),
+      vehicle: exact,
     });
   }
 
@@ -260,22 +224,7 @@ you&apos;ll go straight there.
 Free lookup via the NHTSA public database — find your VIN on your
 registration, insurance card, or the driver-side door jamb.
 </p>
-<form onSubmit={handleDecode} className="mt-4 flex gap-2">
-<input
-value={vin}
-onChange={(e) => setVin(e.target.value)}
-placeholder="Enter 17-character VIN"
-maxLength={17}
-className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:border-orange-500 focus:outline-none"
-/>
-<button
-type="submit"
-disabled={decoding}
-className="rounded-lg bg-orange-500 px-5 py-2 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-50"
->
-{decoding ? "Decoding…" : "Decode"}
-</button>
-</form>
+<VinField onLookup={handleDecode} busy={decoding} busyLabel="Decoding…" buttonLabel="Decode" />
 
 {decodeError && (
 <div className="mt-4 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
@@ -373,11 +322,10 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 {/* SECONDARY: browse the catalog or enter manually, collapsed by default */}
 
 <section className="mt-8 rounded-xl border border-slate-800 bg-slate-900/60 p-5">
-<h2 className="text-lg font-semibold text-slate-100">Don&apos;t have your VIN?</h2>
+<h2 className="text-lg font-semibold text-slate-100">Just browsing? No VIN needed</h2>
 <p className="mt-1 text-sm text-slate-400">
-Pick it from the lists below. If we have curated specs and guides for
-it, we will take you straight to them. If not, you can still log
-service history and get maintenance reminders.
+Pick a year, make and model to see whether we have specs and guides for it.
+This doesn&apos;t add anything to your garage: a VIN is required for that.
 </p>
 <form onSubmit={handleAddCustom} className="mt-4 grid gap-3 sm:grid-cols-2">
   <div>
@@ -513,37 +461,37 @@ service history and get maintenance reminders.
       />
     )}
   </div>
-  <div>
-    <label htmlFor="startMileage" className={labelClass}>
-      Current mileage (optional)
-    </label>
-    <input
-      id="startMileage"
-      value={startMileage}
-      onChange={(e) => setStartMileage(e.target.value)}
-      inputMode="numeric"
-      placeholder="118500"
-      className={fieldClass}
-    />
-  </div>
   {catalogMatches.length > 0 && (
     <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300 sm:col-span-2">
       We have full specs, fluid capacities and guides for this one. Pick your
-      engine and it will land on the curated page.
+      engine to see which one.
     </p>
   )}
-  <p className="text-xs text-slate-500 sm:col-span-2">
-    Mileage is optional and only sharpens your maintenance reminders. You can
-    set or change it any time on the vehicle page.
-  </p>
   <button
     type="submit"
     disabled={!year || !make || !model}
     className="rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-50 sm:col-span-2"
   >
-    Continue: confirm your ride
+    Look up this vehicle
   </button>
 </form>
+{browsed ? (
+  <div className="mt-4 rounded-lg border border-slate-700 bg-slate-950 p-4 text-sm" data-testid="manual-browse-result">
+    <p className="font-semibold text-slate-100">{browsed.label}</p>
+    {browsed.vehicle ? (
+      <p className="mt-1 text-slate-300">
+        We have specs and guides for this vehicle.{" "}
+        <Link href={`/vehicles/${browsed.vehicle.id}`} className="text-orange-400 underline hover:text-orange-300">Browse them</Link>
+        {" "}without adding it.
+      </p>
+    ) : (
+      <p className="mt-1 text-slate-300">We don&apos;t have curated specs for this one yet.</p>
+    )}
+    <p className="mt-2 text-slate-400" data-testid="manual-needs-vin">
+      Browsing doesn&apos;t add a vehicle. To put it in your garage, enter its VIN in the box at the top of this page.
+    </p>
+  </div>
+) : null}
 </section>
 </div>
 );

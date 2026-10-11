@@ -20,7 +20,7 @@ export async function DELETE(
   // legitimately be null once the account that logged it is gone.
   //
   // `create: false` matters: a DELETE must never conjure a garage entry.
-  const garageEntryId = await resolveGarageEntryId(userId, id, { create: false });
+  const garageEntryId = await resolveGarageEntryId(userId, id);
   if (!garageEntryId) return NextResponse.json({ error: "Not found." }, { status: 404 });
 
   await deleteServiceEntry(garageEntryId, entryId);

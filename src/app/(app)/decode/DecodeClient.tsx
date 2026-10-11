@@ -9,11 +9,11 @@ import { useGarage, type ConfigChoice } from "@/lib/garage";
 import type { Vehicle } from "@/types/vehicle";
 import type { CustomVehicleInfo } from "@/types/garage";
 import ConfirmYourRide from "@/components/config/ConfirmYourRide";
+import VinField from "@/components/vin/VinField";
 
 export default function DecodePage() {
   const router = useRouter();
   const { addCustomVehicle, addCatalogVehicle } = useGarage();
-  const [vin, setVin] = useState("");
   const [result, setResult] = useState<DecodedVin | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,15 +38,15 @@ const exactMatch =
 // Nothing is saved from the buttons below: they open Confirm Your Ride, and the vehicle is added only when the
 // customer confirms transmission and drivetrain there (or says Not sure).
 type Confirming =
-  | { kind: "catalog"; vehicle: Vehicle; vin?: string; label: string }
-  | { kind: "custom"; info: CustomVehicleInfo; label: string };
+  | { kind: "catalog"; vehicle: Vehicle; vin: string; label: string }
+  | { kind: "custom"; info: CustomVehicleInfo & { vin: string }; label: string };
 const [confirming, setConfirming] = useState<Confirming | null>(null);
 
 function handleAddMatch() {
-  if (!pickedMatchId) return;
+  if (!pickedMatchId || !result) return;
   const vehicle = findVehicle(pickedMatchId);
   if (!vehicle) return;
-  setConfirming({ kind: "catalog", vehicle, vin: result?.vin, label: `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? " " + vehicle.trim : ""}` });
+  setConfirming({ kind: "catalog", vehicle, vin: result.vin, label: `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? " " + vehicle.trim : ""}` });
 }
 
 async function confirmAdd(choice: ConfigChoice) {
@@ -76,18 +76,14 @@ function handleAddToGarage() {
   });
 }
 
-async function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
+async function handleSubmit(vin: string) {
   setError(null);
   setResult(null);
   setPickedMatchId(null);
-  if (vin.trim().length !== 17) {
-    setError("VINs are 17 characters -- double-check and try again.");
-    return;
-  }
   setLoading(true);
   try {
-    const decoded = await decodeVin(vin);
+    // `vin` already passed the format and check-digit rules and, if it came from a photo, the customer confirmed it.
+    const decoded = { ...(await decodeVin(vin)), vin };
     setResult(decoded);
     const found = matchCatalogVehicles(decoded);
     if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(decoded, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
@@ -128,22 +124,7 @@ return (
   guides for, we&apos;ll offer that instead of a bare lookup.
   </p>
   
-  <form onSubmit={handleSubmit} className="mt-6 flex gap-2">
-  <input
-    value={vin}
-    onChange={(e) => setVin(e.target.value)}
-    placeholder="Enter 17-character VIN"
-    maxLength={17}
-    className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:border-orange-500 focus:outline-none"
-    />
-  <button
-    type="submit"
-    disabled={loading}
-    className="rounded-lg bg-orange-500 px-5 py-2 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-50"
-    >
-    {loading ? "Decoding…" : "Decode"}
-  </button>
-  </form>
+  <VinField onLookup={handleSubmit} busy={loading} busyLabel="Decoding…" buttonLabel="Decode" />
   
     {error && (
     <div className="mt-4 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">

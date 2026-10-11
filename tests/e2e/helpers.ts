@@ -14,3 +14,23 @@ export async function signUpNewUser(page: Page): Promise<string> {
   await expect(page).toHaveURL(/\/garage$/);
   return email;
 }
+
+// A well-formed, unique VIN (valid check digit) for tests. The server enforces the real VIN rules, so fixtures must be real-shaped.
+const TRANSLIT: Record<string, number> = { A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, J: 1, K: 2, L: 3, M: 4, N: 5, P: 7, R: 9, S: 2, T: 3, U: 4, V: 5, W: 6, X: 7, Y: 8, Z: 9 };
+const WEIGHTS = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2];
+const ALPHA = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
+export function checkDigit(v: string): string {
+  let sum = 0;
+  for (let i = 0; i < 17; i++) sum += (/\d/.test(v[i]) ? Number(v[i]) : TRANSLIT[v[i]]) * WEIGHTS[i];
+  const r = sum % 11;
+  return r === 10 ? "X" : String(r);
+}
+export function validVin(prefix = "1HG"): string {
+  // Six random characters (34^6 values) so VINs from parallel workers and from earlier runs never collide. The database
+  // persists across runs and VINs are unique across accounts, so a weaker serial makes the suite flaky.
+  let serial = "";
+  for (let i = 0; i < 6; i++) serial += ALPHA[Math.floor(Math.random() * ALPHA.length)];
+  const body = prefix.toUpperCase().slice(0, 3).padEnd(3, "1") + "CM826" + "0" + "3A" + serial;
+  const v = body.split("").map((c) => (ALPHA.includes(c) ? c : "1")).join("").slice(0, 17);
+  return v.slice(0, 8) + checkDigit(v.slice(0, 8) + "0" + v.slice(9)) + v.slice(9);
+}

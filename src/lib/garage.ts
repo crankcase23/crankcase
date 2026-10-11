@@ -46,7 +46,7 @@ export function useGarage() {
 // alongside the fix for VINs silently matching the wrong cab/trim. It's
 // never asked for from the manual dropdown "add a vehicle" flow, which has
 // no VIN to give.
-const addCatalogVehicle = useCallback(async (vehicleId: string, vin: string | undefined, config: ConfigChoice): Promise<AddOutcome> => {
+const addCatalogVehicle = useCallback(async (vehicleId: string, vin: string, config: ConfigChoice): Promise<AddOutcome> => {
   const res = await fetch("/api/garage", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -60,7 +60,7 @@ const addCatalogVehicle = useCallback(async (vehicleId: string, vin: string | un
   return { id: entry.id as string, created: Boolean(created), configKept: Boolean(configKept) };
 }, []);
 
-const addCustomVehicle = useCallback(async (info: CustomVehicleInfo, config: ConfigChoice): Promise<AddOutcome> => {
+const addCustomVehicle = useCallback(async (info: CustomVehicleInfo & { vin: string }, config: ConfigChoice): Promise<AddOutcome> => {
   const res = await fetch("/api/garage", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -72,6 +72,19 @@ const addCustomVehicle = useCallback(async (info: CustomVehicleInfo, config: Con
     current.some((e) => e.id === entry.id) ? current.map((e) => (e.id === entry.id ? entry : e)) : [...current, entry],
     { revalidate: false });
   return { id: entry.id as string, created: Boolean(created), configKept: Boolean(configKept) };
+}, []);
+
+// VIN completion for an older record that has none. Only ever attaches a VIN to this customer's own entry.
+const completeVin = useCallback(async (id: string, vin: string) => {
+  const res = await fetch(`/api/garage/${encodeURIComponent(id)}/vin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vin }),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Could not save that VIN.");
+  const { entry } = await res.json();
+  await globalMutate(KEY, (current: GarageEntry[] = []) => current.map((e) => (e.id === entry.id ? entry : e)), { revalidate: false });
+  return entry as GarageEntry;
 }, []);
 
 // Edit Configuration. Only the axes given change; the server touches nothing else on the vehicle.
@@ -100,7 +113,7 @@ const findCustom = useCallback(
   [entries],
   );
 
-  return { entries, addCatalogVehicle, addCustomVehicle, updateConfig, removeEntry, findCustom, isLoading, error };
+  return { entries, addCatalogVehicle, addCustomVehicle, completeVin, updateConfig, removeEntry, findCustom, isLoading, error };
 }
 
 

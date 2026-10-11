@@ -31,3 +31,6 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# OCR engine + model copied from node_modules by scripts/ocr/copy-assets.mjs
+/public/ocr/

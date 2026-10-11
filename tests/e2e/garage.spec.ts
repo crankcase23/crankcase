@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { signUpNewUser } from "./helpers";
+import { signUpNewUser, validVin } from "./helpers";
 
 // Every add now goes through Confirm Your Ride; these tests answer "Not sure" so they stay about the garage itself.
 async function confirmNotSure(page: Page) {
@@ -9,13 +9,19 @@ async function confirmNotSure(page: Page) {
   await page.getByRole("button", { name: /and add to garage$/ }).click();
 }
 
-async function fillForm(page: Page, year: string, make: string, model: string) {
+// Adding takes a VIN. NHTSA is unreachable from the sandbox, so its answer is mocked; everything else is the real flow.
+async function addByVin(page: Page, prefix: string, row: Record<string, string>) {
+  await page.route("**/vpic.nhtsa.dot.gov/**", (route) =>
+    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ Count: 1, Results: [{ ErrorCode: "0", ...row }] }) }),
+  );
   await page.goto("/garage/add");
-  await page.getByLabel("Year").fill(year);
-  await page.getByLabel("Make").fill(make);
-  await page.getByLabel("Model").fill(model);
-  await page.getByRole("button", { name: "Continue: confirm your ride" }).click();
+  await page.getByPlaceholder("Enter 17-character VIN").fill(validVin(prefix));
+  await page.getByRole("button", { name: "Decode" }).click();
+  await page.getByRole("button", { name: /^\+ Add (this vehicle )?to (my )?garage$/i }).first().click();
 }
+const JEEP_ROW = { ModelYear: "2014", Make: "Jeep", Model: "Grand Cherokee", EngineCylinders: "6", DisplacementL: "3.6", FuelTypePrimary: "Gasoline" };
+const CIVIC_ROW = { ModelYear: "2018", Make: "Honda", Model: "Civic", EngineCylinders: "4", DisplacementL: "1.5", FuelTypePrimary: "Gasoline", Turbo: "Yes" };
+const TACOMA_ROW = { ModelYear: "2016", Make: "Toyota", Model: "Tacoma", EngineCylinders: "6", DisplacementL: "3.5", FuelTypePrimary: "Gasoline" };
 
 test.describe("garage — add your own vehicle", () => {
   // Each test signs up its own account so garage state doesn't leak between
@@ -31,7 +37,7 @@ test.describe("garage — add your own vehicle", () => {
     await page.getByRole("link", { name: "Add your first vehicle" }).click();
     await expect(page).toHaveURL(/\/garage\/add$/);
 
-    await fillForm(page, "2014", "Jeep", "Grand Cherokee");
+    await addByVin(page, "1C4", JEEP_ROW);
     await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l$/);
 
@@ -41,7 +47,7 @@ test.describe("garage — add your own vehicle", () => {
   });
 
   test("can add a custom vehicle we don't have data for and still log service history", async ({ page }) => {
-    await fillForm(page, "2016", "Toyota", "Tacoma");
+    await addByVin(page, "5TF", TACOMA_ROW);
     await confirmNotSure(page);
 
     await expect(page).toHaveURL(/\/garage\/custom\//);
@@ -63,7 +69,7 @@ test.describe("garage — add your own vehicle", () => {
   });
 
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
-    await fillForm(page, "2018", "Honda", "Civic");
+    await addByVin(page, "2HG", CIVIC_ROW);
     await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
 
