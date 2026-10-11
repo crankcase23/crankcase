@@ -1,0 +1,59 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "checks": [
+    {
+      "callout": "access hatch",
+      "note": "Orange outline tightly encloses the access hatch without obscuring it or including other important components. Label and banner are fully visible and legible.",
+      "result": "PASS"
+    }
+  ],
+  "contentHash": "aa83632fb62696d9ca8bdc3e9f7729f6372999dfbac7079e5055e105be332899",
+  "createdAt": "2026-10-11T06:39:36.484Z",
+  "createdBy": {
+    "actor": "hermes",
+    "role": "independent-reviewer",
+    "system": "ChatGPT web overlay review chat 6acb2f00"
+  },
+  "failedGates": [],
+  "findings": [],
+  "id": "QR-oil-drain-hatch-locate-002",
+  "provenanceCheck": {
+    "notes": "n/a at overlay stage",
+    "validated": true
+  },
+  "refs": [
+    {
+      "id": "GR-oil-drain-hatch-locate-001",
+      "sha256": "7c408fe37d61c9378f0a19b9199ba9420641228c9bd4f0096230317175d5b7af"
+    },
+    {
+      "id": "VC-oil-drain-hatch-locate-v1",
+      "sha256": "51a322ec90ceedb68413cafe04cee870b0f603a71738e45dd6480112668db24a"
+    },
+    {
+      "id": "EP-oil-drain-hatch-locate-v1",
+      "sha256": "4a9202c63419e4ce022f96f9b35b992c0d8bea06018d3bf456cc85ee912bd296"
+    }
+  ],
+  "regressionCheck": [],
+  "reviewClass": "independent",
+  "reviewer": {
+    "actor": "hermes",
+    "model": "GPT (ChatGPT web, exact model not shown in UI)",
+    "rawResponseSha256": "92716de5f3cd16a1be9ba4f2de37ae73ede30a2c49d00fd98b8670cebc468c81",
+    "system": "ChatGPT web overlay review chat 6acb2f00"
+  },
+  "round": 1,
+  "rubricVersion": "CG-QA-v1.0",
+  "schema": "guide-factory.qa-result",
+  "schemaVersion": "reconstructed-1",
+  "stage": "overlay",
+  "verdict": "PASS_OVERLAY",
+  "visualId": "oil-drain-hatch-locate"
+}

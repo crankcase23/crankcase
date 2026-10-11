@@ -216,7 +216,7 @@
       "LOCATE": 23
     },
     "certified": 0,
-    "contractLocked": 28,
+    "contractLocked": 27,
     "evidenceInsufficient": 7,
     "imagesProduced": 0,
     "visuals": 35
@@ -2584,74 +2584,13 @@
       ],
       "guide": 16,
       "guideName": "Engine Oil & Filter Change",
-      "imageProduced": false,
+      "imageProduced": true,
       "imageType": "LOCATE",
-      "phase": "GEN_REQUESTED",
+      "phase": "OVERLAY_PASSED",
       "stages": [
         {
-          "detail": "1 must-show, 9 must-not-show",
-          "stage": "1 visual spec intake",
-          "status": "PASS"
-        },
-        {
-          "detail": "3 reference(s); 2 established / 5 not-established ledger rows",
-          "stage": "2-3 reference intake and ledger",
-          "status": "PASS"
-        },
-        {
-          "detail": "every hero/target has established existence and location",
-          "problemCodes": [],
-          "stage": "3b EP sufficiency (objective gate)",
-          "status": "PASS"
-        },
-        {
-          "detail": "visual contract locked",
-          "stage": "4 visual contract compile/lock",
-          "status": "PASS"
-        },
-        {
-          "detail": "compact prompt built from the locked contract (1604 chars; full spec prompt 2823 chars kept internal)",
-          "stage": "4b generation request",
-          "status": "PASS"
-        },
-        {
-          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
-          "stage": "5 image generation",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "6 provenance checks",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "7 no-source-pixels attestation",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "8 admission gate",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "9 normalization",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "10 independent QA (Hermes) + overlay QA",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "no generated candidate exists yet",
-          "stage": "11 owner sign-off and approved artifact",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "5 events, 3 objects, problems=0",
-          "stage": "12 event log + directory integrity",
+          "detail": "run already holds a generation (phase OVERLAY_PASSED); not rebuilt",
+          "stage": "0 preserved in-flight run",
           "status": "PASS"
         }
       ],

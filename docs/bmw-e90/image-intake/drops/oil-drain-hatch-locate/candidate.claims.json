@@ -1,0 +1,28 @@
+{
+  "generator": {
+    "system": "ChatGPT image generation",
+    "model": "ChatGPT image generation (model name not shown in UI)",
+    "provider": "OpenAI"
+  },
+  "requestId": "6acb2d18-3f14-83e8-89de-d4a28dac6c70",
+  "generationId": "6acb2d18-3f14-83e8-89de-d4a28dac6c70",
+  "submittedPromptSha256": "840c0534fe50f1fca2ad9289d4452a99f5ed2fca68b51b044fcde977d565c63b",
+  "attestation": {
+    "generatedFromTextOnly": true,
+    "noReferenceImageInputs": true,
+    "noTracing": true,
+    "noThirdPartyCompositing": true,
+    "noBakedText": true,
+    "attestedBy": "image-generator",
+    "attestedOn": "2026-10-11",
+    "statement": "Generated in a fresh ChatGPT chat by pasting the run's generation-prompt.txt as text; no uploads. Baked-text claim is the generator's statement and is checked by the independent reviewer."
+  },
+  "imageInputs": [],
+  "inputHashes": [],
+  "contractAck": {
+    "mustNotDepictAcknowledged": true
+  },
+  "licenseTerms": {
+    "summary": "OpenAI ChatGPT usage terms: output rights per the provider terms; C2PA manifest recorded from the native file."
+  }
+}

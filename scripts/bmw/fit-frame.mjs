@@ -89,7 +89,7 @@ export function fitToFrame(bytes) {
     const b = out.subarray(((y + pad.top) * Wc + pad.left) * ch, ((y + pad.top) * Wc + pad.left + W) * ch);
     if (!a.equals(b)) return refuse("CONTENT_CHANGED", `native row ${y} differs in the canvas`);
   }
-  const fitted = encodePng({ width: Wc, height: Hc, channels: ch, pixels: out });
+  const fitted = encodePng({ width: Wc, height: Hc, channels: ch, pixels: out }, { level: 6 }); // level 6 on purpose: the factory normaliser re-encodes at level 9 and refuses a candidate whose bytes equal its output (HASH_COLLISION)
   const record = {
     schema: "bmw-fit-record.v1",
     native: { sha256: sha256(bytes), bytes: bytes.length, width: W, height: H, ratio: Math.round((W / H) * 10000) / 10000, ancillaryChunks: metadataChunkTypes(parsed.chunks), c2pa: c2paInfo(parsed.chunks) },
