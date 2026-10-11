@@ -121,7 +121,12 @@ test("pipeline: drain-plug visual reaches the generation boundary; filter-cap is
   assert.ok(by["oil-drain-plug-access"].stages.find((s) => s.stage.startsWith("5 ")).status === "BLOCKED");
   assert.ok(r.visuals.every((v) => v.certified === false && v.imageProduced === false) && r.certified === false);
   const files = [];
-  (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) (e.isDirectory() ? walk(path.join(d, e.name)) : files.push(e.name)); })(tmp);
+  (function walk(d) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(path.join(d, e.name));
+      else files.push(e.name);
+    }
+  })(tmp);
   assert.ok(!files.some((f) => /\.(png|jpe?g|webp|svg)$/i.test(f)), "no image may exist");
   // the committed run record matches a fresh run (deterministic)
   assert.equal(fs.readFileSync(path.join(tmp, "PIPELINE-REPORT.json"), "utf8"), fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"));
