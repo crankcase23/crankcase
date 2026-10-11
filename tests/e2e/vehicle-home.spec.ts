@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { signUpNewUser } from "./helpers";
+import { signUpNewUser, testVin } from "./helpers";
 
 // Vehicle Home (visual pass 2). Seeds through the real API.
 const JEEP = "2014-jeep-grand-cherokee-3.6l";
@@ -29,7 +29,7 @@ test.describe("Vehicle Home", () => {
 
   test("attention state + recent work reflect the real log and odometer", async ({ page }) => {
     await page.goto("/garage");
-    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, config: { transmission: "unknown", drivetrain: "unknown" } } });
+    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, vin: testVin(), config: { transmission: "unknown", drivetrain: "unknown" } } });
     await page.request.put(`/api/garage/${JEEP}/odometer`, { data: { value: 90000 } });
     await page.request.post(`/api/garage/${JEEP}/service`, { data: { date: "2025-01-10", mileage: 40000, title: "Engine Oil & Filter Change" } });
     await page.goto(`/vehicles/${JEEP}`);
@@ -48,7 +48,7 @@ test.describe("Vehicle Home", () => {
     const over = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(await over()).toBeLessThanOrEqual(0);
 
-    const add = await page.request.post("/api/garage", { data: { kind: "custom", custom: { year: "2013", make: "Nissan", model: "Pathfinder", engine: "3.5L V6" }, config: { transmission: "unknown", drivetrain: "unknown" } } });
+    const add = await page.request.post("/api/garage", { data: { kind: "custom", custom: { vin: testVin(), year: "2013", make: "Nissan", model: "Pathfinder", engine: "3.5L V6" }, config: { transmission: "unknown", drivetrain: "unknown" } } });
     const { entry } = await add.json();
     await page.goto(`/garage/custom/${entry.id}`);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(/Pathfinder/i);
@@ -58,7 +58,7 @@ test.describe("Vehicle Home", () => {
 
   test("accordion: defaults, one pattern, keyboard, real summaries, remembers state", async ({ page }) => {
     await page.goto("/garage");
-    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, config: { transmission: "unknown", drivetrain: "unknown" } } });
+    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, vin: testVin(), config: { transmission: "unknown", drivetrain: "unknown" } } });
     await page.request.post(`/api/garage/${JEEP}/service`, { data: { date: "2026-03-01", mileage: 20000, title: "Tire Rotation" } });
     await page.goto(`/vehicles/${JEEP}`);
     const sec = (name: RegExp) => page.getByRole("button", { name });
@@ -95,7 +95,7 @@ test.describe("Vehicle Home", () => {
 
   test("next manufacturer service: one tile from real mileage, full grid hidden", async ({ page }) => {
     await page.goto("/garage");
-    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, config: { transmission: "unknown", drivetrain: "unknown" } } });
+    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, vin: testVin(), config: { transmission: "unknown", drivetrain: "unknown" } } });
     await page.goto(`/vehicles/${JEEP}`);
     await expect(page.getByText("Log your mileage to see your next manufacturer-recommended service.")).toBeVisible();
     await page.request.put(`/api/garage/${JEEP}/odometer`, { data: { value: 26900 } });
@@ -114,7 +114,7 @@ test.describe("Vehicle Home", () => {
   test("phone: Log a job is one button until tapped; sticky bar + jump nav work", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/garage");
-    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, config: { transmission: "unknown", drivetrain: "unknown" } } });
+    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: JEEP, vin: testVin(), config: { transmission: "unknown", drivetrain: "unknown" } } });
     await page.goto(`/vehicles/${JEEP}`);
 
     // Jump nav lands on a visible, opened chapter.
@@ -151,7 +151,7 @@ test.describe("Vehicle Home", () => {
     page.on("pageerror", (e) => bad.push(e.message));
     await page.goto("/garage");
     const ids = [JEEP, "2020-chevrolet-silverado-1500-5.3l", "2021-honda-accord-1.5t"];
-    for (const id of ids) await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: id, config: { transmission: "unknown", drivetrain: "unknown" } } });
+    for (const id of ids) await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: id, vin: testVin(), config: { transmission: "unknown", drivetrain: "unknown" } } });
     for (const id of ids) {
       await page.goto(`/vehicles/${id}`);
       await page.getByRole("button", { name: /Service History/ }).waitFor();

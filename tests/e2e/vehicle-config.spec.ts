@@ -3,7 +3,8 @@ import { test, expect, Page, BrowserContext } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { signUpNewUser } from "./helpers";
+import { signUpNewUser, testVin } from "./helpers";
+import { vinCheckDigit } from "../../src/lib/vin";
 
 // Vehicle Configuration V1, exercised in a real browser against a production build and a THROWAWAY Postgres:
 //   VIN Lookup -> Confirm Your Ride -> Add to Garage, persistence across logins/devices, Edit Configuration, guide applicability,
@@ -22,7 +23,11 @@ const JEEP = "2014-jeep-grand-cherokee-3.6l";
 const OIL = `/vehicles/${BMW}/repairs/bmw-2010-328i-oil-change`;
 const PASSWORD = "testpassword123";
 let vinSeq = 0;
-const vin = (prefix = "WBATEST") => `${prefix}${String(Date.now()).slice(-6)}${String(++vinSeq).padStart(4, "0")}`.slice(0, 17).padEnd(17, "0");
+const vin = (prefix = "WBATEST") => {
+  // Synthetic VIN, unique per call, no I/O/Q, with a correct check digit so North American prefixes (1FT..., 1C4...) are accepted too.
+  const raw = `${prefix}${String(Date.now()).slice(-6)}${String(++vinSeq).padStart(4, "0")}`.replace(/[IOQ]/g, "K").slice(0, 17).padEnd(17, "0");
+  return raw.slice(0, 8) + vinCheckDigit(raw) + raw.slice(9);
+};
 const OUT_OF_BUILD = /x-?drive|\bawd\b|all[- ]wheel|transfer[- ]case|front (?:differential|axle)|manual[- ](?:trans\w*|gearbox|pan|holder)|\(manual\)|\bclutch\b/i;
 
 async function mockVpic(page: Page, row: Record<string, string>) {
@@ -287,7 +292,7 @@ test.describe("9/14. A later lookup never overwrites a confirmed choice, and nev
 
   test("the same catalog vehicle or the same VIN added twice over the API is one row", async ({ page }) => {
     const email = await signUpNewUser(page);
-    const body = { kind: "catalog", vehicleId: "2018-honda-civic-1.5t", config: { transmission: "cvt", drivetrain: "fwd" } };
+    const body = { kind: "catalog", vehicleId: "2018-honda-civic-1.5t", vin: testVin(), config: { transmission: "cvt", drivetrain: "fwd" } };
     const a = await (await page.request.post("/api/garage", { data: body })).json();
     const b = await (await page.request.post("/api/garage", { data: { ...body, config: { transmission: "manual", drivetrain: "awd" } } })).json();
     expect(a.created).toBe(true); expect(b.created).toBe(false); expect(b.configKept).toBe(true);
@@ -298,7 +303,8 @@ test.describe("9/14. A later lookup never overwrites a confirmed choice, and nev
     expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}'`)).toBe("2");
     expect(rows(email)).toMatch(/2018-honda-civic-1\.5t\|.*\|cvt\|fwd\|t/);
     // concurrent double submit
-    const par = await Promise.all([1, 2, 3].map(() => page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2021-toyota-camry-2.5l", config: { transmission: "automatic", drivetrain: "fwd" } } })));
+    const sharedVin = testVin();
+    const par = await Promise.all([1, 2, 3].map(() => page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2021-toyota-camry-2.5l", vin: sharedVin, config: { transmission: "automatic", drivetrain: "fwd" } } })));
     expect(par.every((r) => r.ok())).toBeTruthy();
     expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='2021-toyota-camry-2.5l'`)).toBe("1");
   });
@@ -392,18 +398,19 @@ test.describe("17/18. Security and refusals", () => {
   test("the server refuses an add without both axes, and impossible BMW combinations", async ({ page }) => {
     await signUpNewUser(page);
     const post = (data: unknown) => page.request.post("/api/garage", { data });
+    const V = testVin();
     for (const d of [
-      { kind: "catalog", vehicleId: BMW },
-      { kind: "catalog", vehicleId: BMW, config: { transmission: "automatic" } },
-      { kind: "catalog", vehicleId: BMW, config: { transmission: "automatic", drivetrain: "4wd" } },
-      { kind: "catalog", vehicleId: BMW, config: { transmission: "cvt", drivetrain: "rwd" } },
-      { kind: "custom", custom: { make: "Nissan" } },
-      { kind: "catalog", vehicleId: "no-such-vehicle", config: { transmission: "automatic", drivetrain: "rwd" } },
+      { kind: "catalog", vehicleId: BMW, vin: V },
+      { kind: "catalog", vehicleId: BMW, vin: V, config: { transmission: "automatic" } },
+      { kind: "catalog", vehicleId: BMW, vin: V, config: { transmission: "automatic", drivetrain: "4wd" } },
+      { kind: "catalog", vehicleId: BMW, vin: V, config: { transmission: "cvt", drivetrain: "rwd" } },
+      { kind: "custom", custom: { make: "Nissan", vin: V } },
+      { kind: "catalog", vehicleId: "no-such-vehicle", vin: V, config: { transmission: "automatic", drivetrain: "rwd" } },
     ]) {
       const r = await post(d);
       expect(r.status(), JSON.stringify(d)).toBe(400);
     }
-    expect(JSON.stringify(await (await post({ kind: "catalog", vehicleId: BMW })).json())).toMatch(/Confirm your/);
+    expect(JSON.stringify(await (await post({ kind: "catalog", vehicleId: BMW, vin: V })).json())).toMatch(/Confirm your/);
   });
 
   test("a vehicle-specific guide with no evidence for the confirmed build gives no steps, parts or torque, and cannot start Wrench Mode", async ({ page }) => {

@@ -15,6 +15,8 @@ import {
 } from "@/lib/vpicBrowse";
 import { useGarage, type ConfigChoice } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
+import { checkVin } from "@/lib/vin";
+import VinPhotoScan from "@/components/garage/VinPhotoScan";
 
 export default function AddVehiclePage() {
 const router = useRouter();
@@ -36,16 +38,17 @@ e.preventDefault();
 setDecodeError(null);
 setDecoded(null);
 setPickedMatchId(null);
-if (vin.trim().length !== 17) {
-setDecodeError("VINs are 17 characters — double-check and try again.");
+const vinCheck = checkVin(vin);
+if (!vinCheck.ok) {
+setDecodeError(vinCheck.error);
 return;
 }
 setDecoding(true);
 try {
-const result = await decodeVin(vin);
+const result = await decodeVin(vinCheck.vin);
 if (!result.make || !result.model || !result.year) {
 setDecodeError(
-"Couldn't get a clean read on that VIN — double-check it, or add your vehicle manually below."
+"Couldn't get a clean read on that VIN — double-check it, or use the year/make/model lists below and enter the VIN there."
 );
 return;
 }
@@ -54,7 +57,7 @@ const found = matchCatalogVehicles(result);
 if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(result, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
 } catch {
 setDecodeError(
-"Couldn't reach the NHTSA VIN decoder right now. Try again in a moment, or add your vehicle manually below."
+"Couldn't reach the NHTSA VIN decoder right now. Try again in a moment, or use the year/make/model lists below and enter the VIN there."
 );
 } finally {
 setDecoding(false);
@@ -133,6 +136,8 @@ engine: engine || undefined,
   const [trim, setTrim] = useState("");
   const [engine, setEngine] = useState("");
   const [startMileage, setStartMileage] = useState("");
+  const [manualVin, setManualVin] = useState("");
+  const [manualVinError, setManualVinError] = useState<string | null>(null);
   const [models, setModels] = useState<string[]>([]);
   const [loadingModels, setLoadingModels] = useState(false);
   
@@ -193,6 +198,14 @@ engine: engine || undefined,
   function handleAddCustom(e: React.FormEvent) {
     e.preventDefault();
     if (!year || !make || !model) return;
+    // A VIN is required to add a vehicle to the garage. Browsing by year/make/model is how the customer finds the vehicle;
+    // the VIN is what makes it theirs.
+    const vc = checkVin(manualVin);
+    if (!vc.ok) {
+      setManualVinError(vc.error);
+      return;
+    }
+    setManualVinError(null);
     // If the picks land on a vehicle we actually have curated data for, send
     // them to the real page rather than a bare custom entry. Either way the
     // customer confirms transmission and drivetrain before anything is saved.
@@ -203,6 +216,7 @@ engine: engine || undefined,
       setConfirming({
         kind: "catalog",
         vehicle: exact,
+        vin: vc.vin,
         mileage: startMileage,
         label: `${exact.year} ${exact.make} ${exact.model}${exact.trim ? " " + exact.trim : ""}`,
       });
@@ -214,6 +228,7 @@ engine: engine || undefined,
       mileage: startMileage,
       label: [year, make, model, trim.trim()].filter(Boolean).join(" "),
       info: {
+        vin: vc.vin,
         year: year || undefined,
         make: make || undefined,
         model: model || undefined,
@@ -260,12 +275,14 @@ you&apos;ll go straight there.
 Free lookup via the NHTSA public database — find your VIN on your
 registration, insurance card, or the driver-side door jamb.
 </p>
-<form onSubmit={handleDecode} className="mt-4 flex gap-2">
+<form onSubmit={handleDecode} className="mt-4 flex gap-2" aria-label="Add by VIN">
 <input
 value={vin}
 onChange={(e) => setVin(e.target.value)}
 placeholder="Enter 17-character VIN"
-maxLength={17}
+maxLength={20}
+autoCapitalize="characters"
+autoComplete="off"
 className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:border-orange-500 focus:outline-none"
 />
 <button
@@ -276,6 +293,8 @@ className="rounded-lg bg-orange-500 px-5 py-2 font-semibold text-slate-950 hover
 {decoding ? "Decoding…" : "Decode"}
 </button>
 </form>
+
+<VinPhotoScan onVin={(v) => { setVin(v); setDecodeError(null); }} />
 
 {decodeError && (
 <div className="mt-4 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
@@ -373,11 +392,11 @@ className="mt-3 w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-s
 {/* SECONDARY: browse the catalog or enter manually, collapsed by default */}
 
 <section className="mt-8 rounded-xl border border-slate-800 bg-slate-900/60 p-5">
-<h2 className="text-lg font-semibold text-slate-100">Don&apos;t have your VIN?</h2>
+<h2 className="text-lg font-semibold text-slate-100">Browse by year, make and model</h2>
 <p className="mt-1 text-sm text-slate-400">
-Pick it from the lists below. If we have curated specs and guides for
-it, we will take you straight to them. If not, you can still log
-service history and get maintenance reminders.
+Pick it from the lists below. Every vehicle in your garage is tied to
+its VIN, so you&apos;ll enter the VIN to add it. Just looking? If we have a
+guide page for your pick you can open it without adding anything.
 </p>
 <form onSubmit={handleAddCustom} className="mt-4 grid gap-3 sm:grid-cols-2">
   <div>
@@ -526,6 +545,30 @@ service history and get maintenance reminders.
       className={fieldClass}
     />
   </div>
+  <div className="sm:col-span-2">
+    <label htmlFor="manualVin" className={labelClass}>
+      VIN (required to add to your garage)
+    </label>
+    <input
+      id="manualVin"
+      value={manualVin}
+      onChange={(e) => {
+        setManualVin(e.target.value);
+        setManualVinError(null);
+      }}
+      maxLength={20}
+      autoCapitalize="characters"
+      autoComplete="off"
+      placeholder="17-character VIN"
+      className={fieldClass}
+    />
+    <VinPhotoScan onVin={(v) => { setManualVin(v); setManualVinError(null); }} />
+    {manualVinError && (
+      <p role="alert" data-testid="manual-vin-error" className="mt-2 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+        {manualVinError}
+      </p>
+    )}
+  </div>
   {catalogMatches.length > 0 && (
     <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300 sm:col-span-2">
       We have full specs, fluid capacities and guides for this one. Pick your
@@ -543,6 +586,11 @@ service history and get maintenance reminders.
   >
     Continue: confirm your ride
   </button>
+  {catalogMatches.length === 1 && (
+    <Link href={`/vehicles/${catalogMatches[0].id}`} className="text-center text-sm text-slate-400 underline hover:text-slate-200 sm:col-span-2">
+      Just browsing? Open the guides for this vehicle without adding it
+    </Link>
+  )}
 </form>
 </section>
 </div>

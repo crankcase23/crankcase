@@ -26,7 +26,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "value must be a number or null." }, { status: 400 });
   }
 
-  const garageEntryId = await resolveGarageEntryId(userId, id, { create: true });
-  await setOdometer(userId, garageEntryId!, value);
+  const garageEntryId = await resolveGarageEntryId(userId, id, { create: false });
+  if (!garageEntryId) return NextResponse.json({ error: "Add this vehicle to your garage with its VIN first.", code: "VIN_REQUIRED" }, { status: 409 });
+  await setOdometer(userId, garageEntryId, value);
   return NextResponse.json({ odometer: value });
 }

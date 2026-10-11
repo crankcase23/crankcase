@@ -14,3 +14,12 @@ export async function signUpNewUser(page: Page): Promise<string> {
   await expect(page).toHaveURL(/\/garage$/);
   return email;
 }
+
+// A unique, synthetic, well-formed VIN for tests (WMI "WVW" is non-North-American, so only the format is checked, never a
+// check digit; no real vehicle has this VIN). Every garage add now requires a VIN.
+const VIN_ALPHABET = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
+export function testVin(): string {
+  let s = "WVWZZZ";
+  for (let i = 0; i < 11; i++) s += VIN_ALPHABET[Math.floor(Math.random() * VIN_ALPHABET.length)];
+  return s;
+}

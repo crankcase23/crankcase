@@ -244,7 +244,7 @@ export async function removeGarageEntry(userId: string, id: string): Promise<voi
 // Service history and odometer are keyed by the same "vehicleId" concept the
 // old localStorage hooks used -- a catalog vehicleId or a custom entry's id.
 // Both need an actual garage_entries.id to hang their foreign key off of.
-// `create: true` auto-provisions a catalog row on first touch, preserving
+// `create: true` (no remaining callers; VIN-required garage) auto-provisions a catalog row on first touch, which was
 // the old behavior where you could log service history for a catalog
 // vehicle you'd never explicitly "added" (it was just a localStorage key).
 export async function resolveGarageEntryId(

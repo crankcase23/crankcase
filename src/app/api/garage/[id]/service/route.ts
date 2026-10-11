@@ -32,13 +32,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "date, mileage, and title are required." }, { status: 400 });
   }
 
-  const garageEntryId = await resolveGarageEntryId(userId, id, { create: true });
-  const entry = await addServiceEntry(userId, garageEntryId!, { date, mileage, title, guideId, notes });
+  // No silent garage rows: a vehicle must already be in the garage (added with its VIN) before service can be logged on it.
+  const garageEntryId = await resolveGarageEntryId(userId, id, { create: false });
+  if (!garageEntryId) return NextResponse.json({ error: "Add this vehicle to your garage with its VIN first.", code: "VIN_REQUIRED" }, { status: 409 });
+  const entry = await addServiceEntry(userId, garageEntryId, { date, mileage, title, guideId, notes });
   await recordEvent({
     type: EVENT_TYPES.SERVICE_LOGGED,
     userId,
     objectType: "garage_entry",
-    objectId: garageEntryId!,
+    objectId: garageEntryId,
     metadata: { title, mileage, guideId },
   });
   return NextResponse.json({ entry });

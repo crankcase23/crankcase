@@ -4,6 +4,7 @@ import { listGarageEntries, addCatalogEntry, addCustomEntry } from "@/lib/garage
 import { recordEvent, EVENT_TYPES } from "@/lib/events";
 import { findVehicle } from "@/lib/data";
 import { parseFullConfig } from "@/lib/vehicleConfig";
+import { checkVin } from "@/lib/vin";
 
 export async function GET() {
   const userId = await requireUserId();
@@ -25,9 +26,13 @@ const body = await request.json().catch(() => null);
 if (body?.kind === "catalog" && typeof body.vehicleId === "string" && body.vehicleId) {
   const vehicle = findVehicle(body.vehicleId);
   if (!vehicle) return NextResponse.json({ error: "Unknown vehicle." }, { status: 400 });
+  // A VIN is required for every permanent garage entry. Same message whether the VIN is missing, malformed, or held by
+  // someone else: this route never reveals anything about other accounts.
+  const v = checkVin(body.vin);
+  if (!v.ok) return NextResponse.json({ error: v.error, code: "VIN_REQUIRED" }, { status: 400 });
   const cfg = parseFullConfig(body.config, vehicle);
   if (!cfg.ok) return NextResponse.json({ error: cfg.error, code: "CONFIG_REQUIRED" }, { status: 400 });
-  const { entry, created, configKept } = await addCatalogEntry(userId, body.vehicleId, str(body.vin), cfg.value);
+  const { entry, created, configKept } = await addCatalogEntry(userId, body.vehicleId, v.vin, cfg.value);
   if (created) {
     await recordEvent({
       type: EVENT_TYPES.VEHICLE_ADDED,
@@ -42,10 +47,12 @@ if (body?.kind === "catalog" && typeof body.vehicleId === "string" && body.vehic
 
 if (body?.kind === "custom" && body.custom && typeof body.custom === "object") {
   const c = body.custom as Record<string, unknown>;
+  const v = checkVin(c.vin);
+  if (!v.ok) return NextResponse.json({ error: v.error, code: "VIN_REQUIRED" }, { status: 400 });
   const cfg = parseFullConfig(body.config);
   if (!cfg.ok) return NextResponse.json({ error: cfg.error, code: "CONFIG_REQUIRED" }, { status: 400 });
   const { entry, created, configKept } = await addCustomEntry(userId, {
-    vin: str(c.vin),
+    vin: v.vin,
     year: str(c.year),
     make: str(c.make),
     model: str(c.model),

@@ -8,6 +8,7 @@ import { matchCatalogVehicles, catalogMatchLooksExact, findVehicle } from "@/lib
 import { useGarage, type ConfigChoice } from "@/lib/garage";
 import type { Vehicle } from "@/types/vehicle";
 import type { CustomVehicleInfo } from "@/types/garage";
+import { checkVin } from "@/lib/vin";
 import ConfirmYourRide from "@/components/config/ConfirmYourRide";
 
 export default function DecodePage() {
@@ -81,13 +82,14 @@ async function handleSubmit(e: React.FormEvent) {
   setError(null);
   setResult(null);
   setPickedMatchId(null);
-  if (vin.trim().length !== 17) {
-    setError("VINs are 17 characters -- double-check and try again.");
+  const vinCheck = checkVin(vin);
+  if (!vinCheck.ok) {
+    setError(vinCheck.error);
     return;
   }
   setLoading(true);
   try {
-    const decoded = await decodeVin(vin);
+    const decoded = await decodeVin(vinCheck.vin);
     setResult(decoded);
     const found = matchCatalogVehicles(decoded);
     if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(decoded, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
@@ -133,7 +135,7 @@ return (
     value={vin}
     onChange={(e) => setVin(e.target.value)}
     placeholder="Enter 17-character VIN"
-    maxLength={17}
+    maxLength={20}
     className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:border-orange-500 focus:outline-none"
     />
   <button

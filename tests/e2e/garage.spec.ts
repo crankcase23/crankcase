@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { signUpNewUser } from "./helpers";
+import { signUpNewUser, testVin } from "./helpers";
 
 // Every add now goes through Confirm Your Ride; these tests answer "Not sure" so they stay about the garage itself.
 async function confirmNotSure(page: Page) {
@@ -14,6 +14,7 @@ async function fillForm(page: Page, year: string, make: string, model: string) {
   await page.getByLabel("Year").fill(year);
   await page.getByLabel("Make").fill(make);
   await page.getByLabel("Model").fill(model);
+  await page.locator("#manualVin").fill(testVin());
   await page.getByRole("button", { name: "Continue: confirm your ride" }).click();
 }
 
