@@ -1,0 +1,48 @@
+{
+  "_status": "PENDING - no raw source yet. The pipeline refuses this manifest until every field below is real.",
+  "_needs": "Both cylinder banks with the upper intake removed, all six coils and their connectors visible.",
+  "_calloutTargetsFromStepText": [
+    "Coil electrical connectors (six)",
+    "Coil retaining bolts"
+  ],
+  "id": "step-15-coils",
+  "step": 15,
+  "guideId": "admin-test-charger-2016-sxt-multi-job",
+  "registryFile": "charger-2016-sxt-multi-job.visuals.json",
+  "application": {
+    "year": 2016,
+    "make": "Dodge",
+    "model": "Charger",
+    "trim": "SXT",
+    "engine": "3.6L Pentastar V6"
+  },
+  "component": "Ignition coils and connectors",
+  "alt": "",
+  "caption": "",
+  "raw": {
+    "file": "raw/step-15-coils.jpg",
+    "sourceType": "",
+    "source": "",
+    "sourceRef": "",
+    "license": {
+      "status": "unknown",
+      "terms": ""
+    },
+    "capturedOn": ""
+  },
+  "verification": {
+    "status": "pending",
+    "vehicleEvidence": "",
+    "verifiedBy": "",
+    "verifiedOn": "",
+    "technicalReviewBy": "",
+    "technicalReviewOn": "",
+    "technicalReviewNotes": "",
+    "uncertainty": "none"
+  },
+  "treatment": {
+    "brightness": 1,
+    "contrast": 1
+  },
+  "callouts": []
+}

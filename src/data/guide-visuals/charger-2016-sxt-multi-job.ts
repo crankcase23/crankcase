@@ -56,15 +56,16 @@ export const chargerVisualSlots: VisualSlot[] = [
   {
     step: 10,
     id: "intake-duct",
-    targetPath: `${DIR}step-10-intake-duct.jpg`,
-    shoot: "Air-inlet system from the throttle body back to the air-cleaner housing, all clamps and the connector in view.",
+    targetPath: `${DIR}step-10-intake-duct.png`,
+    shoot:
+      "Original Crankcase artwork (vector), engine cover already removed: the factory air intake hose from the throttle body to the air box, with both clamps and the IAT connector. Evidence-bounded: see visual-sources/.../artwork/step-10-intake-duct.v3.spec.md.",
     calloutTargets: [
-      "IAT electrical connector",
-      "Clamp at the throttle body",
-      "Clamp at the air-cleaner housing",
-      "Retaining grommet",
+      "IAT connector",
+      "Throttle-body clamp",
+      "Air-box clamp",
+      "Intake hose",
     ],
-    why: "Airbox/intake area: four separate release points on one assembly.",
+    why: "Four actions on one assembly: IAT clip, two clamps, then lift the hose out.",
   },
   {
     step: 11,

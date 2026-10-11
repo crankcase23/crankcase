@@ -35,6 +35,8 @@ export type LicenseStatus =
   | "permission-granted"
   | "public-domain"
   | "oem-authorized"
+  /** AI-generated output. Ownership is NOT asserted; provider terms are recorded. Never "owned". */
+  | "generated-original"
   | "unknown";
 
 /** Exactly what the Crankcase treatment did. Written by the pipeline, never by hand. */
@@ -49,10 +51,139 @@ export interface TreatmentRecord {
   contrast: number;
 }
 
+/**
+ * A reference used to ESTABLISH FACTS for original artwork. It may be inspected
+ * by the author and the technical reviewer. It is never an input to the
+ * artwork's pixels: no embedding, no tracing (see OriginalArtworkRecord).
+ */
+export interface ReferenceEvidence {
+  id: string;
+  kind: "oem-figure" | "oem-text" | "parts-catalog" | "third-party-guide" | "third-party-photo" | "user-supplied-photo";
+  source: string;
+  /** URL, or document + page + figure, precise enough for a reviewer to re-open it. */
+  sourceRef: string;
+  /** "reference-only" = facts read from the item; "corroborating-text" = supporting text only. */
+  usage: "reference-only" | "corroborating-text";
+  /** The facts this reference is used to establish. */
+  establishes: string[];
+  /** What we may and may not do with it (e.g. "no redistribution; no pixels used"). */
+  rights: string;
+}
+
+export type LedgerAttribute =
+  | "existence" | "location" | "orientation" | "relationship" | "hardware-type" | "action"
+  | "fine-detail-geometry"
+  // Safety-critical: never drawn unless established; otherwise omitted or occluded.
+  | "release-mechanism-geometry" | "fastener-position" | "fastener-head-type";
+
+/** One independently tracked fact about one element, and how the picture treats it. */
+export interface EvidenceLedgerRow {
+  element: string;
+  attribute: LedgerAttribute;
+  status: "established" | "not-established";
+  /** ids into referenceEvidence. Required when established. */
+  evidence?: string[];
+  render: "draw" | "simplify" | "occlude" | "de-emphasize" | "omit";
+  note: string;
+}
+
+/** An unsupported attribute that was deliberately kept out of the picture. */
+export interface OmittedAttribute {
+  element: string;
+  attribute: LedgerAttribute;
+  handling: "omitted" | "occluded" | "de-emphasized" | "simplified";
+  reason: string;
+}
+
+/** Everything that makes a piece of original artwork auditable. Written by the pipeline from the manifest. */
+export interface OriginalArtworkRecord {
+  /** Newly authored Crankcase artwork; never a copy, trace or transform of a reference. */
+  originalCrankcaseArtwork: true;
+  author: string;
+  authoredOn: string;
+  method: "vector-svg";
+  /** The approved visual specification the artwork was drawn from. */
+  specRef: string;
+  /** Repo path of the authored SVG, and its hash. */
+  sourceFile: string;
+  sourceSha256: string;
+  /** Present when the platform stamped provenance into the SVG file; sourceSha256 is the authored content without it. */
+  platformProvenance?: PlatformProvenanceRecord;
+  noSourcePixels: {
+    attested: true;
+    by: string;
+    on: string;
+    statement: string;
+    /** Must be empty: no reference image was an input to the artwork. */
+    referenceImageInputs: string[];
+    /** Must be empty: nothing was traced. */
+    tracedFrom: string[];
+  };
+  referenceEvidence: ReferenceEvidence[];
+  evidenceLedger: EvidenceLedgerRow[];
+  omittedAttributes: OmittedAttribute[];
+  /** Elements the picture must never show. The pipeline fails the build if the SVG draws one. */
+  mustNotDepict: string[];
+}
+
+/** Platform/provider provenance stamped into an original-artwork SVG (recorded, never part of the authored content). */
+export interface PlatformProvenanceRecord {
+  present: true;
+  manifestBase64Length: number;
+  manifestSha256: string;
+  /** Hash of the stamped file as stored; `sourceSha256` covers the authored content without the stamp. */
+  fileSha256: string;
+}
+
+export interface RasterArtifactRecord {
+  mediaType: "png" | "webp";
+  sha256: string;
+  bytes: number;
+  width: number;
+  height: number;
+  metadataChunks: string[];
+}
+
+/** Everything that makes a generated raster auditable. Written by the pipeline from the Guide Factory objects. */
+export interface GeneratedRasterRecord {
+  /** Repo path of the Guide Factory directory holding the objects and the source artifact. */
+  factoryDir: string;
+  visualId: string;
+  epRef: { id: string; sha256: string };
+  vcRef: { id: string; sha256: string };
+  grRef: { id: string; sha256: string };
+  qrRef: { id: string; sha256: string };
+  overlayQrRef?: { id: string; sha256: string };
+  templateRef: { id: string; sha256: string };
+  eventsSeq: number;
+  eventsHeadSha256: string | null;
+  generator: { system: string; model: string; provider: string };
+  license: { status: "generated-original"; ownershipAsserted: false; provider: string; model: string; terms: { summary: string; url?: string } };
+  promptSha256: string;
+  /** Must be empty: no image was an input to generation. */
+  imageInputs: unknown[];
+  attestation: {
+    generatedFromTextOnly: true; noReferenceImageInputs: true; noTracing: true; noThirdPartyCompositing: true; noBakedText: true;
+    attestedBy: string; attestedOn: string;
+  };
+  providerProvenance: { requestId: string | null; generationId: string | null; c2pa: { present: boolean; manifestSha256?: string } };
+  /** The generator's file, untouched. Its hash equals provenance.rawSha256. */
+  sourceArtifact: RasterArtifactRecord & { file: string; c2pa: { present: boolean; manifestSha256?: string }};
+  /** The published derivative. Its hash equals provenance.finalSha256 and differs from the source hash. */
+  normalizedArtifact: RasterArtifactRecord & { normalizer: { version: string; tool: string; ops: string[] } };
+  qa: { stage: "content"; verdict: "PASS_FOR_OVERLAY_QA"; rubricVersion: string; reviewer: { actor: string; system: string }; provenanceValidated: true; recordedOn: string; overlayVerdict?: string };
+  /** The only wording shown to customers; full provenance stays internal. */
+  customerDisclosure: "Simplified illustration";
+}
+
 export interface VisualProvenance {
   /** Only "verified" visuals are ever displayed. */
   status: "verified" | "pending";
-  sourceType: "own-photo" | "licensed" | "oem-manual" | "other";
+  /**
+   * "original-artwork" = newly authored Crankcase vector art (see originalArtwork).
+   * The others describe a raw photo / manual page we hold rights to.
+   */
+  sourceType: "own-photo" | "licensed" | "oem-manual" | "other" | "original-artwork" | "generated-raster";
   /** Who/what produced the raw image. */
   source: string;
   /** URL, manual + page, or file reference that lets someone find the original. */
@@ -81,6 +212,10 @@ export interface VisualProvenance {
   rawSha256: string;
   finalSha256: string;
   treatment: TreatmentRecord;
+  /** Present exactly when sourceType is "original-artwork". */
+  originalArtwork?: OriginalArtworkRecord;
+  /** Present exactly when sourceType is "generated-raster". */
+  generatedRaster?: GeneratedRasterRecord;
 }
 
 /** A point on the image, in percent of its width / height (0-100, from top-left). */
