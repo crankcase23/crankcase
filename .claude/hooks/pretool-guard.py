@@ -213,8 +213,11 @@ def parse_gh_api(seg):
     method, fields, path, i = None, [], None, 2
     while i < len(seg):
         t = seg[i]
-        if t in ("--input", "--hostname", "-H", "--header") or t.startswith(("--input=", "--hostname=", "--header=")):
-            block("gh api --input/--hostname/-H can redirect credentials or smuggle a method override.")
+        if t == "--input" and i + 1 < len(seg) or t.startswith("--input="):
+            val = seg[i + 1] if t == "--input" else t.split("=", 1)[1]
+            fields.append("@input=@" + val); i += 2 if t == "--input" else 1; continue
+        if t in ("--hostname", "-H", "--header") or t.startswith(("--hostname=", "--header=")):
+            block("gh api --hostname/-H can redirect credentials or smuggle a method override.")
         if t in ("-X", "--method") and i + 1 < len(seg):
             method = seg[i + 1].upper(); i += 2; continue
         if t.startswith("--method="):
@@ -266,6 +269,18 @@ def check_gh(seg, single):
     sub = path[len(f"repos/{REPO}"):].strip("/")
     keys = {}
     for f in fields:
+        if f.startswith("@input=@"):
+            # --input FILE: body comes from a non-secret JSON file under /tmp or /home/claude; judge its keys like -f fields
+            if not (effective in ("POST", "PATCH") and method) or not safe_body_file(f[7:]):
+                block("gh api --input needs an explicit -X POST/PATCH and a non-secret file under /tmp or /home/claude.")
+            try:
+                body = json.load(open(os.path.realpath(f[8:])))
+            except Exception:
+                return None
+            if not isinstance(body, dict) or not all(isinstance(x, (str, bool)) for x in body.values()):
+                return None
+            keys.update({k: str(v) for k, v in body.items()})
+            continue
         if "=" not in f:
             return None
         k, v = f.split("=", 1)

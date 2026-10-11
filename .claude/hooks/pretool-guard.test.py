@@ -6,6 +6,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 GUARD = os.path.join(HERE, "pretool-guard.py")
 REPO_DIR = os.path.abspath(os.path.join(HERE, "..", ".."))
 R = "repos/crankcase23/crankcase"
+import tempfile
+_T = tempfile.mkdtemp(prefix="guard-input-")
+def _j(name, obj):
+    fp = os.path.join(_T, name); open(fp, "w").write(json.dumps(obj)); return fp
+_ok = _j("pr.json", {"title": "t", "head": "claude/x", "base": "main", "body": "b"})
+_main = _j("prmain.json", {"title": "t", "head": "claude/x", "base": "develop"})
+_extra = _j("prextra.json", {"title": "t", "head": "claude/x", "base": "main", "state": "closed"})
+_cmt = _j("cmt.json", {"body": "hi"})
 CASES = [
     # --- plain feature-branch pushes: allowed
     ("git push origin claude/feature-x", "allow"),
@@ -87,6 +95,14 @@ CASES = [
     ("gh repo delete x", "block"), ("gh repo edit --visibility private", "block"), ("gh secret set X", "block"), ("gh auth token", "block"),
     ("gh auth status", "block"), ("gh ruleset list", "block"), ("gh workflow run x", "block"), ("gh release create v1", "block"),
     ("gh pr merge 33", "pass"), ("gh pr view 33", "pass"),
+    # --- gh api --input: only a non-secret JSON file, explicit POST/PATCH, same key allowlist as -f
+    (f"gh api {R}/pulls --method POST --input {_ok} --jq '.number,.html_url'", "allow"),
+    (f"gh api -X POST {R}/pulls --input={_ok}", "allow"),
+    (f"gh api -X POST {R}/issues/33/comments --input {_cmt}", "allow"),
+    (f"gh api -X POST {R}/pulls --input {_main}", "block"), (f"gh api -X POST {R}/pulls --input {_extra}", "block"),
+    (f"gh api {R}/pulls --input {_ok}", "block"), (f"gh api -X POST {R}/pulls --input .env", "block"),
+    (f"gh api -X POST {R}/pulls --input /etc/passwd", "block"), (f"gh api -X PUT {R}/pulls/33/merge --input {_ok}", "block"),
+    (f"gh api -X PUT {R}/contents/x --input {_ok}", "block"), (f"gh api -X DELETE {R} --input {_ok}", "block"),
     # --- vercel, secrets, environment, rm
     ("vercel --prod", "block"), ("npx vercel deploy", "block"), ("npx --no-install vercel", "block"), ("cd x && vercel", "block"),
     ("cat .env", "block"), ("head -n 3 .env.local", "block"), ("grep KEY .env", "block"), ("tail .env.production", "block"),
