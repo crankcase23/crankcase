@@ -7,6 +7,10 @@ import generated from "./bmw-2010-328i-oil-change.visuals.json";
  * Nothing is written here by hand. `*.visuals.json` holds ONLY visuals that reached APPROVED in the Guide Factory
  * (independent QA, overlay QA, owner sign-off); the entries are copied from each run's `registry-entry.preview.json`.
  * NOT yet wired into REGISTRY in src/lib/guideVisuals.ts (that file is hash-locked: see docs/bmw-e90/PARTS-BIN-PROPOSAL.md).
+ *
+ * BEFORE WIRING: the staged hatch visual is keyed to step 4, but in the current guide the "Open the undertray access hatch" step is
+ * step 7 (the guide now opens with "Before you start" steps). Remap the step number first; scripts/bmw/tests/guides.test.mjs fails if
+ * this set is registered while the numbers disagree.
  */
 const application: VisualApplication = {
   year: 2010,

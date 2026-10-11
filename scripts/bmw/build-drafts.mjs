@@ -103,7 +103,79 @@ const asSentence = (t) => {
   const cap = x.charAt(0).toUpperCase() + x.slice(1);
   return /[.!?]$/.test(cap) ? cap : cap + ".";
 };
-const q = (s) => JSON.stringify(stripUrls(String(s)));
+// Internal evidence jargon -> words a customer understands. Wording only: no fact, number or uncertainty flag is dropped.
+const PLAIN = [
+  [/VIN-DECODE\.md/g, "the VIN decode"],
+  [/NHTSA vPIC/g, "NHTSA's VIN decoder"],
+  [/\bBMW TIS\b/g, "BMW service manual"],
+  [/\bTIS\b/g, "BMW service manual"],
+  [/\bETK\b/g, "BMW parts catalog"],
+  [/older ledger entry/g, "older catalog entry"],
+  [/hence primary:false and VERIFIED_SECONDARY, not VERIFIED\./g, "so it counts as independent-source confirmation, not a BMW document."],
+  [/VERIFIED_SECONDARY/g, "confirmed by independent sources"],
+  [/\bnot VERIFIED\b/g, "not confirmed from a BMW document"],
+  [/\bvariantDependencies\b/g, "the build checks above"],
+  [/\bCONFLICT\b/g, "disagreement"],
+  [/secondary[- ]sourced/gi, "sourced from independent websites"],
+  [/secondary hosts/gi, "independent websites"],
+  [/secondary[- ]sources?/gi, "independent websites"],
+];
+export function plain(text) {
+  return PLAIN.reduce((t, [re, to]) => t.replace(re, to), String(text));
+}
+const q = (s) => JSON.stringify(plain(stripUrls(String(s))));
+
+// How confidence is shown to the reader (the raw ledger status words stay internal).
+const TAGS = { verified: "", secondary: "(confirmed by 2+ independent sources)", single: "(one source only: confirm)", conflict: "(sources disagree: confirm)", missing: "(not confirmed)" };
+const tagOf = (st) => TAGS[st] ?? "";
+const STEP_WARN = {
+  conflict: "⚠ Sources disagree on this step. Confirm before relying on it.",
+  missing: "⚠ No source confirms this step. Confirm before relying on it.",
+  secondary: "⚠ Based on independent websites, not a BMW document. Confirm against your owner's manual before relying on it.",
+  single: "⚠ Only one source supports this step. Confirm before relying on it.",
+};
+
+// ---- long-step handling (display only; every word is kept, only the grouping changes) ----
+// Same sentence rule as splitInstruction in src/lib/wrenchSteps.ts (Wrench Mode shows each sentence as a numbered line).
+export function sentencesOf(text) {
+  const parts = []; let start = 0;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c !== "." && c !== "!" && c !== "?") continue;
+    if (!/\s/.test(text[i + 1] ?? "")) continue;
+    let j = i + 1; while (j < text.length && /\s/.test(text[j])) j++;
+    if (j < text.length && /[A-Z⚠]/.test(text[j])) { parts.push(text.slice(start, i + 1).trim()); start = j; i = j - 1; }
+  }
+  parts.push(text.slice(start).trim());
+  return parts.filter(Boolean);
+}
+const LONG_STEP = 650;
+/** One long step -> two steps of similar size, cut at a sentence boundary. Short, single-sentence or blocked steps are untouched. */
+function splitLong(step) {
+  const sents = sentencesOf(step.instructions);
+  if (step.instructions.length <= LONG_STEP || sents.length < 4 || step.title.startsWith(BLOCK_PREFIX)) return [step];
+  let best = 1, bestDiff = Infinity;
+  for (let k = 1; k < sents.length; k++) {
+    const a = sents.slice(0, k).join(" ").length, b = sents.slice(k).join(" ").length;
+    if (Math.abs(a - b) < bestDiff) { bestDiff = Math.abs(a - b); best = k; }
+  }
+  const halves = [sents.slice(0, best).join(" "), sents.slice(best).join(" ")];
+  return halves.map((instructions, i) => ({ ...step, title: `${step.title} (part ${i + 1} of 2)`, instructions }));
+}
+/** The pre-job configuration checklist -> a few short "Before you start" steps instead of one wall of text. */
+function configSteps(deps) {
+  const items = deps.map(asSentence);
+  const groups = [[]]; let len = 0;
+  for (const it of items) {
+    if (groups[groups.length - 1].length && len + it.length > 780) { groups.push([]); len = 0; }
+    groups[groups.length - 1].push(it); len += it.length;
+  }
+  return groups.map((g, i) => ({
+    title: `Before you start: check your car's build (${i + 1} of ${groups.length})`,
+    instructions: (i === 0 ? "This guide depends on how your car was built. Check each item before buying parts. " : "") + g.join(" "),
+    warning: i === 0 ? "⚠ Your car's exact build is not confirmed from the VIN alone. Check every item in this section before buying parts." : undefined,
+  }));
+}
 const files = fs.readdirSync(EVID).filter((f) => /^guide-\d\d\.json$/.test(f)).sort();
 const guides = files.map((f) => JSON.parse(fs.readFileSync(path.join(EVID, f), "utf8")));
 
@@ -119,15 +191,7 @@ function buildGuide(g) {
   if (!m) throw new Error(`no META for guide ${g.guide}`);
   const c = counts(g);
   const steps = [];
-  if (g.variantDependencies?.length) {
-    steps.push({
-      title: "Confirm your car's configuration first",
-      instructions:
-        "This draft depends on how your car was built. Check each item before buying parts. " +
-        g.variantDependencies.map(asSentence).join(" "),
-      warning: "⚠ CONFIGURATION NOT CONFIRMED FOR THIS VIN — see the evidence summary for the exact open items.",
-    });
-  }
+  if (g.variantDependencies?.length) steps.push(...configSteps(g.variantDependencies));
   const inapplicable = [];
   for (const s of g.steps) {
     const st = norm(s.status);
@@ -143,8 +207,8 @@ function buildGuide(g) {
       continue;
     }
     const warn = [...(s.warnings ?? [])];
-    if (st !== "verified") warn.push(`⚠ ${st === "conflict" ? "SOURCES DISAGREE" : st === "missing" ? "NOT FOUND IN ANY SOURCE" : st === "secondary" ? "SECONDARY SOURCES ONLY (no BMW document)" : "SINGLE-SOURCE STEP"} — confirm before relying on it.`);
-    steps.push({ title: s.title, instructions: s.instruction, warning: warn.length ? warn.join(" ") : undefined });
+    if (st !== "verified") warn.push(STEP_WARN[st] ?? STEP_WARN.single);
+    steps.push(...splitLong({ title: s.title, instructions: s.instruction, warning: warn.length ? warn.join(" ") : undefined }));
   }
   for (const d of DISPOSITION.filter((x) => x.g === g.guide)) {
     if (!g.steps.some((s) => d.re.test(s.title))) throw new Error(`DISPOSITION for guide ${g.guide} (${d.re}) matches no ledger step: table is stale.`);
@@ -157,8 +221,8 @@ function buildGuide(g) {
           fastener: t.fastener,
           value: t.value,
           notes: st === "verified"
-            ? `Verified. Confirm against your owner's manual or service data before use.${t.conflicts ? ` Note: ${t.conflicts}` : ""}`
-            : `Secondary-source figure (2+ independent sites agree; no BMW document was reachable). Confirm against BMW service data before use.${t.conflicts ? ` Note: ${t.conflicts}` : ""}`,
+            ? `Confirmed from BMW documentation or agreeing sources. Still check your owner's manual or service data before use.${t.conflicts ? ` Note: ${t.conflicts}` : ""}`
+            : `Two or more independent sources agree on this figure; no BMW document was available. Confirm against BMW service data before use.${t.conflicts ? ` Note: ${t.conflicts}` : ""}`,
         }
       : {
           fastener: t.fastener,
@@ -167,12 +231,12 @@ function buildGuide(g) {
           // rows keep their reference text; the full conflict detail stays in the evidence ledger.
           notes: st === "conflict"
             ? "Sources conflict on this value, so no figure is shown. Use BMW repair data for this fastener."
-            : `Reference only, NOT verified (${norm(t.status)}): ${t.value ?? "no value found"}.${t.conflicts ? ` ${t.conflicts}` : ""}`,
+            : `Reference only, not confirmed${st === "missing" ? " (no figure found)" : " (one source)"}: ${t.value ?? "no value found"}.${t.conflicts ? ` ${t.conflicts}` : ""}`,
         };
   });
   const parts = [
-    ...g.parts.map((p) => `${p.item}${p.partNumber ? ` — ${p.partNumber}` : ""} [${norm(p.status)}]`),
-    ...g.fluids.map((f) => `Fluid: ${f.item} — ${f.spec}${f.capacity ? `, ${f.capacity}` : ""} [${norm(f.status)}]`),
+    ...g.parts.map((p) => `${p.item}${p.partNumber ? ` — ${p.partNumber}` : ""}${tagOf(norm(p.status)) ? ` ${tagOf(norm(p.status))}` : ""}`),
+    ...g.fluids.map((f) => `Fluid: ${f.item} — ${f.spec}${f.capacity ? `, ${f.capacity}` : ""}${tagOf(norm(f.status)) ? ` ${tagOf(norm(f.status))}` : ""}`),
   ];
   return {
     no: g.guide,
@@ -180,15 +244,15 @@ function buildGuide(g) {
     slug: m.slug,
     title: `${g.name} — 2010 BMW 328i (DRAFT)`,
     summary:
-      `DRAFT, not published and not certified. ${g.primarySourceFound ? "Some facts come from BMW document text (owner's-manual mirrors or training material); the rest from secondary sources." : "Built from secondary sources only; no BMW document was found for the key safety facts."} ` +
-      `Evidence: ${c.verified} verified, ${c.secondary} agreed by 2+ independent secondary sources, ${c.single} single-source, ${c.conflict} conflicting, ${c.missing} not found. ` +
-      `Status: ${g.recommendedStatus}.` +
+      `Draft for owner testing: not published and not certified. ${g.primarySourceFound ? "Some facts come from BMW document text (owner's-manual copies or training material); the rest from independent websites." : "Built from independent websites only; no BMW document was found for the key safety facts."} ` +
+      `Of the facts behind this guide: ${c.verified} confirmed from BMW documents or agreeing sources, ${c.secondary} confirmed by 2+ independent sources, ${c.single} from a single source, ${c.conflict} where sources disagree, ${c.missing} not found. ` +
+      `Anything not confirmed is flagged in the step it affects.` +
       (inapplicable.length ? ` Not applicable to this car: ${inapplicable.join(" ")}` : "") +
       (steps.some((x) => x.title.startsWith(BLOCK_PREFIX)) ? ` Blocked steps (unresolved safety-critical): ${steps.filter((x) => x.title.startsWith(BLOCK_PREFIX)).length}.` : ""),
     difficulty: m.diff,
     estTime: `${m.time} (author's estimate)`,
     job: m.job,
-    tools: g.tools.map((t) => ({ name: t.item, note: norm(t.status) === "verified" ? undefined : `[${norm(t.status)}]` })),
+    tools: g.tools.map((t) => ({ name: t.item, note: tagOf(norm(t.status)) || undefined })),
     parts,
     safety: g.safety.length ? g.safety : ["Follow standard jack-stand and fluid-handling safety."],
     torque,

@@ -1,0 +1,198 @@
+{
+ "schema": "bmw-real-route-receipt.v1",
+ "at": "2026-10-11T07:53:02.360Z",
+ "mode": "next start (production build) on a throwaway LOCAL Postgres, normal signup+login form, test account promoted to admin in the local DB only",
+ "stats": {
+  "expected": 37,
+  "unexpected": 0,
+  "flaky": 0,
+  "skipped": 0
+ },
+ "results": [
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-front-brake-pads: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 30395
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-fuse-bulb: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 24024
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-key-fob-battery: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 17702
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-oxygen-sensor: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 17516
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-rear-brake-pads: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 18345
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-serpentine-belt: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 13602
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-battery: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 14398
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-coolant: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 13122
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-fluid-checks: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 7766
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-cabin-air-filter: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 5751
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-pcv-valve: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 5850
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-engine-air-filter: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 6014
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-tire-rotation: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 6481
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-wiper-blades: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 19467
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-differential-fluid: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 17748
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, desktop > bmw-2010-328i-oil-change: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 20055
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-front-brake-pads: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 13367
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-fuse-bulb: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 12812
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-key-fob-battery: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 8634
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-oxygen-sensor: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 11145
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-rear-brake-pads: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 9297
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-serpentine-belt: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 7749
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-battery: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 9430
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-coolant: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 8506
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-fluid-checks: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 7442
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-cabin-air-filter: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 6294
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-pcv-valve: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 14837
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-engine-air-filter: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 11088
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-tire-rotation: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 13424
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-wiper-blades: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 11482
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-differential-fluid: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 11406
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route, phone > bmw-2010-328i-oil-change: planning, wrench walk, blocked steps, completion, recovery",
+   "status": "passed",
+   "ms": 12065
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route: access control is unchanged > a signed-out visitor cannot reach a BMW draft",
+   "status": "passed",
+   "ms": 1404
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route: access control is unchanged > a signed-in NON-admin is bounced and never sees the guide",
+   "status": "passed",
+   "ms": 6190
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route: access control is unchanged > an admin gets a 404 for an unknown BMW slug",
+   "status": "passed",
+   "ms": 5233
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route: access control is unchanged > the admin guide list links all 16 BMW drafts",
+   "status": "passed",
+   "ms": 7892
+  },
+  {
+   "test": "bmw-admin-guides.spec.ts > real admin route: access control is unchanged > the customer side never exposes a BMW draft",
+   "status": "passed",
+   "ms": 5777
+  }
+ ]
+}

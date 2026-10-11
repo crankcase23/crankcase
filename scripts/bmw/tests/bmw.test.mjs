@@ -63,15 +63,19 @@ test("a torque number is printed only when its evidence is VERIFIED or VERIFIED_
   assert.ok(numeric > 0 && warned > 0, `numeric=${numeric} warned=${warned}`);
 });
 
-test("every step that is not VERIFIED carries a visible warning", async () => {
+test("every step that is not VERIFIED carries a visible warning (long steps may be split in two: every part keeps the warning)", async () => {
   const { bmwDraftGuides } = await bundle("src/data/admin-test-guides/bmw-2010-328i-drafts.ts");
+  const BLOCK = "⛔ BLOCKED — ";
   for (const { guide } of bmwDraftGuides) {
     const ev = evidence.find((e) => guide.title.startsWith(e.name));
-    const offset = guide.steps.length - ev.steps.length; // 0 or 1 (the leading configuration step)
-    assert.ok(offset === 0 || offset === 1);
-    ev.steps.forEach((s, i) => {
-      if (!/^\s*verified/i.test(s.status)) assert.ok(guide.steps[i + offset].warning, `${guide.id} step ${i + 1} (${s.status.slice(0, 20)}) has no warning`);
-    });
+    for (const s of ev.steps) {
+      if (/^\s*verified/i.test(s.status)) continue;
+      const base = s.title.replace(/\s*\(.*$/, "");
+      const mine = guide.steps.filter((x) => x.title.replace(BLOCK, "").replace(/ \(part \d of \d\)$/, "").startsWith(base));
+      // an INAPPLICABLE step is intentionally removed from the walkthrough (its absence is asserted in guides.test.mjs)
+      if (!mine.length) { assert.match(guide.summary, /Not applicable to this car/, `${guide.id}: step "${s.title}" vanished without an inapplicable note`); continue; }
+      for (const x of mine) assert.ok(x.warning, `${guide.id} step "${x.title}" (${s.status.slice(0, 20)}) has no warning`);
+    }
   }
 });
 

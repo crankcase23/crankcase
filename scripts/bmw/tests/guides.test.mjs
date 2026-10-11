@@ -23,14 +23,35 @@ test("REGRESSION phone overflow: no raw URL reaches any customer-facing text (an
   for (const { guide } of bmwDraftGuides) for (const t of everyString(guide)) assert.ok(!/https?:\/\//i.test(t), `${guide.id}: raw URL in "${t.slice(0, 80)}"`);
 });
 
-test("REGRESSION step 1 readability: the configuration step is a checklist of short sentences, not a pipe-joined wall of text", () => {
+test("REGRESSION step 1 readability: the configuration checklist is a few short 'Before you start' steps, not one pipe-joined wall of text", () => {
   for (const { guide } of bmwDraftGuides) {
-    const s1 = guide.steps[0];
-    if (!/^Confirm your car's configuration/.test(s1.title)) continue;
-    assert.ok(!/ \| /.test(s1.instructions), `${guide.id}: pipe-joined step 1`);
-    const sentences = s1.instructions.split(/(?<=[.!?])\s+(?=[A-Z⚠])/);
-    assert.ok(sentences.length >= 3, `${guide.id}: step 1 does not split into sentences`);
+    const cfg = guide.steps.filter((s) => /^Before you start: check your car's build \(\d+ of \d+\)$/.test(s.title));
+    assert.ok(cfg.length >= 1, `${guide.id}: no configuration steps`);
+    assert.deepEqual(guide.steps.slice(0, cfg.length).map((s) => s.title), cfg.map((s) => s.title), "configuration steps come first");
+    cfg.forEach((s, i) => {
+      assert.ok(!/ \| /.test(s.instructions), `${guide.id}: pipe-joined configuration text`);
+      assert.ok(s.instructions.length <= 1800, `${guide.id} config step ${i + 1} is ${s.instructions.length} chars`);
+      assert.equal(!!s.warning, i === 0, "the build-not-confirmed warning sits on the first configuration step");
+    });
   }
+});
+
+test("wording: no internal evidence terminology reaches customer-facing text, and uncertainty is still visible", () => {
+  const banned = [/\[(verified|secondary|single|conflict|missing)\]/, /BUILDABLE/, /VERIFIED_SECONDARY/, /\.md\b/, /\bledger\b/i, /evidence summary/i, /variantDependencies/, /SECONDARY SOURCES ONLY/, /\bETK\b/, /\bTIS\b/, /\bCONFLICT\b/];
+  for (const { guide } of bmwDraftGuides) for (const t of everyString(guide)) for (const re of banned) assert.ok(!re.test(t), `${guide.id}: internal term ${re} in "${t.slice(0, 90)}"`);
+  // ...but nothing was concealed: unconfirmed items still say so
+  const all = bmwDraftGuides.flatMap(({ guide }) => everyString(guide)).join("\n");
+  for (const phrase of ["sources disagree", "one source only", "not confirmed", "independent websites", "VERIFY EXACT TORQUE", "Confirm before relying"]) assert.ok(all.includes(phrase), `uncertainty wording lost: ${phrase}`);
+});
+
+test("long steps are broken up: no non-blocked step is over 900 characters unless it is a single long sentence", () => {
+  const sentences = (t) => t.split(/(?<=[.!?])\s+(?=[A-Z⚠])/);
+  for (const { guide } of bmwDraftGuides) for (const s of guide.steps) {
+    if (s.instructions.length > 900) assert.ok(sentences(s.instructions).length < 2, `${guide.id} step ${s.number} is ${s.instructions.length} chars in ${sentences(s.instructions).length} sentences`);
+  }
+  const split = bmwDraftGuides.flatMap(({ guide }) => guide.steps).filter((s) => / \(part \d of 2\)$/.test(s.title));
+  assert.ok(split.length >= 10, "expected the long steps to have been split");
+  for (const s of split) assert.ok(s.instructions.length <= 700, `split part still long: ${s.title}`);
 });
 
 test("every ledger step that is CONFLICT or MISSING has a recorded decision (BLOCKED / INAPPLICABLE / ACCEPTED); the builder refuses an undecided one", () => {
@@ -64,7 +85,7 @@ test("INAPPLICABLE: xDrive-only transfer case / front differential is not a walk
   assert.ok(!g.steps.some((s) => /xDrive/i.test(s.title)), "xDrive step still in the walkthrough");
   assert.match(g.summary, /not applicable/i);
   assert.match(g.summary, /transfer case/i);
-  assert.equal(g.steps.length, 8, "configuration step + 7 procedure steps");
+  assert.equal(g.steps.filter((s) => !/^Before you start/.test(s.title)).length, 7, "7 procedure steps (xDrive step removed)");
 });
 
 test("the blocked count in each summary matches the blocked steps (so Planning Mode and Wrench Mode agree)", () => {
@@ -110,4 +131,15 @@ test("navigation: the admin catalog resolves every BMW slug and nothing else; an
   const route = fs.readFileSync(path.join(ROOT, "src/app/admin/guides/test/[slug]/page.tsx"), "utf8");
   assert.match(route, /if \(!entry\) notFound\(\)/);
   assert.match(route, /requireAdmin\("guides\.view"\)/);
+});
+
+test("GUARD for later image work: the staged hatch picture may only be registered if its step number is the hatch step (it is keyed to step 4 today; the hatch step moved)", () => {
+  const staged = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/guide-visuals/bmw-2010-328i-oil-change.visuals.json"), "utf8"));
+  const hatch = bySlug("oil-change").steps.find((s) => /undertray access hatch/i.test(s.title));
+  const registered = /const REGISTRY[^\n]*bmw/i.test(fs.readFileSync(path.join(ROOT, "src/lib/guideVisuals.ts"), "utf8"));
+  for (const v of staged.visuals) if (/hatch/i.test(v.id)) {
+    if (registered) assert.equal(v.step, hatch.number, `hatch picture is keyed to step ${v.step} but the hatch step is ${hatch.number}`);
+    else assert.ok(true); // not registered: nothing can display it. Remap v.step to ${hatch.number} BEFORE wiring.
+  }
+  assert.ok(hatch, "hatch step exists");
 });

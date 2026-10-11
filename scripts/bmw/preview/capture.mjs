@@ -22,7 +22,7 @@ if (!arg("dir") || !arg("out")) { console.error("usage: capture.mjs --dir BUILT 
 fs.mkdirSync(out, { recursive: true });
 
 const SLUGS = (arg("slugs") ?? "front-brake-pads,fuse-bulb,key-fob-battery,oxygen-sensor,rear-brake-pads,serpentine-belt,battery,coolant,fluid-checks,cabin-air-filter,pcv-valve,engine-air-filter,tire-rotation,wiper-blades,differential-fluid,oil-change").split(",").map((s) => `bmw-2010-328i-${s}`);
-const VIEWPORTS = [{ name: "desktop", width: 1280, height: 900 }, { name: "phone", width: 390, height: 844, isMobile: true, hasTouch: true }];
+const VIEWPORTS = [{ name: "desktop", width: 1280, height: 900 }, { name: "phone", width: 390, height: 844, isMobile: true, hasTouch: true }, { name: "small-phone", width: 320, height: 568, isMobile: true, hasTouch: true }];
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png" };
 const server = http.createServer((req, res) => {
   const u = new URL(req.url, "http://x");
