@@ -14,7 +14,7 @@ Date: 2026-10-11. Branch `claude/bmw-guide-build`, PR #38. **Nothing is merged, 
 - Blocked steps: engine-bay fuses, xenon low-beam bulb, idler pulley replacement.
 - Any torque that is not VERIFIED or confirmed by 2+ independent hosts prints "VERIFY EXACT TORQUE BEFORE SERVICE" with no number. That includes the rear caliper guide screws, idler pulley, battery terminal / hold-down, bleeder screw and drain plugs.
 - Configuration-dependent items (brake package, caliper screw head type, differential plug type, drivetrain) remain "check your car" steps.
-- The owner's own VIN, VIN-tail serial and decode results are removed from the public copy.
+- The owner's own VIN and VIN-tail serial are removed from the public copy. (The first release, PR #38, still carried the owner's VIN-decode results, "owner states" remarks and internal research notes in the step text; the production smoke test found that. The cleanup PR removes or rewrites them in the customer copy only, lists every change in `CUSTOMER-SCRUB-REPORT.md`, and `scripts/bmw/customer-deny.mjs` plus `customer.test.mjs` keep them out.)
 
 ## Generated, not hand-written
 
