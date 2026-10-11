@@ -121,7 +121,6 @@
       "Bash(gh repo*)",
       "Bash(gh secret*)",
       "Bash(gh auth*)",
-      "Bash(gh api *--input*)",
       "Bash(gh api *--hostname*)",
       "Bash(gh api *=@.env*)",
       "Bash(gh api *-X DELETE*)",
