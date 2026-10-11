@@ -1,0 +1,48 @@
+{
+  "_status": "PENDING - no raw source yet. The pipeline refuses this manifest until every field below is real.",
+  "_needs": "Right-side valve-cover area showing the PCV valve and its hose.",
+  "_calloutTargetsFromStepText": [
+    "PCV valve",
+    "PCV hose"
+  ],
+  "id": "step-33-pcv-valve",
+  "step": 33,
+  "guideId": "admin-test-charger-2016-sxt-multi-job",
+  "registryFile": "charger-2016-sxt-multi-job.visuals.json",
+  "application": {
+    "year": 2016,
+    "make": "Dodge",
+    "model": "Charger",
+    "trim": "SXT",
+    "engine": "3.6L Pentastar V6"
+  },
+  "component": "PCV valve and hose",
+  "alt": "",
+  "caption": "",
+  "raw": {
+    "file": "raw/step-33-pcv-valve.jpg",
+    "sourceType": "",
+    "source": "",
+    "sourceRef": "",
+    "license": {
+      "status": "unknown",
+      "terms": ""
+    },
+    "capturedOn": ""
+  },
+  "verification": {
+    "status": "pending",
+    "vehicleEvidence": "",
+    "verifiedBy": "",
+    "verifiedOn": "",
+    "technicalReviewBy": "",
+    "technicalReviewOn": "",
+    "technicalReviewNotes": "",
+    "uncertainty": "none"
+  },
+  "treatment": {
+    "brightness": 1,
+    "contrast": 1
+  },
+  "callouts": []
+}

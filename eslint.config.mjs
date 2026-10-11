@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Guide Factory recovery: quarantined reconstruction + byte-frozen recovered
+    // copies (scripts/visuals/factory-reconstructed/RECOVERY.md). Kept verbatim so
+    // its hashes stay checkable; not linted to our app rules.
+    "scripts/visuals/factory-reconstructed/**",
   ]),
 ]);
 
