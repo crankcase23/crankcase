@@ -60,7 +60,50 @@ function norm(status) {
 }
 const PRINTABLE = new Set(["verified", "secondary"]);
 
-const q = (s) => JSON.stringify(String(s));
+// ---------------------------------------------------------------------------------------------------------------------------
+// STEP DISPOSITIONS. Every ledger step whose evidence status is CONFLICT or MISSING MUST be decided here, or the build fails
+// (so a new unresolved step can never slip into a guide silently).
+//   BLOCKED       unresolved AND safety-critical (or BMW says shop-only): the procedure text is NOT shown. The step stays in the
+//                 walkthrough as a visible stop, with the reason and the safe alternative. The original text stays in the ledger.
+//   INAPPLICABLE  does not exist on this car (RWD 328i): removed from the walkthrough, stated once in the guide summary.
+//   ACCEPTED      unresolved only in a detail that is not safety-critical, or the step text itself already tells the reader to
+//                 stop/verify: shown with its warning. The reason is recorded here so the decision is reviewable.
+// ---------------------------------------------------------------------------------------------------------------------------
+const DISPOSITION = [
+  { g: 2, re: /^Engine-bay fuses/i, kind: "BLOCKED", reason: "Where the engine-bay fuse boxes are and how they open is not established by any BMW document (web sources disagree).", instead: "Do not open or probe them. Use the glove-box fuse box only; if an engine-electronics fault remains after that, have the car diagnosed." },
+  { g: 2, re: /^Xenon low-beam/i, kind: "BLOCKED", reason: "BMW states xenon lamp work, including bulb replacement, is for a BMW center or qualified workshop only (high voltage).", instead: "Do not replace a xenon bulb yourself. Have a BMW center or qualified workshop do it." },
+  { g: 6, re: /^Replace the idler pulley/i, kind: "BLOCKED", reason: "The idler pulley bolt torque is unresolved: sources disagree by a factor of two, and BMW's own printed value was later corrected without the new number being readable. No figure is shown here on purpose.", instead: "Skip this step. Leave the idler pulley in place and re-inspect it at step 5; if it is worn or noisy, have it replaced with BMW repair data." },
+  { g: 15, re: /^xDrive only/i, kind: "INAPPLICABLE", reason: "Transfer case and front differential exist only on xDrive. The VIN decode and the parts catalog show a rear-wheel-drive 328i." },
+  { g: 2, re: /^Parking \/ halo/i, kind: "ACCEPTED", reason: "Bulb type disputed; the step tells the reader to match the old bulb's marking. Not a safety-critical fastener or procedure." },
+  { g: 6, re: /^Clear access to the belt/i, kind: "ACCEPTED", reason: "Two sourced access methods are given; the conflict is about which fasteners, and the step says to use what is on the car." },
+  { g: 7, re: /^Tightening torques/i, kind: "ACCEPTED", reason: "No torque exists in any source; the step says snug, do not over-tighten, and publishes no number." },
+  { g: 9, re: /^Transmission and differential/i, kind: "ACCEPTED", reason: "The step itself tells the owner not to top up or service these and to go to a shop." },
+  { g: 13, re: /^Support the car on stands/i, kind: "ACCEPTED", reason: "Stand positions are unsourced; the step itself says never rely on the jack and to stop and use a shop lift if no safe point is found." },
+  { g: 14, re: /^Release the old blade/i, kind: "ACCEPTED", reason: "Direction of the final pull conflicts between sources; the step says try BMW's direction and never force it." },
+  { g: 16, re: /^Drain the sump/i, kind: "ACCEPTED", reason: "Plug orientation unestablished; the step says shield your hand, angle the pan, and remove only the 17 mm plug with the copper washer." },
+];
+export function dispositionFor(guideNo, title) {
+  return DISPOSITION.find((d) => d.g === guideNo && d.re.test(title));
+}
+const BLOCK_PREFIX = "⛔ BLOCKED — ";
+
+
+// Raw URLs are unreadable on a phone and run off the screen. The ledger (docs/bmw-e90/evidence/*.json) keeps every full URL;
+// the customer-facing text keeps only the host, e.g. "[https://vpic.nhtsa.dot.gov/api/...]" -> "(vpic.nhtsa.dot.gov)".
+const host = (u) => u.replace(/^https?:\/\//, "").split(/[\/?#]/)[0];
+export function stripUrls(text) {
+  return String(text)
+    .replace(/\((https?:\/\/[^\s)\]]+)\)/g, (_, u) => `(${host(u)})`)
+    .replace(/\[(https?:\/\/[^\s\]]+)\]/g, (_, u) => `(${host(u)})`)
+    .replace(/https?:\/\/[^\s)\]]+/g, (u) => `(${host(u)})`);
+}
+// One checklist item -> one sentence, so Wrench Mode renders it as its own numbered line.
+const asSentence = (t) => {
+  const x = stripUrls(t).replace(/\s+/g, " ").trim();
+  const cap = x.charAt(0).toUpperCase() + x.slice(1);
+  return /[.!?]$/.test(cap) ? cap : cap + ".";
+};
+const q = (s) => JSON.stringify(stripUrls(String(s)));
 const files = fs.readdirSync(EVID).filter((f) => /^guide-\d\d\.json$/.test(f)).sort();
 const guides = files.map((f) => JSON.parse(fs.readFileSync(path.join(EVID, f), "utf8")));
 
@@ -80,16 +123,31 @@ function buildGuide(g) {
     steps.push({
       title: "Confirm your car's configuration first",
       instructions:
-        "This draft depends on how your car was built. Check each item before buying parts: " +
-        g.variantDependencies.join(" | "),
+        "This draft depends on how your car was built. Check each item before buying parts. " +
+        g.variantDependencies.map(asSentence).join(" "),
       warning: "⚠ CONFIGURATION NOT CONFIRMED FOR THIS VIN — see the evidence summary for the exact open items.",
     });
   }
+  const inapplicable = [];
   for (const s of g.steps) {
     const st = norm(s.status);
+    const disp = dispositionFor(g.guide, s.title);
+    if ((st === "conflict" || st === "missing") && !disp) throw new Error(`guide ${g.guide} step "${s.title}" is ${st} in the ledger but has no DISPOSITION (BLOCKED / INAPPLICABLE / ACCEPTED). Decide it in build-drafts.mjs.`);
+    if (disp?.kind === "INAPPLICABLE") { inapplicable.push(`${s.title.replace(/\s*\(.*$/, "")}: not applicable. ${disp.reason}`); continue; }
+    if (disp?.kind === "BLOCKED") {
+      steps.push({
+        title: BLOCK_PREFIX + s.title.replace(/\s*\(.*$/, ""),
+        instructions: `This step is blocked: it cannot be done safely from this guide. ${disp.reason} ${disp.instead}`,
+        warning: "⛔ BLOCKED — unresolved safety-critical item. Do not perform this procedure from this guide.",
+      });
+      continue;
+    }
     const warn = [...(s.warnings ?? [])];
     if (st !== "verified") warn.push(`⚠ ${st === "conflict" ? "SOURCES DISAGREE" : st === "missing" ? "NOT FOUND IN ANY SOURCE" : st === "secondary" ? "SECONDARY SOURCES ONLY (no BMW document)" : "SINGLE-SOURCE STEP"} — confirm before relying on it.`);
     steps.push({ title: s.title, instructions: s.instruction, warning: warn.length ? warn.join(" ") : undefined });
+  }
+  for (const d of DISPOSITION.filter((x) => x.g === g.guide)) {
+    if (!g.steps.some((s) => d.re.test(s.title))) throw new Error(`DISPOSITION for guide ${g.guide} (${d.re}) matches no ledger step: table is stale.`);
   }
   const torque = g.torque.map((t) => {
     const st = norm(t.status);
@@ -105,7 +163,11 @@ function buildGuide(g) {
       : {
           fastener: t.fastener,
           value: V_TORQUE,
-          notes: `Reference only, NOT verified (${norm(t.status)}): ${t.value ?? "no value found"}.${t.conflicts ? ` ${t.conflicts}` : ""}`,
+          // A CONFLICT must not leak either candidate number into the guide (a reader would pick one). Single-source and missing
+          // rows keep their reference text; the full conflict detail stays in the evidence ledger.
+          notes: st === "conflict"
+            ? "Sources conflict on this value, so no figure is shown. Use BMW repair data for this fastener."
+            : `Reference only, NOT verified (${norm(t.status)}): ${t.value ?? "no value found"}.${t.conflicts ? ` ${t.conflicts}` : ""}`,
         };
   });
   const parts = [
@@ -120,7 +182,9 @@ function buildGuide(g) {
     summary:
       `DRAFT, not published and not certified. ${g.primarySourceFound ? "Some facts come from BMW document text (owner's-manual mirrors or training material); the rest from secondary sources." : "Built from secondary sources only; no BMW document was found for the key safety facts."} ` +
       `Evidence: ${c.verified} verified, ${c.secondary} agreed by 2+ independent secondary sources, ${c.single} single-source, ${c.conflict} conflicting, ${c.missing} not found. ` +
-      `Status: ${g.recommendedStatus}.`,
+      `Status: ${g.recommendedStatus}.` +
+      (inapplicable.length ? ` Not applicable to this car: ${inapplicable.join(" ")}` : "") +
+      (steps.some((x) => x.title.startsWith(BLOCK_PREFIX)) ? ` Blocked steps (unresolved safety-critical): ${steps.filter((x) => x.title.startsWith(BLOCK_PREFIX)).length}.` : ""),
     difficulty: m.diff,
     estTime: `${m.time} (author's estimate)`,
     job: m.job,

@@ -1,5 +1,8 @@
 # BMW 328i (E90, VIN WBAPH7C58AA175760): guide status, 2026-10-10
 
+> **2026-10-11 PIVOT: image factory paused. Working guides first.** Current readiness (all 16 working, 3 steps blocked, 1 section inapplicable, browser-tested desktop + phone) is in `READINESS-MATRIX.md`; screenshots and the JSON receipt are in `preview-receipts/2026-10-11/`. Re-run with `npm run bmw:preview -- --out DIR`. The table below predates the pivot (step counts changed: blocked/inapplicable handling) and is kept for the evidence columns.
+
+
 Certified guides: **0 of 16**. Usable uncertified drafts (admin-only): **16 of 16** (guide 3 has no visuals by design). No image is certified. Two ChatGPT-generated images exist in the repo and are NOT certified: `oil-drain-hatch-locate` (OVERLAY_PASSED, waiting for owner sign-off) and `oil-drain-plug-identify` (image QA passed and normalized; overlay QA failed 3x, factory phase NEEDS_ANDY, see `image-intake/overlay-qa/oil-drain-plug-identify/FINDING.md`). Guide 16 (Engine Oil & Filter Change) is the only guide with images in progress; the other 15 are unchanged.
 
 | # | Guide | Status | Steps | Torque rows (verified) | Visuals | Open missing-evidence items |

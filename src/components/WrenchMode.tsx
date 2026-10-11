@@ -381,7 +381,7 @@ export default function WrenchMode({
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerCancel}
             style={{ touchAction: "pan-y pinch-zoom" }}
-            className="cg-grid-fine min-w-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 sm:px-10 sm:py-8"
+            className="cg-grid-fine min-w-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 [overflow-wrap:anywhere] sm:px-10 sm:py-8"
           >
             {!current ? (
               <p className="text-xl text-slate-300">This guide has no steps.</p>
