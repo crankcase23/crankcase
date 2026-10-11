@@ -1,0 +1,37 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "wheel-bolts-and-metal-valve-stem",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 7,
+    "tag": "IDENTIFY",
+    "subtitle": "This is it"
+  },
+  "highlights": [
+    {
+      "element": "wheel-bolt-fasteners",
+      "role": "hero",
+      "note": "Five hex-head wheel bolts per wheel on a 5-lug circle, tightened in a crisscross order.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "metal-valve-stem",
+      "role": "target",
+      "note": "A metal tire valve stem, which indicates a direct TPMS sensor inside the tire.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

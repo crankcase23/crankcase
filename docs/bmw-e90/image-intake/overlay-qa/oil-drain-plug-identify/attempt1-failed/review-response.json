@@ -1,0 +1,4 @@
+{"overlaySha256": "aa42d7bb3009f46c188d323a2d24ab58cd34062dba217d9436aa213ab0514ca5",
+ "results": [
+  {"callout": "drain plug", "result": "FAIL", "note": "Orange box cuts across the hex head rather than enclosing the entire drain plug."},
+  {"callout": "crush washer", "result": "FAIL", "note": "Orange box encloses most of the drain plug head and surrounding surface instead of tightly isolating the thin copper washer."}]}

@@ -1,0 +1,8 @@
+Generate a landscape 16:10 illustration (1600x1000 px or larger) for a DIY car-repair guide. Wiper arm hook end and blade release, on a 2010 BMW 328i (E90), 3.0L inline-6. Step: "Lift the first arm".
+Look: clean realistic 3D technical illustration, light neutral studio background, matte materials, soft light and soft contact shadows, tight framing, minimal detail. Realism is for materials and light only: no invented detail, no orange or other saturated accent colours (copper parts may be copper).
+View: Front three-quarter view of the front end of the car, mild perspective. Tight close-up: the hero fills about 40-60% of the frame on a plain simplified surface.
+Show: HERO: A press tab on the hook end of the blade that releases it from the arm. Do NOT depict the shape of its release mechanism: keep it a plain generic shape. The hook or peg at the end of the arm that the blade slides onto, with a plastic cover.
+Background only, simplified and dim: a plain light neutral ground plane.
+Leave out entirely: blade release tab detail, arm hook end detail, wiper arm lifted, wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+Layout: plain empty light margin of at least 8% of the width on the left and right and 8% of the height at the bottom; nothing touches those edges, the subject floats on the plain ground. Keep the top 3%-17% of the height plain light background.
+No text, letters, numbers, labels, arrows, callout lines or watermarks anywhere. Anything not described above stays a plain generic shape; if unsure how a real part looks, leave it out.

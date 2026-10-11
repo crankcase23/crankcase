@@ -1,0 +1,62 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Front pad wear sensor and its connector (driver side only), on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Disconnect and remove the wear sensor (driver side only)\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A thin wear-sensor wire clipped into the inner brake pad, running up out of the caliper area."
+    },
+    {
+      "rank": 2,
+      "text": "A small plastic junction box with a door, high in the wheel well behind the strut, holding the sensor plug with a release tab."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "sensor connector junction box detail (Exact box shape; door hinge and plug design are not established)",
+    "pad wear sensor wire detail (Passenger-side front has no sensor; depict only the driver side)",
+    "strut wire bracket (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "9d8e3cd31954ba99cff3559665645fb67c81191550ee1c6dd8c0f46982849c91",
+  "callouts": [
+    {
+      "label": "pad wear sensor wire",
+      "element": "pad-wear-sensor-wire",
+      "required": true
+    },
+    {
+      "label": "sensor connector junction box",
+      "element": "sensor-connector-junction-box",
+      "required": true
+    }
+  ]
+}

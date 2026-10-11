@@ -1,0 +1,37 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "wiper-blade-release-hook",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 2,
+    "tag": "IDENTIFY",
+    "subtitle": "This is it"
+  },
+  "highlights": [
+    {
+      "element": "blade-release-tab",
+      "role": "hero",
+      "note": "A press tab on the hook end of the blade that releases it from the arm.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "arm-hook-end",
+      "role": "target",
+      "note": "The hook or peg at the end of the arm that the blade slides onto, with a plastic cover.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

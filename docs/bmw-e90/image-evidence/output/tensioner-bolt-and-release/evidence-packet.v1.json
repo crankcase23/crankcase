@@ -1,0 +1,294 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Release the tensioner and take the belt off",
+      "Replace the tensioner (optional)"
+    ],
+    "stepNumber": 4,
+    "title": "tensioner-bolt-and-release (BMW 328i draft Serpentine Belt guide; evidence step 4, 7)"
+  },
+  "contentHash": "726838ff46638010d998f332d06d2ad4dca2c0a1cce9757af1bf72670989b7fa",
+  "createdAt": "2026-10-10T12:01:28.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The mechanical belt tensioner with its roller pulley.",
+      "id": "tensioner-assembly",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A single aluminium M11 Torx-type mounting bolt (external Torx E14 per one source); single use.",
+      "id": "tensioner-mounting-bolt",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The T60 Torx release point turned clockwise to take tension off the belt.",
+      "id": "tensioner-release-socket",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of tensioner assembly: Lock-pin hole position/size and arm geometry not established.",
+      "id": "tensioner-assembly-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of tensioner mounting bolt: Do not show a torque value or head orientation; head size is single-source.",
+      "id": "tensioner-mounting-bolt-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-tensioner-bolt-and-release-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "tensioner-assembly",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "tensioner-mounting-bolt",
+      "evidence": [
+        "ref-1",
+        "ref-5"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "tensioner-mounting-bolt",
+      "note": "E14 external Torx socket; single source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "tensioner-mounting-bolt",
+      "note": "Position of the bolt on the tensioner not established; FCP says single mounting bolt.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "tensioner-release-socket",
+      "evidence": [
+        "ref-4",
+        "ref-6"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "tensioner-release-socket",
+      "note": "Where the pin hole is and how the release lever sits is not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "tensioner-assembly",
+      "evidence": [
+        "ref-4",
+        "ref-1",
+        "ref-6"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-mounting-bolt",
+      "evidence": [
+        "ref-4",
+        "ref-5",
+        "ref-1",
+        "ref-7"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "tensioner-mounting-bolt",
+      "evidence": [
+        "ref-4",
+        "ref-6",
+        "ref-7"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-release-socket",
+      "evidence": [
+        "ref-6",
+        "ref-4"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "tensioner-release-socket",
+      "evidence": [
+        "ref-6",
+        "ref-4"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-assembly-unestablished-detail",
+      "note": "Lock-pin hole position/size and arm geometry not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-mounting-bolt-unestablished-detail",
+      "note": "Do not show a torque value or head orientation; head size is single-source.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "tensioner-assembly-unestablished-detail",
+      "id": "excl-tensioner-assembly-unestablished-detail",
+      "reason": "Lock-pin hole position/size and arm geometry not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "tensioner-assembly-unestablished-detail"
+      }
+    },
+    {
+      "element": "tensioner-mounting-bolt-unestablished-detail",
+      "id": "excl-tensioner-mounting-bolt-unestablished-detail",
+      "reason": "Do not show a torque value or head orientation; head size is single-source.",
+      "trace": {
+        "attribute": "existence",
+        "element": "tensioner-mounting-bolt-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Mechanical belt tensioner 11288624196, Torx screw M11X65-AL 11287530315 used only once."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Kit lists mechanical belt tensioner 11288624196 and M11 x 65 Torx screw 11287530315."
+      ],
+      "id": "ref-2",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Mechanical belt tensioner with roller pulley listed for most 2006-2013 N51/N52 vehicles; bolt sold separately and cannot be reused."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://www.bimmerworld.com/Engine/Pulleys/BMW-MECHANICAL-BELT-TENSIONER-11287530314-11288624196.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "T60 release, E14 bolt, 25 Nm + 90 degrees, lock pin."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Torx M11x65 tensioner bolt cannot be reused."
+      ],
+      "id": "ref-5",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "T60 on long-handled ratchet rotating clockwise to release the tensioner."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "1addicts thread: N52 belt tensioner kit, pulley under alternator, aluminum replacement bolt 25 Nm plus 90 degrees."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=22769621",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "tensioner-bolt-and-release"
+}

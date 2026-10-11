@@ -1,0 +1,181 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "drain-plug",
+      "label": "drain plug",
+      "required": true
+    },
+    {
+      "element": "tool-socket-and-ratchet",
+      "label": "tool socket and ratchet",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "c977a849dd72ec85586838d176db8ff518f5b3d1057ec6564df8733e8b3c61bc",
+  "createdAt": "2026-10-10T12:04:26.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-oil-drain-plug-loosen-v1",
+  "maySimplify": [
+    {
+      "element": "oil-pan-surface"
+    },
+    {
+      "element": "pan-bolts-and-ribs"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "drain-plug",
+      "id": "MD-drain-plug",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-5",
+            "ref-6"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "tool-socket-and-ratchet",
+      "id": "MD-tool-socket-and-ratchet",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-5",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "pan-bolts-and-ribs",
+      "id": "MN-excl-pan-bolts-and-ribs",
+      "reason": "Pan fasteners and rib layout are not established for the automatic pan; left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "pan-bolts-and-ribs"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-oil-drain-plug-loosen-v1",
+      "sha256": "270564f018330bd094e7a646938aeeac0aeb8ae4439f311b4e726c463eb617b7"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "aee8bacf8aee991a11ce74ed551ec75a9cd2cd4ba8eb0e459765f3de3446409e"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "53dc560e51f8b68e695c32526a26a7e2636d52f73ebd76853067ffa655881986"
+  },
+  "suppress": [
+    {
+      "attribute": "orientation",
+      "element": "drain-plug",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "tool-socket-and-ratchet",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-pan-surface",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "pan-bolts-and-ribs",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "oil-drain-plug-loosen"
+}

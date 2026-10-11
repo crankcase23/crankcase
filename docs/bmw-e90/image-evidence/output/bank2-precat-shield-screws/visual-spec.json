@@ -1,0 +1,63 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Bank 2 pre-cat sensor behind its metal shield, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Clear the bank 2 pre-cat shield if needed\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The bank 2 pre-cat sensor, hidden behind a stainless/metal heat shield on the cylinder head and under the ignition wiring harness."
+    },
+    {
+      "rank": 2,
+      "text": "Two E8 external-Torx screws holding the metal shield; nearly blind when looking from above. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "shield e8 screws detail (Exact positions and orientation are not established; do not mark them on a specific edge of the shield)",
+    "bank2 precat sensor detail (Do not show a visible top-down view of the sensor; sources say it is hidden)",
+    "strut brace and large heat shield (No source establishes this element for the car; it is left out)",
+    "crowfoot socket access (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "4da75ef0fdc2a29ea40b1d3e7a00a2ae2a15e8b86a4e6a9c0bdd97d778e0fe10",
+  "callouts": [
+    {
+      "label": "bank2 precat sensor",
+      "element": "bank2-precat-sensor",
+      "required": true
+    },
+    {
+      "label": "shield e8 screws",
+      "element": "shield-e8-screws",
+      "required": true
+    }
+  ]
+}

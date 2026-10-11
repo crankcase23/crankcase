@@ -1,0 +1,28 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "oil-drain-hatch-locate",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 4,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "access-hatch",
+      "role": "hero",
+      "note": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

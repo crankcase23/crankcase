@@ -1,0 +1,1174 @@
+{
+  "guide": 2,
+  "name": "Fuse & Bulb Replacement",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Third pass. A text mirror of the US 2010 BMW 328i owner's manual (carmanualsonline.info, printed pp. 229-236) and the ETK catalog for this VIN (RealOEM PH73 USA 09/2009) closed most remaining gaps. CLOSED: fuse puller location (plastic tweezers on the glove-box distributor box, BMW manual p.236); fuse rules (never repair a blown fuse, same colour and amp rating, fire risk); halogen bulb access (high beam from the engine compartment, low beam and front turn signal through a flap in the wheel well opened with a coin; covers released by folding the wire bracket aside; wire bracket retains the H7; gloves and eye protection because the H7 is pressurized); battery disconnect is NOT required for halogen or fuse work (manual says switch off the consumer and never mentions the battery; only xenon sources ask for it); xenon work is BMW-center-only per the manual; parking/DRL bulb H8 35 W and a separate W5W 5 W parking bulb; front turn bulb PY24W via the wheel-well flap; tail-lamp bulbs and access (trunk-lid brake H21W, backup W16W, other lamps P21W; three positions are LED and are serviced by a BMW center; cargo-area cover for the fender part, trunk-lid trim for the lid part); tail-lamp number conflict (use ETK 63217160788/63217160789/63217160935, Turner 63217160790 is not this build). NEW CONFLICT found: three web fuse charts disagree with each other for the post-09/2007 glove-box layout (for example F30 20 A cigarette lighter vs 10 A seat-belt positioners, F50 10 A DME vs 30 A wipers), so the guide sends the user to the chart on the back of the cover and BMW's fuse map 71239232904 and does not list per-fuse functions. STILL OPEN: engine-bay E-box (the BMW manual describes only the glove-box fuse box; web sources disagree on location), fog bulb access (single forum thread; BMW manual gives no fog bulb procedure), halo/parking bulb type on halogen LCI lamps (H8 favoured, H10W and W5W also appear), which tail-lamp sockets are LED on a 09/2009 build (guide branches on what the user sees inside the lamp), and the separate high-beam step list (manual text read gives steps for the low beam only).",
+  "variantDependencies": [
+    "DECODED CONFIG: halogen headlights (no S522 xenon, no S524 adaptive), fog lights S520 present, S563 lights package, S5AC automatic high beam. Use the halogen H7 / fog H8 paths; the xenon D1 path is probably not this car. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable.] HOW THE USER CONFIRMS: the VIN option list (ETK: S522A = Xenon Light, S524A = Adaptive Headlights) or the bulb they pull out (H7 halogen vs D1S xenon). The BMW owner's manual says any xenon work, including bulb replacement, is for a BMW center only.",
+    "Headlights, halogen access (BMW owner's manual p.231-232): high beam from the engine compartment, low beam and front turn signal through a flap in the wheel well (turn the wheel inward, turn the flap fastener counterclockwise with a coin). The ETK halogen diagram lists separate covers (high-beam covering cap, low-beam lamp cover, headlight cover) and shows two lamp makers, ZKW and VALEO, with different cover part numbers; which maker the car has is not decoded and only changes cover part numbers.",
+    "Fog lights: H8 12V 35W (ETK diagram for build 2009; Turner lists E90 2009+). Pre-LCI 2006-2008 used H11 55W (Turner). M Aerodynamics fog lamps are a separate ETK diagram (the decode shows no M package option). The BMW manual gives no fog bulb procedure.",
+    "Parking / roadside parking / daytime running / halo-ring bulb on this halogen LCI lamp: the BMW manual lists an H8 35 W bulb (cover turned left, bulb turned about 90 degrees) for parking, roadside parking and daytime running lamps, and separately a W5W 5 W parking bulb reached through the high-beam cover; owner posts say the halo bulb is H8; one vendor install guide says H10W. The ETK halogen diagram includes 'light ring' lighting units (ZKW 63117161444, VALEO 63112179077) but no bulb. Unresolved CONFLICT: match the bulb marking of the one removed.",
+    "Fuse layouts differ by production date: four web sources (E90Post, FuseAndRelay, FuseCheck, BMWGuide) put the numbering change around 09/2007, so this 09/2009 car is on the newest glove-box layout. The web charts for that layout disagree with each other (see specs), so the user must follow the chart on the back of the glove-box cover.",
+    "Tail lamps (sedan): the US 2010 BMW manual says the tail lamps are in two parts (trunk lid and fender); positions 2 (roadside parking/tail), 3 (turn signal) and 5 (tail) are LED and serviced by a BMW center, positions 1, 4 and 6 are bulbs (trunk-lid brake H21W, backup W16W, other lamps P21W). BMW's launch-E90 training document says LEDs are not used and ETK lists a lamp revision at 03/2010, so a 09/2009 build might carry the older all-bulb lamp (inference, not proven). The guide branches on what is seen when the cover is opened: bulb carriers vs LED modules.",
+    "Front turn signal: manual lists PY24W (24 W) bulb reached through the wheel-well flap; ETK shows a PY24W on the halogen diagram. LED turn-signal units in ETK xenon/adaptive rows do not apply to the decoded halogen car (applicability not otherwise established).",
+    "Engine-bay E-box / front power distribution box: the BMW manual describes only the glove-box fuse box; web sources place engine-bay boxes in different spots (see specs). Not an owner-serviceable item per BMW."
+  ],
+  "tools": [
+    {
+      "item": "Plastic fuse tweezers (BMW manual: stored on the distributor box in the glove compartment; ETK lists a 'fuse clip' 61146936578)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1710",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_2220",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/"
+      ],
+      "note": "Owner's manual p.236: 'Plastic tweezers are located on the distributor box.' FuseCheck agrees (spare fuses and a pair of plastic forceps in holders on the distributor box). ETK 'fuse clip' is probably the same item but ETK does not say so.",
+      "primary": true
+    },
+    {
+      "item": "Tool for the glove-box fuse cover fasteners (two round quarter-turn fasteners): no source names a tool",
+      "status": "MISSING",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+      ],
+      "note": "BMW manual only says to open the cover and remove it. YouCanic says turn the plastic screws counterclockwise; none says a coin or screwdriver is needed. A coin is a guess; try by hand first."
+    },
+    {
+      "item": "Coin (to turn the wheel-well flap fastener counterclockwise for low-beam and front turn-signal bulb access)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb"
+      ],
+      "note": "BMW manual p.232: 'turn the fastener counterclockwise using a coin, for example.'",
+      "primary": true
+    },
+    {
+      "item": "Onboard vehicle tool kit screwdriver (sedan kit is in a compartment on the right-hand side of the cargo area); used to pry the cargo-area cover and trunk-lid trim plugs for tail-lamp access",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=onboard+vehicle+tool+kit",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamps"
+      ],
+      "note": "BMW manual p.229, p.233-234. A turn-lock fastener on the cargo-area cover can instead be released counterclockwise.",
+      "primary": true
+    },
+    {
+      "item": "Torx T15 or T20 (headlight bulb holder/angel-eye holder screws; poster unsure which)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11758649"
+      ]
+    },
+    {
+      "item": "8 mm socket (fender/wheel liner screws for fog lamp access)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11847764"
+      ],
+      "note": "E90Post fog-light thread (AndyR83: 8 mm socket on the liner screws). LUX guide also lists 8 mm and 10 mm sockets for liner removal. Only needed for the fog bulb route; the BMW halogen headlamp route needs no liner removal."
+    },
+    {
+      "item": "8 mm and 10 mm sockets, ratchet, T20 and T30 Torx (xenon bulb job via fender liner, per bavmods)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
+      ]
+    },
+    {
+      "item": "T15 Torx plus 17 mm socket, 8/10 mm sockets, jack (LUX LED install guide describes the same fender-liner access)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
+      ]
+    },
+    {
+      "item": "Floor jack, jack stands, wheel wrench (when removing the wheel for liner access)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+        "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
+      ],
+      "note": "Needed only for the xenon wheel-and-liner route described by retailers or if the user chooses to jack for the fog bulb job (posters disagree whether a jack helps). The BMW halogen low-beam route needs only the wheel turned inward."
+    },
+    {
+      "item": "Clean gloves and eye protection (do not touch bulb glass; the H7 bulb is pressurized)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=halogen",
+        "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/lights/headlight",
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
+      ],
+      "note": "BMW manual p.230-231: never touch new bulb glass with bare fingers; 'Always wear gloves and eye protection; the atmosphere within the H7 bulb is pressurized.'",
+      "primary": true
+    },
+    {
+      "item": "Pliers/flat screwdriver to twist off cap tabs",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11758649"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "Halogen headlight bulb H7 12V 55W longlife (qty 4 per car: low and high beam)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=23520229",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=halogen"
+      ],
+      "partNumber": "63217160781",
+      "primary": true,
+      "note": "ETK diagram 63_1069 'Individual parts for headlamp, halogen'; BMW owner's manual p.231 lists the halogen low/high beam as H7 55 W; E90Post LCI 328xi thread and Turner H7 listing agree on type."
+    },
+    {
+      "item": "Front turn signal bulb PY24W yellow (halogen lamps)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069",
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap"
+      ],
+      "partNumber": "07119905468",
+      "primary": true,
+      "note": "Turner lists same number as amber turn bulb for E90. BMW manual p.232: front turn signal PY24W 24 W via the wheel-well flap."
+    },
+    {
+      "item": "Xenon low-beam bulb D1S (ETK: 'D1 12V 35W with ignition element'), qty 2",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11473721",
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
+      ],
+      "partNumber": "63217217509",
+      "primary": true
+    },
+    {
+      "item": "Fog bulb H8 12V 35W (qty 2) on 2009+ cars without M aero package",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1073",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50"
+      ],
+      "partNumber": "07119906503",
+      "primary": true,
+      "note": "Turner: H8 fits E90 2009+; H11 (63217160784) for E90 2006-2008."
+    },
+    {
+      "item": "Fog bulb H11 55W (pre-LCI 2006-2008 only)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50"
+      ],
+      "partNumber": "63217160784",
+      "note": "Not for this 2009+ build per ETK."
+    },
+    {
+      "item": "Angel-eye/halo bulb H8 35W (xenon/adaptive lamps)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
+      ],
+      "partNumber": "07119906503",
+      "primary": true
+    },
+    {
+      "item": "Halo / parking / daytime-running bulb on halogen LCI lamps (type disputed)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=8311110",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50",
+        "https://cdn11.bigcommerce.com/s-ldaxybx767/product_images/uploaded_images/old-site-media/images/Products/City%20Vision%20Lighting/E90%20LCI%20Halogen%20Headlight%20Angel%20Eye%20Guide.pdf",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=roadside+parking+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=bulb",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=24431475",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=10983823",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=9352450",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069"
+      ],
+      "partNumber": null,
+      "conflicts": "H8 12V 35W: BMW owner's manual p.230 lists H8 35 W for parking, roadside parking and daytime running lamps (cover turned left, bulb turned about 90 degrees) but does not use the words halo or light ring; E90Post posters say the stock angel-eye bulb on a 2010 LCI is H8 ('I believe the lci halogens use an h-8'); Turner lists H8. H10W: a lighting vendor install guide for E90 LCI halogen lamps. W5W 5 W: BMW manual p.232 lists a separate parking/roadside bulb reached by pulling the socket after removing the high-beam cover. Also an E90Post post quoting LuxAngelEyes says the LCI halogen and pre-LCI xenon ring bulbs are 'proprietary and designed differently'. ETK halogen diagram 63_1069 lists light-ring lighting units but no ring bulb. Weight of evidence favours H8, but it is not proven for this lamp: read the marking on the bulb removed.",
+      "note": "ETK halogen diagram includes 'Lighting unit, light rings' (ZKW 63117161444, VALEO 63112179077), so halo rings probably exist on this halogen LCI lamp even though the decode shows no angel-eye option."
+    },
+    {
+      "item": "Parking / roadside parking / daytime running lamp bulb H8 12V 35W (BMW manual)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=roadside+parking+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=bulb"
+      ],
+      "partNumber": null,
+      "primary": true,
+      "note": "Manual p.230: switch off lamps and take the remote out of the ignition lock, turn the cover left and remove it, turn the bulb about 90 degrees and pull it out, unplug, replace, plug in, turn until it stops, refit cover. Same H8 type as ETK 07119906503 (fog) but the manual gives no part number and does not say where the cover sits."
+    },
+    {
+      "item": "Parking / roadside parking lamp bulb W5W 5 W (BMW manual; reached through the high-beam headlamp cover)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=bulb"
+      ],
+      "partNumber": null,
+      "primary": true,
+      "note": "Manual p.232: remove the high-beam headlamp cover, pull out the bulb socket, replace the bulb, insert socket, refit cover. The text read does not say which lamp variant uses W5W vs H8."
+    },
+    {
+      "item": "Cornering light bulb H3 12V 55W (adaptive headlight cars only)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642"
+      ],
+      "partNumber": "63217160779",
+      "primary": true,
+      "note": "ETK for adaptive (S524A); E90Post says H3 cornering bulb sits behind the top cover."
+    },
+    {
+      "item": "Halogen headlamp covers (ETK): high-beam covering cap L/R ZKW 63127238826 / 63127238827, VALEO 63127246481 / 63127246482; low-beam lamp cover (VALEO) 63117159564; headlight cover 63127681410 (qty 2). Lamp maker ZKW vs VALEO decides which applies",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=halogen"
+      ],
+      "partNumber": "63127238826 / 63127238827 / 63127246481 / 63127246482 / 63117159564 / 63127681410",
+      "primary": true,
+      "note": "Only needed if a cover is lost or cracked. BMW manual warns to refit covers carefully or the lamp can leak."
+    },
+    {
+      "item": "Lighting unit, light rings (ETK halogen diagram): ZKW 63117161444, VALEO 63112179077 (qty 2)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069"
+      ],
+      "partNumber": "63117161444 / 63112179077",
+      "primary": true,
+      "note": "Shows the halogen LCI lamp has a light-ring unit in the catalog; does not name its bulb."
+    },
+    {
+      "item": "Side repeater/additional turn lamp bulb yellow 12V 5W",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_0920"
+      ],
+      "partNumber": "63217160798",
+      "primary": true
+    },
+    {
+      "item": "Rear lamp bulbs (sedan): trunk-lid brake lamp H21W 21 W longlife x2 63217160788; backup lamp W16W 16 W longlife x2 63217160935; other lamps P21W 21 W x4 63217160789",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1074",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=H21W",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamp+sedan+brake+lamp+backup+lamp"
+      ],
+      "partNumber": "63217160789 / 63217160788 / 63217160935",
+      "primary": true,
+      "note": "ETK 63_1074 gives the numbers and quantities; BMW owner's manual p.232-233 assigns the types: brake lamp in the trunk lid H21W, backup lamp W16W, 'other lamps' P21W. The manual does not say which positions the P21W covers. Positions 2, 3 and 5 are LED, not bulbs (see next row)."
+    },
+    {
+      "item": "Rear lamp bulb sockets (ETK): side-panel (fender) lamp L 63217211213 / R 63217211214; trunk-lid lamp L 63217211211 / R 63217211212",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1074"
+      ],
+      "partNumber": "63217211213 / 63217211214 / 63217211211 / 63217211212",
+      "primary": true,
+      "note": "ETK also lists complete lamps; the old numbers 63214871733-63214871736 are ENDED (up to 03/2010) and replaced by 63217289427-63217289430. ETK shows no LED modules in this diagram."
+    },
+    {
+      "item": "Rear lamp LED positions on the US 2010 sedan: roadside parking/tail lamp (2), turn signal (3), tail lamp (5) are LED; brake lamps (1, 6) and backup lamp (4) are bulbs",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamp+sedan+brake+lamp+backup+lamp",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1074",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=17862989"
+      ],
+      "partNumber": null,
+      "primary": true,
+      "conflicts": "BMW owner's manual (US 2010): positions 2, 3, 5 are LED and, if one fails, 'contact your BMW center'; E90Post owners of a 2011 sedan say the same (turn signals and tail bars LED; brake, fog, reverse incandescent). BMW launch-E90 training document ST502: 'conventional bulb technology ... LEDs are not used'. ETK 63_1074 for this VIN lists only bulb sockets and bulbs and a lamp revision at 03/2010. A 09/2009 build may therefore have either lamp; not decodable. Guide branches on what is seen when the cover is opened."
+    },
+    {
+      "item": "Tail/brake 21W longlife 63217160790 (Turner, older ledger entry; NOT in the ETK for this VIN)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ],
+      "partNumber": "63217160790 vs 63217160788/63217160789",
+      "conflicts": null,
+      "note": "Resolved in favour of the ETK for this VIN (09/2009): use 63217160788 (H21W), 63217160789 (P21W) and 63217160935 (W16W). Turner 63217160790 is not in the 2009+ ETK rear light diagram 63_1074, so it is not recommended for this build. 16W 63217160935 appears in both Turner and ETK."
+    },
+    {
+      "item": "Assorted blade fuses, same rating and colour as the failed fuse. ETK colour/amp: Mini 4 A pink, 5 A yellow-brown, 7.5 A brown, 10 A red, 15 A blue, 20 A yellow; blade 5 A light brown 61131372523, 7.5 A brown 61131372524, 10 A red 61131372525, 15 A blue 61131372526, 20 A yellow Maxi 61131372527, 25 A white 61131372528, 30 A green 61131372529, 40 A orange 61138364543",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1710",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "partNumber": null,
+      "primary": true
+    },
+    {
+      "item": "Fuse allocation map (ETK 'Map, fuse grouping') 71239232904; Mini fuses 4 A pink 61136917400, 5 A yellow-brown 61136917401, 7.5 A brown 61136917402, 10 A red 61136917403, 15 A blue 61136917404, 20 A yellow 61136942071; Maxi 20 A yellow 61146940095, 30 A green 61138367146, 40 A orange 61138367132, 50 A red 61138367154, 60 A blue 61136914636; BMW fuse clip 61146936578",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1710",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "partNumber": "71239232904",
+      "primary": true,
+      "note": "ETK 61_1710. The BMW manual (p.236) says never replace a fuse with a different colour or amp rating. ETK does not say which fuse positions take Mini vs blade vs Maxi."
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Fender/wheel liner screws, bulb holder screws, glove-box fasteners",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null,
+      "note": "No torque in any source; these are light-duty trim fasteners, hand-tight/snug only."
+    }
+  ],
+  "specs": [
+    {
+      "item": "Glove-box fuse box (junction box) location",
+      "value": "Behind the passenger glove compartment; cover released by two round quarter-turn fasteners; chart sticker on the back of the cover",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=30763666"
+      ],
+      "primary": true,
+      "note": "BMW owner's manual p.236: 'Open the cover in the glove compartment and remove it'; assignment information is on the rear of the cover. The manual mentions no other owner-serviceable fuse box."
+    },
+    {
+      "item": "Fuse numbering differs by build date",
+      "value": "Numbering changes around 09/2007: E90Post and BMWGuide (Type 3 after 09/2007), FuseCheck ('from 09.2007 to 2010' is the newest layout), FuseAndRelay (Type 2 tags from 08/07). A 09/2009 build is on the newest layout.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=30763666",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram",
+        "https://bmwguide.net/bmw-3-series-e90-fuses-and-relays/"
+      ],
+      "primary": false
+    },
+    {
+      "item": "Fuse chart for 2010 E90 glove box (web charts)",
+      "value": "CONFLICT between web charts for the post-09/2007 layout. YouCanic and FuseAndRelay (Type 2): F30 20 A cigarette lighter, F35 30 A ABS, F50 10 A ECM, F51 50 A ignition switch control module, F69 50 A fan, F88 20 A engine management (FuseAndRelay as logged earlier: F51 50 A ignition control, F69 50 A fan, F88 20 A engine management). FuseCheck (09.2007 to 2010 table): F8 20 A cigar lighters/12 V outlets, F30 10 A seat belt positioner controllers, F35 30 A DSC, F50 30 A wiper control, F51 40 A car access system, F88 40 A blower, F69 no entry. Do not publish per-fuse functions.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "primary": false,
+      "note": "BMW manual p.236 only says the assignment is on the rear of the cover (chart not in the text read); ETK lists the fuse map as part 71239232904. Tell the user to use the sticker on the cover."
+    },
+    {
+      "item": "Rear power distribution box (trunk)",
+      "value": "On top of the battery; contains fusible links that cannot be replaced individually; replace as complete unit. No user-serviceable trunk fuse panel is described",
+      "status": "VERIFIED",
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=30763666",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1946"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Engine-bay E-box / front power distribution box (location and access)",
+      "value": "Exists (ETK front power distribution box 61149119445, from 09/2007; E-box fuses F01-F07 on web charts; JBE integrated in the front power distribution box per ST502). Location sources disagree: BMWGuide 'in the rear of the engine compartment, near the wipers'; RPM Motorsport: the DME/ECU compartment is on the passenger side under the hood behind a white cover, reached after removing the A/C filter covers and rain gutter tray (not stated to be the same box as the E-box fuses); Car-Box: power fuse boxes 'near the battery' and on the left side of the engine compartment under the cowl trim panel. The BMW owner's manual describes no engine-bay fuse box.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_2220",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06a_E90%20General%20Vehicle%20Electrical.pdf",
+        "https://bmwguide.net/bmw-3-series-e90-fuses-and-relays/",
+        "https://www.rpmmotorsport.net/pages/removing-or-installing-a-dme-or-cas-a-bmw-e90-3-series-from-years-2005-to-2011",
+        "https://car-box.info/bmw/3-series/e90-e91-2005-2013.html",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "primary": true,
+      "note": "Existence verified (ETK); location and access NOT established, and BMW describes only the glove-box fuses for owners. Guide must not give location steps."
+    },
+    {
+      "item": "Fuse puller storage location",
+      "value": "Plastic tweezers on the distributor box in the glove compartment (BMW owner's manual p.236); FuseCheck: spare fuses and plastic forceps in holders on the distributor box",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1710"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Cigarette lighter fuse",
+      "value": "20 A on all three charts, but the position number conflicts: F30 (YouCanic, FuseAndRelay) vs F8 (FuseCheck 09.2007-2010 table)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram"
+      ],
+      "primary": false
+    },
+    {
+      "item": "Xenon vs halogen option codes",
+      "value": "ETK: S522A Xenon Light, S524A Adaptive Headlights; ST502: bi-xenon only with Adaptive Headlight Control on the launch E90; ST502: halogen is standard",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06b_E90%20General%20Vehicle%20Electrical%20II.pdf"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Headlight bulb access (halogen)",
+      "value": "High-beam headlamp is reached from the engine compartment; low-beam headlamp and front turn signal through a flap in the wheel well (turn the wheel inward; turn the flap fastener counterclockwise with a coin). Covers (separate for low and high beam): fold the wire bracket aside and flip the cover out of its guide; refit carefully or the lamp can leak. No wheel or liner removal in the BMW procedure. ST502 (launch E90) agrees on service openings in the wheel arch covers.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=halogen",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=high-beam+headlamp",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069"
+      ],
+      "primary": true,
+      "note": "Earlier conflict (wheel arch vs rear covers from under the hood) is explained by BMW: high beam from the engine bay, low beam through the wheel-well flap. Retailer routes that remove the wheel and liner (bavmods, LUX) are for xenon/aftermarket jobs. Owner posts (E90Post 17230769) mention both under-hood and wheel-arch panel routes."
+    },
+    {
+      "item": "Halo/angel-eye bulb access",
+      "value": "Twist off the round finned cap on the back of the headlight from under the hood (no wheel removal); H8 bulb twists out; remove extra rubber washers on the new bulb",
+      "status": "VERIFIED",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
+      ],
+      "primary": false,
+      "note": "Two E90Post threads (one E90 xenon, one 335i adaptive); a third post says wheel liner removal needed; a vendor guide for halogen LCI removes the rear covers. Treat as variant dependent."
+    },
+    {
+      "item": "Fog lamp bulb access",
+      "value": "Turn the front wheel toward the side being worked on, remove the wheel-liner screws (8 mm per one poster; two bottom screws at the front of the liner per another), peel the liner back to expose the bulb; posters disagree whether a jack helps. The BMW owner's manual gives no fog bulb procedure.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11847764"
+      ],
+      "note": "One E9x thread (five posters, one host); a linked DIY there predates 2011. Other E90Post fog threads concern the housing, not the bulb."
+    },
+    {
+      "item": "Tail lamp bulb access",
+      "value": "BMW owner's manual (sedan, p.233-234): fender part: pry off the cargo-area cover with a screwdriver or release the turn-lock fastener (counterclockwise); trunk-lid part: remove the warning triangle from its holder and unscrew the holder, pry out the plastic plugs in the trunk-lid trim and remove the trim. Then release the bulb holder at its clip and pull it out, press gently and turn the bulb left to remove, refit and re-engage the holder until it clicks. ST502 (launch E90) describes a flap in the luggage-compartment trim panel.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=H21W",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamp+sedan+brake+lamp+backup+lamp",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://tpautorepair.net/how-to-change-bmw-328i-tail-light-bulb/"
+      ],
+      "primary": true,
+      "note": "TP Auto Repair (generic E90/E92 text) also describes a panel behind each lamp and squeezing carrier tabs; it is not model-year specific."
+    },
+    {
+      "item": "Xenon bulb high voltage / battery disconnect / who may do the work",
+      "value": "BMW owner's manual p.230: any work on the xenon lamp system, including bulb replacement, only by a BMW center or qualified workshop (high voltage can be fatal). BMW ST502: control unit supplies the ignition voltage; retailer guides add lights off and battery negative disconnected, then wait several minutes.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06b_E90%20General%20Vehicle%20Electrical%20II.pdf",
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+        "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/lights/headlight",
+        "https://tpautorepair.net/how-to-change-headlight-bulb-bmw-335i/"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Headlight must be re-aimed/coded after lamp replacement (adaptive)",
+      "value": "ST502: after replacing adaptive-headlight parts, coding/adaptation is needed and headlights must be adjusted and checked",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06b_E90%20General%20Vehicle%20Electrical%20II.pdf"
+      ],
+      "primary": true,
+      "note": "Applies to replacing control units/lamp assemblies, not to bulb swaps."
+    },
+    {
+      "item": "Battery disconnect for halogen bulb or fuse work",
+      "value": "Not required by BMW: the manual says to switch off the consumer in question and take the remote out of the ignition lock, and never mentions disconnecting the battery. If the battery is ever disconnected, p.236 lists what resets (time and date, radio stations, navigation start-up, seat and mirror memory, compass calibration) and that the glass roof may only open partly and must be initialized by a BMW center (this car has a glass roof, option 403).",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "primary": true,
+      "note": "Retailer and carcarekiosk battery-disconnect advice is tied to HID/xenon, not halogen."
+    },
+    {
+      "item": "Fuse replacement rules",
+      "value": "Never attempt to repair a blown fuse; never replace a defective fuse with one of another colour or amp rating (circuit overload, vehicle fire); spare fuses from a BMW center; ignition switched off with the remote out of the lock before work.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "primary": true
+    },
+    {
+      "item": "H7 halogen bulb handling",
+      "value": "Change bulbs only when cool (burns); never touch new bulb glass with bare fingers (use a clean cloth or hold the base); always wear gloves and eye protection because the H7 atmosphere is pressurized; refit covers carefully or the lamp can leak; check and adjust headlamp aim only through a BMW center.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=halogen",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Low-beam bulb change steps (halogen), BMW manual p.232",
+      "value": "Remove the low-beam cover; disconnect the plug from the lamp; push the wire bracket sideways out of its mounting and fold it down; remove the bulb; insert the new bulb as shown in the illustration; fold the wire bracket up and engage it; connect the plug; refit the cover. Separate step list for the high beam was not in the text read (assumed the same, not stated).",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=high-beam+headlamp"
+      ],
+      "primary": true,
+      "note": "The retainer is the wire bracket (no twist ring); this closes the earlier 'retainer type' gap for the low beam."
+    },
+    {
+      "item": "Bulb-failure monitoring",
+      "value": "ST502: the FRM checks lamp outputs for a line break or defective bulb, so a failed bulb is reported by the car; lamps should be checked after replacement.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06b_E90%20General%20Vehicle%20Electrical%20II.pdf"
+      ],
+      "primary": true
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Identify the failed circuit",
+      "instruction": "Switch the ignition off and take the remote out of the ignition lock. Find the fuse on the chart printed on the back of the glove-box fuse cover (BMW owner's manual p.236; the glove-box fuse box is the only one BMW describes for owner service). This 09/2009 car is on the newest glove-box layout (numbering changed around 09/2007). Web fuse charts for that layout disagree with each other, so use the sticker, not a web chart; if the sticker is missing the catalog item is BMW fuse map 71239232904.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not trust per-fuse functions from web charts: three charts disagree (for example F30 is 20 A cigarette lighter on two and 10 A seat-belt positioners on the third).",
+        "Never attempt to repair a blown fuse."
+      ],
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1710",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=30763666",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram"
+      ],
+      "primary": true
+    },
+    {
+      "n": 2,
+      "title": "Open the glove-box fuse panel",
+      "instruction": "Open the glove box and remove the fuse cover (web sources: two round plastic quarter-turn fasteners, turned counterclockwise; BMW says only 'open the cover in the glove compartment and remove it'). The chart is on the back of the cover (it can fall into the glove box). Plastic tweezers are on the distributor box (spare fuses are also stored there per FuseCheck). Take a photo of the layout before touching anything.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Panel is tight to reach; use the plastic tweezers stored on the distributor box.",
+        "YouCanic's FAQ says to remove the whole glove box for full access; its steps and the other sources only remove the cover."
+      ],
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+        "https://fusecheck.com/bmw/bmw-3-series-e90-e91-e92-e93-2005-2010-fuse-diagram"
+      ],
+      "primary": true
+    },
+    {
+      "n": 3,
+      "title": "Swap the fuse",
+      "instruction": "Pull the suspect fuse with the plastic tweezers, compare its colour/number with the chart, fit a new fuse of identical amp rating and colour. BMW colour code (ETK): Mini 4 A pink, 5 A yellow-brown, 7.5 A brown, 10 A red, 15 A blue, 20 A yellow; blade/Maxi 5 A light brown, 7.5 A brown, 10 A red, 15 A blue, 20 A yellow, 25 A white, 30 A green, 40 A orange, 50 A red, 60 A blue.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never fit a different colour or higher amp rating (BMW: circuit overload and vehicle fire risk); a repeat blow means a short.",
+        "Never repair a blown fuse. Check one fuse at a time and note what it does."
+      ],
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1710",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+      ],
+      "primary": true
+    },
+    {
+      "n": 4,
+      "title": "Trunk fuses",
+      "instruction": "There is no replaceable-fuse panel in the trunk: the rear power distribution box on top of the battery contains fusible links that cannot be replaced individually and the box is replaced as a unit. Do not open it.",
+      "status": "VERIFIED",
+      "warnings": [
+        "If a main supply fusible link is suspected, have the car checked; do not bypass."
+      ],
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=30763666"
+      ],
+      "primary": true
+    },
+    {
+      "n": 5,
+      "title": "Engine-bay fuses (E-box / front power distribution box): not an owner step",
+      "instruction": "The BMW owner's manual describes only the glove-box fuse box. An engine electronics box (E-box, web chart fuses F01-F07: 30 A ignition coils, 30 A coolant pump/thermostat, 20 A crank sensor/purge valve, 30 A crankcase and O2 heaters, 10 A E-box fan) and a front power distribution box (ETK 61149119445) exist, but web sources disagree on where they are and how they open (rear of the engine compartment near the wipers; passenger-side DME compartment under a white cover behind the A/C filter covers and rain gutter tray; or near the battery / left side under the cowl trim). Do not open or probe them from this guide; if the glove-box fuses are fine and an engine-electronics fault remains, have it diagnosed.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Location and access are not established by a BMW document; do not publish location or access steps without a source.",
+        "Wiper arms must be against the windshield before the hood is opened (BMW manual p.229)."
+      ],
+      "sources": [
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_2220",
+        "https://bmwguide.net/bmw-3-series-e90-fuses-and-relays/",
+        "https://www.rpmmotorsport.net/pages/removing-or-installing-a-dme-or-cas-a-bmw-e90-3-series-from-years-2005-to-2011",
+        "https://car-box.info/bmw/3-series/e90-e91-2005-2013.html",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Confirm the headlight type",
+      "instruction": "Expected case for this car: halogen (decoded: no S522 xenon, no S524 adaptive). Confirm from the VIN option list (ETK: S522A Xenon Light, S524A Adaptive Headlights) or by the bulb you remove: H7 12V 55W halogen vs D1S xenon. Halogen: go to step 7. Xenon or adaptive (not expected): BMW says have any xenon work, including bulb replacement, done only by a BMW center; step 8 records what retailer guides describe and is not recommended.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Xenon systems carry high voltage that can cause fatal injuries (BMW owner's manual p.230).",
+        "A corner-illuminating H3 55 W bulb exists only on adaptive-headlight cars (manual p.231; ETK S524A)."
+      ],
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06b_E90%20General%20Vehicle%20Electrical%20II.pdf",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb"
+      ],
+      "primary": true
+    },
+    {
+      "n": 7,
+      "title": "Halogen H7 low/high-beam bulb",
+      "instruction": "Switch the lamps off, take the remote out of the ignition lock and let the bulb cool; wear gloves and eye protection (the H7 is pressurized). High beam: from the engine compartment, fold the wire bracket of the high-beam cover to the side, flip the cover out of its guide. Low beam: turn the front wheel inward, open the flap in the wheel well by turning its fastener counterclockwise with a coin, remove the low-beam cover the same way (fold the wire bracket aside, flip the cover out of its guide). Disconnect the plug, push the wire bracket sideways out of its mounting and fold it down, remove the H7 12V 55W bulb, fit the new one as shown in the manual's illustration, fold the bracket up and engage it, connect the plug, refit the cover carefully (leaks can damage the lamp), then test. The same flap gives access to the front turn-signal bulb (step 10 note).",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not touch glass; replace in pairs for matching light.",
+        "The manual text read prints the wire-bracket and plug steps for the low beam; the same sequence is assumed, not stated, for the high beam.",
+        "No battery disconnect is needed for halogen (BMW says switch off the consumer); check and adjust headlamp aim only through a BMW center.",
+        "Covers differ by lamp maker (ZKW or VALEO); they are not interchangeable by guess."
+      ],
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=halogen",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=high-beam+headlamp",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069",
+        "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/lights/headlight"
+      ],
+      "primary": true
+    },
+    {
+      "n": 8,
+      "title": "Xenon low-beam bulb (D1S), not expected for this car",
+      "instruction": "BMW states xenon lamp work, including bulb replacement, is for a BMW center or qualified workshop only. For reference, one retailer guide: switch lights off and disconnect the battery negative; remove the wheel and fender liner screws, open the bulb cover (six T20 per that retailer), press the retaining clips, pull and replace the D1S, plug in and test before reassembly; replace both sides together.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "High voltage; BMW says BMW center only. If you do disconnect the battery, expect the power-failure items in the owner's manual p.236 (clock, radio, memory seats, compass, glass roof initialization at a BMW center).",
+        "Support the car on stands; do not touch bulb glass."
+      ],
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
+        "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/lights/headlight",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb",
+        "https://tpautorepair.net/how-to-change-headlight-bulb-bmw-335i/",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses"
+      ],
+      "primary": false
+    },
+    {
+      "n": 9,
+      "title": "Parking / halo (angel-eye) bulb",
+      "instruction": "Bulb type on this halogen LCI lamp is disputed, so match the old bulb. BMW owner's manual p.230 (H8 35 W, parking / roadside parking / daytime running lamps): switch off, remove the remote from the ignition lock, turn the cover left and remove it, turn the bulb about 90 degrees and pull it out, unplug the connector, fit the new bulb, plug in, turn until it stops, refit the cover. BMW also lists a separate W5W 5 W parking bulb: remove the high-beam cover, pull out the bulb socket, swap the bulb, refit. Owner posts on xenon/adaptive cars reach the H8 from under the hood by unclipping the plastic panel on top of the headlight or twisting off a finned cap, and say to remove extra rubber washers from the new bulb.",
+      "status": "CONFLICT",
+      "warnings": [
+        "H8 (BMW manual, two posters) vs H10W (one vendor guide) vs W5W (BMW manual, separate parking bulb): read the marking on the removed bulb before buying.",
+        "Wiring bundle near the bulb can be tight.",
+        "Direction of twist is from one 335i post only; BMW says about 90 degrees without naming the direction."
+      ],
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=26172610",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=8311110",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=roadside+parking+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=bulb",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=24431475",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=10983823",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=20621213",
+        "https://cdn11.bigcommerce.com/s-ldaxybx767/product_images/uploaded_images/old-site-media/images/Products/City%20Vision%20Lighting/E90%20LCI%20Halogen%20Headlight%20Angel%20Eye%20Guide.pdf",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1069"
+      ],
+      "primary": false
+    },
+    {
+      "n": 10,
+      "title": "Fog bulb H8",
+      "instruction": "Not described in the BMW owner's manual (which says to contact a BMW center for bulbs it does not describe). Owner-post route: turn the front wheels toward the side being worked on, remove the wheel-liner screws (8 mm per one poster; two bottom screws at the front of the liner per another), peel the liner back, twist out the H8 35 W bulb, replace, refit the liner.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Posters disagree whether a jack helps; use stands if lifting.",
+        "BMW manual: front turn-signal bulb (PY24W 24 W) uses the same wheel-well flap as the low beam; rotate the socket left and remove it, press gently and turn the bulb left, refit the socket, close the flap."
+      ],
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1073",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=lamps+and+bulbs"
+      ],
+      "primary": false
+    },
+    {
+      "n": 11,
+      "title": "Rear (tail/brake/backup) bulbs",
+      "instruction": "BMW owner's manual (sedan, p.232-234): the tail lamps are in two parts, one in the trunk lid and one in the fender. Fender part: pry off the cargo-area cover with a screwdriver or release its turn-lock fastener counterclockwise. Trunk-lid part: remove the warning triangle from its holder and unscrew the holder, pry out the plastic plugs in the trunk-lid trim and remove the trim. Release the bulb holder at its clip, pull it out, press gently on the bulb and turn it left to remove; fit the new bulb, re-engage the holder until it clicks, refit the cover or trim. Bulbs: trunk-lid brake lamp H21W 21 W, backup lamp W16W 16 W, other lamps P21W 21 W. BRANCH: the manual says positions 2 (roadside parking/tail), 3 (turn signal) and 5 (tail) are LED; if the lamp function that failed has no bulb carrier, it is LED and BMW says contact a BMW center. A 09/2009 build may carry an older all-bulb lamp (ETK shows a lamp revision at 03/2010), so count the bulb carriers when the cover is open.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Which P21W socket does which function is not stated by BMW; note carrier positions before removing anything.",
+        "Never touch new bulb glass with bare fingers; let bulbs cool."
+      ],
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamps",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=H21W",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=tail+lamp+sedan+brake+lamp+backup+lamp",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=onboard+vehicle+tool+kit",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1074",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+        "https://tpautorepair.net/how-to-change-bmw-328i-tail-light-bulb/"
+      ],
+      "primary": true
+    },
+    {
+      "n": 12,
+      "title": "Test and re-check",
+      "instruction": "Switch the lights on, confirm every function and check the dash for bulb-out warnings (the FRM monitors the lamp outputs). Headlight aim is checked and adjusted only through a BMW center.",
+      "status": "VERIFIED",
+      "warnings": [],
+      "sources": [
+        "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/lights/headlight",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/06b_E90%20General%20Vehicle%20Electrical%20II.pdf",
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=headlamp+bulb"
+      ]
+    }
+  ],
+  "safety": [
+    "Ignition off and remote out of the lock before fuse or bulb work; BMW says switch off the consumer in question first. Same-rating, same-colour fuses only; never repair or bridge a fuse (circuit overload can cause a vehicle fire).",
+    "Do not open the rear power distribution box on the battery.",
+    "Xenon (HID) systems carry high voltage that can be fatal: BMW says xenon work, including bulb replacement, only by a BMW center or qualified workshop.",
+    "H7 halogen bulbs are pressurized: wear gloves and eye protection, change only when cool, never touch new glass with bare fingers.",
+    "Refit headlamp covers carefully (leaks damage the lamp) and have headlamp aim checked only through a BMW center.",
+    "Wiper arms must be against the windshield before the hood is opened (BMW manual p.229).",
+    "Use jack stands, never just a jack, if a wheel is removed (xenon or fog routes).",
+    "If the battery is disconnected: time/date, radio, memory seats and compass reset and the glass roof may only open partly until a BMW center initializes it (manual p.236).",
+    "After replacing adaptive-headlight components the lamps need coding and aim check."
+  ],
+  "missingEvidence": [
+    "Engine-bay E-box / front power distribution box: physical location, cover release and a verified fuse chart. The BMW owner's manual mentions only the glove-box fuse box; web sources disagree (rear near the wipers, passenger-side DME compartment, near the battery or left side).",
+    "A BMW-document glove-box fuse chart for this build (the manual says the chart is on the rear of the cover but the text read does not reproduce it; ETK gives only the part number 71239232904). The three web charts disagree, so no per-fuse functions are published.",
+    "Separate printed step list for the high-beam bulb (the manual text read gives the wire-bracket and plug steps for the low beam only; same sequence assumed).",
+    "Fog bulb replacement from a BMW document (the manual has none); the only procedure is one E90Post thread.",
+    "Which P21W sockets serve which tail-lamp function, and whether a 09/2009 build has the LED (positions 2, 3, 5) lamp or the older all-bulb lamp (ETK lamp revision at 03/2010; manual describes LED).",
+    "Halo / parking bulb type on halogen LCI lamps (H8 favoured; H10W and W5W also appear) and whether this car has halo rings at all (ETK halogen diagram includes light-ring units; the decode shows no angel-eye option).",
+    "Lamp maker (ZKW or VALEO) for cover part numbers.",
+    "Wheel-well flap fastener torque or tool beyond 'a coin, for example'; no torque value exists for any of the trim fasteners in these jobs.",
+    "The owner's manual was read through a third-party text mirror (carmanualsonline.info), not the BMW PDF itself."
+  ],
+  "ownerInputsNeeded": [],
+  "visuals": [
+    {
+      "id": "glovebox-fuse-panel",
+      "title": "Glove-box fuse panel cover",
+      "evidenceSteps": [
+        2,
+        3
+      ],
+      "viewpoint": "footwell",
+      "elements": [
+        {
+          "id": "glove-box-open",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The open glove compartment on the passenger side of the dashboard."
+        },
+        {
+          "id": "fuse-cover-fasteners",
+          "role": "hero",
+          "criticality": "procedure",
+          "describe": "Two round plastic quarter-turn fasteners (fastener type: quarter-turn) that hold the fuse panel cover; turned counterclockwise to unlock."
+        },
+        {
+          "id": "fuse-cover",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The removable cover whose back carries the fuse chart sticker."
+        },
+        {
+          "id": "fuse-panel",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The junction box fuse panel behind the glove box, reachable once the cover drops."
+        }
+      ],
+      "facts": [
+        {
+          "element": "glove-box-open",
+          "attribute": "location",
+          "urls": [
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://fuseandrelay.com/bmw/e90.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "Junction box behind passenger glove compartment."
+        },
+        {
+          "element": "fuse-cover-fasteners",
+          "attribute": "existence",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252",
+            "https://fuseandrelay.com/bmw/e90.html"
+          ],
+          "note": "Two round plastic quarter-turn fasteners."
+        },
+        {
+          "element": "fuse-cover-fasteners",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "Round plastic quarter-turn; YouCanic says counterclockwise."
+        },
+        {
+          "element": "fuse-cover-fasteners",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "Exact positions of the two fasteners on the cover are not stated by any source."
+        },
+        {
+          "element": "fuse-cover",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+            "https://fuseandrelay.com/bmw/e90.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "Fuse diagram is on the back of the cover."
+        },
+        {
+          "element": "fuse-panel",
+          "attribute": "fine-detail-geometry",
+          "urls": [],
+          "note": "Number/arrangement of fuse positions and fuse puller location not established."
+        },
+        {
+          "element": "fuse-cover-fasteners",
+          "attribute": "location",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://fuseandrelay.com/bmw/e90.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "All three place the two fasteners on the fuse-panel cover inside the passenger glove compartment (YouCanic: open the glove box and you see two round plastic screws); none gives their exact spot on the cover."
+        },
+        {
+          "element": "fuse-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://fuseandrelay.com/bmw/e90.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "FuseAndRelay: remove the protective cover, diagram on its back; Bimmerpost: cover with two quarter-turn fasteners, diagram on back; YouCanic: remove the panel."
+        },
+        {
+          "element": "fuse-cover",
+          "attribute": "location",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://fuseandrelay.com/bmw/e90.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "Cover sits in the glove-box area on the passenger side, over the fuse panel behind the glove compartment."
+        },
+        {
+          "element": "fuse-panel",
+          "attribute": "existence",
+          "urls": [
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://fuseandrelay.com/bmw/e90.html"
+          ],
+          "note": "BMW ST502 describes the junction box with fuses/relays behind the glovebox; YouCanic and FuseAndRelay describe the glove-box fuses."
+        },
+        {
+          "element": "fuse-panel",
+          "attribute": "location",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+            "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+          ],
+          "note": "BMW ST502: junction box on the passenger side behind the glove compartment; YouCanic: fuses behind the glove box."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "fuse-panel",
+          "reason": "Fuse positions, numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions."
+        },
+        {
+          "element": "fuse-cover-fasteners",
+          "reason": "Exact positions on the cover not established; depict only that there are two round fasteners."
+        }
+      ],
+      "sources": {
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf": {
+          "kind": "oem-text",
+          "establishes": "Junction box is arranged on the passenger side behind the glove compartment."
+        },
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf": {
+          "kind": "oem-text",
+          "establishes": "Junction box located behind the glovebox; fuses and relays plug into its PC board."
+        },
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/": {
+          "kind": "third-party-guide",
+          "establishes": "Open glove box, turn the two round plastic screws counterclockwise, remove the panel."
+        },
+        "https://fuseandrelay.com/bmw/e90.html": {
+          "kind": "third-party-guide",
+          "establishes": "Passenger fuse box in glove box: turn the two latches, remove cover, diagram on the back."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252": {
+          "kind": "third-party-photo",
+          "establishes": "Fuse panel behind glove box held by two quarter-turn fasteners; diagram on back of cover."
+        },
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses": {
+          "kind": "oem-text",
+          "establishes": "US 2010 328i owner's manual p.236: open the cover in the glove compartment and remove it; plastic tweezers are on the distributor box; fuse assignment is on the rear of the cover."
+        }
+      },
+      "gapFillNotes": [
+        "YouCanic's FAQ says to remove the whole glove box for full access, while its steps and the other sources only remove the cover. Exact position of the two fasteners on the cover is not stated anywhere (keep generic).",
+        "BMW owner's manual p.236 adds that plastic tweezers sit on the distributor box; it names no tool and does not describe the fasteners, so the two round quarter-turn fasteners still rest on the three web sources."
+      ],
+      "imageType": "LOCATE"
+    },
+    {
+      "id": "wheel-arch-liner-access",
+      "title": "Front wheel-arch liner screws for fog/low-beam access",
+      "evidenceSteps": [
+        7,
+        8,
+        10
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "front-wheel-liner",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The black plastic front wheel-arch liner that is peeled back or unscrewed to reach the bulbs behind the bumper/headlight."
+        },
+        {
+          "id": "liner-screws",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "Several screws (8 mm head per one thread; Torx per one retailer) around the liner; bottom screws on the front part named by one poster."
+        },
+        {
+          "id": "service-opening",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "A small cover in the liner/arch ahead of the wheel that BMW describes as the opening for bulb replacement."
+        }
+      ],
+      "facts": [
+        {
+          "element": "front-wheel-liner",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+            "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+            "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
+          ],
+          "note": "Three guides use the liner for access."
+        },
+        {
+          "element": "service-opening",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=17230769"
+          ],
+          "note": "BMW manual: flap in the wheel well for the low beam and front turn signal; ST502: service openings in the wheel arch covers; E90Post: panel under the wheel arch."
+        },
+        {
+          "element": "liner-screws",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+            "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+            "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
+          ],
+          "note": "8 mm hex head (E90Post fog thread); bavmods lists T20/T30 and 8/10 mm; LUX lists 8/10 mm sockets. Sources differ; count and positions are not consistent."
+        },
+        {
+          "element": "liner-screws",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "LUX guide: 5 screws and 1 nut inside plus 4 underneath; bavmods six T20 for the cover; not reconciled."
+        },
+        {
+          "element": "front-wheel-liner",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+            "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+            "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
+          ],
+          "note": "All three route headlight/low-beam work through the front wheel-well (fender) liner."
+        },
+        {
+          "element": "liner-screws",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+            "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+            "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
+          ],
+          "note": "Bimmerpost: 8 mm screws hold the black plastic liner; BAVMods: remove 8 mm fender liner screws and one 10 mm nut; LUX: 9 screws and 1 nut in total."
+        },
+        {
+          "element": "liner-screws",
+          "attribute": "location",
+          "urls": [
+            "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11847764"
+          ],
+          "note": "LUX: 5 screws and 1 nut inside the wheel well plus 4 on the bottom; Bimmerpost: two lower screws at the front edge of the liner. Counts differ, so show a handful of screws around the liner's edge."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "liner-screws",
+          "reason": "Count, head type and positions are not reconciled between sources; do not draw individual screws."
+        },
+        {
+          "element": "service-opening",
+          "reason": "Exact shape and location of the cover in the liner is not established."
+        }
+      ],
+      "sources": {
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf": {
+          "kind": "oem-text",
+          "establishes": "Bulbs can be replaced without removing the headlight through service openings in the wheel arch covers."
+        },
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide": {
+          "kind": "third-party-guide",
+          "establishes": "Xenon low-beam bulb job via wheel removal and fender liner."
+        },
+        "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf": {
+          "kind": "third-party-guide",
+          "establishes": "Wheel removal and wheel-well liner screws to reach the headlight bulb on an E90."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11847764": {
+          "kind": "third-party-guide",
+          "establishes": "E9x fog-light thread: turn the wheel, remove the liner screws (8 mm per AndyR83; two lower screws at the front edge per Cali_Creez), peel the liner back; posters disagree whether a jack helps."
+        },
+        "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap": {
+          "kind": "oem-text",
+          "establishes": "US 2010 328i owner's manual p.231-232: low-beam headlamp and front turn signal are reached through a flap in the wheel well (turn the wheel inward, turn the fastener counterclockwise with a coin); the high beam is reached from the engine compartment."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=17230769": {
+          "kind": "third-party-guide",
+          "establishes": "E90Post angel-eye thread: one poster says to access the headlamp from the wheel arch you remove the panel under the arch; others say the bulbs can be changed from under the bonnet."
+        }
+      },
+      "gapFillNotes": [
+        "Screw count and head type conflict across sources (9 screws+1 nut vs 3 vs two lower front; 8 mm vs 10 mm nut; T20 applies to the headlight bulb cover, not the liner). Keep screws generic.",
+        "Re-read 2026-10-10: E90Post p=26172610 does not mention the liner, 8 mm screws or a cover in front of the wheel, so those claims now rest on p=11847764 and the BMW owner's manual flap description."
+      ],
+      "imageType": "LOCATE"
+    }
+  ],
+  "withdrawnVisuals": [
+    {
+      "id": "headlight-halo-cap-engine-bay",
+      "title": "Halo bulb cap on the back of the headlight (under the hood)",
+      "reason": "Decoded configuration shows halogen headlights without the xenon/adaptive angel-eye lamps this visual depicted; it would show a part this car probably does not have. Withdrawn until the lamp type is confirmed at the car."
+    }
+  ],
+  "resolutionNotes": [
+    "RESOLVED fuse puller location: BMW owner's manual p.236 (US 2010 328i, text mirror carmanualsonline.info) says plastic tweezers are on the glove-box distributor box; FuseCheck agrees; tool row now VERIFIED. ETK 'fuse clip' 61146936578 kept as a catalog reference.",
+    "RESOLVED fuse rules: never repair a blown fuse, same colour and amp rating only, fire risk, spares from a BMW center (manual p.236). Added fuse map 71239232904 and the Mini/Maxi fuse part numbers from ETK 61_1710.",
+    "NEW CONFLICT: the three web glove-box fuse charts disagree (YouCanic/FuseAndRelay vs FuseCheck: F30, F35, F50, F51, F88, cigarette-lighter fuse number). The previous ledger said the charts agreed. Status changed from VERIFIED_SECONDARY to CONFLICT; guide says to follow the sticker on the cover.",
+    "RESOLVED fuse layout by build date: E90Post, BMWGuide, FuseCheck and FuseAndRelay all put the numbering change around 09/2007; a 09/2009 build uses the newest layout (still VERIFIED_SECONDARY).",
+    "RESOLVED halogen bulb access: BMW manual p.231-232 (high beam from engine compartment; low beam and front turn signal via wheel-well flap opened with a coin; covers by folding the wire bracket aside; wire bracket retains the bulb; H7 pressurized so gloves and eye protection). This resolves the earlier wheel-arch vs rear-cover conflict and the retainer-type gap for the low beam. Status VERIFIED.",
+    "RESOLVED battery-disconnect need: not required for halogen bulb or fuse work (manual says switch off the consumer and never mentions the battery); xenon work is BMW-center-only per the manual. Power-failure side effects (manual p.236, incl. glass roof initialization) added to the warnings.",
+    "RESOLVED tail-lamp bulbs and access: manual p.232-234 gives bulb types by function (trunk-lid brake H21W, backup W16W, other lamps P21W), LED positions 2, 3, 5 (BMW center only), and step-by-step access for both lamp halves; ETK 63_1074 adds socket numbers. Turner 63217160790 conflict resolved in favour of ETK (not in the catalog for this VIN).",
+    "NEW CONFLICT recorded: tail-lamp LED vs bulb (manual and E90Post say LED positions exist; ST502 launch E90 says no LEDs; ETK lists a lamp revision at 03/2010 and no LED modules). Guide branches on what the user sees inside the lamp.",
+    "PARTLY RESOLVED parking/halo bulb: BMW manual lists H8 35 W (parking/roadside/DRL) and W5W 5 W (separate parking bulb); two E90Post posts say halo bulb H8; one vendor guide says H10W. Kept CONFLICT (manual never says 'halo' or 'light ring'). ETK halogen diagram contains light-ring units, so rings probably exist on this lamp even though the decode shows no angel-eye option.",
+    "CORRECTION: E90Post p=26172610 does not say what an earlier pass attributed to it (liner screws, 8 mm socket, gloves, cover in front of the wheel). Those claims were re-pointed to p=11847764 (fog bulb: 8 mm screws, peel the liner back, jack optional) or the BMW manual, and the visual wheel-arch-liner-access facts/sources were updated accordingly. The fog bulb procedure stays SINGLE_SOURCE (one thread, one host).",
+    "ownerInputsNeeded emptied (it asked the owner to photograph/inspect the car); variant identification is now inside steps 6, 9 and 11 as how-to-identify branches.",
+    "COULD NOT RESOLVE: engine-bay E-box location/access (BMW manual silent; BMWGuide, RPM Motorsport and Car-Box disagree; status CONFLICT, step 5 is now 'not an owner step'); a BMW-document fuse chart; high-beam printed step list; fog bulb from a BMW document; which tail-lamp sockets map to which function beyond the manual; whether the 09/2009 build has LED or all-bulb tail lamps; halo bulb type; lamp maker ZKW vs VALEO. Withdrawn visual headlight-halo-cap-engine-bay left withdrawn (decode inference; ETK shows light-ring units, so it may be reinstated if halo rings are confirmed).",
+    "Source caveat: the owner's manual was read through a third-party text mirror (carmanualsonline.info) via its search pages, not the BMW PDF; ETK data from RealOEM for type PH73 USA 09/2009."
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Finding the cabin microfilter cover at the base of the windshield, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Locate the cover\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A long black plastic cover running along the base of the windshield in the engine bay, in front of the wipers."
+    },
+    {
+      "rank": 2,
+      "text": "The 8 mm screws that hold the cover and its ducts; shown as screw heads without a specific count."
+    }
+  ],
+  "maySimplify": [
+    "wiper arms resting",
+    "windshield edge"
+  ],
+  "mustNotShow": [
+    "cover screw points detail (Screw count (3/4/6) and positions conflict between sources and the 2010 car is unverified)",
+    "microfilter cover detail (Exact cover outline; duct shape and seam lines are not established; show a generic long black cover)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "58c8d699b8b3369014dae66513de5c0fefe8cb469273a365807eaa40c4c45b1e",
+  "callouts": [
+    {
+      "label": "microfilter cover",
+      "element": "microfilter-cover",
+      "required": true
+    },
+    {
+      "label": "cover screw points",
+      "element": "cover-screw-points",
+      "required": true
+    }
+  ]
+}

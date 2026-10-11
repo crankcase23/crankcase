@@ -1,0 +1,60 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Oil drain: this is the engine oil drain plug, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Drain the sump\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head. Do NOT depict its orientation: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface."
+    }
+  ],
+  "maySimplify": [
+    "oil pan surface"
+  ],
+  "mustNotShow": [
+    "pan bolts and ribs (Pan fasteners and rib layout are not established for the automatic pan; left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "9a1188e8d50d584ac8184564e0ccb76a8c7ca289b0f85d6f949034fa18fee009",
+  "callouts": [
+    {
+      "label": "drain plug",
+      "element": "drain-plug",
+      "required": true
+    },
+    {
+      "label": "crush washer",
+      "element": "crush-washer",
+      "required": true
+    }
+  ]
+}

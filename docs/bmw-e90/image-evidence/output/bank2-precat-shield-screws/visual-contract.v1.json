@@ -1,0 +1,218 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "bank2-precat-sensor",
+      "label": "bank2 precat sensor",
+      "required": true
+    },
+    {
+      "element": "shield-e8-screws",
+      "label": "shield e8 screws",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "68ead30eb46c87ab61c5724ef6ec32288f4a4c5588be7ef38b5228aba7d70c67",
+  "createdAt": "2026-10-10T12:00:51.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-bank2-precat-shield-screws-v1",
+  "maySimplify": [
+    {
+      "element": "strut-brace-and-large-heat-shield"
+    },
+    {
+      "element": "crowfoot-socket-access"
+    },
+    {
+      "element": "shield-e8-screws-unestablished-detail"
+    },
+    {
+      "element": "bank2-precat-sensor-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "bank2-precat-sensor",
+      "id": "MD-bank2-precat-sensor",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "shield-e8-screws",
+      "id": "MD-shield-e8-screws",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "shield-e8-screws-unestablished-detail",
+      "id": "MN-excl-shield-e8-screws-unestablished-detail",
+      "reason": "Exact positions and orientation are not established; do not mark them on a specific edge of the shield.",
+      "trace": {
+        "attribute": "existence",
+        "element": "shield-e8-screws-unestablished-detail"
+      }
+    },
+    {
+      "element": "bank2-precat-sensor-unestablished-detail",
+      "id": "MN-excl-bank2-precat-sensor-unestablished-detail",
+      "reason": "Do not show a visible top-down view of the sensor; sources say it is hidden.",
+      "trace": {
+        "attribute": "existence",
+        "element": "bank2-precat-sensor-unestablished-detail"
+      }
+    },
+    {
+      "element": "strut-brace-and-large-heat-shield",
+      "id": "MN-excl-strut-brace-and-large-heat-shield",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "strut-brace-and-large-heat-shield"
+      }
+    },
+    {
+      "element": "crowfoot-socket-access",
+      "id": "MN-excl-crowfoot-socket-access",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "crowfoot-socket-access"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-bank2-precat-shield-screws-v1",
+      "sha256": "67aa602875d53f17c826be04b231b091703830ea7d880eadca402dc5e9c5a574"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "e707882752637d549e5be8844b235ca746fa5c2bddc98b7612294cc226b80eeb"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "4da75ef0fdc2a29ea40b1d3e7a00a2ae2a15e8b86a4e6a9c0bdd97d778e0fe10"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-position",
+      "element": "shield-e8-screws",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "strut-brace-and-large-heat-shield",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "crowfoot-socket-access",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "shield-e8-screws-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "bank2-precat-sensor-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "bank2-precat-shield-screws"
+}

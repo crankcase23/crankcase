@@ -255,6 +255,23 @@ export interface RepairGuide {
    */
   variantParts?: VariantPart[];
   /**
+   * UNCERTIFIED PREVIEW. A guide that is readable by every customer but is not
+   * finished: some facts are unverified and some steps are blocked. It is never
+   * gated, never sold, and never counted as paid content, whatever its `tier`
+   * says. `tier` is the tier the guide will have once certified, which is what
+   * keeps it compatible with the Get the Keys model; this flag is what keeps a
+   * customer from being charged for it meanwhile. Anything that grants or
+   * charges for premium access must go through isSellable() in
+   * src/lib/guideAccess.ts, never read `tier` directly.
+   */
+  preview?: boolean;
+  /**
+   * Render this guide with the Overall Guide + Wrench Mode experience on the
+   * customer page instead of the plain full guide. Opt-in per guide so every
+   * other vehicle's guide pages stay exactly as they were.
+   */
+  wrenchMode?: boolean;
+  /**
    * Which covered service job this guide satisfies. Drives the Coverage tab.
    *
    * Optional so a guide is never rejected for lacking it, but a guide without

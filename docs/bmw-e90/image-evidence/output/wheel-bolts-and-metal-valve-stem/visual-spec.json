@@ -1,0 +1,61 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Wheel bolts, locking bolt and the metal TPMS valve stem, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Move the wheels\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: Five hex-head wheel bolts per wheel on a 5-lug circle, tightened in a crisscross order. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "A metal tire valve stem, which indicates a direct TPMS sensor inside the tire."
+    }
+  ],
+  "maySimplify": [
+    "locking wheel bolt"
+  ],
+  "mustNotShow": [
+    "locking wheel bolt detail (Not confirmed as fitted; key pattern shape not established)",
+    "wheel bolt fasteners detail (Wheel spoke design and finish are unknown for this car)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "c70dc0abf85b65ab97e148e774f5f9978f2dab88d45b6459a63bd152e5c433cc",
+  "callouts": [
+    {
+      "label": "wheel bolt fasteners",
+      "element": "wheel-bolt-fasteners",
+      "required": true
+    },
+    {
+      "label": "metal valve stem",
+      "element": "metal-valve-stem",
+      "required": true
+    }
+  ]
+}

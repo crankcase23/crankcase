@@ -1,0 +1,219 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Passenger side only: free the wear sensor",
+      "Fit new pads and sensor"
+    ],
+    "stepNumber": 5,
+    "title": "rear-wear-sensor-passenger-side (BMW 328i draft Rear Brake Pads guide; evidence step 5, 11)"
+  },
+  "contentHash": "bc4fa4afbdc1ede96eb53b57499c5c9ca6279b474ddb9b1ddb9f406efb5b0266",
+  "createdAt": "2026-10-10T12:01:10.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "A wear-sensor wire clipped into the inner pad of the passenger-side rear caliper.",
+      "id": "rear-pad-wear-sensor-wire",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The sensor plug in a black box behind the wheel-arch cover, reached after removing its 10 mm fasteners.",
+      "id": "sensor-connector-behind-arch-cover",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of sensor connector behind arch cover: Plug shape and cover outline are not established.",
+      "id": "sensor-connector-behind-arch-cover-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of rear pad wear sensor wire: Driver-side rear has no sensor.",
+      "id": "rear-pad-wear-sensor-wire-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-rear-wear-sensor-passenger-side-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "rear-pad-wear-sensor-wire",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "sensor-connector-behind-arch-cover",
+      "evidence": [
+        "ref-4",
+        "ref-3",
+        "ref-1"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "sensor-connector-behind-arch-cover",
+      "note": "1 site: connector release tab; shape not described.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "rear-pad-wear-sensor-wire",
+      "evidence": [
+        "ref-1",
+        "ref-5",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "sensor-connector-behind-arch-cover",
+      "evidence": [
+        "ref-4",
+        "ref-3",
+        "ref-6",
+        "ref-5"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "sensor-connector-behind-arch-cover-unestablished-detail",
+      "note": "Plug shape and cover outline are not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "rear-pad-wear-sensor-wire-unestablished-detail",
+      "note": "Driver-side rear has no sensor.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "sensor-connector-behind-arch-cover-unestablished-detail",
+      "id": "excl-sensor-connector-behind-arch-cover-unestablished-detail",
+      "reason": "Plug shape and cover outline are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "sensor-connector-behind-arch-cover-unestablished-detail"
+      }
+    },
+    {
+      "element": "rear-pad-wear-sensor-wire-unestablished-detail",
+      "id": "excl-rear-pad-wear-sensor-wire-unestablished-detail",
+      "reason": "Driver-side rear has no sensor.",
+      "trace": {
+        "attribute": "existence",
+        "element": "rear-pad-wear-sensor-wire-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Rear-right sensor and black box on wheel well."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Sensor on passenger rear."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "drivediy.dozuki.com",
+      "sourceRef": "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Partly remove the right rear fender liner to reach the sensor connector."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=7051703",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "10 mm wheel-arch cover fasteners, connector unplug, rear sensor steps."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "club.autodoc.co.uk",
+      "sourceRef": "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pad-wear-sensor-on-bmw-3-saloon-e90-replacement-guide-36986",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMWTuning E90 sensor guide: two sensors, front driver side and rear passenger side, connector in little black box in upper wheel well behind liner (10mm plastic nuts)."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwtuning.co",
+      "sourceRef": "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Team-BHP E90-E93 pad DIY: prying anti-rattle clip, two plastic caps hiding caliper guide bolts top and bottom, wear sensor cable on left inner pad, 10mm plastic bolts under wheel-well liner."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "rear-wear-sensor-passenger-side"
+}

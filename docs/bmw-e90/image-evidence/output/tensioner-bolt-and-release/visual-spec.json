@@ -1,0 +1,70 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Tensioner: release point and single-use mounting bolt, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Release the tensioner and take the belt off\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The mechanical belt tensioner with its roller pulley."
+    },
+    {
+      "rank": 2,
+      "text": "A single aluminium M11 Torx-type mounting bolt (external Torx E14 per one source); single use. Do NOT depict its fastener head shape, where its fasteners sit: keep it a plain generic shape."
+    },
+    {
+      "rank": 3,
+      "text": "The T60 Torx release point turned clockwise to take tension off the belt. Do NOT depict the shape of its release mechanism: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "tensioner assembly detail (Lock-pin hole position/size and arm geometry not established)",
+    "tensioner mounting bolt detail (Do not show a torque value or head orientation; head size is single-source)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "ef6e82b346d5db99b222313f2630996da455c9e3f9ef4df9dd7c4df3d79a229f",
+  "callouts": [
+    {
+      "label": "tensioner assembly",
+      "element": "tensioner-assembly",
+      "required": true
+    },
+    {
+      "label": "tensioner mounting bolt",
+      "element": "tensioner-mounting-bolt",
+      "required": true
+    },
+    {
+      "label": "tensioner release socket",
+      "element": "tensioner-release-socket",
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,404 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Record belt path",
+      "Release the tensioner and take the belt off",
+      "Inspect",
+      "Route the new belt"
+    ],
+    "stepNumber": 3,
+    "title": "accessory-drive-components (BMW 328i draft Serpentine Belt guide; evidence step 3, 4, 5, 8)"
+  },
+  "contentHash": "14efa433b3af64a797453fbcbe69f195cce5aabd93c095482567448958adedf9",
+  "createdAt": "2026-10-10T12:01:19.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "A single six-rib serpentine belt (6PK1990) driving the accessories.",
+      "id": "drive-belt",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The spring tensioner with roller pulley that holds the belt tight.",
+      "id": "tensioner-pulley",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The Torx-type socket point on the tensioner that is turned clockwise with a long ratchet to relieve tension.",
+      "id": "tensioner-release-point",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The deflection (idler) pulley mounted at the alternator, with a protective cap.",
+      "id": "deflection-pulley",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The alternator driven by the belt.",
+      "id": "alternator",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The A/C compressor driven by the same belt.",
+      "id": "ac-compressor",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The power steering pump driven by the same belt.",
+      "id": "power-steering-pump",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The crankshaft pulley at the bottom of the belt run.",
+      "id": "crank-pulley",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of drive belt: The belt path geometry (which side of each pulley) is not established by any diagram.",
+      "id": "drive-belt-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of tensioner release point: Exact position/orientation on the tensioner and direction as seen from the front are not established.",
+      "id": "tensioner-release-point-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of crank pulley: Relative placement of components around the engine front is not established.",
+      "id": "crank-pulley-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-accessory-drive-components-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "drive-belt",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-pulley",
+      "evidence": [
+        "ref-1",
+        "ref-4",
+        "ref-5",
+        "ref-2"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "tensioner-release-point",
+      "evidence": [
+        "ref-5",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "tensioner-release-point",
+      "evidence": [
+        "ref-5",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "deflection-pulley",
+      "evidence": [
+        "ref-5",
+        "ref-6"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "deflection-pulley",
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "alternator",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "ac-compressor",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "power-steering-pump",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "crank-pulley",
+      "evidence": [
+        "ref-2",
+        "ref-6"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "drive-belt",
+      "note": "Order crank, A/C, power steering, idler, alternator, tensioner: single source; positions not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "drive-belt",
+      "evidence": [
+        "ref-5",
+        "ref-2",
+        "ref-1"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "tensioner-pulley",
+      "evidence": [
+        "ref-2",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-release-point",
+      "evidence": [
+        "ref-2",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "tensioner-release-point",
+      "evidence": [
+        "ref-2",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "deflection-pulley",
+      "evidence": [
+        "ref-1",
+        "ref-5",
+        "ref-6"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "drive-belt-unestablished-detail",
+      "note": "The belt path geometry (which side of each pulley) is not established by any diagram.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-release-point-unestablished-detail",
+      "note": "Exact position/orientation on the tensioner and direction as seen from the front are not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "crank-pulley-unestablished-detail",
+      "note": "Relative placement of components around the engine front is not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "drive-belt-unestablished-detail",
+      "id": "excl-drive-belt-unestablished-detail",
+      "reason": "The belt path geometry (which side of each pulley) is not established by any diagram.",
+      "trace": {
+        "attribute": "existence",
+        "element": "drive-belt-unestablished-detail"
+      }
+    },
+    {
+      "element": "tensioner-release-point-unestablished-detail",
+      "id": "excl-tensioner-release-point-unestablished-detail",
+      "reason": "Exact position/orientation on the tensioner and direction as seen from the front are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "tensioner-release-point-unestablished-detail"
+      }
+    },
+    {
+      "element": "crank-pulley-unestablished-detail",
+      "id": "excl-crank-pulley-unestablished-detail",
+      "reason": "Relative placement of components around the engine front is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "crank-pulley-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "ETK Belt drive generator/AC/power steering: belt 6PK1990, tensioner, aluminium M11x65 screw, deflection pulley, caps."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 drive belt article: T60 release clockwise, order of components, access, caution on routing."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retail kit: belt also runs A/C compressor; one tensioner."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retail kit: tensioner for alternator, power steering pump and A/C compressor."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "N52 article: T60 release, E14 tensioner bolt, 16 mm idler bolt to alternator, caps, lock pin."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E82 N52 post: 16 mm socket for pulley under alternator; slide belt onto crank pulley sideways."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=22769621",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "accessory-drive-components"
+}

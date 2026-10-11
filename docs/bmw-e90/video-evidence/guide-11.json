@@ -1,0 +1,151 @@
+{
+  "guide": 11,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-mZRf6R7-zws",
+      "url": "https://www.youtube.com/watch?v=mZRf6R7-zws",
+      "titleAsListed": "How To Replace The Crankcase Ventilation Valve [CCV or PCV] On A BMW N52 Engine (E90, E91, E60)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "N52",
+        "E60"
+      ],
+      "titleConflictSignals": [
+        "E60"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-M3YbtvNKMCA",
+      "url": "https://www.youtube.com/watch?v=M3YbtvNKMCA",
+      "titleAsListed": "How to test CCV PCV Crank Case Vale on BMW N52 N53 Rough Idling",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "N52",
+        "N53"
+      ],
+      "titleConflictSignals": [
+        "N53"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-ZXcDHK30yxQ",
+      "url": "https://www.youtube.com/watch?v=ZXcDHK30yxQ",
+      "titleAsListed": "SYMPTOMS OF BAD CCV VALVE, PCV VALVE ON BMW N51 N52 N53 N54 N55",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "N52",
+        "N51",
+        "N54",
+        "N53",
+        "N55"
+      ],
+      "titleConflictSignals": [
+        "N54",
+        "N53",
+        "N55"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-kMg7Kvx26VE",
+      "url": "https://www.youtube.com/watch?v=kMg7Kvx26VE",
+      "titleAsListed": "BMW E90 3-Series Crankcase Breather Valve Replacement for 335i, 325i, 325Xi, 330i, 330xi, and 328i",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "328I",
+        "325I",
+        "330I",
+        "335I"
+      ],
+      "titleConflictSignals": [
+        "335I"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-LDFn-zKP_8w",
+      "url": "https://www.youtube.com/watch?v=LDFn-zKP_8w",
+      "titleAsListed": "BMW e90 328i (N52) Rough Idle fix! How To Replace The CCV Valve",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "328I",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-Y75L1_7y6dg",
+      "url": "https://www.youtube.com/watch?v=Y75L1_7y6dg",
+      "titleAsListed": "Don't waste your MONEY, check for recalls #bmw #n52 #recall #pcv",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

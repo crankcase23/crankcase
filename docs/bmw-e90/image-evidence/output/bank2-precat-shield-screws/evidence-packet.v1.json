@@ -1,0 +1,273 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Clear the bank 2 pre-cat shield if needed",
+      "Loosen the sensor"
+    ],
+    "stepNumber": 6,
+    "title": "bank2-precat-shield-screws (BMW 328i draft Oxygen Sensor guide; evidence step 6, 7)"
+  },
+  "contentHash": "67aa602875d53f17c826be04b231b091703830ea7d880eadca402dc5e9c5a574",
+  "createdAt": "2026-10-10T12:00:47.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "The bank 2 pre-cat sensor, hidden behind a stainless/metal heat shield on the cylinder head and under the ignition wiring harness.",
+      "id": "bank2-precat-sensor",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two E8 external-Torx screws holding the metal shield; nearly blind when looking from above.",
+      "id": "shield-e8-screws",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "The strut-tower-to-firewall brace and a large aluminum heat shield that are removed first for access.",
+      "id": "strut-brace-and-large-heat-shield",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A slim 22 mm crowfoot or offset socket seated squarely on the sensor hex with the lead fed through the slot.",
+      "id": "crowfoot-socket-access",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of shield e8 screws: Exact positions and orientation are not established; do not mark them on a specific edge of the shield.",
+      "id": "shield-e8-screws-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of bank2 precat sensor: Do not show a visible top-down view of the sensor; sources say it is hidden.",
+      "id": "bank2-precat-sensor-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-bank2-precat-shield-screws-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "bank2-precat-sensor",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "shield-e8-screws",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "shield-e8-screws",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "shield-e8-screws",
+      "note": "Only z4-forum says nearly blind from the top and that the rear hole was slotted by the author for reinstallation; exact positions on the shield are not described. GAP.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "strut-brace-and-large-heat-shield",
+      "note": "z4-forum only: strut tower-to-firewall brace and large aluminum heat shield removed first. Single source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "crowfoot-socket-access",
+      "evidence": [
+        "ref-1",
+        "ref-5",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "bank2-precat-sensor",
+      "evidence": [
+        "ref-2",
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "shield-e8-screws",
+      "evidence": [
+        "ref-2",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "crowfoot-socket-access",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "shield-e8-screws-unestablished-detail",
+      "note": "Exact positions and orientation are not established; do not mark them on a specific edge of the shield.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "bank2-precat-sensor-unestablished-detail",
+      "note": "Do not show a visible top-down view of the sensor; sources say it is hidden.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "shield-e8-screws-unestablished-detail",
+      "id": "excl-shield-e8-screws-unestablished-detail",
+      "reason": "Exact positions and orientation are not established; do not mark them on a specific edge of the shield.",
+      "trace": {
+        "attribute": "existence",
+        "element": "shield-e8-screws-unestablished-detail"
+      }
+    },
+    {
+      "element": "bank2-precat-sensor-unestablished-detail",
+      "id": "excl-bank2-precat-sensor-unestablished-detail",
+      "reason": "Do not show a visible top-down view of the sensor; sources say it is hidden.",
+      "trace": {
+        "attribute": "existence",
+        "element": "bank2-precat-sensor-unestablished-detail"
+      }
+    },
+    {
+      "element": "strut-brace-and-large-heat-shield",
+      "id": "excl-strut-brace-and-large-heat-shield",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "strut-brace-and-large-heat-shield"
+      }
+    },
+    {
+      "element": "crowfoot-socket-access",
+      "id": "excl-crowfoot-socket-access",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "crowfoot-socket-access"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Stainless shield with two 6 mm E8 screws, strut brace and large aluminum shield removed first, 22 mm slim crowfoot."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "z4-forum.com",
+      "sourceRef": "https://z4-forum.com/posts/2118334",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bank 2 sensor 1 under a metal bracket held by two small E8 screws; offset sensor wrench fed over the lead."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bank 2 pre-cat is in the exhaust manifold buried beneath the ignition wiring harness."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retailer: 11787558073 is bank 2, pre-catalytic converter, rear downpipe."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-5944212-lambda-probe/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bank 2 sensor 1 is the harder of the two upstream sensors to reach."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=14115692",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "bank2-precat-shield-screws"
+}

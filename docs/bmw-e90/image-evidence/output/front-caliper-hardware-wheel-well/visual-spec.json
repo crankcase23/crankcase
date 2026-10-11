@@ -1,0 +1,81 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Front caliper: spring, dust caps, guide pins and carrier bolts, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Remove the anti-rattle spring\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A floating disc-brake caliper straddling the rotor, seen from the outboard side with the wheel removed."
+    },
+    {
+      "rank": 2,
+      "text": "A spring retaining clip fitted on the caliper, pried out with a flat screwdriver."
+    },
+    {
+      "rank": 3,
+      "text": "Rubber or plastic caps covering the ends of the guide pins."
+    },
+    {
+      "rank": 4,
+      "text": "Two guide pins with hex-socket heads that hold the caliper to the carrier; they unthread to free the caliper. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "anti rattle spring clip detail (Exact bend shape; orientation and routing are not established)",
+    "guide pin bolt fasteners detail (Top/bottom or front/back placement of the two pins is not established)",
+    "front brake caliper detail (Brand (ATE/Teves); colour and size depend on brake package and are not established for this car)",
+    "carrier bolt fasteners (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "e90b3b431dae3a1adaa43399ac6699e66915bf7f6320666d45c074d932eaad46",
+  "callouts": [
+    {
+      "label": "front brake caliper",
+      "element": "front-brake-caliper",
+      "required": true
+    },
+    {
+      "label": "anti rattle spring clip",
+      "element": "anti-rattle-spring-clip",
+      "required": true
+    },
+    {
+      "label": "guide pin dust caps",
+      "element": "guide-pin-dust-caps",
+      "required": true
+    },
+    {
+      "label": "guide pin bolt fasteners",
+      "element": "guide-pin-bolt-fasteners",
+      "required": true
+    }
+  ]
+}

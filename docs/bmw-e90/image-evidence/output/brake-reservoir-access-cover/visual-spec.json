@@ -1,0 +1,70 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Reaching the brake reservoir: the cowl cover over it, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Brake fluid\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The long black plastic cover along the base of the windshield in front of the wipers, covering the cabin microfilter housing and the brake reservoir."
+    },
+    {
+      "rank": 2,
+      "text": "The 8 mm screw locations that hold the cover; the count is unresolved so they are shown without a number. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    },
+    {
+      "rank": 3,
+      "text": "The reservoir revealed when the cover is lifted, with MIN and MAX marks on its side."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "cover fastener points detail (Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified)",
+    "brake reservoir detail (Cap markings; shape and exact orientation are not established)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "8f634cad4c31984653139350eb949a9481c4e5a3604374534b0868279315f66e",
+  "callouts": [
+    {
+      "label": "microfilter housing cover",
+      "element": "microfilter-housing-cover",
+      "required": true
+    },
+    {
+      "label": "cover fastener points",
+      "element": "cover-fastener-points",
+      "required": true
+    },
+    {
+      "label": "brake reservoir",
+      "element": "brake-reservoir",
+      "required": true
+    }
+  ]
+}

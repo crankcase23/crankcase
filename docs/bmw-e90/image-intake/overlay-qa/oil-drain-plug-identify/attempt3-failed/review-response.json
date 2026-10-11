@@ -1,0 +1,4 @@
+{"overlaySha256": "1c2b78a9944597c2f83d5f1680666c411427b0610489e5f61955bee3c18772f8",
+ "results": [
+  {"callout": "drain plug", "result": "FAIL", "note": "Orange rectangle encloses the hex head but also includes the copper crush washer and surrounding surface. Multiple orange outlines obscure the component."},
+  {"callout": "crush washer", "result": "FAIL", "note": "Orange oval outlines enclose most of the hex head rather than tightly isolating the thin copper washer. The washer is not clearly distinguished from the plug."}]}

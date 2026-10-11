@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin/rbac";
 import { listGuideRecords, getGuideSummary } from "@/lib/admin/guides";
 import { getTopEventObjects } from "@/lib/admin/metrics";
-import { listAdminTestGuides } from "@/data/admin-test-guides/charger-2016-sxt-multi-job";
+import { listAdminTestGuides } from "@/data/admin-test-guides";
 import { parsePeriod, resolvePeriod } from "@/lib/admin/periods";
 import { formatNumber } from "@/lib/admin/format";
 import {

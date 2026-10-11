@@ -1,0 +1,57 @@
+{
+  "schema": "bmw-fit-record.v1",
+  "native": {
+    "sha256": "37fc4a493990d5af47bc677d224d0f71b80eede67096d66252228378d451876e",
+    "bytes": 1530126,
+    "width": 1586,
+    "height": 992,
+    "ratio": 1.5988,
+    "ancillaryChunks": [
+      "caBX"
+    ],
+    "c2pa": {
+      "present": true,
+      "manifestSha256": "f553e5ad8fbef884bbf3b10693609c9a37551ba9b840be71fbba8257fae81733"
+    }
+  },
+  "fitted": {
+    "sha256": "f1c6a719b791399507d80c6c73dfddc2c3ed0b98239774b789e2e1f88dde3a34",
+    "bytes": 1119284,
+    "width": 1600,
+    "height": 1000,
+    "ratio": 1.6
+  },
+  "ops": [
+    "pad-edge-replicate"
+  ],
+  "pad": {
+    "left": 7,
+    "right": 7,
+    "top": 4,
+    "bottom": 4
+  },
+  "paddedFractionOfCanvas": 0.0088,
+  "paddedEdgeStats": {
+    "left": {
+      "mean": 241.9,
+      "std": 3.5
+    },
+    "right": {
+      "mean": 242.5,
+      "std": 4
+    },
+    "top": {
+      "mean": 244.5,
+      "std": 0.7
+    },
+    "bottom": {
+      "mean": 240.4,
+      "std": 0.9
+    }
+  },
+  "stretched": false,
+  "cropped": false,
+  "upscaled": false,
+  "contentPixelsUnchanged": true,
+  "note": "Padding only. The factory normaliser then downscales this exact 16:10 canvas uniformly to 1600x1000 and strips metadata."
+}

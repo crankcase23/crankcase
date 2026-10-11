@@ -1,0 +1,28 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "side-jack-pad",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 2,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "side-jack-pad-rectangle",
+      "role": "hero",
+      "note": "A small rectangular plastic pad along the lower side of the body near a wheel; a hollow rectangle that is the lift and stand point.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

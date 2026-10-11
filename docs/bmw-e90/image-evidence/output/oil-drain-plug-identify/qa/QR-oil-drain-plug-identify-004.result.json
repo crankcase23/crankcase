@@ -1,0 +1,66 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "checks": [
+    {
+      "callout": "drain plug",
+      "note": "Orange rectangle encloses the hex head but also includes the copper crush washer and surrounding surface. Multiple orange outlines obscure the component.",
+      "result": "FAIL"
+    },
+    {
+      "callout": "crush washer",
+      "note": "Orange oval outlines enclose most of the hex head rather than tightly isolating the thin copper washer. The washer is not clearly distinguished from the plug.",
+      "result": "FAIL"
+    }
+  ],
+  "contentHash": "83bc0f10df1c9c0fa701958e46abf847254edc9827a947165d240ebddd5a0207",
+  "createdAt": "2026-10-11T07:00:38.762Z",
+  "createdBy": {
+    "actor": "hermes",
+    "role": "independent-reviewer",
+    "system": "ChatGPT web overlay review chat 6acb33d1"
+  },
+  "failedGates": [
+    "VISUAL_ACCURACY"
+  ],
+  "findings": [],
+  "id": "QR-oil-drain-plug-identify-004",
+  "provenanceCheck": {
+    "notes": "n/a at overlay stage",
+    "validated": true
+  },
+  "refs": [
+    {
+      "id": "GR-oil-drain-plug-identify-001",
+      "sha256": "476b4fe8ed2475ebe228dc1c1831a19ed495ef43aca362f97d4ea203b5238361"
+    },
+    {
+      "id": "VC-oil-drain-plug-identify-v1",
+      "sha256": "4e14248e3cf698afe8eca61248536f6cc0a27cfd2d558e03def94c8395666285"
+    },
+    {
+      "id": "EP-oil-drain-plug-identify-v1",
+      "sha256": "2467d5560108cf4e6ab50c52ff1cc6a37272148d70550226b094394a0847149c"
+    }
+  ],
+  "regressionCheck": [],
+  "reviewClass": "independent",
+  "reviewer": {
+    "actor": "hermes",
+    "model": "GPT (ChatGPT web, exact model not shown in UI)",
+    "rawResponseSha256": "18c08b864ed76c65ca2b94ce48344e4ee4d399311e32c2018ce7dbf417ae9ef7",
+    "system": "ChatGPT web overlay review chat 6acb33d1"
+  },
+  "round": 3,
+  "rubricVersion": "CG-QA-v1.0",
+  "schema": "guide-factory.qa-result",
+  "schemaVersion": "reconstructed-1",
+  "stage": "overlay",
+  "verdict": "ESCALATE",
+  "visualId": "oil-drain-plug-identify"
+}

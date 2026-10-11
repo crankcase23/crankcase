@@ -1,0 +1,42 @@
+{
+  "candidateSha256": "f164587109e55fa77df8e58dd6920363874ad7a23647a51428811f29c6cae539",
+  "rubricVersion": "CG-QA-v1.0",
+  "provenanceCheck": {
+    "validated": "true|false",
+    "notes": "short"
+  },
+  "checks": [
+    {
+      "contractItemId": "MD-drain-plug",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MD-crush-washer",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MN-excl-pan-bolts-and-ribs",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+      "contractItemRef": "an item id above",
+      "element": "element id",
+      "attribute": "e.g. location",
+      "description": "what is wrong",
+      "requiredChange": "what to change",
+      "fixType": "modify|remove|suppress|simplify|relocate|add",
+      "gate": "VISUAL_ACCURACY",
+      "evidenceDeficiency": false,
+      "regression": false
+    }
+  ],
+  "regressionCheck": []
+}

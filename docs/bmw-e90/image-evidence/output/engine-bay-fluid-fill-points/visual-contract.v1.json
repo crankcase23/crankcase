@@ -1,0 +1,273 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "coolant-expansion-tank-cap",
+      "label": "coolant expansion tank cap",
+      "required": true
+    },
+    {
+      "element": "washer-fluid-filler-cap",
+      "label": "washer fluid filler cap",
+      "required": true
+    },
+    {
+      "element": "engine-oil-filler-cap",
+      "label": "engine oil filler cap",
+      "required": true
+    },
+    {
+      "element": "brake-reservoir-under-cover",
+      "label": "brake reservoir under cover",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "dccb7f44911d27035b7c343aa79f05db45056aa4f9e9b489ea697809077f5268",
+  "createdAt": "2026-10-10T12:02:13.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-engine-bay-fluid-fill-points-v1",
+  "maySimplify": [
+    {
+      "element": "windshield-base-and-wipers"
+    },
+    {
+      "element": "coolant-expansion-tank-cap-unestablished-detail"
+    },
+    {
+      "element": "brake-reservoir-under-cover-unestablished-detail"
+    },
+    {
+      "element": "washer-fluid-filler-cap-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "coolant-expansion-tank-cap",
+      "id": "MD-coolant-expansion-tank-cap",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fine-detail-geometry",
+          "evidence": [
+            "ref-6",
+            "ref-2"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "identification",
+      "element": "washer-fluid-filler-cap",
+      "id": "MD-washer-fluid-filler-cap",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-7",
+            "ref-8"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-6",
+            "ref-9"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "identification",
+      "element": "engine-oil-filler-cap",
+      "id": "MD-engine-oil-filler-cap",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-10"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-10",
+            "ref-16"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "identification",
+      "element": "brake-reservoir-under-cover",
+      "id": "MD-brake-reservoir-under-cover",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-11",
+            "ref-12",
+            "ref-13",
+            "ref-14"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-11",
+            "ref-15"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-11",
+            "ref-12",
+            "ref-14"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "coolant-expansion-tank-cap-unestablished-detail",
+      "id": "MN-excl-coolant-expansion-tank-cap-unestablished-detail",
+      "reason": "Exact tank shape, cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank.",
+      "trace": {
+        "attribute": "existence",
+        "element": "coolant-expansion-tank-cap-unestablished-detail"
+      }
+    },
+    {
+      "element": "brake-reservoir-under-cover-unestablished-detail",
+      "id": "MN-excl-brake-reservoir-under-cover-unestablished-detail",
+      "reason": "The reservoir is hidden; do not show cover screw count or the reservoir's cap markings.",
+      "trace": {
+        "attribute": "existence",
+        "element": "brake-reservoir-under-cover-unestablished-detail"
+      }
+    },
+    {
+      "element": "washer-fluid-filler-cap-unestablished-detail",
+      "id": "MN-excl-washer-fluid-filler-cap-unestablished-detail",
+      "reason": "Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour.",
+      "trace": {
+        "attribute": "existence",
+        "element": "washer-fluid-filler-cap-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-engine-bay-fluid-fill-points-v1",
+      "sha256": "8c4a170613cbef6c7fef3dec8ec78e5f0516a1af782f71d5c48c0c1ba514bc67"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "ec484f735e281fb33683ea135d87622e1eb76e164e56e86bb44ce409f40833ec"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "0315bd9fdd0e525b3206c8546565e67c62de17c95f6dfb3deb85e5feb09cceef"
+  },
+  "suppress": [
+    {
+      "attribute": "existence",
+      "element": "windshield-base-and-wipers",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "coolant-expansion-tank-cap-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "brake-reservoir-under-cover-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "washer-fluid-filler-cap-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "engine-bay-fluid-fill-points"
+}

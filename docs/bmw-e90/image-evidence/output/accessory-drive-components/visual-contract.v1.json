@@ -1,0 +1,291 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "drive-belt",
+      "label": "drive belt",
+      "required": true
+    },
+    {
+      "element": "tensioner-pulley",
+      "label": "tensioner pulley",
+      "required": true
+    },
+    {
+      "element": "tensioner-release-point",
+      "label": "tensioner release point",
+      "required": true
+    },
+    {
+      "element": "deflection-pulley",
+      "label": "deflection pulley",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "77786f2b434301c86413e08ffdf794d723b531c2844fff3346592e8a077c584c",
+  "createdAt": "2026-10-10T12:01:23.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-accessory-drive-components-v1",
+  "maySimplify": [
+    {
+      "element": "alternator"
+    },
+    {
+      "element": "ac-compressor"
+    },
+    {
+      "element": "power-steering-pump"
+    },
+    {
+      "element": "crank-pulley"
+    },
+    {
+      "element": "drive-belt-unestablished-detail"
+    },
+    {
+      "element": "tensioner-release-point-unestablished-detail"
+    },
+    {
+      "element": "crank-pulley-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "drive-belt",
+      "id": "MD-drive-belt",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-5",
+            "ref-2",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "tensioner-pulley",
+      "id": "MD-tensioner-pulley",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-4",
+            "ref-5",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "tensioner-release-point",
+      "id": "MD-tensioner-release-point",
+      "requirements": [
+        {
+          "attribute": "hardware-type",
+          "evidence": [
+            "ref-5",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "action",
+          "evidence": [
+            "ref-5",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-2",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "identification",
+      "element": "deflection-pulley",
+      "id": "MD-deflection-pulley",
+      "requirements": [
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-5",
+            "ref-6"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-5",
+            "ref-6"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "drive-belt-unestablished-detail",
+      "id": "MN-excl-drive-belt-unestablished-detail",
+      "reason": "The belt path geometry (which side of each pulley) is not established by any diagram.",
+      "trace": {
+        "attribute": "existence",
+        "element": "drive-belt-unestablished-detail"
+      }
+    },
+    {
+      "element": "tensioner-release-point-unestablished-detail",
+      "id": "MN-excl-tensioner-release-point-unestablished-detail",
+      "reason": "Exact position/orientation on the tensioner and direction as seen from the front are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "tensioner-release-point-unestablished-detail"
+      }
+    },
+    {
+      "element": "crank-pulley-unestablished-detail",
+      "id": "MN-excl-crank-pulley-unestablished-detail",
+      "reason": "Relative placement of components around the engine front is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "crank-pulley-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-accessory-drive-components-v1",
+      "sha256": "14efa433b3af64a797453fbcbe69f195cce5aabd93c095482567448958adedf9"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "847f98b49b30235218fb093ccd1808e3419cbf569859243ed9e092e43ab97297"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "779989dc84f00df0faa79a8acad5a78d53bc2552a1b5bbacc00daada3f906b02"
+  },
+  "suppress": [
+    {
+      "attribute": "relationship",
+      "element": "drive-belt",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "drive-belt-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-release-point-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "crank-pulley-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "accessory-drive-components"
+}

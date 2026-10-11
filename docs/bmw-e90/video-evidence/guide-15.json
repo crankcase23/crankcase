@@ -1,0 +1,137 @@
+{
+  "guide": 15,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-XfIPCntzpoE",
+      "url": "https://www.youtube.com/watch?v=XfIPCntzpoE",
+      "titleAsListed": "DIY! BMW E90 Differential Fluid Change.",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-g4kwZdyWU5g",
+      "url": "https://www.youtube.com/watch?v=g4kwZdyWU5g",
+      "titleAsListed": "How To Change Your BMW E90/E91/E92/E93 328i (xDrive) Differential Fluid (front and rear)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "328I",
+        "XDRIVE"
+      ],
+      "titleConflictSignals": [
+        "XDRIVE"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-YWAY_WIUlhg",
+      "url": "https://www.youtube.com/watch?v=YWAY_WIUlhg",
+      "titleAsListed": "How to Change BMW Rear Differential Fluid",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-bz4RSMtRqlk",
+      "url": "https://www.youtube.com/watch?v=bz4RSMtRqlk",
+      "titleAsListed": "2007 BMW 3-Series Rear Diff Oil Change",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "2007"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-2G2_VRdW7K8",
+      "url": "https://www.youtube.com/watch?v=2G2_VRdW7K8",
+      "titleAsListed": "BMW Differential Fluid Change - E92 335i",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E92",
+        "335I"
+      ],
+      "titleConflictSignals": [
+        "335I"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-KNaOxsDsRHw",
+      "url": "https://www.youtube.com/watch?v=KNaOxsDsRHw",
+      "titleAsListed": "BMW 335I Rear Diff Oil Change",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "335I"
+      ],
+      "titleConflictSignals": [
+        "335I"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Start, check for leaks, verify the level electronically"
+    ],
+    "stepNumber": 11,
+    "title": "electronic-oil-level-check (BMW 328i draft Engine Oil & Filter Change guide; evidence step 11)"
+  },
+  "contentHash": "2c0fbf003e168b80da519231540c922afe7ff051147a4d52bfbe9539939f9d4b",
+  "createdAt": "2026-10-10T12:03:46.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "procedure",
+      "describe": "The small button on the turn-indicator lever that is pressed up or down repeatedly to step through the on-board computer displays until OIL appears.",
+      "id": "turn-signal-stalk-button-1",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "The second button on the turn-indicator lever pressed once the OIL symbol is showing to start the oil level check.",
+      "id": "turn-signal-stalk-button-2",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The instrument cluster area where the OIL symbol and the level message (OK, being checked, below minimum, too high) appear.",
+      "id": "cluster-oil-readout",
+      "role": "target"
+    },
+    {
+      "criticality": "cosmetic",
+      "describe": "The center control display showing Vehicle Info > Vehicle status > Engine oil level as the alternative route.",
+      "id": "idrive-vehicle-status-menu",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of cluster oil readout: The exact cluster layout, fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only.",
+      "id": "cluster-oil-readout-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of turn signal stalk button 1: The precise position of the button on the stalk end is not described by any retrieved source.",
+      "id": "turn-signal-stalk-button-1-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-electronic-oil-level-check-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button-1",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "turn-signal-stalk-button-1",
+      "evidence": [
+        "ref-1"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "turn-signal-stalk-button-2",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "cluster-oil-readout",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "idrive-vehicle-status-menu",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button-2",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "turn-signal-stalk-button-2",
+      "evidence": [
+        "ref-1"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "cluster-oil-readout",
+      "evidence": [
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "idrive-vehicle-status-menu",
+      "note": "cosmetic context drawn as a plain generic shape; no specific claim",
+      "render": "simplify",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "cluster-oil-readout-unestablished-detail",
+      "note": "The exact cluster layout, fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button-1-unestablished-detail",
+      "note": "The precise position of the button on the stalk end is not described by any retrieved source.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "cluster-oil-readout-unestablished-detail",
+      "id": "excl-cluster-oil-readout-unestablished-detail",
+      "reason": "The exact cluster layout, fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only.",
+      "trace": {
+        "attribute": "existence",
+        "element": "cluster-oil-readout-unestablished-detail"
+      }
+    },
+    {
+      "element": "turn-signal-stalk-button-1-unestablished-detail",
+      "id": "excl-turn-signal-stalk-button-1-unestablished-detail",
+      "reason": "The precise position of the button on the stalk end is not described by any retrieved source.",
+      "trace": {
+        "attribute": "existence",
+        "element": "turn-signal-stalk-button-1-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "2011 E90 owner's manual p.227-228: turn-indicator lever buttons 1 and 2, OIL symbol, iDrive path, conditions."
+      ],
+      "id": "ref-1",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2011 E94 owner's manual p.223-225: same procedure, displays, 125 mile and 1 qt limits."
+      ],
+      "id": "ref-2",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Forum confirmation of the stalk-button check (cited by the first-pass ledger; not re-read in this pass)."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x electronic oil check via BC button and Oil menu, MIN / +1 qt wording."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "electronic-oil-level-check"
+}

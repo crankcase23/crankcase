@@ -1,0 +1,42 @@
+{
+  "candidateSha256": "ec5003b63e9c6f0e8897313b955b865ef342bb06432b75b51be544b3b1b471f6",
+  "rubricVersion": "CG-QA-v1.0",
+  "provenanceCheck": {
+    "validated": "true|false",
+    "notes": "short"
+  },
+  "checks": [
+    {
+      "contractItemId": "MD-access-hatch",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MN-excl-front-bumper-and-grille",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MN-excl-suspension-and-subframe",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+      "contractItemRef": "an item id above",
+      "element": "element id",
+      "attribute": "e.g. location",
+      "description": "what is wrong",
+      "requiredChange": "what to change",
+      "fixType": "modify|remove|suppress|simplify|relocate|add",
+      "gate": "VISUAL_ACCURACY",
+      "evidenceDeficiency": false,
+      "regression": false
+    }
+  ],
+  "regressionCheck": []
+}

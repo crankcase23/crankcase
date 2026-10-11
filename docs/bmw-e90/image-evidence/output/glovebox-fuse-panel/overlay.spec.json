@@ -1,0 +1,46 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "glovebox-fuse-panel",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 2,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "fuse-cover-fasteners",
+      "role": "hero",
+      "note": "Two round plastic quarter-turn fasteners (fastener type: quarter-turn) that hold the fuse panel cover; turned counterclockwise to unlock.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "fuse-cover",
+      "role": "target",
+      "note": "The removable cover whose back carries the fuse chart sticker.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "fuse-panel",
+      "role": "target",
+      "note": "The junction box fuse panel behind the glove box, reachable once the cover drops.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

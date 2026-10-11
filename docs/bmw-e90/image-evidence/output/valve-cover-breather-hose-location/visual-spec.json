@@ -1,0 +1,72 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Valve cover and the breather hose at its rear, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Prepare for inspection\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The plastic cylinder head cover with the integrated crankcase vent and oil separator (one part), with an oil filler cap on top and a row of six ignition coils."
+    },
+    {
+      "rank": 2,
+      "text": "The push-on breather hose connection at the back of the valve cover. Do NOT depict its fine detail: keep it a plain generic shape."
+    },
+    {
+      "rank": 3,
+      "text": "Two side tabs on the hose end that are squeezed to release it; the hose must not be pried."
+    }
+  ],
+  "maySimplify": [
+    "oil filler cap",
+    "ignition coils row"
+  ],
+  "mustNotShow": [
+    "valve cover detail (No standalone PCV valve; separate oil separator box; rubber diaphragm or external heated valve: none exist on this design)",
+    "oil filler cap detail (Position on the cover is not established)",
+    "breather hose release tabs detail (Tab outline and colour are not described)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "6dde516a310162b72d3b78f42d466a0b0fbf3cd6e4c5c7163025ead57c12236a",
+  "callouts": [
+    {
+      "label": "valve cover",
+      "element": "valve-cover",
+      "required": true
+    },
+    {
+      "label": "breather hose connection",
+      "element": "breather-hose-connection",
+      "required": true
+    },
+    {
+      "label": "breather hose release tabs",
+      "element": "breather-hose-release-tabs",
+      "required": true
+    }
+  ]
+}

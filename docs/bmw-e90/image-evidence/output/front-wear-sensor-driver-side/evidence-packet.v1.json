@@ -1,0 +1,252 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Disconnect and remove the wear sensor (driver side only)",
+      "Fit the new pads and sensor",
+      "Refit the caliper and guide pins"
+    ],
+    "stepNumber": 8,
+    "title": "front-wear-sensor-driver-side (BMW 328i draft Front Brake Pads guide; evidence step 8, 13, 14)"
+  },
+  "contentHash": "1e6eab62f725b7197d13b50f440030935768af3a0d6bfe4673bba366d0f4ea03",
+  "createdAt": "2026-10-10T12:00:11.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "A thin wear-sensor wire clipped into the inner brake pad, running up out of the caliper area.",
+      "id": "pad-wear-sensor-wire",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A small plastic junction box with a door, high in the wheel well behind the strut, holding the sensor plug with a release tab.",
+      "id": "sensor-connector-junction-box",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A bracket on the strut that the sensor wire is hooked to.",
+      "id": "strut-wire-bracket",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of sensor connector junction box: Exact box shape, door hinge and plug design are not established.",
+      "id": "sensor-connector-junction-box-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of pad wear sensor wire: Passenger-side front has no sensor; depict only the driver side.",
+      "id": "pad-wear-sensor-wire-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-front-wear-sensor-driver-side-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "pad-wear-sensor-wire",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "sensor-connector-junction-box",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "sensor-connector-junction-box",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "strut-wire-bracket",
+      "note": "1 site only (wire unhooked from the strut bracket).",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "pad-wear-sensor-wire",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "sensor-connector-junction-box",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-5",
+        "ref-6"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "strut-wire-bracket",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "sensor-connector-junction-box-unestablished-detail",
+      "note": "Exact box shape, door hinge and plug design are not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "pad-wear-sensor-wire-unestablished-detail",
+      "note": "Passenger-side front has no sensor; depict only the driver side.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "sensor-connector-junction-box-unestablished-detail",
+      "id": "excl-sensor-connector-junction-box-unestablished-detail",
+      "reason": "Exact box shape, door hinge and plug design are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "sensor-connector-junction-box-unestablished-detail"
+      }
+    },
+    {
+      "element": "pad-wear-sensor-wire-unestablished-detail",
+      "id": "excl-pad-wear-sensor-wire-unestablished-detail",
+      "reason": "Passenger-side front has no sensor; depict only the driver side.",
+      "trace": {
+        "attribute": "existence",
+        "element": "pad-wear-sensor-wire-unestablished-detail"
+      }
+    },
+    {
+      "element": "strut-wire-bracket",
+      "id": "excl-strut-wire-bracket",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "strut-wire-bracket"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Front sensor on driver-side pad; plastic door behind strut; connector tab."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Front-left sensor, black box on wheel well, release tab, wire on strut bracket."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Sensors on driver front and passenger rear; pull straight out."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "drivediy.dozuki.com",
+      "sourceRef": "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Team-BHP E90-E93 pad DIY: prying anti-rattle clip, two plastic caps hiding caliper guide bolts top and bottom, wear sensor cable on left inner pad, 10mm plastic bolts under wheel-well liner."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMWTuning E90 sensor guide: two sensors, front driver side and rear passenger side, connector in little black box in upper wheel well behind liner (10mm plastic nuts)."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwtuning.co",
+      "sourceRef": "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bimmerpost thread: front sensor plug box behind the strut, rear sensor junction box behind the wheel liner."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=12036574",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "front-wear-sensor-driver-side"
+}

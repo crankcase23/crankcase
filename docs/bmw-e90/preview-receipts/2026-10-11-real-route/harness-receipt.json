@@ -1,0 +1,1000 @@
+{
+  "schema": "bmw-preview-receipt.v1",
+  "at": "2026-10-11T07:51:13.456Z",
+  "results": [
+    {
+      "slug": "bmw-2010-328i-front-brake-pads",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 729
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-front-brake-pads",
+        "steps": 25,
+        "torque": 6,
+        "tools": 12,
+        "parts": 18
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-front-brake-pads",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 729
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-front-brake-pads",
+        "steps": 25,
+        "torque": 6,
+        "tools": 12,
+        "parts": 18
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-front-brake-pads",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 729
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-front-brake-pads",
+        "steps": 25,
+        "torque": 6,
+        "tools": 12,
+        "parts": 18
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-fuse-bulb",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 827
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-fuse-bulb",
+        "steps": 21,
+        "torque": 1,
+        "tools": 11,
+        "parts": 19
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-fuse-bulb",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 827
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-fuse-bulb",
+        "steps": 21,
+        "torque": 1,
+        "tools": 11,
+        "parts": 19
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-fuse-bulb",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 827
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-fuse-bulb",
+        "steps": 21,
+        "torque": 1,
+        "tools": 11,
+        "parts": 19
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-key-fob-battery",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 776
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-key-fob-battery",
+        "steps": 10,
+        "torque": 1,
+        "tools": 4,
+        "parts": 4
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-key-fob-battery",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 776
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-key-fob-battery",
+        "steps": 10,
+        "torque": 1,
+        "tools": 4,
+        "parts": 4
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-key-fob-battery",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 776
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-key-fob-battery",
+        "steps": 10,
+        "torque": 1,
+        "tools": 4,
+        "parts": 4
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-oxygen-sensor",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 885
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-oxygen-sensor",
+        "steps": 15,
+        "torque": 3,
+        "tools": 11,
+        "parts": 10
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-oxygen-sensor",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 885
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-oxygen-sensor",
+        "steps": 15,
+        "torque": 3,
+        "tools": 11,
+        "parts": 10
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-oxygen-sensor",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 885
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-oxygen-sensor",
+        "steps": 15,
+        "torque": 3,
+        "tools": 11,
+        "parts": 10
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-rear-brake-pads",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 744
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-rear-brake-pads",
+        "steps": 22,
+        "torque": 7,
+        "tools": 10,
+        "parts": 18
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-rear-brake-pads",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 744
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-rear-brake-pads",
+        "steps": 22,
+        "torque": 7,
+        "tools": 10,
+        "parts": 18
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-rear-brake-pads",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 744
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-rear-brake-pads",
+        "steps": 22,
+        "torque": 7,
+        "tools": 10,
+        "parts": 18
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-serpentine-belt",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 817
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-serpentine-belt",
+        "steps": 15,
+        "torque": 4,
+        "tools": 9,
+        "parts": 8
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-serpentine-belt",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 817
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-serpentine-belt",
+        "steps": 15,
+        "torque": 4,
+        "tools": 9,
+        "parts": 8
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-serpentine-belt",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 817
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-serpentine-belt",
+        "steps": 15,
+        "torque": 4,
+        "tools": 9,
+        "parts": 8
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-battery",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 876
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-battery",
+        "steps": 20,
+        "torque": 3,
+        "tools": 8,
+        "parts": 12
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-battery",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 876
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-battery",
+        "steps": 20,
+        "torque": 3,
+        "tools": 8,
+        "parts": 12
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-battery",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 876
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-battery",
+        "steps": 20,
+        "torque": 3,
+        "tools": 8,
+        "parts": 12
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-coolant",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 855
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-coolant",
+        "steps": 19,
+        "torque": 5,
+        "tools": 9,
+        "parts": 16
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-coolant",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 855
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-coolant",
+        "steps": 19,
+        "torque": 5,
+        "tools": 9,
+        "parts": 16
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-coolant",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 855
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-coolant",
+        "steps": 19,
+        "torque": 5,
+        "tools": 9,
+        "parts": 16
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-fluid-checks",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 641
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-fluid-checks",
+        "steps": 14,
+        "torque": 2,
+        "tools": 3,
+        "parts": 13
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-fluid-checks",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 641
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-fluid-checks",
+        "steps": 14,
+        "torque": 2,
+        "tools": 3,
+        "parts": 13
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-fluid-checks",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 641
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-fluid-checks",
+        "steps": 14,
+        "torque": 2,
+        "tools": 3,
+        "parts": 13
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-cabin-air-filter",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 709
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-cabin-air-filter",
+        "steps": 11,
+        "torque": 1,
+        "tools": 3,
+        "parts": 6
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-cabin-air-filter",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 709
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-cabin-air-filter",
+        "steps": 11,
+        "torque": 1,
+        "tools": 3,
+        "parts": 6
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-cabin-air-filter",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 709
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-cabin-air-filter",
+        "steps": 11,
+        "torque": 1,
+        "tools": 3,
+        "parts": 6
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-pcv-valve",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 736
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-pcv-valve",
+        "steps": 13,
+        "torque": 0,
+        "tools": 1,
+        "parts": 2
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-pcv-valve",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 736
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-pcv-valve",
+        "steps": 13,
+        "torque": 0,
+        "tools": 1,
+        "parts": 2
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-pcv-valve",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 736
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-pcv-valve",
+        "steps": 13,
+        "torque": 0,
+        "tools": 1,
+        "parts": 2
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-engine-air-filter",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 849
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-engine-air-filter",
+        "steps": 13,
+        "torque": 1,
+        "tools": 6,
+        "parts": 8
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-engine-air-filter",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 849
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-engine-air-filter",
+        "steps": 13,
+        "torque": 1,
+        "tools": 6,
+        "parts": 8
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-engine-air-filter",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 849
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-engine-air-filter",
+        "steps": 13,
+        "torque": 1,
+        "tools": 6,
+        "parts": 8
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-tire-rotation",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 727
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-tire-rotation",
+        "steps": 15,
+        "torque": 2,
+        "tools": 7,
+        "parts": 3
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-tire-rotation",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 727
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-tire-rotation",
+        "steps": 15,
+        "torque": 2,
+        "tools": 7,
+        "parts": 3
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-tire-rotation",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 727
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-tire-rotation",
+        "steps": 15,
+        "torque": 2,
+        "tools": 7,
+        "parts": 3
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-wiper-blades",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 814
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-wiper-blades",
+        "steps": 8,
+        "torque": 1,
+        "tools": 3,
+        "parts": 10
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-wiper-blades",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 814
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-wiper-blades",
+        "steps": 8,
+        "torque": 1,
+        "tools": 3,
+        "parts": 10
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-wiper-blades",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 814
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-wiper-blades",
+        "steps": 8,
+        "torque": 1,
+        "tools": 3,
+        "parts": 10
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-differential-fluid",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 820
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-differential-fluid",
+        "steps": 11,
+        "torque": 4,
+        "tools": 8,
+        "parts": 15
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-differential-fluid",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 820
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-differential-fluid",
+        "steps": 11,
+        "torque": 4,
+        "tools": 8,
+        "parts": 15
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-differential-fluid",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 820
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-differential-fluid",
+        "steps": 11,
+        "torque": 4,
+        "tools": 8,
+        "parts": 15
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-oil-change",
+      "viewport": "desktop",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 861
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-oil-change",
+        "steps": 16,
+        "torque": 2,
+        "tools": 8,
+        "parts": 14
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-oil-change",
+      "viewport": "phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 861
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-oil-change",
+        "steps": 16,
+        "torque": 2,
+        "tools": 8,
+        "parts": 14
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    },
+    {
+      "slug": "bmw-2010-328i-oil-change",
+      "viewport": "small-phone",
+      "checks": {
+        "planningOverflowPx": 0,
+        "wrenchMaxOverflowPx": 0,
+        "emptyTitles": 0,
+        "longestStepChars": 861
+      },
+      "problems": [],
+      "guide": {
+        "id": "admin-draft-bmw-2010-328i-oil-change",
+        "steps": 16,
+        "torque": 2,
+        "tools": 8,
+        "parts": 14
+      },
+      "title": "2010 BMW 328i Sedan (E90)",
+      "pass": true
+    }
+  ],
+  "errorStates": [
+    {
+      "name": "unknown-slug",
+      "problems": [],
+      "pass": true
+    },
+    {
+      "name": "empty-steps",
+      "problems": [],
+      "pass": true
+    },
+    {
+      "name": "no-torque",
+      "problems": [],
+      "pass": true
+    },
+    {
+      "name": "no-parts-tools",
+      "problems": [],
+      "pass": true
+    },
+    {
+      "name": "broken-image",
+      "problems": [],
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 53,
+    "passed": 53,
+    "failed": 0,
+    "guideViewportRuns": 48,
+    "errorStateRuns": 5
+  }
+}

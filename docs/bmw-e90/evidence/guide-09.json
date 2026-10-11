@@ -1,0 +1,757 @@
+{
+  "guide": 9,
+  "name": "Fluid Checks & Top-Offs",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "summary": "Second pass found BMW owner's manual text (MY2011 E90, E94 and 328i xDrive editions on third-party hosts; the 2010 edition could not be read) that now PRIMARY-verifies: the electronic oil-level check (iDrive path, stalk buttons, warm-engine drive condition, 1 US qt / 125 mile rule), coolant is half water and half BMW-approved additive and must be checked cold with the cap opened in two stages and the level between MAX and MIN marks in the filler neck, and the window washer system (including headlamp washers) holds about 6.3 US qt / 6.0 L. Brake fluid is DOT 4 with a 2-year change interval from E9x-specific secondary sources (E92 M3, BMW part listings) and a BMW E46 handbook; no E9x brake-fluid manual page was reachable, so it is VERIFIED_SECONDARY, not VERIFIED. Closed: brake reservoir is under the plastic cover at the driver-side base of the windshield (the cabin microfilter housing cover on E9x); power steering on the N52 E90 328i appears hydraulic (ECS/Turner catalogs list a reservoir and CHF 11S fluid; a 2008 E90 328i owner replaced the pump); BMW coolant 82141467704 confirmed by two retailers. Still open: E90 328i coolant capacity (only other-model figures of about 8.2-8.5 L), washer-fluid spec and exact filler location (single source), expansion tank location (single source), brake-reservoir cover fastener count, automatic transmission and differential fluid specs, and the whole power-steering fluid check procedure (not an owner item in the manual's engine-compartment list). Build as 'check levels and top off' only. Third pass (2026-10-10): the BMW parts catalog for this car's selection (RealOEM PH73 USA 09/2009) shows only hydraulic steering (a 'HYDRO STEERING BOX' for cars without EPS, oil carrier 32416851218 with a CHF 11.S label for cars without active steering, valid to 09/2010), so the electric-steering worry does not apply and CHF 11S is confirmed; the same catalog lists the expansion tank 17137640514 with screw cap 17117639020, washer reservoir variants (61667238669 base, 61677238668 with headlamp washers S502A) and a washer filler pipe 61667135409, and no dipstick diagram under the engine group (oil level is electronic). Coolant capacity is not an owner item (the BMW manual text lists none) but about 8.2 L manual / 8.4-8.5 L automatic is reported by two hosts; the BMW manual's washer capacity (6.3 qt with headlamp washers) now has a second host (6 L). Transmission and differential fluids are not owner checks on this car: the catalog's fluid-change kit says an oil-balancing procedure is vital, and the ATF type conflicts (Dexron VI in ETK vs ZF Lifeguard 6 at retailers).",
+  "variantDependencies": [
+    "Engine: oil-level method is electronic on N52; the MY2011 E90 manual also describes a dipstick method (likely for diesel) so confirm the car has no dipstick. N51 (SULEV) not separately researched.",
+    "Transmission: the owner supplied automatic and the VIN option list shows S205A; the catalog lists GA6L45R and GA6HP19Z automatics for the selection, so the exact unit is not proven. It does not change any owner check here: no dipstick, filler or check plug is named in the catalog's transmission diagram 24_1078, and the fluid-change kit diagrams say the oil-balancing procedure is vital. ATF type CONFLICTS (ETK kit: Dexron VI 83222167718, plus 'ATF 2' 83222305396; Turner kit: ZF Lifeguard 6). Coolant capacity differs by gearbox (8.2 L manual vs about 8.4-8.5 L automatic per secondary sources).",
+    "Drive: rear-wheel drive (PH73 type code, NHTSA/decoder), so xDrive transfer-case and front-differential fluids do not apply. The rear differential is not an owner top-off item and no capacity or spec was found for it (a data table's '55 L' figure is implausible and rejected).",
+    "Steering: RESOLVED to hydraulic for this catalog selection. RealOEM lists a HYDRO steering box ('not suitable if EPS is installed', valid to 09/2010) and oil-carrier parts supplemented 'CHF 11.S' for cars WITHOUT active steering (S217A = No): carrier 32416851218, cap 32416851332, label 71212122171. ECS sells 32416851218 for 'without active steering' and 32416767161 for 'with active steering'. S217A is not in the VIN option list (absence is an inference), so the non-active reservoir is expected. Reservoir location in the engine bay and its level marks are not documented in any source found.",
+    "Model year / build: the cabin filter housing cover that hides the brake reservoir has six 8 mm screws per two hosts for the E90 sedan (bimmerpost 2010-era thread, OnlyEuro; one host says four, an E92 M3 says three); guide 10 uses 'remove every fastener you find'.",
+    "Headlamp washers: the BMW manual's 6.3 US qt / 6.0 L washer capacity includes headlamp washers. ETK uses reservoir 61667238669 for the base car and 61677238668 only with S502A (headlamp cleaning); S502A is not coded on this car per the decode, so the base reservoir is expected and its capacity is not published.",
+    "Oil level: electronic on this gasoline N52 (no oil dipstick). The MY2011 E90 manual lists a dipstick only for diesel engines; Turner lists a Febi oil level sensor for N52 that installs in the bottom of the oil pan; the catalog's engine group has no dipstick diagram."
+  ],
+  "tools": [
+    {
+      "item": "Funnel, clean rags, clean syringe or baster",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/"
+      ],
+      "note": "Generic; one source mentions a syringe to remove overfilled brake fluid."
+    },
+    {
+      "item": "8 mm socket and ratchet (to lift the cowl microfilter housing cover for brake reservoir access)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bmwblog.com/?p=177771",
+        "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=13127589",
+        "https://onlyeuro.com.au/blogs/only-euro/how-to-replace-a-cabin-filter-in-a-bmw-e82-e84-e87-e88-e90-e91-e92-e93"
+      ],
+      "note": "bmwblog is an E92 M3; bavmods covers E90-E93 (four 8 mm screws); bimmerpost is a 2006 330i (six). Count conflict is in guide 10. Count: six per two hosts for the E90 sedan (bimmerpost thread, OnlyEuro); remove every screw you find."
+    },
+    {
+      "item": "Distilled water for the 50/50 coolant mix",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bimmerworld.com/Fluids/BMW-Coolant-Antifreeze/Genuine-BMW-Blue-Antifreeze.html",
+        "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
+      ],
+      "note": "BMW manual says 'half water and half additive' without naming distilled water; three secondary sources use distilled/de-ionised water."
+    }
+  ],
+  "parts": [
+    {
+      "item": "BMW coolant/antifreeze concentrate (blue), 1 gallon",
+      "partNumber": "82141467704",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.bimmerworld.com/Fluids/BMW-Coolant-Antifreeze/Genuine-BMW-Blue-Antifreeze.html",
+        "https://www.turnermotorsport.com/p-1474-bmw-antifreeze-coolant-1-gallon-jug/",
+        "https://www.turnermotorsport.com/p-554106-e9x-328-cooling-system-refresh-kit-level-3/"
+      ],
+      "note": "Turner lists E90 328i N52 and calls it BMW coolant, nitrite/phosphate-free, 50/50 with distilled water, 8+ L systems. Bimmerworld notes BMW changed formula for 2018+ cars. A second Turner listing (Febi 1.5 L, same number cross-referenced) calls it 'G11' while a forum and Bimmerworld call BMW blue 'G48' type: naming differs, so buy the BMW-branded 82141467704 and do not mix coolant types."
+    },
+    {
+      "item": "DOT 4 brake fluid (Genuine BMW 1 gal / 12 fl oz; ATE Typ 200 BF1200 DOT 4 listed for 328i)",
+      "partNumber": "81220142155 (1 gal), 81220142156 (12 fl oz); ATE BF1200",
+      "status": "SINGLE_SOURCE",
+      "primary": false,
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/328i/Brake-Fluid/"
+      ],
+      "note": "FCP lists the Genuine BMW DOT 4 numbers (not E90-specific fitment) and ATE Typ 200 for the 328i. The youcanic article independently names ATE Type 200 as the alternative and says DOT 4 is the most common BMW fluid; a bimmerpost thread also recommends ATE Typ 200 (amber). Use any fresh sealed DOT 4."
+    },
+    {
+      "item": "Washer fluid (any automotive washer fluid; no BMW part number)",
+      "partNumber": null,
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2006-325i-standard/?vd_lang=en"
+      ],
+      "note": "BMW-data tables (bolidenforum, 2011 328xi N52 and 2006 325i pages, same host) say: fill with water and, if required, washer antifreeze per the manufacturer's recommendations. No BMW part number or additive restriction exists in the manual text. Single host, so SINGLE_SOURCE; any climate-rated automotive washer fluid is the practical choice."
+    },
+    {
+      "item": "Power steering fluid CHF 11S (reference only; not an owner top-up item in the manual)",
+      "partNumber": "83290429576 (Genuine BMW 1 L; Pentosin CHF11S equivalent)",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=32_1567",
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Steering/Fluid/",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-840-bmw-steering/m-88-pentosin?Nrpp=50",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2006-325i-standard/?vd_lang=en"
+      ],
+      "note": "BMW catalog (RealOEM 32_1567, this car's selection) supplements the oil carrier, cap and label 'CHF 11.S' for cars without active steering; ECS lists Genuine BMW CHF 11S for the E90 328i N52 and Turner's E9x kit includes CHF 11S. A BMW-data table for a 2006 325i also allows BMW ATF 81229400272 as an alternative; do not use it, use CHF 11S. Reservoir 32416851218 'without active steering' (up to 09/2010) is the expected one."
+    },
+    {
+      "item": "Coolant expansion tank (ETK), screw cap and level switch",
+      "partNumber": "17137640514 (tank), 17117639020 (cap), 17137553919 (level switch)",
+      "primary": true,
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0322"
+      ],
+      "note": "Reference only for identification; the ETK diagram gives no cap pressure rating. The manual's check procedure does not require parts."
+    },
+    {
+      "item": "Windshield washer reservoir (ETK variants) and filler pipe",
+      "partNumber": "61667238669 (base), 61677238668 (headlamp washers S502A); filler pipe 61667135409",
+      "primary": true,
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1879",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1877"
+      ],
+      "note": "Reference only. ETK lists no capacity and no cap as a separate part. A bimmerpost thread says headlamp-washer cars have a reservoir with two openings for two different pumps."
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Engine oil level check",
+      "spec": "Electronic readout. Engine must be at operating temperature after at least about 6.2 miles (10 km) of uninterrupted driving. Instrument cluster: press button 1 on the turn-indicator lever up/down until the OIL symbol appears, then press button 2 (check takes about 3 minutes stationary, about 5 minutes driving). iDrive: Vehicle Info > Vehicle status > Engine oil level. Add up to 1 US quart / 1 L only after the display asks, and within 125 miles. 'Level too high': have it checked.",
+      "capacity": "see guide 16 (about 6.9 US qt total)",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+        "https://z4-forum.com/threads/oil-level.146358/",
+        "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x",
+        "https://www.turnermotorsport.com/p-54816234-engine-oil-level-sensor/",
+        "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x"
+      ],
+      "conflicts": "RESOLVED: no oil dipstick on this gasoline N52. The MY2011 E90 manual's dipstick text is diesel-only; Turner lists the N52 oil level sensor installed in the bottom of the oil pan; the catalog engine group (RealOEM) has no dipstick diagram; bavmods says modern BMWs use an electronic sensor instead of a dipstick. bavmods describes reaching the Oil menu with the BC button; this is the same stalk button as the manual's 'button 1', not a different method."
+    },
+    {
+      "item": "Coolant",
+      "spec": "Half water, half BMW-approved additive (blue BMW coolant). Use only additives suitable for BMW; do not add coolant when hot; do not mix coolant types. Check with the engine cold: turn the expansion tank cap slightly counterclockwise to relieve pressure, then open fully; level correct between MAX and MIN marks in the filler neck; close the cap until it clicks audibly; have repeated loss investigated.",
+      "capacity": "Not an owner item: the retrievable BMW 328i manual text lists no coolant capacity and top-offs do not need it. Secondary figures for the N52 328i: about 8.2 L (8.65 US qt) manual (bolidenforum BMW-data, two pages same host; ricksfreeautorepairadvice 8.6 qt), about 8.4 L (8.9 US qt) automatic (ricksfreeautorepairadvice) / 8.5 L (Z4 forum, unsourced); one Bentley-derived N52 AT PDF says 10 L and does not name the car, so it is treated as a conflict.",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/24",
+        "https://www.bimmerworld.com/Fluids/BMW-Coolant-Antifreeze/Genuine-BMW-Blue-Antifreeze.html",
+        "https://www.turnermotorsport.com/p-1474-bmw-antifreeze-coolant-1-gallon-jug/",
+        "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
+        "https://ricksfreeautorepairadvice.com/bmw-coolant-type-and-capacity/",
+        "https://tpautorepair.net/where-is-the-coolant-in-a-2011-bmw-328i/",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0322"
+      ],
+      "conflicts": "Spec/procedure VERIFIED from two BMW manuals plus retailers. Capacity is secondary approximate (8.2 L MT, about 8.4-8.5 L AT); a 10 L figure on an unnamed-car N52 PDF conflicts. Expansion tank side: tpautorepair (2009 and 2011 328i pages) and youcanic all say passenger side; tpautorepair says near the firewall on one page and near the front on the other, so do not rely on fore-aft position."
+    },
+    {
+      "item": "Brake fluid",
+      "spec": "DOT 4; BMW sells it as low-viscosity DOT 4 (ECS and Bimmerworld list Genuine BMW DOT 4 low viscosity for this chassis family); change about every 2 years (BMW recommendation reported by secondary hosts; CBS tracks it); do not mix DOT 3 into DOT 4; never use fluid from an open container; fill only to just below MAX; brake fluid damages paint.",
+      "capacity": "MISSING (not an owner capacity item)",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.bmwblog.com/?p=177771",
+        "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/",
+        "https://www.fcpeuro.com/BMW-parts/328i/Brake-Fluid/",
+        "https://www.manualslib.com/manual/18585/Bmw-Ag.html?page=131",
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/24",
+        "https://www.ecstuning.com/BMW-E90-330i-N52_3.0L/Braking/Fluid/",
+        "https://tpautorepair.net/does-bmw-need-special-brake-fluid/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=12296150"
+      ],
+      "conflicts": "The only BMW document naming DOT 4 and the 2-year interval is a 2003/04 3 Series (E46) handbook, a different chassis. The MY2011 E90 manual lists brake fluid only as a Condition Based Service item (p.231) and warns it harms paint. Gearshifters also quotes 30,000 mi (reader comment). Another forum says 'annual flush' as opinion. Fresh reads: tpautorepair (generic BMW) says roughly every 2 years regardless of mileage and many late BMWs call for low-viscosity DOT 4; an E90 LCI bimmerpost poster says 'under BMW free program it is every two years' but also says it should be flushed annually and others only speculate. No BMW document for this car states the interval."
+    },
+    {
+      "item": "Washer fluid",
+      "spec": "Filler neck serves both the window washers and the headlamp washers (BMW manual). No BMW fluid part number; BMW-data tables say fill with water and, if required, washer antifreeze per the manufacturer's recommendations.",
+      "capacity": "about 6.3 US qt / 6.0 L including headlamp washers (BMW manual; bolidenforum BMW-data table says 6 L / 6.30 US qt 'with headlamp washer', a second host)",
+      "status": "VERIFIED (capacity); SINGLE_SOURCE (spec)",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/26",
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/26",
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2006-325i-standard/?vd_lang=en"
+      ],
+      "note": "Capacity now has a second host (bolidenforum, 2006 325i). Reservoir variant for a car without headlamp washers is not published."
+    },
+    {
+      "item": "Power steering fluid (hydraulic on this car)",
+      "spec": "CHF 11S (BMW 83290429576 / Pentosin CHF11S): BMW catalog supplements the oil carrier, cap and label 'CHF 11.S' for this car's selection. The manual does not list the reservoir among owner-serviced items.",
+      "capacity": "MISSING",
+      "status": "VERIFIED_SECONDARY (hydraulic type and CHF 11S confirmed by the BMW catalog plus two retailers); capacity MISSING; reservoir location and level marks not documented",
+      "primary": false,
+      "sources": [
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Steering/Reservoir/",
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Steering/Fluid/",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-840-bmw-steering/m-88-pentosin?Nrpp=50",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29821386",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=32_1509",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=32_1567",
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Steering/Reservoir/",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2006-325i-standard/?vd_lang=en"
+      ],
+      "conflicts": "RESOLVED for this VIN: the catalog's steering group (RealOEM) offers only a hydro steering box ('not suitable if EPS is installed', up to 09/2010) and oil-carrier parts for cars without active steering (S217A = No), so electric steering is not expected; forum EPS reports apply to other markets/builds. Active steering is not in the decode; if present the reservoir is 32416767161. Still missing: reservoir position, level marks, capacity, and any BMW check procedure."
+    },
+    {
+      "item": "Manual transmission fluid (reference only)",
+      "spec": "author used Royal Purple Synchromax; no OE spec given",
+      "capacity": "just under 2 qt",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.billswebspace.com/BMWe90ManualTransmissionFluidChange.htm"
+      ]
+    },
+    {
+      "item": "Automatic transmission and rear differential fluid (not owner checks)",
+      "spec": "Transmission: ATF type CONFLICT. BMW catalog fluid-change kit lists ATF Dexron VI (83222167718 1 L; US 83222163514/83222167720) and 'ATF 2' (83222305396), says the required quantity varies and the oil-balancing procedure must be followed, and names no dipstick, filler or check plug; Turner's service kit uses ZF Lifeguard 6 (M-1375.4). No owner fill or check procedure exists in the sources. Rear differential (RWD): no spec or capacity found.",
+      "capacity": "MISSING (catalog: varies; follow oil-balancing procedure)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=24_1393",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=24_1372",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=24_1078",
+        "https://www.turnermotorsport.com/p-13332225-automatic-transmission-service-kit-lifeguard-6-fluid/",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en"
+      ],
+      "note": "Out of scope for a top-off guide: nothing here is an owner check on this car. Kept as a conflict so no ATF is recommended."
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Coolant expansion tank cap",
+      "value": "No torque; BMW manual says turn until it clicks audibly",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/24",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=28134150"
+      ],
+      "conflicts": "A bimmerpost thread reports a coolant leak when the cap was not fully seated."
+    },
+    {
+      "fastener": "Brake reservoir cap / washer cap",
+      "value": "MISSING (hand-tight; no spec)",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": "No torque exists in any source (BMW manual says only to close the cap); treat as hand-tight. Expansion tank cap: see the cap row (clicks audibly)."
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Prep",
+      "instruction": "Park on level ground with the engine off. Before opening the hood make sure the wiper arms rest against the windshield (BMW manual). For coolant the engine must be fully cold; wait at least 30-60 minutes after driving.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not open the hood while the engine is hot and never open the coolant cap on a hot engine; hot coolant can scald."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Engine oil level",
+      "instruction": "Drive at least about 6.2 miles (10 km) without stopping so the engine is at operating temperature. Then use the turn-indicator lever buttons (button 1 until OIL appears, then button 2) or iDrive Vehicle Info > Vehicle status > Engine oil level and wait for the result (about 3 minutes stationary, 5 driving). Add oil only if the display asks, at most 1 US quart (1 L), and within 125 miles. Oil spec and filler: see guide 16.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not overfill; 'level too high' needs a workshop check.",
+        "Adding oil to a cold or just-driven reading before the display asks can overfill."
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Coolant",
+      "instruction": "With the engine cold, find the translucent expansion tank on the passenger side of the engine bay (tpautorepair and youcanic agree on the side; whether it is nearer the firewall or the front differs between pages, and the owner's manual shows it as an engine-compartment item with the diesel tank on the opposite side). Do not confuse it with the larger washer-fluid tank. Turn the cap slightly counterclockwise to relieve pressure, then open it. The level should be between the MAX and MIN marks in the filler neck. If low, add slowly only BMW-approved coolant mixed 50/50 with distilled water, without overfilling, then close the cap until it clicks. Have repeated loss investigated.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never mix coolant types.",
+        "Repeated low coolant means a leak; do not keep topping up.",
+        "Coolant is toxic to pets; clean spills."
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Brake fluid",
+      "instruction": "The brake fluid reservoir is on the driver's side at the base of the windshield, under a plastic cover that on E9x cars is the cabin microfilter housing cover (six 8 mm screws per two E90 sources; others say four or three, so remove every screw you find and count them; see guide 10). Clean around the reservoir, read the level against the MIN and MAX marks on its side, and if below MIN top up with fresh sealed DOT 4 (BMW sells low-viscosity DOT 4) to just below MAX. Refit the cover.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "A falling level can mean worn pads or a leak; get it inspected.",
+        "Brake fluid damages paint; wipe spills at once with water.",
+        "Use only sealed, new DOT 4; do not use fluid from an open container."
+      ],
+      "sources": [
+        "https://onlyeuro.com.au/blogs/only-euro/how-to-replace-a-cabin-filter-in-a-bmw-e82-e84-e87-e88-e90-e91-e92-e93",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=7276455"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Washer fluid",
+      "instruction": "Fill the washer reservoir through the engine-bay filler neck on the passenger side near the strut tower (youcanic; a bimmerpost thread puts the tank at the passenger-side wheel well; cap colour disagrees between black and blue pages), which also feeds the headlamp washers. Total system about 6.3 US qt / 6.0 L including headlamp washers (BMW manual, second host bolidenforum); stop about two inches below the cap per one source. Water with washer antifreeze as needed; no BMW part number or additive restriction was found.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Use fluid rated for your climate; no BMW additive restriction was found."
+      ],
+      "sources": [
+        "https://www.youcanic.com/add-windshield-washer-fluid-2004-2013-bmw-3-series/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=21195767",
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/26",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2006-325i-standard/?vd_lang=en"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Power steering (inspection only)",
+      "instruction": "This car's BMW catalog shows hydraulic power steering (no electric steering parts for the selection) with CHF 11S fluid and, unless it has active steering, reservoir 32416851218. The owner's manual does not list the reservoir among owner-serviced items, and no source gives its position or level marks, so only look for leaks and a level in the translucent range. If the level is clearly low, use only CHF 11S (never ATF or generic fluid) or have a shop do it; repeated loss means a leak.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Do not use ATF or random fluid; wrong fluid damages the pump."
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Transmission and differential",
+      "instruction": "Not a routine owner check. The catalog lists no dipstick, filler or check plug for the automatic, requires an oil-balancing procedure for fluid service, and the ATF type conflicts (Dexron VI vs ZF Lifeguard 6), so do not top up. Rear differential fluid has no documented owner check. Take any transmission or differential concern to a shop.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Do not add ATF; the correct fluid and fill procedure are not established for an owner."
+      ],
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=24_1393",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=24_1078",
+        "https://www.turnermotorsport.com/p-13332225-automatic-transmission-service-kit-lifeguard-6-fluid/"
+      ]
+    }
+  ],
+  "safety": [
+    "Engine cold before opening the coolant cap; hot coolant can scald.",
+    "Brake fluid is corrosive to paint and absorbs moisture; keep containers sealed and use only new fluid.",
+    "Low brake fluid or brake system leaks are safety-critical; seek inspection.",
+    "Coolant is toxic to pets; clean spills.",
+    "Keep wiper arms down when opening the hood (BMW manual) and do not drop fasteners into the cowl."
+  ],
+  "missingEvidence": [
+    "BMW owner's-manual text for brake fluid (DOT 4) and its interval for an E9x; the retrievable MY2011 pages mention brake fluid only as a CBS item. MY2010 manual text unreadable. DOT 4 low-viscosity is retailer/catalog level only.",
+    "Coolant capacity for this exact car (approx 8.2 L MT / 8.4-8.5 L AT from secondary hosts; a 10 L PDF conflicts); not an owner item.",
+    "Washer fluid additive restriction beyond 'water plus antifreeze' (single host); reservoir capacity for a car without headlamp washers.",
+    "Power steering: reservoir position, level marks, capacity and BMW check procedure (type is hydraulic CHF 11S per the catalog; active steering S217A not decoded, presumed absent).",
+    "ATF type and fill procedure (Dexron VI per BMW catalog vs ZF Lifeguard 6 per retailer) and rear-differential fluid spec: not owner checks.",
+    "Expansion tank fore-aft position (passenger side confirmed by three pages, firewall vs front differs).",
+    "Brake reservoir cover screw count for a 2010 E90 is six per two hosts but conflicts with four and three; positions unknown. Brake fluid capacity; reservoir cap torque.",
+    "Exact washer-filler cap colour (black per youcanic, blue per tpautorepair)."
+  ],
+  "ownerInputsNeeded": [],
+  "visuals": [
+    {
+      "id": "engine-bay-fluid-fill-points",
+      "title": "Where the owner-serviceable fluid fill points are in the engine bay",
+      "evidenceSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "coolant-expansion-tank-cap",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The cap on the translucent coolant expansion tank, with a filler neck marked MAX and MIN; reported on the passenger side toward the firewall."
+        },
+        {
+          "id": "washer-fluid-filler-cap",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The washer-fluid filler neck cap, reported black with a wiper symbol, serving window and headlamp washers."
+        },
+        {
+          "id": "engine-oil-filler-cap",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The engine oil filler neck cap on top of the engine."
+        },
+        {
+          "id": "brake-reservoir-under-cover",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The brake fluid reservoir at the driver-side base of the windshield, hidden under a long plastic cover."
+        },
+        {
+          "id": "windshield-base-and-wipers",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The base of the windshield and wiper arms for orientation."
+        }
+      ],
+      "facts": [
+        {
+          "element": "coolant-expansion-tank-cap",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0322"
+          ],
+          "note": "Manual lists the expansion tank as engine-compartment item; location text not retrievable. ETK 17_0322 lists the tank and its screw cap for this car."
+        },
+        {
+          "element": "coolant-expansion-tank-cap",
+          "attribute": "location",
+          "urls": [
+            "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/",
+            "https://www.youcanic.com/check-add-coolant-bmw-3-series-2004-2013/",
+            "https://tpautorepair.net/where-is-the-coolant-in-a-2011-bmw-328i/"
+          ],
+          "note": "tpautorepair: passenger side near the firewall; youcanic: in the engine compartment in front of the passenger side. Third page: passenger side near the front of the car; fore-aft position differs, so draw only 'passenger side'."
+        },
+        {
+          "element": "coolant-expansion-tank-cap",
+          "attribute": "fine-detail-geometry",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+            "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/"
+          ],
+          "note": "Manual: level between max and min marks in the filler neck. tpautorepair: MIN and MAX on the tank side or a float, black cap. These differ; do not draw detailed marks."
+        },
+        {
+          "element": "washer-fluid-filler-cap",
+          "attribute": "location",
+          "urls": [
+            "https://www.youcanic.com/add-windshield-washer-fluid-2004-2013-bmw-3-series/",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=21195767"
+          ],
+          "note": "Passenger side near the strut tower (youcanic); a bimmerpost thread puts the tank at the passenger-side wheel well. Cap colour conflicts (black vs blue), so do not draw a colour."
+        },
+        {
+          "element": "washer-fluid-filler-cap",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1877"
+          ],
+          "note": "Manual lists the filler neck; ETK lists a washer filler pipe 61667135409 (second host)."
+        },
+        {
+          "element": "engine-oil-filler-cap",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://bmwtuning.co/bmw-e90-oil-change/"
+          ],
+          "note": "Manual lists the engine oil filler neck; bmwtuning.co says the cap is on top of the engine cover."
+        },
+        {
+          "element": "brake-reservoir-under-cover",
+          "attribute": "location",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/",
+            "https://www.1addicts.com/forums/showthread.php?p=5432347",
+            "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/"
+          ],
+          "note": "Driver side at the base of the windshield under a plastic cover (E92 M3, generic E9x article, E82 thread, generic 3-series article)."
+        },
+        {
+          "element": "brake-reservoir-under-cover",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/"
+          ],
+          "note": "Cover is the cabin microfilter housing (E92 M3: remove cabin filter housing bolts; generic article: 'microfilter housing')."
+        },
+        {
+          "element": "engine-oil-filler-cap",
+          "attribute": "location",
+          "urls": [
+            "https://bmwtuning.co/bmw-e90-oil-change/",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
+          ],
+          "note": "bmwtuning: cap right on top of the engine cover; RealOEM lists the cap for oil filler (11128655331) as item 12 of the cylinder head cover diagram, i.e. on the valve cover."
+        },
+        {
+          "element": "brake-reservoir-under-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/",
+            "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/"
+          ],
+          "note": "All say a brake reservoir/master cylinder sits driver side at the windshield base beneath a plastic cover (bmwblog on an E92 M3, youcanic on E90-E93, gearshifters generic 3-series)."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "coolant-expansion-tank-cap",
+          "reason": "Exact tank shape, cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank."
+        },
+        {
+          "element": "brake-reservoir-under-cover",
+          "reason": "The reservoir is hidden; do not show cover screw count or the reservoir's cap markings."
+        },
+        {
+          "element": "washer-fluid-filler-cap",
+          "reason": "Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour."
+        }
+      ],
+      "sources": {
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23": {
+          "kind": "oem-text",
+          "establishes": "E90 manual p.226: engine compartment items (expansion tank, washer filler, jump-start terminal, oil filler neck)."
+        },
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23": {
+          "kind": "oem-text",
+          "establishes": "E94 manual p.223-226: engine compartment items, coolant check, washer filler for headlamp and window systems."
+        },
+        "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/": {
+          "kind": "third-party-guide",
+          "establishes": "E90 328i expansion tank passenger side near firewall, black cap, MIN/MAX."
+        },
+        "https://www.youcanic.com/add-windshield-washer-fluid-2004-2013-bmw-3-series/": {
+          "kind": "third-party-guide",
+          "establishes": "Washer filler passenger side near strut tower, black cap with wiper symbol."
+        },
+        "https://www.bmwblog.com/?p=177771": {
+          "kind": "third-party-guide",
+          "establishes": "E92 M3: brake master cylinder driver side near windshield base; access by removing cabin air filter housing."
+        },
+        "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/": {
+          "kind": "third-party-guide",
+          "establishes": "Reservoir below plastic cover on driver's side."
+        },
+        "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/": {
+          "kind": "third-party-guide",
+          "establishes": "Newer models: plastic cover is the microfilter housing."
+        },
+        "https://www.1addicts.com/forums/showthread.php?p=5432347": {
+          "kind": "third-party-guide",
+          "establishes": "E82/E88: reservoir drivers side in front of the windshield, plastic cover popped off."
+        },
+        "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/": {
+          "kind": "third-party-guide",
+          "establishes": "Driver side, behind a plastic cover."
+        },
+        "https://bmwtuning.co/bmw-e90-oil-change/": {
+          "kind": "third-party-guide",
+          "establishes": "Oil cap on top of the engine cover."
+        },
+        "https://www.youcanic.com/check-add-coolant-bmw-3-series-2004-2013/": {
+          "kind": "third-party-guide",
+          "establishes": "E90-E93 article: expansion tank in the engine compartment in front of the passenger side."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM E90 328i cylinder head cover diagram lists the oil filler cap as part of the cover assembly."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0322": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM E90 LCI 328i expansion tank diagram: tank 17137640514, screw cap 17117639020, level switch 17137553919."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1877": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM filler pipe for wash container 61667135409 (existence of a washer filler pipe; no position)."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=21195767": {
+          "kind": "third-party-guide",
+          "establishes": "E9x thread: washer tank sits at the back of the passenger-side wheel well; headlamp-washer cars have two openings."
+        },
+        "https://tpautorepair.net/where-is-the-coolant-in-a-2011-bmw-328i/": {
+          "kind": "third-party-guide",
+          "establishes": "2011 328i article: expansion tank passenger side near the front, black cap with warning symbol; separate larger washer tank with a blue cap further toward the side or rear."
+        },
+        "https://www.turnermotorsport.com/p-54816234-engine-oil-level-sensor/": {
+          "kind": "parts-catalog",
+          "establishes": "Febi oil level sensor for N52 installs in the bottom of the oil pan (electronic oil level, no dipstick)."
+        }
+      },
+      "gapFillNotes": [
+        "washer-fluid-filler-cap: passenger side now has youcanic plus an indirect bimmerpost statement (tank at the passenger wheel well); exact filler position and cap colour still not established; OEM manual text gives the item list without positions.",
+        "Brake reservoir existence sources are E92 M3 and generic E9x/3-series articles, not an E90-specific page."
+      ],
+      "imageType": "LOCATE"
+    },
+    {
+      "id": "brake-reservoir-access-cover",
+      "title": "Reaching the brake reservoir: the cowl cover over it",
+      "evidenceSteps": [
+        4
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "microfilter-housing-cover",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The long black plastic cover along the base of the windshield in front of the wipers, covering the cabin microfilter housing and the brake reservoir."
+        },
+        {
+          "id": "cover-fastener-points",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "The 8 mm screw locations that hold the cover; the count is unresolved so they are shown without a number."
+        },
+        {
+          "id": "brake-reservoir",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The reservoir revealed when the cover is lifted, with MIN and MAX marks on its side."
+        }
+      ],
+      "facts": [
+        {
+          "element": "microfilter-housing-cover",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+            "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+            "https://www.bmwblog.com/?p=177771"
+          ],
+          "note": "Long black cover at the base of the windshield in front of the wipers."
+        },
+        {
+          "element": "cover-fastener-points",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=13127589"
+          ],
+          "note": "8 mm hex heads (bmwblog bolts, bavmods screws, bimmerpost '8 mil')."
+        },
+        {
+          "element": "cover-fastener-points",
+          "attribute": "fastener-position",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771"
+          ],
+          "note": "Single source (E92 M3): two near the windshield, one closer to the front. Counts of 3, 4 and 6 are reported across E9x sources; do not draw a number."
+        },
+        {
+          "element": "brake-reservoir",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/"
+          ],
+          "note": "Reservoir lies under that cover."
+        },
+        {
+          "element": "microfilter-housing-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+            "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+            "https://www.bmwblog.com/?p=177771"
+          ],
+          "note": "Three sites describe a plastic cabin filter cover/housing at the base of the windshield in the E9x engine bay."
+        },
+        {
+          "element": "cover-fastener-points",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+            "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+            "https://www.bmwblog.com/?p=177771",
+            "https://onlyeuro.com.au/blogs/only-euro/how-to-replace-a-cabin-filter-in-a-bmw-e82-e84-e87-e88-e90-e91-e92-e93"
+          ],
+          "note": "All three describe 8 mm screws/bolts holding the cover (counts differ: 3, 4, 6). Six is best supported for the E90 sedan (bimmerpost thread and OnlyEuro); still show no number."
+        },
+        {
+          "element": "cover-fastener-points",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+            "https://www.bmwblog.com/?p=177771"
+          ],
+          "note": "bimmerpost: screws at the two ducts plus two through tabs on the front edge; bmwblog: two bolts up by the windshield and one closer to the front. Positions agree only broadly (ends near windshield plus front edge)."
+        },
+        {
+          "element": "brake-reservoir",
+          "attribute": "existence",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/",
+            "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/"
+          ],
+          "note": "Brake master cylinder reservoir exists on E9x under the plastic cover (E92 M3, E9x generic, generic 3-series)."
+        },
+        {
+          "element": "brake-reservoir",
+          "attribute": "location",
+          "urls": [
+            "https://www.bmwblog.com/?p=177771",
+            "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/",
+            "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/"
+          ],
+          "note": "All say driver side near the base of the windshield beneath the plastic cover."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "cover-fastener-points",
+          "reason": "Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified."
+        },
+        {
+          "element": "brake-reservoir",
+          "reason": "Cap markings, shape and exact orientation are not established."
+        }
+      ],
+      "sources": {
+        "https://www.bmwblog.com/?p=177771": {
+          "kind": "third-party-guide",
+          "establishes": "E92 M3: remove three 8 mm bolts of the cabin air filter housing to reach the master cylinder reservoir (driver side)."
+        },
+        "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93": {
+          "kind": "third-party-guide",
+          "establishes": "E90-E93 cabin filter assembly held by four 8 mm screws."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=7276455": {
+          "kind": "third-party-guide",
+          "establishes": "Long black plastic cover in front of the wipers; six screws; 8 mm."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=13127589": {
+          "kind": "third-party-guide",
+          "establishes": "2006 330i: cover with six screws, 8 mm socket."
+        },
+        "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/": {
+          "kind": "third-party-guide",
+          "establishes": "Plastic cover is the microfilter housing on newer models."
+        },
+        "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/": {
+          "kind": "third-party-guide",
+          "establishes": "E9x article: reservoir is below the plastic cover on the driver's side."
+        },
+        "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/": {
+          "kind": "third-party-guide",
+          "establishes": "3-series article: brake fluid reservoir driver side behind a plastic cover."
+        },
+        "https://onlyeuro.com.au/blogs/only-euro/how-to-replace-a-cabin-filter-in-a-bmw-e82-e84-e87-e88-e90-e91-e92-e93": {
+          "kind": "third-party-guide",
+          "establishes": "E8x/E9x cabin filter guide: six screws on the upper housing, three retention tabs on the filter frame."
+        }
+      },
+      "gapFillNotes": [
+        "Fastener count conflicts across sources (3, 4, 6); show no number.",
+        "Fastener count narrowed to six for the E90 sedan per two hosts (guide 10 finding); positions still unestablished, so the image shows screw heads without a count."
+      ],
+      "imageType": "LOCATE"
+    }
+  ],
+  "resolutionNotes": [
+    "RESOLVED: power steering is hydraulic on this car. The BMW catalog (RealOEM PH73 USA 09/2009) lists only a HYDRO steering box ('not suitable if EPS is installed', valid to 09/2010) and oil-carrier parts supplemented CHF 11.S for cars without active steering (S217A = No); fluid row upgraded to VERIFIED and the guide row to VERIFIED_SECONDARY. Active steering is not in the decode, so reservoir 32416851218 is expected (32416767161 if active steering). The EPS caveat in variantDependencies is removed for this VIN.",
+    "RESOLVED: engine oil level is electronic with no dipstick (manual dipstick text is diesel-only; Turner lists an N52 oil-pan level sensor; RealOEM engine group has no dipstick diagram; bavmods).",
+    "RESOLVED: coolant capacity is not an owner item (retrievable manual text has none) and secondary figures are about 8.2 L manual / 8.4-8.5 L automatic (bolidenforum, ricksfreeautorepairadvice, Z4 forum); a 10 L N52 PDF for an unnamed car conflicts and is not used. Expansion tank side (passenger) now has three pages; fore-aft position still differs.",
+    "RESOLVED: washer capacity 6.3 qt / 6.0 L including headlamp washers now has a second host (bolidenforum); washer spec is 'water plus antifreeze as needed' from one host only (SINGLE_SOURCE). ETK shows reservoir variants by S502A (not coded here) and a filler pipe; filler side is passenger per youcanic plus an indirect bimmerpost statement. NEW CONFLICT: filler cap colour (black vs blue).",
+    "NARROWED: brake reservoir cover screws six per two hosts (guide 10); brake fluid spec now carries the low-viscosity DOT 4 note from ECS and Bimmerworld; the 2-year interval is still secondary only.",
+    "NEW CONFLICT: automatic transmission fluid. BMW's ETK fluid-change kit lists Dexron VI and 'ATF 2' and demands the oil-balancing procedure; Turner's kit uses ZF Lifeguard 6. Neither is an owner top-off, so step 7 is out of scope and set to CONFLICT. Rear differential spec still MISSING (a '55 L' data-table figure is implausible and rejected).",
+    "NOT RESOLVED: BMW document for the brake fluid interval; power steering reservoir position, marks and capacity; washer filler exact position; MY2010 owner's manual text (unreadable).",
+    "ownerInputsNeeded emptied: transmission and drive are given (automatic, RWD), steering type is now settled by the catalog, and the cap, screw-count and label items are handled by 'remove every screw you find' wording and read-the-cap instructions; none requires inspecting the car beforehand.",
+    "recommendedStatus stays BUILDABLE_PARTIAL: usable as an uncertified draft limited to 'check levels and top off' (oil electronically, coolant, brake fluid, washer) with power steering as inspection-only and transmission/differential excluded."
+  ]
+}

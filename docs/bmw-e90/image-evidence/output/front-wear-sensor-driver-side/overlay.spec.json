@@ -1,0 +1,37 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "front-wear-sensor-driver-side",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 8,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "pad-wear-sensor-wire",
+      "role": "hero",
+      "note": "A thin wear-sensor wire clipped into the inner brake pad, running up out of the caliper area.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "sensor-connector-junction-box",
+      "role": "target",
+      "note": "A small plastic junction box with a door, high in the wheel well behind the strut, holding the sensor plug with a release tab.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "battery",
+      "label": "battery",
+      "required": true
+    },
+    {
+      "element": "rear-power-distribution-box",
+      "label": "rear power distribution box",
+      "required": true
+    },
+    {
+      "element": "negative-terminal-with-ibs",
+      "label": "negative terminal with ibs",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "8e5f358e3fff5cee4b220bdaa198cb8a9b2742d6710231421618b225fc680df9",
+  "createdAt": "2026-10-10T12:01:41.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-trunk-battery-compartment-v1",
+  "maySimplify": [
+    {
+      "element": "positive-terminal-cover"
+    },
+    {
+      "element": "vent-hose"
+    },
+    {
+      "element": "hold-down-bracket"
+    },
+    {
+      "element": "vent-hose-unestablished-detail"
+    },
+    {
+      "element": "hold-down-bracket-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "battery",
+      "id": "MD-battery",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "identification",
+      "element": "rear-power-distribution-box",
+      "id": "MD-rear-power-distribution-box",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-6"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-8",
+            "ref-12"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "negative-terminal-with-ibs",
+      "id": "MD-negative-terminal-with-ibs",
+      "requirements": [
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-1",
+            "ref-7",
+            "ref-8"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-3",
+            "ref-9"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-7",
+            "ref-8",
+            "ref-13"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-7",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "vent-hose-unestablished-detail",
+      "id": "MN-excl-vent-hose-unestablished-detail",
+      "reason": "Routing path and clip positions on the E90 sedan are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "vent-hose-unestablished-detail"
+      }
+    },
+    {
+      "element": "hold-down-bracket-unestablished-detail",
+      "id": "MN-excl-hold-down-bracket-unestablished-detail",
+      "reason": "Exact shape and number of fasteners are not established beyond catalog part list.",
+      "trace": {
+        "attribute": "existence",
+        "element": "hold-down-bracket-unestablished-detail"
+      }
+    },
+    {
+      "element": "positive-terminal-cover",
+      "id": "MN-excl-positive-terminal-cover",
+      "reason": "Colour/shape only established on an E82 post; avoid detailed geometry.",
+      "trace": {
+        "attribute": "existence",
+        "element": "positive-terminal-cover"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-trunk-battery-compartment-v1",
+      "sha256": "10c193f00c0ca97cb1f35a5f50bbeed014bc3499b68373b4d50269770605d82a"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "4969aa3c34d1d3a507c2222b861e234abd0d800db6b85c6fdb69458c19944cc4"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "7650048b084b752727d0c2c191b9bea15183c7c719d7a65f150dbeda54e4c56f"
+  },
+  "suppress": [
+    {
+      "attribute": "existence",
+      "element": "positive-terminal-cover",
+      "handling": "omit"
+    },
+    {
+      "attribute": "location",
+      "element": "vent-hose",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "hold-down-bracket",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "vent-hose-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "hold-down-bracket-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "trunk-battery-compartment"
+}

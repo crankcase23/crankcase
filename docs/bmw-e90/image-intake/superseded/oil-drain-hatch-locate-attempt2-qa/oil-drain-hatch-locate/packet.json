@@ -1,0 +1,259 @@
+{
+  "schema": "bmw-image-qa-packet.v1",
+  "rubricVersion": "CG-QA-v1.0",
+  "visualId": "oil-drain-hatch-locate",
+  "application": {
+    "year": 2010,
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "engine": "3.0L inline-6 (engine code not confirmed)"
+  },
+  "status": "READY_FOR_REVIEW",
+  "candidate": {
+    "generationId": "GR-oil-drain-hatch-locate-001",
+    "file": "candidate.png",
+    "sha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+    "width": 1600,
+    "height": 1000,
+    "cycle": 1
+  },
+  "contract": {
+    "id": "VC-oil-drain-hatch-locate-v1",
+    "contentHash": "51a322ec90ceedb68413cafe04cee870b0f603a71738e45dd6480112668db24a",
+    "frame": {
+      "height": 1000,
+      "maxBytes": 12582912,
+      "mediaTypes": [
+        "png"
+      ],
+      "noBakedText": true,
+      "width": 1600
+    },
+    "clearSpace": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "fit": {
+    "schema": "bmw-fit-record.v1",
+    "native": {
+      "sha256": "206084d941a67d0a5c880907efb827184627c11567edb3c1a6f9d0897b4a3557",
+      "bytes": 1579545,
+      "width": 1586,
+      "height": 992,
+      "ratio": 1.5988,
+      "ancillaryChunks": [
+        "caBX"
+      ],
+      "c2pa": {
+        "present": true,
+        "manifestSha256": "cd226d04465c94baa58306c0cb6f16acf3fabb8cf0f64f080f8498a7d9f10f40"
+      }
+    },
+    "fitted": {
+      "sha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+      "bytes": 1250999,
+      "width": 1600,
+      "height": 1000,
+      "ratio": 1.6
+    },
+    "ops": [
+      "pad-edge-replicate"
+    ],
+    "pad": {
+      "left": 7,
+      "right": 7,
+      "top": 4,
+      "bottom": 4
+    },
+    "paddedFractionOfCanvas": 0.0088,
+    "paddedEdgeStats": {
+      "left": {
+        "mean": 249.7,
+        "std": 2.3
+      },
+      "right": {
+        "mean": 249.2,
+        "std": 2.1
+      },
+      "top": {
+        "mean": 247.4,
+        "std": 0.7
+      },
+      "bottom": {
+        "mean": 243.2,
+        "std": 0.9
+      }
+    },
+    "stretched": false,
+    "cropped": false,
+    "upscaled": false,
+    "contentPixelsUnchanged": true,
+    "note": "Padding only. The factory normaliser then downscales this exact 16:10 canvas uniformly to 1600x1000 and strips metadata."
+  },
+  "items": [
+    {
+      "contractItemId": "MD-access-hatch",
+      "kind": "must-depict",
+      "element": "access-hatch",
+      "criticality": "critical",
+      "visibility": "hero",
+      "describe": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline.",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "attribute": "location",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        }
+      ]
+    },
+    {
+      "contractItemId": "MN-excl-front-bumper-and-grille",
+      "kind": "must-not-depict",
+      "element": "front-bumper-and-grille",
+      "reason": "No source establishes the lower front styling for this car; left out."
+    },
+    {
+      "contractItemId": "MN-excl-suspension-and-subframe",
+      "kind": "must-not-depict",
+      "element": "suspension-and-subframe",
+      "reason": "No source establishes the surrounding chassis layout; left out."
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "kind": "provenance",
+      "rule": "Answer PASS only if the image shows no sign of copied/traced source imagery, and contains no baked-in text. The generator's attestation is in the packet."
+    }
+  ],
+  "technical": [
+    {
+      "element": "access-hatch",
+      "role": "hero",
+      "criticality": "critical",
+      "describe": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline.",
+      "established": [
+        {
+          "attribute": "existence",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            },
+            {
+              "url": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+              "kind": "third-party-guide",
+              "says": "17 mm plug with copper crush washer; oil exits sideways."
+            }
+          ]
+        },
+        {
+          "attribute": "location",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            }
+          ]
+        }
+      ],
+      "notEstablished": [
+        {
+          "attribute": "fine-detail-geometry",
+          "render": "omit",
+          "note": "Not established: one poster describes a triangular panel, others a small removable panel."
+        },
+        {
+          "attribute": "fastener-position",
+          "render": "omit",
+          "note": "Conflict: three screws vs coin-operated catch."
+        }
+      ]
+    }
+  ],
+  "prompt": "Generate a landscape 16:10 illustration (1600x1000 px or larger) for a DIY car-repair guide. Oil drain: where the undertray access hatch is, on a 2010 BMW 328i (E90), 3.0L inline-6. Step: \"Open the undertray access hatch\".\nLook: clean realistic 3D technical illustration, light neutral studio background, matte materials, soft light and soft contact shadows, tight framing, minimal detail. Realism is for materials and light only: no invented detail, no orange or other saturated accent colours (copper parts may be copper).\nView: Low view from beneath the front of the car looking rearward, mild perspective. Wide enough to find the part: the hero about 15-30% of the frame width, surroundings plain and simplified.\nShow: HERO: A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline. Do NOT depict its fine detail, where its fasteners sit: keep it a plain generic shape.\nBackground only, simplified and dim: undertray panel.\nLeave out entirely: front bumper and grille, suspension and subframe, wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.\nLayout: plain empty light margin of at least 8% of the width on the left and right and 8% of the height at the bottom; nothing touches those edges, the subject floats on the plain ground. Keep the top 3%-17% of the height plain light background.\nNo text, letters, numbers, labels, arrows, callout lines or watermarks anywhere. Anything not described above stays a plain generic shape; if unsure how a real part looks, leave it out.\n",
+  "attestation": {
+    "attestedBy": "image-generator",
+    "attestedOn": "2026-10-11",
+    "generatedFromTextOnly": true,
+    "noBakedText": true,
+    "noReferenceImageInputs": true,
+    "noThirdPartyCompositing": true,
+    "noTracing": true,
+    "statement": "Generated in a fresh ChatGPT chat by pasting the run's generation-prompt.txt as text; no uploads. Baked-text claim is the generator's statement and is checked by the independent reviewer."
+  },
+  "generator": {
+    "system": "ChatGPT image generation",
+    "model": "ChatGPT image generation (model name not shown in UI)"
+  },
+  "reviewerIdentityRequired": "Hermes / ChatGPT / GPT-5.6 Sol",
+  "replyFormat": {
+    "candidateSha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+    "rubricVersion": "CG-QA-v1.0",
+    "provenanceCheck": {
+      "validated": "true|false",
+      "notes": "short"
+    },
+    "checks": [
+      {
+        "contractItemId": "MD-access-hatch",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-front-bumper-and-grille",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-suspension-and-subframe",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "PROVENANCE",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      }
+    ],
+    "findings": [
+      {
+        "id": "F1",
+        "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+        "contractItemRef": "an item id above",
+        "element": "element id",
+        "attribute": "e.g. location",
+        "description": "what is wrong",
+        "requiredChange": "what to change",
+        "fixType": "modify|remove|suppress|simplify|relocate|add",
+        "gate": "VISUAL_ACCURACY",
+        "evidenceDeficiency": false,
+        "regression": false
+      }
+    ],
+    "regressionCheck": []
+  }
+}

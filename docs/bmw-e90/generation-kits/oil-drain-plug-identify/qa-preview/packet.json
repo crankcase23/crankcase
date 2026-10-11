@@ -1,0 +1,280 @@
+{
+  "schema": "bmw-image-qa-packet.v1",
+  "rubricVersion": "CG-QA-v1.0",
+  "visualId": "oil-drain-plug-identify",
+  "application": {
+    "year": 2010,
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "engine": "3.0L inline-6 (engine code not confirmed)"
+  },
+  "status": "AWAITING_CANDIDATE_IMAGE",
+  "candidate": {
+    "generationId": null,
+    "file": "candidate.png",
+    "sha256": "(set when the image exists)",
+    "width": null,
+    "height": null,
+    "cycle": null
+  },
+  "contract": {
+    "id": "VC-oil-drain-plug-identify-v1",
+    "contentHash": "6115560cb8f46f6d104dec87b6df47b254f13a0c3e4ce5ec8a5445beec4fddd6",
+    "frame": {
+      "height": 1000,
+      "maxBytes": 12582912,
+      "mediaTypes": [
+        "png"
+      ],
+      "noBakedText": true,
+      "width": 1600
+    },
+    "clearSpace": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "fit": null,
+  "items": [
+    {
+      "contractItemId": "MD-drain-plug",
+      "kind": "must-depict",
+      "element": "drain-plug",
+      "criticality": "critical",
+      "visibility": "hero",
+      "describe": "The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head.",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "attribute": "location",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010"
+          ]
+        },
+        {
+          "attribute": "fastener-head-type",
+          "render": "draw",
+          "sources": [
+            "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/",
+            "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/"
+          ]
+        }
+      ]
+    },
+    {
+      "contractItemId": "MD-crush-washer",
+      "kind": "must-depict",
+      "element": "crush-washer",
+      "criticality": "procedure",
+      "visibility": "target",
+      "describe": "A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface.",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "render": "draw",
+          "sources": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834",
+            "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/"
+          ]
+        },
+        {
+          "attribute": "location",
+          "render": "draw",
+          "sources": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834"
+          ]
+        }
+      ]
+    },
+    {
+      "contractItemId": "MN-excl-pan-bolts-and-ribs",
+      "kind": "must-not-depict",
+      "element": "pan-bolts-and-ribs",
+      "reason": "Pan fasteners and rib layout are not established for the automatic pan; left out."
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "kind": "provenance",
+      "rule": "Answer PASS only if the image shows no sign of copied/traced source imagery, and contains no baked-in text. The generator's attestation is in the packet."
+    }
+  ],
+  "technical": [
+    {
+      "element": "drain-plug",
+      "role": "hero",
+      "criticality": "critical",
+      "describe": "The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head.",
+      "established": [
+        {
+          "attribute": "existence",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            },
+            {
+              "url": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+              "kind": "third-party-guide",
+              "says": "17 mm plug with copper crush washer; oil exits sideways."
+            }
+          ]
+        },
+        {
+          "attribute": "location",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            },
+            {
+              "url": "https://us.haynes.com/blogs/step-by-step-guides/oil-change-bmw-x3-2003-2010",
+              "kind": "third-party-guide",
+              "says": "Haynes (X3 2003-2010, engine code not named): sump plug on the base of the engine, 17 mm spanner or socket, replace the plug washer."
+            }
+          ]
+        },
+        {
+          "attribute": "fastener-head-type",
+          "sources": [
+            {
+              "url": "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/",
+              "kind": "parts-catalog",
+              "says": "Turner: engine oil drain plug is a classic 17 mm external male hex head, M12x1.5x16, sold with its crush washer; fitment table lists E90 328i N52."
+            },
+            {
+              "url": "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/",
+              "kind": "parts-catalog",
+              "says": "ECS: genuine screw plug 11137535106 for the oil change or a damaged hex head; fitment table lists E90 328i N52; crush washer sold separately."
+            }
+          ]
+        }
+      ],
+      "notEstablished": [
+        {
+          "attribute": "orientation",
+          "render": "omit",
+          "note": "Not established for this car: sources conflict (straight down vs facing right vs sideways) and the automatic pan is not catalogued. Oil pan variant: Turner lists separate engine oil pans for manual (11137553164) and automatic (11137552414) cars; the RealOEM 328i diagram shows only the manual pan (S205A = No). This car is an automatic (S205), so plug position and orientation on ITS pan are not established; keep the pan a plain generic mass."
+        }
+      ]
+    },
+    {
+      "element": "crush-washer",
+      "role": "target",
+      "criticality": "procedure",
+      "describe": "A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface.",
+      "established": [
+        {
+          "attribute": "existence",
+          "sources": [
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            },
+            {
+              "url": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834",
+              "kind": "parts-catalog",
+              "says": "RealOEM 328i oil pan diagram: screw plug M12x1.5 (11137553918) with gasket ring A12x17-CU (07119963151). The diagram lists only the manual-transmission pan 11137553164 (S205A = No); no automatic pan is shown."
+            },
+            {
+              "url": "https://www.turnermotorsport.com/p-54317188-engine-oil-drain-plug/",
+              "kind": "parts-catalog",
+              "says": "Turner: engine oil drain plug is a classic 17 mm external male hex head, M12x1.5x16, sold with its crush washer; fitment table lists E90 328i N52."
+            }
+          ]
+        },
+        {
+          "attribute": "location",
+          "sources": [
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            },
+            {
+              "url": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834",
+              "kind": "parts-catalog",
+              "says": "RealOEM 328i oil pan diagram: screw plug M12x1.5 (11137553918) with gasket ring A12x17-CU (07119963151). The diagram lists only the manual-transmission pan 11137553164 (S205A = No); no automatic pan is shown."
+            }
+          ]
+        }
+      ],
+      "notEstablished": []
+    }
+  ],
+  "prompt": "Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.\n\nSUBJECT: Oil drain: this is the engine oil drain plug, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Drain the sump\".\n\nFRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). End-on view straight along the axis of the part, against a plain simplified surface; no ground, horizon or body edges visible. IDENTIFY image: tight close-up of the hero part filling roughly 40-60% of the frame on a plain simplified surface. If an element's orientation is listed as not established, view it end-on with no ground, horizon, body edge or gravity cue. Style (CG-VS-1.0): clean, realistic 3D technical illustration; light neutral studio background (soft white to light grey); matte materials, soft light, soft contact shadows; tight component framing; minimal unnecessary detail. Realism applies to materials and lighting only: it does NOT license invented detail, so every part not listed below stays a plain generic shape. No orange or other saturated accent colours anywhere (a copper-coloured part may be copper); highlights and arrows are added later as an editable overlay.\n\nMUST SHOW (clearly, in this order of importance):\n1. HERO: The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head. Do NOT depict its orientation: keep it a plain generic shape.\n2. A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface.\n\nMAY SHOW, SIMPLIFIED AND DIM (background only): oil pan surface. Keep every one of these generic and low-contrast. Never invent detail on them.\n\nMUST NOT SHOW (leave these out entirely, do not substitute): pan bolts and ribs (Pan fasteners and rib layout are not established for the automatic pan; left out), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.\n\nNO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.\n\nCLEAR SPACE: keep one horizontal band plain and uncluttered (light neutral background only): the top 3%-17% of the height, across the full width. The step banner and labels are added later in software.\n\nDo not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.\n",
+  "attestation": null,
+  "generator": null,
+  "reviewerIdentityRequired": "Hermes / ChatGPT / GPT-5.6 Sol",
+  "replyFormat": {
+    "candidateSha256": "(sha256 of candidate.png)",
+    "rubricVersion": "CG-QA-v1.0",
+    "provenanceCheck": {
+      "validated": "true|false",
+      "notes": "short"
+    },
+    "checks": [
+      {
+        "contractItemId": "MD-drain-plug",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MD-crush-washer",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-pan-bolts-and-ribs",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "PROVENANCE",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      }
+    ],
+    "findings": [
+      {
+        "id": "F1",
+        "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+        "contractItemRef": "an item id above",
+        "element": "element id",
+        "attribute": "e.g. location",
+        "description": "what is wrong",
+        "requiredChange": "what to change",
+        "fixType": "modify|remove|suppress|simplify|relocate|add",
+        "gate": "VISUAL_ACCURACY",
+        "evidenceDeficiency": false,
+        "regression": false
+      }
+    ],
+    "regressionCheck": []
+  }
+}

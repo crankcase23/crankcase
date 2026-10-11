@@ -1,0 +1,52 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Where the factory side jack pad sits and how to support it, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Lift and support the car\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A small rectangular plastic pad along the lower side of the body near a wheel; a hollow rectangle that is the lift and stand point. Do NOT depict its fine detail: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "wheel and tire"
+  ],
+  "mustNotShow": [
+    "side jack pad rectangle detail (Exact distance from the wheel arch; the pad's notch or arrow markings and the front-centre jack point geometry are not established)",
+    "jack pad adapter puck (Shown only as an optional accessory; not as factory equipment)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "cb06c5de2fd20d10f38c7d662056194a74dca6935d1f6dcbe41832882ea472dc",
+  "callouts": [
+    {
+      "label": "side jack pad rectangle",
+      "element": "side-jack-pad-rectangle",
+      "required": true
+    }
+  ]
+}

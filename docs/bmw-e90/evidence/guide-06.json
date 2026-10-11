@@ -1,0 +1,1004 @@
+{
+  "guide": 6,
+  "name": "Serpentine Belt",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Upgraded from BLOCKED. The BMW ETK diagram 'Belt drive - generator/AC/power steering' (RealOEM decode of this VIN's tail: E90 LCI 328i sedan, N52N, built 09/2009, US) settles the part-number conflicts: ribbed V-belt 6PK1990 = 11287628650 (older numbers 11287549150/11287527564 are previous revisions per Turner), mechanical belt tensioner = 11288624196 with M11x65 ALUMINIUM Torx screw 11287530315 ('aluminium screws may only be used once'), deflection pulley 11287535860, protective caps 11287535867 and 11281435114. Engine is N52N per ETK; the same belt number is listed by a retailer for N51, N52N and N53 so N51-vs-N52 no longer matters for the belt. Two independent secondary procedures (FCP Euro N52 article; Pelican Parts E90 article) agree on T60 tensioner release rotating clockwise and removing intake ducting/airbox (and fan shroud on one) first. Tensioner bolt torque 25 Nm + 90 degrees is corroborated by FCP plus four forum sources but NO BMW document (VERIFIED_SECONDARY, primary:false). Idler (deflection) pulley bolt torque is CONFLICT (40 Nm vs 80 Nm) and must not be published. Pass 2: the ETK diagram carries no engine/transmission/option condition, bimmerworld lists the same tensioner for N51/N52 and a retailer lists the same belt for N51/N52N/N53, so engine label (RealOEM N52N vs N52K from VIN decoders) does not change any part or step. A/C compressor is on this belt with no option split in the ETK. Transmission: the owner states automatic, so the FCP T25 transmission-oil-cooler fastener on the fan shroud applies (single source). Correction: bimmerpost thread p=19426657 is an N54 335i thread and is no longer counted for N52 idler torque or access. Bentley published an erratum for the N52/N52KP idler-pulley-to-alternator torque, which explains why 40 vs 80 Nm disagree; the idler torque stays CONFLICT and unpublished. Still missing: lock-pin diameter and whether the pin exists on this tensioner, a belt routing diagram, alternator pulley torque, the BMW repair instruction, E14 size confirmation (single source). Usable as an uncertified draft: belt/tensioner/pulley parts, tools, release direction, tensioner bolt (secondary 25 Nm + 90 deg) and step order are supported; idler bolt torque must be left out and the routing must be photographed before removal.",
+  "variantDependencies": [
+    "Engine label: RealOEM VIN-tail decode (A175760, E90 LCI 328i, 09/2009, PH73 USA) = N52N; VIN decoders cited elsewhere (bimmer.work, a bimmerpost poster with a 2009 328i) say N52K. These are different naming schemes for the same 3.0 L N52B30 family (BMW's September 2006 N52 revision is called N52KP/N52K); NHTSA vPIC gives displacement 3.0 L, 6 cyl and no engine model. No source shows a belt, tensioner or pulley difference between the labels: ETK diagram 11_3740 has no engine condition and Bentley's N52/N52KP erratum treats both as one family. Label stays UNRESOLVED as a name but is not a procedure variable. [https://www.realoem.com/bmw/enUS/select?vin=A175760] [https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010] [https://bentleypubs.atlassian.net/wiki/spaces/tech/pages/437454449/121-20+N52+engine%2C+Idler+pulley+to+alternator+housing+torque+correction]",
+    "N51 (SULEV) vs N52: RealOEM decodes this VIN tail as N52N, not N51, so N51 is excluded by the catalog decode. Even if it were an N51, bimmerworld lists the same 11288624196 tensioner for N51/N52 and a retailer lists the same belt for N51/N52N/N53; Turner says N51 and N52 look identical and the SULEV label under the hood is the identifier. [https://www.bimmerworld.com/Engine/Pulleys/BMW-MECHANICAL-BELT-TENSIONER-11287530314-11288624196.html] [https://www.turnermotorsport.com/t-E90_SULEV_N51_or_LEV_N52]",
+    "Transmission: owner states automatic (RealOEM decode does not show it). FCP: automatic cars have an external transmission oil cooler on the fan shroud held by one T25 fastener that must come off before the shroud (single source). Applies to this car if the fan shroud is removed; not needed if the shroud stays on. Manual-only branch not applicable.",
+    "Drive: owner states rear-wheel drive (PH73 type code); xDrive not applicable. No source shows a belt difference for xDrive on E90 LCI.",
+    "A/C and power steering: ETK diagram 11_3740 is titled generator/AC/power steering and lists one belt, one tensioner, one deflection pulley with no option or market condition, so the A/C compressor and the power steering pump are on this belt on this car. Turner notes exclusions only for X5 with Adaptive Drive/4-zone climate (not E90).",
+    "Alternator pulley removal may need a special tool (BimmerWorld CTA-8088 for Bosch alternators); only if the alternator pulley itself is being replaced.",
+    "Access path differs by source: FCP removes snorkel, airbox and fan shroud; Pelican removes the front intake duct, a duct across the radiator and a 6 mm Allen fastener and raises the front of the car; a 2008 528i poster says fan shroud and intake housing removal makes the work easier. Both approaches are presented; which one is needed depends on tool clearance.",
+    "Tensioner lock pin: FCP (N52 article) says pull the pin after routing; Pelican staff say none is used; an N55 thread says the pin must be removed first. Whether the 11288624196 tensioner is supplied with a pin is not established; handled as a branch in step 9."
+  ],
+  "tools": [
+    {
+      "item": "T60 Torx socket/bit on a long-handled ratchet or breaker bar (tensioner release)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ],
+      "primary": false,
+      "note": "Two independent step-by-step articles; also a 5series poster mentions a large Torx/T50 uncertainly. Schwaben N54 tool uses T60 head."
+    },
+    {
+      "item": "E14 external Torx socket (tensioner mounting bolt)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+      ],
+      "primary": false,
+      "note": "Single source. ETK and BimmerWorld call the part a 'Torx screw' M11x65 without saying internal or external Torx, so E14 external is neither confirmed nor contradicted; test-fit and do not force."
+    },
+    {
+      "item": "16 mm deep socket (idler/deflection pulley bolt, under the alternator)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621"
+      ],
+      "primary": false,
+      "note": "1addicts post is an E82 N52."
+    },
+    {
+      "item": "T25 socket (fan shroud, transmission oil cooler fastener), 10 mm socket (airbox bolts)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+      ],
+      "note": "FCP: automatic cars have a transmission oil cooler on the fan shroud held by one T25 fastener; this car is automatic (owner-stated), so it applies only if the shroud is removed."
+    },
+    {
+      "item": "T20 Torx (intake duct) and 6 mm Allen (duct fastener)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    },
+    {
+      "item": "Torque wrench (low range) plus angle gauge/protractor for the 90 degree step",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.1addicts.com/forums/showthread.php?p=23331035"
+      ],
+      "primary": false
+    },
+    {
+      "item": "Small flat screwdriver (pulley caps, hose clamp, connector tabs, duct tabs)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    },
+    {
+      "item": "Alternator pulley removal tool (CTA-8088 for Bosch alternators) - only if replacing the alternator pulley",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ]
+    },
+    {
+      "item": "Tensioner lock pin (size)",
+      "status": "MISSING",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ],
+      "note": "FCP says to pull the lock pin after routing the belt; Pelican staff say no pin is needed; an N55 thread (other engine) says the pin must come out before belt install. Pin diameter and presence on this tensioner not given anywhere. Not resolvable remotely; handled as a branch in step 9."
+    }
+  ],
+  "parts": [
+    {
+      "item": "Ribbed V-belt 6PK1990 (Genuine BMW 11287628650)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.turnermotorsport.com/p-361811-accessory-belt/",
+        "https://www.fcpeuro.com/BMW-parts/328i/Drive-Belts/",
+        "https://www.mecatechnic.com/en-GB/p/accessory-drive-belt-for-bmw-e90-e91-e92-e93-lci-2136-x-1990-mm_BC35835",
+        "https://www.mecatechnic.com/en-GB/p/accessory-drive-belt-for-bmw-e90-e91-e92-e93-2136-x-1990-mm_BC35829",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ],
+      "partNumber": "11287628650",
+      "primary": true,
+      "note": "Resolves earlier CONFLICT: ETK diagram shows '6PK 1990' on 11287628650; Turner Genuine page lists 11287549150 and 11287527564 as previous revisions; Mecatechnic OE ref 11-28-7-628-650 = 6PK1990 (1990 mm)."
+    },
+    {
+      "item": "Previous belt numbers 11287549150 (Continental in Turner kit ADK0022P) and 11287527564",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.turnermotorsport.com/p-361811-accessory-belt/",
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/"
+      ],
+      "partNumber": "11287549150",
+      "note": "Superseded by 11287628650 per Turner; the Continental kit still lists 11287549150."
+    },
+    {
+      "item": "Mechanical belt tensioner with roller pulley",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://www.bimmerworld.com/Engine/Pulleys/BMW-MECHANICAL-BELT-TENSIONER-11287530314-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ],
+      "partNumber": "11288624196",
+      "primary": true,
+      "note": "Turner kit and BimmerWorld title also show 11287530314 (older number). FCP lists a Febi 11287594969 tensioner as aftermarket."
+    },
+    {
+      "item": "Tensioner mounting screw M11x65 Torx, ALUMINIUM, single use (qty 1)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ],
+      "partNumber": "11287530315",
+      "primary": true,
+      "note": "ETK: 'Attention: aluminium screws may only be used once'."
+    },
+    {
+      "item": "Deflection (idler) pulley",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ],
+      "partNumber": "11287535860",
+      "primary": true
+    },
+    {
+      "item": "Pulley protection caps",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740"
+      ],
+      "partNumber": "11287535867 and 11281435114",
+      "primary": true,
+      "note": "FCP says the idler pulley caps are pried off with a flat screwdriver and reinstalled."
+    },
+    {
+      "item": "Alternator pulley (in BimmerWorld kit)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ],
+      "partNumber": "12317560483"
+    },
+    {
+      "item": "Complete kits: Turner/Continental ADK0022P (belt+tensioner+idler), Continental 11287628650KT, BimmerWorld INA kit 11288624196",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://www.fcpeuro.com/BMW-parts/328i/Drive-Belts/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ],
+      "partNumber": "ADK0022P / 11287628650KT"
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Tensioner mounting bolt (aluminium M11x65, single use)",
+      "value": "25 Nm (18.4 ft-lb) then a further 90 degrees; replace the bolt every time",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.1addicts.com/forums/showthread.php?p=23331035",
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740"
+      ],
+      "conflicts": "A 5series thread asks about 22 Nm for a tensioner spring bolt (question only, unsourced); N54 threads quote 40 Nm tensioner (not applicable). No BMW document states the N52 torque; ETK confirms single use only. Sources 1addicts x2 are one host.",
+      "primary": false,
+      "note": "Five secondary sources agree on 25 Nm + 90 degrees; ETK confirms the bolt is single use."
+    },
+    {
+      "fastener": "Idler (deflection) pulley bolt",
+      "value": "CONFLICT: 40 Nm (FCP N52 article; one Pelican commenter) vs 80 Nm (Pelican staff reply); a 5series E60 poster asks '80 Nm or 19 Nm' unanswered",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811",
+        "https://bentleypubs.atlassian.net/wiki/spaces/tech/pages/437454449/121-20+N52+engine%2C+Idler+pulley+to+alternator+housing+torque+correction"
+      ],
+      "conflicts": "40 Nm vs 80 Nm (vs an unanswered 19 Nm question). Bentley Publishers' B310 E90 manual update '121-20 N52 engine, Idler pulley to alternator housing torque correction' (2015, applies to N52/N52KP) shows the printed BMW-derived value was wrong and was corrected, but the corrected number is not readable. The earlier N54 bimmerpost '38 Nm pulleys' figure is from a 335i thread and is excluded. Do not publish a number until a BMW repair instruction or the Bentley corrected table is read.",
+      "primary": false
+    },
+    {
+      "fastener": "Alternator pulley",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null,
+      "primary": false
+    },
+    {
+      "fastener": "Fan shroud/airbox/intake duct fasteners",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ],
+      "conflicts": null,
+      "note": "No torque; light plastic-mounted fasteners."
+    }
+  ],
+  "specs": [
+    {
+      "item": "Belt part and size",
+      "value": "Ribbed V-belt 6PK1990, 6 ribs, 1990 mm, BMW 11287628650",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.mecatechnic.com/en-GB/p/accessory-drive-belt-for-bmw-e90-e91-e92-e93-lci-2136-x-1990-mm_BC35835",
+        "https://www.mecatechnic.com/en-GB/p/accessory-drive-belt-for-bmw-e90-e91-e92-e93-2136-x-1990-mm_BC35829",
+        "https://www.fcpeuro.com/BMW-parts/328i/Drive-Belts/"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Components on the belt",
+      "value": "Crankshaft, A/C compressor, power steering pump, deflection (idler) pulley, alternator and tensioner; one belt",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ],
+      "primary": true,
+      "note": "ETK diagram title 'Belt drive - generator/AC/power steering'; Pelican gives the order crank, A/C, power steering, idler, alternator, tensioner."
+    },
+    {
+      "item": "Belt routing diagram (geometry)",
+      "value": "Not found; no source gives a diagram or pulley positions; Pelican staff note drawings may not match every car",
+      "status": "MISSING",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+      ]
+    },
+    {
+      "item": "Tensioner release",
+      "value": "T60 Torx on a long ratchet, rotate clockwise ('to the right') and hold; slip belt off; with new tensioner a lock pin may be pulled after routing",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ],
+      "primary": false,
+      "note": "Pelican staff say rotate and hold, no pin; FCP says pull the lock pin. Treat pin as variant."
+    },
+    {
+      "item": "Tensioner bolt reuse",
+      "value": "Single use; aluminium M11x65",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Engine and fitment",
+      "value": "N52N per RealOEM VIN-tail decode (A175760); VIN decoders elsewhere say N52K (different naming of the same N52B30 family); same belt number listed for N51 / N52N / N53 E90 LCI and the same tensioner listed for N51/N52",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/select?vin=A175760",
+        "https://www.mecatechnic.com/en-GB/p/accessory-drive-belt-for-bmw-e90-e91-e92-e93-lci-2136-x-1990-mm_BC35835",
+        "https://www.mecatechnic.com/en-GB/p/accessory-drive-belt-for-bmw-e90-e91-e92-e93-2136-x-1990-mm_BC35829",
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://www.bimmerworld.com/Engine/Pulleys/BMW-MECHANICAL-BELT-TENSIONER-11287530314-11288624196.html"
+      ],
+      "primary": true
+    },
+    {
+      "item": "Replacement interval",
+      "value": "BimmerWorld: tensioner every belt change, 40-60k miles; FCP: belt about 80k miles with tensioner and idler; Pelican: inspect, replace about every 4 years; Autodoc's replacement schedule for the E90 lists every 30,000 km",
+      "status": "CONFLICT",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://club.autodoc.co.uk/manuals/engine/poly-v-belt/bmw/3-series"
+      ],
+      "conflicts": "No BMW interval found; four aftermarket sources disagree (30,000 km Autodoc, 40-60k miles BimmerWorld, about 80k miles FCP, about 4 years Pelican); do not publish a hard interval, advise inspection."
+    },
+    {
+      "item": "Job duration",
+      "value": "Under 1 h (FCP), about 1.5 h (1addicts E82), about 2 h (Pelican)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    },
+    {
+      "item": "Access (what must come off)",
+      "value": "FCP: intake snorkel, airbox, fan assembly; Pelican: front intake duct, duct across radiator, 6 mm Allen fastener, front of car raised; a 2008 528i poster: removing the fan shroud and air intake housing makes the work easier",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://5series.net/forums/e60-discussion-2/diy-drive-belt-tensioner-replacement-138912/?nojs=1"
+      ],
+      "conflicts": "Both approaches may work; sources are not alternatives of each other. Present both as options. (The bimmerpost p=19426657 thread earlier cited here is an N54 335i, not an N52, and was removed.)"
+    },
+    {
+      "item": "Install technique",
+      "value": "Seat belt on the crank pulley first by sliding it in sideways; place on the tensioner pulley last; confirm every rib sits in its groove",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+      ],
+      "primary": false
+    },
+    {
+      "item": "Post-install check",
+      "value": "Run briefly (<30 s), shut off and recheck belt seating, then run and check noise/charging",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Prepare",
+      "instruction": "Work on a cool engine with the key out. Note that the aluminium tensioner bolt is single-use and the tensioner spring is strong.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Keep hands, hair and clothing clear of belt and fan.",
+        "Tensioner is under considerable spring force; do not release it uncontrolled."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://5series.net/forums/e60-discussion-2/diy-drive-belt-tensioner-replacement-138912/?nojs=1"
+      ],
+      "primary": true
+    },
+    {
+      "n": 2,
+      "title": "Clear access to the belt",
+      "instruction": "Remove the air intake snorkel/duct and airbox (FCP: snorkel two fasteners, airbox two 10 mm bolts, hose clamp, MAF connector). Pelican alternative: two T20 at the front duct, loosen clamp and turn the hose lock 90 degrees, remove the 6 mm Allen fastener and raise the front. Remove the fan assembly if you need room for the tool (FCP: unplug the connector, free the expansion tank line, T25 at the shroud top; automatics also have a T25 oil-cooler fastener). This car is an automatic (owner-stated), so if the fan shroud comes out, expect the extra T25 oil-cooler fastener; skip it if the shroud stays on.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Unplug the MAF sensor cleanly; do not strain connectors.",
+        "Fan shroud fits tightly; wiggle it clear."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://5series.net/forums/e60-discussion-2/diy-drive-belt-tensioner-replacement-138912/?nojs=1"
+      ],
+      "sourcesNote": "Both approaches documented; which is needed depends on tool and fan clearance. The N54 bimmerpost thread formerly cited here was removed."
+    },
+    {
+      "n": 3,
+      "title": "Record belt path",
+      "instruction": "Photograph or sketch the belt path and note direction of rotation before removing anything; this is mandatory because no routing diagram could be read remotely. The order given is crank, A/C compressor, power steering pump, idler, alternator, tensioner (Pelican); ETK confirms those same components share one 6PK1990 belt.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "If photos and the new belt do not match, stop; routing differs by model per Pelican staff."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740"
+      ],
+      "primary": false
+    },
+    {
+      "n": 4,
+      "title": "Release the tensioner and take the belt off",
+      "instruction": "Fit a T60 on a long-handled ratchet in the tensioner release point, rotate clockwise and hold, lift the belt off the tensioner pulley, then off the other pulleys.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Release slowly; keep fingers out of the belt path; a slipping bit can injure.",
+        "Do not use an undersized tool."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ],
+      "primary": false
+    },
+    {
+      "n": 5,
+      "title": "Inspect",
+      "instruction": "Fold the belt to check rib cracks, glazing and chunks; spin the idler and tensioner pulleys for play, rough rotation or noise; replace worn parts. Replace tensioner and idler together with the belt when they are worn (kit recommended).",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "The idler pulley commonly fails (Pelican)."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Replace the idler pulley (optional)",
+      "instruction": "Pry off the idler caps with a flat screwdriver, remove the 16 mm deep-socket bolt that holds the pulley to the alternator, fit the new pulley by hand to avoid cross-threading, reinstall caps. Torque is NOT publishable (40 Nm vs 80 Nm conflict).",
+      "status": "CONFLICT",
+      "warnings": [
+        "Do not guess the torque; use BMW repair data."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ],
+      "primary": false
+    },
+    {
+      "n": 7,
+      "title": "Replace the tensioner (optional)",
+      "instruction": "Remove the single E14 mounting bolt and the tensioner. Fit the new tensioner with a NEW single-use aluminium M11x65 bolt: thread by hand, torque 25 Nm then a further 90 degrees. Remove any retaining disc on the back of the new pulley if the kit instructs (E82 post).",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Aluminium bolt may only be used once (BMW ETK).",
+        "Never reuse the bolt; torque + angle figure is from secondary sources, not a BMW document."
+      ],
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.1addicts.com/forums/showthread.php?p=23331035",
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811"
+      ],
+      "primary": false
+    },
+    {
+      "n": 8,
+      "title": "Route the new belt",
+      "instruction": "Use the 6PK1990 belt 11287628650. Seat it on the crank pulley first (slide in sideways), then A/C compressor, power steering pump, idler and alternator, and finally onto the tensioner pulley while the T60 holds tension released. Check every rib is in its groove.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "A mis-seated belt can jump off or shred."
+      ],
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740"
+      ],
+      "primary": false
+    },
+    {
+      "n": 9,
+      "title": "Apply tension",
+      "instruction": "Let the tensioner back slowly. Branch: if the tensioner carries a lock pin (FCP: pull it only after the belt is routed; an N55 thread says the pin must be out before the belt goes on), follow the pin that is actually fitted; if there is no pin (Pelican staff), just rotate and release. Re-check seating on every pulley.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Pin size and location not documented; Pelican says no pin is used."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Reassemble",
+      "instruction": "Refit the fan assembly (reconnect plug, expansion line, T25, new zip tie for wiring), airbox/ducting and intake snorkel; reconnect the MAF sensor.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Torque values for these fasteners not sourced; snug only."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    },
+    {
+      "n": 11,
+      "title": "Verify",
+      "instruction": "Start the engine, let it run briefly, shut off and recheck belt alignment on all pulleys; then run again and check noise and charging.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "If the belt walks off or squeals, stop and re-inspect pulleys/tensioner."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+      ]
+    }
+  ],
+  "safety": [
+    "Engine cold, key out; keep hands and hair clear of belt, fans and pulleys.",
+    "Tensioner is under strong spring pressure; release with the correct T60 and long handle and hold it controlled.",
+    "Aluminium tensioner bolt is single-use; replace every time it is removed.",
+    "Do not publish or rely on the idler pulley torque until conflict resolved.",
+    "Torque + angle figures come from secondary sources only; verify with BMW repair data when possible.",
+    "Support the car properly if you raise the front."
+  ],
+  "missingEvidence": [
+    "BMW-issued repair instruction (ISTA/TIS) with torque for tensioner bolt, idler pulley bolt and alternator pulley; not reachable remotely (workshop-manuals.com/Bentley content is behind a login).",
+    "Idler pulley bolt torque (40 Nm vs 80 Nm); Bentley's N52/N52KP erratum 121-20 proves a corrected value exists but it is not readable.",
+    "Tensioner lock pin diameter and whether this tensioner uses one (FCP yes, Pelican no); not resolvable without the part in hand or a BMW document.",
+    "An official belt routing diagram and rotation direction (ETK image not readable as text). YouTube titles show E90/N52 serpentine-belt 'diagram' videos, but video can only help identify and does not certify; none was used.",
+    "E14 external Torx size for the tensioner bolt (single source, FCP).",
+    "N52K vs N52N engine label remains a naming difference between VIN decoders and RealOEM; it changes no part or step found.",
+    "Replacement interval: no BMW figure; aftermarket sources disagree (30,000 km to about 80k miles).",
+    "Any E90 sedan-specific photo or video confirming the fan/intake removal order (the FCP and Pelican articles are N52/E90 text only)."
+  ],
+  "ownerInputsNeeded": [],
+  "visuals": [
+    {
+      "id": "accessory-drive-components",
+      "title": "N52 accessory drive: which pulleys are on the belt",
+      "evidenceSteps": [
+        3,
+        4,
+        5,
+        8
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "drive-belt",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A single six-rib serpentine belt (6PK1990) driving the accessories."
+        },
+        {
+          "id": "tensioner-pulley",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The spring tensioner with roller pulley that holds the belt tight."
+        },
+        {
+          "id": "tensioner-release-point",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The Torx-type socket point on the tensioner that is turned clockwise with a long ratchet to relieve tension."
+        },
+        {
+          "id": "deflection-pulley",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The deflection (idler) pulley mounted at the alternator, with a protective cap."
+        },
+        {
+          "id": "alternator",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The alternator driven by the belt."
+        },
+        {
+          "id": "ac-compressor",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The A/C compressor driven by the same belt."
+        },
+        {
+          "id": "power-steering-pump",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The power steering pump driven by the same belt."
+        },
+        {
+          "id": "crank-pulley",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The crankshaft pulley at the bottom of the belt run."
+        }
+      ],
+      "facts": [
+        {
+          "element": "drive-belt",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+            "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+          ],
+          "note": "One belt for alternator, power steering and A/C."
+        },
+        {
+          "element": "tensioner-pulley",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+          ],
+          "note": "Mechanical belt tensioner with roller pulley."
+        },
+        {
+          "element": "tensioner-release-point",
+          "attribute": "hardware-type",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+          ],
+          "note": "T60 Torx."
+        },
+        {
+          "element": "tensioner-release-point",
+          "attribute": "action",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+          ],
+          "note": "Rotate clockwise and hold."
+        },
+        {
+          "element": "deflection-pulley",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.1addicts.com/forums/showthread.php?p=22769621"
+          ],
+          "note": "Bolted to the alternator (16 mm bolt)."
+        },
+        {
+          "element": "deflection-pulley",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+            "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+          ],
+          "note": "ETK 'deflection pulley'."
+        },
+        {
+          "element": "alternator",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+          ],
+          "note": "Driven by belt."
+        },
+        {
+          "element": "ac-compressor",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/"
+          ],
+          "note": "Driven by belt."
+        },
+        {
+          "element": "power-steering-pump",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+          ],
+          "note": "Driven by belt."
+        },
+        {
+          "element": "crank-pulley",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.1addicts.com/forums/showthread.php?p=22769621"
+          ],
+          "note": "Belt seated on crank pulley first."
+        },
+        {
+          "element": "drive-belt",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+          ],
+          "note": "Order crank, A/C, power steering, idler, alternator, tensioner: single source; positions not established."
+        },
+        {
+          "element": "drive-belt",
+          "attribute": "location",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740"
+          ],
+          "note": "FCP: belts at front of engine; Pelican: single belt routed crank, A/C, power steering, idler, alternator, tensioner; RealOEM: 6PK 1990 ribbed belt."
+        },
+        {
+          "element": "tensioner-pulley",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "Pelican: belt goes onto tensioner pulley last; FCP: tensioner fits on the front of the engine."
+        },
+        {
+          "element": "tensioner-release-point",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "Both say a T60 Torx socket on a long ratchet turned clockwise releases belt tension."
+        },
+        {
+          "element": "tensioner-release-point",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "Both say the T60 bit goes into the tensioner itself; neither describes its position on the engine beyond front of engine."
+        },
+        {
+          "element": "deflection-pulley",
+          "attribute": "location",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.1addicts.com/forums/showthread.php?p=22769621"
+          ],
+          "note": "RealOEM: deflection pulley with protection cap; FCP: idler bolts to alternator under covers; 1addicts: pulley under the alternator."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "drive-belt",
+          "reason": "The belt path geometry (which side of each pulley) is not established by any diagram."
+        },
+        {
+          "element": "tensioner-release-point",
+          "reason": "Exact position/orientation on the tensioner and direction as seen from the front are not established."
+        },
+        {
+          "element": "crank-pulley",
+          "reason": "Relative placement of components around the engine front is not established."
+        }
+      ],
+      "sources": {
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740": {
+          "kind": "parts-catalog",
+          "establishes": "ETK Belt drive generator/AC/power steering: belt 6PK1990, tensioner, aluminium M11x65 screw, deflection pulley, caps."
+        },
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm": {
+          "kind": "third-party-guide",
+          "establishes": "E90 drive belt article: T60 release clockwise, order of components, access, caution on routing."
+        },
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine": {
+          "kind": "third-party-guide",
+          "establishes": "N52 article: T60 release, E14 tensioner bolt, 16 mm idler bolt to alternator, caps, lock pin."
+        },
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/": {
+          "kind": "parts-catalog",
+          "establishes": "Retail kit: belt also runs A/C compressor; one tensioner."
+        },
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html": {
+          "kind": "parts-catalog",
+          "establishes": "Retail kit: tensioner for alternator, power steering pump and A/C compressor."
+        },
+        "https://www.1addicts.com/forums/showthread.php?p=22769621": {
+          "kind": "third-party-guide",
+          "establishes": "E82 N52 post: 16 mm socket for pulley under alternator; slide belt onto crank pulley sideways."
+        }
+      },
+      "gapFillNotes": [
+        "Belt rib count 6PK1990 only from RealOEM.",
+        "Belt routing geometry still NOT established by any readable source; step 3 makes a photo before removal mandatory. Visual must not depict a routing."
+      ],
+      "imageType": "LOCATE"
+    },
+    {
+      "id": "tensioner-bolt-and-release",
+      "title": "Tensioner: release point and single-use mounting bolt",
+      "evidenceSteps": [
+        4,
+        7
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "tensioner-assembly",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The mechanical belt tensioner with its roller pulley."
+        },
+        {
+          "id": "tensioner-mounting-bolt",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "A single aluminium M11 Torx-type mounting bolt (external Torx E14 per one source); single use."
+        },
+        {
+          "id": "tensioner-release-socket",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The T60 Torx release point turned clockwise to take tension off the belt."
+        }
+      ],
+      "facts": [
+        {
+          "element": "tensioner-assembly",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+            "https://www.bimmerworld.com/Engine/Pulleys/BMW-MECHANICAL-BELT-TENSIONER-11287530314-11288624196.html",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "Mechanical belt tensioner 11288624196."
+        },
+        {
+          "element": "tensioner-mounting-bolt",
+          "attribute": "hardware-type",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html"
+          ],
+          "note": "M11x65 Torx, aluminium, single use."
+        },
+        {
+          "element": "tensioner-mounting-bolt",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "E14 external Torx socket; single source."
+        },
+        {
+          "element": "tensioner-mounting-bolt",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "Position of the bolt on the tensioner not established; FCP says single mounting bolt."
+        },
+        {
+          "element": "tensioner-release-socket",
+          "attribute": "hardware-type",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+          ],
+          "note": "T60."
+        },
+        {
+          "element": "tensioner-release-socket",
+          "attribute": "release-mechanism-geometry",
+          "urls": [],
+          "note": "Where the pin hole is and how the release lever sits is not established."
+        },
+        {
+          "element": "tensioner-assembly",
+          "attribute": "location",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm"
+          ],
+          "note": "FCP: tensioner on the front of the engine; RealOEM lists mechanical belt tensioner in belt drive diagram; Pelican: tensioner pulley last in routing."
+        },
+        {
+          "element": "tensioner-mounting-bolt",
+          "attribute": "existence",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
+            "https://www.1addicts.com/forums/showthread.php?p=22769621"
+          ],
+          "note": "FCP: only mounting bolt, E14, aluminum, 25 Nm plus 90 degrees; BimmerWorld: M11x65 Torx, replace when removed; RealOEM: Torx screw M11X65-AL, aluminum single use; 1addicts: aluminum bolt."
+        },
+        {
+          "element": "tensioner-mounting-bolt",
+          "attribute": "location",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.1addicts.com/forums/showthread.php?p=22769621"
+          ],
+          "note": "Sources say the tensioner is held on by one aluminum bolt; no finer position given."
+        },
+        {
+          "element": "tensioner-release-socket",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "Both: T60 Torx turned clockwise to release."
+        },
+        {
+          "element": "tensioner-release-socket",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm",
+            "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine"
+          ],
+          "note": "Both place it on the tensioner; no finer position given."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "tensioner-assembly",
+          "reason": "Lock-pin hole position/size and arm geometry not established."
+        },
+        {
+          "element": "tensioner-mounting-bolt",
+          "reason": "Do not show a torque value or head orientation; head size is single-source."
+        }
+      ],
+      "sources": {
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740": {
+          "kind": "parts-catalog",
+          "establishes": "Mechanical belt tensioner 11288624196, Torx screw M11X65-AL 11287530315 used only once."
+        },
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html": {
+          "kind": "parts-catalog",
+          "establishes": "Torx M11x65 tensioner bolt cannot be reused."
+        },
+        "https://www.bimmerworld.com/Engine/Pulleys/BMW-MECHANICAL-BELT-TENSIONER-11287530314-11288624196.html": {
+          "kind": "parts-catalog",
+          "establishes": "Mechanical belt tensioner with roller pulley listed for most 2006-2013 N51/N52 vehicles; bolt sold separately and cannot be reused."
+        },
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html": {
+          "kind": "parts-catalog",
+          "establishes": "Kit lists mechanical belt tensioner 11288624196 and M11 x 65 Torx screw 11287530315."
+        },
+        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine": {
+          "kind": "third-party-guide",
+          "establishes": "T60 release, E14 bolt, 25 Nm + 90 degrees, lock pin."
+        },
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BASICS-Drive_Belt_Replacement/BASICS-Drive_Belt_Replacement.htm": {
+          "kind": "third-party-guide",
+          "establishes": "T60 on long-handled ratchet rotating clockwise to release the tensioner."
+        },
+        "https://www.1addicts.com/forums/showthread.php?p=22769621": {
+          "kind": "third-party-guide",
+          "establishes": "1addicts thread: N52 belt tensioner kit, pulley under alternator, aluminum replacement bolt 25 Nm plus 90 degrees."
+        }
+      },
+      "gapFillNotes": [
+        "Fastener head: FCP says E14 external Torx; BimmerWorld and RealOEM say M11x65 Torx screw.",
+        "Lock pin presence/size still unresolved (FCP yes, Pelican no); release-mechanism-geometry stays empty on purpose."
+      ],
+      "imageType": "IDENTIFY"
+    }
+  ],
+  "primaryScope": "PRIMARY (OE parts catalog) found for: RealOEM ETK diagram 11_3740 'Belt drive generator/AC/power steering' for E90 LCI 328i, type code PH73 USA, 09/2009 selection: belt 6PK1990 11287628650, mechanical tensioner 11288624196, single-use aluminium M11x65 Torx screw 11287530315, deflection pulley 11287535860, caps 11287535867/11281435114, with no engine, transmission or option condition on any of them. NO BMW repair instruction (ISTA/TIS) was reachable for any torque, the lock pin, or the belt routing; the Bentley B310 manual update index confirms a 2015 correction to the N52/N52KP 'idler pulley to alternator housing' torque but the corrected value is not readable.",
+  "resolutionNotes": [
+    "RESOLVED: A/C and power steering question removed from ownerInputsNeeded: ETK diagram 11_3740 (belt drive generator/AC/power steering) lists one 6PK1990 belt, one tensioner and one deflection pulley with no option condition, so this car has A/C compressor and PS pump on the belt.",
+    "RESOLVED (as non-variable): engine label. RealOEM VIN decode = N52N (excludes N51); other decoders say N52K. Both are the N52B30 family; no belt/tensioner/pulley difference found (ETK has no engine condition; bimmerworld lists the tensioner for N51/N52; retailer lists the belt for N51/N52N/N53; Bentley N52/N52KP erratum treats them as one family). The name itself stays unresolved and is recorded in variantDependencies and missingEvidence.",
+    "RESOLVED: transmission applicability. Owner stated automatic, so the FCP T25 oil-cooler fastener step is recorded as applicable only if the fan shroud is removed (still single source for the fastener itself).",
+    "CORRECTED: bimmerpost p=19426657 is an E90 335i N54 thread. Its '40 Nm tensioner / 38 Nm pulleys' and fan-shroud access remarks were removed from the idler torque row, the access row and step 2. Two other bimmerpost hits (p=29469800 N57 diesel, p=18329232 M57 diesel) and an 1addicts N55 thread were checked and excluded as not N52.",
+    "NOT RESOLVED (CONFLICT kept): idler pulley bolt torque 40 vs 80 Nm. New fact: Bentley Publishers' E90 service manual update 121-20 (2015, N52/N52KP) corrects the idler-pulley-to-alternator-housing torque, so the manual value is known to have been wrong; corrected number unreadable (page body blocked/empty). Still must not be published.",
+    "NOT RESOLVED: tensioner lock pin (presence and diameter) and belt routing diagram; no readable BMW diagram. YouTube search shows E90/N52 serpentine-belt videos (titles only; video cannot certify and was not used for any critical fact).",
+    "NOT RESOLVED: E14 external Torx size (single source); ETK and BimmerWorld say only 'Torx screw M11x65' aluminium single-use (that part is VERIFIED).",
+    "UNCHANGED: tensioner bolt 25 Nm + 90 deg stays VERIFIED_SECONDARY (3+ independent hosts, no BMW document, primary:false).",
+    "NEW: replacement interval has a fourth aftermarket figure (Autodoc schedule 30,000 km); still CONFLICT, no hard interval to be published.",
+    "ownerInputsNeeded emptied: belt number/A-C resolved from ETK, transmission is owner-stated automatic, pulley condition is an inspection in step 5, belt-path photo is now a mandatory procedure step 3. The only genuinely unresolved items (idler torque, lock pin, routing, BMW torque document) cannot be settled by the owner either and are in missingEvidence.",
+    "Verdict: usable as an uncertified draft with idler torque withheld and a mandatory belt-path photo; safety-critical tier means it should not be certified until a BMW torque source is read.",
+    "CHECKED 2026-10-11 (NOT RESOLVED): a research-report claim that the 40 Nm and 80 Nm figures belong to different components (alternator pulley vs idler) was tested against the primary pages. FCP Euro's N52 article names 40 Nm as the IDLER pulley bolt (the pulley that bolts to the alternator) and gives 25 Nm + 90 degrees for the tensioner bolt; it lists no separate alternator-pulley torque. Pelican's article body has no torque; a commenter says 'the pulley bolt is 40 Nm' (pulley unspecified) and a Pelican staff reply says 80 Nm to a comment about an idler between the alternator and power steering pump (attribution inferred, staff did not name the fastener). So the pages do NOT support the split. The idler stays CONFLICT and its step stays BLOCKED. The Bentley erratum 121-20 still says a corrected value exists."
+  ]
+}

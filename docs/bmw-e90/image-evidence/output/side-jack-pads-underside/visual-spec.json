@@ -1,0 +1,52 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Plastic jack pads at the sill, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Lift at the side jack pads\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A small rectangular plastic jacking pad on the underside of the sill, one at each of four jack points."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "sill jack pad detail (Exact distance from wheels and pad dimensions are not established. Rear-centre and front-centre jack points are in conflict and must not be shown as approved)",
+    "jack pad adapter (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "012d0b83c8cb705e6787bc4bc52f36cfcb67ee0d168797d77ff53b8fe76add96",
+  "callouts": [
+    {
+      "label": "sill jack pad",
+      "element": "sill-jack-pad",
+      "required": true
+    }
+  ]
+}

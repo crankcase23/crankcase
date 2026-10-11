@@ -1,0 +1,52 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Oil drain: where the undertray access hatch is, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the undertray access hatch\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline. Do NOT depict its fine detail, where its fasteners sit: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "undertray panel"
+  ],
+  "mustNotShow": [
+    "front bumper and grille (No source establishes the lower front styling for this car; left out)",
+    "suspension and subframe (No source establishes the surrounding chassis layout; left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "2e7ae13f31568f51148df0f3f4d881329b2f59bde5bfcbb5a2603e3f06210974",
+  "callouts": [
+    {
+      "label": "access hatch",
+      "element": "access-hatch",
+      "required": true
+    }
+  ]
+}

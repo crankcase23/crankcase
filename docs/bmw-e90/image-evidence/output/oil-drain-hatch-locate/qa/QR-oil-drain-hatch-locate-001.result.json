@@ -1,0 +1,83 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "checks": [
+    {
+      "contractItemId": "MD-access-hatch",
+      "result": "PASS"
+    },
+    {
+      "contractItemId": "MN-excl-front-bumper-and-grille",
+      "result": "PASS"
+    },
+    {
+      "contractItemId": "MN-excl-suspension-and-subframe",
+      "result": "PASS"
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "result": "PASS"
+    }
+  ],
+  "contentHash": "ad73a88b63bb37feb964a4e412c9f9fea5404a3358b665c494fd11a59eebc9b7",
+  "createdAt": "2026-10-11T06:38:16.804Z",
+  "createdBy": {
+    "actor": "hermes",
+    "role": "independent-reviewer",
+    "system": "ChatGPT web review chat 6acb2e86"
+  },
+  "failedGates": [],
+  "findings": [
+    {
+      "attribute": "surface-geometry",
+      "contractItemRef": "MD-access-hatch",
+      "description": "The hatch is visibly closed, centrally located, and outlined without fasteners. Its slightly rounded trapezoidal shape remains generic and does not establish unsupported fastener or latch details. No required correction.",
+      "element": "access-hatch",
+      "evidenceDeficiency": false,
+      "fixType": "simplify",
+      "gate": "VISUAL_ACCURACY",
+      "id": "F1",
+      "regression": false,
+      "requiredChange": "None.",
+      "severity": "COSMETIC"
+    }
+  ],
+  "id": "QR-oil-drain-hatch-locate-001",
+  "provenanceCheck": {
+    "notes": "No visible evidence of copied or traced imagery, baked-in text, logos, labels, or watermarks. Visual inspection cannot independently authenticate image origin; generator attestation is reported but not independently verified.",
+    "validated": true
+  },
+  "refs": [
+    {
+      "id": "GR-oil-drain-hatch-locate-001",
+      "sha256": "7c408fe37d61c9378f0a19b9199ba9420641228c9bd4f0096230317175d5b7af"
+    },
+    {
+      "id": "VC-oil-drain-hatch-locate-v1",
+      "sha256": "51a322ec90ceedb68413cafe04cee870b0f603a71738e45dd6480112668db24a"
+    },
+    {
+      "id": "EP-oil-drain-hatch-locate-v1",
+      "sha256": "4a9202c63419e4ce022f96f9b35b992c0d8bea06018d3bf456cc85ee912bd296"
+    }
+  ],
+  "regressionCheck": [],
+  "reviewClass": "independent",
+  "reviewer": {
+    "actor": "hermes",
+    "model": "GPT (ChatGPT web, exact model not shown in UI)",
+    "rawResponseSha256": "ebe5ec6029b80bea6a808496c4ee36dc772929fa7fa6a6aab4454fdacf519b6b",
+    "system": "ChatGPT web review chat 6acb2e86"
+  },
+  "rubricVersion": "CG-QA-v1.0",
+  "schema": "guide-factory.qa-result",
+  "schemaVersion": "reconstructed-1",
+  "stage": "content",
+  "verdict": "PASS_FOR_OVERLAY_QA",
+  "visualId": "oil-drain-hatch-locate"
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "oil-drain-plug-identify",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 5,
+    "tag": "IDENTIFY",
+    "subtitle": "This is it"
+  },
+  "highlights": [
+    {
+      "element": "drain-plug",
+      "role": "hero",
+      "note": "The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head.",
+      "label": "Drain plug",
+      "region": [
+        0.366,
+        0.283,
+        0.278,
+        0.425
+      ],
+      "arrowFrom": null,
+      "primary": true,
+      "labelAt": [
+        0.7,
+        0.82
+      ]
+    },
+    {
+      "element": "crush-washer",
+      "role": "target",
+      "note": "A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface.",
+      "label": "Copper crush washer",
+      "region": [
+        0.349,
+        0.245,
+        0.313,
+        0.375
+      ],
+      "arrowFrom": null,
+      "primary": false,
+      "labelAt": [
+        0.07,
+        0.45
+      ],
+      "shape": "ring",
+      "inner": [
+        0.375,
+        0.272,
+        0.26,
+        0.32
+      ]
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

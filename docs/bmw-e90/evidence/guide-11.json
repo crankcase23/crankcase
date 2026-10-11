@@ -1,0 +1,468 @@
+{
+  "guide": 11,
+  "name": "PCV / Crankcase Ventilation — Inspection & Diagnosis",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "primaryScope": "PRIMARY found for the design question: (a) BMW AG training document ST501 Engine Mechanical (p.30, N52KP and N51): the crankcase ventilation valve and the oil-separating labyrinth are integrated in the plastic cylinder head cover, whereas the original N52 cover is cast magnesium (ST501) with an external electrically heated ventilation valve (ST055 Emissions Management, ST502 Powertrain); (b) OE parts catalog for this vehicle selection (RealOEM PH73 USA 09/2009, engine N52N): cylinder head cover 11127552281 and vent hose 11157559528 are listed, and no separate oil separator or PCV valve appears in the engine-group diagrams inspected (cylinder head cover, cylinder head, attached parts, intake manifold, vacuum pump, engine block). The catalog finding is absence-based and covers only the diagrams checked. NO primary found for valve cover bolt torque, tightening sequence or seal part numbers: torque is a CONFLICT among four non-BMW values. Pass 3 additions: BMW training ST613 (bmwtechinfo.bmwgroup.com) states the N52 uses a magnesium cylinder head cover while new engines use plastic, that the N52KP and N51 use a crankcase ventilation valve with labyrinth oil separation, and that N52K is N52KP (N52B30O1); it does not mention N52N. BMW SIB B 11 03 08 (Sept 2009, as hosted on xoutpost.com) describes the pressure-controlled crankcase ventilation valve (spring and diaphragm), its fault symptoms and a crankcase pressure spec, with no step-by-step test. RealOEM diagrams additionally checked: 11_3736 (cylinder head electrical add-on parts) and 11_3730 (short engine): no separator or vent valve. The group 11 diagram titles contain nothing named crankcase ventilation or separator.",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Scope DECIDED by the owner: keep the PCV category as an integrated crankcase-ventilation inspection and diagnosis procedure; no standalone PCV valve replacement and no valve cover replacement procedure. Evidence: BMW training documents ST501/ST055/ST502 show the later N52 has the vent valve and oil-separating labyrinth integrated in a plastic cylinder head cover (the early N52 had a magnesium cover with an external heated valve). The OE catalog for this car lists the cover (11127552281) and vent hose (11157559528) with no separate separator or valve in the diagrams inspected. No fastener torque is given because nothing in this procedure tightens a torqued fastener. Remaining unverified: N52N vs N52KP naming equivalence, diaphragm presence, any BMW test method. Pass 3: BMW documents now back the symptom list (SIB B 11 03 08: rough running, whistling from the valve, check-engine light with misfire or oxygen-sensor/mixture faults, whistle or howl at idle from crank seals) and give BMW's only measure, a crankcase pressure value for shop use (N52 26.0 mbar, N51 and N52K 28.5 mbar, tolerance 10 percent but no more than 2.0 mbar); no DIY test exists. N52K is the same engine as N52KP per ST613. Diaphragm question: the SIB says BMW crankcase vent valves use a spring and diaphragm, but it does not describe this engine's integrated valve specifically.",
+  "variantDependencies": [
+    "Early N52 (2006, some 2007 builds): cast-magnesium valve cover and an external electrically heated crankcase vent valve (BMW ST055/ST502/ST501) and a replaceable separator under the intake manifold on E90 325xi/330xi/E91/E60 xi (Turner early-production kit 11617531423 / TMS221962, fitment from 10/2005). Not expected for a 2010 328i.",
+    "Later N52 (N52KP/N52N) and N51: plastic cylinder head cover with the vent valve and labyrinth integrated (BMW ST501 p.30); N51 SULEV and N52 share the cover per URO/Turner. The equivalence N52N = N52KP is an inference: ST501 uses KP and does not expand it; RealOEM uses N52N for this car.",
+    "Build date: RealOEM selection shows 09/2009 and engine N52N but does not say it was decoded from the VIN; VIN position 10 (A) indicates model year 2010. Confirm the cover is the plastic design on the car.",
+    "Transmission and drive type: no effect on the cover; the catalog shows the same cover item for this selection.",
+    "N52K (black-top) redesign mention (z4-forum) could not be matched to a BMW or catalog source; ignored.",
+    "Engine label: BMW ST613 states N52K = N52KP = N52B30O1, which matches the bimmer.work decode; N52N (RealOEM) is not defined in that document, so equivalence of N52N with N52K is still not proven. SIB B 11 03 08 lists crankcase pressure 26.0 mbar for N52 and 28.5 mbar for N51/N52K; which value belongs to a catalog N52N is not stated. Identify by cover: plastic cover (later N52) fits this guide; a cast-metal cover with a separate heated vent valve is the early N52 and this guide does not apply."
+  ],
+  "tools": [
+    {
+      "item": "Hose-tab release: finger pressure on the side tabs, no pry tool",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
+      ],
+      "note": "All three say squeeze/depress the side tabs and do not pry; RM European warns the breather connection on the cover breaks easily."
+    }
+  ],
+  "parts": [
+    {
+      "item": "Valve cover with integrated crankcase vent (oil separator/pressure regulator) — reference only, replacement not covered by this guide",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+        "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50",
+        "https://www-graviton.turnermotorsport.com/p-395230-valve-cover/",
+        "https://bavmods.com/products/bmw-1-3-x-z-series-replacement-engine-valve-cover-crankcase-pcv-valve-n51-n52-engine-e90-e91-e92-e93-e60-e81-z4-x3-x5"
+      ],
+      "partNumber": "11127552281",
+      "primary": true,
+      "note": "OE catalog item 01 of the cylinder head cover diagram for this selection; Turner lists E90 328i/328xi; one part, no separate PCV valve sold."
+    },
+    {
+      "item": "Crankcase vent (breather) hose, back of the valve cover",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50",
+        "https://www-graviton.turnermotorsport.com/p-395230-valve-cover/"
+      ],
+      "partNumber": "11157559528",
+      "primary": true
+    }
+  ],
+  "fluids": [],
+  "torque": [],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Understand what is and is not serviceable",
+      "instruction": "On this car (later N52, plastic cover) the crankcase ventilation valve and the oil separator are built into the cylinder head cover; no standalone PCV valve or separator is sold or serviced (BMW SIB B 11 03 08 says BMW crankcase vent valves in general use a spring and diaphragm; on this engine they sit inside the cover). User-serviceable: external inspection, the breather hose to the back of the cover, and the engine cover. Replacing the whole valve cover is a separate shop-level job that this guide does not cover. Do not look for a separate valve.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not buy or fit an early-production separator kit on a later engine."
+      ],
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST501%20New%20Engine%20Technology/04_Engine%20Mechanical.pdf",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+        "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/",
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+        "https://bavmods.com/products/bmw-1-3-x-z-series-replacement-engine-valve-cover-crankcase-pcv-valve-n51-n52-engine-e90-e91-e92-e93-e60-e81-z4-x3-x5",
+        "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/",
+        "https://xoutpost.com/attachments/x5-e53-forum/38381d1260592059-oil-separator-valve-cover-gasket-sib-11-03-08.pdf"
+      ],
+      "primary": true
+    },
+    {
+      "n": 2,
+      "title": "Confirm the engine generation",
+      "instruction": "The early N52 (2006, some 2007) had a cast-magnesium cover and an external electrically heated vent valve with a separator under the intake manifold; later N52 (N52KP/N52N) and N51 have a plastic cover with the vent valve and labyrinth integrated. Check the cover material on the car; this car is catalogued as N52N (09/2009 selection) and is expected to be the plastic design. BMW training ST613 says the N52 uses a magnesium cover and the newer engines a plastic one, and that N52K is the N52KP. With the engine cover off (step 4) look at the cover: plastic means this guide applies; cast metal with a separate heated vent valve means it does not.",
+      "status": "VERIFIED",
+      "warnings": [
+        "If the cover is magnesium and a separate vent valve is fitted, this guide does not apply."
+      ],
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST501%20New%20Engine%20Technology/04_Engine%20Mechanical.pdf",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST055%20Engine%20Electronics/10_Emissions%20Management.pdf",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/04_E90%20Powertrain.pdf",
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+        "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/",
+        "https://www.turnermotorsport.com/p-221962-crankcase-oil-separator-and-vent-hose-kit-e90-325xi330xi-e60-525xi530xi-early-production/",
+        "https://www.realoem.com/bmw/enUS/select?vin=WBAPH7C58AA175760",
+        "https://bmwtechinfo.bmwgroup.com/tech_training_manual/ST613%202007%20NG6%20Engines.pdf"
+      ],
+      "primary": true
+    },
+    {
+      "n": 3,
+      "title": "Note the symptoms",
+      "instruction": "Possible signs of a ventilation fault. BMW SIB B 11 03 08 lists: rough running, whistling from the crankcase ventilation valve, a check-engine light with possible engine-control faults such as misfire on all cylinders or oxygen sensor/mixture adaptation faults, and whistling or howling at idle from the front or rear crankshaft seal area when crankcase vacuum is too high. Other sources add higher oil consumption, blue exhaust smoke, oil leaks from cracked hoses and oil backing up into the throttle body area.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Symptoms overlap with worn rings and other leaks; they do not prove the cover valve has failed.",
+        "The SIB gives no step-by-step test; confirming a valve fault needs a shop measurement."
+      ],
+      "sources": [
+        "https://xoutpost.com/attachments/x5-e53-forum/38381d1260592059-oil-separator-valve-cover-gasket-sib-11-03-08.pdf",
+        "https://www.turnermotorsport.com/p-221962-crankcase-oil-separator-and-vent-hose-kit-e90-325xi330xi-e60-525xi530xi-early-production/",
+        "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/",
+        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST055%20Engine%20Electronics/10_Emissions%20Management.pdf"
+      ],
+      "primary": true
+    },
+    {
+      "n": 4,
+      "title": "Prepare for inspection",
+      "instruction": "Engine fully cold, car level, battery disconnection not required for a visual check. Remove the engine cover (three screws).",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Hot engine parts and oil mist: work cold."
+      ],
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
+      ],
+      "primary": false
+    },
+    {
+      "n": 5,
+      "title": "Inspect the breather hose and connection",
+      "instruction": "At the back of the valve cover, check the vent hose and its push-on connection for cracks, brittleness, oil seepage and security; the connection on the cover itself can crack or break off during handling. Also check the oil filler cap seal, the cover edge for oil seepage, and the intake path/throttle body for pooled oil.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Hose becomes brittle with age (RM European, bavmods); handle gently.",
+        "Do not blow or suck on hoses by mouth."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+        "https://www.turnermotorsport.com/p-221962-crankcase-oil-separator-and-vent-hose-kit-e90-325xi330xi-e60-525xi530xi-early-production/",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
+      ],
+      "primary": false
+    },
+    {
+      "n": 6,
+      "title": "Remove the breather hose only if replacing it",
+      "instruction": "Squeeze or depress the two side tabs and pull the hose off the cover; do not pry. Replace with part 11157559528 if cracked or oily; refit until the tabs click.",
+      "status": "VERIFIED",
+      "warnings": [
+        "If the plastic nipple on the cover breaks, the whole cover needs replacing (Pelican staff reply: if one of the lines breaks, you have to replace it); a glue repair was reported to fail."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
+      ],
+      "primary": false
+    },
+    {
+      "n": 7,
+      "title": "No DIY blow-through test",
+      "instruction": "One z4-forum poster blows through disconnected crankcase vent pipes to check the path. BMW SIB B 11 03 08 gives no step-by-step diagnostic and only a crankcase pressure value (readings within 10 percent, but not more than 2.0 mbar, of spec), and the ST055 training document only points to a repair instruction and SIB for vacuum-leak testing. No source supports a blow-through test for the integrated valve on this engine, so this guide does not use one. Rely on the visual checks above and a shop pressure measurement.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not blow into oil-vapour lines by mouth; avoid ingesting oil mist."
+      ],
+      "sources": [
+        "https://xoutpost.com/attachments/x5-e53-forum/38381d1260592059-oil-separator-valve-cover-gasket-sib-11-03-08.pdf",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST055%20Engine%20Electronics/10_Emissions%20Management.pdf",
+        "https://z4-forum.com/threads/n52-ccv-replacement.82633"
+      ],
+      "primary": true
+    },
+    {
+      "n": 8,
+      "title": "Decide what happens next",
+      "instruction": "Cracked or oily vent hose: replace hose 11157559528 (step 6). Suspected internal failure of the integrated vent valve or oil separator, a cracked cover, or a broken hose nipple on the cover: the fix is the whole valve cover, which is a separate job this guide does not cover. Take it to a shop with your findings. Cleaning the integrated valve is reported as impractical (single forum). For the shop: BMW SIB B 11 03 08 gives crankcase pressure specs of 26.0 mbar (N52) and 28.5 mbar (N51, N52K), within 10 percent but not more than 2.0 mbar; the measuring conditions and tool are not stated, and which value applies to this car's engine label is unresolved, so let the shop's ISTA/repair instruction decide.",
+      "status": "VERIFIED",
+      "warnings": [
+        "No official test procedure exists in the sources.",
+        "The pressure values are for a shop with the BMW procedure; they are not a DIY test."
+      ],
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+        "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50",
+        "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/",
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+        "https://xoutpost.com/attachments/x5-e53-forum/38381d1260592059-oil-separator-valve-cover-gasket-sib-11-03-08.pdf"
+      ],
+      "primary": true
+    },
+    {
+      "n": 9,
+      "title": "What this guide does not cover",
+      "instruction": "Replacing the valve cover is not covered. It needs the Valvetronic motor removed and set up again, 19 perimeter screws of several lengths plus 3 centre fasteners, new gasket and spark plug tube seals, and a tightening torque that no BMW source gave us (reported values disagree from about 4 to 9 Nm). There is no standalone PCV valve to buy or fit on this engine.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Do not attempt to remove or replace a separate PCV valve: it is not a separate part on this engine."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
+      ],
+      "primary": false
+    }
+  ],
+  "safety": [
+    "Engine must be cold before removing the cover or hoses.",
+    "Oil spilled on hot exhaust parts can smoke or catch fire; clean fully.",
+    "The vent valve is not a separate part on this engine: do not attempt to extract or replace one.",
+    "Never blow or suck on crankcase vent hoses by mouth.",
+    "Pushing or prying on the plastic hose nipple can break it, and a broken nipple means a new valve cover."
+  ],
+  "missingEvidence": [
+    "OE catalog check for a hidden separator: diagrams now inspected are head cover (11_3737), head, head attached parts, head electrical add-on parts (11_3736), short engine (11_3730), intake manifold, vacuum pump, engine block and block mounting parts; none lists a separator or vent valve. Group 13 and other groups were not searched.",
+    "Whether the catalog N52N engine equals BMW's N52K/N52KP (ST613 defines N52K = N52KP = N52B30O1 but does not mention N52N).",
+    "Which crankcase pressure spec (26.0 mbar N52 or 28.5 mbar N51/N52K, SIB B 11 03 08) applies to this car, and the measuring conditions.",
+    "Whether the SIB's spring-and-diaphragm description applies to this engine's integrated valve (sources conflict on a diaphragm; z4-forum says vortex type).",
+    "BMW SIB B 11 03 08 was read as hosted on a third-party forum attachment, not on a BMW site.",
+    "Any official BMW DIY inspection method for the integrated crankcase vent (none exists in the documents read)."
+  ],
+  "ownerInputsNeeded": [
+    "Observed symptoms (oil use, smoke, rough idle, oil in intake) to tailor the diagnostic section."
+  ],
+  "visuals": [
+    {
+      "id": "valve-cover-breather-hose-location",
+      "title": "Valve cover and the breather hose at its rear",
+      "evidenceSteps": [
+        4,
+        5,
+        6
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "valve-cover",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The plastic cylinder head cover with the integrated crankcase vent and oil separator (one part), with an oil filler cap on top and a row of six ignition coils."
+        },
+        {
+          "id": "breather-hose-connection",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The push-on breather hose connection at the back of the valve cover."
+        },
+        {
+          "id": "breather-hose-release-tabs",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "Two side tabs on the hose end that are squeezed to release it; the hose must not be pried."
+        },
+        {
+          "id": "oil-filler-cap",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The oil filler cap on the valve cover."
+        },
+        {
+          "id": "ignition-coils-row",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "Six ignition coils standing in the cover, one per cylinder."
+        }
+      ],
+      "facts": [
+        {
+          "element": "valve-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+            "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST501%20New%20Engine%20Technology/04_Engine%20Mechanical.pdf"
+          ],
+          "note": "OE catalog cylinder head cover 11127552281; BMW training says later six-cylinder covers are plastic with the vent integrated; FCP: updated plastic cover with integrated PCV valve."
+        },
+        {
+          "element": "valve-cover",
+          "attribute": "relationship",
+          "urls": [
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST501%20New%20Engine%20Technology/04_Engine%20Mechanical.pdf",
+            "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
+          ],
+          "note": "Crankcase vent valve and oil separator are integrated in the cover, not separate parts."
+        },
+        {
+          "element": "breather-hose-connection",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+            "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx"
+          ],
+          "note": "All four place the breather hose at the back of the valve cover."
+        },
+        {
+          "element": "breather-hose-release-tabs",
+          "attribute": "release-mechanism-geometry",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
+          ],
+          "note": "Squeeze/depress the side tabs (bavmods: both side clips) and pull; do not pry. Tab outline is not described."
+        },
+        {
+          "element": "breather-hose-connection",
+          "attribute": "fine-detail-geometry",
+          "urls": [
+            "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx"
+          ],
+          "note": "RM European: the breather connection on the cover can break off during removal; shape not described. GAP."
+        },
+        {
+          "element": "ignition-coils-row",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+            "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx"
+          ],
+          "note": "Six coils are removed before the cover."
+        },
+        {
+          "element": "oil-filler-cap",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
+          ],
+          "note": "OE catalog cap for oil filler 11128655331 on the cylinder head cover diagram. Single source for position."
+        },
+        {
+          "element": "oil-filler-cap",
+          "attribute": "location",
+          "urls": [
+            "https://bmwtuning.co/bmw-e90-oil-change/",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
+          ],
+          "note": "bmwtuning: oil cap on top of the engine cover; RealOEM lists the oil filler cap within the cylinder head cover diagram. Position on the cover (front passenger side per one Pelican commenter) is not authoritative."
+        },
+        {
+          "element": "valve-cover",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
+          ],
+          "note": "Engine covers come off first, then the six coils are pulled out of the cylinder head cover: it is the cover on top of the engine under the engine covers."
+        },
+        {
+          "element": "breather-hose-connection",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+            "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx"
+          ],
+          "note": "All four describe a breather hose on the back of the valve cover."
+        },
+        {
+          "element": "breather-hose-release-tabs",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
+          ],
+          "note": "Pelican: squeeze tabs; FCP: press release tabs inward; bavmods: depress both side clips."
+        },
+        {
+          "element": "breather-hose-release-tabs",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+            "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+            "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
+          ],
+          "note": "Tabs/clips are on the hose end at the back of the valve cover (Pelican: square tabs; bavmods: two side clips)."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "valve-cover",
+          "reason": "No standalone PCV valve, separate oil separator box, rubber diaphragm or external heated valve: none exist on this design."
+        },
+        {
+          "element": "oil-filler-cap",
+          "reason": "Position on the cover is not established."
+        },
+        {
+          "element": "breather-hose-release-tabs",
+          "reason": "Tab outline and colour are not described."
+        }
+      ],
+      "sources": {
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737": {
+          "kind": "parts-catalog",
+          "establishes": "OE catalog cylinder head cover diagram: cover 11127552281, vent hose 11157559528, oil filler cap, 22 M7 fasteners, six sleeves; no separate separator."
+        },
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST501%20New%20Engine%20Technology/04_Engine%20Mechanical.pdf": {
+          "kind": "oem-text",
+          "establishes": "BMW training doc ST501 p.30: crankcase ventilation valve and oil-separating labyrinth integrated in the cylinder head cover of N52KP and N51; N52 cover is magnesium and newer six-cylinder engines use plastic."
+        },
+        "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/": {
+          "kind": "third-party-guide",
+          "establishes": "Later N52 engines have no serviceable separate oil vent: it is integrated in the valve cover."
+        },
+        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement": {
+          "kind": "third-party-guide",
+          "establishes": "Updated plastic cover with integrated PCV valve; breather hose on the back of the cover released by pressing tabs."
+        },
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm": {
+          "kind": "third-party-guide",
+          "establishes": "Squeeze breather hose tabs at the back of the cover; six ignition coils; 19 perimeter fasteners and 3 centre fasteners."
+        },
+        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1": {
+          "kind": "third-party-guide",
+          "establishes": "Depress both side clips of the crankcase breather hose at the back of the cover; six coils; 19 perimeter bolts."
+        },
+        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx": {
+          "kind": "third-party-guide",
+          "establishes": "Breather hose at the back of the cover becomes brittle and its connection can break during removal."
+        },
+        "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/": {
+          "kind": "parts-catalog",
+          "establishes": "Retailer cover with vent valve and gasket for E90."
+        },
+        "https://bmwtuning.co/bmw-e90-oil-change/": {
+          "kind": "third-party-guide",
+          "establishes": "E90 oil change: oil cap on top of the engine cover."
+        }
+      },
+      "gapFillNotes": [
+        "oil-filler-cap placement on the cover is only roughly established (top of cover); do not rely on exact spot."
+      ],
+      "imageType": "LOCATE"
+    }
+  ],
+  "resolutionNotes": [
+    "Symptoms step now cites BMW SIB B 11 03 08 (rough running, whistling, check-engine faults, crank seal howl).",
+    "Added BMW crankcase pressure values (N52 26.0, N51/N52K 28.5 mbar) as shop-level info; applicability to this car unresolved.",
+    "Resolved N52K = N52KP = N52B30O1 from BMW ST613; N52N not defined there, so left open.",
+    "Diaphragm question partly resolved: SIB says BMW vent valves use a spring and diaphragm in general; engine-specific confirmation absent.",
+    "Blow-through step rewritten: BMW gives no DIY test; status now VERIFIED against the SIB and ST055.",
+    "Catalog check extended with 11_3736 and 11_3730: no separator or valve.",
+    "Cover-material identification instructions added to step 2 (plastic vs cast metal) instead of asking the owner to inspect.",
+    "ownerInputsNeeded reduced to symptoms; engine label and production date requests removed.",
+    "Not resolved: official DIY test, N52N equivalence, applicable pressure spec, torque for cover bolts (not covered by this guide)."
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Glove-box fuse panel cover, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the glove-box fuse panel\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: Two round plastic quarter-turn fasteners (fastener type: quarter-turn) that hold the fuse panel cover; turned counterclockwise to unlock. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "The removable cover whose back carries the fuse chart sticker."
+    },
+    {
+      "rank": 3,
+      "text": "The junction box fuse panel behind the glove box, reachable once the cover drops. Do NOT depict its fine detail: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "fuse panel detail (Fuse positions; numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions)",
+    "fuse cover fasteners detail (Exact positions on the cover not established; depict only that there are two round fasteners)",
+    "glove box open (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "9767767cfee477a4fbcc2b8d3447b3373c733d4d9c8fafc3a4540a78a5dbfd74",
+  "callouts": [
+    {
+      "label": "fuse cover fasteners",
+      "element": "fuse-cover-fasteners",
+      "required": true
+    },
+    {
+      "label": "fuse cover",
+      "element": "fuse-cover",
+      "required": true
+    },
+    {
+      "label": "fuse panel",
+      "element": "fuse-panel",
+      "required": true
+    }
+  ]
+}

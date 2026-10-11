@@ -1,0 +1,252 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "valve-cover",
+      "label": "valve cover",
+      "required": true
+    },
+    {
+      "element": "breather-hose-connection",
+      "label": "breather hose connection",
+      "required": true
+    },
+    {
+      "element": "breather-hose-release-tabs",
+      "label": "breather hose release tabs",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "4b20cc685d72d427b2989c7e391ad30b1392cc31a6a4025c0c22791bf20bb138",
+  "createdAt": "2026-10-10T12:02:45.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-valve-cover-breather-hose-location-v1",
+  "maySimplify": [
+    {
+      "element": "oil-filler-cap"
+    },
+    {
+      "element": "ignition-coils-row"
+    },
+    {
+      "element": "valve-cover-unestablished-detail"
+    },
+    {
+      "element": "oil-filler-cap-unestablished-detail"
+    },
+    {
+      "element": "breather-hose-release-tabs-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "valve-cover",
+      "id": "MD-valve-cover",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-4",
+            "ref-5",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-6",
+            "ref-3",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "breather-hose-connection",
+      "id": "MD-breather-hose-connection",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-6",
+            "ref-3",
+            "ref-7",
+            "ref-8"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-6",
+            "ref-3",
+            "ref-7",
+            "ref-8"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "breather-hose-release-tabs",
+      "id": "MD-breather-hose-release-tabs",
+      "requirements": [
+        {
+          "attribute": "release-mechanism-geometry",
+          "evidence": [
+            "ref-6",
+            "ref-7",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-6",
+            "ref-3",
+            "ref-7"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-6",
+            "ref-3",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "valve-cover-unestablished-detail",
+      "id": "MN-excl-valve-cover-unestablished-detail",
+      "reason": "No standalone PCV valve, separate oil separator box, rubber diaphragm or external heated valve: none exist on this design.",
+      "trace": {
+        "attribute": "existence",
+        "element": "valve-cover-unestablished-detail"
+      }
+    },
+    {
+      "element": "oil-filler-cap-unestablished-detail",
+      "id": "MN-excl-oil-filler-cap-unestablished-detail",
+      "reason": "Position on the cover is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "oil-filler-cap-unestablished-detail"
+      }
+    },
+    {
+      "element": "breather-hose-release-tabs-unestablished-detail",
+      "id": "MN-excl-breather-hose-release-tabs-unestablished-detail",
+      "reason": "Tab outline and colour are not described.",
+      "trace": {
+        "attribute": "existence",
+        "element": "breather-hose-release-tabs-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-valve-cover-breather-hose-location-v1",
+      "sha256": "a534e033f5e835cdd1bcc839f18fdef680527032932d687626bd832bd4f53f4a"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "e3c284d9f4e20f12869dd557091ce9e3d217f91c9482611af9fff2937066ee5e"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "6dde516a310162b72d3b78f42d466a0b0fbf3cd6e4c5c7163025ead57c12236a"
+  },
+  "suppress": [
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "breather-hose-connection",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "valve-cover-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-filler-cap-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "breather-hose-release-tabs-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "valve-cover-breather-hose-location"
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "mediaType": "png",
+    "sha256": "ec5003b63e9c6f0e8897313b955b865ef342bb06432b75b51be544b3b1b471f6",
+    "bytes": 1271666,
+    "width": 1600,
+    "height": 1000,
+    "metadataChunks": [],
+    "c2pa": {
+      "present": false
+    },
+    "animated": false
+  },
+  "normalized": {
+    "mediaType": "png",
+    "sha256": "7722e19d724060dafb5d1174fb4ef161b62b36e0d01787e0cd49162cf396f43f",
+    "bytes": 1250999,
+    "width": 1600,
+    "height": 1000,
+    "metadataChunks": [],
+    "normalizer": {
+      "version": "reconstructed-normalizer-1",
+      "tool": "reconstructed-png-box-downscale (node zlib)",
+      "ops": [
+        "decode",
+        "resize-to-frame",
+        "strip-metadata",
+        "png-encode"
+      ]
+    }
+  },
+  "downscaled": false
+}

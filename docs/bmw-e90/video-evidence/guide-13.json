@@ -1,0 +1,93 @@
+{
+  "guide": 13,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-Xih7M3WBOjY",
+      "url": "https://www.youtube.com/watch?v=Xih7M3WBOjY",
+      "titleAsListed": "Jacking Up Your E90 3-Series BMW - 335i, 325i, 325Xi, 330i, 330xi, 328i",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "328I",
+        "325I",
+        "330I",
+        "335I"
+      ],
+      "titleConflictSignals": [
+        "335I"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-6ubfvp31MLg",
+      "url": "https://www.youtube.com/watch?v=6ubfvp31MLg",
+      "titleAsListed": "How To Jack Up Your E90 BMW At All Four Corners. Performed On My 2008 BMW 335i",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "335I",
+        "2008"
+      ],
+      "titleConflictSignals": [
+        "335I"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-24XDC_Rbol0",
+      "url": "https://www.youtube.com/watch?v=24XDC_Rbol0",
+      "titleAsListed": "Where are BMW Center Jack Points",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-l1O08JRMTuM",
+      "url": "https://www.youtube.com/watch?v=l1O08JRMTuM",
+      "titleAsListed": "How to Rotate Tires : How to Torque Lug Nuts",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

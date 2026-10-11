@@ -1,0 +1,59 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Oil drain: loosening the drain plug with a 17 mm socket, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Drain the sump\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The engine oil drain plug seen end-on, a short external hex head with a copper-coloured crush washer, with the socket fitted over its head. Do NOT depict its orientation: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "A plain chrome 17 mm socket fitted over the plug head, on a plain ratchet whose handle extends away from the plug; no markings or engraving. Do NOT depict its fine detail: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "oil pan surface"
+  ],
+  "mustNotShow": [
+    "pan bolts and ribs (Pan fasteners and rib layout are not established for the automatic pan; left out)",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "53dc560e51f8b68e695c32526a26a7e2636d52f73ebd76853067ffa655881986",
+  "callouts": [
+    {
+      "label": "drain plug",
+      "element": "drain-plug",
+      "required": true
+    },
+    {
+      "label": "tool socket and ratchet",
+      "element": "tool-socket-and-ratchet",
+      "required": true
+    }
+  ]
+}

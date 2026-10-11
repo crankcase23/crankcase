@@ -1,0 +1,1 @@
+Attempt 2 (compact prompt, ChatGPT chat 6acb2d18). Image and review PASSED, but the fitted candidate was encoded at the same zlib level as the factory normaliser, so `finish` refused with NORMALIZE_HASH_COLLISION. fit-frame now encodes candidates at level 6. Same native image re-run as attempt 2b with a fresh packet and review (sha changed). Kept for the audit trail.

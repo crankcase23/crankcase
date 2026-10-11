@@ -1,0 +1,220 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Open the airbox and swap the element",
+      "Close the airbox"
+    ],
+    "stepNumber": 7,
+    "title": "airbox-halves-and-element (BMW 328i draft Engine Air Filter guide; evidence step 7, 8)"
+  },
+  "contentHash": "55e735dccaf45e20316dca638bfd9b985a7b2b921021c7804312f63d2db70674",
+  "createdAt": "2026-10-10T12:02:55.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The two plastic halves of the airbox separated, with the filter element between them.",
+      "id": "airbox-lower-and-lid",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Six screws around the airbox halves that clamp them together.",
+      "id": "airbox-housing-screws",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The new pleated element with its rubber gasket edge that must sit evenly all the way around.",
+      "id": "filter-element-gasket",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of airbox housing screws: Drive type, count (six single-source) and positions are not established across independent sources; a youcanic article says two Torx screws on another style.",
+      "id": "airbox-housing-screws-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of filter element gasket: Which side of the element faces up and any arrow marks are not established.",
+      "id": "filter-element-gasket-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-airbox-halves-and-element-v1",
+  "ledger": [
+    {
+      "attribute": "fastener-position",
+      "element": "airbox-housing-screws",
+      "note": "Single source: six screws holding the halves together, refit in a star pattern; positions not described.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "airbox-housing-screws",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "filter-element-gasket",
+      "note": "Single source: make sure the gasket lines up perfectly.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "airbox-lower-and-lid",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airbox-housing-screws",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airbox-lower-and-lid",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "airbox-housing-screws",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-element-gasket",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "filter-element-gasket",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airbox-housing-screws-unestablished-detail",
+      "note": "Drive type, count (six single-source) and positions are not established across independent sources; a youcanic article says two Torx screws on another style.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-element-gasket-unestablished-detail",
+      "note": "Which side of the element faces up and any arrow marks are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "airbox-housing-screws-unestablished-detail",
+      "id": "excl-airbox-housing-screws-unestablished-detail",
+      "reason": "Drive type, count (six single-source) and positions are not established across independent sources; a youcanic article says two Torx screws on another style.",
+      "trace": {
+        "attribute": "existence",
+        "element": "airbox-housing-screws-unestablished-detail"
+      }
+    },
+    {
+      "element": "filter-element-gasket-unestablished-detail",
+      "id": "excl-filter-element-gasket-unestablished-detail",
+      "reason": "Which side of the element faces up and any arrow marks are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "filter-element-gasket-unestablished-detail"
+      }
+    },
+    {
+      "element": "airbox-lower-and-lid",
+      "id": "excl-airbox-lower-and-lid",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "airbox-lower-and-lid"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Six housing screws, hand-tighten in a star pattern, gasket must line up."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Torx screws on the box, filter side separates, sensor side stays connected, orange-lined filter."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "ETK diagram 13_1148: air filter element 13717542294, seven fillister-head screws 13717545438 on the assembly."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=13_1148",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "airbox-halves-and-element"
+}

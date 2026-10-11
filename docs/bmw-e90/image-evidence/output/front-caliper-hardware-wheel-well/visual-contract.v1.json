@@ -1,0 +1,284 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "front-brake-caliper",
+      "label": "front brake caliper",
+      "required": true
+    },
+    {
+      "element": "anti-rattle-spring-clip",
+      "label": "anti rattle spring clip",
+      "required": true
+    },
+    {
+      "element": "guide-pin-dust-caps",
+      "label": "guide pin dust caps",
+      "required": true
+    },
+    {
+      "element": "guide-pin-bolt-fasteners",
+      "label": "guide pin bolt fasteners",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "cbf6febc35a72eed1b212db9c26d20343887bae7ea26f9733a380e1d2450c78e",
+  "createdAt": "2026-10-10T12:00:06.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-front-caliper-hardware-wheel-well-v1",
+  "maySimplify": [
+    {
+      "element": "carrier-bolt-fasteners"
+    },
+    {
+      "element": "anti-rattle-spring-clip-unestablished-detail"
+    },
+    {
+      "element": "guide-pin-bolt-fasteners-unestablished-detail"
+    },
+    {
+      "element": "front-brake-caliper-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "front-brake-caliper",
+      "id": "MD-front-brake-caliper",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-4",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "anti-rattle-spring-clip",
+      "id": "MD-anti-rattle-spring-clip",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-3",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-3",
+            "ref-1",
+            "ref-4",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "procedure",
+      "element": "guide-pin-dust-caps",
+      "id": "MD-guide-pin-dust-caps",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-4",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "guide-pin-bolt-fasteners",
+      "id": "MD-guide-pin-bolt-fasteners",
+      "requirements": [
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-5",
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-5",
+            "ref-1",
+            "ref-4",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-4",
+            "ref-1",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "anti-rattle-spring-clip-unestablished-detail",
+      "id": "MN-excl-anti-rattle-spring-clip-unestablished-detail",
+      "reason": "Exact bend shape, orientation and routing are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "anti-rattle-spring-clip-unestablished-detail"
+      }
+    },
+    {
+      "element": "guide-pin-bolt-fasteners-unestablished-detail",
+      "id": "MN-excl-guide-pin-bolt-fasteners-unestablished-detail",
+      "reason": "Top/bottom or front/back placement of the two pins is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "guide-pin-bolt-fasteners-unestablished-detail"
+      }
+    },
+    {
+      "element": "front-brake-caliper-unestablished-detail",
+      "id": "MN-excl-front-brake-caliper-unestablished-detail",
+      "reason": "Brand (ATE/Teves), colour and size depend on brake package and are not established for this car.",
+      "trace": {
+        "attribute": "existence",
+        "element": "front-brake-caliper-unestablished-detail"
+      }
+    },
+    {
+      "element": "carrier-bolt-fasteners",
+      "id": "MN-excl-carrier-bolt-fasteners",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "carrier-bolt-fasteners"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-front-caliper-hardware-wheel-well-v1",
+      "sha256": "00679161a0f14d6956b7f108e908b7659188875cac152cba778da6799379bebc"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "fdb179f793f674257ff29f759a51b96a8daa5f9d25d7f574dd8acc392f063910"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "e90b3b431dae3a1adaa43399ac6699e66915bf7f6320666d45c074d932eaad46"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-position",
+      "element": "guide-pin-bolt-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "carrier-bolt-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "anti-rattle-spring-clip-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "guide-pin-bolt-fasteners-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "front-brake-caliper-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "front-caliper-hardware-wheel-well"
+}

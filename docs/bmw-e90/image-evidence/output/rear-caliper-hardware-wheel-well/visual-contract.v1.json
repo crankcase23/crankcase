@@ -1,0 +1,225 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "rear-brake-caliper",
+      "label": "rear brake caliper",
+      "required": true
+    },
+    {
+      "element": "caliper-retaining-clip",
+      "label": "caliper retaining clip",
+      "required": true
+    },
+    {
+      "element": "carrier-bolt-fasteners",
+      "label": "carrier bolt fasteners",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "c42511436db16b3edc13940f7fb9fed6b74b12db404388a6353a9fba1e2c75e1",
+  "createdAt": "2026-10-10T12:01:05.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-rear-caliper-hardware-wheel-well-v1",
+  "maySimplify": [
+    {
+      "element": "guide-screw-fasteners"
+    },
+    {
+      "element": "caliper-retaining-clip-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "rear-brake-caliper",
+      "id": "MD-rear-brake-caliper",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-1",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "caliper-retaining-clip",
+      "id": "MD-caliper-retaining-clip",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-2",
+            "ref-1",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "carrier-bolt-fasteners",
+      "id": "MD-carrier-bolt-fasteners",
+      "requirements": [
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-4",
+            "ref-5",
+            "ref-6",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-position",
+          "evidence": [
+            "ref-4",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-5",
+            "ref-4",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-5",
+            "ref-4",
+            "ref-2"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "guide-screw-fasteners",
+      "id": "MN-excl-guide-screw-fasteners",
+      "reason": "Head type and exact position are only single-sourced.",
+      "trace": {
+        "attribute": "existence",
+        "element": "guide-screw-fasteners"
+      }
+    },
+    {
+      "element": "caliper-retaining-clip-unestablished-detail",
+      "id": "MN-excl-caliper-retaining-clip-unestablished-detail",
+      "reason": "Exact shape and engagement not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "caliper-retaining-clip-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-rear-caliper-hardware-wheel-well-v1",
+      "sha256": "81aabcc39e81774895389b9c5b3976b547c1c0504954c57c3b0ec6e4952bb39e"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "0a0dbefc08267de04e387944124233db67a0c82ba5134a2f4aaaef661d92e068"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "17ced4df08cbe304e14522f8f0aa2533bb329d0a5d300de66ca97e256f9c4b40"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-head-type",
+      "element": "guide-screw-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "guide-screw-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "caliper-retaining-clip-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "rear-caliper-hardware-wheel-well"
+}

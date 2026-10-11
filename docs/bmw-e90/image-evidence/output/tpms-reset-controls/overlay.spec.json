@@ -1,0 +1,37 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "tpms-reset-controls",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 10,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "turn-signal-stalk-button",
+      "role": "hero",
+      "note": "The end button of the turn-signal stalk, used to scroll to TPMS RESET and hold for about 5 seconds.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "idrive-reset-tpm-menu",
+      "role": "target",
+      "note": "An on-screen menu (Vehicle Info > Vehicle Status, or Settings > TPM) with a RESET TPM item.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

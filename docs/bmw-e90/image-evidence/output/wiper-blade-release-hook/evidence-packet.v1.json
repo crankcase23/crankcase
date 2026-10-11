@@ -1,0 +1,251 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Lift the first arm",
+      "Release the old blade",
+      "Fit the new blade"
+    ],
+    "stepNumber": 2,
+    "title": "wiper-blade-release-hook (BMW 328i draft Wiper Blades guide; evidence step 2, 3, 4)"
+  },
+  "contentHash": "09f64d2ee5dd5e4781b3fc260f89391eb6992a1ec3b5f362bdf31b67d69e8c05",
+  "createdAt": "2026-10-10T12:03:27.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "procedure",
+      "describe": "The wiper arm lifted upright away from the glass.",
+      "id": "wiper-arm-lifted",
+      "role": "context"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A press tab on the hook end of the blade that releases it from the arm.",
+      "id": "blade-release-tab",
+      "role": "hero"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The hook or peg at the end of the arm that the blade slides onto, with a plastic cover.",
+      "id": "arm-hook-end",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of blade release tab: Exact tab shape, position and the plastic cover outline are not established by any source.",
+      "id": "blade-release-tab-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of arm hook end: Peg vs hook geometry and dimensions are not established.",
+      "id": "arm-hook-end-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-wiper-blade-release-hook-v1",
+  "ledger": [
+    {
+      "attribute": "action",
+      "element": "wiper-arm-lifted",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "blade-release-tab",
+      "evidence": [
+        "ref-1",
+        "ref-4",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "blade-release-tab",
+      "note": "1 site only: pressing the underside of the hook, which sits under a plastic cover. Gap.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "arm-hook-end",
+      "evidence": [
+        "ref-2",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "blade-release-tab",
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "blade-release-tab",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "arm-hook-end",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "arm-hook-end",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "wiper-arm-lifted",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "blade-release-tab-unestablished-detail",
+      "note": "Exact tab shape, position and the plastic cover outline are not established by any source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "arm-hook-end-unestablished-detail",
+      "note": "Peg vs hook geometry and dimensions are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "blade-release-tab-unestablished-detail",
+      "id": "excl-blade-release-tab-unestablished-detail",
+      "reason": "Exact tab shape, position and the plastic cover outline are not established by any source.",
+      "trace": {
+        "attribute": "existence",
+        "element": "blade-release-tab-unestablished-detail"
+      }
+    },
+    {
+      "element": "arm-hook-end-unestablished-detail",
+      "id": "excl-arm-hook-end-unestablished-detail",
+      "reason": "Peg vs hook geometry and dimensions are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "arm-hook-end-unestablished-detail"
+      }
+    },
+    {
+      "element": "wiper-arm-lifted",
+      "id": "excl-wiper-arm-lifted",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "wiper-arm-lifted"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Lift arm, press underside of hook under a plastic cover, turn blade perpendicular, pull toward back; sizes 24/19 in sedan."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Pivot blade parallel to floor, slide off retention peg, no tools."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Lift arm, press release tab (pen if needed), rotate and pull off; tug test."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "wiperbladesusa.com",
+      "sourceRef": "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2010 328i connector listed as I&L (pinch tab); sedan 24/19 in."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "wiper-blade-release-hook"
+}

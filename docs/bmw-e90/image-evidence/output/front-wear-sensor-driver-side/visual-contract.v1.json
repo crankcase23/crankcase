@@ -1,0 +1,203 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "pad-wear-sensor-wire",
+      "label": "pad wear sensor wire",
+      "required": true
+    },
+    {
+      "element": "sensor-connector-junction-box",
+      "label": "sensor connector junction box",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "1834d318835d5e2b487ae61f125d937f0251cb52a868cd125cc245288848ac17",
+  "createdAt": "2026-10-10T12:00:15.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-front-wear-sensor-driver-side-v1",
+  "maySimplify": [
+    {
+      "element": "strut-wire-bracket"
+    },
+    {
+      "element": "sensor-connector-junction-box-unestablished-detail"
+    },
+    {
+      "element": "pad-wear-sensor-wire-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "pad-wear-sensor-wire",
+      "id": "MD-pad-wear-sensor-wire",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "sensor-connector-junction-box",
+      "id": "MD-sensor-connector-junction-box",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "release-mechanism-geometry",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-5",
+            "ref-6"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "sensor-connector-junction-box-unestablished-detail",
+      "id": "MN-excl-sensor-connector-junction-box-unestablished-detail",
+      "reason": "Exact box shape, door hinge and plug design are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "sensor-connector-junction-box-unestablished-detail"
+      }
+    },
+    {
+      "element": "pad-wear-sensor-wire-unestablished-detail",
+      "id": "MN-excl-pad-wear-sensor-wire-unestablished-detail",
+      "reason": "Passenger-side front has no sensor; depict only the driver side.",
+      "trace": {
+        "attribute": "existence",
+        "element": "pad-wear-sensor-wire-unestablished-detail"
+      }
+    },
+    {
+      "element": "strut-wire-bracket",
+      "id": "MN-excl-strut-wire-bracket",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "strut-wire-bracket"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-front-wear-sensor-driver-side-v1",
+      "sha256": "1e6eab62f725b7197d13b50f440030935768af3a0d6bfe4673bba366d0f4ea03"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "da172e8074c2107ec16349dc45a046d31ca686c748c68d1fc4e531c47ed26ae3"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "9d8e3cd31954ba99cff3559665645fb67c81191550ee1c6dd8c0f46982849c91"
+  },
+  "suppress": [
+    {
+      "attribute": "relationship",
+      "element": "strut-wire-bracket",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "strut-wire-bracket",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "sensor-connector-junction-box-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "pad-wear-sensor-wire-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "front-wear-sensor-driver-side"
+}

@@ -1,0 +1,187 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "wheel-bolt-fasteners",
+      "label": "wheel bolt fasteners",
+      "required": true
+    },
+    {
+      "element": "metal-valve-stem",
+      "label": "metal valve stem",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "afc5ed1c9e4f41ed9b8afe43f1118040ef1f2339f81a3be3a9f38618bfa4dcd4",
+  "createdAt": "2026-10-10T12:03:13.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-wheel-bolts-and-metal-valve-stem-v1",
+  "maySimplify": [
+    {
+      "element": "locking-wheel-bolt"
+    },
+    {
+      "element": "locking-wheel-bolt-unestablished-detail"
+    },
+    {
+      "element": "wheel-bolt-fasteners-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "wheel-bolt-fasteners",
+      "id": "MD-wheel-bolt-fasteners",
+      "requirements": [
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-9",
+            "ref-10",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-9",
+            "ref-10"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "identification",
+      "element": "metal-valve-stem",
+      "id": "MD-metal-valve-stem",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-6",
+            "ref-7",
+            "ref-8"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-9",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "locking-wheel-bolt-unestablished-detail",
+      "id": "MN-excl-locking-wheel-bolt-unestablished-detail",
+      "reason": "Not confirmed as fitted; key pattern shape not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "locking-wheel-bolt-unestablished-detail"
+      }
+    },
+    {
+      "element": "wheel-bolt-fasteners-unestablished-detail",
+      "id": "MN-excl-wheel-bolt-fasteners-unestablished-detail",
+      "reason": "Wheel spoke design and finish are unknown for this car.",
+      "trace": {
+        "attribute": "existence",
+        "element": "wheel-bolt-fasteners-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-wheel-bolts-and-metal-valve-stem-v1",
+      "sha256": "da1fe3bd0d8619937995081022bc41e8a1d40c8810e90eb9af1af394171aed9c"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "1d9b7149bf2b6c9c023bf55b5680e4a7c13e784d73ebd0941e312167897d1af2"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "c70dc0abf85b65ab97e148e774f5f9978f2dab88d45b6459a63bd152e5c433cc"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-position",
+      "element": "wheel-bolt-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "locking-wheel-bolt-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "wheel-bolt-fasteners-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "wheel-bolts-and-metal-valve-stem"
+}

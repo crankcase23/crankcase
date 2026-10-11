@@ -1,0 +1,172 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Open the undertray access hatch"
+    ],
+    "stepNumber": 4,
+    "title": "oil-drain-hatch-locate (BMW 328i draft Engine Oil & Filter Change guide; evidence step 4)"
+  },
+  "contentHash": "4a9202c63419e4ce022f96f9b35b992c0d8bea06018d3bf456cc85ee912bd296",
+  "createdAt": "2026-10-10T12:04:22.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline.",
+      "id": "access-hatch",
+      "role": "hero"
+    },
+    {
+      "criticality": "cosmetic",
+      "describe": "The lower undertray around the hatch, drawn as a plain simplified flat mass.",
+      "id": "undertray-panel",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "Front bumper, grille and lower valance styling.",
+      "id": "front-bumper-and-grille",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "Suspension arms, subframe and crossmembers around the undertray.",
+      "id": "suspension-and-subframe",
+      "role": "context"
+    }
+  ],
+  "id": "EP-oil-drain-hatch-locate-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "access-hatch",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "access-hatch",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "access-hatch",
+      "note": "Not established: one poster describes a triangular panel, others a small removable panel.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "access-hatch",
+      "note": "Conflict: three screws vs coin-operated catch.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "undertray-panel",
+      "note": "cosmetic context drawn as a plain generic shape; no specific claim",
+      "render": "simplify",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "front-bumper-and-grille",
+      "note": "excluded by the visual's mustNotDepict",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "suspension-and-subframe",
+      "note": "excluded by the visual's mustNotDepict",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "front-bumper-and-grille",
+      "id": "excl-front-bumper-and-grille",
+      "reason": "No source establishes the lower front styling for this car; left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "front-bumper-and-grille"
+      }
+    },
+    {
+      "element": "suspension-and-subframe",
+      "id": "excl-suspension-and-subframe",
+      "reason": "No source establishes the surrounding chassis layout; left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "suspension-and-subframe"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "17 mm plug with copper crush washer; oil exits sideways."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "oil-drain-hatch-locate"
+}

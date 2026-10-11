@@ -1,0 +1,317 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Open the glove-box fuse panel",
+      "Swap the fuse"
+    ],
+    "stepNumber": 2,
+    "title": "glovebox-fuse-panel (BMW 328i draft Fuse & Bulb Replacement guide; evidence step 2, 3)"
+  },
+  "contentHash": "f55a27ab8102aedb2a0e4199f16d9d284814d60195106dcfd5702660b9994276",
+  "createdAt": "2026-10-10T12:00:20.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The open glove compartment on the passenger side of the dashboard.",
+      "id": "glove-box-open",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Two round plastic quarter-turn fasteners (fastener type: quarter-turn) that hold the fuse panel cover; turned counterclockwise to unlock.",
+      "id": "fuse-cover-fasteners",
+      "role": "hero"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The removable cover whose back carries the fuse chart sticker.",
+      "id": "fuse-cover",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The junction box fuse panel behind the glove box, reachable once the cover drops.",
+      "id": "fuse-panel",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of fuse panel: Fuse positions, numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions.",
+      "id": "fuse-panel-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of fuse cover fasteners: Exact positions on the cover not established; depict only that there are two round fasteners.",
+      "id": "fuse-cover-fasteners-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-glovebox-fuse-panel-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "glove-box-open",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-cover-fasteners",
+      "evidence": [
+        "ref-3",
+        "ref-5",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "fuse-cover-fasteners",
+      "evidence": [
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "fuse-cover-fasteners",
+      "note": "Exact positions of the two fasteners on the cover are not stated by any source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "fuse-cover",
+      "evidence": [
+        "ref-6",
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "fuse-panel",
+      "note": "Number/arrangement of fuse positions and fuse puller location not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "fuse-cover-fasteners",
+      "evidence": [
+        "ref-3",
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-cover",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "fuse-cover",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-panel",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "fuse-panel",
+      "evidence": [
+        "ref-6",
+        "ref-2",
+        "ref-1",
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "glove-box-open",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-panel-unestablished-detail",
+      "note": "Fuse positions, numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-cover-fasteners-unestablished-detail",
+      "note": "Exact positions on the cover not established; depict only that there are two round fasteners.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "fuse-panel-unestablished-detail",
+      "id": "excl-fuse-panel-unestablished-detail",
+      "reason": "Fuse positions, numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions.",
+      "trace": {
+        "attribute": "existence",
+        "element": "fuse-panel-unestablished-detail"
+      }
+    },
+    {
+      "element": "fuse-cover-fasteners-unestablished-detail",
+      "id": "excl-fuse-cover-fasteners-unestablished-detail",
+      "reason": "Exact positions on the cover not established; depict only that there are two round fasteners.",
+      "trace": {
+        "attribute": "existence",
+        "element": "fuse-cover-fasteners-unestablished-detail"
+      }
+    },
+    {
+      "element": "glove-box-open",
+      "id": "excl-glove-box-open",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "glove-box-open"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Junction box is arranged on the passenger side behind the glove compartment."
+      ],
+      "id": "ref-1",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Junction box located behind the glovebox; fuses and relays plug into its PC board."
+      ],
+      "id": "ref-2",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Open glove box, turn the two round plastic screws counterclockwise, remove the panel."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Passenger fuse box in glove box: turn the two latches, remove cover, diagram on the back."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fuseandrelay.com",
+      "sourceRef": "https://fuseandrelay.com/bmw/e90.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Fuse panel behind glove box held by two quarter-turn fasteners; diagram on back of cover."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-photo",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=31660252",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "US 2010 328i owner's manual p.236: open the cover in the glove compartment and remove it; plastic tweezers are on the distributor box; fuse assignment is on the rear of the cover."
+      ],
+      "id": "ref-6",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "glovebox-fuse-panel"
+}

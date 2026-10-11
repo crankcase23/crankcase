@@ -1,0 +1,17 @@
+{
+  "candidateSha256": "ec5003b63e9c6f0e8897313b955b865ef342bb06432b75b51be544b3b1b471f6",
+  "rubricVersion": "CG-QA-v1.0",
+  "provenanceCheck": {"validated": "true", "notes": "No visible evidence of copied or traced imagery, baked-in text, logos, labels, or watermarks. Visual inspection cannot independently authenticate image origin; generator attestation is reported but not independently verified."},
+  "checks": [
+    {"contractItemId": "MD-access-hatch", "result": "PASS"},
+    {"contractItemId": "MN-excl-front-bumper-and-grille", "result": "PASS"},
+    {"contractItemId": "MN-excl-suspension-and-subframe", "result": "PASS"},
+    {"contractItemId": "PROVENANCE", "result": "PASS"}
+  ],
+  "findings": [
+    {"id": "F1", "severity": "COSMETIC", "contractItemRef": "MD-access-hatch", "element": "access-hatch", "attribute": "surface-geometry",
+     "description": "The hatch is visibly closed, centrally located, and outlined without fasteners. Its slightly rounded trapezoidal shape remains generic and does not establish unsupported fastener or latch details. No required correction.",
+     "requiredChange": "None.", "fixType": "simplify", "gate": "VISUAL_ACCURACY", "evidenceDeficiency": false, "regression": false}
+  ],
+  "regressionCheck": []
+}

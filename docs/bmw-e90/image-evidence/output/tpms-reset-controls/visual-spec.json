@@ -1,0 +1,61 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "TPMS reset: iDrive menu and turn-signal stalk, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Reset the tire pressure monitor\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The end button of the turn-signal stalk, used to scroll to TPMS RESET and hold for about 5 seconds."
+    },
+    {
+      "rank": 2,
+      "text": "An on-screen menu (Vehicle Info > Vehicle Status, or Settings > TPM) with a RESET TPM item."
+    }
+  ],
+  "maySimplify": [
+    "a plain light neutral ground plane"
+  ],
+  "mustNotShow": [
+    "idrive reset tpm menu detail (Exact on-screen layout and menu wording are not consistent across sources)",
+    "turn signal stalk button detail (Stalk shape and button position are not described)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "b67c691f68fe4cc3100b6a6bdc9c65ce64d8f09168bdbf91a8d44011a36dd340",
+  "callouts": [
+    {
+      "label": "turn signal stalk button",
+      "element": "turn-signal-stalk-button",
+      "required": true
+    },
+    {
+      "label": "idrive reset tpm menu",
+      "element": "idrive-reset-tpm-menu",
+      "required": true
+    }
+  ]
+}

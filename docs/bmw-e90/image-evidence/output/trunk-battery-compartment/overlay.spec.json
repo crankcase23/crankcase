@@ -1,0 +1,46 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "trunk-battery-compartment",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 4,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "battery",
+      "role": "hero",
+      "note": "A single 12 V battery on the right side of the luggage compartment, under the trunk cover/panel.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "rear-power-distribution-box",
+      "role": "target",
+      "note": "A distribution box attached to the top of the battery (BMW calls it the rear power distribution box; its fuse links cannot be replaced individually).",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "negative-terminal-with-ibs",
+      "role": "target",
+      "note": "The negative battery post with its clamp; the intelligent battery sensor is part of the negative lead. Do not disturb the sensor.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

@@ -1,0 +1,304 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Release pressure and open the expansion tank cap",
+      "Close the drains and refit hoses",
+      "Mix and fill",
+      "Run the automatic venting routine",
+      "Top up after the cycle",
+      "Re-check the level cold and after driving",
+      "Close the cap, refit covers, dispose of coolant"
+    ],
+    "stepNumber": 4,
+    "title": "expansion-tank-cap-and-vent-screw (BMW 328i draft Coolant Flush & Fill guide; evidence step 4, 9, 10, 11, 12, 14, 15)"
+  },
+  "contentHash": "d0b039cfe01606e8f86b2a4f201f88c34676d24793bcad0e1f57bb66df890d98",
+  "createdAt": "2026-10-10T12:01:55.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "The plastic coolant expansion tank with a screw-on filler cap and a filler neck carrying MIN and MAX level marks.",
+      "id": "expansion-tank",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The screw cap on the expansion tank; turned slightly counter-clockwise first to release pressure, closed until it clicks.",
+      "id": "filler-cap",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A small M10 vent (bleeder) screw on the expansion tank, closed during venting and loosened only while filling.",
+      "id": "vent-screw",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "MIN and MAX marks on the filler neck, plus a level indicator that one source calls a ball float.",
+      "id": "level-indicator-marks",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of vent screw: Position on the tank is not established.",
+      "id": "vent-screw-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of expansion tank: Which side of the engine bay it occupies is not established; draw it isolated, not placed in a specific corner.",
+      "id": "expansion-tank-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-expansion-tank-cap-and-vent-screw-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "expansion-tank",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "filler-cap",
+      "evidence": [
+        "ref-1",
+        "ref-4",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "filler-cap",
+      "evidence": [
+        "ref-4",
+        "ref-2"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "vent-screw",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "vent-screw",
+      "evidence": [
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "expansion-tank",
+      "evidence": [
+        "ref-6",
+        "ref-7"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "level-indicator-marks",
+      "evidence": [
+        "ref-4",
+        "ref-8",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "level-indicator-marks",
+      "note": "Exact mark shape and the ball float geometry are not described by any source. GAP.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "filler-cap",
+      "evidence": [
+        "ref-6",
+        "ref-7",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "vent-screw-unestablished-detail",
+      "note": "Position on the tank is not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "expansion-tank-unestablished-detail",
+      "note": "Which side of the engine bay it occupies is not established; draw it isolated, not placed in a specific corner.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "vent-screw-unestablished-detail",
+      "id": "excl-vent-screw-unestablished-detail",
+      "reason": "Position on the tank is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "vent-screw-unestablished-detail"
+      }
+    },
+    {
+      "element": "expansion-tank-unestablished-detail",
+      "id": "excl-expansion-tank-unestablished-detail",
+      "reason": "Which side of the engine bay it occupies is not established; draw it isolated, not placed in a specific corner.",
+      "trace": {
+        "attribute": "existence",
+        "element": "expansion-tank-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "OE catalog for E90 LCI 328i: tank 17137640514, M10 vent screw 11537793373, level switch 17137553919, cap 17117639020."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0322",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 article: fill to MAX, loosen expansion tank bleeder screw while filling, tighten, then run the electric pump bleed."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/WATER-Draining_Filling_Cooling_System/WATER-Draining_Filling_Cooling_System.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90/E92 thread: keep reservoir cap and bleed screw closed during venting; ball indicator level target."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=16271124",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Owner manual (US 2010 328i sedan, p.222): release pressure by turning cap slightly counter-clockwise, level between MIN and MAX marks on filler neck, close until it clicks."
+      ],
+      "id": "ref-4",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=expansion+tank",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retailer lists an aluminum coolant bleeder screw used in the expansion tank or a hose, cross-reference 11537793373."
+      ],
+      "id": "ref-5",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-363070-aluminum-coolant-bleeder-screw/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90-E93 article: expansion tank is in the engine compartment in front of the passenger side; open the cap slowly when cool."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/check-add-coolant-bmw-3-series-2004-2013/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 328i expansion tank on the passenger side near the firewall, black cap."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E60 N52 bleed PDF: fill to MAX, venting with cap closed, align cap marks."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/attachments/diy-do-yourself-14/29909d1174763887-cooling-system-bleeding-cooling_system_bleeding_e60_n52.pdf",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "expansion-tank-cap-and-vent-screw"
+}

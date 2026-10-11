@@ -1,0 +1,166 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Prepare the car",
+      "Disconnect the positive lead"
+    ],
+    "stepNumber": 3,
+    "title": "engine-bay-jump-terminal (BMW 328i draft Battery Replacement guide; evidence step 3, 6)"
+  },
+  "contentHash": "2602d1075f945d3c97afe0f256c18c59a0db8b379de5c2251aaf0e238e27a470",
+  "createdAt": "2026-10-10T12:01:46.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "A positive jump-start terminal in the engine compartment on the passenger side of the engine, marked B+ and fitted with a red cap.",
+      "id": "b-plus-jump-terminal",
+      "role": "hero"
+    },
+    {
+      "criticality": "identification",
+      "describe": "A red plastic cap over the terminal (a missing red cap is noted on one E90 thread).",
+      "id": "red-terminal-cap",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of b plus jump terminal: Exact mounting bracket, cable routing and negative ground point are not established.",
+      "id": "b-plus-jump-terminal-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-engine-bay-jump-terminal-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "b-plus-jump-terminal",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "b-plus-jump-terminal",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "red-terminal-cap",
+      "evidence": [
+        "ref-4",
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "b-plus-jump-terminal-unestablished-detail",
+      "note": "Exact mounting bracket, cable routing and negative ground point are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "b-plus-jump-terminal-unestablished-detail",
+      "id": "excl-b-plus-jump-terminal-unestablished-detail",
+      "reason": "Exact mounting bracket, cable routing and negative ground point are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "b-plus-jump-terminal-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Battery cable goes to the jump-start terminal in the engine compartment."
+      ],
+      "id": "ref-1",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Jump terminals on the passenger side of the engine."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/jump-start-bmw-3-series-2004-2013/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Jump terminals under the hood, positive marked B+."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=31243580",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 owner thread: red cap covers the positive jump terminal in the engine bay."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-photo",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "lr.sudovanilla.org",
+      "sourceRef": "https://lr.sudovanilla.org/r/E90/comments/1friexo/whats_supposed_was_it_and_where/lpd4lt1/?context=3",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2009 328i article: under the hood, the positive jump-start post has a red cap with a plus sign, passenger side near the firewall."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/where-is-the-battery-on-a-2009-bmw-328i/",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "engine-bay-jump-terminal"
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "accessory-drive-components",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 3,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "drive-belt",
+      "role": "hero",
+      "note": "A single six-rib serpentine belt (6PK1990) driving the accessories.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "tensioner-pulley",
+      "role": "target",
+      "note": "The spring tensioner with roller pulley that holds the belt tight.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "tensioner-release-point",
+      "role": "target",
+      "note": "The Torx-type socket point on the tensioner that is turned clockwise with a long ratchet to relieve tension.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "deflection-pulley",
+      "role": "target",
+      "note": "The deflection (idler) pulley mounted at the alternator, with a protective cap.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

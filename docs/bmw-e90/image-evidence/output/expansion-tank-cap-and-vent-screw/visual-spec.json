@@ -1,0 +1,70 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Coolant expansion tank: filler cap, vent screw and level marks, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Release pressure and open the expansion tank cap\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The plastic coolant expansion tank with a screw-on filler cap and a filler neck carrying MIN and MAX level marks."
+    },
+    {
+      "rank": 2,
+      "text": "The screw cap on the expansion tank; turned slightly counter-clockwise first to release pressure, closed until it clicks."
+    },
+    {
+      "rank": 3,
+      "text": "A small M10 vent (bleeder) screw on the expansion tank, closed during venting and loosened only while filling."
+    }
+  ],
+  "maySimplify": [
+    "level indicator marks"
+  ],
+  "mustNotShow": [
+    "vent screw detail (Position on the tank is not established)",
+    "expansion tank detail (Which side of the engine bay it occupies is not established; draw it isolated; not placed in a specific corner)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "3e6f081093887f3f33a8d7809fed7d6dd1a807fe8633ffbdc5f524206a752823",
+  "callouts": [
+    {
+      "label": "expansion tank",
+      "element": "expansion-tank",
+      "required": true
+    },
+    {
+      "label": "filler cap",
+      "element": "filler-cap",
+      "required": true
+    },
+    {
+      "label": "vent screw",
+      "element": "vent-screw",
+      "required": true
+    }
+  ]
+}

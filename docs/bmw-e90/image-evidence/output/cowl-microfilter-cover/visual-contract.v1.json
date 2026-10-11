@@ -1,0 +1,209 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "microfilter-cover",
+      "label": "microfilter cover",
+      "required": true
+    },
+    {
+      "element": "cover-screw-points",
+      "label": "cover screw points",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "151bdcc90661e2110055d5402ebdfa998e801c4a6d69812e3ea7ae7ea60729a7",
+  "createdAt": "2026-10-10T12:02:31.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-cowl-microfilter-cover-v1",
+  "maySimplify": [
+    {
+      "element": "wiper-arms-resting"
+    },
+    {
+      "element": "windshield-edge"
+    },
+    {
+      "element": "cover-screw-points-unestablished-detail"
+    },
+    {
+      "element": "microfilter-cover-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "microfilter-cover",
+      "id": "MD-microfilter-cover",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-6",
+            "ref-7",
+            "ref-8"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "cover-screw-points",
+      "id": "MD-cover-screw-points",
+      "requirements": [
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-2",
+            "ref-3",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-position",
+          "evidence": [
+            "ref-1",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-3",
+            "ref-2",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "cover-screw-points-unestablished-detail",
+      "id": "MN-excl-cover-screw-points-unestablished-detail",
+      "reason": "Screw count (3/4/6) and positions conflict between sources and the 2010 car is unverified.",
+      "trace": {
+        "attribute": "existence",
+        "element": "cover-screw-points-unestablished-detail"
+      }
+    },
+    {
+      "element": "microfilter-cover-unestablished-detail",
+      "id": "MN-excl-microfilter-cover-unestablished-detail",
+      "reason": "Exact cover outline, duct shape and seam lines are not established; show a generic long black cover.",
+      "trace": {
+        "attribute": "existence",
+        "element": "microfilter-cover-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-cowl-microfilter-cover-v1",
+      "sha256": "9a893e9261c6fecbded997ebc3be571ab049b31a4a86a58cc781fd8814eedbca"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "3e0f01737499e3abdf48cd32b2afd20a2a16cfe197dc203dfb8c62263fadf7b0"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "58c8d699b8b3369014dae66513de5c0fefe8cb469273a365807eaa40c4c45b1e"
+  },
+  "suppress": [
+    {
+      "attribute": "existence",
+      "element": "wiper-arms-resting",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "windshield-edge",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "cover-screw-points-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "microfilter-cover-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "cowl-microfilter-cover"
+}

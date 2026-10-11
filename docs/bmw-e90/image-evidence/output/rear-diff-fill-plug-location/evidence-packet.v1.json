@@ -1,0 +1,261 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Loosen the filler plug first",
+      "Extract the old fluid through the fill hole",
+      "Refill to the level of the opening",
+      "Fit a new plug and torque it"
+    ],
+    "stepNumber": 3,
+    "title": "rear-diff-fill-plug-location (BMW 328i draft Differential / Transfer Case Fluid guide; evidence step 3, 4, 5, 6)"
+  },
+  "contentHash": "0e1bc5cde036037bad9a31e51ccd56c6a51f0f2c067808640470053f738b2024",
+  "createdAt": "2026-10-10T12:03:36.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The rear differential housing (type 188L) seen from underneath, with a bolted cover.",
+      "id": "rear-differential-housing",
+      "role": "context"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A single large M22x1.5 screw plug with a 14 mm internal hex that serves as both fill and drain.",
+      "id": "fill-drain-plug",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Lower chassis braces that can leave little room to turn the plug.",
+      "id": "lower-braces",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of fill drain plug: Position on the housing is not established; do not mark it on a specific side or the cover.",
+      "id": "fill-drain-plug-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of rear differential housing: No second plug: the E90 rear differential has one plug only.",
+      "id": "rear-differential-housing-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-rear-diff-fill-plug-location-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "fill-drain-plug",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "5 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "fill-drain-plug",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-4",
+        "ref-6"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "fill-drain-plug",
+      "note": "No fetched source states where on the housing the plug sits (side, rear cover). GAP: show the plug generically without a precise face.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "rear-differential-housing",
+      "evidence": [
+        "ref-7",
+        "ref-8",
+        "ref-1"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "lower-braces",
+      "note": "E93 328i poster only: no room to loosen or tighten the plug because of the lower braces.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "lower-braces",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fill-drain-plug-unestablished-detail",
+      "note": "Position on the housing is not established; do not mark it on a specific side or the cover.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "rear-differential-housing-unestablished-detail",
+      "note": "No second plug: the E90 rear differential has one plug only.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "fill-drain-plug-unestablished-detail",
+      "id": "excl-fill-drain-plug-unestablished-detail",
+      "reason": "Position on the housing is not established; do not mark it on a specific side or the cover.",
+      "trace": {
+        "attribute": "existence",
+        "element": "fill-drain-plug-unestablished-detail"
+      }
+    },
+    {
+      "element": "rear-differential-housing-unestablished-detail",
+      "id": "excl-rear-differential-housing-unestablished-detail",
+      "reason": "No second plug: the E90 rear differential has one plug only.",
+      "trace": {
+        "attribute": "existence",
+        "element": "rear-differential-housing-unestablished-detail"
+      }
+    },
+    {
+      "element": "lower-braces",
+      "id": "excl-lower-braces",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "lower-braces"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "OE catalog final drive gasket set for this 328i: cover TYP 188L, 8 hex bolts, one screw plug with O-ring M22x1.5 (33117525064), shaft seals."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 335i: 14 mm hex plug, no drain plug, pump oil out through the fill hole."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmersport.co.nz",
+      "sourceRef": "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9X: 14 mm Allen, fill plug is also the drain, 44 lb-ft."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E61 N52: plugs need a 14 mm hex; torque posts."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/topic/126110-differential-oil-change",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 thread: 335d has no drain plug; fluid pumped from the fill hole."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=15935789",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "F30: 14 mm hex bit plug, 60 Nm (different chassis, same plug size)."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-rear-differential-fluid",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "OE catalog rear-axle-drive 188L; ratio 3.23 or 3.73 (automatic); synthetic gear oil 1 L."
+      ],
+      "id": "ref-7",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1250",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMW training doc: the final drive is the 188L unit; lifetime-fill oil."
+      ],
+      "id": "ref-8",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/04_E90%20Powertrain.pdf",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "rear-diff-fill-plug-location"
+}

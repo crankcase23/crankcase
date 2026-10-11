@@ -1,0 +1,70 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Reading the electronic oil level from the turn-signal stalk, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Start, check for leaks, verify the level electronically\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The small button on the turn-indicator lever that is pressed up or down repeatedly to step through the on-board computer displays until OIL appears."
+    },
+    {
+      "rank": 2,
+      "text": "The second button on the turn-indicator lever pressed once the OIL symbol is showing to start the oil level check."
+    },
+    {
+      "rank": 3,
+      "text": "The instrument cluster area where the OIL symbol and the level message (OK, being checked, below minimum, too high) appear."
+    }
+  ],
+  "maySimplify": [
+    "idrive vehicle status menu"
+  ],
+  "mustNotShow": [
+    "cluster oil readout detail (The exact cluster layout; fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only)",
+    "turn signal stalk button 1 detail (The precise position of the button on the stalk end is not described by any retrieved source)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "dd0635ebb14c0ef06b85be97f8daad562e51ac3f4d28af2904969e86f268b8f9",
+  "callouts": [
+    {
+      "label": "turn signal stalk button 1",
+      "element": "turn-signal-stalk-button-1",
+      "required": true
+    },
+    {
+      "label": "turn signal stalk button 2",
+      "element": "turn-signal-stalk-button-2",
+      "required": true
+    },
+    {
+      "label": "cluster oil readout",
+      "element": "cluster-oil-readout",
+      "required": true
+    }
+  ]
+}

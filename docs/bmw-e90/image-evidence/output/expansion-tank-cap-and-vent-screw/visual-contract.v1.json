@@ -1,0 +1,220 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [
+    {
+      "element": "expansion-tank",
+      "label": "expansion tank",
+      "required": true
+    },
+    {
+      "element": "filler-cap",
+      "label": "filler cap",
+      "required": true
+    },
+    {
+      "element": "vent-screw",
+      "label": "vent screw",
+      "required": true
+    }
+  ],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "29df6ff9f5bb4ce1ca6b403419c2c7e5bc592100e2970b5512c3ef48ee297acf",
+  "createdAt": "2026-10-10T12:01:59.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-expansion-tank-cap-and-vent-screw-v1",
+  "maySimplify": [
+    {
+      "element": "level-indicator-marks"
+    },
+    {
+      "element": "vent-screw-unestablished-detail"
+    },
+    {
+      "element": "expansion-tank-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "expansion-tank",
+      "id": "MD-expansion-tank",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-6",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "filler-cap",
+      "id": "MD-filler-cap",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-4",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "action",
+          "evidence": [
+            "ref-4",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-6",
+            "ref-7",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "vent-screw",
+      "id": "MD-vent-screw",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "vent-screw-unestablished-detail",
+      "id": "MN-excl-vent-screw-unestablished-detail",
+      "reason": "Position on the tank is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "vent-screw-unestablished-detail"
+      }
+    },
+    {
+      "element": "expansion-tank-unestablished-detail",
+      "id": "MN-excl-expansion-tank-unestablished-detail",
+      "reason": "Which side of the engine bay it occupies is not established; draw it isolated, not placed in a specific corner.",
+      "trace": {
+        "attribute": "existence",
+        "element": "expansion-tank-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-expansion-tank-cap-and-vent-screw-v1",
+      "sha256": "d0b039cfe01606e8f86b2a4f201f88c34676d24793bcad0e1f57bb66df890d98"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "90cbe22d8b429c392245289aedb785c9b51dc9f242ee22ae568f190e276bd306"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "3e6f081093887f3f33a8d7809fed7d6dd1a807fe8633ffbdc5f524206a752823"
+  },
+  "suppress": [
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "level-indicator-marks",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "vent-screw-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "expansion-tank-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "expansion-tank-cap-and-vent-screw"
+}

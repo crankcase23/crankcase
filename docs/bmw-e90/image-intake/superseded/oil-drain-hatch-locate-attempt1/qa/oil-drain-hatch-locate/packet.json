@@ -1,0 +1,259 @@
+{
+  "schema": "bmw-image-qa-packet.v1",
+  "rubricVersion": "CG-QA-v1.0",
+  "visualId": "oil-drain-hatch-locate",
+  "application": {
+    "year": 2010,
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "engine": "3.0L inline-6 (engine code not confirmed)"
+  },
+  "status": "READY_FOR_REVIEW",
+  "candidate": {
+    "generationId": "GR-oil-drain-hatch-locate-001",
+    "file": "candidate.png",
+    "sha256": "f1c6a719b791399507d80c6c73dfddc2c3ed0b98239774b789e2e1f88dde3a34",
+    "width": 1600,
+    "height": 1000,
+    "cycle": 1
+  },
+  "contract": {
+    "id": "VC-oil-drain-hatch-locate-v1",
+    "contentHash": "6a826ba6dc73c89e09baf3499d76a72bb860bc7a18b1d207c1cb1fe4ca2c2e6f",
+    "frame": {
+      "height": 1000,
+      "maxBytes": 12582912,
+      "mediaTypes": [
+        "png"
+      ],
+      "noBakedText": true,
+      "width": 1600
+    },
+    "clearSpace": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      }
+    ]
+  },
+  "fit": {
+    "schema": "bmw-fit-record.v1",
+    "native": {
+      "sha256": "37fc4a493990d5af47bc677d224d0f71b80eede67096d66252228378d451876e",
+      "bytes": 1530126,
+      "width": 1586,
+      "height": 992,
+      "ratio": 1.5988,
+      "ancillaryChunks": [
+        "caBX"
+      ],
+      "c2pa": {
+        "present": true,
+        "manifestSha256": "f553e5ad8fbef884bbf3b10693609c9a37551ba9b840be71fbba8257fae81733"
+      }
+    },
+    "fitted": {
+      "sha256": "f1c6a719b791399507d80c6c73dfddc2c3ed0b98239774b789e2e1f88dde3a34",
+      "bytes": 1119284,
+      "width": 1600,
+      "height": 1000,
+      "ratio": 1.6
+    },
+    "ops": [
+      "pad-edge-replicate"
+    ],
+    "pad": {
+      "left": 7,
+      "right": 7,
+      "top": 4,
+      "bottom": 4
+    },
+    "paddedFractionOfCanvas": 0.0088,
+    "paddedEdgeStats": {
+      "left": {
+        "mean": 241.9,
+        "std": 3.5
+      },
+      "right": {
+        "mean": 242.5,
+        "std": 4
+      },
+      "top": {
+        "mean": 244.5,
+        "std": 0.7
+      },
+      "bottom": {
+        "mean": 240.4,
+        "std": 0.9
+      }
+    },
+    "stretched": false,
+    "cropped": false,
+    "upscaled": false,
+    "contentPixelsUnchanged": true,
+    "note": "Padding only. The factory normaliser then downscales this exact 16:10 canvas uniformly to 1600x1000 and strips metadata."
+  },
+  "items": [
+    {
+      "contractItemId": "MD-access-hatch",
+      "kind": "must-depict",
+      "element": "access-hatch",
+      "criticality": "critical",
+      "visibility": "hero",
+      "describe": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline.",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "attribute": "location",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        }
+      ]
+    },
+    {
+      "contractItemId": "MN-excl-front-bumper-and-grille",
+      "kind": "must-not-depict",
+      "element": "front-bumper-and-grille",
+      "reason": "No source establishes the lower front styling for this car; left out."
+    },
+    {
+      "contractItemId": "MN-excl-suspension-and-subframe",
+      "kind": "must-not-depict",
+      "element": "suspension-and-subframe",
+      "reason": "No source establishes the surrounding chassis layout; left out."
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "kind": "provenance",
+      "rule": "Answer PASS only if the image shows no sign of copied/traced source imagery, and contains no baked-in text. The generator's attestation is in the packet."
+    }
+  ],
+  "technical": [
+    {
+      "element": "access-hatch",
+      "role": "hero",
+      "criticality": "critical",
+      "describe": "A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline.",
+      "established": [
+        {
+          "attribute": "existence",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            },
+            {
+              "url": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+              "kind": "third-party-guide",
+              "says": "17 mm plug with copper crush washer; oil exits sideways."
+            }
+          ]
+        },
+        {
+          "attribute": "location",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; panel shape and fasteners differ by poster (a triangular panel; three screws); plug orientation reports differ (straight down vs facing right)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "E90/E91/E92/E93 DIY: the drain bolt is behind an access hatch just behind the front-centre jack point, opened with a coin; 17 mm socket on a ratchet; copper crush washer replaced each time; the pan is placed a few inches to the right of the bolt."
+            }
+          ]
+        }
+      ],
+      "notEstablished": [
+        {
+          "attribute": "fine-detail-geometry",
+          "render": "omit",
+          "note": "Not established: one poster describes a triangular panel, others a small removable panel."
+        },
+        {
+          "attribute": "fastener-position",
+          "render": "omit",
+          "note": "Conflict: three screws vs coin-operated catch."
+        }
+      ]
+    }
+  ],
+  "prompt": "Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.\n\nSUBJECT: Oil drain: where the undertray access hatch is, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the undertray access hatch\".\n\nFRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Low view from beneath the front of the car looking rearward, mild perspective. LOCATE image: wide enough that a mechanic can find the part. Show the hero in its simplified surrounding structure, the hero taking roughly 15-30% of the frame width, the surroundings plain and simplified. MARGIN: leave a plain, empty, light neutral margin of at least 8% of the image width on the left and right and at least 8% of the height at the bottom; no part, panel, shadow or structure may touch or run off the left, right or bottom edge of the image. The subject floats on the plain ground, fully inside the frame. Style (CG-VS-1.0): clean, realistic 3D technical illustration; light neutral studio background (soft white to light grey); matte materials, soft light, soft contact shadows; tight component framing; minimal unnecessary detail. Realism applies to materials and lighting only: it does NOT license invented detail, so every part not listed below stays a plain generic shape. No orange or other saturated accent colours anywhere (a copper-coloured part may be copper); highlights and arrows are added later as an editable overlay.\n\nMUST SHOW (clearly, in this order of importance):\n1. HERO: A small closed access hatch set into the lower undertray near the front-centre of the underside, drawn as a plain flat panel with a simple outline. Do NOT depict its fine detail, where its fasteners sit: keep it a plain generic shape.\n\nMAY SHOW, SIMPLIFIED AND DIM (background only): undertray panel. Keep every one of these generic and low-contrast. Never invent detail on them.\n\nMUST NOT SHOW (leave these out entirely, do not substitute): front bumper and grille (No source establishes the lower front styling for this car; left out), suspension and subframe (No source establishes the surrounding chassis layout; left out), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.\n\nNO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.\n\nCLEAR SPACE: keep one horizontal band plain and uncluttered (light neutral background only): the top 3%-17% of the height, across the full width. The step banner and labels are added later in software.\n\nDo not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.\n",
+  "attestation": {
+    "attestedBy": "image-generator",
+    "attestedOn": "2026-10-11",
+    "generatedFromTextOnly": true,
+    "noBakedText": true,
+    "noReferenceImageInputs": true,
+    "noThirdPartyCompositing": true,
+    "noTracing": true,
+    "statement": "Generated in a fresh ChatGPT chat from a text-only prompt, no uploads. DISCLOSURE: the prompt text was a shortened variant of the locked generation-prompt (the full locked prompt failed 4 times with 'treated as an edit' errors in ChatGPT); it kept the hero, framing, margin, clear-space and exclusions but dropped vehicle naming and the style paragraph. Baked-text claim is the generator's statement, to be checked visually by the reviewer."
+  },
+  "generator": {
+    "system": "ChatGPT image generation",
+    "model": "ChatGPT (Plus) image generation, model name not shown in UI"
+  },
+  "reviewerIdentityRequired": "Hermes / ChatGPT / GPT-5.6 Sol",
+  "replyFormat": {
+    "candidateSha256": "f1c6a719b791399507d80c6c73dfddc2c3ed0b98239774b789e2e1f88dde3a34",
+    "rubricVersion": "CG-QA-v1.0",
+    "provenanceCheck": {
+      "validated": "true|false",
+      "notes": "short"
+    },
+    "checks": [
+      {
+        "contractItemId": "MD-access-hatch",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-front-bumper-and-grille",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-suspension-and-subframe",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "PROVENANCE",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      }
+    ],
+    "findings": [
+      {
+        "id": "F1",
+        "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+        "contractItemRef": "an item id above",
+        "element": "element id",
+        "attribute": "e.g. location",
+        "description": "what is wrong",
+        "requiredChange": "what to change",
+        "fixType": "modify|remove|suppress|simplify|relocate|add",
+        "gate": "VISUAL_ACCURACY",
+        "evidenceDeficiency": false,
+        "regression": false
+      }
+    ],
+    "regressionCheck": []
+  }
+}

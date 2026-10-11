@@ -101,7 +101,15 @@ export function BulletList({ items }: { items: string[] }) {
   );
 }
 
-export function TierBadge({ tier }: { tier: "free" | "premium" }) {
+export function TierBadge({ tier, preview = false }: { tier: "free" | "premium"; preview?: boolean }) {
+  // An uncertified preview is never presented as a paid ("Keys") guide, even though its eventual tier may be premium.
+  if (preview) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-300">
+        Preview
+      </span>
+    );
+  }
   return tier === "free" ? (
     <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
       Free

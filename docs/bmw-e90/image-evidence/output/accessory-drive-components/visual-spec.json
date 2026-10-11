@@ -1,0 +1,83 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "N52 accessory drive: which pulleys are on the belt, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Record belt path\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A single six-rib serpentine belt (6PK1990) driving the accessories. Do NOT depict how it relates to neighbouring parts: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "The spring tensioner with roller pulley that holds the belt tight."
+    },
+    {
+      "rank": 3,
+      "text": "The Torx-type socket point on the tensioner that is turned clockwise with a long ratchet to relieve tension."
+    },
+    {
+      "rank": 4,
+      "text": "The deflection (idler) pulley mounted at the alternator, with a protective cap."
+    }
+  ],
+  "maySimplify": [
+    "alternator",
+    "ac compressor",
+    "power steering pump",
+    "crank pulley"
+  ],
+  "mustNotShow": [
+    "drive belt detail (The belt path geometry (which side of each pulley) is not established by any diagram)",
+    "tensioner release point detail (Exact position/orientation on the tensioner and direction as seen from the front are not established)",
+    "crank pulley detail (Relative placement of components around the engine front is not established)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "779989dc84f00df0faa79a8acad5a78d53bc2552a1b5bbacc00daada3f906b02",
+  "callouts": [
+    {
+      "label": "drive belt",
+      "element": "drive-belt",
+      "required": true
+    },
+    {
+      "label": "tensioner pulley",
+      "element": "tensioner-pulley",
+      "required": true
+    },
+    {
+      "label": "tensioner release point",
+      "element": "tensioner-release-point",
+      "required": true
+    },
+    {
+      "label": "deflection pulley",
+      "element": "deflection-pulley",
+      "required": true
+    }
+  ]
+}

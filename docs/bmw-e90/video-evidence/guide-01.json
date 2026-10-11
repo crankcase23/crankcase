@@ -1,0 +1,135 @@
+{
+  "guide": 1,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-qT2NhQUmeBs",
+      "url": "https://www.youtube.com/watch?v=qT2NhQUmeBs",
+      "titleAsListed": "BMW E90 - Front Brake Rotor and Pad Replacement - (325i, 328xi, 325xi, 328i, 128i)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "328I",
+        "325I"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-KawE7NBUH2g",
+      "url": "https://www.youtube.com/watch?v=KawE7NBUH2g",
+      "titleAsListed": "Complete BMW e90 328i Brake Rotors, Pads, and Pad Wear Sensor Replacement",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "328I"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-_0tQFfvPyQ0",
+      "url": "https://www.youtube.com/watch?v=_0tQFfvPyQ0",
+      "titleAsListed": "BMW E90 328i front brake pads/rotors replacement (DIY28)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "328I"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-FWmeHjodmx8",
+      "url": "https://www.youtube.com/watch?v=FWmeHjodmx8",
+      "titleAsListed": "How to Replace Front Brake Pads and Rotors BMW 3 Series 2006-2011",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "2006",
+        "2011"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-flpjA_IbOxk",
+      "url": "https://www.youtube.com/watch?v=flpjA_IbOxk",
+      "titleAsListed": "How To Do A Full DIY Brake Job On An E90 BMW",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-RpaD3WK7yFc",
+      "url": "https://www.youtube.com/watch?v=RpaD3WK7yFc",
+      "titleAsListed": "BMW e90 e91 e92 e93 front brake discs rotors and pads replacement",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

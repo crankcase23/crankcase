@@ -1,0 +1,18 @@
+{
+  "candidateSha256": "f164587109e55fa77df8e58dd6920363874ad7a23647a51428811f29c6cae539",
+  "rubricVersion": "CG-QA-v1.0",
+  "provenanceCheck": {"validated": "true", "notes": "No visible evidence of copied or traced source imagery. No baked-in text, logos, labels, arrows, or watermarks. Generator attestation is reported in the packet but cannot be independently authenticated from pixels."},
+  "checks": [
+    {"contractItemId": "MD-drain-plug", "result": "PASS"},
+    {"contractItemId": "MD-crush-washer", "result": "PASS"},
+    {"contractItemId": "MN-excl-pan-bolts-and-ribs", "result": "PASS"},
+    {"contractItemId": "PROVENANCE", "result": "PASS"}
+  ],
+  "findings": [
+    {"id": "F1", "severity": "COSMETIC", "contractItemRef": "MD-drain-plug", "element": "oil-pan-surface", "attribute": "surface-detail",
+     "description": "The surrounding oil pan surface has a visibly textured, irregular contour. No specific fasteners, ribs, or recognizable pan architecture are depicted. The contour is generic enough to avoid an established-geometry violation, but the material texture is more detailed than the requested minimal simplified surface.",
+     "requiredChange": "Optional: simplify the surface texture while retaining the generic isolated patch and visible washer seating.",
+     "fixType": "simplify", "gate": "VISUAL_ACCURACY", "evidenceDeficiency": false, "regression": false}
+  ],
+  "regressionCheck": []
+}

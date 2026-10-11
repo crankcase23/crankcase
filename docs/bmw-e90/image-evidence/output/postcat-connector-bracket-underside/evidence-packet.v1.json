@@ -1,0 +1,228 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Post-cat sensors (from below)"
+    ],
+    "stepNumber": 11,
+    "title": "postcat-connector-bracket-underside (BMW 328i draft Oxygen Sensor guide; evidence step 11)"
+  },
+  "contentHash": "7ea609d02d086a2db025cb4a393c5dec0e2f7463bd9e882fde155cbd53a59fc4",
+  "createdAt": "2026-10-10T12:00:56.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "procedure",
+      "describe": "The underbody splash shield below the transmission that is removed to reach the sensors.",
+      "id": "transmission-splash-shield",
+      "role": "context"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A small bracket at the bottom of the transmission bell housing that holds the two post-cat sensor plugs.",
+      "id": "postcat-connector-bracket",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two monitor sensors in the exhaust pipe behind the catalytic converters, each wrapped in an insulating foil shield.",
+      "id": "postcat-sensors",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Clips that hold the sensor harness, released when the plugs are disconnected.",
+      "id": "harness-clips",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of postcat connector bracket: Only one source gives its position; show it schematically with no claim of precise side or height.",
+      "id": "postcat-connector-bracket-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of postcat sensors: Do not draw the foil shield shape or exact pipe position; conflicting descriptions.",
+      "id": "postcat-sensors-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-postcat-connector-bracket-underside-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "postcat-connector-bracket",
+      "note": "Pelican only: connectors on a bracket at the bottom of the transmission bell housing. SINGLE SOURCE, gap for a second site.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "transmission-splash-shield",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "postcat-sensors",
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "postcat-sensors",
+      "evidence": [
+        "ref-1",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "postcat-sensors",
+      "note": "Pelican: insulating foil shield that must be compressed slightly for the socket. Shape not described.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "harness-clips",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "postcat-connector-bracket",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "postcat-connector-bracket-unestablished-detail",
+      "note": "Only one source gives its position; show it schematically with no claim of precise side or height.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "postcat-sensors-unestablished-detail",
+      "note": "Do not draw the foil shield shape or exact pipe position; conflicting descriptions.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "postcat-connector-bracket-unestablished-detail",
+      "id": "excl-postcat-connector-bracket-unestablished-detail",
+      "reason": "Only one source gives its position; show it schematically with no claim of precise side or height.",
+      "trace": {
+        "attribute": "existence",
+        "element": "postcat-connector-bracket-unestablished-detail"
+      }
+    },
+    {
+      "element": "postcat-sensors-unestablished-detail",
+      "id": "excl-postcat-sensors-unestablished-detail",
+      "reason": "Do not draw the foil shield shape or exact pipe position; conflicting descriptions.",
+      "trace": {
+        "attribute": "existence",
+        "element": "postcat-sensors-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Post-cat procedure from below: remove transmission splash shield, connectors on a bracket at the bottom of the transmission bell housing, foil shield on sensors."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "OE catalog: engine compartment underfloor panel set and centre brackets for this car."
+      ],
+      "id": "ref-2",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=51_5860",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "OE catalog: monitor sensors L=560 mm and 490 mm, cable clamps, clips, holders."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=18_0610",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retailer: post-cat sensors 11787545074 (bank 1, 560 mm) and 11787545075 (bank 2, 490 mm)."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/BMW-E90-Parts/c-1139-bmw-oxygen-sensors",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Post-cat sensors sit between the manifolds (loose description)."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "z4-forum.com",
+      "sourceRef": "https://z4-forum.com/posts/2118334",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "postcat-connector-bracket-underside"
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "rear-caliper-hardware-wheel-well",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 4,
+    "tag": "IDENTIFY",
+    "subtitle": "This is it"
+  },
+  "highlights": [
+    {
+      "element": "rear-brake-caliper",
+      "role": "hero",
+      "note": "A floating disc-brake caliper on the rear rotor seen from the outboard side with the wheel removed.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "caliper-retaining-clip",
+      "role": "target",
+      "note": "A spring clip on the front of the caliper that comes off by hand or with a screwdriver.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "carrier-bolt-fasteners",
+      "role": "target",
+      "note": "Two hex-head bolts (16 mm) on the back side of the caliper carrier.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

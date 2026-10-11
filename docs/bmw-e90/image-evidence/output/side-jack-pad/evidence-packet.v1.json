@@ -1,0 +1,160 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Lift and support the car"
+    ],
+    "stepNumber": 2,
+    "title": "side-jack-pad (BMW 328i draft Engine Oil & Filter Change guide; evidence step 2)"
+  },
+  "contentHash": "4e366a3f1f299c23e7e07a957ec3be7c1efe89700fb408520236be002fc8ee7a",
+  "createdAt": "2026-10-10T12:03:55.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "A small rectangular plastic pad along the lower side of the body near a wheel; a hollow rectangle that is the lift and stand point.",
+      "id": "side-jack-pad-rectangle",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "An optional rubber or hockey-puck style adapter placed between the jack or stand and the pad.",
+      "id": "jack-pad-adapter-puck",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "describe": "The nearby wheel, shown only for orientation.",
+      "id": "wheel-and-tire",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of side jack pad rectangle: Exact distance from the wheel arch, the pad's notch or arrow markings and the front-centre jack point geometry are not established.",
+      "id": "side-jack-pad-rectangle-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-side-jack-pad-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "side-jack-pad-rectangle",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "side-jack-pad-rectangle",
+      "evidence": [
+        "ref-2",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "side-jack-pad-rectangle",
+      "note": "Hollow rectangular cavity (a forum member suggests a wood block of about 2.25 x 1.25 inch inside). Single source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "jack-pad-adapter-puck",
+      "note": "Single source: pucks or a jack-pad adapter between jack/stand and point; centre them carefully.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "jack-pad-adapter-puck",
+      "note": "excluded by the visual's mustNotDepict",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "wheel-and-tire",
+      "note": "cosmetic context drawn as a plain generic shape; no specific claim",
+      "render": "simplify",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "side-jack-pad-rectangle-unestablished-detail",
+      "note": "Exact distance from the wheel arch, the pad's notch or arrow markings and the front-centre jack point geometry are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "side-jack-pad-rectangle-unestablished-detail",
+      "id": "excl-side-jack-pad-rectangle-unestablished-detail",
+      "reason": "Exact distance from the wheel arch, the pad's notch or arrow markings and the front-centre jack point geometry are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "side-jack-pad-rectangle-unestablished-detail"
+      }
+    },
+    {
+      "element": "jack-pad-adapter-puck",
+      "id": "excl-jack-pad-adapter-puck",
+      "reason": "Shown only as an optional accessory, not as factory equipment.",
+      "trace": {
+        "attribute": "existence",
+        "element": "jack-pad-adapter-puck"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Four jacking points with small plastic pads; pad part number 51717123311; hollow rectangle."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerforums.com",
+      "sourceRef": "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Rectangular plastic pad at the four side points; use stands at all four; adapters/pucks."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "side-jack-pad"
+}

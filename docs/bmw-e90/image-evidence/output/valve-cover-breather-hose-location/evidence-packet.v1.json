@@ -1,0 +1,376 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Prepare for inspection",
+      "Inspect the breather hose and connection",
+      "Remove the breather hose only if replacing it"
+    ],
+    "stepNumber": 4,
+    "title": "valve-cover-breather-hose-location (BMW 328i draft PCV / Crankcase Ventilation — Inspection & Diagnosis guide; evidence step 4, 5, 6)"
+  },
+  "contentHash": "a534e033f5e835cdd1bcc839f18fdef680527032932d687626bd832bd4f53f4a",
+  "createdAt": "2026-10-10T12:02:41.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The plastic cylinder head cover with the integrated crankcase vent and oil separator (one part), with an oil filler cap on top and a row of six ignition coils.",
+      "id": "valve-cover",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The push-on breather hose connection at the back of the valve cover.",
+      "id": "breather-hose-connection",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two side tabs on the hose end that are squeezed to release it; the hose must not be pried.",
+      "id": "breather-hose-release-tabs",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The oil filler cap on the valve cover.",
+      "id": "oil-filler-cap",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "Six ignition coils standing in the cover, one per cylinder.",
+      "id": "ignition-coils-row",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of valve cover: No standalone PCV valve, separate oil separator box, rubber diaphragm or external heated valve: none exist on this design.",
+      "id": "valve-cover-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of oil filler cap: Position on the cover is not established.",
+      "id": "oil-filler-cap-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of breather hose release tabs: Tab outline and colour are not described.",
+      "id": "breather-hose-release-tabs-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-valve-cover-breather-hose-location-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "valve-cover",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "valve-cover",
+      "evidence": [
+        "ref-4",
+        "ref-5",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "breather-hose-connection",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "breather-hose-release-tabs",
+      "evidence": [
+        "ref-6",
+        "ref-7",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "breather-hose-connection",
+      "note": "RM European: the breather connection on the cover can break off during removal; shape not described. GAP.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "ignition-coils-row",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-filler-cap",
+      "evidence": [
+        "ref-1"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "oil-filler-cap",
+      "evidence": [
+        "ref-9",
+        "ref-1"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "valve-cover",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-7"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "breather-hose-connection",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "breather-hose-release-tabs",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-7"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "breather-hose-release-tabs",
+      "evidence": [
+        "ref-6",
+        "ref-3",
+        "ref-7"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "valve-cover-unestablished-detail",
+      "note": "No standalone PCV valve, separate oil separator box, rubber diaphragm or external heated valve: none exist on this design.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-filler-cap-unestablished-detail",
+      "note": "Position on the cover is not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "breather-hose-release-tabs-unestablished-detail",
+      "note": "Tab outline and colour are not described.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "valve-cover-unestablished-detail",
+      "id": "excl-valve-cover-unestablished-detail",
+      "reason": "No standalone PCV valve, separate oil separator box, rubber diaphragm or external heated valve: none exist on this design.",
+      "trace": {
+        "attribute": "existence",
+        "element": "valve-cover-unestablished-detail"
+      }
+    },
+    {
+      "element": "oil-filler-cap-unestablished-detail",
+      "id": "excl-oil-filler-cap-unestablished-detail",
+      "reason": "Position on the cover is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "oil-filler-cap-unestablished-detail"
+      }
+    },
+    {
+      "element": "breather-hose-release-tabs-unestablished-detail",
+      "id": "excl-breather-hose-release-tabs-unestablished-detail",
+      "reason": "Tab outline and colour are not described.",
+      "trace": {
+        "attribute": "existence",
+        "element": "breather-hose-release-tabs-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "OE catalog cylinder head cover diagram: cover 11127552281, vent hose 11157559528, oil filler cap, 22 M7 fasteners, six sleeves; no separate separator."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retailer cover with vent valve and gasket for E90."
+      ],
+      "id": "ref-2",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Updated plastic cover with integrated PCV valve; breather hose on the back of the cover released by pressing tabs."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMW training doc ST501 p.30: crankcase ventilation valve and oil-separating labyrinth integrated in the cylinder head cover of N52KP and N51; N52 cover is magnesium and newer six-cylinder engines use plastic."
+      ],
+      "id": "ref-4",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST501%20New%20Engine%20Technology/04_Engine%20Mechanical.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Later N52 engines have no serviceable separate oil vent: it is integrated in the valve cover."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-13027-crankcase-oil-separator-e90-325i330i-e60-525i530i-e85-z4-30i30si/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Squeeze breather hose tabs at the back of the cover; six ignition coils; 19 perimeter fasteners and 3 centre fasteners."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Depress both side clips of the crankcase breather hose at the back of the cover; six coils; 19 perimeter bolts."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Breather hose at the back of the cover becomes brittle and its connection can break during removal."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "rmeuropean.com",
+      "sourceRef": "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 oil change: oil cap on top of the engine cover."
+      ],
+      "id": "ref-9",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwtuning.co",
+      "sourceRef": "https://bmwtuning.co/bmw-e90-oil-change/",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "valve-cover-breather-hose-location"
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "cg-overlay.v1",
+  "standard": "CG-VS-1.0",
+  "visualId": "engine-bay-fluid-fill-points",
+  "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
+  "banner": {
+    "step": 2,
+    "tag": "LOCATE",
+    "subtitle": "Find it"
+  },
+  "highlights": [
+    {
+      "element": "coolant-expansion-tank-cap",
+      "role": "hero",
+      "note": "The cap on the translucent coolant expansion tank, with a filler neck marked MAX and MIN; reported on the passenger side toward the firewall.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": true
+    },
+    {
+      "element": "washer-fluid-filler-cap",
+      "role": "target",
+      "note": "The washer-fluid filler neck cap, reported black with a wiper symbol, serving window and headlamp washers.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "engine-oil-filler-cap",
+      "role": "target",
+      "note": "The engine oil filler neck cap on top of the engine.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    },
+    {
+      "element": "brake-reservoir-under-cover",
+      "role": "target",
+      "note": "The brake fluid reservoir at the driver-side base of the windshield, hidden under a long plastic cover.",
+      "label": null,
+      "region": null,
+      "arrowFrom": null,
+      "primary": false
+    }
+  ],
+  "palette": {
+    "orange": "#FE6C01",
+    "banner": "#1B1B1B",
+    "text": "#FFFFFF",
+    "highlight": "#FE6C01"
+  }
+}

@@ -1,0 +1,352 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Loosen the intake hose band clamp",
+      "Remove the two airbox mounting fasteners",
+      "Detach the front intake snorkel",
+      "Handle the MAF connector",
+      "Lift out the airbox"
+    ],
+    "stepNumber": 2,
+    "title": "airbox-removal-points (BMW 328i draft Engine Air Filter guide; evidence step 2, 3, 4, 5, 6)"
+  },
+  "contentHash": "44eaf17b9376154fb9a26abd8e7bf975eb19025cdc62d00bd27aae6a25fec58c",
+  "createdAt": "2026-10-10T12:02:50.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The large black plastic air filter housing in the engine bay, sitting on a lower rubber stud.",
+      "id": "airbox-assembly",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Two fasteners (reported 10 mm) holding the airbox to the car near the fender.",
+      "id": "airbox-mounting-fasteners",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A round metal band clamp where the rubber intake hose meets the airbox.",
+      "id": "intake-hose-band-clamp",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A small plug on the mass airflow sensor with a lift-up retention clip that is brittle.",
+      "id": "maf-connector-clip",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Two plastic retention tabs that hold the front intake snorkel to the airbox.",
+      "id": "snorkel-retention-tabs",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of airbox assembly: Driver's-side location is established by two hosts, but the position relative to the battery or strut towers, and the exact box shape, are not; do not draw those.",
+      "id": "airbox-assembly-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of maf connector clip: Exact connector shape, wire routing and whether the sensor sits on the lid or the intake tube are not established.",
+      "id": "maf-connector-clip-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of airbox mounting fasteners: Count of two and hex head are established (ETK, bavmods, bimmerpost); the 10 mm size is single-website and exact positions on the fender side are not.",
+      "id": "airbox-mounting-fasteners-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-airbox-removal-points-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "airbox-assembly",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "airbox-assembly",
+      "evidence": [
+        "ref-5",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "airbox-mounting-fasteners",
+      "evidence": [
+        "ref-2",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "airbox-mounting-fasteners",
+      "evidence": [
+        "ref-1",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "intake-hose-band-clamp",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "maf-connector-clip",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "snorkel-retention-tabs",
+      "note": "Single source: separate its two retention tabs with a flathead.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airbox-mounting-fasteners",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "intake-hose-band-clamp",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "intake-hose-band-clamp",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "maf-connector-clip",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "maf-connector-clip",
+      "evidence": [
+        "ref-4",
+        "ref-1"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "snorkel-retention-tabs",
+      "note": "Only bavmods describes two retention tabs; see gapFillNotes about the screw alternative.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "airbox-mounting-fasteners",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "snorkel-retention-tabs",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airbox-assembly-unestablished-detail",
+      "note": "Driver's-side location is established by two hosts, but the position relative to the battery or strut towers, and the exact box shape, are not; do not draw those.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "maf-connector-clip-unestablished-detail",
+      "note": "Exact connector shape, wire routing and whether the sensor sits on the lid or the intake tube are not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airbox-mounting-fasteners-unestablished-detail",
+      "note": "Count of two and hex head are established (ETK, bavmods, bimmerpost); the 10 mm size is single-website and exact positions on the fender side are not.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "airbox-assembly-unestablished-detail",
+      "id": "excl-airbox-assembly-unestablished-detail",
+      "reason": "Driver's-side location is established by two hosts, but the position relative to the battery or strut towers, and the exact box shape, are not; do not draw those.",
+      "trace": {
+        "attribute": "existence",
+        "element": "airbox-assembly-unestablished-detail"
+      }
+    },
+    {
+      "element": "maf-connector-clip-unestablished-detail",
+      "id": "excl-maf-connector-clip-unestablished-detail",
+      "reason": "Exact connector shape, wire routing and whether the sensor sits on the lid or the intake tube are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "maf-connector-clip-unestablished-detail"
+      }
+    },
+    {
+      "element": "airbox-mounting-fasteners-unestablished-detail",
+      "id": "excl-airbox-mounting-fasteners-unestablished-detail",
+      "reason": "Count of two and hex head are established (ETK, bavmods, bimmerpost); the 10 mm size is single-website and exact positions on the fender side are not.",
+      "trace": {
+        "attribute": "existence",
+        "element": "airbox-mounting-fasteners-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "E9x guide: two 10 mm airbox screws, snorkel tabs, MAF clip, band clamp, lift out, six screws."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2006 325i N52: two large bolts on the right side at the fender, round clamp, MAF left attached, rubber stud."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMW TIS excerpt (E89 N52K) as quoted on a forum: remove intake duct, release screws and clamp, unlock plug, lift housing upward, sits on stop buffer."
+      ],
+      "id": "ref-3",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "z4-forum.com",
+      "sourceRef": "https://z4-forum.com/threads/air-filter-change.151775/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "ETK diagram 13_1148 for this car: intake muffler, filter element, two M6x25 hex bolts, rubber buffer, three hose clamps, HFM with 5-pin socket, suction hoods with two Torx bolts."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=13_1148",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90-E93 general article: airbox on the driver's side, two Torx screws (different style from the N52 guides)."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/change-engine-air-filter-bmw-3-series-2004-2013/",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "airbox-removal-points"
+}
