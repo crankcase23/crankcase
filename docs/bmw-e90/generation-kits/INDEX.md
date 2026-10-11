@@ -2,14 +2,14 @@
 
 One folder per visual. Follow INSTRUCTIONS.md in each. The first three are the oil-change set and the pilot: do the first end to end, including the independent review, before spending effort on the rest. "<runs dir>" in the instructions is docs/bmw-e90/image-evidence/output.
 
-1. oil-drain-hatch-locate
-2. oil-drain-plug-identify
-3. oil-drain-plug-loosen
-4. accessory-drive-components
-5. bank2-precat-shield-screws
-6. brake-reservoir-access-cover
-7. cowl-microfilter-cover
-8. electronic-oil-level-check
+1. oil-drain-plug-identify
+2. oil-drain-plug-loosen
+3. accessory-drive-components
+4. bank2-precat-shield-screws
+5. brake-reservoir-access-cover
+6. cowl-microfilter-cover
+7. electronic-oil-level-check
+8. engine-bay-fluid-fill-points
 9. engine-bay-jump-terminal
 10. expansion-tank-cap-and-vent-screw
 11. filter-cap-o-ring-positions
@@ -30,4 +30,4 @@ One folder per visual. Follow INSTRUCTIONS.md in each. The first three are the o
 26. wheel-bolts-and-metal-valve-stem
 27. wiper-blade-release-hook
 
-Skipped (evidence not sufficient yet): airbox-halves-and-element, airbox-removal-points, engine-bay-fluid-fill-points, microfilter-element-retention-tabs, postcat-connector-bracket-underside, radiator-drain-plugs-underside, rear-diff-fill-level, rear-diff-fill-plug-location
+Skipped (evidence not sufficient yet): oil-drain-hatch-locate, airbox-halves-and-element, airbox-removal-points, microfilter-element-retention-tabs, postcat-connector-bracket-underside, radiator-drain-plugs-underside, rear-diff-fill-level, rear-diff-fill-plug-location

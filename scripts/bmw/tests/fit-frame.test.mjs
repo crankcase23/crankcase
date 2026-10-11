@@ -58,3 +58,13 @@ test("fitting is deterministic", () => {
   const a = fitToFrame(img(1536, 1024)), b = fitToFrame(img(1536, 1024));
   assert.equal(a.record.fitted.sha256, b.record.fitted.sha256);
 });
+
+test("native just under the 1600x1000 minimum is padded up to it, never upscaled", () => {
+  const r = fitToFrame(img(1586, 992));
+  assert.ok(r.ok, JSON.stringify(r));
+  const d = describeRaster(r.bytes);
+  assert.deepEqual([d.width, d.height], [1600, 1000]);
+  assert.equal(r.record.upscaled, false);
+  assert.equal(r.record.contentPixelsUnchanged, true);
+  assert.equal(fitToFrame(img(1400, 875)).code, "TOO_SMALL", "more than MAX_PAD short is still refused");
+});

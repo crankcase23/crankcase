@@ -11,7 +11,7 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "589a01e3d65b0903c3e3c15abe8b31f360e4856590ae961c2f4ba8274a4fc80a",
+  "contentHash": "42cbca6b64d9f5b3ca6473ad19000b1c457c63080f8c0e642522c0e45b79ecda",
   "createdAt": "2026-10-10T12:01:05.000Z",
   "createdBy": {
     "actor": "factory-code",
@@ -186,7 +186,7 @@
   "schemaVersion": "reconstructed-1",
   "specRef": {
     "sourceKind": "documentation-derived-prompt",
-    "sourcePromptSha256": "32fbf4461f1eee20eb6c07de56cf77930c46c09c7eebe2ed2dcbbe6d2be696e4"
+    "sourcePromptSha256": "37c973c05213698d951b57aba546997363db40d000ee34e5c5daa2cafb05ad5d"
   },
   "suppress": [
     {

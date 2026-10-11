@@ -1,6 +1,6 @@
 # Generate: valve-cover-breather-hose-location
 
-Prompt sha256: `470cfb9f15c748aaa8d6966d49d1500418f424340b6064af67e309c705111ea1` (the factory records this; do not edit the prompt).
+Prompt sha256: `6dde516a310162b72d3b78f42d466a0b0fbf3cd6e4c5c7163025ead57c12236a` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

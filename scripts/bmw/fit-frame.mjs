@@ -53,8 +53,13 @@ export function fitToFrame(bytes) {
   try { parsed = parsePng(bytes); img = decodePng(bytes); } catch (e) { return refuse("UNREADABLE", e.message); }
   if (isAnimated(parsed.chunks)) return refuse("ANIMATED", "animated PNG refused");
   const { width: W, height: H, channels: ch, pixels } = img;
-  const base = Math.max(H, Math.ceil((W * FRAME.aspectH) / FRAME.aspectW));
-  if (base < FRAME.height || Math.ceil(base * FRAME.aspectW / FRAME.aspectH) < FRAME.width) return refuse("TOO_SMALL", `${W}x${H} is too small for ${FRAME.width}x${FRAME.height}; upscaling is not allowed`);
+  let base = Math.max(H, Math.ceil((W * FRAME.aspectH) / FRAME.aspectW));
+  // A native image just under the 1600x1000 minimum (for example 1586x992) is PADDED up to it, never upscaled. Anything more than
+  // MAX_PAD short of the minimum is refused: that would need a real upscale or heavy padding.
+  if (base < FRAME.height) {
+    if ((FRAME.height - base) / FRAME.height > MAX_PAD) return refuse("TOO_SMALL", `${W}x${H} is too small for ${FRAME.width}x${FRAME.height}; upscaling is not allowed`);
+    base = FRAME.height;
+  }
   const Hc = Math.ceil(base / FRAME.aspectH) * FRAME.aspectH; // multiple of 10 => exact integer width at 16:10
   const Wc = (Hc / FRAME.aspectH) * FRAME.aspectW;
   const padW = Wc - W, padH = Hc - H;

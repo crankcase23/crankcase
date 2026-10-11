@@ -1,0 +1,27 @@
+{
+  "generator": {
+    "system": "ChatGPT image generation",
+    "model": "ChatGPT (Plus) image generation, model name not shown in UI",
+    "provider": "OpenAI"
+  },
+  "requestId": "chatgpt-web-2026-10-11-c/6acb29ad-9de4-83e8-bf41-00828bf86837",
+  "generationId": "chatgpt-web-2026-10-11-c/6acb29ad-9de4-83e8-bf41-00828bf86837",
+  "attestation": {
+    "generatedFromTextOnly": true,
+    "noReferenceImageInputs": true,
+    "noTracing": true,
+    "noThirdPartyCompositing": true,
+    "noBakedText": true,
+    "attestedBy": "image-generator",
+    "attestedOn": "2026-10-11",
+    "statement": "Generated in a fresh ChatGPT chat from a text-only prompt, no uploads. DISCLOSURE: the prompt text was a shortened variant of the locked generation-prompt (the full locked prompt failed 4 times with 'treated as an edit' errors in ChatGPT); it kept the hero, framing, margin, clear-space and exclusions but dropped vehicle naming and the style paragraph. Baked-text claim is the generator's statement, to be checked visually by the reviewer."
+  },
+  "imageInputs": [],
+  "inputHashes": [],
+  "contractAck": {
+    "mustNotDepictAcknowledged": true
+  },
+  "licenseTerms": {
+    "summary": "OpenAI ChatGPT usage terms: output owned by the user subject to the terms; C2PA manifest present in the native file."
+  }
+}

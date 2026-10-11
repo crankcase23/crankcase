@@ -54,7 +54,10 @@ export const TYPES = {
 
 export const STYLE_LINE = "Style (CG-VS-1.0): clean, realistic 3D technical illustration; light neutral studio background (soft white to light grey); matte materials, soft light, soft contact shadows; tight component framing; minimal unnecessary detail. Realism applies to materials and lighting only: it does NOT license invented detail, so every part not listed below stays a plain generic shape. No orange or other saturated accent colours anywhere (a copper-coloured part may be copper); highlights and arrows are added later as an editable overlay.";
 
-export const framingLine = (type, viewpointText) => `Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). ${viewpointText} ${TYPES[type].framing} ${STYLE_LINE}`;
+// Added after the first real candidate: the generator filled the frame edge to edge, which the fit-to-16:10 step must refuse
+// (padding would smear content). The margin is plain light ground on all four sides so native output can be padded honestly.
+export const MARGIN_LINE = "MARGIN: leave a plain, empty, light neutral margin of at least 8% of the image width on the left and right and at least 8% of the height at the bottom; no part, panel, shadow or structure may touch or run off the left, right or bottom edge of the image. The subject floats on the plain ground, fully inside the frame.";
+export const framingLine = (type, viewpointText) => `Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). ${viewpointText} ${TYPES[type].framing} ${MARGIN_LINE} ${STYLE_LINE}`;
 
 export const CLEAR_SPACE_LINE = "CLEAR SPACE: keep one horizontal band plain and uncluttered (light neutral background only): the top 3%-17% of the height, across the full width. The step banner and labels are added later in software.";
 

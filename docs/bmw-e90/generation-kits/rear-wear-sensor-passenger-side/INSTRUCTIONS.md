@@ -1,6 +1,6 @@
 # Generate: rear-wear-sensor-passenger-side
 
-Prompt sha256: `24384c7013f846e0b92ace3635cefe227c2c4c6d75973dfbb9b78c6fa62354f5` (the factory records this; do not edit the prompt).
+Prompt sha256: `ac31de0d9028631bb28ecd9c5620d06f13b8753131cdbef73b463b71df056c4e` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

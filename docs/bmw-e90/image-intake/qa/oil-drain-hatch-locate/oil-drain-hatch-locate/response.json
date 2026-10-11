@@ -1,0 +1,30 @@
+```json
+{
+  "candidateSha256": "f1c6a719b791399507d80c6c73dfddc2c3ed0b98239774b789e2e1f88dde3a34",
+  "rubricVersion": "CG-QA-v1.0",
+  "provenanceCheck": {
+    "validated": "true",
+    "notes": "No visible evidence of copied or traced imagery. No baked-in text, labels, symbols, or watermarks. Visual inspection cannot independently establish source provenance."
+  },
+  "checks": [
+    {
+      "contractItemId": "MD-access-hatch",
+      "result": "PASS"
+    },
+    {
+      "contractItemId": "MN-excl-front-bumper-and-grille",
+      "result": "PASS"
+    },
+    {
+      "contractItemId": "MN-excl-suspension-and-subframe",
+      "result": "PASS"
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "result": "PASS"
+    }
+  ],
+  "findings": [],
+  "regressionCheck": []
+}
+```

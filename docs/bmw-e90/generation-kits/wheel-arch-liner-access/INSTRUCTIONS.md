@@ -1,6 +1,6 @@
 # Generate: wheel-arch-liner-access
 
-Prompt sha256: `380681d22a95f62e7768d2d223f8b1e4e111ee53222b9c42059a0f38af4077cd` (the factory records this; do not edit the prompt).
+Prompt sha256: `252db3c6adafe61cc82c59147fc1afa4aae1b7cfeec4322d3fc725cb6af989ec` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.
