@@ -1,304 +1,705 @@
 {
- "guide": 15,
- "name": "Differential / Transfer Case Fluid",
- "recommendedStatus": "BUILDABLE_PARTIAL",
- "summary": "Rear differential (applies to RWD and xDrive): single combined fill/drain plug (14 mm hex, M22x1.5), no separate drain on E90 per two E90-referencing sources plus an X5 thread; fluid is BMW SAF-XO 75W-90 GL-5 for an open differential (part 07512293972, confirmed by Turner, ECS and FCP Euro; Turner lists E90 328i/328xi); fill-hole-first rule and fill-until-it-trickles method are corroborated; torque 60 Nm (44 ft-lb) corroborated by two E90-referencing sources without O-ring (65 Nm with O-ring is single-source from an E60 thread). Capacity CONFLICTS (1.0 L vs 1.2 L). xDrive-only items: transfer case fluid DTF-1 (83225A4F016 / 83220397244) is supported by BimmerWorld and FCP Euro SKU text, about 1 L (single source); front differential capacity, plug location, torque, and transfer case torque and plug positions are MISSING. Rear-diff content can ship now; xDrive content is BLOCKED until drive type is confirmed and sources are found. No source distinguished open vs LSD on a 328i; FCP says LSD needs 75W-140.",
- "variantDependencies": [
-  "RWD: rear differential only. xDrive (328xi): rear differential plus front differential plus ATC transfer case; drive type UNCONFIRMED for this VIN.",
-  "Open vs limited-slip rear differential: open uses 75W-90 (SAF-XO, 07512293972); LSD per FCP blog needs 75W-140 (BMW 83222282583, 5 L). 328i diff type UNCONFIRMED.",
-  "Rear diff code (E60 thread mentions 188L/188LW; E90 code not sourced): capacity may vary by diff size; one source says 1.2 L is for the 335i only.",
-  "Automatic vs manual transmission: no effect on diff/transfer case fluid found; transmission fluid is out of scope.",
-  "Early BMW rear differentials may have separate drain/fill plugs (E60 thread); E90 sources describe a single plug."
- ],
- "tools": [
-  {
-   "item": "14 mm hex (Allen) socket, 1/2 in drive; breaker bar may be needed",
-   "status": "VERIFIED (bavmods, bimmersport, 5series thread)",
-   "sources": [
-    "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
-    "https://5series.net/forums/topic/126110-differential-oil-change"
-   ]
-  },
-  {
-   "item": "Snub-nose or short 14 mm hex bit for transfer case plug (xDrive)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://g42.bimmerpost.com/forums/showthread.php?p=15740497"
-   ]
-  },
-  {
-   "item": "Torque wrench (60 Nm / 44 ft-lb range)",
-   "status": "VERIFIED",
-   "sources": [
-    "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/"
-   ]
-  },
-  {
-   "item": "Fluid transfer/extraction pump with tube small enough for fill hole; suction hose",
-   "status": "VERIFIED",
-   "sources": [
-    "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
-    "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
-   ]
-  },
-  {
-   "item": "Hand-pump or squeeze bottle to refill via fill hole",
-   "status": "VERIFIED",
-   "sources": [
-    "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
-    "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
-   ]
-  },
-  {
-   "item": "Measuring jug to record extracted volume",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/"
-   ]
-  },
-  {
-   "item": "Drain pan (for transfer case, which has drain and fill plugs)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html"
-   ]
-  }
- ],
- "parts": [
-  {
-   "item": "BMW SAF-XO 75W-90 GL-5 synthetic differential fluid, 1 L (open diff)",
-   "partNumber": "07512293972",
-   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM)",
-   "sources": [
-    "https://www.turnermotorsport.com/p-30182-07512293972-genuine-bmw-part/",
-    "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/",
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
-   ]
-  },
-  {
-   "item": "Differential drain/fill (check) plug, M22x1.5, genuine BMW",
-   "partNumber": "33117525064",
-   "status": "SINGLE_SOURCE (ECS; Turner lists the same number as a cross-reference on the fluid page, which looks like a catalog quirk; fitment to this VIN unconfirmed)",
-   "sources": [
-    "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/",
-    "https://www.turnermotorsport.com/p-30182-07512293972-genuine-bmw-part/"
-   ]
-  },
-  {
-   "item": "Magnetic M22x1.5 plug (aftermarket options): ECS 009314ECS01A, Rein HWU0065",
-   "partNumber": "009314ECS01A / HWU0065",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/"
-   ]
-  },
-  {
-   "item": "Plug O-ring/seal, M22x1.5 Viton (one poster)",
-   "partNumber": null,
-   "status": "MISSING (BMW part number not found; McMaster-Carr number appears in one forum thread)",
-   "sources": [
-    "https://5series.net/forums/topic/126110-differential-oil-change"
-   ]
-  },
-  {
-   "item": "BMW DTF-1 transfer case fluid, 1 L (xDrive only)",
-   "partNumber": "83225A4F016 (previous: 83220397244, 83220306816, 83222409710)",
-   "status": "VERIFIED (BimmerWorld lists 328xi fitment and OE cross refs; FCP blog SKU shows 83220397244; ECS search listing shows 83225a4f016)",
-   "sources": [
-    "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html",
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
-   ]
-  },
-  {
-   "item": "BMW 75W-140 differential fluid (LSD cars, 5 L)",
-   "partNumber": "83222282583",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
-   ]
-  },
-  {
-   "item": "Transfer case/front diff plugs (xDrive)",
-   "partNumber": null,
-   "status": "MISSING",
-   "sources": [
-    "https://bimmerworld.com/Fluids/Driveline-Fluids/Transfer-Case-Differential-RL-Kit-E9X-xDrive.html"
-   ]
-  }
- ],
- "fluids": [
-  {
-   "item": "Rear differential, open",
-   "spec": "BMW SAF-XO, SAE 75W-90, API GL-5, synthetic",
-   "capacity": "1.0 L (bimmersport: non-335i E90; 5series thread: E60 525i) vs 1.2 L (bavmods: E9X)",
-   "status": "CONFLICT on capacity; VERIFIED on fluid spec",
-   "sources": [
-    "https://www.turnermotorsport.com/p-30182-07512293972-genuine-bmw-part/",
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
-    "https://5series.net/forums/topic/126110-differential-oil-change",
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
-    "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide"
-   ]
-  },
-  {
-   "item": "Rear differential, limited slip",
-   "spec": "75W-140 per FCP Euro",
-   "capacity": "MISSING",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
-   ]
-  },
-  {
-   "item": "Front differential (xDrive only)",
-   "spec": "75W-90 per FCP Euro",
-   "capacity": "MISSING",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
-   ]
-  },
-  {
-   "item": "Transfer case (xDrive only)",
-   "spec": "DTF-1 (formerly TF0870), API GL-4, SAE 75W",
-   "capacity": "just under 1 L (BimmerWorld); about 1 L (X5 E70 poster, different chassis)",
-   "status": "SINGLE_SOURCE on capacity; spec VERIFIED (BimmerWorld, FCP)",
-   "sources": [
-    "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html",
-    "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
-    "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
-   ]
-  }
- ],
- "torque": [
-  {
-   "fastener": "Rear differential fill/drain plug (no O-ring)",
-   "value": "60 Nm (44 ft-lb)",
-   "status": "VERIFIED (bimmersport E90, bavmods E9X, 5series E60)",
-   "sources": [
-    "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
-    "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
-    "https://5series.net/forums/topic/126110-differential-oil-change"
-   ],
-   "conflicts": null
-  },
-  {
-   "fastener": "Rear differential plug with O-ring",
-   "value": "65 Nm (48 ft-lb)",
-   "status": "SINGLE_SOURCE (E60 thread)",
-   "sources": [
-    "https://5series.net/forums/topic/126110-differential-oil-change"
-   ],
-   "conflicts": "Differs from 60 Nm; depends on whether an O-ring is used. Confirm via TIS."
-  },
-  {
-   "fastener": "Transfer case plugs (xDrive)",
-   "value": "MISSING",
-   "status": "MISSING",
-   "sources": [],
-   "conflicts": null
-  },
-  {
-   "fastener": "Front differential plug (xDrive)",
-   "value": "MISSING",
-   "status": "MISSING",
-   "sources": [],
-   "conflicts": null
-  }
- ],
- "steps": [
-  {
-   "n": 1,
-   "title": "Confirm configuration",
-   "instruction": "Identify drive type (RWD vs xDrive) and rear diff type (open vs LSD) from build options before buying fluid. Do not assume.",
-   "status": "MISSING (no source for decoding this VIN)",
-   "warnings": []
-  },
-  {
-   "n": 2,
-   "title": "Warm the fluid and level the car",
-   "instruction": "Drive 5-10 minutes so the oil flows, then park on level ground; a posted tip is to warm the new oil in a bowl of warm water.",
-   "status": "SINGLE_SOURCE",
-   "warnings": []
-  },
-  {
-   "n": 3,
-   "title": "Loosen the fill plug first",
-   "instruction": "Break the 14 mm hex plug loose before removing anything else, so you know you can refill. On the E90 rear diff this is the only plug and it also serves as drain.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Never drain until you are sure the fill plug will open."
-   ]
-  },
-  {
-   "n": 4,
-   "title": "Extract old fluid",
-   "instruction": "Pump the old oil out through the fill hole with a suction pump and tube; measure the volume (reports of 0.95 L extracted).",
-   "status": "VERIFIED",
-   "warnings": [
-    "Some oil may remain; one poster did a second drain-and-refill after a week."
-   ]
-  },
-  {
-   "n": 5,
-   "title": "Refill",
-   "instruction": "Pump new SAF-XO 75W-90 in through the fill hole until it begins to trickle from the opening (the fill level is the bottom of the hole).",
-   "status": "VERIFIED",
-   "warnings": []
-  },
-  {
-   "n": 6,
-   "title": "Refit plug and torque",
-   "instruction": "Clean, fit plug (new O-ring if used) and tighten to 60 Nm (44 ft-lb) for no O-ring.",
-   "status": "VERIFIED",
-   "warnings": []
-  },
-  {
-   "n": 7,
-   "title": "Test",
-   "instruction": "Test drive and check for leaks or noise.",
-   "status": "SINGLE_SOURCE",
-   "warnings": []
-  },
-  {
-   "n": 8,
-   "title": "xDrive only: transfer case",
-   "instruction": "Open the fill plug first, drain via the drain plug, refill with about 1 L DTF-1 through the fill plug until overflow. Plug sizes: 14 mm hex (X5 E70 poster).",
-   "status": "SINGLE_SOURCE",
-   "warnings": [
-    "Applies only if the car is xDrive; torque MISSING."
-   ]
-  },
-  {
-   "n": 9,
-   "title": "xDrive only: front differential",
-   "instruction": "Fluid is reported as 75W-90, but plug location, procedure, capacity and torque were NOT found.",
-   "status": "MISSING",
-   "warnings": []
-  }
- ],
- "safety": [
-  "Always confirm the fill plug can be removed before draining.",
-  "Support the car on stands or a lift on level ground (general practice).",
-  "Gear oil and old fluid are hazardous; contain and dispose of properly.",
-  "Wrong fluid in an LSD or transfer case can cause damage; bavmods warns against non-approved fluid.",
-  "Avoid over-tightening aluminum housing plugs; use a torque wrench."
- ],
- "missingEvidence": [
-  "BMW TIS/owner-manual rear diff capacity for E90 328i (conflict 1.0 vs 1.2 L).",
-  "Open vs limited-slip determination for this VIN.",
-  "Front diff capacity, plug location, torque; transfer case torque, plug positions and capacity from a BMW document.",
-  "BMW part number for plug seals/O-rings.",
-  "Service interval from BMW (retailer/forum values only: 50,000-60,000 mi, 75,000-100,000 km).",
-  "Drive type (RWD or xDrive) from VIN decode."
- ],
- "ownerInputsNeeded": [
-  "Confirm RWD or xDrive (and whether to include xDrive content).",
-  "Confirm open vs limited-slip diff.",
-  "Decide whether to publish rear-diff-only guide now and defer xDrive."
- ]
+  "guide": 15,
+  "name": "Differential / Transfer Case Fluid",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "primaryScope": "PRIMARY found for: (a) BMW TIS text for the rear differential oil check/fill (5series.net PDF carrying BMW AG TIS footers and operation codes 33 11 3AZ/9AZ): remove the filler plug, check the level, fill to the lower edge of the filler plug opening, use only approved gear oils; plug torque table 3AZ (oil fill/drain plug with sealing ring) 65 Nm and 9AZ (plugs with O-ring, replace plugs) 60 Nm. The table lists series E30 to E86 and does NOT name the E90, so it applies to the E90 by plug-type match only; (b) OE parts catalog (RealOEM PH73 USA 09/2009): final drive housing type 188L, ratios 3.23 (row not tied to an option) and 3.73 (automatic S205A), one screw plug with O-ring M22x1.5 33117525064, synthetic gear oil 1 L 83222365987 (valid to 07/2011), no front differential or transfer case groups for this 328i; (c) BMW AG training doc ST502 Powertrain: 188L final drive, lifetime-fill differential oil, ratio table. NO primary found for: rear differential capacity (TIS text and owner manual give none), open vs limited-slip confirmation, service interval, or any xDrive value.",
+  "recommendedStatus": "BUILDABLE",
+  "summary": "Closed since pass 1: (1) Plug torque: BMW TIS text (via a forum PDF) gives 60 Nm for oil filler/drain plugs WITH an O-ring (replace the plug) and 65 Nm for plugs with a sealing ring; the OE catalog lists the E90 plug as \"screw plug with O-ring\" (33117525064), so 60 Nm (44 ft-lb) applies, matching bimmersport (E90), bavmods (E9X) and FCP (F30). The earlier E60 poster's claim of 65 Nm with O-ring / 60 Nm without is reversed relative to the TIS table. Caveat: the TIS table does not name the E90 and says replace the plug. (2) Fill method now has a PRIMARY: fill to the lower edge of the filler opening; single filler/drain plug confirmed by 4 sources and one screw plug in the catalog. (3) Capacity: 1.0 L for the N52 (bimmerpost, bimmersport, 5series N52 poster; measured 0.95 L out and 1.1 L in) versus 1.2 L for the N54/335i/diesel (bimmerpost, bimmersport) and a generic bavmods 1.2 L; status VERIFIED_SECONDARY about 1.0 L, but the level at the opening governs (BMW TIS). (4) Fluid: OE catalog lists synthetic gear oil 83222365987 and Turner cross-references it to SAF-XO 75W-90 GL-5 07512293972 (also listed by ECS and FCP); FCP says 75W-140 only for M3/LSD. (5) Open vs limited-slip: nothing in the OE catalog or BMW training doc for this 328i indicates an LSD (single rear axle assembly listed with only ratio variants); 75W-140 is for M3/LSD cars per FCP. Not proven for the VIN, so one owner check remains. (6) Drive type: the catalog model 328i has no front differential or transfer case groups, indicating RWD; xDrive content is therefore out of scope for this VIN and kept only as reference data (transfer case DTF-1, about 1 L; front differential 60 Nm and 700-1000 ml are from F30 data, not E90). (7) Service interval: BMW training says lifetime-fill; retailers/forums say 40,000-60,000 mi or 75,000-100,000 km; no BMW scheduled interval found.",
+  "variantDependencies": [
+    "Drive type: OE catalog model 328i lists only a rear axle drive (final drive 188L) and no front axle differential, front drive shaft or transfer case; VIN positions 4-6 (PH7) match the catalog type code PH73. RWD is therefore indicated; xDrive (328xi) would add a front differential and ATC transfer case (not applicable, not verified for this VIN).",
+    "Ratio/transmission: final drive ratio 3.23 (catalog row not tied to an option, likely non-automatic) and 3.73 with automatic (S205A) per the OE catalog; both are TYP 188L; sources do not show capacity differing by ratio.",
+    "Open vs limited-slip: no LSD variant appears in the OE catalog for this selection; FCP says an M3 or LSD car needs 75W-140 (BMW 83222282583, 5 L). UNCONFIRMED for the VIN.",
+    "Engine/model: 1.0 L is cited for N52 cars and 1.2 L for N54, diesel and 335i cars (bimmerpost, bimmersport); 328i N52 is the 1.0 L group.",
+    "Plug type: the catalog lists a screw plug with O-ring for the E90 188L; the BMW TIS torque table uses different values (60 Nm O-ring, 65 Nm sealing ring) by plug type.",
+    "Access: bimmerpost (E93 328i) says the plug can be obstructed by lower braces; a snub-nose 14 mm hex or crowfoot may be needed."
+  ],
+  "tools": [
+    {
+      "item": "14 mm hex (Allen) socket, 1/2 in drive; breaker bar may be needed; snub-nose or short bit if lower braces block access",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://5series.net/forums/topic/126110-differential-oil-change",
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-rear-differential-fluid",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=26024349"
+      ],
+      "note": "bimmerpost E93 poster: no room to loosen the plug because of the lower braces; crowfoot with the Allen socket used."
+    },
+    {
+      "item": "Torque wrench able to read 60 Nm / 44 ft-lb",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf"
+      ]
+    },
+    {
+      "item": "Fluid transfer/extraction pump with a tube small enough for the fill hole",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15935789"
+      ],
+      "note": "All describe pumping old oil out through the fill hole because there is no separate drain plug."
+    },
+    {
+      "item": "Hand pump or squeeze bottle to refill through the fill hole",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+      ]
+    },
+    {
+      "item": "Measuring jug to record extracted volume",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/"
+      ]
+    },
+    {
+      "item": "Drain pan/waste container",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/"
+      ]
+    },
+    {
+      "item": "Jack stands, ramps or lift on level ground",
+      "status": "MISSING",
+      "sources": [],
+      "note": "No source gives E90 jacking points; use the owner manual."
+    },
+    {
+      "item": "Rag/brake cleaner to clean the plug and area",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "BMW SAF-XO 75W-90 GL-5 synthetic gear oil, 1 L",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1250",
+        "https://www.turnermotorsport.com/p-30182-07512293972-genuine-bmw-part/",
+        "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/",
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
+      ],
+      "partNumber": "07512293972 (retail); OE catalog: 83222365987 \"BMW synthetic OSP 1L\", valid up to 07/2011",
+      "primary": true,
+      "note": "Turner cross-references 83222365987 and 33117525064 on the fluid page (catalog quirk). OE catalog confirms the 1 L synthetic oil for this selection; the SAF-XO spec name comes from retailers, a 5series poster citing the Bentley manual and a bimmerpost poster."
+    },
+    {
+      "item": "Rear differential oil filler/drain screw plug with O-ring, M22x1.5",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341",
+        "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/",
+        "https://www.turnermotorsport.com/p-42133544-rear-differential-service-kit",
+        "https://www.turnermotorsport.com/p-30182-07512293972-genuine-bmw-part/"
+      ],
+      "partNumber": "33117525064",
+      "primary": true,
+      "note": "OE catalog item 03 in the final drive gasket set diagram: \"screw plug with O-ring\". Replace the plug each time per BMW TIS text for O-ring plugs. Turner kit sells it as Rein 33117525064~REN."
+    },
+    {
+      "item": "Magnetic M22x1.5 plug (aftermarket options): ECS 009314ECS01A, Rein HWU0065",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/"
+      ],
+      "partNumber": "009314ECS01A / HWU0065"
+    },
+    {
+      "item": "Plug O-ring/seal alone",
+      "status": "MISSING",
+      "sources": [
+        "https://5series.net/forums/topic/126110-differential-oil-change"
+      ],
+      "partNumber": null,
+      "note": "Catalog sells the plug with O-ring as one part; a forum poster cites a McMaster-Carr Viton O-ring (9263K587)."
+    },
+    {
+      "item": "Rear differential service kit (2 qt Red Line 75W-90 + Rein plug)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/p-42133544-rear-differential-service-kit"
+      ],
+      "partNumber": "T#42133544",
+      "note": "Turner lists E90 325xi/328xi but not 328i for the kit; do not rely on it for fitment."
+    },
+    {
+      "item": "BMW 75W-140 differential fluid, 5 L (M3/LSD cars only)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
+      ],
+      "partNumber": "83222282583",
+      "note": "Not for an open differential."
+    },
+    {
+      "item": "xDrive only (not applicable to this VIN): DTF-1 transfer case fluid, 1 L",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html",
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
+        "https://www.xoutpost.com/bmw-sav-forums/x5-e53-forum/71037-xdrive-transfer-case-fluid-diy.html"
+      ],
+      "partNumber": "83225A4F016 (previous 83220397244, 83220306816, 83222409710)",
+      "primary": false,
+      "note": "BimmerWorld lists 328xi fitment, SAE 75W, API GL-4, \"just under 1 liter\"; reference only."
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Rear differential, open (no LSD indicated)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+        "https://www.turnermotorsport.com/p-30182-07512293972-genuine-bmw-part/",
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
+        "https://5series.net/forums/topic/126110-differential-oil-change",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15935789",
+        "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/"
+      ],
+      "spec": "BMW synthetic hypoid gear oil: SAE 75W-90, API GL-5 (Castrol SAF-XO). BMW TIS: use only approved gear oils; other oils can cause serious damage.",
+      "capacity": "n/a (see capacity row)",
+      "primary": true
+    },
+    {
+      "item": "Rear differential capacity",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11078744",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://5series.net/forums/topic/126110-differential-oil-change",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+      ],
+      "spec": "About 1.0 L for N52 cars; about 1.2 L is quoted for 335i/N54/diesel and in a generic E9X article. The BMW TIS text gives no volume: the level at the lower edge of the filler opening governs.",
+      "capacity": "1.0 L (bimmerpost: \"1 liter in rear diff with N52\"; bimmersport: \"1.2 litres for a 335i, all others 1 litre\", measured 0.95 L out, about 1.1 L in; 5series E61 N52 poster 1.0 L; xoutpost X5 about 95 percent of a 1 L bottle) vs 1.2 L (bavmods E9X, bimmerpost for N54/diesel)",
+      "primary": false,
+      "dissent": "bavmods says 1.2 L for \"this E9X model\" without naming the engine and says BMW diffs typically hold 1 to 1.4 L."
+    },
+    {
+      "item": "Rear differential, limited slip",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
+      ],
+      "spec": "75W-140 per FCP Euro for M3 or LSD cars. No evidence an LSD is fitted to a 328i.",
+      "capacity": "MISSING",
+      "primary": false
+    },
+    {
+      "item": "Rear differential service interval",
+      "status": "CONFLICT",
+      "sources": [
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/04_E90%20Powertrain.pdf",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html"
+      ],
+      "spec": "BMW training doc (ST502): differential oil is lifetime-fill. Retailers/forums: 40,000-60,000 mi (bavmods), 75,000-100,000 km (bimmersport), transfer case every 5th engine oil service (BimmerWorld).",
+      "capacity": "n/a",
+      "primary": true,
+      "note": "No BMW scheduled interval found."
+    },
+    {
+      "item": "Front differential (xDrive only; not applicable to this VIN)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-front-differential-fluid-bmw-xdrive",
+        "https://xoutpost.com/x3-e83-forum/81186-looking-fluid-capacities-difs-manual-transmission-print.html"
+      ],
+      "spec": "75W-90 per FCP Euro.",
+      "capacity": "F30: roughly 700-800 ml or just under 1 L (FCP); E83 X3 forum: about 1 L each diff; none for the E90.",
+      "primary": false
+    },
+    {
+      "item": "Transfer case (xDrive only; not applicable to this VIN)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html",
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html",
+        "https://xoutpost.com/x3-e83-forum/81186-looking-fluid-capacities-difs-manual-transmission-print.html"
+      ],
+      "spec": "DTF-1 (formerly TF0870), API GL-4, SAE 75W.",
+      "capacity": "just under 1 L (BimmerWorld, 328xi); about 1 L (X5 E70); less than 1 L (X3 E83)",
+      "primary": false
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Rear differential filler/drain plug (screw plug with O-ring, M22x1.5, replace the plug)",
+      "value": "60 Nm (44 ft-lb)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-rear-differential-fluid",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341"
+      ],
+      "conflicts": "BMW TIS table: 9AZ oil filler and drain plugs with O-ring (replace plugs) 60 Nm; 3AZ plug with sealing ring 65 Nm. A 5series.net E61 N52 poster states 65 Nm with O-rings and 60 Nm without, which is reversed relative to the TIS table. The TIS table lists E30 to E86 only, not E90.",
+      "primary": true,
+      "primaryNote": "Primary is the BMW TIS text, applied to the E90 by plug-type match (the OE catalog lists the E90 plug as a screw plug with O-ring); E90 is not named in the TIS table. Independent E90/E9X/F30 secondary sources agree on 60 Nm (44 ft-lb)."
+    },
+    {
+      "fastener": "Rear differential plug if it is a sealing-ring (not O-ring) type",
+      "value": "65 Nm",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf"
+      ],
+      "conflicts": "BMW TIS table 3AZ; not the type listed for this car.",
+      "primary": true
+    },
+    {
+      "fastener": "xDrive transfer case plugs (not applicable to this VIN)",
+      "value": "MISSING for E90; E53 X5 poster says 33 Nm (24 lb-ft) with 16 mm plugs; E70 X5 poster says 14 mm plugs",
+      "status": "MISSING",
+      "sources": [
+        "https://www.xoutpost.com/bmw-sav-forums/x5-e53-forum/71037-xdrive-transfer-case-fluid-diy.html",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+      ],
+      "conflicts": "Different chassis; do not use.",
+      "primary": false
+    },
+    {
+      "fastener": "xDrive front differential plug (not applicable to this VIN)",
+      "value": "MISSING for E90; FCP F30: 60 Nm, 14 mm hex",
+      "status": "MISSING",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-front-differential-fluid-bmw-xdrive"
+      ],
+      "conflicts": "Different chassis.",
+      "primary": false
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Confirm configuration",
+      "instruction": "Confirm RWD (the catalog shows no front differential or transfer case for the 328i) and that the rear differential is an open type. If the car is actually xDrive or has an LSD, stop: this guide does not cover them.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Wrong fluid in an LSD or transfer case can damage it (bavmods; FCP)."
+      ],
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1250",
+        "https://www.realoem.com/bmw/enUS/partgrp?id=PH73-USA-09-2009-E90N-BMW-328i&mg=31",
+        "https://www.realoem.com/bmw/enUS/partgrp?id=PH73-USA-09-2009-E90N-BMW-328i&mg=26",
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
+      ],
+      "primary": false
+    },
+    {
+      "n": 2,
+      "title": "Level the car and (optionally) warm the fluid",
+      "instruction": "Park on level ground and support the car securely. A short drive helps the oil flow; one poster warms the new oil in a bowl of warm water. bavmods starts from a cold engine, so this is optional.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Gear oil and exhaust parts can be hot; support the vehicle on stands or a lift."
+      ],
+      "sources": [
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide"
+      ],
+      "primary": false
+    },
+    {
+      "n": 3,
+      "title": "Loosen the filler plug first",
+      "instruction": "Before draining anything, loosen the single 14 mm hex plug on the differential housing so you know you can refill. It is both the fill and drain plug on this car. Remove lower braces only if they block access.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never remove old oil before confirming the fill plug opens (BMW TIS starts the level check by removing the filler plug)."
+      ],
+      "sources": [
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15740497",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=26024349"
+      ],
+      "primary": true
+    },
+    {
+      "n": 4,
+      "title": "Extract the old fluid through the fill hole",
+      "instruction": "Pump the old oil out through the fill hole with a suction pump and thin tube, measuring the volume (about 0.95 L reported). Some oil stays behind; one poster did a second drain-and-refill after a week.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Old gear oil is hazardous; contain and recycle."
+      ],
+      "sources": [
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15935789",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341"
+      ],
+      "primary": false
+    },
+    {
+      "n": 5,
+      "title": "Refill to the level of the opening",
+      "instruction": "Pump new SAF-XO 75W-90 GL-5 synthetic through the fill hole until it just trickles out (the level is the lower edge of the filler opening). Expect about 1.0 L on the N52; the level, not the volume, decides.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Use only BMW-approved gear oil; do not use 75W-140 unless the car has an LSD."
+      ],
+      "sources": [
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11078744"
+      ],
+      "primary": true
+    },
+    {
+      "n": 6,
+      "title": "Fit a new plug and torque it",
+      "instruction": "Clean the opening, fit a new screw plug with O-ring (33117525064) and tighten to 60 Nm (44 ft-lb). If the plug is reused, inspect the O-ring; BMW TIS says replace O-ring plugs.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not exceed the torque (do not use the 65 Nm sealing-ring value on an O-ring plug).",
+        "One E60 poster reports the opposite assignment of 60/65 Nm; the TIS table prevails."
+      ],
+      "sources": [
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-rear-differential-fluid"
+      ],
+      "primary": true
+    },
+    {
+      "n": 7,
+      "title": "Clean, test drive, recheck",
+      "instruction": "Wipe the housing clean, refit any braces, take a short drive listening for noise or shudder, then check for seepage around the plug.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [],
+      "sources": [
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/"
+      ],
+      "primary": false
+    },
+    {
+      "n": 8,
+      "title": "xDrive only: transfer case and front differential (NOT for this VIN)",
+      "instruction": "Not applicable to a RWD 328i. Reference only: transfer case DTF-1 about 1 L, open the fill plug first, drain, refill to overflow; E70/E53 plug sizes differ (14 mm vs 16 mm) and no E90 torque was found. Front differential plug locations/torque for the E90 were not found.",
+      "status": "MISSING",
+      "warnings": [
+        "Do not apply F30, E53 or E70 values to an E90."
+      ],
+      "sources": [
+        "https://www.bimmerworld.com/Fluids/Driveline-Fluids/TF0870-Transfer-Case-Oil-xDrive-Models-83220397244.html",
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html",
+        "https://www.xoutpost.com/bmw-sav-forums/x5-e53-forum/71037-xdrive-transfer-case-fluid-diy.html",
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-front-differential-fluid-bmw-xdrive",
+        "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84"
+      ],
+      "primary": false
+    }
+  ],
+  "safety": [
+    "Always confirm the fill plug can be removed before draining.",
+    "Support the car on stands, ramps or a lift on level ground.",
+    "Use only BMW-approved synthetic gear oil (SAF-XO 75W-90 GL-5 for open diffs).",
+    "Use 60 Nm only for an O-ring plug and replace the plug; the sealing-ring plug value is 65 Nm per TIS.",
+    "Contain and recycle used gear oil.",
+    "Do not apply xDrive or other-chassis values to this car."
+  ],
+  "missingEvidence": [
+    "BMW document with the rear differential capacity for the E90 328i (TIS text gives only the level rule).",
+    "Proof from the car or build options that the rear differential is open (no LSD).",
+    "BMW service interval (BMW training says lifetime-fill; others give 40,000-60,000 mi).",
+    "E90-specific lower-brace and plug access detail (bimmerpost E93 poster only).",
+    "xDrive front differential and transfer case plug positions, capacities and torque for the E90 (out of scope if RWD is confirmed).",
+    "A copy of the BMW TIS page that names the E90 for the 60 Nm plug torque (the table available lists E30-E86)."
+  ],
+  "ownerInputsNeeded": [
+    "Confirm RWD vs xDrive on the car (look for a front differential or transfer case).",
+    "Confirm open vs limited-slip rear differential from build options if unsure.",
+    "Look at the plug and underside: lower braces blocking access? plug head type and magnetic plug fitted?"
+  ],
+  "visuals": [
+    {
+      "id": "rear-diff-fill-plug-location",
+      "title": "Rear differential single fill/drain plug",
+      "evidenceSteps": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "viewpoint": "underside",
+      "elements": [
+        {
+          "id": "rear-differential-housing",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The rear differential housing (type 188L) seen from underneath, with a bolted cover."
+        },
+        {
+          "id": "fill-drain-plug",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A single large M22x1.5 screw plug with a 14 mm internal hex that serves as both fill and drain."
+        },
+        {
+          "id": "lower-braces",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "Lower chassis braces that can leave little room to turn the plug."
+        }
+      ],
+      "facts": [
+        {
+          "element": "fill-drain-plug",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341",
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+            "https://5series.net/forums/topic/126110-differential-oil-change",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=15935789"
+          ],
+          "note": "OE catalog: one screw plug with O-ring M22x1.5; bimmersport: one drain/fill bolt for both; bavmods: the fill plug also serves as the drain; bimmerpost 335d: no drain plug."
+        },
+        {
+          "element": "fill-drain-plug",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+            "https://5series.net/forums/topic/126110-differential-oil-change",
+            "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-rear-differential-fluid"
+          ],
+          "note": "14 mm internal hex (Allen) head."
+        },
+        {
+          "element": "fill-drain-plug",
+          "attribute": "location",
+          "urls": [],
+          "note": "No fetched source states where on the housing the plug sits (side, rear cover). GAP: show the plug generically without a precise face."
+        },
+        {
+          "element": "rear-differential-housing",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1250",
+            "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/04_E90%20Powertrain.pdf",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341"
+          ],
+          "note": "OE catalog: final drive TYP 188L with a transmission cover and hex bolts; BMW training doc: 188L final drive."
+        },
+        {
+          "element": "lower-braces",
+          "attribute": "relationship",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=26024349"
+          ],
+          "note": "E93 328i poster only: no room to loosen or tighten the plug because of the lower braces."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "fill-drain-plug",
+          "reason": "Position on the housing is not established; do not mark it on a specific side or the cover."
+        },
+        {
+          "element": "rear-differential-housing",
+          "reason": "No second plug: the E90 rear differential has one plug only."
+        }
+      ],
+      "sources": {
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1341": {
+          "kind": "parts-catalog",
+          "establishes": "OE catalog final drive gasket set for this 328i: cover TYP 188L, 8 hex bolts, one screw plug with O-ring M22x1.5 (33117525064), shaft seals."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1250": {
+          "kind": "parts-catalog",
+          "establishes": "OE catalog rear-axle-drive 188L; ratio 3.23 or 3.73 (automatic); synthetic gear oil 1 L."
+        },
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/04_E90%20Powertrain.pdf": {
+          "kind": "oem-text",
+          "establishes": "BMW training doc: the final drive is the 188L unit; lifetime-fill oil."
+        },
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/": {
+          "kind": "third-party-guide",
+          "establishes": "E90 335i: 14 mm hex plug, no drain plug, pump oil out through the fill hole."
+        },
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide": {
+          "kind": "third-party-guide",
+          "establishes": "E9X: 14 mm Allen, fill plug is also the drain, 44 lb-ft."
+        },
+        "https://5series.net/forums/topic/126110-differential-oil-change": {
+          "kind": "third-party-guide",
+          "establishes": "E61 N52: plugs need a 14 mm hex; torque posts."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15935789": {
+          "kind": "third-party-guide",
+          "establishes": "E90 thread: 335d has no drain plug; fluid pumped from the fill hole."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=26024349": {
+          "kind": "third-party-guide",
+          "establishes": "E93 328i: lower braces block access to the plug; crowfoot with Allen used."
+        },
+        "https://www.fcpeuro.com/blog/how-to-replace-bmw-f30-rear-differential-fluid": {
+          "kind": "third-party-guide",
+          "establishes": "F30: 14 mm hex bit plug, 60 Nm (different chassis, same plug size)."
+        }
+      },
+      "gapFillNotes": [
+        "fill-drain-plug location NOT established: bimmersport, bavmods, m3post, z4-forum, 5series.net threads, the BMW TIS pdf and bimmerpost threads were all fetched and none states which face/side of the 188L housing the plug is on (only that it is reached from underneath the rear of the car, with little room because of the lower braces/reinforcement plate). Web search budget ran out before a RealOEM-diagram or photo-description source could be found. Draw the plug generically on the housing."
+      ]
+    },
+    {
+      "id": "rear-diff-fill-level",
+      "title": "Filling to the level of the opening",
+      "evidenceSteps": [
+        4,
+        5
+      ],
+      "viewpoint": "underside",
+      "elements": [
+        {
+          "id": "fill-opening",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The open fill hole with the oil level at its lower edge; oil trickles out when the differential is full."
+        },
+        {
+          "id": "pump-tube",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "A thin tube from a hand pump or squeeze bottle pressed into the opening."
+        },
+        {
+          "id": "extraction-tube",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "A suction tube used earlier to pump old oil out through the same opening."
+        }
+      ],
+      "facts": [
+        {
+          "element": "fill-opening",
+          "attribute": "action",
+          "urls": [
+            "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+            "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+          ],
+          "note": "TIS: fill to the lower edge of the filler plug opening; bimmersport: until a small trickle runs out; bavmods: a slow steady stream; xoutpost: pump in until it begins to overflow."
+        },
+        {
+          "element": "pump-tube",
+          "attribute": "hardware-type",
+          "urls": [
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+          ],
+          "note": "Hand pump or squeeze-bottle nozzle pressed into the fill hole."
+        },
+        {
+          "element": "extraction-tube",
+          "attribute": "action",
+          "urls": [
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+            "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+          ],
+          "note": "Old oil is extracted through the fill hole with a suction pump."
+        },
+        {
+          "element": "fill-opening",
+          "attribute": "fine-detail-geometry",
+          "urls": [],
+          "note": "No source describes the opening geometry or internal level marks. GAP: show a simple opening without internal detail."
+        },
+        {
+          "element": "fill-opening",
+          "attribute": "existence",
+          "urls": [
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide"
+          ],
+          "note": "bimmersport (E90 335i) says old fluid is suctioned out via the fill plug / fill hole; bavmods (E9x) says the pump nozzle is pressed into the fill plug hole; the BMW TIS pdf also refers to oil being filled to the lower edge of the filler opening."
+        },
+        {
+          "element": "pump-tube",
+          "attribute": "existence",
+          "urls": [
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+            "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html"
+          ],
+          "note": "bavmods: easy-fill hand pump whose nozzle goes into the hole and a two-way transfer pump hose; bimmersport: a tube is guided into the fill hole to suck fluid out; xoutpost (X5 E70): tube on a large syringe and a pump."
+        },
+        {
+          "element": "pump-tube",
+          "attribute": "location",
+          "urls": [
+            "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+            "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide"
+          ],
+          "note": "Both say the tube/nozzle enters the differential through the fill plug hole (placed plainly: tube end in the fill opening); neither states which face of the housing."
+        },
+        {
+          "element": "fill-opening",
+          "attribute": "location",
+          "urls": [],
+          "note": "NOT established: no fetched page states which side/face of the rear differential housing the fill hole is on, only that it is reached from underneath. Draw generically on the housing."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "fill-opening",
+          "reason": "Internal geometry and housing shape around the opening are not established."
+        }
+      ],
+      "sources": {
+        "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf": {
+          "kind": "oem-text",
+          "establishes": "BMW TIS text: add oil until it reaches the lower edge of the filler plug opening; use only approved oils."
+        },
+        "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/": {
+          "kind": "third-party-guide",
+          "establishes": "Pump out via the fill hole; fill until a small trickle runs out with the car level."
+        },
+        "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide": {
+          "kind": "third-party-guide",
+          "establishes": "Two-way transfer pump and easy-fill pump; fill until a slow steady stream."
+        },
+        "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html": {
+          "kind": "third-party-guide",
+          "establishes": "X5 E70: extract and refill through the fill holes with syringe/tube."
+        }
+      },
+      "gapFillNotes": [
+        "fill-opening location unresolved (see above); search budget ran out."
+      ]
+    }
+  ]
 }

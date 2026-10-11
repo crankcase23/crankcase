@@ -1,0 +1,235 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Halogen H7 low/high-beam bulb",
+      "Xenon low-beam bulb (D1S)",
+      "Fog bulb H8"
+    ],
+    "stepNumber": 7,
+    "title": "wheel-arch-liner-access (BMW 328i draft Fuse & Bulb Replacement guide; evidence step 7, 8, 10)"
+  },
+  "contentHash": "5439f11a392c2e89893da06ea0c5fe945adbad0ca4e2a57936932ed24905f6a9",
+  "createdAt": "2026-10-10T12:00:34.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The black plastic front wheel-arch liner that is peeled back or unscrewed to reach the bulbs behind the bumper/headlight.",
+      "id": "front-wheel-liner",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Several screws (8 mm head per one thread; Torx per one retailer) around the liner; bottom screws on the front part named by one poster.",
+      "id": "liner-screws",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "A small cover in the liner/arch ahead of the wheel that BMW describes as the opening for bulb replacement.",
+      "id": "service-opening",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of liner screws: Count, head type and positions are not reconciled between sources; do not draw individual screws.",
+      "id": "liner-screws-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of service opening: Exact shape and location of the cover in the liner is not established.",
+      "id": "service-opening-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-wheel-arch-liner-access-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "front-wheel-liner",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "service-opening",
+      "evidence": [
+        "ref-4",
+        "ref-1"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "liner-screws",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "liner-screws",
+      "note": "LUX guide: 5 screws and 1 nut inside plus 4 underneath; bavmods six T20 for the cover; not reconciled.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "front-wheel-liner",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "liner-screws",
+      "evidence": [
+        "ref-5",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "liner-screws",
+      "evidence": [
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "liner-screws-unestablished-detail",
+      "note": "Count, head type and positions are not reconciled between sources; do not draw individual screws.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "service-opening-unestablished-detail",
+      "note": "Exact shape and location of the cover in the liner is not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "liner-screws-unestablished-detail",
+      "id": "excl-liner-screws-unestablished-detail",
+      "reason": "Count, head type and positions are not reconciled between sources; do not draw individual screws.",
+      "trace": {
+        "attribute": "existence",
+        "element": "liner-screws-unestablished-detail"
+      }
+    },
+    {
+      "element": "service-opening-unestablished-detail",
+      "id": "excl-service-opening-unestablished-detail",
+      "reason": "Exact shape and location of the cover in the liner is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "service-opening-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "E90 fog light thread: turn wheels, remove 8 mm liner screws, peel back liner; low beams reached via small cover in front of the wheel."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-photo",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=26172610",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Xenon low-beam bulb job via wheel removal and fender liner."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Wheel removal and wheel-well liner screws to reach the headlight bulb on an E90."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "cdn.shopify.com",
+      "sourceRef": "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bulbs can be replaced without removing the headlight through service openings in the wheel arch covers."
+      ],
+      "id": "ref-4",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x fog-light thread: 8 mm socket removes screws holding the black plastic wheel liner; two lower screws at the front edge; liner can be pulled back."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "wheel-arch-liner-access"
+}

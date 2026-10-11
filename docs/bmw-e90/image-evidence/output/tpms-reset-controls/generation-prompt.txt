@@ -1,0 +1,19 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: TPMS reset: iDrive menu and turn-signal stalk, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Reset the tire pressure monitor".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Driver's-eye view of the instrument cluster and steering column area, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: The end button of the turn-signal stalk, used to scroll to TPMS RESET and hold for about 5 seconds.
+2. An on-screen menu (Vehicle Info > Vehicle Status, or Settings > TPM) with a RESET TPM item.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): a plain dark ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): idrive reset tpm menu detail (Exact on-screen layout and menu wording are not consistent across sources), turn signal stalk button detail (Stalk shape and button position are not described), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

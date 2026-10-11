@@ -1,0 +1,21 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Comfort Access key: valet key release and battery cover, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Comfort Access: open the fob".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Close top-down view of a key fob on a plain neutral surface. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: A BMW key fob with a rear cover that opens to a battery compartment. Do NOT depict its fine detail: keep it a plain generic shape.
+2. A small tab on the side of the fob that is pressed to release the metal valet key. Do NOT depict the shape of its release mechanism: keep it a plain generic shape.
+3. The gap/access port left after the valet key is removed where a blade is inserted to lift the battery cover.
+4. A round CR2032 coin cell inside; orientation not established. Do NOT depict its orientation: keep it a plain generic shape.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): a plain dark ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): coin cell detail (Polarity/orientation is not established; do not show + or - facing), side release tab detail (Exact position on the case is not established), key body detail (Do not imply the standard (non-CA) key opens the same way; it is sealed), valet key blade (No source establishes this element for the car; it is left out), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

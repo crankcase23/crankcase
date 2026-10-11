@@ -1,0 +1,20 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Reading the electronic oil level from the turn-signal stalk, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Start, check for leaks, verify the level electronically".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Driver's-eye view of the instrument cluster and steering column area, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: The small button on the turn-indicator lever that is pressed up or down repeatedly to step through the on-board computer displays until OIL appears.
+2. The second button on the turn-indicator lever pressed once the OIL symbol is showing to start the oil level check.
+3. The instrument cluster area where the OIL symbol and the level message (OK, being checked, below minimum, too high) appear.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): idrive vehicle status menu. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): cluster oil readout detail (The exact cluster layout; fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only), turn signal stalk button 1 detail (The precise position of the button on the stalk end is not described by any retrieved source), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

@@ -11,11 +11,11 @@
       "Open the undertray access hatch",
       "Drain the sump"
     ],
-    "stepNumber": 3,
-    "title": "oil-drain-plug-access (BMW 328i draft oil-change guide; evidence step 3, 4)"
+    "stepNumber": 4,
+    "title": "oil-drain-plug-access (BMW 328i draft Engine Oil & Filter Change guide; evidence step 4, 5)"
   },
-  "contentHash": "50d964e56d7f50ab36603bb0cc74610fe32b6f70a2d06cb70433947f9317af9a",
-  "createdAt": "2026-10-10T12:00:02.000Z",
+  "contentHash": "94cbad80eb3b43d3df7d349afec161d0c79630944a79d3b9ea561f9e99f56c0c",
+  "createdAt": "2026-10-10T12:04:19.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"
@@ -23,27 +23,44 @@
   "elements": [
     {
       "criticality": "critical",
+      "describe": "The engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape.",
       "id": "drain-plug",
       "role": "hero"
     },
     {
       "criticality": "critical",
+      "describe": "The small access hatch in the lower undertray near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it.",
       "id": "access-hatch",
       "role": "target"
     },
     {
       "criticality": "cosmetic",
+      "describe": "The oil pan as a plain simplified mass around the plug.",
       "id": "oil-pan",
       "role": "context"
     },
     {
       "criticality": "procedure",
+      "describe": "Whatever holds the access hatch closed (screws or a coin-operated catch; sources conflict).",
       "id": "hatch-fasteners",
       "role": "context"
     },
     {
       "criticality": "cosmetic",
+      "describe": "The plastic engine (ignition coil) cover; RealOEM and Turner list one for the E90 N52, but its exact shape and fit are not established.",
       "id": "engine-cover",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of hatch fasteners: Sources conflict on how the hatch is fastened.",
+      "id": "hatch-fasteners-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of engine cover: An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
+      "id": "engine-cover-unestablished-detail",
       "role": "context"
     }
   ],
@@ -57,7 +74,7 @@
         "ref-2",
         "ref-3"
       ],
-      "note": "3 independent sources agree",
+      "note": "3 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -68,7 +85,7 @@
         "ref-1",
         "ref-3"
       ],
-      "note": "2 independent sources agree",
+      "note": "2 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -94,7 +111,7 @@
         "ref-3",
         "ref-4"
       ],
-      "note": "3 independent sources agree",
+      "note": "3 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -105,7 +122,7 @@
         "ref-1",
         "ref-3"
       ],
-      "note": "2 independent sources agree",
+      "note": "2 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -119,63 +136,68 @@
     {
       "attribute": "existence",
       "element": "hatch-fasteners",
-      "note": "Conflict (screws vs coin catch); must not be drawn.",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-cover",
+      "evidence": [
+        "ref-5",
+        "ref-6",
+        "ref-7"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-pan",
+      "evidence": [
+        "ref-8"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "hatch-fasteners-unestablished-detail",
+      "note": "Sources conflict on how the hatch is fastened.",
       "render": "omit",
       "status": "not-established"
     },
     {
       "attribute": "existence",
-      "element": "engine-cover",
-      "note": "No source says the N52 has a cover; must not be drawn.",
-      "render": "omit",
-      "status": "not-established"
-    },
-    {
-      "attribute": "existence",
-      "element": "oil-pan",
-      "note": "Context only; drawn as a plain generic mass, no specific claim.",
-      "render": "omit",
-      "status": "not-established"
-    },
-    {
-      "attribute": "location",
-      "element": "oil-pan",
-      "note": "no source cited for this fact",
-      "render": "omit",
-      "status": "not-established"
-    },
-    {
-      "attribute": "location",
-      "element": "hatch-fasteners",
-      "note": "no source cited for this fact",
-      "render": "omit",
-      "status": "not-established"
-    },
-    {
-      "attribute": "location",
-      "element": "engine-cover",
-      "note": "no source cited for this fact",
+      "element": "engine-cover-unestablished-detail",
+      "note": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
       "render": "omit",
       "status": "not-established"
     }
   ],
   "mustNotDepict": [
     {
-      "element": "hatch-fasteners",
-      "id": "excl-hatch-fasteners",
+      "element": "hatch-fasteners-unestablished-detail",
+      "id": "excl-hatch-fasteners-unestablished-detail",
       "reason": "Sources conflict on how the hatch is fastened.",
       "trace": {
         "attribute": "existence",
-        "element": "hatch-fasteners"
+        "element": "hatch-fasteners-unestablished-detail"
       }
     },
     {
-      "element": "engine-cover",
-      "id": "excl-engine-cover",
-      "reason": "No source establishes an engine cover on this engine.",
+      "element": "engine-cover-unestablished-detail",
+      "id": "excl-engine-cover-unestablished-detail",
+      "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
       "trace": {
         "attribute": "existence",
-        "element": "engine-cover"
+        "element": "engine-cover-unestablished-detail"
       }
     }
   ],
@@ -223,13 +245,57 @@
       "source": "g42.bimmerpost.com",
       "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
       "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM 328i cylinder head cover diagram: valve cover 11127552281, ignition coil covering 11127575032, oil filler cap 11128655331; no acoustic cover listed."
+      ],
+      "id": "ref-5",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Genuine BMW Engine Beauty Cover (ignition coil covering) 11127575032 listed for E90 with N52/N52N engines."
+      ],
+      "id": "ref-6",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 (2006 330i) thread: the plastic engine cover pops up, held by plugs, snapping onto the valve cover with rubber grommets."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11283613",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM 328i oil pan diagram: oil pan 11137553164, screw plug M12x1.5 11137553918, gasket ring 07119963151."
+      ],
+      "id": "ref-8",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834",
+      "usage": "reference-only"
     }
   ],
   "refs": [],
   "schema": "guide-factory.evidence-packet",
   "schemaVersion": "reconstructed-1",
   "sufficiencyProposal": {
-    "basis": "Built from cited secondary sources only; 2+ independent hosts required per established fact.",
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
     "proposedBy": "claude-research"
   },
   "visualId": "oil-drain-plug-access"

@@ -1,0 +1,289 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Move the wheels",
+      "Refit and torque in a star pattern",
+      "Reset the tire pressure monitor"
+    ],
+    "stepNumber": 4,
+    "title": "wheel-bolts-and-metal-valve-stem (BMW 328i draft Tire Rotation guide; evidence step 4, 5, 7)"
+  },
+  "contentHash": "b2464ebb18e73ef98aa504dce52e91672455be263c10f9060f2516606b0556f3",
+  "createdAt": "2026-10-10T12:03:15.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "Five hex-head wheel bolts per wheel on a 5-lug circle, tightened in a crisscross order.",
+      "id": "wheel-bolt-fasteners",
+      "role": "hero"
+    },
+    {
+      "criticality": "identification",
+      "describe": "One bolt per wheel that needs a special key, if the car has a lock set.",
+      "id": "locking-wheel-bolt",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "A metal tire valve stem, which indicates a direct TPMS sensor inside the tire.",
+      "id": "metal-valve-stem",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of locking wheel bolt: Not confirmed as fitted; key pattern shape not established.",
+      "id": "locking-wheel-bolt-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of wheel bolt fasteners: Wheel spoke design and finish are unknown for this car.",
+      "id": "wheel-bolt-fasteners-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-wheel-bolts-and-metal-valve-stem-v1",
+  "ledger": [
+    {
+      "attribute": "fastener-head-type",
+      "element": "wheel-bolt-fasteners",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "wheel-bolt-fasteners",
+      "note": "1 site: 5x120 pattern, so five bolts; no second site.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "locking-wheel-bolt",
+      "evidence": [
+        "ref-4",
+        "ref-5"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "metal-valve-stem",
+      "evidence": [
+        "ref-6",
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "wheel-bolt-fasteners",
+      "evidence": [
+        "ref-9",
+        "ref-10",
+        "ref-5"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "wheel-bolt-fasteners",
+      "evidence": [
+        "ref-9",
+        "ref-10"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "metal-valve-stem",
+      "evidence": [
+        "ref-9",
+        "ref-7"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "locking-wheel-bolt-unestablished-detail",
+      "note": "Not confirmed as fitted; key pattern shape not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "wheel-bolt-fasteners-unestablished-detail",
+      "note": "Wheel spoke design and finish are unknown for this car.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "locking-wheel-bolt-unestablished-detail",
+      "id": "excl-locking-wheel-bolt-unestablished-detail",
+      "reason": "Not confirmed as fitted; key pattern shape not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "locking-wheel-bolt-unestablished-detail"
+      }
+    },
+    {
+      "element": "wheel-bolt-fasteners-unestablished-detail",
+      "id": "excl-wheel-bolt-fasteners-unestablished-detail",
+      "reason": "Wheel spoke design and finish are unknown for this car.",
+      "trace": {
+        "attribute": "existence",
+        "element": "wheel-bolt-fasteners-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "M12x1.5, 17 mm hex, 60-degree taper seat matching stock bolts."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "17 mm socket for wheel bolts."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "17 mm socket and torque for BMW wheel bolts."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "blog.ecstuning.com",
+      "sourceRef": "https://blog.ecstuning.com/?p=1238",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 LCI 328i catalog: set wheel locks and coded wheel bolts with 17 mm adaptor."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0811",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Locking bolts and M12x1.5 information."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Metal valve stem identifies a sensor wheel."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "moderntiredealer.com",
+      "sourceRef": "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Direct systems use valve-stem sensors; reset procedures."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tomorrowstechnician.com",
+      "sourceRef": "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "NHTSA vPIC decode for this VIN: 2010 BMW 328i sedan, TPMS Direct (government database fed by manufacturer data)."
+      ],
+      "id": "ref-8",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "vpic.nhtsa.dot.gov",
+      "sourceRef": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 LCI 328i alloy wheel diagram: wheel bolt M12x1.5 qty 20 (5 per wheel), screw-in RDC valve and RDC valve cap qty 4."
+      ],
+      "id": "ref-9",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0837",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "5x120 pattern, M12x1.5 lug bolts."
+      ],
+      "id": "ref-10",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "koleso.ee",
+      "sourceRef": "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "wheel-bolts-and-metal-valve-stem"
+}

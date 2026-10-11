@@ -1,0 +1,66 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "N52 accessory drive: which pulleys are on the belt, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Record belt path\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A single six-rib serpentine belt (6PK1990) driving the accessories. Do NOT depict how it relates to neighbouring parts: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "The spring tensioner with roller pulley that holds the belt tight."
+    },
+    {
+      "rank": 3,
+      "text": "The Torx-type socket point on the tensioner that is turned clockwise with a long ratchet to relieve tension."
+    },
+    {
+      "rank": 4,
+      "text": "The deflection (idler) pulley mounted at the alternator, with a protective cap."
+    }
+  ],
+  "maySimplify": [
+    "alternator",
+    "ac compressor",
+    "power steering pump",
+    "crank pulley"
+  ],
+  "mustNotShow": [
+    "drive belt detail (The belt path geometry (which side of each pulley) is not established by any diagram)",
+    "tensioner release point detail (Exact position/orientation on the tensioner and direction as seen from the front are not established)",
+    "crank pulley detail (Relative placement of components around the engine front is not established)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "09bb405df30b7ec927023a623e69254cf8815b3fff4ca2e2b6ebc46e5a111e8e"
+}

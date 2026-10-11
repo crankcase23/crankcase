@@ -1,0 +1,19 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Post-cat sensor connectors under the car near the transmission, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Post-cat sensors (from below)".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Low view from beneath the front of the car looking rearward, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: A small bracket at the bottom of the transmission bell housing that holds the two post-cat sensor plugs.
+2. Two monitor sensors in the exhaust pipe behind the catalytic converters, each wrapped in an insulating foil shield. Do NOT depict its fine detail: keep it a plain generic shape.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): transmission splash shield, harness clips. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): postcat connector bracket detail (Only one source gives its position; show it schematically with no claim of precise side or height), postcat sensors detail (Do not draw the foil shield shape or exact pipe position; conflicting descriptions), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

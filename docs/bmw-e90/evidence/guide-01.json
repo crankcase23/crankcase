@@ -1,380 +1,1013 @@
 {
- "guide": 1,
- "name": "Front Brake Pads",
- "recommendedStatus": "BUILDABLE_PARTIAL",
- "summary": "Generic floating-caliper pad swap and cluster CBS reset are supported by multiple sources. Front pad/sensor part numbers depend on brake package, drivetrain and build date and could not be pinned to this VIN. No 328i-specific torque for caliper guide bolts or carrier bolts was found; do not publish torque values for them. Front-specific written procedure is thin (only generic E9x/M3 forum text plus a rear-focused guide).",
- "variantDependencies": [
-  "Engine (N52B30 vs N51B30 SULEV) UNCONFIRMED: no evidence found that the brake/tire/wiper jobs differ by engine; not a tracked dependency but unverified.",
-  "RWD vs xDrive UNCONFIRMED: front wear sensor part number differs (34356789441 listed for xi/xDrive vs 34356789440 for non-xi); front jack point differs on xDrive.",
-  "Production date UNCONFIRMED: retailer fitment splits at 03/2010 (wear sensors) and 09/2009 (wipers); a 2010 model year car may fall on either side.",
-  "Brake package UNCONFIRMED: retailers split fitment between 'standard' and 'M Performance' front brakes (larger front brake); front pad part number depends on it.",
-  "Transmission (manual vs auto) UNCONFIRMED: no evidence it affects these jobs.",
-  "Front sensor: 34356789440 (non-xDrive) vs 34356789441 (xDrive/xi) per retailers; 34356792560 appears as another front sensor with no fitment given; build-date cutoff 03/2010 on 789440 listing.",
-  "Front pad PN candidates differ by brake package/date (see parts); 34116794917 is listed by a retailer for 330/335-class cars, not 328i.",
-  "Front caliper guide hardware: M3 thread describes 7 mm hex guide bolts with different lengths front; not confirmed for 328i."
- ],
- "tools": [
-  {
-   "item": "Jack and jack stands (4 recommended by one poster)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://g42.bimmerpost.com/forums/showthread.php?p=19280433"
-   ]
-  },
-  {
-   "item": "17 mm socket, 1/2 in drive, for wheel bolts",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://blog.ecstuning.com/?p=1238",
-    "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html"
-   ]
-  },
-  {
-   "item": "Hex (Allen) socket for caliper guide bolts: 7 mm (E9x M3 thread) vs 17 mm hex (rear, Team-BHP) vs 5/8 in socket (rear, bmwtuning); size for 328i FRONT not confirmed",
-   "status": "CONFLICT",
-   "sources": [
-    "https://www.m3post.com/forums/showthread.php?p=4835403",
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://bmwtuning.co/e90-brake-pads-replacement/"
-   ]
-  },
-  {
-   "item": "Piston retraction tool or C-clamp / spreader",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://bmwtuning.co/e90-brake-pads-replacement/",
-    "https://www.m3post.com/forums/showthread.php?p=4835403"
-   ]
-  },
-  {
-   "item": "Flat-blade screwdrivers (anti-rattle spring, plastic caps, sensor clip)",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://bmwtuning.co/e90-brake-pads-replacement/",
-    "https://www.m3post.com/forums/showthread.php?p=4835403"
-   ]
-  },
-  {
-   "item": "10 mm socket and 8 mm for wheel-liner fasteners to reach sensor box",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://bmwtuning.co/e90-brake-pad-sensor-replacement/"
-   ]
-  },
-  {
-   "item": "Torque wrench (range to 120+ Nm for wheel bolts)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://blog.ecstuning.com/?p=1238"
-   ]
-  },
-  {
-   "item": "Brake cleaner, anti-squeal paste, caliper-guide grease",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://bmwtuning.co/e90-brake-pads-replacement/",
-    "https://www.m3post.com/forums/showthread.php?p=4835403"
-   ]
-  },
-  {
-   "item": "Cluster reset method needs no tool; scan tool optional backup (BMW-capable, generic OBD may not reset CBS)",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.techtips.ie/Hella-Ireland/bmw---service-reset-condition-based-service-cbs--brake-pads.pdf",
-    "https://www.youcanic.com/bmw-brake-light-service-reset-instructions/",
-    "https://bmwtuning.co/e90-brake-pad-sensor-replacement/"
-   ]
-  }
- ],
- "parts": [
-  {
-   "item": "Front pad set, 328i/328xi (BimmerWorld lists E9x 328i and 328xi 06-13; description says 2009+)",
-   "partNumber": "34116790759",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.bimmerworld.com/Brakes/Street-Performance-Brake-Pads/OEM-BMW-Brakes-Repair-Kit-Brake-Pads-34116790759.html"
-   ]
-  },
-  {
-   "item": "Front pad set, 328i 2007-2010 / 328i xDrive 2009-2010 (PMB; says match brake package and VIN)",
-   "partNumber": "34116780711",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://pmbperformance.com/products/bmw-brake-pad-set-17"
-   ]
-  },
-  {
-   "item": "Front pad set named in Team-BHP parts list",
-   "partNumber": "34116794917",
-   "status": "CONFLICT",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://r44performance.com/products/genuine-bmw-e90-e93-z4-e89-oem-front-brake-pads-34116794917"
-   ]
-  },
-  {
-   "item": "Pagid OEM front pads (328i/328xi only up to 09/2007 production)",
-   "partNumber": "34116799166",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/p-15878-oem-front-brake-pads-e82-e9x-e89/"
-   ]
-  },
-  {
-   "item": "Front pad wear sensor, non-xDrive",
-   "partNumber": "34356789440",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
-    "https://www.turnermotorsport.com/p-361173-front-brake-pad-wear-sensor/",
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-751-bremmen-parts?Nrpp=50"
-   ]
-  },
-  {
-   "item": "Front pad wear sensor, xDrive/xi",
-   "partNumber": "34356789441",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.bimmerworld.com/Brakes/Sensors-ABS-Wear/Brake-Pad-Sensor-34356789441.html",
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-266-bowa?Nrpp=48"
-   ]
-  },
-  {
-   "item": "Front pad wear sensor alternate; fitment not stated (possibly later-build supersession; unverified)",
-   "partNumber": "34356792560",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-266-bowa?Nrpp=48"
-   ]
-  },
-  {
-   "item": "Pad anti-squeal paste (BMW)",
-   "partNumber": "83192158851",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
-   ]
-  },
-  {
-   "item": "Caliper carrier Torx bolt M12x1.5x43 (replace-when-removed; only if carrier removed, not needed for pads only)",
-   "partNumber": "34106864424",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/p-394625-torx-screw-with-wash/",
-    "https://www.turnermotorsport.com/p-47096357-caliper-hex-bolt/"
-   ]
-  },
-  {
-   "item": "Front rotors / rotor+pad kit 34116855006KIT (FCP page references it for 328i xDrive; kit contents not confirmed)",
-   "partNumber": "34116855006KIT",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.fcpeuro.com/blog/front-bmw-e90-brake-replacement-diy-video"
-   ]
-  }
- ],
- "fluids": [
-  {
-   "item": "Brake fluid (top-off only; spec/capacity not researched)",
-   "spec": "MISSING",
-   "capacity": "MISSING",
-   "status": "MISSING",
-   "sources": []
-  }
- ],
- "torque": [
-  {
-   "fastener": "Wheel bolts (M12x1.5, 17 mm hex)",
-   "value": "120 Nm (89 lb-ft)",
-   "status": "VERIFIED",
-   "sources": [
-    "https://blog.ecstuning.com/?p=1238",
-    "https://www.m3post.com/forums/showthread.php?p=25539406",
-    "https://g42.bimmerpost.com/forums/showthread.php?p=6673488",
-    "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
-   ],
-   "conflicts": "All secondary sources (retailer article for M3, two forum lists, one blog); no BMW owner's manual or TIS document found. BimmerWorld lists 75 ft-lb for its aftermarket NUTS only (not bolts)."
-  },
-  {
-   "fastener": "Front caliper guide bolts (328i)",
-   "value": "MISSING",
-   "status": "MISSING",
-   "sources": [
-    "https://www.m3post.com/forums/showthread.php?p=4835403"
-   ],
-   "conflicts": "One M3-thread poster gives 22 ft-lb for guide bolts front and rear; single forum source, E9x M3 context, not 328i-verified."
-  },
-  {
-   "fastener": "Front caliper carrier (bracket) bolts, only if carrier removed",
-   "value": "MISSING for 328i",
-   "status": "MISSING",
-   "sources": [
-    "https://g42.bimmerpost.com/forums/showthread.php?p=5223168",
-    "https://blog.ecstuning.com/?p=1238"
-   ],
-   "conflicts": "Bimmerpost: 110 Nm (BMW Performance 135i-style caliper) vs about 80 Nm advice (unsourced); ECS M3/F10 big-brake kit article: bracket 110 Nm, mounting 115 Nm. Different calipers; not applicable to a 328i without confirmation."
-  },
-  {
-   "fastener": "Wear sensor, wheel-liner screws/nuts",
-   "value": "MISSING",
-   "status": "MISSING",
-   "sources": [],
-   "conflicts": null
-  }
- ],
- "steps": [
-  {
-   "n": 1,
-   "title": "Prepare and loosen wheel bolts",
-   "instruction": "Park on level ground, loosen the 17 mm wheel bolts a turn while the car is on the ground, then lift and support the car on stands at the proper jack points.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Never work under a car supported only by a jack.",
-    "xDrive center-front jack point differs from RWD (single forum source); confirm location."
-   ]
-  },
-  {
-   "n": 2,
-   "title": "Remove wheel and expose sensor",
-   "instruction": "Take the wheel off. Pad wear sensor wiring runs to a small junction box high in the wheel well; liner fasteners may need removing to reach it.",
-   "status": "SINGLE_SOURCE",
-   "warnings": []
-  },
-  {
-   "n": 3,
-   "title": "Unclip wear sensor from pad",
-   "instruction": "Pull the sensor from the pad face with a small screwdriver. On a car with a sensor, the small spring clip often stays on the old pad; keep it if the new sensor lacks one. Only one front sensor is listed per car (not per wheel) by several retailers; confirm which side on your car.",
-   "status": "CONFLICT",
-   "warnings": [
-    "Sources disagree whether front sensors exist on one or both sides; M3 thread mentions both pads on M3."
-   ]
-  },
-  {
-   "n": 4,
-   "title": "Remove anti-rattle spring",
-   "instruction": "Pry the anti-rattle clip out of the caliper with screwdrivers or pliers, shielding paint.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Spring can fly out; wear eye protection."
-   ]
-  },
-  {
-   "n": 5,
-   "title": "Release caliper",
-   "instruction": "Pop the plastic caps off the guide bolts, back each bolt out with the correct hex socket until the caliper slides off the carrier (in the M3 thread the bolts only need unthreading).",
-   "status": "VERIFIED",
-   "warnings": [
-    "Hex size for the 328i front guide bolts is not confirmed (7 mm vs 17 mm vs 5/8 in reported across sources)."
-   ]
-  },
-  {
-   "n": 6,
-   "title": "Support caliper and remove pads",
-   "instruction": "Hang or rest the caliper so the hose carries no load. Slide out the outer pad, then pry the inner pad from the piston retaining clips.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Do not let the caliper hang by its brake hose."
-   ]
-  },
-  {
-   "n": 7,
-   "title": "Retract piston",
-   "instruction": "Use the old inner pad as a pressure spreader and push the piston back gently with a clamp or spreader. Watch the reservoir level so it does not overflow; opening the cap may help.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Piston can be stiff; check fluid level."
-   ]
-  },
-  {
-   "n": 8,
-   "title": "Clean and lubricate",
-   "instruction": "Clean the carrier with brake cleaner, avoiding rubber and paint. Lightly lubricate guide bolts and apply a thin film of anti-squeal paste to metal-to-metal contact points only, never on friction faces or the rotor.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Keep grease and paste off pad friction material and rotor."
-   ]
-  },
-  {
-   "n": 9,
-   "title": "Inspect rotor",
-   "instruction": "Check rotor condition and thickness; replace or resurface if scored or worn. Rotor minimum thickness values were not researched.",
-   "status": "SINGLE_SOURCE",
-   "warnings": [
-    "Rotor minimum thickness specs: MISSING."
-   ]
-  },
-  {
-   "n": 10,
-   "title": "Install new pads, sensor, and spring",
-   "instruction": "Fit the pads, reinstall the anti-rattle spring, clip in the new wear sensor and route its cable as the old one ran.",
-   "status": "VERIFIED",
-   "warnings": []
-  },
-  {
-   "n": 11,
-   "title": "Refit caliper and torque",
-   "instruction": "Slide the caliper back, tighten guide bolts, refit caps. Torque value for the 328i: MISSING (do not state a number).",
-   "status": "MISSING",
-   "warnings": [
-    "Torque to BMW specification obtained from owner-approved source before publication."
-   ]
-  },
-  {
-   "n": 12,
-   "title": "Wheel on and torque",
-   "instruction": "Mount wheel, snug bolts, lower the car, then torque the wheel bolts to 120 Nm in a star pattern.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Torque value is secondary-source only."
-   ]
-  },
-  {
-   "n": 13,
-   "title": "Seat pads",
-   "instruction": "Before driving, pump the brake pedal until firm. Then bed in with a gentle drive and several firm stops for non-OEM or performance pads (OEM pad bed-in not required per one source).",
-   "status": "VERIFIED",
-   "warnings": [
-    "Check pedal feel and fluid level before moving the car."
-   ]
-  },
-  {
-   "n": 14,
-   "title": "Reset CBS brake service",
-   "instruction": "With a new wear sensor fitted, ignition on engine off, use the instrument-cluster trip/odometer reset button to reach the brake service item, hold until RESET appears, press again until the indicator clears. If it fails, use a BMW-capable scan tool (Service > Maintenance > CBS reset, choose front brake).",
-   "status": "VERIFIED",
-   "warnings": [
-    "Reset only works with a new wear sensor fitted (Hella). Reader reports of failure on some 2010 328i displays."
-   ]
-  }
- ],
- "safety": [
-  "Support car on rated jack stands; never rely on the jack.",
-  "Brake dust: do not blow with compressed air; use brake cleaner and wet wipe.",
-  "Do not let the caliper hang by the brake hose.",
-  "After the job, test brakes at low speed before driving normally.",
-  "Wheel bolts must be torqued; re-check after first drive (general practice; not source-verified)."
- ],
- "missingEvidence": [
-  "Front pad PN for this exact car (brake package, build date, xDrive or not): candidates conflict.",
-  "328i front caliper guide bolt torque and hex size; carrier bolt torque.",
-  "Authoritative BMW (TIS/owner's manual) wheel bolt torque; only secondary sources for 120 Nm.",
-  "Front-specific step-by-step for 328i (FCP video not transcribed).",
-  "Rotor minimum thickness and discard thickness.",
-  "Brake fluid spec and DOT level.",
-  "Which side(s) have front wear sensors on a 328i.",
-  "Whether N51B30/transmission/xDrive alters any step."
- ],
- "ownerInputsNeeded": [
-  "Production date (door jamb sticker) to split sensor/pad fitment at 03/2010.",
-  "Drivetrain: RWD or xDrive (VIN decode or badge).",
-  "Front brake size/package (rotor diameter and thickness stamped on rotor).",
-  "Whether front wear sensor is currently installed and if warning light is on.",
-  "Approve source for torque values (BMW TIS/Bentley) before publishing."
- ]
+  "guide": 1,
+  "name": "Front Brake Pads",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": false,
+  "recommendedStatus": "BUILDABLE_WITH_OWNER_CHECKS",
+  "summary": "Second pass closed the main safety gaps. Front caliper guide-pin torque (30 Nm, 7 mm hex), carrier-bolt torque (110 Nm, 18 mm socket) and wheel-bolt torque (120 Nm) now each have 3+ independent secondary sources, so they are VERIFIED_SECONDARY; no BMW TIS/owner's-manual page could be fetched (workshop-manuals.com TIS mirror and BMW manuals were unreachable or truncated), so primary:false. The front wear sensor is on the driver (left) front only (3 sources). A 2010 car (built after 09/2007) takes the 312x24 front brake: pad set 34116790759 (2009+) or its predecessor 34116780711; sensor 34356789440 (RWD, to 03/2010) or its successor 34356792560 (03/2010+), 34356789441 / 34356792561 for xDrive. NHTSA decodes the VIN as a 2010 BMW 328i sedan, 3.0 L, 230 hp, built in Munich. Still open: rotor discard thickness (sources conflict; read the MIN TH stamp on the rotor), the exact production month (sensor split at 03/2010), and the factory fastener torque for the wheel-liner screws.",
+  "variantDependencies": [
+    "VIN WBAPH7C58AA175760 decodes at NHTSA vPIC (check digit valid) to: BMW 328i, 2010, Sedan, 3.0 L, 230 hp, Munich, TPMS Direct. NHTSA gives no engine code, so N52B30 is consistent (230 hp is the US N52 rating) but still an assumption. [https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010]",
+    "RWD vs xDrive: NHTSA returns DriveType AWD for the sister pattern WBAPK7C5 but no drive type for WBAPH7C5 (this VIN), which points to RWD. Not proven; the owner should confirm (badge or rear differential). Only sensor part numbers and the front jack point differ.",
+    "Production date: the VIN gives model year 2010 only. Pad fitment splits at 09/2007 (this car is after it) and sensor fitment splits at 03/2010 (cannot be resolved without the door-jamb date).",
+    "Brake package: front 312x24 rotor on 328i built after 09/2007 per Bimmerworld and Turner; Pelican staff say 312x24 vs 320x24 depends on VIN. Confirm the rotor diameter from the car.",
+    "Engine N52B30 vs N51B30: no source shows the pad job differing. NHTSA 230 hp is the N52 figure (N51 SULEV is rated lower in US trims per general knowledge, not source-verified).",
+    "Transmission: no source shows any effect on this job.",
+    "Front caliper guide-pin head: sources agree on a hex socket head (7 mm FCP/Autodoc, 6 mm in one Pelican staff reply). BMW service data also lists a hexagon-head guide screw at 35 Nm for some cars; a 328i-style front uses the socket-head variant at 30 Nm per FCP and Autodoc. Check the head before applying a torque."
+  ],
+  "tools": [
+    {
+      "item": "Floor jack, rated jack stands (2 minimum, 4 if lifting the whole car), wheel chocks",
+      "status": "VERIFIED",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=19280433",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "item": "17 mm wheel-bolt socket (1/2 in drive), breaker bar",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://blog.ecstuning.com/?p=1238",
+        "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+      ]
+    },
+    {
+      "item": "7 mm hex (Allen) socket for the two front caliper guide pins (a 6 mm bit fit poorly on some cars)",
+      "conflicts": "One Pelican staff reply says a 6 mm bit worked on its car while a reader found 6 mm too large; FCP and Autodoc both say 7 mm. Use 7 mm and test fit.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.m3post.com/forums/showthread.php?p=4835403",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+      ]
+    },
+    {
+      "item": "18 mm socket (deep, 3/8 or 1/2 in drive) for the two caliper carrier bolts, only if the carrier or rotor comes off",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm"
+      ]
+    },
+    {
+      "item": "6 mm hex bit for the rotor retaining screw, only if replacing rotors",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=7051703"
+      ]
+    },
+    {
+      "item": "Torque wrench covering 16 to 120 Nm (about 12 to 90 lb-ft); ideally a small one for 30 Nm and a large one for 110/120 Nm",
+      "status": "VERIFIED",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i"
+      ]
+    },
+    {
+      "item": "Piston wind-back tool, large C-clamp or caliper spreader (front piston is pushed straight in, no twisting needed per the sources)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/e90-brake-pads-replacement/",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "item": "Flat-blade screwdriver and pliers or needle-nose pliers (anti-rattle spring, sensor, caps)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+      ]
+    },
+    {
+      "item": "8 mm and 10 mm nut drivers or sockets and a Phillips screwdriver, only if the wheel-liner must be loosened to reach the sensor connector",
+      "status": "VERIFIED",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=7051703",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pad-wear-sensor-on-bmw-3-saloon-e90-replacement-guide-36986",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+      ]
+    },
+    {
+      "item": "Wire brush, brake cleaner, silicone-based caliper grease for guide pins, anti-squeal paste for pad-to-carrier contact points",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/e90-brake-pads-replacement/"
+      ]
+    },
+    {
+      "item": "Micrometer or vernier caliper to measure rotor thickness against the stamped minimum",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "item": "Cluster trip/odometer reset button (CBS reset needs no tool); BMW-capable scan tool as fallback",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.techtips.ie/Hella-Ireland/bmw---service-reset-condition-based-service-cbs--brake-pads.pdf",
+        "https://www.youcanic.com/bmw-brake-light-service-reset-instructions/",
+        "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+        "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "Front pad set, 328i / 328i xDrive built 2009 onward (BMW kit; Bimmerworld says original pad for E9X LCI 328i from 2009; PMB lists 328i and 328i xDrive 2009-2013). Kit contents (clips, sensor) not stated.",
+      "partNumber": "34116790759",
+      "primary": false,
+      "note": "Best match for a 2010 build. Confirm against the old pads and VIN.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.bimmerworld.com/Brakes/Street-Performance-Brake-Pads/OEM-BMW-Brakes-Repair-Kit-Brake-Pads-34116790759.html",
+        "https://pmbperformance.com/products/bmw-brake-pad-set-71"
+      ]
+    },
+    {
+      "item": "Front pad set, 328i / 328i xDrive / 328xi, built after 09/2007 (predecessor number; PMB lists 2007-2010; FCP and Leebmann24 (BMW-style fitment table with production dates, E90 from 09/2007) list it)",
+      "partNumber": "34116780711",
+      "primary": false,
+      "note": "Same 312x24 brake family. No retailer states whether 34116790759 formally supersedes it; treat as alternate and match the old pad shape.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://pmbperformance.com/products/bmw-brake-pad-set-17",
+        "https://www.fcpeuro.com/BMW-parts/328xi/Brake-Pads?page=2",
+        "https://www.leebmann24.com/fr/en/product/bmw-repair-kit-brake-pads-asbestos-free-10159514"
+      ]
+    },
+    {
+      "item": "Front pad set for cars built up to 09/2007 only (not for this car)",
+      "partNumber": "34116799166 (also 34116771868 Textar-listed)",
+      "note": "Excluded: Turner and ECS both limit it to production up to 09/2007.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.turnermotorsport.com/p-15878-oem-front-brake-pads-e82-e9x-e89/",
+        "https://www.ecstuning.com/BMW-E90-328xi-N52_3.0L/Braking/Pads/Front/2"
+      ]
+    },
+    {
+      "item": "Front pad set named in the Team-BHP post (listed by a retailer for 330/335-class cars, not 328i)",
+      "partNumber": "34116794917",
+      "conflicts": "Do not use for a 328i unless a parts counter confirms by VIN.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://r44performance.com/products/genuine-bmw-e90-e93-z4-e89-oem-front-brake-pads-34116794917"
+      ]
+    },
+    {
+      "item": "Front pad wear sensor, non-xDrive, built up to 03/2010",
+      "partNumber": "34356789440",
+      "primary": false,
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+        "https://www.turnermotorsport.com/p-361173-front-brake-pad-wear-sensor/",
+        "https://www.bimmerworld.com/Brakes/Sensors-ABS-Wear/Brake-Wear-Sensor-34-35-6-789-440.html"
+      ]
+    },
+    {
+      "item": "Front pad wear sensor, non-xDrive, built from 03/2010 (Bimmerworld: supersedes 34356789440; Turner and Brembo/Febi/URO listings say 03/2010+)",
+      "partNumber": "34356792560",
+      "primary": false,
+      "note": "Bowa listing gives overall length 692 mm. Compare to the old sensor length if unsure.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.bimmerworld.com/Brakes/Sensors-ABS-Wear/Brake-Pad-Sensor-34356792560.html",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-133-bmw-pad-wear-sensors",
+        "https://www.turnermotorsport.com/p-5987821-front-brake-wear-sensor-bmw-328i-xdrive-2011-2013-335i-xdrive-2011-2013-335is-2011/"
+      ]
+    },
+    {
+      "item": "Front pad wear sensor, xDrive, built up to 03/2010",
+      "partNumber": "34356789441",
+      "primary": false,
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.bimmerworld.com/Brakes/Sensors-ABS-Wear/Brake-Pad-Sensor-34356789441.html",
+        "https://www.ecstuning.com/BMW-E90-328xi-N52_3.0L/Braking/Pads/Front/2",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-133-bmw-pad-wear-sensors"
+      ]
+    },
+    {
+      "item": "Front pad wear sensor, xDrive, built from 03/2010 (listing description says Front Left)",
+      "partNumber": "34356792561",
+      "note": "ECS lists the Bremmen version under an E84 title, so fitment text is unreliable; Turner is the only clean E90 source.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-133-bmw-pad-wear-sensors",
+        "https://www.ecstuning.com/BMW-E90-328xi-N52_3.0L/Braking/Pads/Front/2"
+      ]
+    },
+    {
+      "item": "Front brake rotor 312 x 24 mm, 328i / 328xi, not for 2007 328i (supersedes 34116855006 and 34116774875 per Bimmerworld; Turner sells the Pagid pair as 34116774875P)",
+      "partNumber": "34116792219",
+      "primary": false,
+      "note": "Only if the rotor is below minimum or damaged. FCP also references 34116855006KIT for a 2010 328i xDrive front/rear kit (contents not stated).",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.bimmerworld.com/Brakes/Brake-Rotors/Front-Brake-Rotor-Genuine-BMW-F22-F30.html",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-108-bmw-oem-replacement-brake-rotors-discs/m-122-pagid?Nrpp=48"
+      ]
+    },
+    {
+      "item": "BMW low-viscosity DOT 4 brake fluid for top-off (see fluids)",
+      "partNumber": "81220142156",
+      "primary": false,
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.ecstuning.com/BMW-E90-330i-N52_3.0L/Braking/Fluid/",
+        "https://www.bimmerworld.com/About-Us/BMW-Brake-Fluid-Types/Genuine-BMW-DOT4-ESL-Low-Viscosity-Brake-Fluid-81220142156.html"
+      ]
+    },
+    {
+      "item": "BMW anti-squeal paste",
+      "partNumber": "83192158851",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+      ]
+    },
+    {
+      "item": "Caliper carrier bolt: Turner lists 34106864424 (M12x1.5x43, replace-when-removed) while another Turner listing gives 34116772428 (M12x1.5x32, generic E90 carrier bolt)",
+      "partNumber": "34106864424 vs 34116772428",
+      "conflicts": "Listings differ in length and drive; both are only needed if the carrier is removed. The 34116772428 listing is generic E90 and may be the rear bolt. Not required for a pad swap.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.turnermotorsport.com/p-394625-torx-screw-with-wash/",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-884-bmw-rear-caliper-hardware"
+      ]
+    },
+    {
+      "item": "Pad wear sensor clip (clip accessory)",
+      "partNumber": "34356779356",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-133-bmw-pad-wear-sensors"
+      ]
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Brake fluid, top-off only after pushing the piston back",
+      "spec": "DOT 4 low-viscosity (BMW 81 22 0 142 156). Bimmerworld: low viscosity is factory fill for most 2004+ BMWs with DSC; ECS lists it first for E90 N52. Verify the cap or reservoir label before topping off.",
+      "capacity": "Top-off only; no capacity needed (a full flush is about three 355 mL bottles per ECS, not part of this job).",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.bimmerworld.com/About-Us/BMW-Brake-Fluid-Types/Genuine-BMW-DOT4-ESL-Low-Viscosity-Brake-Fluid-81220142156.html",
+        "https://www.ecstuning.com/BMW-E90-330i-N52_3.0L/Braking/Fluid/"
+      ]
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Wheel bolts (M12x1.5, 17 mm hex, 5 per wheel)",
+      "value": "120 Nm (88.5 lb-ft)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pad-wear-sensor-on-bmw-3-saloon-e90-replacement-guide-36986",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy",
+        "https://blog.ecstuning.com/?p=1238",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=6673488"
+      ],
+      "conflicts": "Dissent: koleso.ee wheel database lists 115 Nm (https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488, no source given); FCP converts to 119 Nm / 88 lb-ft. Department 69 quotes BMW TIS (via workshop-manuals.com) for 120 Nm, but that page was not fetchable, so no primary copy was read.",
+      "primary": false
+    },
+    {
+      "fastener": "Front caliper guide pins (7 mm hex socket-head)",
+      "value": "30 Nm (22 lb-ft)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy"
+      ],
+      "conflicts": "Hexagon-head guide screw variant is listed at 35 Nm in the Bolidenforum BMW-data table. An older E36/E46 site gives 22 lb-ft (same number, different chassis, not counted). Department 69 repeats FCP, not independent.",
+      "primary": false
+    },
+    {
+      "fastener": "Front caliper carrier (bracket) bolts, M12x1.5, 18 mm",
+      "value": "110 Nm (81 lb-ft)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=5223168"
+      ],
+      "conflicts": "An unsourced forum moderator suggests about 80 Nm and warns 110 Nm can stretch the bolt; three tables (FCP, Autodoc, Bolidenforum BMW-data) and the Bimmerpost OP all say 110. A BMW data row for an aluminium caliper variant says 115 Nm (BMW 5-series page), not this car. Use 110 Nm and replace the bolts if BMW or the parts counter requires it.",
+      "primary": false
+    },
+    {
+      "fastener": "Rotor retaining screw (6 mm hex), only if rotor removed",
+      "value": "16 Nm (12 lb-ft)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en"
+      ],
+      "conflicts": null,
+      "primary": false
+    },
+    {
+      "fastener": "Wear sensor wheel-liner fasteners / junction box door",
+      "value": "MISSING (no spec found; do not over-tighten)",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": "Sources only give sizes (8/10 mm). Treat as snug hand-tight plastic trim fasteners."
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Prepare the car",
+      "instruction": "Park on level ground, chock the rear wheels, put the car in Park or first gear. Open the hood and unscrew the brake-fluid reservoir cap (optional but recommended so the level can rise as the piston is pushed back); keep the cap clean. Do not press the brake pedal while any caliper is off.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Brake fluid damages paint; wipe spills at once.",
+        "Never press the brake pedal with the caliper removed."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html"
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Loosen the wheel bolts on the ground",
+      "instruction": "With the car still on the ground, break each 17 mm wheel bolt loose about one turn.",
+      "status": "VERIFIED",
+      "warnings": [
+        "If locking bolts are fitted, find the key first."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Lift the front and support it on stands",
+      "instruction": "Raise the front using the plastic jack pads at the sill and place rated stands under the jack points; leave the car level and stable before removing a wheel. The center front lift point on xDrive is reported to differ from RWD. Sources disagree on the rear center point, so use the side jack points for any lifting that you cannot verify.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Never work under a car held only by a jack.",
+        "Do not jack on the rear differential cover; one source says BMW forbids rear-center jacking on E90 (see guide 13 for the jack-point conflict)."
+      ],
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=19280433",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14807196",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=37910"
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Remove the wheel",
+      "instruction": "Remove the bolts while holding the wheel, then lift it off.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Support the wheel; it is heavy."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Remove the anti-rattle spring",
+      "instruction": "Pry the retaining spring off the caliper with a flat screwdriver while holding it with your other hand. Keep it if it is clean; Hella advises replacing it on older cars because it is preloaded and fatigues.",
+      "status": "VERIFIED",
+      "warnings": [
+        "The spring can fly off; wear eye protection."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Remove the two guide pins",
+      "instruction": "Pop the rubber or plastic dust caps off the guide pins, clean the pin heads with a wire brush and spray lubricant, then unscrew both pins with a 7 mm hex socket until the caliper is free.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Check the hex size before turning; do not round the socket heads.",
+        "Keep the pin boots intact."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+        "https://www.m3post.com/forums/showthread.php?p=4835403"
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Take the caliper off and support it",
+      "instruction": "Spread the pads slightly with a screwdriver or pry bar, slide the caliper off the rotor, and hang it from the spring/strut with wire or rest it on a stand.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never let the caliper hang by the brake hose."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "n": 8,
+      "title": "Disconnect and remove the wear sensor (driver side only)",
+      "instruction": "The front wear sensor is on the driver (left) front brake only. Pull it straight out of the inner pad, unhook its wire from the strut bracket, open the small plastic door behind the strut (or lift the cover high in the wheel well), press the connector tab and separate the plug. Skip this step on the passenger front.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Old sensors can be brittle and snap; replace the sensor with every pad change.",
+        "Passenger-side front has no sensor."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+        "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Remove the old pads and clips",
+      "instruction": "Slide the outer pad out of the caliper carrier; the inner pad is held by a clip in the piston and pries out. Note the position of the metal clip that often stays on the old inner pad and any carrier abutment clips.",
+      "status": "VERIFIED",
+      "warnings": [],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Inspect and measure the rotor",
+      "instruction": "Check for cracks, scoring, a raised lip and measure thickness at several points with a micrometer; compare with the MIN TH value stamped on the rotor. Replace rotors in pairs if at or below minimum. Published minimums conflict (see torque and missingEvidence), so the stamp decides.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Do not use an unsourced number from a forum; the rotor stamp governs."
+      ],
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Specification_Checking/BRAKES-Brake_Rotor_Specification_Checking.htm",
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html"
+      ]
+    },
+    {
+      "n": 11,
+      "title": "Clean and lubricate",
+      "instruction": "Clean the carrier abutments with a wire brush and brake cleaner (not on rubber), check the guide-pin boots, put a thin film of silicone-based caliper grease on the pin sliding surfaces only (never mineral oil near rubber), and put a thin film of anti-squeal paste on the pad backing contact points on the carrier.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Keep grease and paste off pad friction material and rotor faces."
+      ],
+      "sources": [
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/e90-brake-pads-replacement/"
+      ]
+    },
+    {
+      "n": 12,
+      "title": "Retract the piston",
+      "instruction": "Push the piston straight back into the caliper with a wind-back tool or clamp against the old inner pad, watching the reservoir so it does not overflow.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Open the reservoir cap first and mop spills."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html"
+      ]
+    },
+    {
+      "n": 13,
+      "title": "Fit the new pads and sensor",
+      "instruction": "Fit the new pads with friction material facing the rotor and clips seated; on the driver front, press the new wear sensor into its channel on the inner pad and route the wire as before. Do not reuse the old sensor.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Check that the spring and clips are not bent."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+      ]
+    },
+    {
+      "n": 14,
+      "title": "Refit the caliper and guide pins",
+      "instruction": "Slide the caliper over the pads and rotor, thread both guide pins in by hand, then torque them to 30 Nm. Refit the dust caps, then refit the anti-rattle spring and make sure it is seated. Reconnect the sensor plug, close the junction box door, clip the wire back.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "30 Nm is secondary-sourced only (no BMW document read).",
+        "Confirm the pin head type first (socket-head vs hexagon-head)."
+      ],
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en"
+      ]
+    },
+    {
+      "n": 15,
+      "title": "Optional branch: rotor replacement",
+      "instruction": "If replacing the rotor: remove the two 18 mm carrier bolts (breaker bar), lift off the carrier, remove the 6 mm rotor screw, clean the hub face of rust, fit the new rotor and torque the screw to 16 Nm, reinstall the carrier and torque its bolts to 110 Nm, then continue from step 12. Leave the parking brake off.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Replace rotors and pads together.",
+        "Carrier bolt torque is secondary-sourced (110 Nm)."
+      ],
+      "sources": [
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en"
+      ]
+    },
+    {
+      "n": 16,
+      "title": "Refit the wheel and torque",
+      "instruction": "Clean the hub contact face, optionally put a thin film of copper grease only where the rotor hat meets the wheel, mount the wheel, thread the bolts by hand, snug them, lower the car, then torque to 120 Nm in a crisscross sequence.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Torque value is secondary-sourced; BMW TIS (per Department 69) also says to re-check all wheel bolts after installation.",
+        "Do not put grease on the bolt threads or cones."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy",
+        "https://blog.ecstuning.com/?p=1238"
+      ]
+    },
+    {
+      "n": 17,
+      "title": "Pump the pedal and check fluid",
+      "instruction": "Before starting the engine, pump the brake pedal until it is firm (about two-thirds travel). Then check the reservoir; top up to MAX with DOT 4 low-viscosity fluid and refit the cap.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not drive until the pedal is firm."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+      ]
+    },
+    {
+      "n": 18,
+      "title": "Reset the brake service indicator",
+      "instruction": "With a new sensor fitted and ignition on (engine off), use the trip/odometer reset button to reach the brake service item, hold until RESET shows, press again to confirm. If the cluster method fails, use a BMW-capable scan tool (service functions, CBS reset, front brakes).",
+      "status": "VERIFIED",
+      "warnings": [
+        "Reset requires the new sensor to be fitted and both axle sensors intact (Pelican staff).",
+        "Some 2010 cluster reports of failure; generic OBD tools may not reset CBS."
+      ],
+      "sources": [
+        "https://www.techtips.ie/Hella-Ireland/bmw---service-reset-condition-based-service-cbs--brake-pads.pdf",
+        "https://www.youcanic.com/bmw-brake-light-service-reset-instructions/",
+        "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+        "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+      ]
+    },
+    {
+      "n": 19,
+      "title": "Test and bed in",
+      "instruction": "Road-test at low speed, check pedal feel and for noise, avoid hard stops for the first 150 to 200 km (Autodoc), then do a few firm stops if the pads call for bedding.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Test brakes in an empty area before normal driving."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ]
+    },
+    {
+      "n": 20,
+      "title": "Re-check the wheel bolts",
+      "instruction": "After the first short drive and again after about 50 to 100 km, re-check wheel-bolt torque.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Re-check interval is general practice; only the 'check again after installation' instruction is attributed to BMW TIS."
+      ],
+      "sources": [
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy"
+      ]
+    }
+  ],
+  "safety": [
+    "Support the car on rated jack stands on a level surface; never rely on the jack. Do not jack on the rear differential cover.",
+    "Never let the caliper hang by its brake hose and never press the pedal with the caliper off.",
+    "Brake dust may be hazardous: wet-wipe or use brake cleaner; do not blow it off with compressed air.",
+    "Do not put grease on friction surfaces; use silicone-based grease on pins and keep mineral oil off rubber boots.",
+    "Torque wheel bolts to 120 Nm crisscross and re-check after a short drive; torques here are secondary-sourced, not from a BMW document.",
+    "Pump the pedal to firm before moving the car and test at low speed."
+  ],
+  "missingEvidence": [
+    "No BMW primary document (TIS, Bentley, owner's manual) was reachable; all torques are secondary (workshop-manuals.com TIS mirror failed to load, owner's manual hosts truncated or robots-blocked).",
+    "Rotor minimum/discard thickness for the 312x24 front rotor: Pelican gives 22.4 mm in one article and an inconsistent 18.4 mm entry in another; no clean source. Read the MIN TH stamp.",
+    "Whether 34116790759 formally supersedes 34116780711 (no retailer states it).",
+    "Factory torque for the wear-sensor liner fasteners (not specified anywhere found).",
+    "Which hex size is used on this exact car's guide pins is only 6-vs-7 mm unresolved in one staff reply; 7 mm is the majority.",
+    "FCP's front and rear video walkthroughs are not transcribed (video only)."
+  ],
+  "ownerInputsNeeded": [
+    "Door-jamb production month/year (to pick sensor 34356789440 vs 34356792560, or xDrive 789441 vs 792561).",
+    "Confirm RWD vs xDrive (badge/differential; NHTSA suggests RWD for this VIN pattern).",
+    "Front rotor diameter and the stamped MIN TH on the rotor (and rotor thickness measured).",
+    "Whether the front sensor is plugged in on the driver side and whether the brake warning is lit.",
+    "Guide-pin head type (socket-head 7 mm vs hexagon-head) before applying torque."
+  ],
+  "visuals": [
+    {
+      "id": "front-caliper-hardware-wheel-well",
+      "title": "Front caliper: spring, dust caps, guide pins and carrier bolts",
+      "evidenceSteps": [
+        5,
+        6,
+        7,
+        14,
+        15
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "front-brake-caliper",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "A floating disc-brake caliper straddling the rotor, seen from the outboard side with the wheel removed."
+        },
+        {
+          "id": "anti-rattle-spring-clip",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "A spring retaining clip fitted on the caliper, pried out with a flat screwdriver."
+        },
+        {
+          "id": "guide-pin-dust-caps",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "Rubber or plastic caps covering the ends of the guide pins."
+        },
+        {
+          "id": "guide-pin-bolt-fasteners",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "Two guide pins with hex-socket heads that hold the caliper to the carrier; they unthread to free the caliper."
+        },
+        {
+          "id": "carrier-bolt-fasteners",
+          "role": "context",
+          "criticality": "critical",
+          "describe": "Two larger hex-head bolts behind the caliper that hold the carrier bracket to the steering knuckle."
+        }
+      ],
+      "facts": [
+        {
+          "element": "front-brake-caliper",
+          "attribute": "existence",
+          "urls": [
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+          ],
+          "note": "3 sites."
+        },
+        {
+          "element": "anti-rattle-spring-clip",
+          "attribute": "location",
+          "urls": [
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html"
+          ],
+          "note": "3 sites say it is a spring on the caliper that is pried off; exact routing/shape is not established."
+        },
+        {
+          "element": "guide-pin-dust-caps",
+          "attribute": "existence",
+          "urls": [
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+          ],
+          "note": "3 sites (Pelican calls them rubber plugs)."
+        },
+        {
+          "element": "guide-pin-bolt-fasteners",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+          ],
+          "note": "3 sites: hex socket (7 mm per FCP/Autodoc; 6 mm per one Pelican staff reply)."
+        },
+        {
+          "element": "guide-pin-bolt-fasteners",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "Gap: no source says where the two guide pins sit (top/bottom or front/back)."
+        },
+        {
+          "element": "carrier-bolt-fasteners",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+            "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+            "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm"
+          ],
+          "note": "4 sites: 18 mm hex head, two bolts."
+        },
+        {
+          "element": "carrier-bolt-fasteners",
+          "attribute": "relationship",
+          "urls": [
+            "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+            "https://www.turnermotorsport.com/BMW-E90-Parts/c-689-bmw-caliper-brackets-and-adapters"
+          ],
+          "note": "3 sites: two bolts from behind, carrier secured to the steering knuckle."
+        },
+        {
+          "element": "front-brake-caliper",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+          ],
+          "note": "Sources describe the caliper sitting on the rotor with the bracket behind it and being tied up off the brake hose; none gives a richer placement statement, so only the generic straddling-rotor placement is supported."
+        },
+        {
+          "element": "anti-rattle-spring-clip",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+            "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+          ],
+          "note": "All four describe an anti-rattle spring/clip on the caliper pried out with a flat screwdriver."
+        },
+        {
+          "element": "guide-pin-dust-caps",
+          "attribute": "location",
+          "urls": [
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+          ],
+          "note": "Autodoc: dust-boot caps of the guide pins; Team-BHP: two plastic caps hiding the caliper bolts; Pelican: rubber plugs on the caliper mounting fasteners."
+        },
+        {
+          "element": "guide-pin-bolt-fasteners",
+          "attribute": "existence",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm"
+          ],
+          "note": "FCP: 7mm hex caliper guide pins (separate from 18mm bolts); Autodoc: hex bit fastening plus guide pins; Team-BHP and Pelican: hex/Allen caliper bolts. Size varies by source (6, 7, 17mm cited)."
+        },
+        {
+          "element": "guide-pin-bolt-fasteners",
+          "attribute": "location",
+          "urls": [
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+            "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+            "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i"
+          ],
+          "note": "Team-BHP: one top, one bottom under caps; Autodoc and FCP: guide pins hold the caliper to its bracket."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "anti-rattle-spring-clip",
+          "reason": "Exact bend shape, orientation and routing are not established."
+        },
+        {
+          "element": "guide-pin-bolt-fasteners",
+          "reason": "Top/bottom or front/back placement of the two pins is not established."
+        },
+        {
+          "element": "front-brake-caliper",
+          "reason": "Brand (ATE/Teves), colour and size depend on brake package and are not established for this car."
+        }
+      ],
+      "sources": {
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138": {
+          "kind": "third-party-guide",
+          "establishes": "Spring, dust caps, guide pins with H7 hex bit, caliper removal order, 30 Nm and 120 Nm."
+        },
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i": {
+          "kind": "third-party-guide",
+          "establishes": "Guide pins 7 mm hex 30 Nm; carrier bolts 18 mm 110 Nm; wheel nuts 119 Nm (E90 incl. 328i)."
+        },
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm": {
+          "kind": "third-party-guide",
+          "establishes": "Spring, rubber plugs, sensor on driver front, plastic door behind strut."
+        },
+        "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html": {
+          "kind": "third-party-guide",
+          "establishes": "Teves FN caliper steps, retaining spring, guide screws, wear indicator replacement."
+        },
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf": {
+          "kind": "third-party-guide",
+          "establishes": "Carrier bolts socket 18 at 110 Nm, guide pins H7 at 30 Nm, rotor screw H6 at 16 Nm."
+        },
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59": {
+          "kind": "third-party-guide",
+          "establishes": "Two caliper (carrier) bolts 18 mm front, one top and one bottom; sensor driver front."
+        },
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm": {
+          "kind": "third-party-guide",
+          "establishes": "Two bracket bolts 18 mm front; 6 mm rotor fastener."
+        },
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-689-bmw-caliper-brackets-and-adapters": {
+          "kind": "parts-catalog",
+          "establishes": "Front carrier is secured to the steering knuckle."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "Caps, spring, caliper support."
+        }
+      }
+    },
+    {
+      "id": "front-wear-sensor-driver-side",
+      "title": "Front pad wear sensor and its connector (driver side only)",
+      "evidenceSteps": [
+        8,
+        13,
+        14
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "pad-wear-sensor-wire",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "A thin wear-sensor wire clipped into the inner brake pad, running up out of the caliper area."
+        },
+        {
+          "id": "sensor-connector-junction-box",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "A small plastic junction box with a door, high in the wheel well behind the strut, holding the sensor plug with a release tab."
+        },
+        {
+          "id": "strut-wire-bracket",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "A bracket on the strut that the sensor wire is hooked to."
+        }
+      ],
+      "facts": [
+        {
+          "element": "pad-wear-sensor-wire",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+            "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+          ],
+          "note": "3 sites: driver (left) front brake only; sensor is on the inner pad (inner per Autodoc/youcanic rear article)."
+        },
+        {
+          "element": "sensor-connector-junction-box",
+          "attribute": "location",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/"
+          ],
+          "note": "2 sites: plastic door/black box high in the wheel well behind the strut."
+        },
+        {
+          "element": "sensor-connector-junction-box",
+          "attribute": "release-mechanism-geometry",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/"
+          ],
+          "note": "2 sites say a connector release tab is pressed; actual tab shape is not described."
+        },
+        {
+          "element": "strut-wire-bracket",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/"
+          ],
+          "note": "1 site only (wire unhooked from the strut bracket)."
+        },
+        {
+          "element": "pad-wear-sensor-wire",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+            "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+          ],
+          "note": "Pelican, YouCanic, DriveDIY and Team-BHP all describe a wear sensor wire in the front pad on the driver side only."
+        },
+        {
+          "element": "sensor-connector-junction-box",
+          "attribute": "existence",
+          "urls": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+            "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/",
+            "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=12036574"
+          ],
+          "note": "Pelican: plastic door behind the front strut; YouCanic and BMWTuning: black box on the wheel well with the connector; Bimmerpost: front plug in junction box behind the strut."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "sensor-connector-junction-box",
+          "reason": "Exact box shape, door hinge and plug design are not established."
+        },
+        {
+          "element": "pad-wear-sensor-wire",
+          "reason": "Passenger-side front has no sensor; depict only the driver side."
+        }
+      ],
+      "sources": {
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm": {
+          "kind": "third-party-guide",
+          "establishes": "Front sensor on driver-side pad; plastic door behind strut; connector tab."
+        },
+        "https://www.youcanic.com/bmw-brake-pad-wear-sensor-replacement/": {
+          "kind": "third-party-guide",
+          "establishes": "Front-left sensor, black box on wheel well, release tab, wire on strut bracket."
+        },
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59": {
+          "kind": "third-party-guide",
+          "establishes": "Sensors on driver front and passenger rear; pull straight out."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "Team-BHP E90-E93 pad DIY: prying anti-rattle clip, two plastic caps hiding caliper guide bolts top and bottom, wear sensor cable on left inner pad, 10mm plastic bolts under wheel-well liner."
+        },
+        "https://bmwtuning.co/e90-brake-pad-sensor-replacement/": {
+          "kind": "third-party-guide",
+          "establishes": "BMWTuning E90 sensor guide: two sensors, front driver side and rear passenger side, connector in little black box in upper wheel well behind liner (10mm plastic nuts)."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=12036574": {
+          "kind": "third-party-guide",
+          "establishes": "Bimmerpost thread: front sensor plug box behind the strut, rear sensor junction box behind the wheel liner."
+        }
+      }
+    }
+  ]
 }

@@ -1,0 +1,57 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Pre-cat oxygen sensor connectors under the engine cover, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Remove engine cover and access covers for the pre-cat sensors\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: Two sensor plugs (one per bank) on the right side of the engine above the exhaust manifold, each seated in a mounting bracket and joined to its sensor by a lead that runs in channels and clips under the engine cover."
+    },
+    {
+      "rank": 2,
+      "text": "A release tab on each plug that is pressed down to separate the halves after the plug is pulled up out of its bracket. Do NOT depict its fine detail: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "engine cover screws",
+    "exhaust manifold top"
+  ],
+  "mustNotShow": [
+    "connector release tab detail (Plug and tab geometry are not described by any source; draw a plain plug with a generic tab mark; no detail)",
+    "engine cover screws detail (Screw positions are not given; show only that three exist)",
+    "precat sensor connectors detail (Do not state which of the two plugs belongs to which bank by position; sources only say bank 1 plug is further toward the rear)",
+    "engine cover (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "04f3459a4e162dbe9cf55b901725af48129082ebbdec3de1e27ca383666d54c9"
+}

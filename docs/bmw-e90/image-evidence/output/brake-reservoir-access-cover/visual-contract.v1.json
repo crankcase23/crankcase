@@ -1,0 +1,213 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "a0ede976c07e84188845abca853730806da497fc04cf48d184897c55ac51956f",
+  "createdAt": "2026-10-10T12:02:28.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-brake-reservoir-access-cover-v1",
+  "maySimplify": [
+    {
+      "element": "cover-fastener-points-unestablished-detail"
+    },
+    {
+      "element": "brake-reservoir-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "microfilter-housing-cover",
+      "id": "MD-microfilter-housing-cover",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "cover-fastener-points",
+      "id": "MD-cover-fastener-points",
+      "requirements": [
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-3",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "identification",
+      "element": "brake-reservoir",
+      "id": "MD-brake-reservoir",
+      "requirements": [
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-3",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-3",
+            "ref-6",
+            "ref-7"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-6",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "cover-fastener-points-unestablished-detail",
+      "id": "MN-excl-cover-fastener-points-unestablished-detail",
+      "reason": "Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified.",
+      "trace": {
+        "attribute": "existence",
+        "element": "cover-fastener-points-unestablished-detail"
+      }
+    },
+    {
+      "element": "brake-reservoir-unestablished-detail",
+      "id": "MN-excl-brake-reservoir-unestablished-detail",
+      "reason": "Cap markings, shape and exact orientation are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "brake-reservoir-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-brake-reservoir-access-cover-v1",
+      "sha256": "5de30ab3143254b65d12e15ce6e100e17f9d9cfbc36e9a227f28155f037f93d7"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "47fec8939009712c6639f76ff0d8a6162bfdebaf98d96da99cea12835270b435"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "78492617e4ea97df520070be039b73f703a9bb31dc4e8071a3a1be25110b8ad4"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-position",
+      "element": "cover-fastener-points",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "cover-fastener-points-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "brake-reservoir-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "brake-reservoir-access-cover"
+}

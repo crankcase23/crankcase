@@ -1,0 +1,60 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Trunk battery area: what sits where, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the trunk battery area\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A single 12 V battery on the right side of the luggage compartment, under the trunk cover/panel."
+    },
+    {
+      "rank": 2,
+      "text": "A distribution box attached to the top of the battery (BMW calls it the rear power distribution box; its fuse links cannot be replaced individually)."
+    },
+    {
+      "rank": 3,
+      "text": "The negative battery post with its clamp; the intelligent battery sensor is part of the negative lead. Do not disturb the sensor."
+    }
+  ],
+  "maySimplify": [
+    "vent hose",
+    "hold down bracket"
+  ],
+  "mustNotShow": [
+    "vent hose detail (Routing path and clip positions on the E90 sedan are not established)",
+    "hold down bracket detail (Exact shape and number of fasteners are not established beyond catalog part list)",
+    "positive terminal cover (Colour/shape only established on an E82 post; avoid detailed geometry)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "0aa906da105c916e43b16718211345259df56ce90ca0462cc163422fa5071456"
+}

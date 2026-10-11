@@ -1,0 +1,59 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Glove-box fuse panel cover, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the glove-box fuse panel\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: Two round plastic quarter-turn fasteners (fastener type: quarter-turn) that hold the fuse panel cover; turned counterclockwise to unlock. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "The removable cover whose back carries the fuse chart sticker."
+    },
+    {
+      "rank": 3,
+      "text": "The junction box fuse panel behind the glove box, reachable once the cover drops. Do NOT depict its fine detail: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "a plain dark ground plane"
+  ],
+  "mustNotShow": [
+    "fuse panel detail (Fuse positions; numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions)",
+    "fuse cover fasteners detail (Exact positions on the cover not established; depict only that there are two round fasteners)",
+    "glove box open (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "72fbd1e422be39e03b5eed2bb8c57b8a55f5c14d299dccd0892e621d91069889"
+}

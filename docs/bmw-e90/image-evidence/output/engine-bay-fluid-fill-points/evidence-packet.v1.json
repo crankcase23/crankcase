@@ -1,0 +1,375 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Engine oil level",
+      "Coolant",
+      "Brake fluid",
+      "Washer fluid"
+    ],
+    "stepNumber": 2,
+    "title": "engine-bay-fluid-fill-points (BMW 328i draft Fluid Checks & Top-Offs guide; evidence step 2, 3, 4, 5)"
+  },
+  "contentHash": "10434b1bafee3bbbc4db0bf7f6a4469f82063ab8a606b3684ba548fe8d7dc449",
+  "createdAt": "2026-10-10T12:02:19.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The cap on the translucent coolant expansion tank, with a filler neck marked MAX and MIN; reported on the passenger side toward the firewall.",
+      "id": "coolant-expansion-tank-cap",
+      "role": "hero"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The washer-fluid filler neck cap, reported black with a wiper symbol, serving window and headlamp washers.",
+      "id": "washer-fluid-filler-cap",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The engine oil filler neck cap on top of the engine.",
+      "id": "engine-oil-filler-cap",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The brake fluid reservoir at the driver-side base of the windshield, hidden under a long plastic cover.",
+      "id": "brake-reservoir-under-cover",
+      "role": "target"
+    },
+    {
+      "criticality": "cosmetic",
+      "describe": "The base of the windshield and wiper arms for orientation.",
+      "id": "windshield-base-and-wipers",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of coolant expansion tank cap: Exact tank shape, cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank.",
+      "id": "coolant-expansion-tank-cap-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of brake reservoir under cover: The reservoir is hidden; do not show cover screw count or the reservoir's cap markings.",
+      "id": "brake-reservoir-under-cover-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of washer fluid filler cap: Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible.",
+      "id": "washer-fluid-filler-cap-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-engine-bay-fluid-fill-points-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "coolant-expansion-tank-cap",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "coolant-expansion-tank-cap",
+      "evidence": [
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "coolant-expansion-tank-cap",
+      "evidence": [
+        "ref-4",
+        "ref-2"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "washer-fluid-filler-cap",
+      "note": "Single source: passenger side near the strut tower, black cap with a wiper symbol. BMW manuals confirm a filler neck exists for headlamp and window washers.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "washer-fluid-filler-cap",
+      "evidence": [
+        "ref-1",
+        "ref-4"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-oil-filler-cap",
+      "evidence": [
+        "ref-1",
+        "ref-5"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "brake-reservoir-under-cover",
+      "evidence": [
+        "ref-6",
+        "ref-7",
+        "ref-8",
+        "ref-9"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "brake-reservoir-under-cover",
+      "evidence": [
+        "ref-6",
+        "ref-10"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "engine-oil-filler-cap",
+      "evidence": [
+        "ref-5",
+        "ref-11"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "brake-reservoir-under-cover",
+      "evidence": [
+        "ref-6",
+        "ref-7",
+        "ref-9"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "windshield-base-and-wipers",
+      "note": "cosmetic context drawn as a plain generic shape; no specific claim",
+      "render": "simplify",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "coolant-expansion-tank-cap-unestablished-detail",
+      "note": "Exact tank shape, cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "brake-reservoir-under-cover-unestablished-detail",
+      "note": "The reservoir is hidden; do not show cover screw count or the reservoir's cap markings.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "washer-fluid-filler-cap-unestablished-detail",
+      "note": "Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "coolant-expansion-tank-cap-unestablished-detail",
+      "id": "excl-coolant-expansion-tank-cap-unestablished-detail",
+      "reason": "Exact tank shape, cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank.",
+      "trace": {
+        "attribute": "existence",
+        "element": "coolant-expansion-tank-cap-unestablished-detail"
+      }
+    },
+    {
+      "element": "brake-reservoir-under-cover-unestablished-detail",
+      "id": "excl-brake-reservoir-under-cover-unestablished-detail",
+      "reason": "The reservoir is hidden; do not show cover screw count or the reservoir's cap markings.",
+      "trace": {
+        "attribute": "existence",
+        "element": "brake-reservoir-under-cover-unestablished-detail"
+      }
+    },
+    {
+      "element": "washer-fluid-filler-cap-unestablished-detail",
+      "id": "excl-washer-fluid-filler-cap-unestablished-detail",
+      "reason": "Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible.",
+      "trace": {
+        "attribute": "existence",
+        "element": "washer-fluid-filler-cap-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "E90 manual p.226: engine compartment items (expansion tank, washer filler, jump-start terminal, oil filler neck)."
+      ],
+      "id": "ref-1",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 328i expansion tank passenger side near firewall, black cap, MIN/MAX."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90-E93 article: expansion tank in the engine compartment in front of the passenger side."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/check-add-coolant-bmw-3-series-2004-2013/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E94 manual p.223-226: engine compartment items, coolant check, washer filler for headlamp and window systems."
+      ],
+      "id": "ref-4",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Oil cap on top of the engine cover."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwtuning.co",
+      "sourceRef": "https://bmwtuning.co/bmw-e90-oil-change/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E92 M3: brake master cylinder driver side near windshield base; access by removing cabin air filter housing."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwblog.com",
+      "sourceRef": "https://www.bmwblog.com/?p=177771",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Reservoir below plastic cover on driver's side."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E82/E88: reservoir drivers side in front of the windshield, plastic cover popped off."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=5432347",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Driver side, behind a plastic cover."
+      ],
+      "id": "ref-9",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "gearshifters.org",
+      "sourceRef": "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Newer models: plastic cover is the microfilter housing."
+      ],
+      "id": "ref-10",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM E90 328i cylinder head cover diagram lists the oil filler cap as part of the cover assembly."
+      ],
+      "id": "ref-11",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "engine-bay-fluid-fill-points"
+}

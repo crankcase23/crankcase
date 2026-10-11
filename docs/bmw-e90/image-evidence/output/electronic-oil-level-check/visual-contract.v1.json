@@ -1,0 +1,203 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "e94d6e6dbb8887611259594e9941ab3cbe5b79fd1ec87aa062fae270ca5f7f04",
+  "createdAt": "2026-10-10T12:03:56.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-electronic-oil-level-check-v1",
+  "maySimplify": [
+    {
+      "element": "idrive-vehicle-status-menu"
+    },
+    {
+      "element": "cluster-oil-readout-unestablished-detail"
+    },
+    {
+      "element": "turn-signal-stalk-button-1-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "procedure",
+      "element": "turn-signal-stalk-button-1",
+      "id": "MD-turn-signal-stalk-button-1",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "turn-signal-stalk-button-2",
+      "id": "MD-turn-signal-stalk-button-2",
+      "requirements": [
+        {
+          "attribute": "action",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "identification",
+      "element": "cluster-oil-readout",
+      "id": "MD-cluster-oil-readout",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "cluster-oil-readout-unestablished-detail",
+      "id": "MN-excl-cluster-oil-readout-unestablished-detail",
+      "reason": "The exact cluster layout, fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only.",
+      "trace": {
+        "attribute": "existence",
+        "element": "cluster-oil-readout-unestablished-detail"
+      }
+    },
+    {
+      "element": "turn-signal-stalk-button-1-unestablished-detail",
+      "id": "MN-excl-turn-signal-stalk-button-1-unestablished-detail",
+      "reason": "The precise position of the button on the stalk end is not described by any retrieved source.",
+      "trace": {
+        "attribute": "existence",
+        "element": "turn-signal-stalk-button-1-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-electronic-oil-level-check-v1",
+      "sha256": "4a3013f8b83853e7bdfb3423a6f4a3cc904b9af01a6490a79ef6ce848b49342b"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "8a607bfe79c544a4215859c8ec6c2b8001a97752ef7bcb5aff497b99a6493620"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "5878c68f2d7ae26830851080e6b4183958588001ecb039be102efe2033124785"
+  },
+  "suppress": [
+    {
+      "attribute": "existence",
+      "element": "idrive-vehicle-status-menu",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "cluster-oil-readout-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button-1-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "electronic-oil-level-check"
+}

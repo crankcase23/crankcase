@@ -1,0 +1,236 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "9c374e000414ffa18df9874988abce36dd8984c091af3b5492e90cc088a04322",
+  "createdAt": "2026-10-10T12:00:24.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-glovebox-fuse-panel-v1",
+  "maySimplify": [
+    {
+      "element": "glove-box-open"
+    },
+    {
+      "element": "fuse-panel-unestablished-detail"
+    },
+    {
+      "element": "fuse-cover-fasteners-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "procedure",
+      "element": "fuse-cover-fasteners",
+      "id": "MD-fuse-cover-fasteners",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-3",
+            "ref-5",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-3",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "identification",
+      "element": "fuse-cover",
+      "id": "MD-fuse-cover",
+      "requirements": [
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-3",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-4",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "identification",
+      "element": "fuse-panel",
+      "id": "MD-fuse-panel",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-1",
+            "ref-3",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "fuse-panel-unestablished-detail",
+      "id": "MN-excl-fuse-panel-unestablished-detail",
+      "reason": "Fuse positions, numbers and puller location are not established; draw as a generic rectangular fuse bank without labelled positions.",
+      "trace": {
+        "attribute": "existence",
+        "element": "fuse-panel-unestablished-detail"
+      }
+    },
+    {
+      "element": "fuse-cover-fasteners-unestablished-detail",
+      "id": "MN-excl-fuse-cover-fasteners-unestablished-detail",
+      "reason": "Exact positions on the cover not established; depict only that there are two round fasteners.",
+      "trace": {
+        "attribute": "existence",
+        "element": "fuse-cover-fasteners-unestablished-detail"
+      }
+    },
+    {
+      "element": "glove-box-open",
+      "id": "MN-excl-glove-box-open",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "glove-box-open"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-glovebox-fuse-panel-v1",
+      "sha256": "1670887852385a8cb28547c5281f73728836b0b73321fe5978589d4622eb6df4"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "1c108203a1d4620b90f87de2e2edbecfedd4ffe0371daa64c2e7edd7e2bbfe44"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "72fbd1e422be39e03b5eed2bb8c57b8a55f5c14d299dccd0892e621d91069889"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-position",
+      "element": "fuse-cover-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "fuse-panel",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "glove-box-open",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-panel-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "fuse-cover-fasteners-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "glovebox-fuse-panel"
+}

@@ -5,9 +5,11 @@
 //                                                            docs/bmw-e90/EVIDENCE-SUMMARY.md
 //
 // Rules this script enforces (so the output cannot quietly overstate the evidence):
-//  * A torque value is printed as a number ONLY when its evidence status is VERIFIED. Anything else renders the
-//    house warning "VERIFY EXACT TORQUE BEFORE SERVICE" and keeps the reference figure in the notes.
-//  * Every step that is not VERIFIED carries a visible warning.
+//  * A torque value is printed as a number ONLY when its evidence status is VERIFIED (BMW document, or 2+ agreeing
+//    sources with a primary) or VERIFIED_SECONDARY (2+ independent hosts, no BMW document; the note says so). Anything
+//    else (SINGLE_SOURCE, CONFLICT, MISSING) renders the house warning "VERIFY EXACT TORQUE BEFORE SERVICE" and keeps
+//    the reference figure in the notes.
+//  * Every step that is not VERIFIED carries a visible warning (secondary-source steps get a milder one).
 //  * Nothing here makes a guide publishable. The output lives in src/data/admin-test-guides, which only /admin imports.
 //
 // Usage: node scripts/bmw/build-drafts.mjs          write outputs
@@ -35,7 +37,7 @@ const META = {
   8: { slug: "coolant", job: "coolant", diff: "Moderate", time: "About 2–3 hours including bleeding" },
   9: { slug: "fluid-checks", job: "fluid-checks", diff: "Easy", time: "About 15–30 minutes" },
   10: { slug: "cabin-air-filter", job: "cabin-air-filter", diff: "Easy", time: "About 15–30 minutes" },
-  11: { slug: "pcv-valve", job: "pcv-valve", diff: "Moderate", time: "Inspection about 30 minutes" },
+  11: { slug: "pcv-valve", job: "pcv-valve", diff: "Moderate", time: "Inspection about 30 minutes; valve cover replacement (advanced) about 3–4 hours" },
   12: { slug: "engine-air-filter", job: "engine-air-filter", diff: "Easy", time: "About 15–30 minutes" },
   13: { slug: "tire-rotation", job: "tire-rotation", diff: "Easy", time: "About 45–60 minutes" },
   14: { slug: "wiper-blades", job: "wiper-blades", diff: "Easy", time: "About 10 minutes" },
@@ -45,13 +47,18 @@ const META = {
 // Jobs with no torqued fastener anywhere in the procedure (types.ts noFasteners rule). Everything else keeps its torque list.
 const NO_FASTENERS = new Set([3, 14]);
 
+// Normalised evidence class. "secondary" = VERIFIED_SECONDARY (2+ independent hosts, no BMW document).
+// Compound strings such as "VERIFIED (capacity); MISSING (spec)" classify by their first token, then downgrade if they
+// also mention a conflict or a missing part.
 function norm(status) {
   const s = String(status ?? "");
   if (/conflict/i.test(s)) return "conflict";
-  if (/^\s*verified/i.test(s)) return "verified";
+  if (/^\s*verified_secondary/i.test(s)) return /missing/i.test(s) ? "missing" : "secondary";
+  if (/^\s*verified/i.test(s)) return /missing/i.test(s) ? "missing" : "verified";
   if (/missing/i.test(s)) return "missing";
   return "single";
 }
+const PRINTABLE = new Set(["verified", "secondary"]);
 
 const q = (s) => JSON.stringify(String(s));
 const files = fs.readdirSync(EVID).filter((f) => /^guide-\d\d\.json$/.test(f)).sort();
@@ -59,7 +66,7 @@ const guides = files.map((f) => JSON.parse(fs.readFileSync(path.join(EVID, f), "
 
 function counts(g) {
   const all = [...g.tools, ...g.parts, ...g.fluids, ...g.torque, ...g.steps];
-  const c = { verified: 0, single: 0, conflict: 0, missing: 0 };
+  const c = { verified: 0, secondary: 0, single: 0, conflict: 0, missing: 0 };
   for (const x of all) c[norm(x.status)]++;
   return c;
 }
@@ -81,13 +88,20 @@ function buildGuide(g) {
   for (const s of g.steps) {
     const st = norm(s.status);
     const warn = [...(s.warnings ?? [])];
-    if (st !== "verified") warn.push(`⚠ ${st === "conflict" ? "SOURCES DISAGREE" : st === "missing" ? "NOT FOUND IN ANY SOURCE" : "SINGLE-SOURCE STEP"} — confirm before relying on it.`);
+    if (st !== "verified") warn.push(`⚠ ${st === "conflict" ? "SOURCES DISAGREE" : st === "missing" ? "NOT FOUND IN ANY SOURCE" : st === "secondary" ? "SECONDARY SOURCES ONLY (no BMW document)" : "SINGLE-SOURCE STEP"} — confirm before relying on it.`);
     steps.push({ title: s.title, instructions: s.instruction, warning: warn.length ? warn.join(" ") : undefined });
   }
   const torque = g.torque.map((t) => {
-    const ok = norm(t.status) === "verified" && t.value && !/missing/i.test(t.value);
+    const st = norm(t.status);
+    const ok = PRINTABLE.has(st) && t.value && /\d/.test(t.value) && !/no torque|not found|missing/i.test(t.value);
     return ok
-      ? { fastener: t.fastener, value: t.value, notes: "Reference from secondary sources only (no BMW document was reachable). Confirm against your owner's manual before use." }
+      ? {
+          fastener: t.fastener,
+          value: t.value,
+          notes: st === "verified"
+            ? `Verified. Confirm against your owner's manual or service data before use.${t.conflicts ? ` Note: ${t.conflicts}` : ""}`
+            : `Secondary-source figure (2+ independent sites agree; no BMW document was reachable). Confirm against BMW service data before use.${t.conflicts ? ` Note: ${t.conflicts}` : ""}`,
+        }
       : {
           fastener: t.fastener,
           value: V_TORQUE,
@@ -104,8 +118,8 @@ function buildGuide(g) {
     slug: m.slug,
     title: `${g.name} — 2010 BMW 328i (DRAFT)`,
     summary:
-      `DRAFT, not published and not certified. Built from secondary sources only; no BMW owner's manual, TIS or ETK document was reachable. ` +
-      `Evidence: ${c.verified} item(s) agreed by 2+ independent sources, ${c.single} single-source, ${c.conflict} conflicting, ${c.missing} not found. ` +
+      `DRAFT, not published and not certified. ${g.primarySourceFound ? "Some facts come from BMW document text (owner's-manual mirrors or training material); the rest from secondary sources." : "Built from secondary sources only; no BMW document was found for the key safety facts."} ` +
+      `Evidence: ${c.verified} verified, ${c.secondary} agreed by 2+ independent secondary sources, ${c.single} single-source, ${c.conflict} conflicting, ${c.missing} not found. ` +
       `Status: ${g.recommendedStatus}.`,
     difficulty: m.diff,
     estTime: `${m.time} (author's estimate)`,
@@ -175,24 +189,46 @@ function ts() {
   return L.join("\n");
 }
 
+// Readiness is about the TEXT of the guide. It is never certification: images, independent QA and owner sign-off are separate.
+function readiness(g) {
+  const rows = [...g.parts, ...g.fluids, ...g.torque, ...g.steps];
+  const conflicts = rows.filter((x) => norm(x.status) === "conflict").length;
+  const missingContent = [...g.parts, ...g.fluids, ...g.steps].filter((x) => norm(x.status) === "missing").length;
+  const blockers = [];
+  if (conflicts) blockers.push(`${conflicts} conflicting item(s)`);
+  if (missingContent) blockers.push(`${missingContent} part/fluid/step item(s) not found`);
+  const caveats = [];
+  const noTorque = g.torque.filter((t) => !PRINTABLE.has(norm(t.status)));
+  if (noTorque.length && !NO_FASTENERS.has(g.guide)) caveats.push(`${noTorque.length} torque value(s) withheld (house VERIFY warning shows)`);
+  if (g.evidenceTier === "safety-critical" && !g.primarySourceFound) caveats.push("safety-critical with no BMW document found");
+  if (g.variantDependencies?.length) caveats.push("configuration items need owner confirmation");
+  return { level: blockers.length ? "NEEDS_EVIDENCE" : "READY_FOR_QA", blockers, caveats };
+}
+
 function md() {
   const L = [];
   L.push("# 2010 BMW 328i (E90) — evidence summary by guide");
   L.push("");
   L.push("GENERATED by `scripts/bmw/build-drafts.mjs` from `docs/bmw-e90/evidence/*.json`. Do not edit by hand.");
   L.push("");
-  L.push("Nothing here is published or certified. No BMW primary document (owner's manual, TIS, ETK) was reachable; every source is a forum, retailer or independent-shop page. \"Verified\" below means 2+ independent secondary sources agree.");
+  L.push("Nothing here is published or certified. Evidence classes: **verified** = a BMW document, or 2+ agreeing sources including one; **secondary** = 2+ independent hosts agree, no BMW document; **single** = one source; **conflict** = sources disagree; **missing** = not found. Criticality tier decides how much evidence a fact needs: safety-critical guides may not print a figure from a single source.");
   L.push("");
-  L.push("| # | Guide | Status | Verified | Single-source | Conflict | Missing |");
-  L.push("|---|---|---|---|---|---|---|");
+  L.push("Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no missing parts/fluids/steps; it is not certification. Certification also needs certified images, independent (Hermes) QA, and owner sign-off. Certified images today: 0.");
+  L.push("");
+  L.push("| # | Guide | Tier | BMW doc | Readiness | Verified | Secondary | Single | Conflict | Missing | Visuals proposed |");
+  L.push("|---|---|---|---|---|---|---|---|---|---|---|");
   for (const g of guides) {
     const c = counts(g);
-    L.push(`| ${g.guide} | ${g.name} | ${g.recommendedStatus} | ${c.verified} | ${c.single} | ${c.conflict} | ${c.missing} |`);
+    L.push(`| ${g.guide} | ${g.name} | ${g.evidenceTier} | ${g.primarySourceFound ? "yes" : "no"} | ${readiness(g).level} | ${c.verified} | ${c.secondary} | ${c.single} | ${c.conflict} | ${c.missing} | ${(g.visuals ?? []).length} |`);
   }
   for (const g of guides) {
+    const r = readiness(g);
     L.push("");
-    L.push(`## ${g.guide}. ${g.name} — ${g.recommendedStatus}`);
+    L.push(`## ${g.guide}. ${g.name} — ${g.recommendedStatus} (${r.level})`);
     L.push("");
+    if (r.blockers.length) L.push(`**Blockers:** ${r.blockers.join("; ")}`, "");
+    if (r.caveats.length) L.push(`**Caveats:** ${r.caveats.join("; ")}`, "");
+    if (g.primaryScope) L.push(`**BMW-document scope:** ${g.primaryScope}`, "");
     L.push("**Missing or unresolved evidence**");
     for (const m of g.missingEvidence) L.push(`- ${m}`);
     L.push("");
@@ -203,6 +239,7 @@ function md() {
   L.push("");
   return L.join("\n");
 }
+
 
 const outputs = [[OUT_TS, ts()], [OUT_MD, md()]];
 if (process.argv.includes("--check")) {

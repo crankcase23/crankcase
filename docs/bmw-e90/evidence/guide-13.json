@@ -1,190 +1,626 @@
 {
- "guide": 13,
- "name": "Tire Rotation",
- "recommendedStatus": "BUILDABLE_PARTIAL",
- "summary": "Rotation pattern depends entirely on the car's tire package: square setups (205/55R16 or 225/45R17 all around) can be cross-rotated; Sport-package staggered 225/45R17 front and 255/40R17 rear can only be swapped side to side if tires are non-directional. Wheel bolt torque 120 Nm is supported only by secondary sources. TPMS reset steps are verified; whether a given car has direct TPMS (RDC) or indirect FTM must be checked on the car. No BMW-published rotation interval found.",
- "variantDependencies": [
-  "Engine (N52B30 vs N51B30 SULEV) UNCONFIRMED: no evidence found that the brake/tire/wiper jobs differ by engine; not a tracked dependency but unverified.",
-  "RWD vs xDrive UNCONFIRMED: front wear sensor part number differs (34356789441 listed for xi/xDrive vs 34356789440 for non-xi); front jack point differs on xDrive.",
-  "Production date UNCONFIRMED: retailer fitment splits at 03/2010 (wear sensors) and 09/2009 (wipers); a 2010 model year car may fall on either side.",
-  "Brake package UNCONFIRMED: retailers split fitment between 'standard' and 'M Performance' front brakes (larger front brake); front pad part number depends on it.",
-  "Transmission (manual vs auto) UNCONFIRMED: no evidence it affects these jobs.",
-  "Tire package: square (16 in 205/55R16 or 17 in 225/45R17) vs Sport-package staggered 17 in (225/45R17 front, 255/40R17 rear) per two retailer tables.",
-  "Directional or asymmetric tires: forum posts disagree on whether stock RE050A is directional; read sidewall.",
-  "TPMS: 2009-13 E90 may have direct TPM or indirect FTM; menu and reset differ.",
-  "RWD vs xDrive: one blog suggests longer rotation interval on xDrive (about 7,000 mi) vs 5,000 mi; only a single blog source and not BMW.",
-  "Spare: compact spare/chains installed must not be present during TPMS reset.",
-  "Tire-package sources: https://www.sizemytires.com/vehicle/2010/bmw/328i-xdrive ; https://www.mavis.com/vehicle/bmw/328i/2010/sedan-wsport-pkg/"
- ],
- "tools": [
-  {
-   "item": "17 mm socket (1/2 in drive) for wheel bolts",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
-    "https://blog.ecstuning.com/?p=1238",
-    "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html"
-   ]
-  },
-  {
-   "item": "Torque wrench (reaches 120 Nm)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://blog.ecstuning.com/?p=1238"
-   ]
-  },
-  {
-   "item": "Floor jack and 2+ jack stands",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://g42.bimmerpost.com/forums/showthread.php?p=19280433"
-   ]
-  },
-  {
-   "item": "Locking-bolt key if car has locking bolts (from BMW wheel-lock set)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
-   ]
-  },
-  {
-   "item": "Tire pressure gauge and inflator (TPMS reset requires correct pressure)",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
-    "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/"
-   ]
-  }
- ],
- "parts": [
-  {
-   "item": "No parts required",
-   "partNumber": null,
-   "status": "VERIFIED",
-   "sources": []
-  },
-  {
-   "item": "Wheel bolts M12x1.5, 17 mm hex, 60-degree tapered seat (replacement only)",
-   "partNumber": null,
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html",
-    "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
-   ]
-  },
-  {
-   "item": "Wheel lock key (if equipped)",
-   "partNumber": null,
-   "status": "MISSING",
-   "sources": []
-  }
- ],
- "fluids": [],
- "torque": [
-  {
-   "fastener": "Wheel bolts",
-   "value": "120 Nm (89 lb-ft)",
-   "status": "VERIFIED",
-   "sources": [
-    "https://blog.ecstuning.com/?p=1238",
-    "https://www.m3post.com/forums/showthread.php?p=25539406",
-    "https://g42.bimmerpost.com/forums/showthread.php?p=6673488",
-    "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
-   ],
-   "conflicts": "All secondary; one source suggests confirming. No BMW document located. BimmerWorld's 75 ft-lb (about 102 Nm) is for its aftermarket nuts, not OE bolts. Staggered/square tire table sources: sizemytires (xDrive 2010) and Mavis (2010 328i Sport package)."
-  },
-  {
-   "fastener": "Tire pressures (front/rear, load-dependent)",
-   "value": "MISSING (read door-jamb/fuel-flap placard)",
-   "status": "MISSING",
-   "sources": [],
-   "conflicts": null
-  }
- ],
- "steps": [
-  {
-   "n": 1,
-   "title": "Identify tire package",
-   "instruction": "Read both front and rear tire sidewalls. Same size all four: square. Wider rear (255/40R17 vs 225/45R17): staggered. Note any directional arrow and the inside/outside labels.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Never rotate front to rear on staggered setups."
-   ]
-  },
-  {
-   "n": 2,
-   "title": "Pick pattern",
-   "instruction": "Square non-directional: cross-rotation or front/rear swap; square directional: swap front and rear same side; staggered non-directional: swap sides only, which needs the tires remounted on wheels (forum estimate about $50 per axle); staggered directional: no rotation without remounting.",
-   "status": "CONFLICT",
-   "warnings": [
-    "Forum sources disagree on RE050A direction; read sidewall. No BMW rotation chart located."
-   ]
-  },
-  {
-   "n": 3,
-   "title": "Loosen bolts and raise car",
-   "instruction": "Loosen wheel bolts a turn on the ground, jack at the jack points (rear: cast-iron differential housing), set stands.",
-   "status": "SINGLE_SOURCE",
-   "warnings": [
-    "Stands, not the jack, hold the car.",
-    "xDrive front jack point differs from RWD."
-   ]
-  },
-  {
-   "n": 4,
-   "title": "Move wheels",
-   "instruction": "Remove wheels and refit per pattern; clean the hub face of rust first.",
-   "status": "SINGLE_SOURCE",
-   "warnings": [
-    "Hub-centric fit; keep mounting face clean (general practice, unsourced)."
-   ]
-  },
-  {
-   "n": 5,
-   "title": "Torque in star pattern",
-   "instruction": "Lower the car and torque all bolts to 120 Nm in a crisscross order.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Torque from secondary sources; re-check after first drive (general practice)."
-   ]
-  },
-  {
-   "n": 6,
-   "title": "Set pressures",
-   "instruction": "Set all four tires to the placard pressure.",
-   "status": "VERIFIED",
-   "warnings": []
-  },
-  {
-   "n": 7,
-   "title": "Reset tire monitor",
-   "instruction": "Direct TPM with iDrive: Vehicle Info > Vehicle Status > RESET TPM after inflating, engine on, then drive a few minutes. FTM (indirect) uses the same Vehicle Status reset. Without iDrive: scroll turn-signal stalk to TPMS RESET and hold the button about 5 s, then drive about 15 min.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Do not reset with compact spare or snow chains fitted.",
-    "Whether sensor positions auto-relearn after rotation: MISSING."
-   ]
-  }
- ],
- "safety": [
-  "Use rated jack stands.",
-  "Never exceed or skip wheel bolt torque; do not torque hot bolts.",
-  "Do not rotate staggered tires front-to-rear.",
-  "Do not reset TPMS with a spare or chains on."
- ],
- "missingEvidence": [
-  "BMW-published rotation interval or pattern guidance for E90.",
-  "BMW document for wheel bolt torque (only secondary).",
-  "TPMS: whether sensors auto-learn position after rotation.",
-  "Tire pressure placard values.",
-  "Wheel-bolt thread/hex for this exact car (one source mentions some later models use M14x1.25).",
-  "Whether stock Sport-package tire is directional."
- ],
- "ownerInputsNeeded": [
-  "Tire sizes front and rear, and any directional arrows.",
-  "RWD or xDrive.",
-  "Whether car has direct TPMS (metal stems, TPM menu) or FTM.",
-  "Locking bolts present?",
-  "Production date."
- ]
+  "guide": 13,
+  "name": "Tire Rotation",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": false,
+  "recommendedStatus": "BUILDABLE_WITH_OWNER_CHECKS",
+  "summary": "Second pass closed the TPMS question: NHTSA vPIC decodes this VIN as a 2010 BMW 328i sedan with TPMS 'Direct' (so metal-stem sensors; reset via iDrive or turn-signal stalk after rotation). Wheel bolt torque 120 Nm now has 6+ independent secondary sources (Autodoc x3 guides, Bolidenforum BMW-data table, FCP 119 Nm, ECS, Bimmerpost, Department 69 quoting TIS) so it is VERIFIED_SECONDARY, with one dissent (koleso.ee 115 Nm); no BMW owner's manual or TIS page could be read, so primary:false. Rotation pattern depends on the tire package: square (205/55R16 or 225/45R17 all round) can be cross-rotated, Sport-package staggered 225/45R17 front and 255/40R17 rear (wheels 8.5J ET40 vs 9J ET30) can only be swapped side to side if non-directional. No BMW-published rotation interval or pattern was found (forum claims that BMW recommends against rotation are secondhand and not E90-specific). The earlier 'lift at the rear differential' advice is withdrawn: sources conflict, so use the side jack pads.",
+  "variantDependencies": [
+    "VIN WBAPH7C58AA175760 decodes at NHTSA vPIC to BMW 328i, 2010, Sedan, 3.0 L, 230 hp, Munich, TPMS Direct. [https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010]",
+    "RWD vs xDrive: NHTSA returns AWD for the sister pattern WBAPK7C5 and no drive type for this VIN's WBAPH7C5, suggesting RWD. Retailer tire tables (sizemytires, Mavis) list staggered Sport-package fitment on the 328i xDrive as well, so drivetrain does not decide the tire package.",
+    "Tire package: square 205/55R16 91H (16 in) or 225/45R17 91H/91V; staggered 17 in Sport package 225/45R17 front, 255/40R17 rear (sizemytires, Mavis, Apex). Read the sidewalls.",
+    "Wheel widths: Apex lists 17x8.5 ET40 front and 17x9 ET30 rear for the staggered set, so staggered wheels cannot be swapped front to rear.",
+    "Directional tires: stock Potenza RE050A direction is disputed by forum posts; read the sidewall arrow.",
+    "TPMS: NHTSA says Direct; Mitchell/Modern Tire Dealer says 2009-13 E90 can be TPM (direct) or FTM (indirect), told apart by metal valve stems.",
+    "Spare: a compact spare or snow chains must not be fitted during a TPMS reset (Tomorrow's Technician).",
+    "Engine, transmission: no source shows any effect on rotation."
+  ],
+  "tools": [
+    {
+      "item": "17 mm wheel-bolt socket (1/2 in drive) and breaker bar",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+        "https://blog.ecstuning.com/?p=1238",
+        "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+      ]
+    },
+    {
+      "item": "Torque wrench reaching 120 Nm (90 lb-ft)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pad-wear-sensor-on-bmw-3-saloon-e90-replacement-guide-36986",
+        "https://blog.ecstuning.com/?p=1238"
+      ]
+    },
+    {
+      "item": "Floor jack, rated jack stands, wheel chocks; pad (wood or hockey-puck) between jack and plastic jack pad",
+      "status": "VERIFIED",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=19280433",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14807196",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+      ]
+    },
+    {
+      "item": "Locking-bolt key if fitted (from the wheel-lock set)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
+      ]
+    },
+    {
+      "item": "Tire pressure gauge and inflator; correct pressures are required before a TPMS reset",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+        "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/"
+      ]
+    },
+    {
+      "item": "Wire brush or cloth to clean hub and wheel mounting faces (general practice, not in an E90 source)",
+      "conflicts": "Autodoc steps apply copper grease to the rotor-to-wheel contact area, which implies cleaning it first.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "No parts required for a rotation",
+      "status": "VERIFIED",
+      "sources": [
+        "https://apexwheels.com/fitment-guides/bmw/3-series/bmw-e90-e91-lci-3-series-wheel-and-tire-fitment-guide",
+        "https://www.velgenwheels.com/blogs/blog/how-to-rotate-tires-with-a-staggered-wheel-setup"
+      ]
+    },
+    {
+      "item": "Wheel bolts: M12x1.5 thread, 17 mm hex, 60-degree taper seat, 5 per wheel on a 5x120 pattern (replacement only)",
+      "partNumber": null,
+      "note": "5x120 and the bolt (not nut) design come from koleso.ee only; thread and hex from Bimmerworld and tpautorepair.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html",
+        "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/",
+        "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488"
+      ]
+    },
+    {
+      "item": "Wheel lock key (if equipped)",
+      "status": "MISSING",
+      "sources": []
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Wheel bolts (M12x1.5, 17 mm)",
+      "value": "120 Nm (88.5 lb-ft)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pad-wear-sensor-on-bmw-3-saloon-e90-replacement-guide-36986",
+        "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+        "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
+        "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy",
+        "https://blog.ecstuning.com/?p=1238",
+        "https://www.m3post.com/forums/showthread.php?p=25539406",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=6673488",
+        "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
+      ],
+      "conflicts": "Dissent: koleso.ee wheel database lists 115 Nm with no source. FCP states 119 Nm (88 lb-ft), a rounding of the same figure. Department 69 attributes 120 Nm to BMW TIS (workshop-manuals.com) and says TIS also instructs re-checking all wheel bolts after installation; that TIS page itself could not be fetched, hence primary:false. BimmerWorld's 75 ft-lb applies only to its aftermarket nuts.",
+      "primary": false
+    },
+    {
+      "fastener": "Tire pressures (US placard, load-dependent)",
+      "value": "MISSING (read the placard on the car; EU data in koleso.ee lists 2.2 bar front for 205/55R16, not a US figure)",
+      "status": "MISSING",
+      "sources": [
+        "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488"
+      ],
+      "conflicts": null
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Identify tire package and direction",
+      "instruction": "Read all four sidewalls. Same size all round (205/55R16 or 225/45R17) is square. Narrower front 225/45R17 and wider rear 255/40R17 is staggered. Note any rotation arrow and any 'inside/outside' marking, plus the tire date code.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never swap staggered tires front to rear: the wheels differ in width and offset."
+      ],
+      "sources": [
+        "https://www.sizemytires.com/vehicle/2010/bmw/328i-xdrive",
+        "https://www.mavis.com/vehicle/bmw/328i/2010/sedan-wsport-pkg/",
+        "https://apexwheels.com/fitment-guides/bmw/3-series/bmw-e90-e91-lci-3-series-wheel-and-tire-fitment-guide"
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Choose the pattern",
+      "instruction": "Square and non-directional: rearward cross (rears forward on same side, fronts to opposite rear) or front/rear swap. Square directional: swap front and rear on the same side only. Staggered and non-directional: swap left and right on the same axle only (Apex, Velgen); front and rear wheels differ in width and offset so they never trade axles. Staggered and directional: tires would have to be remounted on the opposite wheels (Velgen), so most owners skip rotation. If tires are worn unevenly or you are unsure, have a shop do it.",
+      "status": "CONFLICT",
+      "warnings": [
+        "No BMW document on rotation was found; forum claims that BMW recommends against rotating are secondhand and not E90-specific.",
+        "Forum posts disagree on whether stock RE050A is directional; read the sidewall."
+      ],
+      "sources": [
+        "https://apexwheels.com/fitment-guides/bmw/3-series/bmw-e90-e91-lci-3-series-wheel-and-tire-fitment-guide",
+        "https://www.velgenwheels.com/blogs/blog/how-to-rotate-tires-with-a-staggered-wheel-setup",
+        "https://tiregrades.com/tire-maintenance/rotation/rotation-patterns/tire-rotation-patterns",
+        "https://bobistheoilguy.com/forums/threads/bmw-tire-rotation.144663/",
+        "https://www.bimmerforums.com/forum/archive/index.php/t-245594.html"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Loosen bolts on the ground, then lift and support",
+      "instruction": "With the car on the ground break each 17 mm bolt loose about one turn, chock a wheel on the other axle, then jack at the plastic jack pads (sill points) and place stands. If using a center jack point, note the conflict: sources describe the rear centre as the differential housing, the crossmember behind it, or not permitted at all, so prefer side jack points with a pad between jack and plastic.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Stands, not the jack, hold the car.",
+        "One forum thread quotes BMW that rear-centre jacking is not allowed on the E90; do not jack on the aluminium diff cover.",
+        "xDrive front centre point is reported to differ from RWD (single forum source)."
+      ],
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=19280433",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14807196",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=37910"
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Move the wheels",
+      "instruction": "Remove the bolts while supporting each wheel, move wheels per the chosen pattern, and clean any rust or dirt off the hub face and the wheel mounting face. Note any locking bolt and keep the key at hand.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Hub-centric fit: keep mounting faces clean so the wheel seats flat (general practice)."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Refit and torque in a star pattern",
+      "instruction": "Start every bolt by hand, snug in a crisscross order with the wheel on the stands, lower the car, then torque all five bolts per wheel to 120 Nm in a crisscross sequence.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Torque is secondary-sourced; do not torque hot bolts.",
+        "BMW TIS (per Department 69) says to re-check after installation."
+      ],
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy",
+        "https://blog.ecstuning.com/?p=1238"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Set tire pressures",
+      "instruction": "Set all four tires to the placard pressures (cold). The placard values for this car are not in a source; read them from the car.",
+      "status": "MISSING",
+      "warnings": [
+        "Do not guess pressures from EU data."
+      ],
+      "sources": [
+        "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+        "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/"
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Reset the tire pressure monitor",
+      "instruction": "This car's VIN decodes as direct TPMS. With pressures set and the engine running: iDrive cars use Vehicle Info > Vehicle Status > RESET TPM (Tomorrow's Technician) or Settings > TPM > Reset TPM (Modern Tire Dealer); cars without iDrive scroll the turn-signal stalk to the TPMS RESET/INIT item and hold the button about 5 seconds. Then drive about 15 minutes; the reset resumes if interrupted.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not reset with a compact spare or snow chains fitted.",
+        "If metal valve stems are not present the car may be FTM (indirect); the reset menu is the same."
+      ],
+      "sources": [
+        "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+        "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+        "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010"
+      ]
+    },
+    {
+      "n": 8,
+      "title": "Re-check the bolts",
+      "instruction": "After the first short drive re-check wheel-bolt torque and tire pressures.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Re-check after a short drive is general practice; BMW TIS 're-check after installation' is attributed by Department 69."
+      ],
+      "sources": [
+        "https://www.department69.com/articles/bmw-e90-e91-e92-e93-common-torque-specifications-maintenance-diy"
+      ]
+    }
+  ],
+  "safety": [
+    "Use rated jack stands on level ground; do not rely on the jack or on the aluminium differential cover.",
+    "Do not rotate staggered tires front to rear; do not rotate directional tires across sides without remounting.",
+    "Torque wheel bolts to 120 Nm in a crisscross order and re-check after a short drive; value is secondary-sourced.",
+    "Do not torque hot bolts; do not use anti-seize/grease on the bolt threads unless BMW says to (no source says to).",
+    "Do not reset TPMS with a spare or chains fitted."
+  ],
+  "missingEvidence": [
+    "No BMW primary document (owner's manual, TIS, Bentley) was readable: BMW TIS mirror (workshop-manuals.com) errored, manual PDFs were truncated, BMW rotation guidance not found.",
+    "Whether stock Sport-package tire is directional (forum disagreement, no tire-maker spec fetched).",
+    "US tire-pressure placard values and where the placard sits on this car.",
+    "Whether TPMS wheel positions auto-relearn after rotation (neither TPMS article addresses rotation directly).",
+    "Which jack point is permitted at the rear centre and front centre (forum conflict; the BMW TIS 'lifting with trolley jack' page is cited but its content was not readable).",
+    "BMW-recommended rotation interval."
+  ],
+  "ownerInputsNeeded": [
+    "Tire sizes front and rear and any directional arrow (and run-flat markings if any).",
+    "Confirm RWD or xDrive.",
+    "Placard pressures from the car.",
+    "Metal valve stems present (confirms direct TPMS) and the iDrive menu or stalk layout.",
+    "Locking wheel bolt present and key available.",
+    "Which jack pads exist at the sill (some cars have missing plastic pads)."
+  ],
+  "visuals": [
+    {
+      "id": "side-jack-pads-underside",
+      "title": "Plastic jack pads at the sill",
+      "evidenceSteps": [
+        3
+      ],
+      "viewpoint": "underside",
+      "elements": [
+        {
+          "id": "sill-jack-pad",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A small rectangular plastic jacking pad on the underside of the sill, one at each of four jack points."
+        },
+        {
+          "id": "jack-pad-adapter",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "A wood block or cut hockey puck placed between the jack and the plastic pad."
+        }
+      ],
+      "facts": [
+        {
+          "element": "sill-jack-pad",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+            "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html",
+            "https://www.bimmerworld.com/Tools/BMW-Jack-Pad-E92-328i-xi-335i-is-xi-M3-Coupe-51717164761.html",
+            "https://www.turnermotorsport.com/p-582235-bmw-mini-jack-pad-adapter/"
+          ],
+          "note": "Bimmerpost and Bimmerforums: small plastic rectangular blocks at four jack points (BMW part 'Support lifting platform' 51717123311); BimmerWorld sells the pad (E90/E92 fitment list); Turner sells an adapter that fits into the plastic lifting points, listing E90 328i."
+        },
+        {
+          "element": "sill-jack-pad",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14807196",
+            "https://www.bimmerworld.com/Tools/BMW-Jack-Pad-E92-328i-xi-335i-is-xi-M3-Coupe-51717164761.html"
+          ],
+          "note": "Bimmerpost: lift points on the rocker panels; BimmerWorld: the hard block sits on the underside of the rocker panel at the factory jacking point. Bimmerforums loosely says 'on the frame' at the four corners."
+        },
+        {
+          "element": "jack-pad-adapter",
+          "attribute": "relationship",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14807196",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14494441"
+          ],
+          "note": "One website: wood or hockey-puck pad between jack and pad."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "sill-jack-pad",
+          "reason": "Exact distance from wheels and pad dimensions are not established."
+        },
+        {
+          "element": "sill-jack-pad",
+          "reason": "Rear-centre and front-centre jack points are in conflict and must not be shown as approved."
+        }
+      ],
+      "sources": {
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14807196": {
+          "kind": "third-party-guide",
+          "establishes": "Lift points on the rocker panels; hockey pucks as pads."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14494441": {
+          "kind": "third-party-guide",
+          "establishes": "Plastic rectangular pads at four jack points."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=37910": {
+          "kind": "third-party-guide",
+          "establishes": "Plastic boxes under the car that the OEM jack fits into; rear-centre jacking said to be disallowed."
+        },
+        "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html": {
+          "kind": "third-party-guide",
+          "establishes": "E90 thread: four jacking points with little plastic blocks; OEM name 'support lifting platform' 51717123311; can crack under a bare floor-jack cup."
+        },
+        "https://www.bimmerworld.com/Tools/BMW-Jack-Pad-E92-328i-xi-335i-is-xi-M3-Coupe-51717164761.html": {
+          "kind": "parts-catalog",
+          "establishes": "BMW jack pad 51717164761 sits on the underside of the rocker panel at the jacking point; page text says E92 coupe but fitment list includes E90."
+        },
+        "https://www.turnermotorsport.com/p-582235-bmw-mini-jack-pad-adapter/": {
+          "kind": "parts-catalog",
+          "establishes": "Jack pad adapter seats into the factory plastic lifting points; fitment table includes E90 328i."
+        }
+      },
+      "gapFillNotes": [
+        "BimmerWorld's pad listing is described as E92 coupe only while its fitment list includes E90; the E90 sedan part number is 51717123311 per Bimmerforums. Safe to depict a small rectangular plastic block under the sill near each wheel."
+      ]
+    },
+    {
+      "id": "wheel-bolts-and-metal-valve-stem",
+      "title": "Wheel bolts, locking bolt and the metal TPMS valve stem",
+      "evidenceSteps": [
+        4,
+        5,
+        7
+      ],
+      "viewpoint": "exterior-front",
+      "elements": [
+        {
+          "id": "wheel-bolt-fasteners",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "Five hex-head wheel bolts per wheel on a 5-lug circle, tightened in a crisscross order."
+        },
+        {
+          "id": "locking-wheel-bolt",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "One bolt per wheel that needs a special key, if the car has a lock set."
+        },
+        {
+          "id": "metal-valve-stem",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "A metal tire valve stem, which indicates a direct TPMS sensor inside the tire."
+        }
+      ],
+      "facts": [
+        {
+          "element": "wheel-bolt-fasteners",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html",
+            "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+            "https://blog.ecstuning.com/?p=1238"
+          ],
+          "note": "3 sites: 17 mm hex, M12x1.5, taper seat."
+        },
+        {
+          "element": "wheel-bolt-fasteners",
+          "attribute": "fastener-position",
+          "urls": [
+            "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488"
+          ],
+          "note": "1 site: 5x120 pattern, so five bolts; no second site."
+        },
+        {
+          "element": "locking-wheel-bolt",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0811",
+            "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
+          ],
+          "note": "RealOEM for this car lists 'Wheel bolt lock with adaptor' / 'Set wheel locks' (M12x1.5, 17 mm adaptor) as an option/accessory; TP Auto Repair says cars with anti-theft locking bolts need a dedicated key. Not confirmed fitted on this VIN."
+        },
+        {
+          "element": "metal-valve-stem",
+          "attribute": "existence",
+          "urls": [
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+            "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010"
+          ],
+          "note": "Modern Tire Dealer says the metal stem is the only external clue; Tomorrow's Technician says direct systems use valve-stem sensors; NHTSA says this VIN has direct TPMS. 3 sites."
+        },
+        {
+          "element": "wheel-bolt-fasteners",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0837",
+            "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488",
+            "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
+          ],
+          "note": "RealOEM: wheel bolt M12x1.5 quantity 20 per car (5 per wheel); Koleso: lug bolts, 5x120; TP Auto Repair: BMW wheels use bolts threading into the hub."
+        },
+        {
+          "element": "wheel-bolt-fasteners",
+          "attribute": "location",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0837",
+            "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488"
+          ],
+          "note": "Five bolts per wheel on a 5x120 bolt circle through the wheel face into the hub."
+        },
+        {
+          "element": "metal-valve-stem",
+          "attribute": "location",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0837",
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/"
+          ],
+          "note": "RealOEM lists a screw-in RDC valve and RDC valve cap per wheel (from 03/2007); Tomorrow's Technician says the sensor is mounted in the valve stem on the wheel rim."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "locking-wheel-bolt",
+          "reason": "Not confirmed as fitted; key pattern shape not established."
+        },
+        {
+          "element": "wheel-bolt-fasteners",
+          "reason": "Wheel spoke design and finish are unknown for this car."
+        }
+      ],
+      "sources": {
+        "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html": {
+          "kind": "parts-catalog",
+          "establishes": "M12x1.5, 17 mm hex, 60-degree taper seat matching stock bolts."
+        },
+        "https://koleso.ee/en/valuveljed/bmw/3-series/248/e90-e91-e92-e93-2005-2010/488": {
+          "kind": "third-party-guide",
+          "establishes": "5x120 pattern, M12x1.5 lug bolts."
+        },
+        "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90": {
+          "kind": "third-party-guide",
+          "establishes": "Metal valve stem identifies a sensor wheel."
+        },
+        "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/": {
+          "kind": "third-party-guide",
+          "establishes": "Direct systems use valve-stem sensors; reset procedures."
+        },
+        "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010": {
+          "kind": "oem-text",
+          "establishes": "NHTSA vPIC decode for this VIN: 2010 BMW 328i sedan, TPMS Direct (government database fed by manufacturer data)."
+        },
+        "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/": {
+          "kind": "third-party-guide",
+          "establishes": "Locking bolts and M12x1.5 information."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "17 mm socket for wheel bolts."
+        },
+        "https://blog.ecstuning.com/?p=1238": {
+          "kind": "third-party-guide",
+          "establishes": "17 mm socket and torque for BMW wheel bolts."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0837": {
+          "kind": "parts-catalog",
+          "establishes": "E90 LCI 328i alloy wheel diagram: wheel bolt M12x1.5 qty 20 (5 per wheel), screw-in RDC valve and RDC valve cap qty 4."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=36_0811": {
+          "kind": "parts-catalog",
+          "establishes": "E90 LCI 328i catalog: set wheel locks and coded wheel bolts with 17 mm adaptor."
+        }
+      },
+      "gapFillNotes": [
+        "BimmerWorld sells a '17mm M12x1.5 black lug NUT' with E90 fitment, but RealOEM and Koleso show E90 uses wheel BOLTS; ignore the nut wording.",
+        "RealOEM wheel diagram is for alloy style 154; bolt count applies to all E90 wheels (5x120)."
+      ]
+    },
+    {
+      "id": "tpms-reset-controls",
+      "title": "TPMS reset: iDrive menu and turn-signal stalk",
+      "evidenceSteps": [
+        7
+      ],
+      "viewpoint": "dashboard",
+      "elements": [
+        {
+          "id": "turn-signal-stalk-button",
+          "role": "hero",
+          "criticality": "procedure",
+          "describe": "The end button of the turn-signal stalk, used to scroll to TPMS RESET and hold for about 5 seconds."
+        },
+        {
+          "id": "idrive-reset-tpm-menu",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "An on-screen menu (Vehicle Info > Vehicle Status, or Settings > TPM) with a RESET TPM item."
+        }
+      ],
+      "facts": [
+        {
+          "element": "turn-signal-stalk-button",
+          "attribute": "action",
+          "urls": [
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/"
+          ],
+          "note": "2 sites: scroll with the stalk to RESET/INIT and hold about 5 seconds, then drive."
+        },
+        {
+          "element": "idrive-reset-tpm-menu",
+          "attribute": "action",
+          "urls": [
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/"
+          ],
+          "note": "2 sites, but menu names differ (Vehicle Status > RESET TPM vs Settings > TPM > Reset TPM)."
+        },
+        {
+          "element": "turn-signal-stalk-button",
+          "attribute": "existence",
+          "urls": [
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+            "https://www.import-car.com/tpms-update-bmw-systems/"
+          ],
+          "note": "All three describe resetting TPM with a scroll switch and a button on the turn-signal stalk (hold about 5 s)."
+        },
+        {
+          "element": "turn-signal-stalk-button",
+          "attribute": "location",
+          "urls": [
+            "https://www.import-car.com/tpms-update-bmw-systems/",
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90"
+          ],
+          "note": "Import Car (2009-2011 3-Series): push the button on the end of the turn-signal stalk; Modern Tire Dealer: button on the turn-indicator lever. Stalk is the left-hand column lever."
+        },
+        {
+          "element": "idrive-reset-tpm-menu",
+          "attribute": "existence",
+          "urls": [
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+            "https://www.import-car.com/tpms-update-bmw-systems/",
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90"
+          ],
+          "note": "iDrive cars have a RESET TPM item; menu path wording differs."
+        },
+        {
+          "element": "idrive-reset-tpm-menu",
+          "attribute": "location",
+          "urls": [
+            "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+            "https://www.import-car.com/tpms-update-bmw-systems/",
+            "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90"
+          ],
+          "note": "Tomorrow's Technician and Import Car: Vehicle Info > Vehicle Status > RESET TPM; Modern Tire Dealer (Mitchell): Settings > TPM > reset."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "idrive-reset-tpm-menu",
+          "reason": "Exact on-screen layout and menu wording are not consistent across sources."
+        },
+        {
+          "element": "turn-signal-stalk-button",
+          "reason": "Stalk shape and button position are not described."
+        }
+      ],
+      "sources": {
+        "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90": {
+          "kind": "third-party-guide",
+          "establishes": "TPM and FTM reset steps with and without iDrive (Mitchell excerpt, 2009-13 E90)."
+        },
+        "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/": {
+          "kind": "third-party-guide",
+          "establishes": "2009-11 3-series stalk reset (hold ~5 s, drive 15 min); iDrive Vehicle Status RESET TPM."
+        },
+        "https://www.import-car.com/tpms-update-bmw-systems/": {
+          "kind": "third-party-guide",
+          "establishes": "2009-2011 3-Series: scroll stalk switch to TPMS RESET, press end-of-stalk button, hold ~5 s; iDrive path Vehicle Info > Vehicle Status > RESET TPM."
+        }
+      },
+      "gapFillNotes": [
+        "Whether this car has iDrive is not known from the VIN; show the stalk as primary and the menu as the alternative. Menu names differ between sources (Settings>TPM vs Vehicle Info>Vehicle Status)."
+      ]
+    }
+  ]
 }

@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "4df429170a6c36be414676d99629ed3f7ca93a830e92009add69c07c9ab6151a",
-  "createdAt": "2026-10-10T12:00:06.000Z",
+  "contentHash": "362c2924097b0b7482495c80b513a53883056be9759d6ae72fa3e4f4b60763e5",
+  "createdAt": "2026-10-10T12:04:23.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -31,6 +31,12 @@
     },
     {
       "element": "engine-cover"
+    },
+    {
+      "element": "hatch-fasteners-unestablished-detail"
+    },
+    {
+      "element": "engine-cover-unestablished-detail"
     }
   ],
   "mustDepict": [
@@ -87,21 +93,21 @@
   ],
   "mustNotDepict": [
     {
-      "element": "hatch-fasteners",
-      "id": "MN-excl-hatch-fasteners",
+      "element": "hatch-fasteners-unestablished-detail",
+      "id": "MN-excl-hatch-fasteners-unestablished-detail",
       "reason": "Sources conflict on how the hatch is fastened.",
       "trace": {
         "attribute": "existence",
-        "element": "hatch-fasteners"
+        "element": "hatch-fasteners-unestablished-detail"
       }
     },
     {
-      "element": "engine-cover",
-      "id": "MN-excl-engine-cover",
-      "reason": "No source establishes an engine cover on this engine.",
+      "element": "engine-cover-unestablished-detail",
+      "id": "MN-excl-engine-cover-unestablished-detail",
+      "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
       "trace": {
         "attribute": "existence",
-        "element": "engine-cover"
+        "element": "engine-cover-unestablished-detail"
       }
     }
   ],
@@ -138,18 +144,18 @@
   "refs": [
     {
       "id": "EP-oil-drain-plug-access-v1",
-      "sha256": "50d964e56d7f50ab36603bb0cc74610fe32b6f70a2d06cb70433947f9317af9a"
+      "sha256": "94cbad80eb3b43d3df7d349afec161d0c79630944a79d3b9ea561f9e99f56c0c"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "fdb179f793f674257ff29f759a51b96a8daa5f9d25d7f574dd8acc392f063910"
+      "sha256": "360cfc3a63bb402432f38a4c5489b892aea1333568f568a336db13514c0ce9ce"
     }
   ],
   "schema": "guide-factory.visual-contract",
   "schemaVersion": "reconstructed-1",
   "specRef": {
     "sourceKind": "documentation-derived-prompt",
-    "sourcePromptSha256": "f3d9f29d2e02049de3e710ddcd1f37dc9692c9c99a3d6d3f503fa7bcc5cbaf1c"
+    "sourcePromptSha256": "2353ac4581272d80e79588452f2a930c5d8e9ea7f2c9dde294506a46e80bce81"
   },
   "suppress": [
     {
@@ -169,32 +175,12 @@
     },
     {
       "attribute": "existence",
-      "element": "hatch-fasteners",
+      "element": "hatch-fasteners-unestablished-detail",
       "handling": "omit"
     },
     {
       "attribute": "existence",
-      "element": "engine-cover",
-      "handling": "omit"
-    },
-    {
-      "attribute": "existence",
-      "element": "oil-pan",
-      "handling": "omit"
-    },
-    {
-      "attribute": "location",
-      "element": "oil-pan",
-      "handling": "omit"
-    },
-    {
-      "attribute": "location",
-      "element": "hatch-fasteners",
-      "handling": "omit"
-    },
-    {
-      "attribute": "location",
-      "element": "engine-cover",
+      "element": "engine-cover-unestablished-detail",
       "handling": "omit"
     }
   ],

@@ -1,0 +1,22 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: The points that free the airbox from the car, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Loosen the intake hose band clamp".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). High three-quarter view looking down into the open engine bay from the front, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: The large black plastic air filter housing in the engine bay, sitting on a lower rubber stud.
+2. Two fasteners (reported 10 mm) holding the airbox to the car near the fender. Do NOT depict its fastener head shape: keep it a plain generic shape.
+3. A round metal band clamp where the rubber intake hose meets the airbox.
+4. A small plug on the mass airflow sensor with a lift-up retention clip that is brittle.
+5. Two plastic retention tabs that hold the front intake snorkel to the airbox. Do NOT depict the shape of its release mechanism: keep it a plain generic shape.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): a plain dark ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): airbox assembly detail (Side of the engine bay is unresolved; do not draw it on a specific side or in a specific position relative to the battery or strut towers), maf connector clip detail (Exact connector shape; wire routing and whether the sensor sits on the lid or the intake tube are not established), airbox mounting fasteners detail (Count of two is established; but head size is single-website and exact positions on the fender side are not), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

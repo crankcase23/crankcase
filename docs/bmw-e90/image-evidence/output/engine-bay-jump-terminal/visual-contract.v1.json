@@ -1,0 +1,126 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "df2aedb42bc77d2de5df0e788299e7512d5785f35a984ef8445f582bd2e9f190",
+  "createdAt": "2026-10-10T12:02:00.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-engine-bay-jump-terminal-v1",
+  "maySimplify": [
+    {
+      "element": "red-terminal-cap"
+    },
+    {
+      "element": "b-plus-jump-terminal-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "b-plus-jump-terminal",
+      "id": "MD-b-plus-jump-terminal",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "b-plus-jump-terminal-unestablished-detail",
+      "id": "MN-excl-b-plus-jump-terminal-unestablished-detail",
+      "reason": "Exact mounting bracket, cable routing and negative ground point are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "b-plus-jump-terminal-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-engine-bay-jump-terminal-v1",
+      "sha256": "cbb4cfb98969c59f1b3eb26b35a2dd2d559af83eb72d14e5763e96a574501d57"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "75e81ff00c1c88eef3f4cb3bb66c33a6b3de7a4be24f2d5e4674b6d23307d6ba"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "971ec783b3383c3a0e915ad442e6d810b51a4cd036491b14bbb39c1ea24be621"
+  },
+  "suppress": [
+    {
+      "attribute": "existence",
+      "element": "b-plus-jump-terminal-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "engine-bay-jump-terminal"
+}

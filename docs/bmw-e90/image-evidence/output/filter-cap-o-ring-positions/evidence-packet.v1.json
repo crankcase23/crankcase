@@ -1,0 +1,223 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Remove the old filter element and clean",
+      "Fit new O-rings and element"
+    ],
+    "stepNumber": 6,
+    "title": "filter-cap-o-ring-positions (BMW 328i draft Engine Oil & Filter Change guide; evidence step 6, 7)"
+  },
+  "contentHash": "f3b50f3e19e624bc24820cc0bd47c849fa897bc53226d5665b7e296b5c57ce08",
+  "createdAt": "2026-10-10T12:04:10.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The round cap with the element attached, shown off the engine.",
+      "id": "filter-housing-cap",
+      "role": "context"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A large black rubber ring around the cap perimeter, seated above the threaded section.",
+      "id": "large-black-o-ring",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A small green rubber ring on the tip of the cap's centre stem.",
+      "id": "small-green-o-ring",
+      "role": "target"
+    },
+    {
+      "criticality": "cosmetic",
+      "describe": "The paper filter element mounted on the cap.",
+      "id": "filter-element-body",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of filter housing cap: Cap flute count rendering, alignment-mark colors and the housing's side/end position on the engine are not established; this image is the cap off the engine only.",
+      "id": "filter-housing-cap-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-filter-cap-o-ring-positions-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "large-black-o-ring",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "small-green-o-ring",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "large-black-o-ring",
+      "note": "Size listed as 80 x 3.5 mm; single source for dimensions.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-housing-cap",
+      "evidence": [
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "large-black-o-ring",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-5"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "small-green-o-ring",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-6"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-element-body",
+      "note": "cosmetic context drawn as a plain generic shape; no specific claim",
+      "render": "simplify",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-housing-cap-unestablished-detail",
+      "note": "Cap flute count rendering, alignment-mark colors and the housing's side/end position on the engine are not established; this image is the cap off the engine only.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "filter-housing-cap-unestablished-detail",
+      "id": "excl-filter-housing-cap-unestablished-detail",
+      "reason": "Cap flute count rendering, alignment-mark colors and the housing's side/end position on the engine are not established; this image is the cap off the engine only.",
+      "trace": {
+        "attribute": "existence",
+        "element": "filter-housing-cap-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Small green O-ring on cap stem, large black O-ring on perimeter above the thread; seat correctly."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Kit has large black O-ring (housing threads), small green O-ring (centre pole tip), crush washer."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwtuning.co",
+      "sourceRef": "https://bmwtuning.co/bmw-e90-oil-change/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Cap is removed from the engine bay with the 86 mm tool; 25 Nm."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Cap 11427525334 fits E90 328i N52; sealing ring not included."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "ecstuning.com",
+      "sourceRef": "https://www.ecstuning.com/b-genuine-bmw-parts/oil-filter-cap/11427525334/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM 2009 E90 LCI 328i oil filter diagram: filter cover 11427525334, filter element set 11427953129, gasket 11428637821, and O-ring 11428683168 (80x3.5, colour not stated)."
+      ],
+      "id": "ref-5",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3867",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "N52 oil change thread: new filter has two O-rings, one goes up high in a groove, the other is green, small and goes at the bottom."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=6151834",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "filter-cap-o-ring-positions"
+}

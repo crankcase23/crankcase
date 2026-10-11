@@ -1,0 +1,173 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "05a816e96b06217084b20856140b9a8a79bea27e87e622b6cbaaa303a1b3a0d6",
+  "createdAt": "2026-10-10T12:01:24.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-rear-wear-sensor-passenger-side-v1",
+  "maySimplify": [
+    {
+      "element": "sensor-connector-behind-arch-cover-unestablished-detail"
+    },
+    {
+      "element": "rear-pad-wear-sensor-wire-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "rear-pad-wear-sensor-wire",
+      "id": "MD-rear-pad-wear-sensor-wire",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-5",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "sensor-connector-behind-arch-cover",
+      "id": "MD-sensor-connector-behind-arch-cover",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-4",
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-4",
+            "ref-3",
+            "ref-6",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "sensor-connector-behind-arch-cover-unestablished-detail",
+      "id": "MN-excl-sensor-connector-behind-arch-cover-unestablished-detail",
+      "reason": "Plug shape and cover outline are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "sensor-connector-behind-arch-cover-unestablished-detail"
+      }
+    },
+    {
+      "element": "rear-pad-wear-sensor-wire-unestablished-detail",
+      "id": "MN-excl-rear-pad-wear-sensor-wire-unestablished-detail",
+      "reason": "Driver-side rear has no sensor.",
+      "trace": {
+        "attribute": "existence",
+        "element": "rear-pad-wear-sensor-wire-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-rear-wear-sensor-passenger-side-v1",
+      "sha256": "921ae2c295ba01029c7a9e5e4513fdf5fb41f7c339f0dd146b0eeb2b966302d5"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "c924330ad26a6dd7731813a81b41f672f9b6669514710649603366781af2d606"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "ce573bfee1af3ec836ebe22350619f82b1065b40ed1811f13bf1791b106c7d19"
+  },
+  "suppress": [
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "sensor-connector-behind-arch-cover",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "sensor-connector-behind-arch-cover-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "rear-pad-wear-sensor-wire-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "rear-wear-sensor-passenger-side"
+}

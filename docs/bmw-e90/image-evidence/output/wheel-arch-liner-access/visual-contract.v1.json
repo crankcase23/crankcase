@@ -1,0 +1,182 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "f4869e6c1178f2469ee19a5f4b6bf0d441770d0c3af9180b26a15ec78d02a804",
+  "createdAt": "2026-10-10T12:00:38.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-wheel-arch-liner-access-v1",
+  "maySimplify": [
+    {
+      "element": "service-opening"
+    },
+    {
+      "element": "liner-screws-unestablished-detail"
+    },
+    {
+      "element": "service-opening-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "front-wheel-liner",
+      "id": "MD-front-wheel-liner",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "liner-screws",
+      "id": "MD-liner-screws",
+      "requirements": [
+        {
+          "attribute": "fastener-head-type",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-5",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "liner-screws-unestablished-detail",
+      "id": "MN-excl-liner-screws-unestablished-detail",
+      "reason": "Count, head type and positions are not reconciled between sources; do not draw individual screws.",
+      "trace": {
+        "attribute": "existence",
+        "element": "liner-screws-unestablished-detail"
+      }
+    },
+    {
+      "element": "service-opening-unestablished-detail",
+      "id": "MN-excl-service-opening-unestablished-detail",
+      "reason": "Exact shape and location of the cover in the liner is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "service-opening-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-wheel-arch-liner-access-v1",
+      "sha256": "5439f11a392c2e89893da06ea0c5fe945adbad0ca4e2a57936932ed24905f6a9"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "cadfa846122fcb60a4b61d637a1e5b009aa5d6786aa1048a3e3a902d66eed4d4"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "e4d705e141fa00fc0a4fd9ac35a25b2a99f5f0eecd1b9659b20267d260b26dd1"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-position",
+      "element": "liner-screws",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "liner-screws-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "service-opening-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "wheel-arch-liner-access"
+}

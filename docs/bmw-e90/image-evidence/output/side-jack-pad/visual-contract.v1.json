@@ -1,0 +1,156 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "8c9f6a94872d21fe28956e84bc2fbfb470c021de248079d4d8ee7994b03d7b66",
+  "createdAt": "2026-10-10T12:04:05.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-side-jack-pad-v1",
+  "maySimplify": [
+    {
+      "element": "jack-pad-adapter-puck"
+    },
+    {
+      "element": "wheel-and-tire"
+    },
+    {
+      "element": "side-jack-pad-rectangle-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "side-jack-pad-rectangle",
+      "id": "MD-side-jack-pad-rectangle",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "side-jack-pad-rectangle-unestablished-detail",
+      "id": "MN-excl-side-jack-pad-rectangle-unestablished-detail",
+      "reason": "Exact distance from the wheel arch, the pad's notch or arrow markings and the front-centre jack point geometry are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "side-jack-pad-rectangle-unestablished-detail"
+      }
+    },
+    {
+      "element": "jack-pad-adapter-puck",
+      "id": "MN-excl-jack-pad-adapter-puck",
+      "reason": "Shown only as an optional accessory, not as factory equipment.",
+      "trace": {
+        "attribute": "existence",
+        "element": "jack-pad-adapter-puck"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-side-jack-pad-v1",
+      "sha256": "302d8e48258ca92e3bf7992a083565fd5f92e1501dfcdaf0a2ccf7cd8a6d8984"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "ee46afb25e77ff60fb200368d53e5990925925c4171a098fe468d1fb453a187a"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "2fa1fa1867faeb063b0371adce9d9d93343eea46e53e19f835a4b851e2218c36"
+  },
+  "suppress": [
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "side-jack-pad-rectangle",
+      "handling": "omit"
+    },
+    {
+      "attribute": "relationship",
+      "element": "jack-pad-adapter-puck",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "jack-pad-adapter-puck",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "wheel-and-tire",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "side-jack-pad-rectangle-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "side-jack-pad"
+}

@@ -1,193 +1,505 @@
 {
- "guide": 12,
- "name": "Engine Air Filter",
- "recommendedStatus": "BUILDABLE_PARTIAL",
- "summary": "Element part number 13717542294 for E90 328i/328xi (N52, 2007+) is confirmed by two independent retailers (Bimmerworld, Turner), neither a BMW document. The general removal sequence (loosen intake-hose clamp, remove two airbox fastener(s), unplug MAF, lift airbox, split halves, swap element, reverse) is consistent across three sources, but one is a 2006 325i thread and one is an E89 Z4 TIS excerpt, so exact fastener sizes/counts are SINGLE_SOURCE. No torque values exist in any source (hand-tight only). N51 fitment is unverified.",
- "variantDependencies": [
-  "Engine: 13717542294 is listed for N52 (2007+ 328i/328xi). N51B30 airbox/filter fitment NOT found.",
-  "Z4 TIS excerpt is for an N52K (E89), not E90; used only to corroborate sequence.",
-  "xDrive vs RWD: Turner lists same filter for 328i and 328xi; no procedure difference reported.",
-  "Transmission type is irrelevant to this job (no source suggests a dependency).",
-  "Euro airbox conversion filter (Mann 13717536006) is a different airbox; not applicable to a stock US car unless converted."
- ],
- "tools": [
-  {
-   "item": "10 mm wrench/socket (airbox fasteners)",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
-   ]
-  },
-  {
-   "item": "T25 Torx (airbox half screws) / Torx driver",
-   "status": "VERIFIED (BW lists T25; BP lists a Torx driver, size unstated)",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
-    "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
-   ]
-  },
-  {
-   "item": "Flathead screwdriver (hose clamp, tabs)",
-   "status": "VERIFIED (secondary sources only, no BMW document)",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
-    "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
-   ]
-  },
-  {
-   "item": "Pick or small pry tool for MAF connector clip",
-   "status": "VERIFIED (secondary sources only, no BMW document)",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
-    "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
-   ]
-  },
-  {
-   "item": "Microfiber towel / MAF-safe cleaning supplies",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
-   ]
-  }
- ],
- "parts": [
-  {
-   "item": "Engine air filter element, 2007+ E90 328i/328xi (N52)",
-   "partNumber": "13717542294",
-   "status": "VERIFIED (secondary sources only, no BMW document) (two independent retailers)",
-   "sources": [
-    "https://www.bimmerworld.com/Engine/Engine-Maintenance/Air-Filter-E90-E91-E92-E93-325i-330i-328i-328xi-BMW-13717542294.html",
-    "https://www.turnermotorsport.com/p-360727-air-filter/",
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-92-bmw-air-intake-filters/m-35-mann?Nrpp=50"
-   ]
-  },
-  {
-   "item": "Mann alternative filter (E60/E82/E90/E92/Z4)",
-   "partNumber": "13717556961",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-92-bmw-air-intake-filters/m-35-mann?Nrpp=50"
-   ]
-  },
-  {
-   "item": "Mann N52 Euro airbox filter (not stock airbox)",
-   "partNumber": "13717536006",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-92-bmw-air-intake-filters/m-35-mann?Nrpp=50"
-   ]
-  },
-  {
-   "item": "Airbox screws (listed on bavmods page, identity unclear)",
-   "partNumber": "13717545438",
-   "status": "SINGLE_SOURCE (unverified what it identifies)",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
-   ]
-  }
- ],
- "fluids": [],
- "torque": [
-  {
-   "fastener": "Airbox housing screws, bolts, clamp",
-   "value": "MISSING",
-   "status": "MISSING (sources say hand-tighten / no spec)",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
-   ],
-   "conflicts": null
-  }
- ],
- "steps": [
-  {
-   "n": 1,
-   "title": "Prep",
-   "instruction": "Switch the engine off and let it cool. One source says disconnect the battery negative terminal first (to protect the MAF); the Z4 TIS excerpt only says switch off ignition and read fault memory first.",
-   "status": "CONFLICT (BW: disconnect battery; Z4 TIS: ignition off)",
-   "warnings": [
-    "Battery disconnect will reset some settings; decide with owner."
-   ]
-  },
-  {
-   "n": 2,
-   "title": "Loosen intake hose clamp",
-   "instruction": "Loosen the band clamp on the rubber intake hose at the airbox outlet and free the hose.",
-   "status": "VERIFIED (BW, BP, Z4)",
-   "warnings": []
-  },
-  {
-   "n": 3,
-   "title": "Remove airbox mounting fasteners",
-   "instruction": "Remove the two fasteners holding the airbox (10 mm per BW; BP calls them two large bolts on the right side at the fender).",
-   "status": "VERIFIED for count of two (BW, BP); size SINGLE_SOURCE",
-   "warnings": []
-  },
-  {
-   "n": 4,
-   "title": "Release intake snorkel/duct",
-   "instruction": "Release the front intake snorkel by unlatching its retention tabs.",
-   "status": "VERIFIED (BW, BP, Z4 mention removing intake duct)",
-   "warnings": [
-    "Tabs are brittle."
-   ]
-  },
-  {
-   "n": 5,
-   "title": "Handle MAF connector",
-   "instruction": "Unplug the mass airflow sensor by lifting its small retention clip. BP says the wire has enough slack to leave it attached and let the box hang; BW and Z4 unplug it.",
-   "status": "CONFLICT (unplug vs leave attached)",
-   "warnings": [
-    "The sensor clip is small and brittle; one owner broke it. Do not strain the wire."
-   ]
-  },
-  {
-   "n": 6,
-   "title": "Lift out airbox",
-   "instruction": "Lift the airbox straight up off its lower rubber stud and out.",
-   "status": "VERIFIED (BW, BP, Z4)",
-   "warnings": []
-  },
-  {
-   "n": 7,
-   "title": "Open airbox and swap element",
-   "instruction": "Turn the box over, remove the housing screws (six per BW), separate the halves, remove the old element, wipe out debris, seat the new element with its gasket properly.",
-   "status": "SINGLE_SOURCE for screw count; general step verified (BW, BP)",
-   "warnings": [
-    "Do not run the engine with a loosely seated element."
-   ]
-  },
-  {
-   "n": 8,
-   "title": "Reassemble",
-   "instruction": "Close the halves, tighten screws evenly by hand, refit airbox onto the lower stud (may need wiggling; a smear of silicone on the grommet is suggested by one Z4 poster), reconnect MAF, hose and clamp, snorkel and the two fasteners.",
-   "status": "VERIFIED (BW, BP, Z4) for sequence",
-   "warnings": [
-    "Seat the rubber stud fully."
-   ]
-  },
-  {
-   "n": 9,
-   "title": "Test",
-   "instruction": "Reconnect battery if removed, start engine, check for fault lights and intake leaks.",
-   "status": "SINGLE_SOURCE",
-   "warnings": []
-  }
- ],
- "safety": [
-  "Do not let the MAF wire or connector take strain.",
-  "Never reinstall a visibly damaged element or run without the filter.",
-  "Avoid oiled aftermarket filters that can contaminate the MAF (BP warns about this)."
- ],
- "missingEvidence": [
-  "BMW/TIS procedure for the E90 N52 airbox and torque values.",
-  "BMW service interval for engine air filter (bavmods suggests 12,000-15,000 mi/1 yr; single source, not BMW).",
-  "N51B30 airbox/element fitment.",
-  "Exact housing screw drive size and count confirmed on an E90.",
-  "Whether battery disconnect or fault-memory step is required."
- ],
- "ownerInputsNeeded": [
-  "Confirm engine code (N52 vs N51).",
-  "Confirm stock airbox (not a Euro airbox or aftermarket intake).",
-  "Choose OE-style vs Mann element."
- ]
+  "guide": 12,
+  "name": "Engine Air Filter",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "evidenceTier": "standard",
+  "primarySourceFound": false,
+  "summary": "Second pass: element 13717542294 is now confirmed by three independent retailers (Bimmerworld, Turner, FCP Euro) for the E90 328i/328xi, so it is VERIFIED. Procedure: two fasteners (10 mm per bavmods; 'two large bolts on the right side at the fender' per bimmerpost), intake-hose band clamp, snorkel retention tabs, MAF connector clip, lift the airbox up off its lower rubber stud, six housing screws, are corroborated by bavmods (E92/E9x N52 guides) and a bimmerpost 2006 325i N52 thread; a BMW TIS excerpt for the E89 N52K (quoted on a Z4 forum) lists the same sequence (read fault memory, ignition off, remove intake duct, release screws and clamp, unlock plug, lift housing up) but names no fastener sizes. No E90-specific BMW document was found, so primarySourceFound is false. Conflicts that remain: whether to unplug the MAF (bavmods and TIS unplug; bimmerpost leaves it attached), whether the battery must be disconnected (bavmods yes; TIS only ignition off), and the airbox style (a youcanic E9x article says two Torx screws on the cover, bavmods/bimmerpost say six housing screws; an M3 uses eight Torx). Euro-airbox number 13717536006 is listed by Turner as a non-stock airbox filter but by FCP as fitting 328i/328xi, so it should not be bought unless it matches the removed filter. No torque values exist. Interval: no BMW interval found; three retailers/DIY sites say yearly or 12,000-15,000 miles.",
+  "variantDependencies": [
+    "Engine: 13717542294 is listed for E90 328i/328xi N52 (Turner, Bimmerworld, FCP). aFe/Dinan listings cover 'N51/N52' together, so N51 likely shares the airbox, but no BMW or retailer statement was found for N51 specifically.",
+    "Z4 TIS excerpt is for an N52K (E89), not E90; used only to corroborate sequence. The bimmerpost DIY is a 2006 325i (N52B25) and the bavmods guide is an E92/E9x guide.",
+    "xDrive vs RWD: Turner and Bimmerworld list the same filter for 328i and 328xi; no procedure difference reported.",
+    "Transmission type is irrelevant to this job.",
+    "Euro airbox conversion (Mann 13717536006 / Mahle LX1035) is a different airbox; not applicable to a stock US car unless converted."
+  ],
+  "tools": [
+    {
+      "item": "10 mm socket/wrench and ratchet (two airbox fasteners)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+        "https://bavmods.com/pages/how-to-replace-bmw-engine-air-filter-bmw-e-chassis-e6x-e8x-e9x-1-3-5-series-diy-guide",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+      ],
+      "note": "bavmods (two pages, one website) says 10 mm; bimmerpost says 'two large bolts' without a size, so the size is effectively single-site."
+    },
+    {
+      "item": "T25 Torx driver (listed by bavmods; which screws use it is not stated)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+      ],
+      "note": "An M3 thread says eight Torx T25 (author said T20, commenter warned T20 strips) for the M3 airbox, which differs from the 328i airbox."
+    },
+    {
+      "item": "Flat-head screwdriver (band clamp, snorkel tabs, MAF clip)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+      ]
+    },
+    {
+      "item": "Pick or small pry tool for the MAF connector clip",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+      ],
+      "note": "bimmerpost says 'a small screwdriver' unclips the sensor."
+    },
+    {
+      "item": "Microfiber towel / MAF-safe cleaner (cleaning the airbox; optional MAF cleaning)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "Engine air filter element, E90 328i/328xi (N52), stock airbox",
+      "partNumber": "13717542294",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bimmerworld.com/Engine/Engine-Maintenance/OEM-Air-Filter-E90-E91-E92-E93-325i-330i-328i-328xi-BMW-13717542294.html",
+        "https://www.turnermotorsport.com/p-360727-air-filter/",
+        "https://www.fcpeuro.com/BMW-parts/328i-xDrive/Air-Filter/"
+      ],
+      "note": "Turner (Genuine BMW) says 2007+ E90 328i and 328xi, stock air box. Bimmerworld lists E90-E93 (2006-2013) 325i/325xi/328i/328xi/330i/330xi and E82 128i (no engine code). FCP lists it for 128i, 325i, 325xi, 328i, 328i xDrive, 328xi. Mahle/Mann/Hengst/Bosch brands are offered."
+    },
+    {
+      "item": "Mann alternative element (E60/E82/E90/E92/Z4)",
+      "partNumber": "13717556961",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-92-bmw-air-intake-filters/m-35-mann?Nrpp=50"
+      ]
+    },
+    {
+      "item": "Euro airbox / alternate element (Turner: 'Mann N52 Euro airbox'; FCP: Mahle LX1035 listed for 128i, 325i, 328i, 328i xDrive, 328xi, 330i, 330xi)",
+      "partNumber": "13717536006",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-92-bmw-air-intake-filters/m-35-mann?Nrpp=50",
+        "https://www.fcpeuro.com/BMW-parts/328i-xDrive/Air-Filter/"
+      ],
+      "note": "Turner says it is for a non-stock (Euro) airbox; FCP lists it for the US 328i. Do not buy by this number; match the removed element or buy 13717542294."
+    },
+    {
+      "item": "Airbox half screws (identity unclear)",
+      "partNumber": "13717545438",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+      ],
+      "note": "Listed beside the six-screw note; replace any missing screws."
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Airbox housing screws, airbox mounting bolts, hose clamp",
+      "value": "No torque in any source; hand-tighten the six housing screws in a star pattern, snug the two mounting bolts and the clamp",
+      "status": "MISSING",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+        "https://z4-forum.com/threads/air-filter-change.151775/"
+      ],
+      "conflicts": "The Z4 TIS excerpt shows torque codes (13 62 3AZ, 13 62 5AZ) without values."
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Prep",
+      "instruction": "Engine off and cool. Per the BMW TIS excerpt for the N52K, switch the ignition off (and read fault memory first if you have a reader). bavmods adds disconnecting the battery negative terminal 'to avoid damaging the MAF sensor'; the TIS does not. Decide per owner preference; if the battery is disconnected, no registration is needed (only a replacement battery needs registering per the BMW manual).",
+      "status": "CONFLICT",
+      "warnings": [
+        "Battery disconnect resets some settings (clock/radio/windows)."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Loosen the intake hose band clamp",
+      "instruction": "Loosen the band clamp on the rubber intake hose where it meets the airbox with a flat-head screwdriver and free the hose.",
+      "status": "VERIFIED",
+      "warnings": []
+    },
+    {
+      "n": 3,
+      "title": "Remove the two airbox mounting fasteners",
+      "instruction": "Remove the two fasteners that hold the airbox to the car (10 mm per bavmods; bimmerpost: two large bolts on the right side by the fender).",
+      "status": "VERIFIED",
+      "warnings": []
+    },
+    {
+      "n": 4,
+      "title": "Release the intake snorkel",
+      "instruction": "Unlatch the front intake snorkel by separating its two retention tabs with a flat-head screwdriver.",
+      "status": "VERIFIED",
+      "warnings": [
+        "The tabs are brittle."
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Handle the MAF connector",
+      "instruction": "Unplug the mass airflow sensor connector by lifting its small retention clip (bavmods and the BMW TIS excerpt unplug it). A bimmerpost 2006 325i poster leaves it attached and lets the box hang on the wire's slack; if you do that, do not strain the wire.",
+      "status": "CONFLICT",
+      "warnings": [
+        "The MAF clip is small and brittle; one owner broke it.",
+        "Do not let the MAF wire take strain."
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Lift out the airbox",
+      "instruction": "Lift the airbox straight up off its lower rubber stud and out of the engine bay; it may need wiggling.",
+      "status": "VERIFIED",
+      "warnings": []
+    },
+    {
+      "n": 7,
+      "title": "Open the airbox and swap the element",
+      "instruction": "Remove the six housing screws (bavmods; replace any missing ones), separate the halves, pull out the old element, wipe the housing with a microfiber towel (debris contaminates the new element), and seat the new element so its gasket lines up perfectly.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Do not run the engine with a loosely seated element.",
+        "Avoid oiled aftermarket filters that can contaminate the MAF."
+      ]
+    },
+    {
+      "n": 8,
+      "title": "Close the airbox",
+      "instruction": "Align the screw holes, refit the six screws by hand in a star pattern to seat the element evenly. If you have MAF cleaner, 3-5 short bursts on the sensor are suggested by bavmods (optional).",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "No torque spec; hand-tighten only."
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Refit the airbox",
+      "instruction": "Seat the airbox bottom onto the rubber stud (a smear of silicone on the grommet is suggested by one Z4 poster), reconnect the MAF connector, refit the snorkel, the intake hose and band clamp, and the two mounting fasteners.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Seat the rubber stud fully and tighten the clamp snugly."
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Test",
+      "instruction": "Reconnect the battery if removed, start the engine and check for warning lights and intake or vacuum leaks.",
+      "status": "SINGLE_SOURCE",
+      "warnings": []
+    }
+  ],
+  "safety": [
+    "Do not let the MAF wire or connector take strain.",
+    "Never run the engine without the filter or with a visibly damaged element.",
+    "Avoid oiled aftermarket filters that can contaminate the MAF.",
+    "Keep screws and tools out of the intake tract."
+  ],
+  "missingEvidence": [
+    "BMW/TIS procedure for the E90 N52 airbox with fastener sizes and torque values (only an E89 N52K TIS excerpt on a forum, without sizes).",
+    "BMW service interval for the engine air filter (retailers say 12,000-15,000 miles or yearly).",
+    "N51 (SULEV) airbox/element fitment stated by a retailer or BMW document.",
+    "Which airbox screws use T25 and how many (six housing screws per bavmods; a youcanic E9x article says two Torx; an M3 uses eight).",
+    "Whether battery disconnect or fault-memory readout is required (TIS: ignition off; bavmods: disconnect).",
+    "Side of the engine bay the airbox sits on (youcanic says driver's side; bimmerpost mentions bolts 'on the right side' at the fender; unresolved)."
+  ],
+  "ownerInputsNeeded": [
+    "Confirm engine code (N52 vs N51) from the engine cover/VIN.",
+    "Confirm stock airbox (not a Euro airbox or aftermarket intake).",
+    "Count the screws on your airbox lid when you open it and note whether the MAF is on the lid or the intake tube.",
+    "Choose OE-style (13717542294) or an equivalent brand."
+  ],
+  "visuals": [
+    {
+      "id": "airbox-removal-points",
+      "title": "The points that free the airbox from the car",
+      "evidenceSteps": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "airbox-assembly",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The large black plastic air filter housing in the engine bay, sitting on a lower rubber stud."
+        },
+        {
+          "id": "airbox-mounting-fasteners",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "Two fasteners (reported 10 mm) holding the airbox to the car near the fender."
+        },
+        {
+          "id": "intake-hose-band-clamp",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "A round metal band clamp where the rubber intake hose meets the airbox."
+        },
+        {
+          "id": "maf-connector-clip",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "A small plug on the mass airflow sensor with a lift-up retention clip that is brittle."
+        },
+        {
+          "id": "snorkel-retention-tabs",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "Two plastic retention tabs that hold the front intake snorkel to the airbox."
+        }
+      ],
+      "facts": [
+        {
+          "element": "airbox-assembly",
+          "attribute": "existence",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://z4-forum.com/threads/air-filter-change.151775/"
+          ],
+          "note": "Three sites describe lifting the airbox up off a lower rubber stud/buffer."
+        },
+        {
+          "element": "airbox-assembly",
+          "attribute": "location",
+          "urls": [
+            "https://www.youcanic.com/change-engine-air-filter-bmw-3-series-2004-2013/",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+          ],
+          "note": "youcanic: large black box on the driver's side; bimmerpost (2006 325i N52): box mounted at the driver-side fender."
+        },
+        {
+          "element": "airbox-mounting-fasteners",
+          "attribute": "fastener-position",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+          ],
+          "note": "Two fasteners hold the box; bimmerpost places them on the right side at the fender; bavmods says external, removed first."
+        },
+        {
+          "element": "airbox-mounting-fasteners",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+          ],
+          "note": "10 mm hex head; single website (two pages)."
+        },
+        {
+          "element": "intake-hose-band-clamp",
+          "attribute": "hardware-type",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://z4-forum.com/threads/air-filter-change.151775/"
+          ],
+          "note": "Band clamp / round metal clamp loosened with a screwdriver; TIS excerpt: release clamp and detach air intake hose."
+        },
+        {
+          "element": "maf-connector-clip",
+          "attribute": "release-mechanism-geometry",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://z4-forum.com/threads/air-filter-change.151775/"
+          ],
+          "note": "bavmods: lift the retention tab with a flathead and pull the harness; bimmerpost: unclip with a small screwdriver; TIS: unlock and remove plug."
+        },
+        {
+          "element": "snorkel-retention-tabs",
+          "attribute": "release-mechanism-geometry",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+          ],
+          "note": "Single source: separate its two retention tabs with a flathead."
+        },
+        {
+          "element": "airbox-mounting-fasteners",
+          "attribute": "existence",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+          ],
+          "note": "bavmods: two 10 mm airbox screws; bimmerpost: two large bolts holding the box to the fender."
+        },
+        {
+          "element": "intake-hose-band-clamp",
+          "attribute": "existence",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://z4-forum.com/threads/air-filter-change.151775/"
+          ],
+          "note": "bavmods: band clamp; bimmerpost: round metal clip; BMW TIS (E89 N52K) via forum: release clamp and detach air intake hose."
+        },
+        {
+          "element": "intake-hose-band-clamp",
+          "attribute": "location",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://z4-forum.com/threads/air-filter-change.151775/"
+          ],
+          "note": "All place the clamp where the intake hose meets the airbox."
+        },
+        {
+          "element": "maf-connector-clip",
+          "attribute": "existence",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+            "https://z4-forum.com/threads/air-filter-change.151775/"
+          ],
+          "note": "bavmods: lift MAF connector retention tab; bimmerpost: unclip sensor with a small screwdriver; TIS: unlock plug."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "airbox-assembly",
+          "reason": "Side of the engine bay is unresolved; do not draw it on a specific side or in a specific position relative to the battery or strut towers."
+        },
+        {
+          "element": "maf-connector-clip",
+          "reason": "Exact connector shape, wire routing and whether the sensor sits on the lid or the intake tube are not established."
+        },
+        {
+          "element": "airbox-mounting-fasteners",
+          "reason": "Count of two is established, but head size is single-website and exact positions on the fender side are not."
+        }
+      ],
+      "sources": {
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3": {
+          "kind": "third-party-guide",
+          "establishes": "E9x guide: two 10 mm airbox screws, snorkel tabs, MAF clip, band clamp, lift out, six screws."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11949674": {
+          "kind": "third-party-guide",
+          "establishes": "2006 325i N52: two large bolts on the right side at the fender, round clamp, MAF left attached, rubber stud."
+        },
+        "https://z4-forum.com/threads/air-filter-change.151775/": {
+          "kind": "oem-text",
+          "establishes": "BMW TIS excerpt (E89 N52K) as quoted on a forum: remove intake duct, release screws and clamp, unlock plug, lift housing upward, sits on stop buffer."
+        },
+        "https://www.youcanic.com/change-engine-air-filter-bmw-3-series-2004-2013/": {
+          "kind": "third-party-guide",
+          "establishes": "E90-E93 general article: airbox on the driver's side, two Torx screws (different style from the N52 guides)."
+        }
+      },
+      "gapFillNotes": [
+        "airbox-mounting-fasteners location NOT established beyond bimmerpost (driver-side fender); bavmods gives no position.",
+        "maf-connector-clip location NOT established: only bimmerpost implies the sensor is on the airbox sensor side.",
+        "snorkel-retention-tabs existence and location NOT established: only bavmods describes two tabs.",
+        "youcanic says airbox has two Torx screws: different style from the N52 guides."
+      ]
+    },
+    {
+      "id": "airbox-halves-and-element",
+      "title": "Opening the airbox and seating the new element",
+      "evidenceSteps": [
+        7,
+        8
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "airbox-lower-and-lid",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The two plastic halves of the airbox separated, with the filter element between them."
+        },
+        {
+          "id": "airbox-housing-screws",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "Six screws around the airbox halves that clamp them together."
+        },
+        {
+          "id": "filter-element-gasket",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The new pleated element with its rubber gasket edge that must sit evenly all the way around."
+        }
+      ],
+      "facts": [
+        {
+          "element": "airbox-housing-screws",
+          "attribute": "fastener-position",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+          ],
+          "note": "Single source: six screws holding the halves together, refit in a star pattern; positions not described."
+        },
+        {
+          "element": "airbox-housing-screws",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+          ],
+          "note": "bavmods lists a T-25 screwdriver (not tied to a screw); bimmerpost says Torx screws; an M3 thread says T25 on the M3 airbox. Drive type likely Torx T25 but not confirmed on a 328i."
+        },
+        {
+          "element": "filter-element-gasket",
+          "attribute": "action",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+          ],
+          "note": "Single source: make sure the gasket lines up perfectly."
+        },
+        {
+          "element": "airbox-lower-and-lid",
+          "attribute": "relationship",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+          ],
+          "note": "bimmerpost: filter side separates while the sensor side stays connected; bavmods: separate the two halves."
+        },
+        {
+          "element": "airbox-housing-screws",
+          "attribute": "existence",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11949674"
+          ],
+          "note": "bavmods: six screws hold the airbox assembly halves together; bimmerpost: Torx screws set vertically on the box that are removed to open it."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "airbox-housing-screws",
+          "reason": "Drive type, count (six single-source) and positions are not established across independent sources; a youcanic article says two Torx screws on another style."
+        },
+        {
+          "element": "filter-element-gasket",
+          "reason": "Which side of the element faces up and any arrow marks are not established."
+        }
+      ],
+      "sources": {
+        "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3": {
+          "kind": "third-party-guide",
+          "establishes": "Six housing screws, hand-tighten in a star pattern, gasket must line up."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11949674": {
+          "kind": "third-party-guide",
+          "establishes": "Torx screws on the box, filter side separates, sensor side stays connected, orange-lined filter."
+        }
+      },
+      "gapFillNotes": [
+        "airbox-housing-screws location NOT established (no source gives positions).",
+        "filter-element-gasket existence and location NOT established: only bavmods mentions the gasket."
+      ]
+    }
+  ]
 }

@@ -7,19 +7,315 @@
     "year": 2010
   },
   "certified": false,
+  "gaps": [
+    {
+      "deficits": [
+        {
+          "attribute": "existence",
+          "criticality": "identification",
+          "element": "finned-round-cap",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "hero",
+          "urlsHave": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
+          ]
+        },
+        {
+          "attribute": "location",
+          "criticality": "identification",
+          "element": "finned-round-cap",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "hero",
+          "urlsHave": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
+          ]
+        }
+      ],
+      "guide": 2,
+      "visualId": "headlight-halo-cap-engine-bay"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "identification",
+          "element": "key-body",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "hero",
+          "urlsHave": []
+        },
+        {
+          "attribute": "location",
+          "criticality": "procedure",
+          "element": "side-release-tab",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": []
+        }
+      ],
+      "guide": 3,
+      "visualId": "comfort-access-key-opening"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "existence",
+          "criticality": "procedure",
+          "element": "strut-brace-and-large-heat-shield",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "context",
+          "urlsHave": [
+            "https://z4-forum.com/posts/2118334"
+          ]
+        }
+      ],
+      "guide": 4,
+      "visualId": "bank2-precat-shield-screws"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "critical",
+          "element": "postcat-connector-bracket",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts",
+          "role": "hero",
+          "urlsHave": [
+            "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm"
+          ]
+        },
+        {
+          "attribute": "existence",
+          "criticality": "critical",
+          "element": "postcat-connector-bracket",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "hero",
+          "urlsHave": []
+        }
+      ],
+      "guide": 4,
+      "visualId": "postcat-connector-bracket-underside"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "existence",
+          "criticality": "identification",
+          "element": "positive-terminal-cover",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "context",
+          "urlsHave": [
+            "https://www.1addicts.com/forums/showthread.php?p=22173925"
+          ]
+        },
+        {
+          "attribute": "location",
+          "criticality": "identification",
+          "element": "vent-hose",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "context",
+          "urlsHave": [
+            "https://www.1addicts.com/forums/showthread.php?p=22173925"
+          ]
+        }
+      ],
+      "guide": 7,
+      "visualId": "trunk-battery-compartment"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "critical",
+          "element": "right-drain-plug",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "target",
+          "urlsHave": []
+        }
+      ],
+      "guide": 8,
+      "visualId": "radiator-drain-plugs-underside"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "identification",
+          "element": "washer-fluid-filler-cap",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": [
+            "https://www.youcanic.com/add-windshield-washer-fluid-2004-2013-bmw-3-series/"
+          ]
+        }
+      ],
+      "guide": 9,
+      "visualId": "engine-bay-fluid-fill-points"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "procedure",
+          "element": "element-retention-tabs",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": []
+        }
+      ],
+      "guide": 10,
+      "visualId": "microfilter-element-retention-tabs"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "procedure",
+          "element": "airbox-mounting-fasteners",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": []
+        },
+        {
+          "attribute": "location",
+          "criticality": "critical",
+          "element": "maf-connector-clip",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "target",
+          "urlsHave": []
+        },
+        {
+          "attribute": "existence",
+          "criticality": "procedure",
+          "element": "snorkel-retention-tabs",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": []
+        },
+        {
+          "attribute": "location",
+          "criticality": "procedure",
+          "element": "snorkel-retention-tabs",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": []
+        }
+      ],
+      "guide": 12,
+      "visualId": "airbox-removal-points"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "procedure",
+          "element": "airbox-housing-screws",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": []
+        },
+        {
+          "attribute": "existence",
+          "criticality": "critical",
+          "element": "filter-element-gasket",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "hero",
+          "urlsHave": []
+        },
+        {
+          "attribute": "location",
+          "criticality": "critical",
+          "element": "filter-element-gasket",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "hero",
+          "urlsHave": []
+        }
+      ],
+      "guide": 12,
+      "visualId": "airbox-halves-and-element"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "critical",
+          "element": "fill-drain-plug",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "hero",
+          "urlsHave": []
+        }
+      ],
+      "guide": 15,
+      "visualId": "rear-diff-fill-plug-location"
+    },
+    {
+      "deficits": [
+        {
+          "attribute": "location",
+          "criticality": "critical",
+          "element": "fill-opening",
+          "haveHosts": 0,
+          "need": "2+ distinct hosts",
+          "role": "hero",
+          "urlsHave": []
+        }
+      ],
+      "guide": 15,
+      "visualId": "rear-diff-fill-level"
+    }
+  ],
+  "rule": "see header of scripts/bmw/pipeline-visuals.mjs",
+  "summary": {
+    "certified": 0,
+    "contractLocked": 25,
+    "evidenceInsufficient": 10,
+    "imagesProduced": 0,
+    "visuals": 35
+  },
   "visuals": [
     {
       "certified": false,
+      "evidenceSteps": [
+        5,
+        6,
+        7,
+        14,
+        15
+      ],
+      "guide": 1,
+      "guideName": "Front Brake Pads",
       "imageProduced": false,
       "phase": "GEN_REQUESTED",
       "stages": [
         {
-          "detail": "3 must-show, 12 must-not-show",
+          "detail": "4 must-show, 11 must-not-show",
           "stage": "1 visual spec intake",
           "status": "PASS"
         },
         {
-          "detail": "4 reference(s); 4 established / 9 not-established ledger rows",
+          "detail": "9 reference(s); 11 established / 5 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -35,7 +331,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2123 chars)",
+          "detail": "prompt built from the locked contract (2408 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -71,7 +367,7 @@
         },
         {
           "detail": "no generated candidate exists yet",
-          "stage": "11 Andy sign-off and approved artifact",
+          "stage": "11 owner sign-off and approved artifact",
           "status": "BLOCKED"
         },
         {
@@ -80,25 +376,191 @@
           "status": "PASS"
         }
       ],
-      "visualId": "oil-drain-plug-access"
+      "visualId": "front-caliper-hardware-wheel-well"
     },
     {
       "certified": false,
+      "evidenceSteps": [
+        8,
+        13,
+        14
+      ],
+      "guide": 1,
+      "guideName": "Front Brake Pads",
       "imageProduced": false,
-      "phase": "EP_INSUFFICIENT",
+      "phase": "GEN_REQUESTED",
       "stages": [
         {
-          "detail": "2 must-show, 7 must-not-show",
+          "detail": "2 must-show, 10 must-not-show",
           "stage": "1 visual spec intake",
           "status": "PASS"
         },
         {
-          "detail": "3 reference(s); 1 established / 5 not-established ledger rows",
+          "detail": "6 reference(s); 5 established / 4 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
         {
-          "detail": "EP INSUFFICIENT: hero element filter-cap lacks established location",
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2088 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "front-wear-sensor-driver-side"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2,
+        3
+      ],
+      "guide": 2,
+      "guideName": "Fuse & Bulb Replacement",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 9 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2301 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "glovebox-fuse-panel"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        9
+      ],
+      "guide": 2,
+      "guideName": "Fuse & Bulb Replacement",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "1 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "3 reference(s); 1 established / 7 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 2 hero/target fact(s) not established",
           "problemCodes": [
             "EP_HERO_NOT_ESTABLISHED"
           ],
@@ -112,6 +574,2163 @@
         },
         {
           "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "headlight-halo-cap-engine-bay"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        7,
+        8,
+        10
+      ],
+      "guide": 2,
+      "guideName": "Fuse & Bulb Replacement",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 6 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2085 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "wheel-arch-liner-access"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2,
+        3
+      ],
+      "guide": 3,
+      "guideName": "Key Fob Battery",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "4 must-show, 11 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 9 established / 9 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 2 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "comfort-access-key-opening"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3,
+        4,
+        5
+      ],
+      "guide": 4,
+      "guideName": "Oxygen Sensor",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 11 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 8 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2468 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "precat-sensor-connectors-engine-bay"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        6,
+        7
+      ],
+      "guide": 4,
+      "guideName": "Oxygen Sensor",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 11 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 6 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2273 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "bank2-precat-shield-screws"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        11
+      ],
+      "guide": 4,
+      "guideName": "Oxygen Sensor",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 4 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 2 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "postcat-connector-bracket-underside"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        6,
+        12
+      ],
+      "guide": 5,
+      "guideName": "Rear Brake Pads",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "6 reference(s); 8 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1959 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "rear-caliper-hardware-wheel-well"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        5,
+        11
+      ],
+      "guide": 5,
+      "guideName": "Rear Brake Pads",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "6 reference(s); 4 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1985 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "rear-wear-sensor-passenger-side"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3,
+        4,
+        5,
+        8
+      ],
+      "guide": 6,
+      "guideName": "Serpentine Belt",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "4 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "6 reference(s); 15 established / 4 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2323 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "accessory-drive-components"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        7
+      ],
+      "guide": 6,
+      "guideName": "Serpentine Belt",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "7 reference(s); 8 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2166 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "tensioner-bolt-and-release"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "guide": 7,
+      "guideName": "Battery Replacement",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "12 reference(s); 11 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2188 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "trunk-battery-compartment"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3,
+        6
+      ],
+      "guide": 7,
+      "guideName": "Battery Replacement",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "1 must-show, 8 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 3 established / 1 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1753 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "engine-bay-jump-terminal"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15
+      ],
+      "guide": 8,
+      "guideName": "Coolant Flush & Fill",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "8 reference(s); 8 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2122 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "expansion-tank-cap-and-vent-screw"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3,
+        5,
+        9
+      ],
+      "guide": 8,
+      "guideName": "Coolant Flush & Fill",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "2 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "7 reference(s); 4 established / 6 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 1 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "radiator-drain-plugs-underside"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "guide": 9,
+      "guideName": "Fluid Checks & Top-Offs",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "4 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "11 reference(s); 9 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 1 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "engine-bay-fluid-fill-points"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4
+      ],
+      "guide": 9,
+      "guideName": "Fluid Checks & Top-Offs",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "7 reference(s); 8 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2160 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "brake-reservoir-access-cover"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2,
+        3
+      ],
+      "guide": 10,
+      "guideName": "Cabin Air Filter",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "8 reference(s); 7 established / 4 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2016 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "cowl-microfilter-cover"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        5,
+        6
+      ],
+      "guide": 10,
+      "guideName": "Cabin Air Filter",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 3 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 1 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "microfilter-element-retention-tabs"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        5,
+        6
+      ],
+      "guide": 11,
+      "guideName": "PCV Valve",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "9 reference(s); 11 established / 4 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2218 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "valve-cover-breather-hose-location"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "guide": 12,
+      "guideName": "Engine Air Filter",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "5 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 9 established / 9 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 4 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "airbox-removal-points"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        7,
+        8
+      ],
+      "guide": 12,
+      "guideName": "Engine Air Filter",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "2 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "2 reference(s); 3 established / 8 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 3 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "airbox-halves-and-element"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3
+      ],
+      "guide": 13,
+      "guideName": "Tire Rotation",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "1 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "5 reference(s); 2 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1895 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "side-jack-pads-underside"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        5,
+        7
+      ],
+      "guide": 13,
+      "guideName": "Tire Rotation",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "10 reference(s); 6 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1919 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "wheel-bolts-and-metal-valve-stem"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        7
+      ],
+      "guide": 13,
+      "guideName": "Tire Rotation",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "3 reference(s); 6 established / 2 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1920 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "tpms-reset-controls"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2,
+        3,
+        4
+      ],
+      "guide": 14,
+      "guideName": "Wiper Blades",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 7 established / 4 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2020 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "wiper-blade-release-hook"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "guide": 15,
+      "guideName": "Differential / Transfer Case Fluid",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "1 must-show, 10 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "8 reference(s); 3 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 1 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "rear-diff-fill-plug-location"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        5
+      ],
+      "guide": 15,
+      "guideName": "Differential / Transfer Case Fluid",
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 6 established / 4 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: 1 hero/target fact(s) not established",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "rear-diff-fill-level"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        11
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 8 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2264 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "electronic-oil-level-check"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        2
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "1 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "2 reference(s); 2 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1983 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "side-jack-pad"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        6,
+        7
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 8 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "6 reference(s); 5 established / 3 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1980 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "filter-cap-o-ring-positions"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        4,
+        5
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "2 must-show, 9 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "8 reference(s); 7 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2156 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "oil-drain-plug-access"
+    },
+    {
+      "certified": false,
+      "evidenceSteps": [
+        3,
+        6,
+        8
+      ],
+      "guide": 16,
+      "guideName": "Engine Oil & Filter Change",
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "1 must-show, 8 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "8 reference(s); 4 established / 1 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (1741 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
           "stage": "12 event log + directory integrity",
           "status": "PASS"
         }

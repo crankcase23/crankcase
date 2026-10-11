@@ -1,0 +1,18 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Halo bulb cap on the back of the headlight (under the hood), on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Halo (angel-eye) bulb".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). High three-quarter view looking down into the open engine bay from the front, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: A circular finned plastic cap on the back of the headlight covering the halo (angel-eye) bulb; twists off. Do NOT depict how it is operated, its fine detail: keep it a plain generic shape.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): top cover compartment. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): finned round cap detail (Position relative to low/high beam caps and the headlight's mounting points is not established; also varies between halogen and xenon lamps), top cover compartment detail (Adaptive-headlight cars only; do not show on a generic car), headlight rear housing (No source establishes this element for the car; it is left out), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

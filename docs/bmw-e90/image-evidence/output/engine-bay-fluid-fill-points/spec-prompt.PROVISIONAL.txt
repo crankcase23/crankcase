@@ -1,0 +1,21 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Where the owner-serviceable fluid fill points are in the engine bay, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Engine oil level".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). High three-quarter view looking down into the open engine bay from the front, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: The cap on the translucent coolant expansion tank, with a filler neck marked MAX and MIN; reported on the passenger side toward the firewall.
+2. The washer-fluid filler neck cap, reported black with a wiper symbol, serving window and headlamp washers.
+3. The engine oil filler neck cap on top of the engine.
+4. The brake fluid reservoir at the driver-side base of the windshield, hidden under a long plastic cover.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): windshield base and wipers. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): coolant expansion tank cap detail (Exact tank shape; cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank), brake reservoir under cover detail (The reservoir is hidden; do not show cover screw count or the reservoir's cap markings), washer fluid filler cap detail (Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

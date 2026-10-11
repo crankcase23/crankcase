@@ -1,0 +1,225 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Extract the old fluid through the fill hole",
+      "Refill to the level of the opening"
+    ],
+    "stepNumber": 4,
+    "title": "rear-diff-fill-level (BMW 328i draft Differential / Transfer Case Fluid guide; evidence step 4, 5)"
+  },
+  "contentHash": "1096bef0ec74f83d073b55a4a381c09c85f5c88af7362eb4ad9d7eb2b2d8ca6c",
+  "createdAt": "2026-10-10T12:03:47.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "The open fill hole with the oil level at its lower edge; oil trickles out when the differential is full.",
+      "id": "fill-opening",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A thin tube from a hand pump or squeeze bottle pressed into the opening.",
+      "id": "pump-tube",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A suction tube used earlier to pump old oil out through the same opening.",
+      "id": "extraction-tube",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of fill opening: Internal geometry and housing shape around the opening are not established.",
+      "id": "fill-opening-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-rear-diff-fill-level-v1",
+  "ledger": [
+    {
+      "attribute": "action",
+      "element": "fill-opening",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "pump-tube",
+      "evidence": [
+        "ref-3",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "extraction-tube",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "fill-opening",
+      "note": "No source describes the opening geometry or internal level marks. GAP: show a simple opening without internal detail.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fill-opening",
+      "evidence": [
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "pump-tube",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "pump-tube",
+      "evidence": [
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "fill-opening",
+      "note": "NOT established: no fetched page states which side/face of the rear differential housing the fill hole is on, only that it is reached from underneath. Draw generically on the housing.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "extraction-tube",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "fill-opening-unestablished-detail",
+      "note": "Internal geometry and housing shape around the opening are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "fill-opening-unestablished-detail",
+      "id": "excl-fill-opening-unestablished-detail",
+      "reason": "Internal geometry and housing shape around the opening are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "fill-opening-unestablished-detail"
+      }
+    },
+    {
+      "element": "extraction-tube",
+      "id": "excl-extraction-tube",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "extraction-tube"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "BMW TIS text: add oil until it reaches the lower edge of the filler plug opening; use only approved oils."
+      ],
+      "id": "ref-1",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/attachments/diy-do-yourself-14/48934-differential-gear-oil-change-differential_drain_with_torque.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Pump out via the fill hole; fill until a small trickle runs out with the car level."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmersport.co.nz",
+      "sourceRef": "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Two-way transfer pump and easy-fill pump; fill until a slow steady stream."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-change-differential-fluid-on-bmw-e-chassis-e60-e82-e90-1-3-5-series-diy-guide",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "X5 E70: extract and refill through the fill holes with syringe/tube."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "xoutpost.com",
+      "sourceRef": "https://xoutpost.com/bmw-sav-forums/x5-e70-forum/100017-transfer-case-rear-differential-fluid-change-today.html",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "rear-diff-fill-level"
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Rear caliper: clip, guide screws and carrier bolts, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Remove the anti-rattle clip\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A floating disc-brake caliper on the rear rotor seen from the outboard side with the wheel removed."
+    },
+    {
+      "rank": 2,
+      "text": "A spring clip on the front of the caliper that comes off by hand or with a screwdriver."
+    },
+    {
+      "rank": 3,
+      "text": "Two hex-head bolts (16 mm) on the back side of the caliper carrier."
+    }
+  ],
+  "maySimplify": [
+    "a plain dark ground plane"
+  ],
+  "mustNotShow": [
+    "guide screw fasteners (Head type and exact position are only single-sourced)",
+    "caliper retaining clip detail (Exact shape and engagement not established)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "bfbe84f19bbadf74047fb225b34f4e307f6e133b466773c36b4621cc9c496fee"
+}

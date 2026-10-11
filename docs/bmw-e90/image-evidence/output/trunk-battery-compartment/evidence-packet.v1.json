@@ -1,0 +1,413 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Open the trunk battery area",
+      "Disconnect the negative terminal first",
+      "Disconnect the positive lead",
+      "Release the power box (if it is clipped on) and the vent hose",
+      "Remove the hold-down and lift the battery out"
+    ],
+    "stepNumber": 4,
+    "title": "trunk-battery-compartment (BMW 328i draft Battery Replacement guide; evidence step 4, 5, 6, 7, 8)"
+  },
+  "contentHash": "c5616e4ba0582a310f630445b80a35e24c9be0b5e275657e7704661c7c129d9a",
+  "createdAt": "2026-10-10T12:01:47.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "A single 12 V battery on the right side of the luggage compartment, under the trunk cover/panel.",
+      "id": "battery",
+      "role": "hero"
+    },
+    {
+      "criticality": "identification",
+      "describe": "A distribution box attached to the top of the battery (BMW calls it the rear power distribution box; its fuse links cannot be replaced individually).",
+      "id": "rear-power-distribution-box",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "The negative battery post with its clamp; the intelligent battery sensor is part of the negative lead. Do not disturb the sensor.",
+      "id": "negative-terminal-with-ibs",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "A cover over the positive terminal on the battery top (a red cover is described on an E82 post).",
+      "id": "positive-terminal-cover",
+      "role": "context"
+    },
+    {
+      "criticality": "identification",
+      "describe": "A vent hose leading from the battery's vent port; routing in the trunk is not established.",
+      "id": "vent-hose",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A metal hold-down plate/bracket that clamps the battery; exact position and number of fasteners not established beyond one M6 collar screw in the catalog.",
+      "id": "hold-down-bracket",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of vent hose: Routing path and clip positions on the E90 sedan are not established.",
+      "id": "vent-hose-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of hold down bracket: Exact shape and number of fasteners are not established beyond catalog part list.",
+      "id": "hold-down-bracket-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-trunk-battery-compartment-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "battery",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "battery",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "rear-power-distribution-box",
+      "evidence": [
+        "ref-1",
+        "ref-5"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "rear-power-distribution-box",
+      "evidence": [
+        "ref-1"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "negative-terminal-with-ibs",
+      "evidence": [
+        "ref-1",
+        "ref-6",
+        "ref-7"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "negative-terminal-with-ibs",
+      "evidence": [
+        "ref-3",
+        "ref-8"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "positive-terminal-cover",
+      "note": "Single E82 source for a flip-up cover; E90 not confirmed by a second site.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "vent-hose",
+      "evidence": [
+        "ref-9",
+        "ref-10"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "vent-hose",
+      "note": "Near positive side (E82 only). E90 route unknown.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "hold-down-bracket",
+      "evidence": [
+        "ref-9",
+        "ref-3",
+        "ref-8"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "hold-down-bracket",
+      "note": "Near negative terminal; single E82 source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "rear-power-distribution-box",
+      "evidence": [
+        "ref-1",
+        "ref-7",
+        "ref-11"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "negative-terminal-with-ibs",
+      "evidence": [
+        "ref-1",
+        "ref-6",
+        "ref-7",
+        "ref-12"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "negative-terminal-with-ibs",
+      "evidence": [
+        "ref-1",
+        "ref-6",
+        "ref-3"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "vent-hose-unestablished-detail",
+      "note": "Routing path and clip positions on the E90 sedan are not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "hold-down-bracket-unestablished-detail",
+      "note": "Exact shape and number of fasteners are not established beyond catalog part list.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "vent-hose-unestablished-detail",
+      "id": "excl-vent-hose-unestablished-detail",
+      "reason": "Routing path and clip positions on the E90 sedan are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "vent-hose-unestablished-detail"
+      }
+    },
+    {
+      "element": "hold-down-bracket-unestablished-detail",
+      "id": "excl-hold-down-bracket-unestablished-detail",
+      "reason": "Exact shape and number of fasteners are not established beyond catalog part list.",
+      "trace": {
+        "attribute": "existence",
+        "element": "hold-down-bracket-unestablished-detail"
+      }
+    },
+    {
+      "element": "positive-terminal-cover",
+      "id": "excl-positive-terminal-cover",
+      "reason": "Colour/shape only established on an E82 post; avoid detailed geometry.",
+      "trace": {
+        "attribute": "existence",
+        "element": "positive-terminal-cover"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "BMW ST502 E90 voltage supply: battery right side of luggage compartment; rear power distribution box on top of battery; IBS on negative terminal; battery safety terminal; jump-start terminal in engine compartment; junction box behind glovebox."
+      ],
+      "id": "ref-1",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/03_E90%20Voltage%20Supply%20and%20Bus.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMW ST502 E90 overview: battery and PDC/AHM/Comfort Access control units on the right-hand side of the luggage compartment."
+      ],
+      "id": "ref-2",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "archive.org",
+      "sourceRef": "https://archive.org/download/BMWTechnicalTrainingDocuments/ST502%20E90%20Complete%20Vehicle/01_E90%20Complete%20Vehicle.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 battery in trunk, right-side cover, 10/13 mm tools, bracket, terminal order."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 battery location trunk right side."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "gearshifters.org",
+      "sourceRef": "https://gearshifters.org/bmw/what-size-battery-for-bmw-e90/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 thread: rear power distribution panel on top of the battery; battery in boot."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=30763666",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMW TIS 12 00: negative lead first, cars with IBS on negative terminal: do not pry pole shoes or loosen IBS socket cap screw."
+      ],
+      "id": "ref-6",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/attachments/diy-do-yourself-14/81518d1244527064-disconnecting-battery-bmw_battery_tis.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "ETK cable diagram: negative cable with IBS and adapter, positive cable with SBK, rear power distribution box."
+      ],
+      "id": "ref-7",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1946",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E82 DIY: red positive box clips, vent tube near positive terminal, hold-down plate near negative, front lip, 10 mm nuts."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=22173925",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "ETK battery holder diagram: hold-down, vent hose, elbow, grommet, rollover protection cover and fasteners."
+      ],
+      "id": "ref-9",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1987",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retail listing of BMW battery vent hose 61-21-1-377-745 routing gases away through the factory vent path."
+      ],
+      "id": "ref-10",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pmbperformance.com",
+      "sourceRef": "https://pmbperformance.com/products/bmw-battery-vent-hose",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Genuine BMW power distribution box w/ fuse 61146971370, fits E90 328i, described as sitting on top of the battery."
+      ],
+      "id": "ref-11",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://www.bimmerworld.com/Safety-Race-Interior/Battery-Electrical/Genuine-BMW-Electrical-Power-Distribution-Box-W-Fus-61146971370.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x thread: the IBS is built into the negative battery terminal."
+      ],
+      "id": "ref-12",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=15359488",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "trunk-battery-compartment"
+}

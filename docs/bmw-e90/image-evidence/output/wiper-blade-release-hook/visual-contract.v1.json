@@ -1,0 +1,203 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "fe19fdfd6b0fd4e1c5b980be1db08c988a6050f42dc6caf56136cbe5a37e1222",
+  "createdAt": "2026-10-10T12:03:37.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-wiper-blade-release-hook-v1",
+  "maySimplify": [
+    {
+      "element": "wiper-arm-lifted"
+    },
+    {
+      "element": "blade-release-tab-unestablished-detail"
+    },
+    {
+      "element": "arm-hook-end-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "blade-release-tab",
+      "id": "MD-blade-release-tab",
+      "requirements": [
+        {
+          "attribute": "action",
+          "evidence": [
+            "ref-1",
+            "ref-4",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "identification",
+      "element": "arm-hook-end",
+      "id": "MD-arm-hook-end",
+      "requirements": [
+        {
+          "attribute": "fine-detail-geometry",
+          "evidence": [
+            "ref-2",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "blade-release-tab-unestablished-detail",
+      "id": "MN-excl-blade-release-tab-unestablished-detail",
+      "reason": "Exact tab shape, position and the plastic cover outline are not established by any source.",
+      "trace": {
+        "attribute": "existence",
+        "element": "blade-release-tab-unestablished-detail"
+      }
+    },
+    {
+      "element": "arm-hook-end-unestablished-detail",
+      "id": "MN-excl-arm-hook-end-unestablished-detail",
+      "reason": "Peg vs hook geometry and dimensions are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "arm-hook-end-unestablished-detail"
+      }
+    },
+    {
+      "element": "wiper-arm-lifted",
+      "id": "MN-excl-wiper-arm-lifted",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "wiper-arm-lifted"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-wiper-blade-release-hook-v1",
+      "sha256": "42cb30d13ed6d0d91171bcdeb78bf849b8ca7bf38dc9c8cef713f4bc6bf76f8e"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "276fd8641c3bf313d848ed8ff2b920242bef3661103b90c800b12fbeab7389e7"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "b665e1c8efee73182e7f4d25ced52a88f5da7a58afb0056f534f2d18436794c0"
+  },
+  "suppress": [
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "blade-release-tab",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "wiper-arm-lifted",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "blade-release-tab-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "arm-hook-end-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "wiper-blade-release-hook"
+}

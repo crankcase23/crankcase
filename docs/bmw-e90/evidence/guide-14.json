@@ -1,159 +1,357 @@
 {
- "guide": 14,
- "name": "Wiper Blades",
- "recommendedStatus": "BUILDABLE_PARTIAL",
- "summary": "Front-only job (E90 sedan has no rear wiper). Replacement set PN 61612455435 is listed for 2010+ builds by BimmerWorld and Turner (supersedes 61612159627); pre-09/2009 cars use 61610427668. Driver blade 24 in is supported by two sources; passenger blade 19 in (youcanic) vs 18 in (autopadre) conflicts. Procedure is simple and consistent across sources; no tools or torque needed.",
- "variantDependencies": [
-  "Engine (N52B30 vs N51B30 SULEV) UNCONFIRMED: no evidence found that the brake/tire/wiper jobs differ by engine; not a tracked dependency but unverified.",
-  "RWD vs xDrive UNCONFIRMED: front wear sensor part number differs (34356789441 listed for xi/xDrive vs 34356789440 for non-xi); front jack point differs on xDrive.",
-  "Production date UNCONFIRMED: retailer fitment splits at 03/2010 (wear sensors) and 09/2009 (wipers); a 2010 model year car may fall on either side.",
-  "Brake package UNCONFIRMED: retailers split fitment between 'standard' and 'M Performance' front brakes (larger front brake); front pad part number depends on it.",
-  "Transmission (manual vs auto) UNCONFIRMED: no evidence it affects these jobs.",
-  "Build date: pre-09/2009 sets use 61610427668; 09/2009+ (2010+) sets use 61612455435 (supersedes 61612159627) per retailer listings. Passenger wiper ARM differs from 09/2009 (61619449924, Turner). BimmerWorld says 'not for 4-door models before 2010'.",
-  "Body style: sedan passenger blade 19 in (youcanic); coupe/convertible passenger 17 in; this is a sedan so sedan applies.",
-  "Drivetrain/engine: no evidence either affects wipers; unconfirmed.",
-  "Rear wiper: none on sedan (sedan has no rear wiper; one source lists none; not independently verified for this VIN)."
- ],
- "tools": [
-  {
-   "item": "No tools required",
-   "status": "VERIFIED",
-   "sources": [
-    "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
-    "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
-   ]
-  },
-  {
-   "item": "Towel or cardboard under arm to protect windshield",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
-   ]
-  }
- ],
- "parts": [
-  {
-   "item": "Front wiper blade set (driver+passenger), 2010+ E90 incl. 328i/328i xDrive",
-   "partNumber": "61612455435",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.bimmerworld.com/Body-Aero/Wiper-Blades/Wiper-Blade-Set-E90-328i-xi-335i-xi-M3-Sedan-BMW-61612159627.html",
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
-   ]
-  },
-  {
-   "item": "Prior revision of that set (listed 2010-2011 by a Valeo retailer; Valeo mfr nos. 900-24-8B / 900-19-6B)",
-   "partNumber": "61612159627",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.bimmerworld.com/Body-Aero/Wiper-Blades/Wiper-Blade-Set-E90-328i-xi-335i-xi-M3-Sedan-BMW-61612159627.html",
-    "https://www.idparts.com/valeo-complete-wiper-blade-set-2010-e90-61612159627-900-900-p-4183.html"
-   ]
-  },
-  {
-   "item": "Pre-09/2009 E90 set (not for a 2010 build)",
-   "partNumber": "61610427668",
-   "status": "VERIFIED",
-   "sources": [
-    "https://www.turnermotorsport.com/p-5991-oem-bosch-wiper-blade-set-e90-325ixi-328ixi-330ixi-335ixi-m3-sedan/",
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
-   ]
-  },
-  {
-   "item": "Another genuine E90 set listed without production date",
-   "partNumber": "61612468941",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
-   ]
-  },
-  {
-   "item": "Passenger wiper arm for builds from 09/2009 (only if arm is damaged)",
-   "partNumber": "61619449924",
-   "status": "SINGLE_SOURCE",
-   "sources": [
-    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
-   ]
-  }
- ],
- "fluids": [],
- "torque": [
-  {
-   "fastener": "Wiper arm nut (not needed for blade swap)",
-   "value": "MISSING (not required)",
-   "status": "MISSING",
-   "sources": [],
-   "conflicts": null
-  }
- ],
- "steps": [
-  {
-   "n": 1,
-   "title": "Park and prepare",
-   "instruction": "Park on level ground, ignition off. Fold a towel over the glass below the arm as a safeguard.",
-   "status": "SINGLE_SOURCE",
-   "warnings": [
-    "Dropped arm can crack the windshield."
-   ]
-  },
-  {
-   "n": 2,
-   "title": "Lift arm",
-   "instruction": "Lift the wiper arm from the glass and hold it upright.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Hold the arm; do not let it snap back onto the glass."
-   ]
-  },
-  {
-   "n": 3,
-   "title": "Release old blade",
-   "instruction": "Press the release tab and swing the blade perpendicular to the arm, then slide it off the hook/peg.",
-   "status": "VERIFIED",
-   "warnings": [
-    "Exact E90 release tab design not shown in sources; one source describes a plastic cover on the hook."
-   ]
-  },
-  {
-   "n": 4,
-   "title": "Fit new blade",
-   "instruction": "Slide the correct length blade on until it clicks. Driver 24 in, passenger 19 in (18 in per one source; verify against old blade).",
-   "status": "CONFLICT",
-   "warnings": [
-    "Passenger length conflict."
-   ]
-  },
-  {
-   "n": 5,
-   "title": "Lower arm and repeat",
-   "instruction": "Lower the arm gently and repeat on the other side.",
-   "status": "VERIFIED",
-   "warnings": []
-  },
-  {
-   "n": 6,
-   "title": "Test",
-   "instruction": "Run wipers with washer fluid to check for chatter, clean glass first if streaking.",
-   "status": "SINGLE_SOURCE",
-   "warnings": [
-    "Do not run wipers dry on dirty glass."
-   ]
-  }
- ],
- "safety": [
-  "Support the arm; a spring-loaded arm snapping back can crack the windshield.",
-  "Do not run wipers on dry glass."
- ],
- "missingEvidence": [
-  "Passenger blade length: 19 in vs 18 in; only the Valeo mfr code 900-19-6B hints 19 in (inference, not stated).",
-  "E90-specific blade release mechanism and any arm-lock/service position.",
-  "BMW document for part number; only retailers.",
-  "Whether a 2010 US sedan production date falls before or after the 09/2009 split (VIN decode needed).",
-  "Washer fluid spec and capacity (not researched)."
- ],
- "ownerInputsNeeded": [
-  "Production date from door-jamb sticker.",
-  "Measure existing passenger blade length.",
-  "Confirm sedan (not wagon) and no rear wiper."
- ]
+  "guide": 14,
+  "name": "Wiper Blades",
+  "evidenceTier": "standard",
+  "primarySourceFound": false,
+  "recommendedStatus": "BUILDABLE",
+  "summary": "Front-only job: the sedan has no rear wiper (set sold as 2 front blades; the rear wiper appears only on the wagon in sources). Sizes are now settled: driver 24 in (600 mm) and passenger 19 in (475 mm) agree across youcanic, Oximo and tpautorepair; one affiliate site (Autopadre) says 18 in and is outvoted. For a 2010 model-year car the current set is 61612455435 (supersedes 61612159627; 61610427668 is the pre-09/2009 set). The release method is a press-tab or hook release that lets the blade pivot perpendicular to the arm and slide off the hook (youcanic, tpautorepair, wiperbladesusa); the exact tab geometry is not described by any source. No BMW document was read; this is a standard-tier job with no torque.",
+  "variantDependencies": [
+    "VIN WBAPH7C58AA175760 decodes at NHTSA vPIC to BMW 328i, 2010, Sedan (4 doors), 3.0 L, 230 hp, Munich. [https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010]",
+    "Build date: Oximo splits sedan wipers at 2009-09-01 and Turner/Bimmerworld at 09/2009 (set 61610427668 before, 61612455435/61612159627 after). Model year 2010 almost certainly falls after the split but the VIN does not give the month, so confirm from the door-jamb date or by matching the old blades.",
+    "Body style: sedan passenger blade 19 in; coupe/convertible passenger 17 in (youcanic, tpautorepair). This car is a sedan per NHTSA.",
+    "Passenger wiper ARM differs from 09/2009 (61619449924 on Turner); only matters if the arm is damaged.",
+    "Drivetrain, engine, transmission: no source shows any effect on wipers.",
+    "Rear wiper: none on the sedan (Valeo/Turner sets are 2 front blades; tpautorepair lists a rear wiper only for the F31 wagon)."
+  ],
+  "tools": [
+    {
+      "item": "No tools required",
+      "status": "VERIFIED",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+      ]
+    },
+    {
+      "item": "Towel or folded cardboard under the arm to protect the windshield (precaution)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
+      ]
+    },
+    {
+      "item": "A pen or small stick to push the release tab, only if the tab is stiff",
+      "conflicts": "Wiperbladesusa suggests a pen for some Bosch adapter types; not an E90-specific instruction.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "Front wiper blade set (driver + passenger), builds from 09/2009 incl. 2010 328i/328i xDrive. BimmerWorld and Turner list it for 2010+.",
+      "partNumber": "61612455435",
+      "note": "Bimmerworld says it is not for 4-door models before 2010.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bimmerworld.com/Body-Aero/Wiper-Blades/Wiper-Blade-Set-E90-328i-xi-335i-xi-M3-Sedan-BMW-61612159627.html",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+      ]
+    },
+    {
+      "item": "Prior revision of that set (Valeo mfr nos. 900-24-8B / 900-19-6B, listed 2010-2011 on a 335d page)",
+      "partNumber": "61612159627",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bimmerworld.com/Body-Aero/Wiper-Blades/Wiper-Blade-Set-E90-328i-xi-335i-xi-M3-Sedan-BMW-61612159627.html",
+        "https://www.idparts.com/valeo-complete-wiper-blade-set-2010-e90-61612159627-900-900-p-4183.html"
+      ]
+    },
+    {
+      "item": "Pre-09/2009 E90 set (not for a 2010 build)",
+      "partNumber": "61610427668",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.turnermotorsport.com/p-5991-oem-bosch-wiper-blade-set-e90-325ixi-328ixi-330ixi-335ixi-m3-sedan/",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+      ]
+    },
+    {
+      "item": "Another genuine E90 set listed without production date",
+      "partNumber": "61612468941",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+      ]
+    },
+    {
+      "item": "Passenger wiper arm for builds from 09/2009 (only if the arm is damaged)",
+      "partNumber": "61619449924",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+      ]
+    },
+    {
+      "item": "Aftermarket equivalent lengths for builds from 2009-09-01: 600 mm (24 in) driver, 475 mm (19 in) passenger, B-type mounting",
+      "note": "Aftermarket fitment table; useful for sizing only.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.oximo.pl/en/wiper/bmw-3-e90-sedan-2009-09-01-wb400525-0/"
+      ]
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Windshield washer fluid (to test the new blades)",
+      "spec": "MISSING (not researched; any automotive washer fluid)",
+      "capacity": "MISSING",
+      "status": "MISSING",
+      "sources": []
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Wiper arm nut (not touched in a blade swap)",
+      "value": "MISSING (not required)",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": "A BMW-data table on Bolidenforum lists several wiper-arm torques (20, 25, 27, 30, 35 Nm depending on label and variant) without saying which fits this car; do not use them."
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Park and prepare",
+      "instruction": "Park on level ground, set the parking brake and switch the ignition off. Optional: turn the wipers on and switch the car off with the blades midway up the glass for easier access. Fold a towel or card over the glass below the arm.",
+      "status": "VERIFIED",
+      "warnings": [
+        "A dropped arm can crack the windshield."
+      ],
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Lift the first arm",
+      "instruction": "Lift the wiper arm away from the glass and hold it upright (driver side first is fine).",
+      "status": "VERIFIED",
+      "warnings": [
+        "Hold the arm; do not let it snap back onto the glass."
+      ],
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+        "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Release the old blade",
+      "instruction": "Press the release tab on the blade's hook end (youcanic describes pressing the underside of the hook, with a plastic cover over it), turn the blade perpendicular to the arm, and slide it off the hook toward the base of the arm.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Exact E90 tab shape is not shown in any source; if it is stiff, do not force it, check the old blade's design.",
+        "Measure the old blades to confirm which blade is which length."
+      ],
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+        "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/",
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/",
+        "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more"
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Fit the new blade",
+      "instruction": "Slide the correct blade on until it clicks and tug it to check it is locked. Driver side 24 in (600 mm), passenger side 19 in (475 mm). The blades are not interchangeable.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Passenger length: 19 in (youcanic, Oximo, tpautorepair) vs 18 in (Autopadre, outvoted); compare with the old blade before buying or fitting."
+      ],
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+        "https://www.oximo.pl/en/wiper/bmw-3-e90-sedan-2009-09-01-wb400525-0/",
+        "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/",
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/",
+        "https://www.autopadre.com/wiper-size/bmw-328i"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Lower the arm and repeat",
+      "instruction": "Lower the arm gently onto the glass and repeat on the other side.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Lower it by hand."
+      ],
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+        "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Test",
+      "instruction": "Run the wipers with washer fluid; clean the glass first if streaks remain. Do not run wipers dry on dirty glass.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Chatter usually means the blade is not seated or the glass is dirty."
+      ],
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more"
+      ]
+    }
+  ],
+  "safety": [
+    "Support the arm; a spring-loaded arm snapping back can crack the windshield.",
+    "Do not run wipers on dry glass."
+  ],
+  "missingEvidence": [
+    "Exact release-tab geometry for the factory E90 blade connector: sources give a hook, press tab or 'I&L pinch tab' but no dimensions or photos.",
+    "No BMW document (owner's manual, parts catalog) for the part number; only retailers.",
+    "Whether the 2010 build month falls before or after the 09/2009 set split (VIN does not give month).",
+    "Washer fluid spec and capacity (not researched; not needed for the job).",
+    "A service/arm-lock position for the arms: no source mentions one."
+  ],
+  "ownerInputsNeeded": [
+    "Door-jamb production month/year (to pick 61612455435 over 61610427668).",
+    "Measure the existing passenger blade (19 in expected).",
+    "Check which connector type the arm ends have if the new blade does not click on."
+  ],
+  "visuals": [
+    {
+      "id": "wiper-blade-release-hook",
+      "title": "Wiper arm hook end and blade release",
+      "evidenceSteps": [
+        2,
+        3,
+        4
+      ],
+      "viewpoint": "exterior-front",
+      "elements": [
+        {
+          "id": "wiper-arm-lifted",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "The wiper arm lifted upright away from the glass."
+        },
+        {
+          "id": "blade-release-tab",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A press tab on the hook end of the blade that releases it from the arm."
+        },
+        {
+          "id": "arm-hook-end",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The hook or peg at the end of the arm that the blade slides onto, with a plastic cover."
+        }
+      ],
+      "facts": [
+        {
+          "element": "wiper-arm-lifted",
+          "attribute": "action",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+            "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+            "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+          ],
+          "note": "3 sites: lift the arm up and away from the glass and hold it."
+        },
+        {
+          "element": "blade-release-tab",
+          "attribute": "action",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+            "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/",
+            "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+          ],
+          "note": "3 sites agree a press/pinch tab releases the blade; they do not agree on its shape."
+        },
+        {
+          "element": "blade-release-tab",
+          "attribute": "release-mechanism-geometry",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
+          ],
+          "note": "1 site only: pressing the underside of the hook, which sits under a plastic cover. Gap."
+        },
+        {
+          "element": "arm-hook-end",
+          "attribute": "fine-detail-geometry",
+          "urls": [
+            "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
+          ],
+          "note": "2 sites: blade pivots parallel to the floor (perpendicular to the arm) and slides off the peg/hook; peg shape not described."
+        },
+        {
+          "element": "blade-release-tab",
+          "attribute": "existence",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+            "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/",
+            "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/"
+          ],
+          "note": "YouCanic: press the underside of the hook; WiperBladesUSA (E9x M3): push the release tab underneath; TP Auto Repair: 2010 328i connector is I&L (pinch tab)."
+        },
+        {
+          "element": "blade-release-tab",
+          "attribute": "location",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+            "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/"
+          ],
+          "note": "Both put the release on the underside of the hook/connector end where blade meets arm."
+        },
+        {
+          "element": "arm-hook-end",
+          "attribute": "existence",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+            "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+            "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/"
+          ],
+          "note": "YouCanic: hook with plastic cover; BAVMods: retention peg the blade slides off; TP Auto Repair: arm is hook or side-pin style."
+        },
+        {
+          "element": "arm-hook-end",
+          "attribute": "location",
+          "urls": [
+            "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/",
+            "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more"
+          ],
+          "note": "At the tip of the wiper arm where the blade is turned perpendicular and slid off toward the back."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "blade-release-tab",
+          "reason": "Exact tab shape, position and the plastic cover outline are not established by any source."
+        },
+        {
+          "element": "arm-hook-end",
+          "reason": "Peg vs hook geometry and dimensions are not established."
+        }
+      ],
+      "sources": {
+        "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/": {
+          "kind": "third-party-guide",
+          "establishes": "Lift arm, press underside of hook under a plastic cover, turn blade perpendicular, pull toward back; sizes 24/19 in sedan."
+        },
+        "https://tpautorepair.net/what-size-wiper-blades-for-bmw-328i/": {
+          "kind": "third-party-guide",
+          "establishes": "2010 328i connector listed as I&L (pinch tab); sedan 24/19 in."
+        },
+        "https://www.wiperbladesusa.com/how-to-change-bosch-wiper-blades/bmw/m3/2009/": {
+          "kind": "third-party-guide",
+          "establishes": "Lift arm, press release tab (pen if needed), rotate and pull off; tug test."
+        },
+        "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more": {
+          "kind": "third-party-guide",
+          "establishes": "Pivot blade parallel to floor, slide off retention peg, no tools."
+        }
+      },
+      "gapFillNotes": [
+        "Sources disagree on attachment style: hook (YouCanic), retention peg (BAVMods), 'side pin' for an E9x M3 (WiperBladesUSA); exact hook/peg shape not established, draw it generically.",
+        "Shared hosts for blade-release-tab existence: three hosts agree on a press/pinch tab, though shapes differ."
+      ]
+    }
+  ]
 }

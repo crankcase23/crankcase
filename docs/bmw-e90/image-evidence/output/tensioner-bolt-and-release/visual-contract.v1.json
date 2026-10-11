@@ -1,0 +1,223 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "6d78925b5373ed5dde9308eda874784d13fb17651942cfb7b3eaa26e488bc483",
+  "createdAt": "2026-10-10T12:01:42.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-tensioner-bolt-and-release-v1",
+  "maySimplify": [
+    {
+      "element": "tensioner-assembly-unestablished-detail"
+    },
+    {
+      "element": "tensioner-mounting-bolt-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "identification",
+      "element": "tensioner-assembly",
+      "id": "MD-tensioner-assembly",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-4",
+            "ref-1",
+            "ref-6"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "tensioner-mounting-bolt",
+      "id": "MD-tensioner-mounting-bolt",
+      "requirements": [
+        {
+          "attribute": "hardware-type",
+          "evidence": [
+            "ref-1",
+            "ref-5"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-4",
+            "ref-5",
+            "ref-1",
+            "ref-7"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-4",
+            "ref-6",
+            "ref-7"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    },
+    {
+      "criticality": "critical",
+      "element": "tensioner-release-socket",
+      "id": "MD-tensioner-release-socket",
+      "requirements": [
+        {
+          "attribute": "hardware-type",
+          "evidence": [
+            "ref-4",
+            "ref-6"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-6",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-6",
+            "ref-4"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "tensioner-assembly-unestablished-detail",
+      "id": "MN-excl-tensioner-assembly-unestablished-detail",
+      "reason": "Lock-pin hole position/size and arm geometry not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "tensioner-assembly-unestablished-detail"
+      }
+    },
+    {
+      "element": "tensioner-mounting-bolt-unestablished-detail",
+      "id": "MN-excl-tensioner-mounting-bolt-unestablished-detail",
+      "reason": "Do not show a torque value or head orientation; head size is single-source.",
+      "trace": {
+        "attribute": "existence",
+        "element": "tensioner-mounting-bolt-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-tensioner-bolt-and-release-v1",
+      "sha256": "4232d82440fbbb9ddb9f7c021fa45de3ba8de10904b8a56dd5e2159af334739b"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "93caa48588c8a222459081bb775c8b36ac751a702dbf41b72e0126666b9075e6"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "a733ab1c2a2b02d3eefb416409f512abe7568b0a2fd254f746566788c17f2fbf"
+  },
+  "suppress": [
+    {
+      "attribute": "fastener-head-type",
+      "element": "tensioner-mounting-bolt",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "tensioner-mounting-bolt",
+      "handling": "omit"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "tensioner-release-socket",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-assembly-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "tensioner-mounting-bolt-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "tensioner-bolt-and-release"
+}

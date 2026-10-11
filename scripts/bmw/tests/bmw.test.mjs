@@ -37,7 +37,13 @@ test("generated drafts and evidence summary are not stale", () => {
   execFileSync("node", [path.join(ROOT, "scripts/bmw/build-drafts.mjs"), "--check"], { stdio: "pipe" });
 });
 
-test("a torque number is printed only when its evidence is VERIFIED; everything else shows the VERIFY warning", async () => {
+test("evidence ledgers pass the schema/consistency validator", async () => {
+  const { validateEvidence } = await import(path.join(ROOT, "scripts/bmw/validate-evidence.mjs"));
+  const r = validateEvidence(EVID);
+  assert.deepEqual(r.errors, []);
+});
+
+test("a torque number is printed only when its evidence is VERIFIED or VERIFIED_SECONDARY; everything else shows the VERIFY warning", async () => {
   const { bmwDraftGuides } = await bundle("src/data/admin-test-guides/bmw-2010-328i-drafts.ts");
   const byNo = new Map(evidence.map((e) => [e.guide, e]));
   const drafts = bmwDraftGuides.map((x) => x.guide);
@@ -49,9 +55,9 @@ test("a torque number is printed only when its evidence is VERIFIED; everything 
     assert.equal(guide.torqueSpecs.length, ev.torque.length, guide.id);
     guide.torqueSpecs.forEach((t, i) => {
       const src = ev.torque[i];
-      const verified = /^\s*verified/i.test(src.status) && !/conflict/i.test(src.status);
-      if (t.value.includes("VERIFY EXACT TORQUE")) { warned++; assert.ok(!verified || /missing/i.test(src.value ?? ""), `${guide.id}: verified torque hidden unexpectedly`); }
-      else { numeric++; assert.ok(verified, `${guide.id}: ${t.fastener} printed a number without VERIFIED evidence`); assert.equal(t.value, src.value); }
+      const verified = /^\s*verified/i.test(src.status) && !/conflict|missing/i.test(src.status);
+      if (t.value.includes("VERIFY EXACT TORQUE")) { warned++; assert.ok(!verified || !/\d/.test(src.value ?? "") || /no torque|not found|missing/i.test(src.value ?? ""), `${guide.id}: verified torque hidden unexpectedly`); }
+      else { numeric++; assert.ok(verified, `${guide.id}: ${t.fastener} printed a number without VERIFIED/VERIFIED_SECONDARY evidence`); assert.equal(t.value, src.value); }
     });
   }
   assert.ok(numeric > 0 && warned > 0, `numeric=${numeric} warned=${warned}`);
@@ -96,38 +102,45 @@ test("drafts are isolated from the customer catalog", () => {
   assert.ok(!/id:\s*"2010-bmw-328i-3\.0l"[\s\S]{0,400}keys:/.test(vehicles), "BMW record must not carry fitment keys");
 });
 
-test("pipeline: every cited source exists in the evidence pull, and 'established' needs 2+ independent hosts", async () => {
-  const { buildEP } = await import(path.join(ROOT, "scripts/bmw/pipeline-oil-change.mjs"));
-  const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/visuals.json"), "utf8"));
-  for (const v of cfg.visuals) {
-    const ep = buildEP(v);
-    for (const row of ep.ledger) {
-      if (row.status !== "established") continue;
-      const hosts = new Set(row.evidence.map((id) => new URL(ep.references.find((r) => r.id === id).sourceRef).hostname));
-      assert.ok(hosts.size >= 2, `${v.visualId} ${row.element}/${row.attribute} established with <2 hosts`);
-    }
-  }
-  assert.throws(() => buildEP({ ...cfg.visuals[0], facts: [{ element: "drain-plug", attribute: "existence", urls: ["https://example.invalid/made-up"] }] }), /unknown source/);
+test("pipeline: guide slugs match the draft table and every visual's cited URLs are catalogued", async () => {
+  const pv = await import(path.join(ROOT, "scripts/bmw/pipeline-visuals.mjs"));
+  const { bmwDraftGuides } = await bundle("src/data/admin-test-guides/bmw-2010-328i-drafts.ts");
+  const slugs = new Set(bmwDraftGuides.map((g) => g.slug));
+  for (const [n, s] of Object.entries(pv.GUIDE_SLUG)) assert.ok(slugs.has(`bmw-2010-328i-${s}`), `guide ${n} slug ${s} not in drafts`);
+  const vs = pv.loadVisuals();
+  assert.ok(vs.length >= 30);
+  for (const v of vs) pv.buildEP(v); // throws on an uncatalogued URL
+  const v0 = { ...vs[0], facts: [{ element: vs[0].elements[0].id, attribute: "existence", urls: ["https://example.invalid/made-up"] }] };
+  assert.throws(() => pv.buildEP(v0), /unknown source/);
 });
 
-test("pipeline: drain-plug visual reaches the generation boundary; filter-cap is blocked on evidence; no image, nothing certified", async () => {
-  const { runAll } = await import(path.join(ROOT, "scripts/bmw/pipeline-oil-change.mjs"));
+test("pipeline: the evidence rule (critical needs 2 hosts; others 2 hosts or 1 BMW-document/catalog source)", async () => {
+  const { establishes } = await import(path.join(ROOT, "scripts/bmw/pipeline-visuals.mjs"));
+  const src = { "https://a.com/1": { kind: "third-party-guide" }, "https://a.com/2": { kind: "third-party-guide" }, "https://b.com/1": { kind: "third-party-guide" }, "https://m.com/1": { kind: "oem-text" } };
+  assert.equal(establishes(["https://a.com/1", "https://a.com/2"], src, "critical").ok, false, "same host twice is one host");
+  assert.equal(establishes(["https://a.com/1", "https://b.com/1"], src, "critical").ok, true);
+  assert.equal(establishes(["https://m.com/1"], src, "critical").ok, false, "critical needs 2 hosts even with a BMW document");
+  assert.equal(establishes(["https://m.com/1"], src, "identification").ok, true);
+  assert.equal(establishes(["https://a.com/1"], src, "procedure").ok, false);
+  assert.equal(establishes([], src, "identification").ok, false);
+});
+
+test("pipeline: every visual is run; contract-locked ones stop at the generation boundary; nothing is imaged or certified; deterministic", async () => {
+  const { runAll, loadVisuals } = await import(path.join(ROOT, "scripts/bmw/pipeline-visuals.mjs"));
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "bmw-pipe-"));
   const r = await runAll({ out: tmp });
-  const by = Object.fromEntries(r.visuals.map((v) => [v.visualId, v]));
-  assert.equal(by["oil-drain-plug-access"].phase, "GEN_REQUESTED");
-  assert.equal(by["oil-filter-cap"].phase, "EP_INSUFFICIENT");
-  assert.ok(by["oil-filter-cap"].stages.some((s) => /lacks established location/.test(s.detail)));
-  assert.ok(by["oil-drain-plug-access"].stages.find((s) => s.stage.startsWith("5 ")).status === "BLOCKED");
+  assert.equal(r.visuals.length, loadVisuals().length);
+  assert.ok(r.summary.contractLocked > 0 && r.summary.evidenceInsufficient > 0);
+  for (const v of r.visuals) {
+    assert.ok(["GEN_REQUESTED", "EP_INSUFFICIENT"].includes(v.phase), `${v.visualId}: ${v.phase}`);
+    assert.ok(!v.stages.some((s) => s.status === "FAIL"), `${v.visualId} has a FAIL stage: ${JSON.stringify(v.stages.filter((s) => s.status === "FAIL"))}`);
+    if (v.phase === "GEN_REQUESTED") assert.equal(v.stages.find((s) => s.stage.startsWith("5 ")).status, "BLOCKED");
+  }
   assert.ok(r.visuals.every((v) => v.certified === false && v.imageProduced === false) && r.certified === false);
+  // insufficient visuals list their exact deficits (the work list)
+  for (const v of r.visuals.filter((x) => x.phase === "EP_INSUFFICIENT")) assert.ok(r.gaps.some((g) => g.visualId === v.visualId && g.deficits.length), `${v.visualId} has no recorded deficits`);
   const files = [];
-  (function walk(d) {
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      if (e.isDirectory()) walk(path.join(d, e.name));
-      else files.push(e.name);
-    }
-  })(tmp);
+  (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { if (e.isDirectory()) walk(path.join(d, e.name)); else files.push(e.name); } })(tmp);
   assert.ok(!files.some((f) => /\.(png|jpe?g|webp|svg)$/i.test(f)), "no image may exist");
-  // the committed run record matches a fresh run (deterministic)
-  assert.equal(fs.readFileSync(path.join(tmp, "PIPELINE-REPORT.json"), "utf8"), fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"));
+  assert.equal(fs.readFileSync(path.join(tmp, "PIPELINE-REPORT.json"), "utf8"), fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"), "committed run record is stale: run npm run bmw:pipeline");
 });

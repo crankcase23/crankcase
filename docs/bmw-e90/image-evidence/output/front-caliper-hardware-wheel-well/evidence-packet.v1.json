@@ -1,0 +1,396 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Remove the anti-rattle spring",
+      "Remove the two guide pins",
+      "Take the caliper off and support it",
+      "Refit the caliper and guide pins",
+      "Optional branch: rotor replacement"
+    ],
+    "stepNumber": 5,
+    "title": "front-caliper-hardware-wheel-well (BMW 328i draft Front Brake Pads guide; evidence step 5, 6, 7, 14, 15)"
+  },
+  "contentHash": "00679161a0f14d6956b7f108e908b7659188875cac152cba778da6799379bebc",
+  "createdAt": "2026-10-10T12:00:02.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "A floating disc-brake caliper straddling the rotor, seen from the outboard side with the wheel removed.",
+      "id": "front-brake-caliper",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A spring retaining clip fitted on the caliper, pried out with a flat screwdriver.",
+      "id": "anti-rattle-spring-clip",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Rubber or plastic caps covering the ends of the guide pins.",
+      "id": "guide-pin-dust-caps",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two guide pins with hex-socket heads that hold the caliper to the carrier; they unthread to free the caliper.",
+      "id": "guide-pin-bolt-fasteners",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two larger hex-head bolts behind the caliper that hold the carrier bracket to the steering knuckle.",
+      "id": "carrier-bolt-fasteners",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of anti rattle spring clip: Exact bend shape, orientation and routing are not established.",
+      "id": "anti-rattle-spring-clip-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of guide pin bolt fasteners: Top/bottom or front/back placement of the two pins is not established.",
+      "id": "guide-pin-bolt-fasteners-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of front brake caliper: Brand (ATE/Teves), colour and size depend on brake package and are not established for this car.",
+      "id": "front-brake-caliper-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-front-caliper-hardware-wheel-well-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "front-brake-caliper",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "anti-rattle-spring-clip",
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-2"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "guide-pin-dust-caps",
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "guide-pin-bolt-fasteners",
+      "evidence": [
+        "ref-5",
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "guide-pin-bolt-fasteners",
+      "note": "Gap: no source says where the two guide pins sit (top/bottom or front/back).",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "carrier-bolt-fasteners",
+      "evidence": [
+        "ref-5",
+        "ref-6",
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "carrier-bolt-fasteners",
+      "evidence": [
+        "ref-7",
+        "ref-8",
+        "ref-9"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "front-brake-caliper",
+      "evidence": [
+        "ref-3",
+        "ref-4",
+        "ref-1"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "anti-rattle-spring-clip",
+      "evidence": [
+        "ref-3",
+        "ref-1",
+        "ref-4",
+        "ref-7"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "guide-pin-dust-caps",
+      "evidence": [
+        "ref-1",
+        "ref-4",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "guide-pin-bolt-fasteners",
+      "evidence": [
+        "ref-5",
+        "ref-1",
+        "ref-4",
+        "ref-3"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "guide-pin-bolt-fasteners",
+      "evidence": [
+        "ref-4",
+        "ref-1",
+        "ref-5"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "carrier-bolt-fasteners",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "anti-rattle-spring-clip-unestablished-detail",
+      "note": "Exact bend shape, orientation and routing are not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "guide-pin-bolt-fasteners-unestablished-detail",
+      "note": "Top/bottom or front/back placement of the two pins is not established.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "front-brake-caliper-unestablished-detail",
+      "note": "Brand (ATE/Teves), colour and size depend on brake package and are not established for this car.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "anti-rattle-spring-clip-unestablished-detail",
+      "id": "excl-anti-rattle-spring-clip-unestablished-detail",
+      "reason": "Exact bend shape, orientation and routing are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "anti-rattle-spring-clip-unestablished-detail"
+      }
+    },
+    {
+      "element": "guide-pin-bolt-fasteners-unestablished-detail",
+      "id": "excl-guide-pin-bolt-fasteners-unestablished-detail",
+      "reason": "Top/bottom or front/back placement of the two pins is not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "guide-pin-bolt-fasteners-unestablished-detail"
+      }
+    },
+    {
+      "element": "front-brake-caliper-unestablished-detail",
+      "id": "excl-front-brake-caliper-unestablished-detail",
+      "reason": "Brand (ATE/Teves), colour and size depend on brake package and are not established for this car.",
+      "trace": {
+        "attribute": "existence",
+        "element": "front-brake-caliper-unestablished-detail"
+      }
+    },
+    {
+      "element": "carrier-bolt-fasteners",
+      "id": "excl-carrier-bolt-fasteners",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "carrier-bolt-fasteners"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Spring, dust caps, guide pins with H7 hex bit, caliper removal order, 30 Nm and 120 Nm."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "club.autodoc.co.uk",
+      "sourceRef": "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Teves FN caliper steps, retaining spring, guide screws, wear indicator replacement."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "hella.com",
+      "sourceRef": "https://www.hella.com/hella-tech-world-au-en/replacing-brake-pads-disc-2420.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Spring, rubber plugs, sensor on driver front, plastic door behind strut."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Pads_Replacement/BRAKES-Brake_Pads_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Caps, spring, caliper support."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Guide pins 7 mm hex 30 Nm; carrier bolts 18 mm 110 Nm; wheel nuts 119 Nm (E90 incl. 328i)."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/how-to-replace-control-arms-end-links-tie-rods-ball-joints-bmw-e90-x1-325i-328i-330i-335i",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Carrier bolts socket 18 at 110 Nm, guide pins H7 at 30 Nm, rotor screw H6 at 16 Nm."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "club.autodoc.se",
+      "sourceRef": "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/front-brake-discs/pdf/SE-byta-bromsskivor-fram-pa-bmw-e90-utbytesguide.pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Two caliper (carrier) bolts 18 mm front, one top and one bottom; sensor driver front."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "drivediy.dozuki.com",
+      "sourceRef": "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Two bracket bolts 18 mm front; 6 mm rotor fastener."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Front carrier is secured to the steering knuckle."
+      ],
+      "id": "ref-9",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/BMW-E90-Parts/c-689-bmw-caliper-brackets-and-adapters",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "front-caliper-hardware-wheel-well"
+}

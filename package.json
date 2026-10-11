@@ -12,7 +12,9 @@
     "factory:test": "node --test scripts/visuals/factory-reconstructed/tests/*.test.mjs",
     "factory:prove-step10": "node scripts/visuals/factory-reconstructed/charger-step10/run-proving.mjs",
     "bmw:drafts": "node scripts/bmw/build-drafts.mjs",
-    "bmw:pipeline": "node scripts/bmw/pipeline-oil-change.mjs",
+    "bmw:pipeline": "node scripts/bmw/pipeline-visuals.mjs",
+    "bmw:validate": "node scripts/bmw/validate-evidence.mjs",
+    "bmw:qa": "node scripts/bmw/hermes-qa.mjs",
     "bmw:test": "node --test scripts/bmw/tests/*.test.mjs",
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
   },

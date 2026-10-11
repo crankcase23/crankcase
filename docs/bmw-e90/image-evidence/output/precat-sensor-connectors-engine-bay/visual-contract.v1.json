@@ -1,0 +1,225 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "d7f40b21a0e0d73becc997560080221f713531273fa2edd70f67c27f74888def",
+  "createdAt": "2026-10-10T12:00:52.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-precat-sensor-connectors-engine-bay-v1",
+  "maySimplify": [
+    {
+      "element": "engine-cover"
+    },
+    {
+      "element": "engine-cover-screws"
+    },
+    {
+      "element": "exhaust-manifold-top"
+    },
+    {
+      "element": "connector-release-tab-unestablished-detail"
+    },
+    {
+      "element": "engine-cover-screws-unestablished-detail"
+    },
+    {
+      "element": "precat-sensor-connectors-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "precat-sensor-connectors",
+      "id": "MD-precat-sensor-connectors",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-3",
+            "ref-2",
+            "ref-4",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "relationship",
+          "evidence": [
+            "ref-3",
+            "ref-2"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "connector-release-tab",
+      "id": "MD-connector-release-tab",
+      "requirements": [
+        {
+          "attribute": "release-mechanism-geometry",
+          "evidence": [
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "connector-release-tab-unestablished-detail",
+      "id": "MN-excl-connector-release-tab-unestablished-detail",
+      "reason": "Plug and tab geometry are not described by any source; draw a plain plug with a generic tab mark, no detail.",
+      "trace": {
+        "attribute": "existence",
+        "element": "connector-release-tab-unestablished-detail"
+      }
+    },
+    {
+      "element": "engine-cover-screws-unestablished-detail",
+      "id": "MN-excl-engine-cover-screws-unestablished-detail",
+      "reason": "Screw positions are not given; show only that three exist.",
+      "trace": {
+        "attribute": "existence",
+        "element": "engine-cover-screws-unestablished-detail"
+      }
+    },
+    {
+      "element": "precat-sensor-connectors-unestablished-detail",
+      "id": "MN-excl-precat-sensor-connectors-unestablished-detail",
+      "reason": "Do not state which of the two plugs belongs to which bank by position; sources only say bank 1 plug is further toward the rear.",
+      "trace": {
+        "attribute": "existence",
+        "element": "precat-sensor-connectors-unestablished-detail"
+      }
+    },
+    {
+      "element": "engine-cover",
+      "id": "MN-excl-engine-cover",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "engine-cover"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-precat-sensor-connectors-engine-bay-v1",
+      "sha256": "620557eaebd7bb38e964bebcc0cc7b474ecc3c0121c64de30ecf905244866a22"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "556de40af756f4ccc15aab9543ae717b06c11c5770b2e962b3f4a2aab7c67eb5"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "04f3459a4e162dbe9cf55b901725af48129082ebbdec3de1e27ca383666d54c9"
+  },
+  "suppress": [
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "connector-release-tab",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-cover",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "connector-release-tab-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-cover-screws-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "precat-sensor-connectors-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "precat-sensor-connectors-engine-bay"
+}

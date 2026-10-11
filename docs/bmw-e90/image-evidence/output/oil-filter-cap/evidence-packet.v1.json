@@ -8,16 +8,15 @@
   },
   "canonicalStep": {
     "actions": [
-      "Loosen filter cap",
-      "Remove old cartridge",
-      "Lubricate and install new cartridge",
-      "Torque cap"
+      "Open the engine-bay caps",
+      "Remove the old filter element and clean",
+      "Install and torque the housing cap"
     ],
-    "stepNumber": 2,
-    "title": "oil-filter-cap (BMW 328i draft oil-change guide; evidence step 2, 5, 7, 8)"
+    "stepNumber": 3,
+    "title": "oil-filter-cap (BMW 328i draft Engine Oil & Filter Change guide; evidence step 3, 6, 8)"
   },
-  "contentHash": "2d963b4d1e2628d18c9f3dd3388005d87ef1b63b46f3f2e491ee4bc015575219",
-  "createdAt": "2026-10-10T12:00:11.000Z",
+  "contentHash": "d0d9e8d3ddf824d9f3ee497df4d65a3971a29a555a8d04c38700dd67e1f4a4df",
+  "createdAt": "2026-10-10T12:04:28.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"
@@ -25,17 +24,26 @@
   "elements": [
     {
       "criticality": "critical",
+      "describe": "The oil filter housing cap on top of the 3.0L inline-6, drawn as a plain round cap.",
       "id": "filter-cap",
       "role": "hero"
     },
     {
       "criticality": "cosmetic",
+      "describe": "The engine as a plain simplified mass around the cap.",
       "id": "engine-mass",
       "role": "context"
     },
     {
       "criticality": "cosmetic",
+      "describe": "The plastic engine (ignition coil) cover; RealOEM and Turner list one for the E90 N52, but its exact shape and fit are not established.",
       "id": "engine-cover",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of engine cover: An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
+      "id": "engine-cover-unestablished-detail",
       "role": "context"
     }
   ],
@@ -49,54 +57,60 @@
         "ref-2",
         "ref-3"
       ],
-      "note": "3 independent sources agree",
+      "note": "3 independent host(s)",
       "render": "draw",
       "status": "established"
     },
     {
       "attribute": "location",
       "element": "filter-cap",
-      "note": "Only 'in the engine bay'; which side or end of the engine is not stated by any source.",
-      "render": "omit",
-      "status": "not-established"
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
     },
     {
       "attribute": "existence",
       "element": "engine-mass",
-      "note": "Context only.",
-      "render": "omit",
-      "status": "not-established"
+      "evidence": [
+        "ref-5"
+      ],
+      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
     },
     {
       "attribute": "existence",
       "element": "engine-cover",
-      "note": "No source says the N52 has a cover; must not be drawn.",
-      "render": "omit",
-      "status": "not-established"
+      "evidence": [
+        "ref-6",
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
     },
     {
-      "attribute": "location",
-      "element": "engine-mass",
-      "note": "no source cited for this fact",
-      "render": "omit",
-      "status": "not-established"
-    },
-    {
-      "attribute": "location",
-      "element": "engine-cover",
-      "note": "no source cited for this fact",
+      "attribute": "existence",
+      "element": "engine-cover-unestablished-detail",
+      "note": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
       "render": "omit",
       "status": "not-established"
     }
   ],
   "mustNotDepict": [
     {
-      "element": "engine-cover",
-      "id": "excl-engine-cover",
-      "reason": "No source establishes an engine cover on this engine.",
+      "element": "engine-cover-unestablished-detail",
+      "id": "excl-engine-cover-unestablished-detail",
+      "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture.",
       "trace": {
         "attribute": "existence",
-        "element": "engine-cover"
+        "element": "engine-cover-unestablished-detail"
       }
     }
   ],
@@ -133,13 +147,68 @@
       "source": "1addicts.com",
       "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=6151834",
       "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 DIY: open the bonnet, undo the oil cap, loosen the oil filter housing from the top; under-car hatch is only for the drain bolt, opened with a coin, just behind the front-centre jack point."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM engine group list for the 2009 E90 LCI 328i (short engine, cylinder head, cylinder head cover, oil filter diagram 11_3867, oil pan)."
+      ],
+      "id": "ref-5",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/partgrp?id=PH73-USA-09-2009-E90N-BMW-328i&mg=11&sg=",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM 328i cylinder head cover diagram: valve cover, ignition coil covering 11127575032, oil filler cap."
+      ],
+      "id": "ref-6",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Genuine BMW Engine Beauty Cover (ignition coil covering) 11127575032 listed for E90 with N52/N52N engines."
+      ],
+      "id": "ref-7",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 (2006 330i) thread: the plastic engine cover pops up, held by plugs, snapping onto the valve cover with rubber grommets."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11283613",
+      "usage": "reference-only"
     }
   ],
   "refs": [],
   "schema": "guide-factory.evidence-packet",
   "schemaVersion": "reconstructed-1",
   "sufficiencyProposal": {
-    "basis": "Built from cited secondary sources only; 2+ independent hosts required per established fact.",
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
     "proposedBy": "claude-research"
   },
   "visualId": "oil-filter-cap"

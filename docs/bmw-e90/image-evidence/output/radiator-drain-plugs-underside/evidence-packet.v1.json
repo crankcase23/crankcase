@@ -1,0 +1,264 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Raise and support the front; remove the undertray and radiator cover",
+      "Drain at the radiator",
+      "Close the drains and refit hoses"
+    ],
+    "stepNumber": 3,
+    "title": "radiator-drain-plugs-underside (BMW 328i draft Coolant Flush & Fill guide; evidence step 3, 5, 9)"
+  },
+  "contentHash": "bdcaa3df85f6b82c5b72890bbe97b617a1a8cdabeb336083dfca24ab575237a2",
+  "createdAt": "2026-10-10T12:02:14.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The bottom edge of the radiator, normally hidden behind the engine undertray and a plastic radiator cover.",
+      "id": "radiator-bottom",
+      "role": "context"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A large plastic thumb-wheel drain plug at the bottom left of the radiator, turned by hand.",
+      "id": "left-drain-plug",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "describe": "A second plastic drain plug at the bottom right of the radiator on some cars.",
+      "id": "right-drain-plug",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "The fasteners and metal brackets that hold the radiator cover, removed so the plugs can be reached.",
+      "id": "radiator-cover-fasteners",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of right drain plug: Do not state it exists on every car.",
+      "id": "right-drain-plug-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-radiator-drain-plugs-underside-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "left-drain-plug",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "left-drain-plug",
+      "evidence": [
+        "ref-2",
+        "ref-5",
+        "ref-6"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "right-drain-plug",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "hardware-type",
+      "element": "left-drain-plug",
+      "note": "Plastic; a large thumb wheel turned by hand (5series flush thread); one source says red colour.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "radiator-cover-fasteners",
+      "note": "No source states head type or size. GAP.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "radiator-cover-fasteners",
+      "evidence": [
+        "ref-2",
+        "ref-7"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "radiator-bottom",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "right-drain-plug",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "radiator-cover-fasteners",
+      "note": "excluded by the visual's mustNotDepict",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "right-drain-plug-unestablished-detail",
+      "note": "Do not state it exists on every car.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "radiator-cover-fasteners",
+      "id": "excl-radiator-cover-fasteners",
+      "reason": "Head type, count and size are not established; show generic round fastener marks only or omit.",
+      "trace": {
+        "attribute": "existence",
+        "element": "radiator-cover-fasteners"
+      }
+    },
+    {
+      "element": "right-drain-plug-unestablished-detail",
+      "id": "excl-right-drain-plug-unestablished-detail",
+      "reason": "Do not state it exists on every car.",
+      "trace": {
+        "attribute": "existence",
+        "element": "right-drain-plug-unestablished-detail"
+      }
+    },
+    {
+      "element": "radiator-bottom",
+      "id": "excl-radiator-bottom",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "radiator-bottom"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "OE catalog: drain plug, radiator, quantity 2, part 17117530902; radiator 17117559273 manual, 17117562079 automatic."
+      ],
+      "id": "ref-1",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0323",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Remove radiator cover, drain at left plug, optional right plug on some models, hose at thermostat."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/WATER-Draining_Filling_Cooling_System/WATER-Draining_Filling_Cooling_System.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Plastic red thumb-wheel plug to loosen by hand; about 65 percent drains."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/diy-do-yourself-14/coolant-flush-2006-530i-n52-108642",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E60 N52 PDF: radiator drain plug (peacock) after removing splash shield."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/attachments/diy-do-yourself-14/116065d1294591996-coolant-flush-2006-530i-n52-coolant-draining-filling-procedures-bmw-n52-engine..pdf",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x thread: one radiator drain plug underneath at the right-hand side facing the front of the car (car's left), blue plastic screw, reached after removing the splash guard."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=14552462",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 radiator replacement article comments: OEM radiator has one drain plug on the driver's side; aftermarket Nissens adds a passenger-side plug."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/WATER-Radiator_Replacement/WATER-Radiator_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E92 owner: plastic radiator cover slides into bumper rear and clips into vertical plastic; push-type clips at both ends."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=14280986",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "radiator-drain-plugs-underside"
+}

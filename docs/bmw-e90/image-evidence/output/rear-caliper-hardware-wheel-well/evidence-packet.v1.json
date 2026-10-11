@@ -1,0 +1,271 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Remove the anti-rattle clip",
+      "Release the caliper (choose method)",
+      "Refit the caliper and torque"
+    ],
+    "stepNumber": 4,
+    "title": "rear-caliper-hardware-wheel-well (BMW 328i draft Rear Brake Pads guide; evidence step 4, 6, 12)"
+  },
+  "contentHash": "7ff23e554be1bded687c28242d772c8c92b389f51c4c7bacd4e36365066dd8aa",
+  "createdAt": "2026-10-10T12:01:11.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "A floating disc-brake caliper on the rear rotor seen from the outboard side with the wheel removed.",
+      "id": "rear-brake-caliper",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A spring clip on the front of the caliper that comes off by hand or with a screwdriver.",
+      "id": "caliper-retaining-clip",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two hex-head bolts (16 mm) on the back side of the caliper carrier.",
+      "id": "carrier-bolt-fasteners",
+      "role": "target"
+    },
+    {
+      "criticality": "critical",
+      "describe": "Two guide screws that hold the caliper to the carrier; head type (hexagon or socket) is not established.",
+      "id": "guide-screw-fasteners",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of caliper retaining clip: Exact shape and engagement not established.",
+      "id": "caliper-retaining-clip-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-rear-caliper-hardware-wheel-well-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "rear-brake-caliper",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "caliper-retaining-clip",
+      "evidence": [
+        "ref-2",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "carrier-bolt-fasteners",
+      "evidence": [
+        "ref-4",
+        "ref-5",
+        "ref-6",
+        "ref-2"
+      ],
+      "note": "4 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "carrier-bolt-fasteners",
+      "evidence": [
+        "ref-4",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "guide-screw-fasteners",
+      "note": "1 site: hexagon 13 mm with 15 mm back-up flats; other sources unspecified.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "rear-brake-caliper",
+      "evidence": [
+        "ref-2",
+        "ref-1",
+        "ref-5"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "caliper-retaining-clip",
+      "evidence": [
+        "ref-2",
+        "ref-1",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "carrier-bolt-fasteners",
+      "evidence": [
+        "ref-5",
+        "ref-4",
+        "ref-2"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "carrier-bolt-fasteners",
+      "evidence": [
+        "ref-5",
+        "ref-4",
+        "ref-2"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "guide-screw-fasteners",
+      "note": "excluded by the visual's mustNotDepict",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "caliper-retaining-clip-unestablished-detail",
+      "note": "Exact shape and engagement not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "guide-screw-fasteners",
+      "id": "excl-guide-screw-fasteners",
+      "reason": "Head type and exact position are only single-sourced.",
+      "trace": {
+        "attribute": "existence",
+        "element": "guide-screw-fasteners"
+      }
+    },
+    {
+      "element": "caliper-retaining-clip-unestablished-detail",
+      "id": "excl-caliper-retaining-clip-unestablished-detail",
+      "reason": "Exact shape and engagement not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "caliper-retaining-clip-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Rear caliper fastening with 13/15 mm tools, retaining clips, 35 Nm."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "club.autodoc.co.uk",
+      "sourceRef": "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Retaining clip on front of caliper; two caliper bolts on the back side with 5/8 in socket."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwtuning.co",
+      "sourceRef": "https://bmwtuning.co/e90-brake-pads-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Rear pad removal steps for BMW generally."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/bmw-rear-brake-pad-replacement/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Rear caliper bolts 16 mm, one top and one bottom."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "drivediy.dozuki.com",
+      "sourceRef": "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bracket bolts 16 mm on the rear."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "pelicanparts.com",
+      "sourceRef": "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Carrier bolts socket 16 at 65 Nm; mounting bolts 35 Nm."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "club.autodoc.se",
+      "sourceRef": "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/rear-brake-discs/pdf/SE-byta-bromsskivor-bak-pa-bmw-e90-utbytesguide.pdf",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "rear-caliper-hardware-wheel-well"
+}

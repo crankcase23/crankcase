@@ -1,0 +1,19 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Front wheel-arch liner screws for fog/low-beam access, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Halogen H7 low/high-beam bulb".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). View into the wheel well with the wheel removed, from the side at hub height, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: The black plastic front wheel-arch liner that is peeled back or unscrewed to reach the bulbs behind the bumper/headlight.
+2. Several screws (8 mm head per one thread; Torx per one retailer) around the liner; bottom screws on the front part named by one poster. Do NOT depict where its fasteners sit: keep it a plain generic shape.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): service opening. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): liner screws detail (Count; head type and positions are not reconciled between sources; do not draw individual screws), service opening detail (Exact shape and location of the cover in the liner is not established), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

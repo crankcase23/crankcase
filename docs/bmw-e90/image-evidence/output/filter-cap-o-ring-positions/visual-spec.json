@@ -1,0 +1,54 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Where the two O-rings sit on the oil filter housing cap, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Remove the old filter element and clean\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A large black rubber ring around the cap perimeter, seated above the threaded section. Do NOT depict its fine detail: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "A small green rubber ring on the tip of the cap's centre stem."
+    }
+  ],
+  "maySimplify": [
+    "filter housing cap",
+    "filter element body"
+  ],
+  "mustNotShow": [
+    "filter housing cap detail (Cap flute count rendering; alignment-mark colors and the housing's side/end position on the engine are not established; this image is the cap off the engine only)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "6bec5547473b4d5cbafea2cea7abdfba5f5e07afa50b4acec0a9de7334fb6309"
+}

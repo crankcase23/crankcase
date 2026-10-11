@@ -1,0 +1,54 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Front wheel-arch liner screws for fog/low-beam access, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Halogen H7 low/high-beam bulb\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The black plastic front wheel-arch liner that is peeled back or unscrewed to reach the bulbs behind the bumper/headlight."
+    },
+    {
+      "rank": 2,
+      "text": "Several screws (8 mm head per one thread; Torx per one retailer) around the liner; bottom screws on the front part named by one poster. Do NOT depict where its fasteners sit: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "service opening"
+  ],
+  "mustNotShow": [
+    "liner screws detail (Count; head type and positions are not reconciled between sources; do not draw individual screws)",
+    "service opening detail (Exact shape and location of the cover in the liner is not established)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "e4d705e141fa00fc0a4fd9ac35a25b2a99f5f0eecd1b9659b20267d260b26dd1"
+}

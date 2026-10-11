@@ -1,0 +1,175 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Loosen bolts on the ground, then lift and support"
+    ],
+    "stepNumber": 3,
+    "title": "side-jack-pads-underside (BMW 328i draft Tire Rotation guide; evidence step 3)"
+  },
+  "contentHash": "55d20b59843a7e11fe8169e63f85102b264231082ed870636d985f96285a6551",
+  "createdAt": "2026-10-10T12:03:06.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "describe": "A small rectangular plastic jacking pad on the underside of the sill, one at each of four jack points.",
+      "id": "sill-jack-pad",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "A wood block or cut hockey puck placed between the jack and the plastic pad.",
+      "id": "jack-pad-adapter",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of sill jack pad: Exact distance from wheels and pad dimensions are not established. Rear-centre and front-centre jack points are in conflict and must not be shown as approved.",
+      "id": "sill-jack-pad-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-side-jack-pads-underside-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "sill-jack-pad",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "sill-jack-pad",
+      "evidence": [
+        "ref-5",
+        "ref-3"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "jack-pad-adapter",
+      "note": "One website: wood or hockey-puck pad between jack and pad.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "jack-pad-adapter",
+      "note": "no source cited; left out",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "sill-jack-pad-unestablished-detail",
+      "note": "Exact distance from wheels and pad dimensions are not established. Rear-centre and front-centre jack points are in conflict and must not be shown as approved.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "sill-jack-pad-unestablished-detail",
+      "id": "excl-sill-jack-pad-unestablished-detail",
+      "reason": "Exact distance from wheels and pad dimensions are not established. Rear-centre and front-centre jack points are in conflict and must not be shown as approved.",
+      "trace": {
+        "attribute": "existence",
+        "element": "sill-jack-pad-unestablished-detail"
+      }
+    },
+    {
+      "element": "jack-pad-adapter",
+      "id": "excl-jack-pad-adapter",
+      "reason": "No source establishes this element for the car; it is left out.",
+      "trace": {
+        "attribute": "existence",
+        "element": "jack-pad-adapter"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Plastic rectangular pads at four jack points."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 thread: four jacking points with little plastic blocks; OEM name 'support lifting platform' 51717123311; can crack under a bare floor-jack cup."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerforums.com",
+      "sourceRef": "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "BMW jack pad 51717164761 sits on the underside of the rocker panel at the jacking point; page text says E92 coupe but fitment list includes E90."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://www.bimmerworld.com/Tools/BMW-Jack-Pad-E92-328i-xi-335i-is-xi-M3-Coupe-51717164761.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Jack pad adapter seats into the factory plastic lifting points; fitment table includes E90 328i."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-582235-bmw-mini-jack-pad-adapter/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Lift points on the rocker panels; hockey pucks as pads."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=14807196",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "side-jack-pads-underside"
+}

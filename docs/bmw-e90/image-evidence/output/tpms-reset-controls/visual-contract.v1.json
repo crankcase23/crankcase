@@ -1,0 +1,181 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "756e6aa3c31a9cd398a99e414675080332a34d8d4e495be0b437990eb9509753",
+  "createdAt": "2026-10-10T12:03:28.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-tpms-reset-controls-v1",
+  "maySimplify": [
+    {
+      "element": "idrive-reset-tpm-menu-unestablished-detail"
+    },
+    {
+      "element": "turn-signal-stalk-button-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "procedure",
+      "element": "turn-signal-stalk-button",
+      "id": "MD-turn-signal-stalk-button",
+      "requirements": [
+        {
+          "attribute": "action",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "element": "idrive-reset-tpm-menu",
+      "id": "MD-idrive-reset-tpm-menu",
+      "requirements": [
+        {
+          "attribute": "action",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-2",
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-2",
+            "ref-3",
+            "ref-1"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "idrive-reset-tpm-menu-unestablished-detail",
+      "id": "MN-excl-idrive-reset-tpm-menu-unestablished-detail",
+      "reason": "Exact on-screen layout and menu wording are not consistent across sources.",
+      "trace": {
+        "attribute": "existence",
+        "element": "idrive-reset-tpm-menu-unestablished-detail"
+      }
+    },
+    {
+      "element": "turn-signal-stalk-button-unestablished-detail",
+      "id": "MN-excl-turn-signal-stalk-button-unestablished-detail",
+      "reason": "Stalk shape and button position are not described.",
+      "trace": {
+        "attribute": "existence",
+        "element": "turn-signal-stalk-button-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-tpms-reset-controls-v1",
+      "sha256": "02a14a2eec579471ce604fd0b7be705cf70fa873dffadca72df7f207176d12ae"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "7da580927335c7b944601f4a730913280c18b6201d9e43abed5f876fbe56dd20"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "0bf5bc1ed7ce44c08448ec68bd4af5c38f32640b982e74811171ddb595442072"
+  },
+  "suppress": [
+    {
+      "attribute": "existence",
+      "element": "idrive-reset-tpm-menu-unestablished-detail",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "tpms-reset-controls"
+}

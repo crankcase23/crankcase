@@ -1,0 +1,55 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Wiper arm hook end and blade release, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Lift the first arm\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A press tab on the hook end of the blade that releases it from the arm. Do NOT depict the shape of its release mechanism: keep it a plain generic shape."
+    },
+    {
+      "rank": 2,
+      "text": "The hook or peg at the end of the arm that the blade slides onto, with a plastic cover."
+    }
+  ],
+  "maySimplify": [
+    "a plain dark ground plane"
+  ],
+  "mustNotShow": [
+    "blade release tab detail (Exact tab shape; position and the plastic cover outline are not established by any source)",
+    "arm hook end detail (Peg vs hook geometry and dimensions are not established)",
+    "wiper arm lifted (No source establishes this element for the car; it is left out)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "b665e1c8efee73182e7f4d25ced52a88f5da7a58afb0056f534f2d18436794c0"
+}

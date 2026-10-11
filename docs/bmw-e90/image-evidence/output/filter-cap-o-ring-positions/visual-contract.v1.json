@@ -1,0 +1,163 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "fa2c2d547df955272a60ec4b21231374500e28ca42f7df56600a1efab5bb5e4d",
+  "createdAt": "2026-10-10T12:04:14.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-filter-cap-o-ring-positions-v1",
+  "maySimplify": [
+    {
+      "element": "filter-housing-cap"
+    },
+    {
+      "element": "filter-element-body"
+    },
+    {
+      "element": "filter-housing-cap-unestablished-detail"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "large-black-o-ring",
+      "id": "MD-large-black-o-ring",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-5"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "small-green-o-ring",
+      "id": "MD-small-green-o-ring",
+      "requirements": [
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-2"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-6"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "filter-housing-cap-unestablished-detail",
+      "id": "MN-excl-filter-housing-cap-unestablished-detail",
+      "reason": "Cap flute count rendering, alignment-mark colors and the housing's side/end position on the engine are not established; this image is the cap off the engine only.",
+      "trace": {
+        "attribute": "existence",
+        "element": "filter-housing-cap-unestablished-detail"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-filter-cap-o-ring-positions-v1",
+      "sha256": "f3b50f3e19e624bc24820cc0bd47c849fa897bc53226d5665b7e296b5c57ce08"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "cafbcd6e4c36bcf007dd8cdec57ab97cc1b23f37e92e0cfe399155d5d65909f3"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "6bec5547473b4d5cbafea2cea7abdfba5f5e07afa50b4acec0a9de7334fb6309"
+  },
+  "suppress": [
+    {
+      "attribute": "fine-detail-geometry",
+      "element": "large-black-o-ring",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-element-body",
+      "handling": "simplify"
+    },
+    {
+      "attribute": "existence",
+      "element": "filter-housing-cap-unestablished-detail",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "filter-cap-o-ring-positions"
+}

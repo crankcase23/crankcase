@@ -1,0 +1,279 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Brake fluid"
+    ],
+    "stepNumber": 4,
+    "title": "brake-reservoir-access-cover (BMW 328i draft Fluid Checks & Top-Offs guide; evidence step 4)"
+  },
+  "contentHash": "5de30ab3143254b65d12e15ce6e100e17f9d9cfbc36e9a227f28155f037f93d7",
+  "createdAt": "2026-10-10T12:02:24.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "The long black plastic cover along the base of the windshield in front of the wipers, covering the cabin microfilter housing and the brake reservoir.",
+      "id": "microfilter-housing-cover",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "The 8 mm screw locations that hold the cover; the count is unresolved so they are shown without a number.",
+      "id": "cover-fastener-points",
+      "role": "target"
+    },
+    {
+      "criticality": "identification",
+      "describe": "The reservoir revealed when the cover is lifted, with MIN and MAX marks on its side.",
+      "id": "brake-reservoir",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of cover fastener points: Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified.",
+      "id": "cover-fastener-points-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of brake reservoir: Cap markings, shape and exact orientation are not established.",
+      "id": "brake-reservoir-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-brake-reservoir-access-cover-v1",
+  "ledger": [
+    {
+      "attribute": "location",
+      "element": "microfilter-housing-cover",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "cover-fastener-points",
+      "evidence": [
+        "ref-3",
+        "ref-2",
+        "ref-4"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "cover-fastener-points",
+      "note": "Single source (E92 M3): two near the windshield, one closer to the front. Counts of 3, 4 and 6 are reported across E9x sources; do not draw a number.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "relationship",
+      "element": "brake-reservoir",
+      "evidence": [
+        "ref-3",
+        "ref-5"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "microfilter-housing-cover",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "cover-fastener-points",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "cover-fastener-points",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "brake-reservoir",
+      "evidence": [
+        "ref-3",
+        "ref-6",
+        "ref-7"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "brake-reservoir",
+      "evidence": [
+        "ref-3",
+        "ref-6",
+        "ref-7"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "cover-fastener-points-unestablished-detail",
+      "note": "Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "brake-reservoir-unestablished-detail",
+      "note": "Cap markings, shape and exact orientation are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "cover-fastener-points-unestablished-detail",
+      "id": "excl-cover-fastener-points-unestablished-detail",
+      "reason": "Count (3/4/6) and exact positions conflict between E9x sources and the 2010 car is unverified.",
+      "trace": {
+        "attribute": "existence",
+        "element": "cover-fastener-points-unestablished-detail"
+      }
+    },
+    {
+      "element": "brake-reservoir-unestablished-detail",
+      "id": "excl-brake-reservoir-unestablished-detail",
+      "reason": "Cap markings, shape and exact orientation are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "brake-reservoir-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Long black plastic cover in front of the wipers; six screws; 8 mm."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90-E93 cabin filter assembly held by four 8 mm screws."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E92 M3: remove three 8 mm bolts of the cabin air filter housing to reach the master cylinder reservoir (driver side)."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bmwblog.com",
+      "sourceRef": "https://www.bmwblog.com/?p=177771",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2006 330i: cover with six screws, 8 mm socket."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=13127589",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Plastic cover is the microfilter housing on newer models."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/check-bmw-brake-fluid-level-reset-brake-warning/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x article: reservoir is below the plastic cover on the driver's side."
+      ],
+      "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/add-brake-fluid-check-level-2004-2013-bmw-3-series/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "3-series article: brake fluid reservoir driver side behind a plastic cover."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "gearshifters.org",
+      "sourceRef": "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "brake-reservoir-access-cover"
+}

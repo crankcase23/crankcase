@@ -2,78 +2,113 @@
   "guide": 16,
   "name": "Engine Oil & Filter Change",
   "recommendedStatus": "BUILDABLE_PARTIAL",
-  "summary": "Capacity (about 6.9 US qt / ~6.5 L with filter), 25 Nm torque for both drain plug and filter-housing cap, 17 mm drain plug, 86 mm 16-flute cap tool, and OE filter element 11427566327 (Mann HU816x equivalent) are each backed by 2+ independent secondary sources. No BMW/OEM document (owner's manual, TIS, repair manual) for this E90 was obtainable; the only BMW doc found is a 2003-04 E46 handbook (different chassis/engine). All fitment evidence is for N52; N51 and xDrive are unverified. Oil approval is reported as BMW Longlife-01 by several forum sources but one source disputes it, so the owner should confirm against the car's manual or oil-cap/service label. Drain washer OE number is single-source. Service-interval reset procedure was not researched.",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "summary": "Second pass closed most prior gaps. PRIMARY (BMW owner's manuals, reproduced on third-party hosts; MY2011 E90/E94/328i xDrive editions, the 2010 edition at manualslib could not be read with the available tools): approved viscosity classes are SAE 0W-40, 0W-30, 5W-40 and 5W-30; gasoline approvals are BMW High Performance SAE 5W-30, BMW Longlife-01 and Longlife-01 FE (LL-04 is listed only for diesel); engine data table for the 328i shows 2,996 cc / 230 hp (US N52B30 class engine); electronic oil-level check path and conditions; add at most 1 US qt only after the display asks, within 125 miles. This resolves the earlier LL-01 vs LL-04 / viscosity conflicts. STILL SECONDARY ONLY (2+ independent sources, no BMW document found): total capacity (about 6.9 US qt / 6.5 L), 25 Nm for both the filter-housing cap and drain plug (18 lb-ft), 86 mm 16-flute cap tool (BMW special tool 83 30 0 493 936), filter kit 11427566327, large cap O-ring 11428683168, drain plug 11137535106 and crush washer 07119963151. The access-hatch conflict is resolved: E90 sources describe a coin/screwdriver half-turn cover; the 'three screws' recollection comes from an E60 N52 thread. Drain-plug orientation (straight down vs sideways spray) is still conflicted and the guide tells the owner to angle the pan. The filter kit is reported to include both cap O-rings and one copper crush washer.",
   "variantDependencies": [
-    "Engine: all numbers here are for N52B30 (3.0L). N51B30 oil capacity, filter and housing fitment were NOT found. Engine code must be confirmed from VIN/engine cover/underhood label.",
-    "Drivetrain: xDrive (328xi) may have different pan/undertray/front-axle clearance and capacity. The only xi data found is 6.2 L for E46 325xi/330xi (a different chassis/engine, so not applicable). E90 xDrive capacity is MISSING.",
-    "Transmission: manual vs auto does not change the oil service, but one source (Z4 forum, E89 N52) hints a slightly different fill with manual gearbox; no E90 numbers. Treat capacity as transmission-independent only as an assumption.",
-    "Sources list the 2.5L N52 only for early cars; a 2010 328i is expected to be N52B30 but this is UNCONFIRMED.",
-    "Oil approval (LL-01 vs LL-04 vs other) differs by market and model year; US 2010 spec not confirmed from a BMW document."
+    "Engine: BMW owner's manual engine table (2011 E94 manual, 328i column) lists 2,996 cc and 230 hp, and Wikipedia lists the US/Canada 328i/328xi as N52B30 (2007-2013). A SULEV N51 variant (some US states) exists; a retailer listing and an aftermarket filter listing cover 'N51/N52' together, but N51 oil capacity and cap/plug differences were NOT found. Confirm engine code from the engine cover/underhood label or VIN decode.",
+    "Drivetrain: xDrive (328xi) capacity, undertray and drain orientation were NOT found for E90. RWD assumed from the unconfirmed VIN decode.",
+    "Transmission type does not change the oil service; no source gave a transmission-dependent engine oil quantity for E90.",
+    "Model year: approvals/viscosity were read from MY2011 manuals (08/11 print) and a 2008 328i manual (08/07 print, only 5W-40/5W-30 classes and 'BMW High Performance Synthetic'). The 2010 (08/09 print) manual exists at manualslib but its text was not retrievable; the owner should compare with the oil-cap label or manual.",
+    "Drain plug orientation and hatch hardware may vary with undertray version (Sport package cars reportedly have an extra front flap)."
   ],
   "tools": [
     {
-      "item": "86 mm, 16-flute oil filter housing cap socket (aluminum preferred; CTA 2489 named by FCP Euro)",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "item": "86 mm, 16-flute oil filter housing cap socket/wrench (BMW special tool 83 30 0 493 936; CTA 2489 named by FCP Euro). A strap or fitted wrench also works per one thread.",
+      "status": "VERIFIED",
       "sources": [
+        "https://www.bimmerworld.com/Tools/BMW-Oil-Change-Service-Tools/Oil-Filter-Cap-Tool-N20-N51-N52-N54-N55-Engines-BMW-83300493936.html",
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
         "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
         "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
-      ]
+      ],
+      "note": "Bimmerworld lists the tool for E90/E91/E92/E93 (06-13) 328i/328xi and N52. A generic BMW guide (bavmods) says some caps need a 27 mm wrench; one retailer earlier listed 26 mm hex for an E90 N52 housing. These hex-type cap reports are unresolved; the fluted 86 mm tool is the one named for E90 N52 by five sources."
     },
     {
-      "item": "17 mm socket for drain plug",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "item": "17 mm socket and ratchet for drain plug",
+      "status": "VERIFIED",
       "sources": [
         "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/bmw-e90-oil-change/",
         "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/"
       ]
     },
     {
-      "item": "Torque wrench (reads 25 Nm / 18 lb-ft range)",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "item": "Torque wrench covering 25 Nm (18 lb-ft)",
+      "status": "VERIFIED",
       "sources": [
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
-        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+        "https://bavmods.com/pages/how-to-change-bmw-oil-filter-e90-e92-f30-f32-n52-n54-n55-328i-335i"
+      ],
+      "note": "One E90 guide (bmwtuning.co) says to tighten by hand with a normal wrench and not use a torque wrench; three other sources give 25 Nm / 18 lb-ft."
+    },
+    {
+      "item": "Floor jack or ramps plus four jack stands (jack pads/adapters recommended)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+        "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=20202359",
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+      ],
+      "note": "Ramps (Team-BHP, bmwtuning.co) and stands on all four corners (bimmerpost) are both reported; owner's manual p.238/244 confirms jacking points exist 'at the positions shown in the illustration' (illustration not retrievable)."
+    },
+    {
+      "item": "Coin or flat-head screwdriver for the undertray access hatch",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/bmw-e90-oil-change/"
+      ],
+      "note": "Team-BHP: hatch opened with a coin, just behind the front-centre jack point. bmwtuning.co: plastic drain-plug cover turned 180 degrees by hand or with a flat-head screwdriver."
+    },
+    {
+      "item": "Drain pan (7 L or larger), funnel, rags, nitrile gloves",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+        "https://bmwtuning.co/bmw-e90-oil-change/"
       ]
     },
     {
-      "item": "Jack stands / ramps; jack at all four jacking points",
-      "status": "SINGLE_SOURCE (jack/stands mentioned in several threads; lift-point procedure only in BP1)",
-      "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=14552462"
-      ]
-    },
-    {
-      "item": "Drain pan, rags, turkey baster for residual oil in housing",
+      "item": "Turkey baster or syringe to remove residual oil from the filter housing",
       "status": "SINGLE_SOURCE",
       "sources": [
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
       ]
     },
     {
-      "item": "Torx bits T20/T25 (FCP lists these for the gasket job; whether they fit the E90 undertray is not stated)",
-      "status": "MISSING (undertray fastener type/size not confirmed)",
+      "item": "Torx bits T20/T25 for full undertray removal (not needed when using the hatch)",
+      "status": "MISSING",
       "sources": [
         "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
-      ]
+      ],
+      "note": "FCP lists T20/T25 for a different job; no E90 source gives full-tray fastener type/count, and the hatch makes full removal unnecessary."
     }
   ],
   "parts": [
     {
-      "item": "Oil filter element (cartridge), N52/N54/N55 6-cyl",
-      "partNumber": "11427566327 (alternate/previous 11427541827)",
-      "status": "VERIFIED (secondary: Turner, BMWBlog for E83 X3 N52 which lists same OE number)",
+      "item": "Oil filter kit (element plus 2 cap O-rings plus copper crush washer), N52",
+      "partNumber": "11427566327 (alt/previous 11427541827)",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
         "https://www.turnermotorsport.com/p-4162-oem-mahlemann-oil-filter-most-2006-6-cylinder-n52n54n55s55/",
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Maintenance/Engine/Oil_Service/",
         "https://www.bmwblog.com/?p=243123"
-      ]
+      ],
+      "note": "Turner lists E90 328i/328xi N52. Team-BHP states the kit includes 2 O-rings and 1 copper crush washer; bmwtuning.co (which names 11 42 7 953 129, a Mann-brand number) also describes a kit with a large black O-ring, small green O-ring and crush washer. Mann HU816x is the equivalent element. No OE catalog (RealOEM/ETK) was reachable."
     },
     {
-      "item": "Mann HU816x equivalent filter",
+      "item": "Mann HU816x equivalent element",
       "partNumber": "HU816x",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
         "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
@@ -81,224 +116,945 @@
       ]
     },
     {
-      "item": "Filter housing cap O-rings (large outer and small center-post O-rings)",
-      "partNumber": null,
-      "status": "MISSING (O-ring OE numbers not found; forums say replace both and seat correctly)",
+      "item": "Large black cap O-ring (80 x 3.5 mm), replace every oil change",
+      "partNumber": "11428683168 (previous 11427566133)",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=25725625",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
-      ]
+        "https://www.ecstuning.com/b-genuine-bmw-parts/o-ring/11428683168/",
+        "https://www.fcpeuro.com/Parts/Oil-Filter-Cover-O~Ring/"
+      ],
+      "note": "ECS lists E90 328i N52 and says replace at every filter change. FCP lists 328i/328i xDrive and size 80x3.5 mm but not the chassis. Placement: large black ring sits on the cap perimeter above the threaded section (bimmerpost, bmwtuning.co)."
     },
     {
-      "item": "Oil drain plug crush washer (12x17 mm)",
+      "item": "Small green center-post (stem) O-ring",
+      "partNumber": null,
+      "status": "MISSING",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://bmwtuning.co/bmw-e90-oil-change/"
+      ],
+      "note": "Existence and location confirmed by two sites, but no separate OE number found. It ships inside the filter kit, so no separate purchase is normally needed."
+    },
+    {
+      "item": "Oil drain plug crush washer (12 x 17 x 1.5 mm copper)",
       "partNumber": "07119963151",
-      "status": "SINGLE_SOURCE (Turner lists it for E90 328i N52; ECS shows Victor Reinz equivalent under the same number but does not label it OE)",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
         "https://www.turnermotorsport.com/p-6488-gasket-ring-07119963151/",
+        "https://www.bimmerworld.com/Engine/Gaskets/Genuine-BMW-Screw-Plug-11137535106.html",
         "https://www.ecstuning.com/b-victor-reinz-parts/drain-plug-washer/07119963151~vic/"
+      ],
+      "note": "Turner lists E90 328i N52 as Genuine BMW. Bimmerworld pairs it (12x17x1.5 mm) with the plug. A different washer number (07119963132, A12x16) is listed as a related item by Bimmerworld and ECS; use the one in your kit or match the removed washer."
+    },
+    {
+      "item": "Oil drain plug, M12x1.5x16, steel (aluminum pan)",
+      "partNumber": "11137535106 (supersedes 11131273093, 07119919225)",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.bimmerworld.com/Engine/Gaskets/Genuine-BMW-Screw-Plug-11137535106.html",
+        "https://www.ecstuning.com/b-genuine-bmw-parts/screw-plug/11137535106/",
+        "https://www.turnermotorsport.com/p-41188174-oil-drain-plug/"
+      ],
+      "note": "All three list E90 328i N52. Whether BMW REQUIRES replacing the plug each time: Turner's filter page says BMW recommends replacing it with the filter (single source); a Z4 thread says reuse is common. Treat as optional; always replace the washer."
+    },
+    {
+      "item": "Jack support pad (lifting platform) for the four side jacking points",
+      "partNumber": "51717123311",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html"
       ]
     },
     {
-      "item": "Drain plug itself",
-      "partNumber": null,
-      "status": "MISSING (reuse is reported; BMW replacement requirement not found)",
+      "item": "Oil filter housing gasket kit (NOT part of a routine change; only if the housing leaks)",
+      "partNumber": "11428637821 (gasket); kit 11428637821KT; bolts single-use",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
-        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/"
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Maintenance/Engine/Oil/2",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1126-bmw-oil-filter-housing-gasket?Nrpp=50"
       ]
     },
     {
-      "item": "Oil filter housing gasket kit incl. oil pressure sensor (NOT part of a routine change)",
-      "partNumber": "11428637821KT",
-      "status": "SINGLE_SOURCE (ECS)",
+      "item": "Oil filter housing cap (only if damaged; sealing ring not included)",
+      "partNumber": "11427525334",
+      "status": "SINGLE_SOURCE",
       "sources": [
-        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Maintenance/Engine/Oil/2"
+        "https://www.ecstuning.com/b-genuine-bmw-parts/oil-filter-cap/11427525334/"
       ]
     }
   ],
   "fluids": [
     {
-      "item": "Engine oil approval",
-      "spec": "BMW Longlife-01 reported (LL-04 also accepted per one post); one source says LL-01 is obsolete and suggests API-SP 5W-30; another recommends MB 229.5-class oil",
+      "item": "Engine oil approval (gasoline N52)",
+      "spec": "BMW High Performance SAE 5W-30, BMW Longlife-01 or BMW Longlife-01 FE per the MY2011 328i xDrive owner's manual (p.262). The MY2011 E94 manual calls LL-01 and LL-01 FE the preferred alternatives (API SM or higher, up to 1 L, only as a top-up). BMW Longlife-04 is listed for diesel engines only. Do not use additives.",
       "capacity": "n/a",
-      "status": "CONFLICT (LL-01 per BP2, S5b, BP3; disputed by Z4; BMW document MISSING)",
+      "status": "VERIFIED",
+      "primary": true,
       "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=25725625",
-        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=15773480",
-        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
-      ]
+        "https://www.manualslib.com/manual/572208/Bmw-328i-Xdrive.html?page=263",
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+        "https://z4-forum.com/posts/2171893/",
+        "https://mail.oilspecifications.org/bmw.php"
+      ],
+      "conflicts": "A Z4 forum poster calls LL-01 obsolete (API-SP 5W-30 suggestion) and a bimmerpost DIY says to look for MB 229.5; neither is a BMW document and both are overruled by the BMW manuals. Manual edition is MY2011; the MY2010 text was unreadable, so the owner should compare with the oil cap/manual."
     },
     {
       "item": "Viscosity",
-      "spec": "Reported: 5W-30, 0W-30, 5W-40, 0W-40 all in use; not one agreed value",
+      "spec": "SAE 0W-40, 0W-30, 5W-40 or 5W-30 (other grades may cause malfunction or engine damage). The 08/07 328i manual lists only 5W-40 and 5W-30 classes and 'BMW High Performance Synthetic'. BMW's own genuine oil change kit for N52 is 5W-30 (ECS).",
       "capacity": "n/a",
-      "status": "CONFLICT (no BMW doc to choose)",
+      "status": "VERIFIED",
+      "primary": true,
       "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=15773480",
-        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
-        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
-        "https://getjerry.com/car-repair/2010-bmw-328i-oil-capacity"
-      ]
+        "https://www.manualslib.com/manual/572208/Bmw-328i-Xdrive.html?page=263",
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/24",
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+        "https://www.manualslib.com/manual/452001/Bmw-328i.html?page=226",
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Maintenance/Engine/Oil_Service/"
+      ],
+      "conflicts": "Earlier ledger recorded 5W-30/0W-30/5W-40/0W-40 as an unresolved CONFLICT; the MY2011 BMW manuals list all four classes as approved, so choice within them is the owner's (5W-30 is the BMW-branded default)."
     },
     {
       "item": "Engine oil quantity incl. filter, N52",
       "spec": "n/a",
-      "capacity": "about 6.9 US qt (~6.5 L); many owners put in ~7 qt and check electronically",
-      "status": "VERIFIED (secondary sources only, no BMW document); E46 BMW handbook shows 6.5 L for 325i/330i but is a different chassis and not used as a source",
+      "capacity": "about 6.9 US qt (about 6.5 L); owners often pour 6 qt, run, then top up using the electronic level",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
-        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
-        "https://5series.net/forums/e60-discussion-2/oil-change-question-78967/",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=25725625",
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
-        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
-        "https://www.bmwblog.com/?p=243123"
-      ]
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+        "https://getjerry.com/car-repair/2010-bmw-328i-oil-capacity",
+        "https://bmwtuning.co/bmw-e90-oil-change/",
+        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
+      ],
+      "conflicts": "Quantities quoted: 6.9 qt/6.5 L (most), 6.6 L (Team-BHP), 6.7 L (one bimmerpost poster), 7 L/7 qt kit sizes (FCP, ECS kits), 6.5 qt (bavmods generic). The BMW owner's manual capacity page (p.250-258 range) did not expose an engine oil figure in the retrievable text."
     }
   ],
   "torque": [
     {
       "fastener": "Oil filter housing cap",
-      "value": "25 Nm (18 lb-ft)",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "value": "25 Nm (18 lb-ft); thread in by hand first",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
         "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
         "https://5series.net/forums/e60-discussion-2/torque-specs-2006-530i-n52-engine-136240/",
         "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
-        "https://5series.net/forums/e60-discussion-2/anyone-have-torque-specs-oil-filter-housing-525i-108875/"
+        "https://5series.net/forums/e60-discussion-2/anyone-have-torque-specs-oil-filter-housing-525i-108875/",
+        "https://bavmods.com/pages/how-to-change-bmw-oil-filter-e90-e92-f30-f32-n52-n54-n55-328i-335i"
       ],
-      "conflicts": "S5d notes 'hand tight' for an M54; no numeric disagreement found"
+      "conflicts": "One 525i thread calls 25 Nm 'hand tight only'; Team-BHP adds that blue alignment marks on the housing should be matched on re-tightening (single source). No BMW document with this value was reachable. Bentley's E9x N52 'oil filter housing' page exists but its torque table is behind a login."
     },
     {
-      "fastener": "Oil drain plug",
-      "value": "25 Nm (18 lb-ft)",
-      "status": "VERIFIED (secondary sources only, no BMW document) (S5a is an E60 N52 list, not E90)",
+      "fastener": "Oil drain plug (M12)",
+      "value": "25 Nm (18 lb-ft) with a new crush washer",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
       "sources": [
         "https://5series.net/forums/e60-discussion-2/torque-specs-2006-530i-n52-engine-136240/",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://bavmods.com/pages/how-to-change-bmw-oil-filter-e90-e92-f30-f32-n52-n54-n55-328i-335i"
       ],
-      "conflicts": "FCP gave no torque value for the plug"
+      "conflicts": "5series.net list is an E60 N52 thread; bimmerpost thread is a 2011 328i xDrive; bavmods is a generic BMW guide. FCP, Team-BHP and bmwtuning.co give no number (bmwtuning.co says hand-tighten). Bimmerworld's plug page says check BMW service info for torque."
     }
   ],
   "steps": [
     {
       "n": 1,
-      "title": "Position and lift",
-      "instruction": "Park on level ground and raise the car at all four jacking points, then support on stands so it sits level. Confirm the E90 jacking points from the owner's manual; they were not documented in the sources.",
-      "status": "SINGLE_SOURCE",
+      "title": "Gather parts and warm the engine briefly",
+      "instruction": "Collect: filter kit 11427566327 (or equivalent with both O-rings and a crush washer), about 7 US quarts of oil in an approved viscosity and BMW LL-01 / High Performance 5W-30 class, a spare drain washer, and the tools. Run the engine a few minutes so the oil drains well, then park on level ground with the engine off.",
+      "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Never work under a car supported only by a jack."
+        "Oil, the exhaust and the pan will be hot; wait a few minutes or wear gloves."
       ]
     },
     {
       "n": 2,
-      "title": "Loosen filter cap",
-      "instruction": "From the top, loosen the oil filter housing cap with the 86 mm cap tool and leave it sitting loosely so the housing can drain back into the pan.",
-      "status": "SINGLE_SOURCE",
-      "warnings": []
+      "title": "Lift and support the car",
+      "instruction": "Raise the car by the factory jacking points (rectangular plastic pads along the sides; a front-centre jack point is also reported) and set it on stands at the four side points, or drive onto ramps. Use jack pads or a pad adapter so the plastic pads are not crushed. Check the owner's manual jacking illustration for exact positions.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Never work under a car held only by a jack.",
+        "Do not leave the car partly raised on one side jack point; it can roll off.",
+        "On Sport-package cars the front flap can touch ramps before the tyres do."
+      ]
     },
     {
       "n": 3,
-      "title": "Open the undertray access hatch",
-      "instruction": "Reach the drain plug through the small access hatch in the lower undertray, near the front-centre of the underside. Removing the whole undertray gives cleaner access, but the hatch is enough. Sources disagree on how the hatch is held (three screws versus a coin-operated catch), so check what your car has.",
-      "status": "CONFLICT (hatch fastener: three screws vs coin-operated; full-tray fasteners not found)",
-      "warnings": []
+      "title": "Open the engine-bay caps",
+      "instruction": "Open the hood, unscrew the oil filler cap, and loosen the oil filter housing cap with the 86 mm 16-flute tool without removing it, so air can enter and the housing can drain back to the pan. Whether the plastic engine cover must come off to reach the cap is not established by any source; remove it only if it blocks the tool.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Loosen the housing cap before pulling the drain plug; some owners vent the housing first."
+      ]
     },
     {
       "n": 4,
-      "title": "Drain the sump",
-      "instruction": "Place pan under the plug and remove the 17 mm plug; allow full drain.",
-      "status": "VERIFIED (17 mm size from 3 sources)",
+      "title": "Open the undertray access hatch",
+      "instruction": "Locate the small hatch just behind the front-centre jack point in the lower undertray. Turn its half-turn catch (about 180 degrees) with a coin or flat-head screwdriver and remove the cover. Removing the full undertray gives cleaner access but is not required. The 'three screws' hatch seen in older threads came from an E60.",
+      "status": "VERIFIED",
       "warnings": [
-        "Oil may be hot if the engine was recently run."
+        "Keep the hatch clean and refit it later; do not drop the catch into the pan."
       ]
     },
     {
       "n": 5,
-      "title": "Remove old cartridge",
-      "instruction": "Unscrew the cap, pull the cartridge out with it, and suck out residual oil from the housing with a baster.",
-      "status": "SINGLE_SOURCE",
-      "warnings": []
+      "title": "Drain the sump",
+      "instruction": "Put the pan under the drain plug and remove the 17 mm plug. Shield your hand and angle the pan: sources disagree whether oil exits straight down (N52 330i manual, RealOEM diagram for another model) or sprays sideways (a 2011 328i xDrive thread). Let it drain fully.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Oil may be hot.",
+        "Plug and pan are both silver aluminum/steel and easy to confuse; confirm you are on the sump, not another bolt."
+      ]
     },
     {
       "n": 6,
-      "title": "Replace O-rings and clean",
-      "instruction": "Fit new O-rings on the cap (large seal and small center-post seals), clean mating surfaces, and make sure each O-ring is seated correctly; poor seating is the commonly reported cause of leaks.",
-      "status": "VERIFIED (BP1, BP2, S5d agree)",
+      "title": "Remove the old filter element and clean",
+      "instruction": "Unscrew the housing cap by hand or with the tool; the old element comes out with it. Remove leftover oil from the housing with a baster. Pull the two old O-rings off the cap (large black ring on the perimeter above the thread; small green ring on the centre stem) and wipe the cap and housing seats clean.",
+      "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "A kinked or pinched O-ring leaks."
+        "Hold the cap over the pan; residual oil will drip.",
+        "The cap may be very tight; one owner needed a breaker bar."
       ]
     },
     {
       "n": 7,
-      "title": "Lubricate and install new cartridge",
-      "instruction": "Lightly lubricate the O-rings with fresh oil, install the new cartridge on the cap, thread the cap in by hand first.",
-      "status": "VERIFIED (FCP, BP1)",
-      "warnings": []
+      "title": "Fit new O-rings and element",
+      "instruction": "Lightly coat both new O-rings with fresh oil, seat the large ring in its groove above the threaded section so it is not twisted or pinched, fit the small ring on the stem, and press the new element onto the cap. Optionally pre-wet the element with a little new oil.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "A kinked or mis-seated O-ring is the commonly reported cause of leaks.",
+        "Do not reuse the old O-rings."
+      ]
     },
     {
       "n": 8,
-      "title": "Torque cap",
-      "instruction": "Torque the cap to 25 Nm (about 18 lb-ft). More torque does not improve the seal.",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "title": "Install and torque the housing cap",
+      "instruction": "Thread the cap in by hand, then tighten to 25 Nm (18 lb-ft). If blue alignment marks are visible on the housing, match them when tightening. More torque does not improve the seal.",
+      "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Do not over-tighten the plastic-and-aluminum housing cap."
+        "Do not over-tighten the cap; torque specs here are secondary-source values (no BMW document found)."
       ]
     },
     {
       "n": 9,
-      "title": "Refit drain plug with new washer",
-      "instruction": "Install the plug with a new crush washer and torque to 25 Nm.",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
-      "warnings": []
+      "title": "Refit the drain plug with a new washer",
+      "instruction": "Fit a new copper crush washer (07119963151) on the plug and tighten to 25 Nm (18 lb-ft). Refit the hatch cover.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Over-tightening can strip the aluminum pan; under-tightening leaks."
+      ]
     },
     {
       "n": 10,
       "title": "Refill",
-      "instruction": "Add roughly 6.9 US quarts (about 6.5 L) of the chosen oil through the filler cap; avoid going above about 7 qt.",
-      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "instruction": "Lower the car level. Add about 6 US quarts through the filler, then up to about 6.9 US qt (6.5 L) total using the capacity and electronic level; do not exceed about 7 qt. Refit the filler cap.",
+      "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Overfill is a reported mistake; the electronic gauge can lag."
+        "There is no dipstick on the N52; the level is judged electronically, so avoid overfilling.",
+        "Overfill and underfill can both damage the engine."
       ]
     },
     {
       "n": 11,
-      "title": "Start, inspect for leaks, verify level",
-      "instruction": "Run the engine briefly, check for leaks at the cap and plug, then confirm the level with the electronic readout after the engine has rested: with the ignition on, press the turn-signal stalk button until OIL shows in the instrument cluster, then press the end button to read the level. The iDrive route for the level is not established for this car.",
-      "status": "VERIFIED (BP2, S5c, BP1; menu path not documented)",
-      "warnings": []
+      "title": "Start, check for leaks, verify the level electronically",
+      "instruction": "Start the engine, watch for oil-pressure warnings, and check the filter cap and drain plug for leaks. For the level check the BMW manual says the engine must be at operating temperature after at least about 6.2 miles (10 km) of uninterrupted driving. Then either press button 1 on the turn-indicator lever up/down until the OIL symbol appears and press button 2, or use iDrive: Vehicle Info > Vehicle status > Engine oil level. The check takes about 3 minutes at standstill or about 5 minutes while driving. If the display asks for oil, add at most 1 US quart (1 L) and add it within 125 miles. 'Level too high' means have it checked at once.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Add oil only after the display asks for it.",
+        "Check again for leaks after about half an hour of driving."
+      ]
     },
     {
       "n": 12,
       "title": "Reset the oil service reminder",
-      "instruction": "Close the doors and switch the ignition on without starting the engine. Hold the instrument-cluster reset button for about five seconds until the service display appears, cycle to the oil item, then hold the button until RESET confirms.",
-      "status": "VERIFIED (two independent secondary guides agree; iDrive route single-source)",
+      "instruction": "With doors closed, switch the ignition on without starting. Hold the cluster trip-reset button about 5 seconds until the service display appears, tap it to reach the oil item, then hold until RESET confirms (hold times quoted: about 3 s at the RESET? prompt, or hold the BC stalk button until RESET). One source also gives an iDrive route: Vehicle Info > Service Info > Engine Oil > Reset > Confirm.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "If nothing happens you may have gone to full ignition; go back to the first ignition position and retry."
+      ]
+    },
+    {
+      "n": 13,
+      "title": "Dispose of used oil and filter",
+      "instruction": "Take used oil and the old element to a recycler or parts store collection point.",
+      "status": "VERIFIED_SECONDARY",
       "warnings": []
     }
   ],
   "safety": [
-    "Support the car on stands; do not rely on a jack alone.",
-    "Hot oil and exhaust parts can burn; let the engine cool or wear gloves.",
-    "Dispose of used oil and filter properly.",
-    "Do not overfill: no dipstick on N52, level is judged electronically."
+    "Support the car on stands; do not rely on a jack alone, and do not leave it partly raised on a side jack point.",
+    "Hot oil and exhaust parts can burn; let the engine cool a few minutes or wear gloves.",
+    "Do not overfill: the N52 has no dipstick and the electronic gauge needs a warm engine, a drive and a few minutes to read correctly.",
+    "Add no more than 1 US quart after the display requests it, and use only BMW-approved oil (no additives).",
+    "Dispose of used oil and filter properly."
   ],
   "missingEvidence": [
-    "Any BMW/TIS/owner's-manual document for this E90 (capacity, approval, torque, procedure).",
-    "E90-specific undertray fastener size and count.",
-    "OE part number for the filter cap O-rings.",
-    "Whether BMW requires replacing the drain plug itself.",
-    "N51B30 and xDrive capacity/filter/undertray differences.",
-    "Official oil approval and viscosity for a 2010 US 328i.",
-    "BMW jacking-point procedure for the E90.",
-    "Position of the oil filter housing cap on the engine (side/end) is not stated by any source; do not illustrate a specific side.",
-    "Whether the N52 has a decorative engine cover that must come off is not stated by any source.",
-    "Drain plug orientation conflicts (pointing straight down vs facing sideways).",
-    "One retailer lists a 26 mm hex cap socket for the E90 N52 housing, which conflicts with the 86 mm 16-flute cap tool from three other sources."
+    "No BMW document (owner's manual capacity page, TIS, repair manual) was reachable for engine oil quantity and the 25 Nm drain-plug and filter-cap torques; these remain secondary-only. The MY2010 (08/09) owner's manual text at manualslib could not be read.",
+    "Whether the plastic engine cover must be removed to reach the oil filter housing cap (no source).",
+    "E90 undertray full-tray fastener type/size/count (hatch makes it unnecessary).",
+    "OE part number for the small centre-post O-ring (supplied in the kit).",
+    "Whether BMW requires replacing the drain plug itself each change (single retailer says recommended).",
+    "N51 (SULEV) and xDrive engine oil capacity/drain orientation differences for E90.",
+    "Drain plug orientation: straight down vs sideways (conflict unresolved).",
+    "Exact BMW jacking-point illustration for the E90 (manual text only says 'as shown in the illustration').",
+    "Position of the oil filter housing cap on the engine (side/end) is not stated by any E90 source; do not illustrate a specific side.",
+    "Cap tool: unresolved 26/27 mm hex-cap reports for some caps versus the 86 mm 16-flute tool for E90 N52."
   ],
   "ownerInputsNeeded": [
-    "Confirm engine code (N52 vs N51) and drivetrain (RWD vs xDrive) from the vehicle/VIN decode.",
-    "Provide a photo of the oil filler cap or the owner's manual page showing the approved oil spec and capacity.",
-    "Decide viscosity choice once approval is confirmed."
+    "Confirm engine code (N52 vs SULEV N51) and RWD vs xDrive from the engine cover label or VIN decode.",
+    "Confirm there is no dipstick and whether the filter housing cap is the fluted type (86 mm) or hex type before buying the tool.",
+    "Read the oil-cap label or MY2010 owner's manual oil page to confirm LL-01 / High Performance 5W-30 approval and the capacity line.",
+    "Note whether the undertray hatch is a coin catch or screws, and which direction the drain plug faces on your car."
+  ],
+  "visuals": [
+    {
+      "id": "electronic-oil-level-check",
+      "title": "Reading the electronic oil level from the turn-signal stalk",
+      "evidenceSteps": [
+        11
+      ],
+      "viewpoint": "dashboard",
+      "elements": [
+        {
+          "id": "turn-signal-stalk-button-1",
+          "role": "hero",
+          "criticality": "procedure",
+          "describe": "The small button on the turn-indicator lever that is pressed up or down repeatedly to step through the on-board computer displays until OIL appears."
+        },
+        {
+          "id": "turn-signal-stalk-button-2",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "The second button on the turn-indicator lever pressed once the OIL symbol is showing to start the oil level check."
+        },
+        {
+          "id": "cluster-oil-readout",
+          "role": "target",
+          "criticality": "identification",
+          "describe": "The instrument cluster area where the OIL symbol and the level message (OK, being checked, below minimum, too high) appear."
+        },
+        {
+          "id": "idrive-vehicle-status-menu",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The center control display showing Vehicle Info > Vehicle status > Engine oil level as the alternative route."
+        }
+      ],
+      "facts": [
+        {
+          "element": "turn-signal-stalk-button-1",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+            "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/"
+          ],
+          "note": "Two BMW manuals (same publisher, same host) plus a forum thread; BMW manuals say press button 1 on the turn-indicator lever up or down until the OIL symbol appears, then button 2."
+        },
+        {
+          "element": "turn-signal-stalk-button-1",
+          "attribute": "location",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23"
+          ],
+          "note": "Described only as a button on the turn-indicator lever; its exact position on the lever end is not described in the retrievable text."
+        },
+        {
+          "element": "turn-signal-stalk-button-2",
+          "attribute": "action",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+            "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x"
+          ],
+          "note": "bavmods describes the BC button on the stalk reaching the Oil menu (older-style wording); BMW manual says button 2 starts the check."
+        },
+        {
+          "element": "cluster-oil-readout",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+            "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x"
+          ],
+          "note": "Displays: oil level OK, level being checked, below minimum (add 1 US qt), too high, sensor defective (manuals); MIN / +1 qt / centered meter (bavmods)."
+        },
+        {
+          "element": "idrive-vehicle-status-menu",
+          "attribute": "action",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23"
+          ],
+          "note": "Same website only; the iDrive path is from two BMW manuals."
+        },
+        {
+          "element": "turn-signal-stalk-button-2",
+          "attribute": "existence",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23",
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23"
+          ],
+          "note": "BMW owner's manuals (E90 and E94) state: press button 1 in the turn indicator lever up/down until OIL is shown, then press button 2 in the turn indicator lever. bavmods describes the BC button on the stalk instead (older wording)."
+        },
+        {
+          "element": "turn-signal-stalk-button-2",
+          "attribute": "location",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23"
+          ],
+          "note": "Manual places buttons 1 and 2 on the turn indicator lever; the exact spot on the lever (end vs side) is not described, so show a plain stalk with two small buttons."
+        },
+        {
+          "element": "cluster-oil-readout",
+          "attribute": "location",
+          "urls": [
+            "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23",
+            "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x"
+          ],
+          "note": "BMW E94 manual lists the oil level reading under 'Display in the instrument cluster'; bavmods says the reading is in the gauge cluster Oil menu reached with the BC button."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "cluster-oil-readout",
+          "reason": "The exact cluster layout, fonts and graphics (analog gauge or digital bar) are not established; show a generic OIL symbol with text only."
+        },
+        {
+          "element": "turn-signal-stalk-button-1",
+          "reason": "The precise position of the button on the stalk end is not described by any retrieved source."
+        }
+      ],
+      "sources": {
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/23": {
+          "kind": "oem-text",
+          "establishes": "2011 E90 owner's manual p.227-228: turn-indicator lever buttons 1 and 2, OIL symbol, iDrive path, conditions."
+        },
+        "https://www.carmanualsonline.info/bmw-335i-xdrive-convertible-2011-e94-owner-s-manual/23": {
+          "kind": "oem-text",
+          "establishes": "2011 E94 owner's manual p.223-225: same procedure, displays, 125 mile and 1 qt limits."
+        },
+        "https://bavmods.com/pages/how-to-check-and-fill-engine-oil-on-bmws-with-electronic-oil-level-sensors-1-8-series-e9x-e8x-e6x-f3x-f8x-g3x-f10-g8x": {
+          "kind": "third-party-guide",
+          "establishes": "E9x electronic oil check via BC button and Oil menu, MIN / +1 qt wording."
+        },
+        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/": {
+          "kind": "third-party-guide",
+          "establishes": "Forum confirmation of the stalk-button check (cited by the first-pass ledger; not re-read in this pass)."
+        }
+      },
+      "gapFillNotes": [
+        "bavmods describes a BC-button/Oil-menu route that differs from the manual's button 1 / button 2 wording; the picture should follow the BMW manual."
+      ]
+    },
+    {
+      "id": "side-jack-pad",
+      "title": "Where the factory side jack pad sits and how to support it",
+      "evidenceSteps": [
+        2
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "side-jack-pad-rectangle",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A small rectangular plastic pad along the lower side of the body near a wheel; a hollow rectangle that is the lift and stand point."
+        },
+        {
+          "id": "jack-pad-adapter-puck",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "An optional rubber or hockey-puck style adapter placed between the jack or stand and the pad."
+        },
+        {
+          "id": "wheel-and-tire",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The nearby wheel, shown only for orientation."
+        }
+      ],
+      "facts": [
+        {
+          "element": "side-jack-pad-rectangle",
+          "attribute": "existence",
+          "urls": [
+            "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14494441"
+          ],
+          "note": "Both describe small plastic rectangular pads at the four jack points; bimmerforums says 'little plastic blocks' on the frame."
+        },
+        {
+          "element": "side-jack-pad-rectangle",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14494441",
+            "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html"
+          ],
+          "note": "Bimmerpost: rectangular areas along the side, four pads; bimmerforums: four points on the car at the corners. Distance from wheel arch is not stated."
+        },
+        {
+          "element": "side-jack-pad-rectangle",
+          "attribute": "fine-detail-geometry",
+          "urls": [
+            "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html"
+          ],
+          "note": "Hollow rectangular cavity (a forum member suggests a wood block of about 2.25 x 1.25 inch inside). Single source."
+        },
+        {
+          "element": "jack-pad-adapter-puck",
+          "attribute": "relationship",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=14494441"
+          ],
+          "note": "Single source: pucks or a jack-pad adapter between jack/stand and point; centre them carefully."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "side-jack-pad-rectangle",
+          "reason": "Exact distance from the wheel arch, the pad's notch or arrow markings and the front-centre jack point geometry are not established."
+        },
+        {
+          "element": "jack-pad-adapter-puck",
+          "reason": "Shown only as an optional accessory, not as factory equipment."
+        }
+      ],
+      "sources": {
+        "https://www.bimmerforums.com/forum/archive/index.php/t-833996.html": {
+          "kind": "third-party-guide",
+          "establishes": "Four jacking points with small plastic pads; pad part number 51717123311; hollow rectangle."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14494441": {
+          "kind": "third-party-guide",
+          "establishes": "Rectangular plastic pad at the four side points; use stands at all four; adapters/pucks."
+        },
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/25": {
+          "kind": "oem-text",
+          "establishes": "Owner's manual p.244: jacking points exist 'at the positions shown in the illustration' (illustration not in text)."
+        }
+      }
+    },
+    {
+      "id": "filter-cap-o-ring-positions",
+      "title": "Where the two O-rings sit on the oil filter housing cap",
+      "evidenceSteps": [
+        6,
+        7
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "filter-housing-cap",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "The round cap with the element attached, shown off the engine."
+        },
+        {
+          "id": "large-black-o-ring",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "A large black rubber ring around the cap perimeter, seated above the threaded section."
+        },
+        {
+          "id": "small-green-o-ring",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "A small green rubber ring on the tip of the cap's centre stem."
+        },
+        {
+          "id": "filter-element-body",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The paper filter element mounted on the cap."
+        }
+      ],
+      "facts": [
+        {
+          "element": "large-black-o-ring",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+            "https://bmwtuning.co/bmw-e90-oil-change/"
+          ],
+          "note": "Bimmerpost: large black ring on the cap perimeter, above the threaded section. bmwtuning.co: large black ring for the filter housing threads."
+        },
+        {
+          "element": "small-green-o-ring",
+          "attribute": "location",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+            "https://bmwtuning.co/bmw-e90-oil-change/"
+          ],
+          "note": "Bimmerpost: small green ring on the cap stem. bmwtuning.co: small green ring on the centre pole tip."
+        },
+        {
+          "element": "large-black-o-ring",
+          "attribute": "fine-detail-geometry",
+          "urls": [
+            "https://www.fcpeuro.com/Parts/Oil-Filter-Cover-O~Ring/"
+          ],
+          "note": "Size listed as 80 x 3.5 mm; single source for dimensions."
+        },
+        {
+          "element": "filter-housing-cap",
+          "attribute": "existence",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+            "https://www.ecstuning.com/b-genuine-bmw-parts/oil-filter-cap/11427525334/"
+          ],
+          "note": "Cap exists and is removed with the 86 mm tool; sealing ring sold separately."
+        },
+        {
+          "element": "large-black-o-ring",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+            "https://bmwtuning.co/bmw-e90-oil-change/",
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3867"
+          ],
+          "note": "Bimmerpost: large black O-ring on the cap perimeter; bmwtuning.co: big black one goes on the housing threads; RealOEM 328i lists one O-ring 80x3.5 (11428683168), colour not stated, and 1addicts says one ring sits high in a groove."
+        },
+        {
+          "element": "small-green-o-ring",
+          "attribute": "existence",
+          "urls": [
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+            "https://bmwtuning.co/bmw-e90-oil-change/",
+            "https://www.1addicts.com/forums/showthread.php?p=6151834"
+          ],
+          "note": "Bimmerpost: small green O-ring on the stem of the cap; bmwtuning.co: small green one on the tip of the pole; 1addicts (N52): second O-ring is green, small, at the bottom."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "filter-housing-cap",
+          "reason": "Cap flute count rendering, alignment-mark colors and the housing's side/end position on the engine are not established; this image is the cap off the engine only."
+        }
+      ],
+      "sources": {
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477": {
+          "kind": "third-party-guide",
+          "establishes": "Small green O-ring on cap stem, large black O-ring on perimeter above the thread; seat correctly."
+        },
+        "https://bmwtuning.co/bmw-e90-oil-change/": {
+          "kind": "third-party-guide",
+          "establishes": "Kit has large black O-ring (housing threads), small green O-ring (centre pole tip), crush washer."
+        },
+        "https://www.fcpeuro.com/Parts/Oil-Filter-Cover-O~Ring/": {
+          "kind": "parts-catalog",
+          "establishes": "Large cover O-ring 11428683168, 80 x 3.5 mm."
+        },
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90": {
+          "kind": "third-party-guide",
+          "establishes": "Cap is removed from the engine bay with the 86 mm tool; 25 Nm."
+        },
+        "https://www.ecstuning.com/b-genuine-bmw-parts/oil-filter-cap/11427525334/": {
+          "kind": "parts-catalog",
+          "establishes": "Cap 11427525334 fits E90 328i N52; sealing ring not included."
+        },
+        "https://www.1addicts.com/forums/showthread.php?p=6151834": {
+          "kind": "third-party-guide",
+          "establishes": "N52 oil change thread: new filter has two O-rings, one goes up high in a groove, the other is green, small and goes at the bottom."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3867": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM 2009 E90 LCI 328i oil filter diagram: filter cover 11427525334, filter element set 11427953129, gasket 11428637821, and O-ring 11428683168 (80x3.5, colour not stated)."
+        }
+      },
+      "gapFillNotes": [
+        "The catalog lists only one O-ring (the large one) as a separate part; the small green stem O-ring is part of the element/cartridge set and is documented only by forum/guide text."
+      ]
+    },
+    {
+      "id": "oil-drain-plug-access",
+      "title": "Oil drain plug and the undertray access hatch",
+      "evidenceSteps": [
+        4,
+        5
+      ],
+      "viewpoint": "underside",
+      "elements": [
+        {
+          "id": "drain-plug",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape."
+        },
+        {
+          "id": "access-hatch",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The small access hatch in the lower undertray near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it."
+        },
+        {
+          "id": "oil-pan",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The oil pan as a plain simplified mass around the plug."
+        },
+        {
+          "id": "hatch-fasteners",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "Whatever holds the access hatch closed (screws or a coin-operated catch; sources conflict)."
+        },
+        {
+          "id": "engine-cover",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The plastic engine (ignition coil) cover; RealOEM and Turner list one for the E90 N52, but its exact shape and fit are not established."
+        }
+      ],
+      "facts": [
+        {
+          "element": "drain-plug",
+          "attribute": "existence",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.1addicts.com/forums/showthread.php?p=6151834",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "location",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "orientation",
+          "urls": [],
+          "note": "Sources conflict: slightly left of centre facing right vs vertical vs oil exits sideways."
+        },
+        {
+          "element": "drain-plug",
+          "attribute": "fastener-head-type",
+          "urls": [],
+          "note": "Only the 17 mm socket size is established, not the head shape."
+        },
+        {
+          "element": "access-hatch",
+          "attribute": "existence",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "element": "access-hatch",
+          "attribute": "location",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        },
+        {
+          "element": "access-hatch",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "Conflict: three screws vs coin-operated catch."
+        },
+        {
+          "element": "hatch-fasteners",
+          "attribute": "existence",
+          "urls": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ],
+          "note": "Both say the hatch is held closed by something (5series.net poster: three screws; team-bhp E90 DIY: opened with a coin, 'just behind the front-center jack point'); the TYPE of fastener conflicts, so draw a plain closed panel with no specific fastener."
+        },
+        {
+          "element": "engine-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+            "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11283613"
+          ],
+          "note": "Corrected: an ignition-coil cover (beauty cover) exists on the N52 per RealOEM (11127575032) and Turner; its shape is not established, so it stays out of the picture."
+        },
+        {
+          "element": "oil-pan",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834"
+          ],
+          "note": "RealOEM 328i oil pan diagram: oil pan 11137553164, screw plug M12x1.5 with gasket ring A12x17-CU."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "hatch-fasteners",
+          "reason": "Sources conflict on how the hatch is fastened."
+        },
+        {
+          "element": "engine-cover",
+          "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture."
+        }
+      ],
+      "sources": {
+        "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653": {
+          "kind": "third-party-guide",
+          "establishes": "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
+        },
+        "https://www.1addicts.com/forums/showthread.php?p=6151834": {
+          "kind": "third-party-guide",
+          "establishes": "N52 DIY: remove the oil filter housing cap with a cap wrench, drop in new cartridge with two O-rings, refit until marks align."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477": {
+          "kind": "third-party-guide",
+          "establishes": "17mm plug with copper crush washer; oil exits sideways."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM 328i cylinder head cover diagram: valve cover 11127552281, ignition coil covering 11127575032, oil filler cap 11128655331; no acoustic cover listed."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3834": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM 328i oil pan diagram: oil pan 11137553164, screw plug M12x1.5 11137553918, gasket ring 07119963151."
+        },
+        "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw": {
+          "kind": "parts-catalog",
+          "establishes": "Genuine BMW Engine Beauty Cover (ignition coil covering) 11127575032 listed for E90 with N52/N52N engines."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11283613": {
+          "kind": "third-party-guide",
+          "establishes": "E90 (2006 330i) thread: the plastic engine cover pops up, held by plugs, snapping onto the valve cover with rubber grommets."
+        }
+      },
+      "gapFillNotes": [
+        "The input claims no source places an engine cover on the N52. That is wrong: RealOEM (328i) lists an ignition coil covering 11127575032 and Turner lists the engine beauty cover for E90 N52. The N52 DOES have a plastic engine cover over the ignition coils/valve cover; it can be drawn (plain black plastic cover on top of the engine). It is not visible in an underside view anyway.",
+        "hatch-fasteners: sources conflict (three screws vs coin-operated); also bmwtuning.co mentions a plastic drain-plug cover turned 180 degrees by finger/screwdriver. Keep the hatch plain with no visible fastener type.",
+        "RealOEM oil-pan diagram lists the screw plug as M12x1.5 with a 12x17 copper ring, while bimmerpost says 17 mm head, consistent with a 17 mm wrench size on an M12 plug."
+      ]
+    },
+    {
+      "id": "oil-filter-cap",
+      "title": "The oil filter housing cap on the engine",
+      "evidenceSteps": [
+        3,
+        6,
+        8
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "filter-cap",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The oil filter housing cap on top of the 3.0L inline-6, drawn as a plain round cap."
+        },
+        {
+          "id": "engine-mass",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The engine as a plain simplified mass around the cap."
+        },
+        {
+          "id": "engine-cover",
+          "role": "context",
+          "criticality": "cosmetic",
+          "describe": "The plastic engine (ignition coil) cover; RealOEM and Turner list one for the E90 N52, but its exact shape and fit are not established."
+        }
+      ],
+      "facts": [
+        {
+          "element": "filter-cap",
+          "attribute": "existence",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+            "https://www.ecstuning.com/BMW-E90-330xi-N52_3.0L/News/23",
+            "https://www.1addicts.com/forums/showthread.php?p=6151834"
+          ]
+        },
+        {
+          "element": "filter-cap",
+          "attribute": "location",
+          "urls": [
+            "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+            "https://www.1addicts.com/forums/showthread.php?p=6151834",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ],
+          "note": "FCP Euro: filter housing is at the front of the engine, below the intake manifold; 1addicts (N52): filter is on top of the engine; team-bhp (E90): filter housing reached from the top with the bonnet open. Which side (driver/passenger) is NOT stated by any source."
+        },
+        {
+          "element": "engine-mass",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/partgrp?id=PH73-USA-09-2009-E90N-BMW-328i&mg=11&sg="
+          ],
+          "note": "RealOEM engine group for the 2009 E90 LCI 328i lists SHORT ENGINE, ENGINE BLOCK, CYLINDER HEAD, CYLINDER HEAD COVER diagrams."
+        },
+        {
+          "element": "engine-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
+            "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=11283613"
+          ],
+          "note": "Corrected: an ignition-coil cover (beauty cover) exists on the N52 per RealOEM (11127575032) and Turner; its shape is not established, so it stays out of the picture."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "engine-cover",
+          "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture."
+        }
+      ],
+      "sources": {
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90": {
+          "kind": "third-party-guide",
+          "establishes": "Filter cap sits on the housing in the engine bay and comes off with an oil-filter cap socket (article does not name N52)."
+        },
+        "https://www.ecstuning.com/BMW-E90-330xi-N52_3.0L/News/23": {
+          "kind": "third-party-guide",
+          "establishes": "E90 N52 uses a cartridge-style filter housing removed with a 26mm hex cap socket."
+        },
+        "https://www.1addicts.com/forums/showthread.php?p=6151834": {
+          "kind": "third-party-guide",
+          "establishes": "N52 DIY: remove the oil filter housing cap with a cap wrench, drop in new cartridge with two O-rings, refit until marks align."
+        },
+        "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html": {
+          "kind": "third-party-guide",
+          "establishes": "E90 DIY: open the bonnet, undo the oil cap, loosen the oil filter housing from the top; under-car hatch is only for the drain bolt, opened with a coin, just behind the front-centre jack point."
+        },
+        "https://www.realoem.com/bmw/enUS/partgrp?id=PH73-USA-09-2009-E90N-BMW-328i&mg=11&sg=": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM engine group list for the 2009 E90 LCI 328i (short engine, cylinder head, cylinder head cover, oil filter diagram 11_3867, oil pan)."
+        },
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737": {
+          "kind": "parts-catalog",
+          "establishes": "RealOEM 328i cylinder head cover diagram: valve cover, ignition coil covering 11127575032, oil filler cap."
+        },
+        "https://www.turnermotorsport.com/c-1215-bmw-engine-beauty-covers/m-151-genuine-bmw": {
+          "kind": "parts-catalog",
+          "establishes": "Genuine BMW Engine Beauty Cover (ignition coil covering) 11127575032 listed for E90 with N52/N52N engines."
+        },
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11283613": {
+          "kind": "third-party-guide",
+          "establishes": "E90 (2006 330i) thread: the plastic engine cover pops up, held by plugs, snapping onto the valve cover with rubber grommets."
+        }
+      },
+      "gapFillNotes": [
+        "The input says no source places an engine cover on the N52; RealOEM and Turner show one exists (ignition coil covering / engine beauty cover). Treat the earlier 'must not be drawn' note as wrong, though the cover must be shown removed or omitted around the filter cap if it would hide it.",
+        "filter-cap location: top/front of engine is supported, but driver vs passenger side is still unestablished; draw the cap generically near the front of the engine top.",
+        "bmwtuning.co (viewed) says the oil filler cap sits on top of the engine cover; this is not reflected in RealOEM, which lists the oil filler cap on the cylinder head cover diagram, so the filler-cap mounting is uncertain."
+      ]
+    }
   ]
 }

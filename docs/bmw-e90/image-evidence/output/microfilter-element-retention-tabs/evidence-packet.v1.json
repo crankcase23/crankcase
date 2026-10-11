@@ -1,0 +1,206 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Release and remove the old filter",
+      "Install the new filter"
+    ],
+    "stepNumber": 5,
+    "title": "microfilter-element-retention-tabs (BMW 328i draft Cabin Air Filter guide; evidence step 5, 6)"
+  },
+  "contentHash": "772055fb00bf6f9905b6eb3596226b2be4e2185bc7f86263951c2526894c1d90",
+  "createdAt": "2026-10-10T12:02:42.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "identification",
+      "describe": "A flat pleated filter element with a charcoal layer, sitting in its plastic frame or the lifted cover.",
+      "id": "microfilter-element",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Small plastic tabs on the frame that are pressed to free the element; three are reported.",
+      "id": "element-retention-tabs",
+      "role": "target"
+    },
+    {
+      "criticality": "cosmetic",
+      "describe": "Arrow marks printed on the filter edge indicating airflow; direction is unknown for this car.",
+      "id": "airflow-direction-arrows",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of element retention tabs: Tab locations on the frame, count beyond the single-source three, and how they bend are not established.",
+      "id": "element-retention-tabs-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-microfilter-element-retention-tabs-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "element-retention-tabs",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "release-mechanism-geometry",
+      "element": "element-retention-tabs",
+      "note": "Single source: three tabs are depressed; geometry and placement not described.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "microfilter-element",
+      "evidence": [
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "orientation",
+      "element": "airflow-direction-arrows",
+      "note": "No E90 source found. A forum quotes BMW TIS for a 2020 M550i: arrows point in the airflow direction; not applicable to this car.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "microfilter-element",
+      "evidence": [
+        "ref-2",
+        "ref-5",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "element-retention-tabs",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "airflow-direction-arrows",
+      "note": "excluded by the visual's mustNotDepict",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "element-retention-tabs-unestablished-detail",
+      "note": "Tab locations on the frame, count beyond the single-source three, and how they bend are not established.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "airflow-direction-arrows",
+      "id": "excl-airflow-direction-arrows",
+      "reason": "Direction on the E90 filter is not established; do not draw arrows pointing a specific way.",
+      "trace": {
+        "attribute": "existence",
+        "element": "airflow-direction-arrows"
+      }
+    },
+    {
+      "element": "element-retention-tabs-unestablished-detail",
+      "id": "excl-element-retention-tabs-unestablished-detail",
+      "reason": "Tab locations on the frame, count beyond the single-source three, and how they bend are not established.",
+      "trace": {
+        "attribute": "existence",
+        "element": "element-retention-tabs-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Three retention tabs depressed to release the filter; new filter pressed into place."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bavmods.com",
+      "sourceRef": "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Lift cover and unclip the old filter; insert new one and check it sits correctly."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Genuine BMW activated carbon filter 64319313519, E90 328i N52."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "turnermotorsport.com",
+      "sourceRef": "https://www.turnermotorsport.com/p-183846-genuine-bmw-microfilteractivated-carbon",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Activated charcoal microfilter 64319313519 for 2006-2011 E90 sedan; multilayer filter material."
+      ],
+      "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "bimmerworld.com",
+      "sourceRef": "https://www.bimmerworld.com/Engine/Engine-Maintenance/BMW-Microfilter-Activated-Carbon-64319313519.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2006 330i: cabin air filter cover at back of engine compartment near the windshield; filter sits inside the plastic cover; six 8 mm screws."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=13127589",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "microfilter-element-retention-tabs"
+}

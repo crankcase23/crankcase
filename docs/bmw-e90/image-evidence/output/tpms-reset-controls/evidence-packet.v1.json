@@ -1,0 +1,197 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Reset the tire pressure monitor"
+    ],
+    "stepNumber": 7,
+    "title": "tpms-reset-controls (BMW 328i draft Tire Rotation guide; evidence step 7)"
+  },
+  "contentHash": "02a14a2eec579471ce604fd0b7be705cf70fa873dffadca72df7f207176d12ae",
+  "createdAt": "2026-10-10T12:03:24.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "procedure",
+      "describe": "The end button of the turn-signal stalk, used to scroll to TPMS RESET and hold for about 5 seconds.",
+      "id": "turn-signal-stalk-button",
+      "role": "hero"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "An on-screen menu (Vehicle Info > Vehicle Status, or Settings > TPM) with a RESET TPM item.",
+      "id": "idrive-reset-tpm-menu",
+      "role": "target"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of idrive reset tpm menu: Exact on-screen layout and menu wording are not consistent across sources.",
+      "id": "idrive-reset-tpm-menu-unestablished-detail",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "describe": "Unestablished detail of turn signal stalk button: Stalk shape and button position are not described.",
+      "id": "turn-signal-stalk-button-unestablished-detail",
+      "role": "context"
+    }
+  ],
+  "id": "EP-tpms-reset-controls-v1",
+  "ledger": [
+    {
+      "attribute": "action",
+      "element": "turn-signal-stalk-button",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "action",
+      "element": "idrive-reset-tpm-menu",
+      "evidence": [
+        "ref-1",
+        "ref-2"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "turn-signal-stalk-button",
+      "evidence": [
+        "ref-3",
+        "ref-1"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "idrive-reset-tpm-menu",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-1"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "idrive-reset-tpm-menu",
+      "evidence": [
+        "ref-2",
+        "ref-3",
+        "ref-1"
+      ],
+      "note": "3 independent host(s)",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "existence",
+      "element": "idrive-reset-tpm-menu-unestablished-detail",
+      "note": "Exact on-screen layout and menu wording are not consistent across sources.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "turn-signal-stalk-button-unestablished-detail",
+      "note": "Stalk shape and button position are not described.",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "idrive-reset-tpm-menu-unestablished-detail",
+      "id": "excl-idrive-reset-tpm-menu-unestablished-detail",
+      "reason": "Exact on-screen layout and menu wording are not consistent across sources.",
+      "trace": {
+        "attribute": "existence",
+        "element": "idrive-reset-tpm-menu-unestablished-detail"
+      }
+    },
+    {
+      "element": "turn-signal-stalk-button-unestablished-detail",
+      "id": "excl-turn-signal-stalk-button-unestablished-detail",
+      "reason": "Stalk shape and button position are not described.",
+      "trace": {
+        "attribute": "existence",
+        "element": "turn-signal-stalk-button-unestablished-detail"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "TPM and FTM reset steps with and without iDrive (Mitchell excerpt, 2009-13 E90)."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "moderntiredealer.com",
+      "sourceRef": "https://www.moderntiredealer.com/articles/11204-tpms-determine-the-system-on-a-bmw-3-series-e-90",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2009-11 3-series stalk reset (hold ~5 s, drive 15 min); iDrive Vehicle Status RESET TPM."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tomorrowstechnician.com",
+      "sourceRef": "https://www.tomorrowstechnician.com/bmw-tpms-system-breakdown/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2009-2011 3-Series: scroll stalk switch to TPMS RESET, press end-of-stalk button, hold ~5 s; iDrive path Vehicle Info > Vehicle Status > RESET TPM."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "import-car.com",
+      "sourceRef": "https://www.import-car.com/tpms-update-bmw-systems/",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited sources only; each established fact meets the documented evidence rule.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "tpms-reset-controls"
+}

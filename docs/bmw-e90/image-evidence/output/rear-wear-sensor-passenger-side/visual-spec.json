@@ -1,0 +1,54 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Rear pad wear sensor on the passenger rear only, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Passenger side only: free the wear sensor\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: A wear-sensor wire clipped into the inner pad of the passenger-side rear caliper."
+    },
+    {
+      "rank": 2,
+      "text": "The sensor plug in a black box behind the wheel-arch cover, reached after removing its 10 mm fasteners. Do NOT depict the shape of its release mechanism: keep it a plain generic shape."
+    }
+  ],
+  "maySimplify": [
+    "a plain dark ground plane"
+  ],
+  "mustNotShow": [
+    "sensor connector behind arch cover detail (Plug shape and cover outline are not established)",
+    "rear pad wear sensor wire detail (Driver-side rear has no sensor)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "ce573bfee1af3ec836ebe22350619f82b1065b40ed1811f13bf1791b106c7d19"
+}

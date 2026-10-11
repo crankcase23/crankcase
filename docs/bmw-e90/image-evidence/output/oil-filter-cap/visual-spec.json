@@ -1,0 +1,50 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "The oil filter housing cap on the engine, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the engine-bay caps\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The oil filter housing cap on top of the 3.0L inline-6, drawn as a plain round cap."
+    }
+  ],
+  "maySimplify": [
+    "engine mass",
+    "engine cover"
+  ],
+  "mustNotShow": [
+    "engine cover detail (An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "7ed52ee1bd6024a79e1d296a93e03443f8622b1d4862d6e560265b5a86be805a"
+}

@@ -1,0 +1,19 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Wheel bolts, locking bolt and the metal TPMS valve stem, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Move the wheels".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Front three-quarter view of the front end of the car, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: Five hex-head wheel bolts per wheel on a 5-lug circle, tightened in a crisscross order. Do NOT depict where its fasteners sit: keep it a plain generic shape.
+2. A metal tire valve stem, which indicates a direct TPMS sensor inside the tire.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): locking wheel bolt. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): locking wheel bolt detail (Not confirmed as fitted; key pattern shape not established), wheel bolt fasteners detail (Wheel spoke design and finish are unknown for this car), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.
