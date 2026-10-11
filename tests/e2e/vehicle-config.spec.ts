@@ -1,3 +1,4 @@
+import { getRepairsForVehicle } from "../../src/data/repairs";
 import { test, expect, Page, BrowserContext } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -87,6 +88,7 @@ test.describe("1-3. VIN Lookup -> Confirm Your Ride -> Add to Garage", () => {
     // a BMW 328i is only offered builds it came in
     expect(await labelsIn(page, "Transmission")).toEqual(["Automatic", "Manual", "Not sure"]);
     expect(await labelsIn(page, "Drivetrain")).toEqual(["Standard RWD", "xDrive AWD", "Not sure"]);
+    await expect(page.getByTestId("config-generic-note")).toHaveCount(0); // the BMW list is ours, so no "general options" caveat
 
     await pick(page, "Drivetrain", "Standard RWD");
     await expect(page.getByRole("button", { name: "Confirm Automatic · Standard RWD and add to garage" })).toBeEnabled();
@@ -332,6 +334,7 @@ test.describe("15. Other vehicles are unaffected", () => {
     await expect(page.getByTestId("confirm-your-ride")).toBeVisible();
     const drive = await labelsIn(page, "Drivetrain");
     expect(drive).toEqual(["2WD", "4WD", "Not sure"]);
+    await expect(page.getByTestId("config-generic-note")).toContainText("not a list verified for this model");
     await shot(page, "13-confirm-your-ride-jeep");
     await pick(page, "Transmission", "Automatic");
     await pick(page, "Drivetrain", "4WD");
@@ -356,6 +359,7 @@ test.describe("15. Other vehicles are unaffected", () => {
     await page.getByRole("button", { name: "+ Add to garage" }).click();
     await expect(page.getByTestId("confirm-your-ride")).toBeVisible();
     expect(await labelsIn(page, "Drivetrain")).toEqual(["FWD", "RWD", "AWD", "4WD", "Not sure"]);
+    await expect(page.getByTestId("config-generic-note")).toBeVisible();
     await expect(page.getByRole("radiogroup", { name: "Drivetrain" }).getByRole("radio", { name: "4WD" })).toBeChecked();
     await expect(page.getByRole("radiogroup", { name: "Transmission" }).getByRole("radio", { name: "Automatic" })).toBeChecked();
     await expect(page.getByRole("button", { name: "Confirm Automatic · 4WD and add to garage" })).toBeEnabled(); // preselected, still needs the click
@@ -416,6 +420,7 @@ test.describe("16. All 16 BMW categories open for every configuration", () => {
   const JOBS = ["front-brake-pads", "fuse-bulb", "key-fob-battery", "o2-sensor", "rear-brake-pads", "serpentine-belt", "battery", "coolant", "fluid-checks", "cabin-air-filter", "pcv-valve", "engine-air-filter", "tire-rotation", "wiper-blades", "differential-fluid", "oil-change"];
   for (const [name, t, d] of [["Automatic + RWD", "Automatic", "Standard RWD"], ["Not sure", "Not sure", "Not sure"]] as const) {
     test(`${name}: the vehicle page lists 16 categories and every guide opens`, async ({ page }) => {
+      test.setTimeout(150_000);
       await addBmw(page, t, d);
       await page.goto(`/vehicles/${BMW}`);
       const links = await page.locator(`a[href^="/vehicles/${BMW}/repairs/bmw-2010-328i-"]`).evaluateAll((els) => [...new Set(els.map((e) => (e as HTMLAnchorElement).getAttribute("href")))]);
@@ -424,6 +429,12 @@ test.describe("16. All 16 BMW categories open for every configuration", () => {
         const res = await page.goto(href);
         expect(res?.status(), href).toBe(200);
         await expect(page.getByRole("heading").first()).toBeVisible();
+        await expect(page.getByTestId("config-unavailable"), href).toHaveCount(0);
+        // safety-critical restrictions survive any configuration: a guide that has blocked steps still says so
+        const slug = href.split("/").pop()!;
+        const g = getRepairsForVehicle(BMW).find((x) => x.id === slug)!;
+        if (g.steps.some((x) => x.title.startsWith("⛔ BLOCKED — "))) expect(await page.locator("body").innerText(), href).toContain("BLOCKED");
+        if (name === "Automatic + RWD") await expect(page.getByTestId("config-needs-confirmation"), href).toHaveCount(0);
       }
       expect(JOBS.length).toBe(16);
     });

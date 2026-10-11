@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import type { ConfigAxis } from "@/types/vehicle";
-import { choiceLabel, UNKNOWN, type AxisChoice, type ConfigOptions } from "@/lib/vehicleConfig";
+import { choiceLabel, optionsAreModelVerified, UNKNOWN, type AxisChoice, type ConfigOptions } from "@/lib/vehicleConfig";
 
 // The two radio groups (transmission, drivetrain) shared by Confirm Your Ride (add flow) and Edit Configuration.
 // Presentation only: it offers exactly the options it is given (never an impossible one, see configOptionsFor) plus
@@ -34,7 +34,9 @@ export default function ConfigChoices({
   disabled?: boolean;
 }) {
   const uid = useId();
+  const verified = optionsAreModelVerified(options);
   return (
+    <>
     <div className="grid gap-4 sm:grid-cols-2">
       {(["transmission", "drivetrain"] as const).map((axis) => {
         const list = [...options[axis].options, UNKNOWN] as AxisChoice[];
@@ -82,5 +84,12 @@ export default function ConfigChoices({
         );
       })}
     </div>
+    {verified ? null : (
+      <p className="mt-3 text-xs text-slate-500" data-testid="config-generic-note">
+        These are general options, not a list verified for this model, and your choice is saved exactly as you give it. Pick what
+        your vehicle actually has. If you are not sure, choose Not sure and we will not assume.
+      </p>
+    )}
+    </>
   );
 }

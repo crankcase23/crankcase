@@ -93,9 +93,6 @@ export default function ConfirmYourRide({
         These two choices decide which steps, parts, fluids and torque figures Crankcase shows for your vehicle. Pick what your
         vehicle actually has. If you are not sure, say so and we will not guess.
       </p>
-      {options.transmission.source === "generic" || options.drivetrain.source === "generic" ? (
-        <p className="mt-2 text-xs text-slate-500">We do not have a model-specific list for this vehicle, so choose the one that matches yours.</p>
-      ) : null}
 
       <div className="mt-4">
         <ConfigChoices make={mk} options={options} value={value} onChange={(axis, v) => setValue((s) => ({ ...s, [axis]: v }))} basis={basis} disabled={busy} />

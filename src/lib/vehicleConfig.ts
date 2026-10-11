@@ -208,6 +208,15 @@ function build<T extends TransmissionKind | DrivetrainKind>(
   };
 }
 
+/**
+ * True only when BOTH axes come from our own per-model list. Everything else (a generic family, or one a VIN/catalog entry
+ * named) is a general option list: it is never presented as a combination the manufacturer built for this model, and it
+ * never certifies anything. Today only the BMW 328i has a model list.
+ */
+export function optionsAreModelVerified(options: ConfigOptions): boolean {
+  return options.transmission.source === "model" && options.drivetrain.source === "model";
+}
+
 export function configOptionsFor(input: ConfigOptionsInput): ConfigOptions {
   return { transmission: build<TransmissionKind>("transmission", input), drivetrain: build<DrivetrainKind>("drivetrain", input) };
 }

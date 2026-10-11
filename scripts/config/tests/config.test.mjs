@@ -354,3 +354,42 @@ test("migration is additive, idempotent and reversible: no data is dropped, rewr
   assert.ok(/DROP\s+(COLUMN|INDEX|CONSTRAINT)|DROP INDEX/i.test(code(down)));
   assert.ok(!/DROP\s+TABLE|DELETE\s+FROM|TRUNCATE/i.test(code(down)), "rollback never drops a table or rows");
 });
+
+// ----------------------------------------------------------------------------- generic options are not "verified"
+test("only a model list counts as verified: every other vehicle's options are general, and the screen says so", () => {
+  for (const v of data.listVehicles()) {
+    const o = vc.configOptionsFor({ make: v.make, vehicle: v });
+    assert.equal(vc.optionsAreModelVerified(o), v.id === BMW, `${v.id}: only the BMW 328i has a verified model list`);
+  }
+  // a VIN or catalog wording that names a build preselects it but does not make the list verified
+  const civic = data.findVehicle("2018-honda-civic-1.5t");
+  const o = vc.configOptionsFor({ make: "Honda", vehicle: civic, decoded: { driveType: "FWD/Front-Wheel Drive", transmissionStyle: "Continuously Variable Transmission (CVT)" } });
+  assert.equal(vc.optionsAreModelVerified(o), false);
+  const src = fs.readFileSync(path.join(ROOT, "src/components/config/ConfigChoices.tsx"), "utf8");
+  assert.ok(/optionsAreModelVerified/.test(src) && /config-generic-note/.test(src) && /not a list verified for this model/.test(src));
+});
+
+test("generic options never invent builds: no CVT/DCT unless a VIN or the catalog named one; the BMW list is exactly its two builds", () => {
+  for (const v of data.listVehicles()) {
+    if (v.id === BMW) continue;
+    const o = vc.configOptionsFor({ make: v.make, vehicle: v });
+    const named = vc.parseTransmission(v.transmission);
+    for (const t of o.transmission.options) assert.ok(["automatic", "manual"].includes(t) || t === named, `${v.id} offers ${t} with nothing naming it`);
+  }
+  assert.deepEqual(vc.configOptionsFor({ make: "BMW", vehicle: bmw }).drivetrain.options, ["rwd", "awd"]);
+});
+
+test("a saved choice on a vehicle with no model list never changes, certifies or hides anything in its guides; the BMW still restricts on Not sure", () => {
+  for (const v of data.listVehicles()) {
+    if (v.id === BMW) continue;
+    for (const g of catalog.getRepairsForVehicle(v.id)) {
+      for (const c of [cfg("automatic", "awd"), cfg("manual", "fwd"), UNSURE]) {
+        const r = gc.resolveGuideForConfig(g, c, v.make);
+        assert.equal(r.configResolution?.status ?? "none", "none", `${v.id}/${g.id}`);
+        assert.equal(r.steps.length, g.steps.length, `${v.id}/${g.id}`);
+      }
+    }
+  }
+  const oil = bmwGuides.find((g) => g.id === "bmw-2010-328i-oil-change");
+  assert.notEqual(resolve(oil, UNSURE).configResolution.status, "none");
+});
