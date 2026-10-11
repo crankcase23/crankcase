@@ -3977,6 +3977,97 @@ spec: "All-season washer fluid",
         notes: "The 62TE is a Chrysler-built FWD transaxle (shared with the Town & Country/Grand Caravan/Avenger/200 family), a different unit entirely from the ZF-sourced 8-speeds in this catalog's newer Pentastar entries -- takes the older Mopar ATF+4 fluid, not ZF's own. A pan service only replaces what drains out, not the full dry-fill amount.",
       },
     ],
+  },
+  {
+    // SKELETON ENTRY (2026-10-09) -- identity and a few cross-checked reference figures only.
+    // No `keys` on purpose: no shared guide may bind to this vehicle until engine code,
+    // drivetrain and transmission are confirmed. No guides exist for it yet, by design.
+    // Evidence ledger: claude/bmw-e90-328i-evidence-ledger-2026-10-09.md (project docs).
+    // VIN WBAPH7C58AA175760 decodes clean on NHTSA vPIC (valid check digit): 2010 BMW 328i,
+    // sedan, 3.0L 6-cyl gasoline, ~230 hp, Munich. vPIC returns NO drive type, transmission or
+    // engine code. Everything below is secondary-source only (no BMW owner's manual or TIS
+    // text was reachable), so every figure is a reference value to confirm on the car.
+    id: "2010-bmw-328i-3.0l",
+    year: 2010,
+    make: "BMW",
+    model: "328i",
+    trim: "Sedan (E90)",
+    engine: "3.0L naturally aspirated inline-6 (engine code not confirmed -- see specs)",
+    drivetrain: "Not confirmed (parts-catalog evidence points to rear-wheel drive; xDrive not ruled out)",
+    transmission: "Not confirmed (6-speed manual and automatic both exist on this model)",
+    specs: [
+      {
+        label: "Engine",
+        value:
+          "3.0L naturally aspirated inline-6, gasoline, ~230 hp (NHTSA VIN decode). The VIN does not say which engine code: US 328i cars are normally the N52, but a SULEV-emissions variant (N51) was sold in some states. Check the emissions label under the hood before buying engine parts.",
+      },
+      {
+        label: "Drivetrain",
+        value:
+          "Not confirmed from the VIN. A parts-catalog lookup for this VIN shows a rear differential and no front differential or transfer case, which points to rear-wheel drive, but that is an inference. A trunk-lid 'xDrive' badge or a front driveshaft under the car would mean otherwise.",
+      },
+      {
+        label: "Transmission",
+        value:
+          "Not confirmed from the VIN. Look at the pedals and shifter: a clutch pedal means the 6-speed manual, otherwise it is an automatic.",
+      },
+      {
+        label: "Battery",
+        value:
+          "Located in the trunk behind the right-side cover. Group size and amp-hour rating are NOT confirmed (sources disagree) -- read the label on the battery you are replacing. BMW battery registration with a BMW-capable scan tool is expected after a replacement; a generic OBD-II reader cannot do it.",
+      },
+      {
+        label: "Wheel lug bolt torque",
+        value:
+          "120 Nm (~89 ft-lb), M12x1.5 lug BOLTS (17 mm hex), not nuts -- curated from agreeing secondary sources, not a BMW document. Confirm against your owner's manual.",
+      },
+      {
+        label: "Tire size",
+        value:
+          "Not confirmed. 16-inch and 17-inch packages exist; the 17-inch Sport Package is a staggered setup (225/45R17 front, 255/40R17 rear). Read the size off your tire sidewalls and door-jamb placard.",
+      },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "~6.9 qt (6.5 L) with filter change",
+        spec: "5W-30 synthetic, BMW Longlife-01 approved (approval and viscosity not confirmed against the owner's manual)",
+        notes:
+          "There is no dipstick: the level is read on the dash display (ignition on, engine off, via the turn-signal stalk button). The filter is a cartridge inside a cap on top of the engine, not a spin-on. Filter cap and drain plug are both reported at 25 Nm (18 ft-lb) and the drain plug takes a new copper washer every time. One source says cars with an oil cooler hold more -- check whether yours has one. Reference figure only; confirm against your owner's manual before buying oil.",
+      },
+      {
+        name: "Engine Coolant",
+        capacity: "Not confirmed -- sources disagree (roughly 8.1-8.4 L / 8.6-8.9 qt)",
+        spec: "BMW blue coolant, 50/50 with distilled water",
+        notes:
+          "The water pump is electric and the system must be bled using the accelerator-pedal procedure after refilling. Do not buy a single capacity figure from this line; read the Capacities page of your owner's manual.",
+      },
+      {
+        name: "Rear Axle Fluid (rear-wheel-drive cars only)",
+        capacity: "Not confirmed -- sources disagree (roughly 1.0-1.2 L)",
+        spec: "BMW synthetic final-drive oil (SAF-XO, 75W-90 GL-5) for an open differential",
+        notes:
+          "Applies only if the car is confirmed rear-wheel drive with an open differential. One plug is both drain and fill (14 mm hex, ~60 Nm / 44 ft-lb); fill to the bottom edge of the hole.",
+      },
+      {
+        name: "Brake Fluid",
+        capacity: "Fill to MAX line in reservoir",
+        spec: "DOT 4 (low-viscosity DOT 4 is what BMW suppliers sell for this car -- confirm on the reservoir cap)",
+      },
+      {
+        name: "Power Steering Fluid",
+        capacity: "Not confirmed",
+        spec: "Fluid type not confirmed",
+        notes:
+          "This car has hydraulic power steering (not electric), so there is a reservoir and a pump. Read the fluid type off the reservoir cap or owner's manual.",
+      },
+      {
+        name: "Windshield Washer Fluid",
+        capacity: "~6.3 qt (6.0 L) reservoir, includes the headlamp washers",
+        spec: "All-season washer fluid",
+        notes: "Filler is on the passenger side near the strut tower. Single-source figure.",
+      },
+    ],
   }
 ];
 
