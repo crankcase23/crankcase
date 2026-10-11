@@ -340,7 +340,7 @@ function ts() {
 
 // ---- CUSTOMER output: the same guides, shaped for the public catalog (src/data/repairs.ts spreads this in).
 // Differences from the admin drafts, and ONLY these: public ids, no "(DRAFT)" title, an "incomplete guide" summary lead, a
-// leading safety warning (plus a blocked-steps warning), all free while incomplete (house convention is oil change free, rest premium; not applied to unverified guides), and the
+// leading safety warning (plus a blocked-steps warning), house tier convention (oil change free, rest premium) kept so the Get the Keys model still fits, plus preview + wrenchMode flags: preview means readable by everyone, never gated or sold until certified, and the
 // owner's own VIN removed from the text (other customers will read it). Steps, torque rows and blocked steps are byte-identical
 // to the drafts: nothing is loosened for the public.
 const OWN_ID = /WBAPH7C58AA175760|A175760/;
@@ -363,7 +363,7 @@ function customerGuide(g) {
     id: `bmw-2010-328i-${g.slug}`,
     title: g.title.replace(" (DRAFT)", ""),
     summary: soft(g.summary.replace(/^Draft for owner testing: not published and not certified\./, CUSTOMER_LEAD)),
-    tier: "free", // incomplete guides must never sit behind a purchase; flip per guide once a guide is certified
+    tier: g.job === "oil-change" ? "free" : "premium", // the tier it will have once certified (Get the Keys model); `preview: true` below is what keeps it unsold meanwhile
     safety: safety.map(soft),
     tools: g.tools.map((t) => ({ ...t, name: soft(t.name) })),
     parts: g.parts.map(soft),
@@ -397,6 +397,8 @@ function customerTs() {
     L.push(`    difficulty: ${q(g.difficulty)},`);
     L.push(`    estTime: ${q(g.estTime)},`);
     L.push(`    tier: ${q(g.tier)},`);
+    L.push("    preview: true,");
+    L.push("    wrenchMode: true,");
     if (g.noFasteners) L.push("    noFasteners: true,");
     L.push("    tools: [" + g.tools.map((t) => `{ name: ${q(t.name)}${t.note ? `, note: ${q(t.note)}` : ""} }`).join(", ") + "],");
     L.push("    parts: [" + g.parts.map(q).join(", ") + "],");

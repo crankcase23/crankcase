@@ -6,8 +6,8 @@ Date: 2026-10-11. Branch `claude/bmw-guide-build`, PR #38. **Nothing is merged, 
 
 - The 2010 BMW 328i vehicle page lists all 16 guide categories, and each opens its own guide page at `/vehicles/2010-bmw-328i-3.0l/repairs/bmw-2010-328i-<job>`.
 - Every guide opens with a plain "Incomplete guide: not yet verified against BMW service data" summary and a first safety warning saying the same. Guides with blocked steps add "N step(s) are BLOCKED in this guide".
-- All 16 are marked free. The house convention would make 15 of them premium, but unverified guides should not sit behind a purchase once payments are switched on. Flip per guide when it is certified.
-- Customers see the full guide (tools, parts, torque table, steps, warnings). Wrench Mode is **not** on customer guide pages for any vehicle today; it exists on the admin route only. Adding it is a platform change for every vehicle and is not part of this package.
+- **Entitlement:** tiers follow the Get the Keys model (oil change free, the other 15 premium: $20 first vehicle, $18 second, $16 third, $15 fourth and up, presentation-only today), but every BMW guide also carries `preview: true`. Preview means readable by everyone, never gated, never sold, never counted as paid content, and badged "Preview" instead of "Keys". Anything that grants or charges for premium must go through `isSellable()` (`src/lib/guideAccess.ts`), which is false for a preview. To certify a guide: clear its `preview` flag (generator), after the evidence, mechanic review and payment readiness. There is no unlock backend yet, so nothing can charge anyone today.
+- **Customer Wrench Mode:** BMW guides now open in the existing Overall Guide + Wrench Mode component (`GuideWithWrenchMode`) via a thin client wrapper, `GuideWithServiceSave`, which supplies the Service History save (the same POST the garage UI uses). It is opt-in per guide (`wrenchMode: true`), so every other vehicle's guide page is unchanged.
 
 ## What stays restricted (identical to the admin drafts, enforced by tests)
 
@@ -22,8 +22,8 @@ Date: 2026-10-11. Branch `claude/bmw-guide-build`, PR #38. **Nothing is merged, 
 
 ## Validation receipts
 
-- `bmw:test` 60/60, including `customer.test.mjs` (access, parity with drafts, blocked steps, no unverified numbers, incomplete labelling, VIN privacy, no REQUIRED validator gap, other vehicles untouched).
-- Real routes against a production build and a throwaway local database, a normal signed-up customer: 37/37 customer routes (vehicle page lists 16, every guide page at desktop and phone, every step present in order with warnings, blocked steps stay blocked, 404s, admin route still refuses customers, Jeep page unchanged). Admin routes 37/37.
+- `bmw:test` 62/62, including `customer.test.mjs` (access, parity with drafts, blocked steps, no unverified numbers, incomplete labelling, VIN privacy, no REQUIRED validator gap, entitlement/preview rules, other vehicles untouched).
+- Real routes against a production build and a throwaway local database, a normal signed-up customer: 39/39 customer routes. For each of the 16 guides at desktop and phone: page loads, Preview banner and incomplete summary, no paid-unlock wording, Wrench Mode walks every step with correct progress, blocked steps show BLOCKED, the completion sheet **really saves** a Service History entry (verified through the API), Overall Guide / resume / exit recovery. Plus: vehicle page lists 16 with "Preview" badges (no "Keys"), existing premium Jeep guide keeps its paid-unlock banner and gets no Wrench Mode button, signed-out visitors are treated the same on BMW and other guides, 404s, admin route still refuses customers. Admin routes 37/37.
 - Existing e2e: vehicle-home and marketing pass; 3 `garage.spec.ts` tests fail on stale selectors in `/garage/add` (unrelated, untouched code; the test last changed Oct 4, the page Sep 19).
 
 ## Deployment plan
@@ -33,8 +33,12 @@ Date: 2026-10-11. Branch `claude/bmw-guide-build`, PR #38. **Nothing is merged, 
 3. On that message: merge through the GitHub API (never a push), watch the Vercel production deployment, then smoke-check `/vehicles/2010-bmw-328i-3.0l`, one guide page, and a blocked-step guide on the live site.
 4. Rollback: revert PR (new branch, new PR); or remove the one spread line in `repairs.ts`.
 
-## Not done, and why
+## Evidence notes (no new research this pass)
 
-- The Oracle (Perplexity) report was not attached to this session, so none of its claims could be imported. Nothing from it changed a specification.
-- Idler vs alternator pulley: the claim that 40 and 80 Nm are different components is **not supported** by the cited primary pages (FCP names 40 Nm as the idler bolt; Pelican's 80 Nm is a staff reply about an idler). Idler stays conflicted and blocked. Recorded in the guide 6 ledger.
-- Coolant bleeding and fuse-panel BMW documentation: not in hand. The guides keep the existing wording (accelerator-method bleed from two agreeing sources; owner's manual describes the glove-box fuse box only, engine-bay boxes blocked).
+- Idler pulley: FCP supports 40 Nm for the N52 idler mounting bolt (verified from the page). A report says an indexed BMW 80 Nm entry concerns an alternator freewheel pulley; that document was not supplied to me and I could not inspect it, so nothing changed. Bentley's correction body is still unread. The idler torque stays unresolved and the replacement step stays **blocked**.
+- Electric coolant-pump bleeding sequence and the glove-box fuse panel: both were already in the ledgers as VERIFIED from BMW primary text (owner's-manual copy, BMW training documents) and are already in the guides (guide 8 "Run the automatic venting routine"; guide 2 "Open the glove-box fuse panel"). No further import was possible without the report's citations. The engine-bay fuse boxes remain blocked: the manual describes only the glove-box box.
+
+## Still not done
+
+- Wrench Mode customer completion is tested against the catalog vehicle with a signed-in user; a signed-out save fails and the sheet says so without ending the job.
+- The 3 failing `garage.spec.ts` tests (stale selectors in `/garage/add`) were not touched.

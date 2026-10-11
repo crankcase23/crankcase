@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { Pool } from "pg";
 import { bmwDraftGuides } from "../../src/data/admin-test-guides/bmw-2010-328i-drafts";
+import { getRepairsForVehicle } from "../../src/data/repairs";
 
 // REAL-ROUTE test for the 16 BMW draft guides: /admin/guides/test/<slug>, signed in through the normal login form.
 //
@@ -202,36 +203,68 @@ for (const vp of [
     });
 
     for (const { slug, guide } of bmwDraftGuides) {
-      test(`${slug}: customer page, incomplete labelling, every step, restricted steps`, async ({ page }) => {
-        test.setTimeout(120_000);
+      test(`${slug}: customer page, preview labelling, Wrench Mode, restricted steps, completion, recovery`, async ({ page }) => {
+        test.setTimeout(150_000);
         await signUpNew(page);
         const errors: string[] = [];
         page.on("pageerror", (e) => errors.push(e.message));
         const res = await page.goto(`/vehicles/${CAR}/repairs/${slug}`);
         expect(res?.status()).toBe(200);
-        // not the admin page, not a draft
         await expect(page.getByText("Admin test guide — not published")).toHaveCount(0);
+        await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
         const body = await page.locator("body").innerText();
         expect(body).toContain("Incomplete guide: not yet verified against BMW service data.");
-        expect(body).toContain("not yet verified against BMW repair data");
-        expect(body).not.toMatch(/Draft for owner testing|WBAPH7C58AA175760|A175760|admin-draft/);
-        expect(body).toMatch(/torque/i);
+        expect(body).toContain("Preview guide.");
+        expect(body).toContain("not part of a paid Get the Keys unlock");
+        expect(body).not.toMatch(/Premium guide\.|will require unlocking|Draft for owner testing|WBAPH7C58AA175760|A175760|admin-draft/);
         const blockedTitles = guide.steps.filter((s) => s.title.startsWith(BLOCK)).length;
         if (blockedTitles) expect(body).toContain("BLOCKED in this guide");
         expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
 
-        // The customer page renders the FULL guide (Wrench Mode is wired on the admin route only). Every step must be present, in order,
-        // each with its warning, and blocked steps must stay blocked.
-        let at = 0;
-        for (const st of guide.steps) {
-          const i = body.indexOf(st.title.slice(0, 60), at);
-          expect(i, `step "${st.title.slice(0, 50)}" missing or out of order`).toBeGreaterThanOrEqual(0);
-          at = i;
+        // Wrench Mode on the customer page: every step forward, blocked steps stay blocked
+        const total = guide.steps.length;
+        await page.getByRole("button", { name: /start wrench mode/i }).click();
+        await page.waitForSelector('[aria-label="Wrench Mode"]');
+        let blockedSeen = 0;
+        for (let i = 1; i <= total; i++) {
+          expect(await stepOf(page), `step ${i}`).toMatchObject({ n: i, of: total });
+          expect(await clippedPx(page), `step ${i} clipped`).toBeLessThanOrEqual(0);
+          if (guide.steps[i - 1].title.startsWith(BLOCK)) {
+            blockedSeen++;
+            await expect(page.getByRole("dialog", { name: "Wrench Mode" }).getByRole("heading", { level: 2 })).toContainText("BLOCKED");
+            await expect(page.getByLabel("Warning for this step")).toContainText("BLOCKED");
+            await expect(page.getByLabel("Step instructions")).toContainText("This step is blocked");
+          }
+          if (i < total) await page.getByRole("button", { name: "Next step" }).click();
         }
-        expect((body.match(/This step is blocked/g) ?? []).length).toBe(blockedTitles);
-        for (const st of guide.steps.filter((x) => x.warning)) expect(body).toContain(st.warning!.slice(0, 40));
-        for (const t of guide.torqueSpecs) expect(body).toContain(t.fastener.slice(0, 30));
-        expect(await page.evaluate(() => [...document.querySelectorAll("main *")].filter((e) => e.getBoundingClientRect().right > window.innerWidth + 1).length), "elements past the right edge").toBe(0);
+        expect(blockedSeen).toBe(blockedTitles);
+
+        // Completion: the sheet can really save to Service History (customer signed in, catalog vehicle)
+        await page.getByRole("button", { name: "Complete this job" }).click();
+        const sheet = page.getByRole("dialog", { name: /add this service/i });
+        await expect(sheet).toBeVisible();
+        await expect(sheet).not.toContainText("Saving is unavailable here");
+        const save = sheet.getByRole("button", { name: /save to service history/i });
+        await expect(save).toBeDisabled(); // needs a mileage first
+        await sheet.getByLabel("Current mileage").fill("54321");
+        await expect(save).toBeEnabled();
+        await save.click();
+        await expect(page.getByRole("button", { name: /start wrench mode/i })).toBeVisible({ timeout: 20_000 });
+        const saved = await page.request.get(`/api/garage/${CAR}/service`);
+        const entries = (await saved.json()).entries as { guideId?: string; mileage: number }[];
+        expect(entries.some((e) => e.guideId === slug && e.mileage === 54321), "service entry saved for this guide").toBe(true);
+
+        // Recovery: leave to Overall Guide mid-job, resume at the same step, exit
+        await page.getByRole("button", { name: /start wrench mode/i }).click();
+        const target = Math.min(3, total);
+        for (let i = 1; i < target; i++) await page.getByRole("button", { name: "Next step" }).click();
+        await page.getByRole("button", { name: /overall guide/i }).first().click();
+        await page.getByRole("button", { name: /resume wrench mode/i }).click();
+        expect((await stepOf(page))?.n).toBe(target);
+        await page.getByRole("button", { name: /overall guide/i }).first().click();
+        await page.getByRole("button", { name: /exit wrench mode/i }).click();
+        await page.getByRole("alertdialog").getByRole("button", { name: "Exit Wrench Mode" }).click();
+        await expect(page.getByRole("button", { name: /start wrench mode/i })).toBeVisible();
         expect(errors, "page errors").toEqual([]);
       });
     }
@@ -239,6 +272,34 @@ for (const vp of [
 }
 
 test.describe("customer routes: access and navigation", () => {
+  test("entitlement copy: BMW previews show Preview, never the paid-unlock wording; an existing premium guide is unchanged", async ({ page }) => {
+    await signUpNew(page);
+    await page.goto(`/vehicles/${CAR}`);
+    for (const slug of ["bmw-2010-328i-oil-change", "bmw-2010-328i-front-brake-pads"]) {
+      const card = page.locator(`a[href="/vehicles/${CAR}/repairs/${slug}"]`);
+      await expect(card).toContainText("Preview");
+      await expect(card).not.toContainText("Keys");
+    }
+    // existing vehicles keep their Keys badges and paid-unlock wording, and get no Wrench Mode button or Preview banner
+    const jeepPremium = getRepairsForVehicle("2014-jeep-grand-cherokee-3.6l").find((g) => g.tier === "premium");
+    expect(jeepPremium, "a premium Jeep guide exists").toBeTruthy();
+    await page.goto(`/vehicles/2014-jeep-grand-cherokee-3.6l/repairs/${jeepPremium!.id}`);
+    await expect(page.getByText("Premium guide.")).toBeVisible();
+    await expect(page.getByText("Preview guide.")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /start wrench mode/i })).toHaveCount(0);
+  });
+
+  test("a signed-out visitor gets the same treatment on a BMW guide as on any other guide", async ({ page, browser }) => {
+    const ctx = await browser.newContext({ baseURL: "http://localhost:3100" });
+    const anon = await ctx.newPage();
+    const bmw = await anon.goto(`/vehicles/${CAR}/repairs/bmw-2010-328i-oil-change`);
+    const jeepGuide = getRepairsForVehicle("2014-jeep-grand-cherokee-3.6l")[0];
+    const jeep = await anon.goto(`/vehicles/2014-jeep-grand-cherokee-3.6l/repairs/${jeepGuide.id}`);
+    expect(`${bmw?.status()}|${new URL(bmw!.url()).pathname.startsWith("/login")}`).toBe(`${jeep?.status()}|${new URL(jeep!.url()).pathname.startsWith("/login")}`);
+    await ctx.close();
+    void page;
+  });
+
   test("an unknown BMW guide id is a 404; another vehicle's id under the BMW is a 404", async ({ page }) => {
     await signUpNew(page);
     expect((await page.goto(`/vehicles/${CAR}/repairs/bmw-2010-328i-nope`))?.status()).toBe(404);
@@ -251,10 +312,10 @@ test.describe("customer routes: access and navigation", () => {
     await expect(page).not.toHaveURL(/\/admin/);
   });
 
-  test("the back link returns to the BMW vehicle page and the Jeep vehicle page is unchanged", async ({ page }) => {
+  test("the breadcrumb returns to the BMW vehicle page and the Jeep vehicle page is unchanged", async ({ page }) => {
     await signUpNew(page);
     await page.goto(`/vehicles/${CAR}/repairs/bmw-2010-328i-oil-change`);
-    await page.getByRole("link", { name: /Back to 2010 BMW 328i/ }).click();
+    await page.locator(`a[href="/vehicles/${CAR}"]`).first().click();
     await expect(page).toHaveURL(new RegExp(`/vehicles/${CAR.replace(".", "\\.")}$`));
     await page.goto("/vehicles/2014-jeep-grand-cherokee-3.6l");
     await expect(page.getByRole("heading", { level: 1 })).toContainText(/Grand Cherokee/i);

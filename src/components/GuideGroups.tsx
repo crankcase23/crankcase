@@ -67,7 +67,7 @@ function GuideCard({
       </h4>
       <div className="mt-3 flex flex-wrap items-center gap-1.5">
         <DifficultyBadge difficulty={guide.difficulty} />
-        <TierBadge tier={guide.tier} />
+        <TierBadge tier={guide.tier} preview={guide.preview} />
         <span className="text-xs text-slate-400">{guide.estTime}</span>
       </div>
       <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{guide.summary}</p>

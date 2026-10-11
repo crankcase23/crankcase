@@ -85,8 +85,32 @@ test("the catalog validator finds no REQUIRED gap in any public BMW guide (so no
   for (const g of mine) assert.deepEqual(validateGuide(g).filter((i) => i.severity === "required"), [], g.id);
 });
 
-test("pricing: incomplete guides are all free (never behind a purchase until certified)", () => {
-  assert.ok(mine.every((g) => g.tier === "free"));
+test("entitlement: tiers follow the Get the Keys model (oil change free, rest premium) but every BMW guide is a PREVIEW, so none is sellable", async () => {
+  const { isSellable, isPreview, readable } = await bundle("src/lib/guideAccess.ts");
+  assert.deepEqual(mine.filter((g) => g.tier === "free").map((g) => g.jobType), ["oil-change"]);
+  assert.equal(mine.filter((g) => g.tier === "premium").length, 15);
+  for (const g of mine) {
+    assert.equal(g.preview, true, `${g.id}: not marked preview`);
+    assert.equal(isPreview(g), true);
+    assert.equal(isSellable(g), false, `${g.id}: an uncertified guide must never be sellable`);
+    assert.equal(readable(g), true);
+  }
+});
+
+test("guideAccess: only a premium guide that is not a preview is sellable; other vehicles' guides are unaffected", async () => {
+  const { isSellable } = await bundle("src/lib/guideAccess.ts");
+  assert.equal(isSellable({ tier: "premium" }), true);
+  assert.equal(isSellable({ tier: "premium", preview: false }), true);
+  assert.equal(isSellable({ tier: "premium", preview: true }), false);
+  assert.equal(isSellable({ tier: "free" }), false);
+  const others = catalog.resolvedRepairs.filter((r) => r.vehicleId !== VID);
+  assert.ok(others.every((r) => r.preview === undefined && r.wrenchMode === undefined), "no other vehicle's guide may carry preview/wrenchMode");
+  assert.ok(others.some((r) => isSellable(r)), "existing premium guides are still sellable");
+});
+
+test("customer Wrench Mode is opt-in: exactly the 16 BMW guides carry wrenchMode", () => {
+  assert.ok(mine.every((g) => g.wrenchMode === true));
+  assert.equal(catalog.resolvedRepairs.filter((r) => r.wrenchMode).length, 16);
 });
 
 test("other vehicles still resolve their guides and none of them received a BMW guide", () => {
