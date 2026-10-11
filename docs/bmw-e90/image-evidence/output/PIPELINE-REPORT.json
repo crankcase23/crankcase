@@ -1,0 +1,122 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "certified": false,
+  "visuals": [
+    {
+      "certified": false,
+      "imageProduced": false,
+      "phase": "GEN_REQUESTED",
+      "stages": [
+        {
+          "detail": "3 must-show, 12 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "4 reference(s); 4 established / 9 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "PASS"
+        },
+        {
+          "detail": "visual contract locked",
+          "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2123 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 Andy sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "oil-drain-plug-access"
+    },
+    {
+      "certified": false,
+      "imageProduced": false,
+      "phase": "EP_INSUFFICIENT",
+      "stages": [
+        {
+          "detail": "2 must-show, 7 must-not-show",
+          "stage": "1 visual spec intake",
+          "status": "PASS"
+        },
+        {
+          "detail": "3 reference(s); 1 established / 5 not-established ledger rows",
+          "stage": "2-3 reference intake and ledger",
+          "status": "PASS"
+        },
+        {
+          "detail": "EP INSUFFICIENT: hero element filter-cap lacks established location",
+          "problemCodes": [
+            "EP_HERO_NOT_ESTABLISHED"
+          ],
+          "stage": "3b EP sufficiency (objective gate)",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "needs a SUFFICIENT evidence packet",
+          "stage": "4 visual contract compile/lock",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "2 events, 2 objects, problems=0",
+          "stage": "12 event log + directory integrity",
+          "status": "PASS"
+        }
+      ],
+      "visualId": "oil-filter-cap"
+    }
+  ]
+}

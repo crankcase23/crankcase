@@ -1,0 +1,20 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: The underside of a 2010 BMW 328i (E90) with the 3.0L inline-6, seen from below and slightly ahead, shown so a home mechanic can see WHERE the engine oil drain plug is reached. Step: "Open the undertray access hatch and drain the sump."
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Low view from beneath the front of the car looking rearward, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: ONE engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape. Do NOT show its head shape, tool fit, washer or which way it points.
+2. The small access hatch in the lower undertray, near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it. Do NOT show how the hatch is fastened.
+3. The oil pan as a plain simplified mass around the plug.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): a plain undertray panel around the hatch and a plain dark ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): hatch screws or catches, wrench or socket, drain pan, oil drips, engine cover, exhaust, suspension parts, wheels, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

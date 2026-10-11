@@ -1,0 +1,146 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Loosen filter cap",
+      "Remove old cartridge",
+      "Lubricate and install new cartridge",
+      "Torque cap"
+    ],
+    "stepNumber": 2,
+    "title": "oil-filter-cap (BMW 328i draft oil-change guide; evidence step 2, 5, 7, 8)"
+  },
+  "contentHash": "2d963b4d1e2628d18c9f3dd3388005d87ef1b63b46f3f2e491ee4bc015575219",
+  "createdAt": "2026-10-10T12:00:11.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "id": "filter-cap",
+      "role": "hero"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "engine-mass",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "engine-cover",
+      "role": "context"
+    }
+  ],
+  "id": "EP-oil-filter-cap-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "filter-cap",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent sources agree",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "filter-cap",
+      "note": "Only 'in the engine bay'; which side or end of the engine is not stated by any source.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-mass",
+      "note": "Context only.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-cover",
+      "note": "No source says the N52 has a cover; must not be drawn.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "engine-mass",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "engine-cover",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "engine-cover",
+      "id": "excl-engine-cover",
+      "reason": "No source establishes an engine cover on this engine.",
+      "trace": {
+        "attribute": "existence",
+        "element": "engine-cover"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "Filter cap sits on the housing in the engine bay and comes off with an oil-filter cap socket (article does not name N52)."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "fcpeuro.com",
+      "sourceRef": "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 N52 uses a cartridge-style filter housing removed with a 26mm hex cap socket."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "ecstuning.com",
+      "sourceRef": "https://www.ecstuning.com/BMW-E90-330xi-N52_3.0L/News/23",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "N52 DIY: remove the oil filter housing cap with a cap wrench, drop in new cartridge with two O-rings, refit until marks align."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=6151834",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited secondary sources only; 2+ independent hosts required per established fact.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "oil-filter-cap"
+}

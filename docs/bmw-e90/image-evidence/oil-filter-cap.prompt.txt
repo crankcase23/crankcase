@@ -1,0 +1,19 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: The engine bay of a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see WHERE the oil filter housing cap is. Step: "Loosen the oil filter housing cap."
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Front-elevated view, about 50-55 degrees above horizontal, centred at the front of the bay, looking rearward, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: ONE oil filter housing cap on the engine.
+2. A plain simplified engine mass around the cap.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): cowl trough across the top edge, inner fender walls at left and right, strut-tower caps as plain domes. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): engine cover, wiring looms, coolant hoses, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

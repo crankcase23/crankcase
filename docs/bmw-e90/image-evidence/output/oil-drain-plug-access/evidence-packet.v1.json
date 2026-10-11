@@ -1,0 +1,236 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "canonicalStep": {
+    "actions": [
+      "Open the undertray access hatch",
+      "Drain the sump"
+    ],
+    "stepNumber": 3,
+    "title": "oil-drain-plug-access (BMW 328i draft oil-change guide; evidence step 3, 4)"
+  },
+  "contentHash": "50d964e56d7f50ab36603bb0cc74610fe32b6f70a2d06cb70433947f9317af9a",
+  "createdAt": "2026-10-10T12:00:02.000Z",
+  "createdBy": {
+    "actor": "claude-research",
+    "role": "evidence-author"
+  },
+  "elements": [
+    {
+      "criticality": "critical",
+      "id": "drain-plug",
+      "role": "hero"
+    },
+    {
+      "criticality": "critical",
+      "id": "access-hatch",
+      "role": "target"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "oil-pan",
+      "role": "context"
+    },
+    {
+      "criticality": "procedure",
+      "id": "hatch-fasteners",
+      "role": "context"
+    },
+    {
+      "criticality": "cosmetic",
+      "id": "engine-cover",
+      "role": "context"
+    }
+  ],
+  "id": "EP-oil-drain-plug-access-v1",
+  "ledger": [
+    {
+      "attribute": "existence",
+      "element": "drain-plug",
+      "evidence": [
+        "ref-1",
+        "ref-2",
+        "ref-3"
+      ],
+      "note": "3 independent sources agree",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "drain-plug",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent sources agree",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "orientation",
+      "element": "drain-plug",
+      "note": "Sources conflict: slightly left of centre facing right vs vertical vs oil exits sideways.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "drain-plug",
+      "note": "Only the 17 mm socket size is established, not the head shape.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "access-hatch",
+      "evidence": [
+        "ref-1",
+        "ref-3",
+        "ref-4"
+      ],
+      "note": "3 independent sources agree",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "location",
+      "element": "access-hatch",
+      "evidence": [
+        "ref-1",
+        "ref-3"
+      ],
+      "note": "2 independent sources agree",
+      "render": "draw",
+      "status": "established"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "access-hatch",
+      "note": "Conflict: three screws vs coin-operated catch.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "hatch-fasteners",
+      "note": "Conflict (screws vs coin catch); must not be drawn.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-cover",
+      "note": "No source says the N52 has a cover; must not be drawn.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-pan",
+      "note": "Context only; drawn as a plain generic mass, no specific claim.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "oil-pan",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "hatch-fasteners",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "engine-cover",
+      "note": "no source cited for this fact",
+      "render": "omit",
+      "status": "not-established"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "hatch-fasteners",
+      "id": "excl-hatch-fasteners",
+      "reason": "Sources conflict on how the hatch is fastened.",
+      "trace": {
+        "attribute": "existence",
+        "element": "hatch-fasteners"
+      }
+    },
+    {
+      "element": "engine-cover",
+      "id": "excl-engine-cover",
+      "reason": "No source establishes an engine cover on this engine.",
+      "trace": {
+        "attribute": "existence",
+        "element": "engine-cover"
+      }
+    }
+  ],
+  "references": [
+    {
+      "establishes": [
+        "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
+      ],
+      "id": "ref-1",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "5series.net",
+      "sourceRef": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "N52 DIY: remove the oil filter housing cap with a cap wrench, drop in new cartridge with two O-rings, refit until marks align."
+      ],
+      "id": "ref-2",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "1addicts.com",
+      "sourceRef": "https://www.1addicts.com/forums/showthread.php?p=6151834",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
+      ],
+      "id": "ref-3",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "team-bhp.com",
+      "sourceRef": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "17mm plug with copper crush washer; oil exits sideways."
+      ],
+      "id": "ref-4",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+      "usage": "reference-only"
+    }
+  ],
+  "refs": [],
+  "schema": "guide-factory.evidence-packet",
+  "schemaVersion": "reconstructed-1",
+  "sufficiencyProposal": {
+    "basis": "Built from cited secondary sources only; 2+ independent hosts required per established fact.",
+    "proposedBy": "claude-research"
+  },
+  "visualId": "oil-drain-plug-access"
+}

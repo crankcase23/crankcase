@@ -1,0 +1,61 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "The underside of a 2010 BMW 328i (E90) with the 3.0L inline-6, seen from below and slightly ahead, shown so a home mechanic can see WHERE the engine oil drain plug is reached. Step: \"Open the undertray access hatch and drain the sump.\"",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: ONE engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape. Do NOT show its head shape, tool fit, washer or which way it points."
+    },
+    {
+      "rank": 2,
+      "text": "The small access hatch in the lower undertray, near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it. Do NOT show how the hatch is fastened."
+    },
+    {
+      "rank": 3,
+      "text": "The oil pan as a plain simplified mass around the plug."
+    }
+  ],
+  "maySimplify": [
+    "a plain undertray panel around the hatch and a plain dark ground plane"
+  ],
+  "mustNotShow": [
+    "hatch screws or catches",
+    "wrench or socket",
+    "drain pan",
+    "oil drips",
+    "engine cover",
+    "exhaust",
+    "suspension parts",
+    "wheels",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    },
+    {
+      "band": "bottom",
+      "fromPct": 83,
+      "toPct": 97
+    }
+  ],
+  "sourcePromptSha256": "f3d9f29d2e02049de3e710ddcd1f37dc9692c9c99a3d6d3f503fa7bcc5cbaf1c"
+}

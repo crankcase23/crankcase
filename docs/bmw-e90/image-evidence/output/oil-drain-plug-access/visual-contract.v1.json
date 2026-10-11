@@ -1,0 +1,202 @@
+{
+  "application": {
+    "engine": "3.0L inline-6 (engine code not confirmed)",
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "year": 2010
+  },
+  "callouts": [],
+  "composition": {
+    "regionsHint": [],
+    "viewpoint": null
+  },
+  "contentHash": "4df429170a6c36be414676d99629ed3f7ca93a830e92009add69c07c9ab6151a",
+  "createdAt": "2026-10-10T12:00:06.000Z",
+  "createdBy": {
+    "actor": "factory-code",
+    "role": "contract-compiler"
+  },
+  "generation": {
+    "imageInputsAllowed": false,
+    "maxCorrectionCycles": 3
+  },
+  "id": "VC-oil-drain-plug-access-v1",
+  "maySimplify": [
+    {
+      "element": "oil-pan"
+    },
+    {
+      "element": "hatch-fasteners"
+    },
+    {
+      "element": "engine-cover"
+    }
+  ],
+  "mustDepict": [
+    {
+      "criticality": "critical",
+      "element": "drain-plug",
+      "id": "MD-drain-plug",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-2",
+            "ref-3"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "hero"
+    },
+    {
+      "criticality": "critical",
+      "element": "access-hatch",
+      "id": "MD-access-hatch",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "evidence": [
+            "ref-1",
+            "ref-3",
+            "ref-4"
+          ],
+          "render": "draw"
+        },
+        {
+          "attribute": "location",
+          "evidence": [
+            "ref-1",
+            "ref-3"
+          ],
+          "render": "draw"
+        }
+      ],
+      "visibility": "target"
+    }
+  ],
+  "mustNotDepict": [
+    {
+      "element": "hatch-fasteners",
+      "id": "MN-excl-hatch-fasteners",
+      "reason": "Sources conflict on how the hatch is fastened.",
+      "trace": {
+        "attribute": "existence",
+        "element": "hatch-fasteners"
+      }
+    },
+    {
+      "element": "engine-cover",
+      "id": "MN-excl-engine-cover",
+      "reason": "No source establishes an engine cover on this engine.",
+      "trace": {
+        "attribute": "existence",
+        "element": "engine-cover"
+      }
+    }
+  ],
+  "output": {
+    "height": 1000,
+    "maxBytes": 12582912,
+    "mediaTypes": [
+      "png"
+    ],
+    "noBakedText": true,
+    "width": 1600
+  },
+  "overlay": {
+    "clearSpaceRegions": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "qa": {
+    "blockingSeverities": [
+      "CRITICAL",
+      "CONTRACT"
+    ],
+    "rubricVersion": "CG-QA-v1.0"
+  },
+  "refs": [
+    {
+      "id": "EP-oil-drain-plug-access-v1",
+      "sha256": "50d964e56d7f50ab36603bb0cc74610fe32b6f70a2d06cb70433947f9317af9a"
+    },
+    {
+      "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
+      "sha256": "fdb179f793f674257ff29f759a51b96a8daa5f9d25d7f574dd8acc392f063910"
+    }
+  ],
+  "schema": "guide-factory.visual-contract",
+  "schemaVersion": "reconstructed-1",
+  "specRef": {
+    "sourceKind": "documentation-derived-prompt",
+    "sourcePromptSha256": "f3d9f29d2e02049de3e710ddcd1f37dc9692c9c99a3d6d3f503fa7bcc5cbaf1c"
+  },
+  "suppress": [
+    {
+      "attribute": "orientation",
+      "element": "drain-plug",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fastener-head-type",
+      "element": "drain-plug",
+      "handling": "omit"
+    },
+    {
+      "attribute": "fastener-position",
+      "element": "access-hatch",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "hatch-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "engine-cover",
+      "handling": "omit"
+    },
+    {
+      "attribute": "existence",
+      "element": "oil-pan",
+      "handling": "omit"
+    },
+    {
+      "attribute": "location",
+      "element": "oil-pan",
+      "handling": "omit"
+    },
+    {
+      "attribute": "location",
+      "element": "hatch-fasteners",
+      "handling": "omit"
+    },
+    {
+      "attribute": "location",
+      "element": "engine-cover",
+      "handling": "omit"
+    }
+  ],
+  "visualId": "oil-drain-plug-access"
+}
