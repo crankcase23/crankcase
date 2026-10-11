@@ -22,11 +22,14 @@ Per tagged item: confirmed in scope -> shown; confirmed out of scope -> hidden; 
 
 **Runbook (owner, after the release approach is settled):**
 1. Pre-check: run `migrations/2026-10-11-vehicle-configuration-VERIFY.sql` (read-only). Expect 0 columns / 0 constraints / 0 indexes, and 0 duplicate rows. Note the total row count N. If either duplicate count is not 0, stop; the migration would skip that unique index (it prints a NOTICE and changes nothing) and the pairs should be resolved by hand first.
-2. Optional safety net: a Neon branch or restore point right before step 3, if your plan includes one.
+2. Rehearse on a Neon branch (recommended): create a branch of the production database from the Neon console (Branches -> Create branch, parent = production, current data). Branches are copy-on-write, so this costs nothing meaningful and touches nothing live. Run VERIFY -> migration -> VERIFY -> ROLLBACK there. This is the only way to see the real duplicate counts and confirm both unique indexes actually get created on production-shaped data. Delete the branch when done. Do not point any app env at it.
+   Safety net for the real run: note the time (UTC) just before step 3. If your Neon plan includes point-in-time restore, that is the last-resort backstop. Plan limits and restore window are UNVERIFIED here; check Neon console -> Backups/Restore before relying on it. The ROLLBACK SQL is the normal path.
 3. Run `migrations/2026-10-11-vehicle-configuration.sql` (one DO block, one transaction, safe to run twice).
 4. Post-check: run VERIFY again: 3 columns, 2 constraints, 2 indexes, row count still N; then the commented query: 0 rows with a saved choice.
 5. Merge/deploy.
 6. Smoke test: sign in; /garage loads; the existing 328i shows "Confirm transmission & drivetrain"; open it, Edit Configuration -> Automatic + Standard RWD -> save; garage card reads "Automatic · RWD"; open the oil-change guide (no xDrive/manual wording). Add a throwaway vehicle through VIN lookup -> Confirm Your Ride, then remove it.
+
+**Caution (unverified):** Vercel preview deployments may share the production `DATABASE_URL`. If so, opening this PR's preview against the un-migrated DB will fail on garage reads, and previews must not be used to test the migration. Check Vercel -> Settings -> Environment Variables scope before the migration run.
 
 **Rollback:** roll the app back first, then run `migrations/2026-10-11-vehicle-configuration-ROLLBACK.sql`. The only data lost is saved configuration choices.
 
