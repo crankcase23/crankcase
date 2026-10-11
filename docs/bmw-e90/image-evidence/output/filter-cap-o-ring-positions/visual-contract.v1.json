@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "large-black-o-ring",
+      "label": "large black o ring",
+      "required": true
+    },
+    {
+      "element": "small-green-o-ring",
+      "label": "small green o ring",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "e21766e22d060dcfd50c95e66022bdfd364323edf5a1efc1bd764760e8ff0f60",
+  "contentHash": "04e94438c7570143f52fdc786d430e90a1b37c8c5618f1fbb78f32e37065f613",
   "createdAt": "2026-10-10T12:04:08.000Z",
   "createdBy": {
     "actor": "factory-code",

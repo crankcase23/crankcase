@@ -12,6 +12,7 @@
     {
       "element": "bank2-precat-sensor",
       "role": "hero",
+      "note": "The bank 2 pre-cat sensor, hidden behind a stainless/metal heat shield on the cylinder head and under the ignition wiring harness.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "shield-e8-screws",
       "role": "target",
+      "note": "Two E8 external-Torx screws holding the metal shield; nearly blind when looking from above.",
       "label": null,
       "region": null,
       "arrowFrom": null,

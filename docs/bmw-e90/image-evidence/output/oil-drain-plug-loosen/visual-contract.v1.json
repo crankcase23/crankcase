@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "drain-plug",
+      "label": "drain plug",
+      "required": true
+    },
+    {
+      "element": "tool-socket-and-ratchet",
+      "label": "tool socket and ratchet",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "317e5a56c9bfee0dbfc2bac6722aece3f5349cfc684ed61cbde69aa4aac699f6",
+  "contentHash": "b384e88f3da547f552f64197d854a1e3917203b7ed2b487d48698fbbe552f5e6",
   "createdAt": "2026-10-10T12:04:44.000Z",
   "createdBy": {
     "actor": "factory-code",

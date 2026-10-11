@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "microfilter-housing-cover",
+      "label": "microfilter housing cover",
+      "required": true
+    },
+    {
+      "element": "cover-fastener-points",
+      "label": "cover fastener points",
+      "required": true
+    },
+    {
+      "element": "brake-reservoir",
+      "label": "brake reservoir",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "b7980be48184122d92db5ba69dad3f8fbf06f6a01471326fd427bcf318bbf93f",
+  "contentHash": "077fc9619d75f93b5e50b734bd07af84088e3d00ce9321690f3aacd40e7c0352",
   "createdAt": "2026-10-10T12:02:22.000Z",
   "createdBy": {
     "actor": "factory-code",

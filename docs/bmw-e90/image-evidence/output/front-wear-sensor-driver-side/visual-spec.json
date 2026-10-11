@@ -46,5 +46,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "9d8e3cd31954ba99cff3559665645fb67c81191550ee1c6dd8c0f46982849c91"
+  "sourcePromptSha256": "9d8e3cd31954ba99cff3559665645fb67c81191550ee1c6dd8c0f46982849c91",
+  "callouts": [
+    {
+      "label": "pad wear sensor wire",
+      "element": "pad-wear-sensor-wire",
+      "required": true
+    },
+    {
+      "label": "sensor connector junction box",
+      "element": "sensor-connector-junction-box",
+      "required": true
+    }
+  ]
 }

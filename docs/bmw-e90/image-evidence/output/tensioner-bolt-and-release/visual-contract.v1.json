@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "tensioner-assembly",
+      "label": "tensioner assembly",
+      "required": true
+    },
+    {
+      "element": "tensioner-mounting-bolt",
+      "label": "tensioner mounting bolt",
+      "required": true
+    },
+    {
+      "element": "tensioner-release-socket",
+      "label": "tensioner release socket",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "d1833a05553cc2023bbd8fd581aff5661df98bc9119647dea842caad498a876d",
+  "contentHash": "347137f30f1ee2bc47a42f20afd3f76b27f394fba0971ae5eec50ac4edcc9d1a",
   "createdAt": "2026-10-10T12:01:32.000Z",
   "createdBy": {
     "actor": "factory-code",

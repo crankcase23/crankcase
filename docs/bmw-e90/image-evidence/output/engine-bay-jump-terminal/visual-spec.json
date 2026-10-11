@@ -40,5 +40,12 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "743ee1f3b3236170b41173dc0f4ef4836e6fbbfca1bb071b55b7ca2dcc91b806"
+  "sourcePromptSha256": "743ee1f3b3236170b41173dc0f4ef4836e6fbbfca1bb071b55b7ca2dcc91b806",
+  "callouts": [
+    {
+      "label": "b plus jump terminal",
+      "element": "b-plus-jump-terminal",
+      "required": true
+    }
+  ]
 }

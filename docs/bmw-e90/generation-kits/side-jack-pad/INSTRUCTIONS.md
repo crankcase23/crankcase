@@ -1,6 +1,6 @@
 # Generate: side-jack-pad
 
-Prompt sha256: `cb06c5de2fd20d10f38c7d662056194a74dca6935d1f6dcbe41832882ea472dc` (the factory records this; do not edit the prompt).
+Prompt sha256: `734cb7d0cd0b4fafb4894d15c9e0dd9acd994f653190e5ab0be38121620ce047` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

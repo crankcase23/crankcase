@@ -12,6 +12,7 @@
     {
       "element": "blade-release-tab",
       "role": "hero",
+      "note": "A press tab on the hook end of the blade that releases it from the arm.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "arm-hook-end",
       "role": "target",
+      "note": "The hook or peg at the end of the arm that the blade slides onto, with a plastic cover.",
       "label": null,
       "region": null,
       "arrowFrom": null,

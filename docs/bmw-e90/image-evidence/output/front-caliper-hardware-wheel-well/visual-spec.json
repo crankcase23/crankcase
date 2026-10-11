@@ -55,5 +55,27 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "c24fe395d3e38cbd28c44f5a7ba527a6c516cf75b8410d3a2c1d918271df3481"
+  "sourcePromptSha256": "c24fe395d3e38cbd28c44f5a7ba527a6c516cf75b8410d3a2c1d918271df3481",
+  "callouts": [
+    {
+      "label": "front brake caliper",
+      "element": "front-brake-caliper",
+      "required": true
+    },
+    {
+      "label": "anti rattle spring clip",
+      "element": "anti-rattle-spring-clip",
+      "required": true
+    },
+    {
+      "label": "guide pin dust caps",
+      "element": "guide-pin-dust-caps",
+      "required": true
+    },
+    {
+      "label": "guide pin bolt fasteners",
+      "element": "guide-pin-bolt-fasteners",
+      "required": true
+    }
+  ]
 }

@@ -50,5 +50,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "9767767cfee477a4fbcc2b8d3447b3373c733d4d9c8fafc3a4540a78a5dbfd74"
+  "sourcePromptSha256": "9767767cfee477a4fbcc2b8d3447b3373c733d4d9c8fafc3a4540a78a5dbfd74",
+  "callouts": [
+    {
+      "label": "fuse cover fasteners",
+      "element": "fuse-cover-fasteners",
+      "required": true
+    },
+    {
+      "label": "fuse cover",
+      "element": "fuse-cover",
+      "required": true
+    },
+    {
+      "label": "fuse panel",
+      "element": "fuse-panel",
+      "required": true
+    }
+  ]
 }

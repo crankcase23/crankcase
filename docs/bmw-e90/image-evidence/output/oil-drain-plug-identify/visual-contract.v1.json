@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "drain-plug",
+      "label": "drain plug",
+      "required": true
+    },
+    {
+      "element": "crush-washer",
+      "label": "crush washer",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "481c391448881ad54244dcd7fc767eb3216adbc9a76df2a560daaef0f8a46f48",
+  "contentHash": "f74bf83a278306896aaebe1f36b54d45475cb2cad42b5d69d505b7135227df57",
   "createdAt": "2026-10-10T12:04:35.000Z",
   "createdBy": {
     "actor": "factory-code",

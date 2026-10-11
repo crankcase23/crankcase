@@ -12,6 +12,7 @@
     {
       "element": "rear-brake-caliper",
       "role": "hero",
+      "note": "A floating disc-brake caliper on the rear rotor seen from the outboard side with the wheel removed.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "caliper-retaining-clip",
       "role": "target",
+      "note": "A spring clip on the front of the caliper that comes off by hand or with a screwdriver.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "carrier-bolt-fasteners",
       "role": "target",
+      "note": "Two hex-head bolts (16 mm) on the back side of the caliper carrier.",
       "label": null,
       "region": null,
       "arrowFrom": null,

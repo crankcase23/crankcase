@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "rear-pad-wear-sensor-wire",
+      "label": "rear pad wear sensor wire",
+      "required": true
+    },
+    {
+      "element": "sensor-connector-behind-arch-cover",
+      "label": "sensor connector behind arch cover",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "af406d38c8f4f71167dd9a779c5658092bf03dc589c7a3860bec7c8272620da7",
+  "contentHash": "a4d9bd4d5b4341024bc359f78c7933f3fe3e7c828f820d7b1efa7113059fda24",
   "createdAt": "2026-10-10T12:01:14.000Z",
   "createdBy": {
     "actor": "factory-code",

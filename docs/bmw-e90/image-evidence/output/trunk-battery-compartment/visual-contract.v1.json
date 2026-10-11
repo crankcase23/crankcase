@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "battery",
+      "label": "battery",
+      "required": true
+    },
+    {
+      "element": "rear-power-distribution-box",
+      "label": "rear power distribution box",
+      "required": true
+    },
+    {
+      "element": "negative-terminal-with-ibs",
+      "label": "negative terminal with ibs",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "80d5c609bd16e61f4e429b60bbdd0de995c3f2eb584eb745ca3e3a9f44bd5090",
+  "contentHash": "8e5f358e3fff5cee4b220bdaa198cb8a9b2742d6710231421618b225fc680df9",
   "createdAt": "2026-10-10T12:01:41.000Z",
   "createdBy": {
     "actor": "factory-code",

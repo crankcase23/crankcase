@@ -12,6 +12,7 @@
     {
       "element": "drive-belt",
       "role": "hero",
+      "note": "A single six-rib serpentine belt (6PK1990) driving the accessories.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "tensioner-pulley",
       "role": "target",
+      "note": "The spring tensioner with roller pulley that holds the belt tight.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "tensioner-release-point",
       "role": "target",
+      "note": "The Torx-type socket point on the tensioner that is turned clockwise with a long ratchet to relieve tension.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -36,6 +39,7 @@
     {
       "element": "deflection-pulley",
       "role": "target",
+      "note": "The deflection (idler) pulley mounted at the alternator, with a protective cap.",
       "label": null,
       "region": null,
       "arrowFrom": null,

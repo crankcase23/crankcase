@@ -45,5 +45,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "ac31de0d9028631bb28ecd9c5620d06f13b8753131cdbef73b463b71df056c4e"
+  "sourcePromptSha256": "ac31de0d9028631bb28ecd9c5620d06f13b8753131cdbef73b463b71df056c4e",
+  "callouts": [
+    {
+      "label": "rear pad wear sensor wire",
+      "element": "rear-pad-wear-sensor-wire",
+      "required": true
+    },
+    {
+      "label": "sensor connector behind arch cover",
+      "element": "sensor-connector-behind-arch-cover",
+      "required": true
+    }
+  ]
 }

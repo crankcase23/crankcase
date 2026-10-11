@@ -12,6 +12,7 @@
     {
       "element": "sill-jack-pad",
       "role": "hero",
+      "note": "A small rectangular plastic jacking pad on the underside of the sill, one at each of four jack points.",
       "label": null,
       "region": null,
       "arrowFrom": null,

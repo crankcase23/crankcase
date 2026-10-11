@@ -12,6 +12,7 @@
     {
       "element": "precat-sensor-connectors",
       "role": "hero",
+      "note": "Two sensor plugs (one per bank) on the right side of the engine above the exhaust manifold, each seated in a mounting bracket and joined to its sensor by a lead that runs in channels and clips under the engine cover.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "connector-release-tab",
       "role": "target",
+      "note": "A release tab on each plug that is pressed down to separate the halves after the plug is pulled up out of its bracket.",
       "label": null,
       "region": null,
       "arrowFrom": null,

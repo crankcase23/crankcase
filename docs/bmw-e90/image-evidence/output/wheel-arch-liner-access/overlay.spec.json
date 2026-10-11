@@ -12,6 +12,7 @@
     {
       "element": "front-wheel-liner",
       "role": "hero",
+      "note": "The black plastic front wheel-arch liner that is peeled back or unscrewed to reach the bulbs behind the bumper/headlight.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "liner-screws",
       "role": "target",
+      "note": "Several screws (8 mm head per one thread; Torx per one retailer) around the liner; bottom screws on the front part named by one poster.",
       "label": null,
       "region": null,
       "arrowFrom": null,

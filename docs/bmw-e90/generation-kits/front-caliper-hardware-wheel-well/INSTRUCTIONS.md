@@ -1,6 +1,6 @@
 # Generate: front-caliper-hardware-wheel-well
 
-Prompt sha256: `c24fe395d3e38cbd28c44f5a7ba527a6c516cf75b8410d3a2c1d918271df3481` (the factory records this; do not edit the prompt).
+Prompt sha256: `dadf05c38704645d793cbee1aba47a10cd063d0ef0c09c26b6a925e92e4ec036` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

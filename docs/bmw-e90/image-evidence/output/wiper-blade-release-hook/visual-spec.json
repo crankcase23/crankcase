@@ -46,5 +46,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "1449363a8ed4f5f2a5a5acd9e1b8cca4dcc0a3b508324652ef49d39ec3b7420c"
+  "sourcePromptSha256": "1449363a8ed4f5f2a5a5acd9e1b8cca4dcc0a3b508324652ef49d39ec3b7420c",
+  "callouts": [
+    {
+      "label": "blade release tab",
+      "element": "blade-release-tab",
+      "required": true
+    },
+    {
+      "label": "arm hook end",
+      "element": "arm-hook-end",
+      "required": true
+    }
+  ]
 }

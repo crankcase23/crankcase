@@ -6,12 +6,33 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "coolant-expansion-tank-cap",
+      "label": "coolant expansion tank cap",
+      "required": true
+    },
+    {
+      "element": "washer-fluid-filler-cap",
+      "label": "washer fluid filler cap",
+      "required": true
+    },
+    {
+      "element": "engine-oil-filler-cap",
+      "label": "engine oil filler cap",
+      "required": true
+    },
+    {
+      "element": "brake-reservoir-under-cover",
+      "label": "brake reservoir under cover",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "74640a04340c00a926f3dfee1b52b91553850ff3dbd3e7d941c305bad439cdd5",
+  "contentHash": "dccb7f44911d27035b7c343aa79f05db45056aa4f9e9b489ea697809077f5268",
   "createdAt": "2026-10-10T12:02:13.000Z",
   "createdBy": {
     "actor": "factory-code",

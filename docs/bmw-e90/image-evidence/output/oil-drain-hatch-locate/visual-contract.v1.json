@@ -6,12 +6,18 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "access-hatch",
+      "label": "access hatch",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "6a826ba6dc73c89e09baf3499d76a72bb860bc7a18b1d207c1cb1fe4ca2c2e6f",
+  "contentHash": "51a322ec90ceedb68413cafe04cee870b0f603a71738e45dd6480112668db24a",
   "createdAt": "2026-10-10T12:04:26.000Z",
   "createdBy": {
     "actor": "factory-code",

@@ -12,6 +12,7 @@
     {
       "element": "tensioner-assembly",
       "role": "hero",
+      "note": "The mechanical belt tensioner with its roller pulley.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "tensioner-mounting-bolt",
       "role": "target",
+      "note": "A single aluminium M11 Torx-type mounting bolt (external Torx E14 per one source); single use.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "tensioner-release-socket",
       "role": "target",
+      "note": "The T60 Torx release point turned clockwise to take tension off the belt.",
       "label": null,
       "region": null,
       "arrowFrom": null,

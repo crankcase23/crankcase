@@ -41,5 +41,12 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "890d71c277c7df8c28c1d679f6df598ca7b8b03e486cd7bb0a8405a053a6d1cc"
+  "sourcePromptSha256": "890d71c277c7df8c28c1d679f6df598ca7b8b03e486cd7bb0a8405a053a6d1cc",
+  "callouts": [
+    {
+      "label": "filter cap",
+      "element": "filter-cap",
+      "required": true
+    }
+  ]
 }

@@ -140,7 +140,7 @@ test("FileDrop: template has nothing pre-attested; incomplete, wrong-state and g
   assert.equal(r.code, "CLAIMS_INCOMPLETE");
   assert.deepEqual(snapshot(run.dir), before);
   // a false attestation is accepted as a record but rejected by provenance
-  const claims = { generator: { system: "synthetic-generator", model: "synthetic-model-1", provider: "synthetic-provider" }, requestId: "r1", generationId: "g1", attestation: { ...goodAttestation(), noTracing: false }, imageInputs: [], inputHashes: [], contractAck: { mustNotDepictAcknowledged: true }, licenseTerms: { summary: "SYNTHETIC terms" } };
+  const claims = { generator: { system: "synthetic-generator", model: "synthetic-model-1", provider: "synthetic-provider" }, requestId: "r1", generationId: "g1", submittedPromptSha256: sha256(Buffer.from("SYNTHETIC PROMPT\n", "utf8")), attestation: { ...goodAttestation(), noTracing: false }, imageInputs: [], inputHashes: [], contractAck: { mustNotDepictAcknowledged: true }, licenseTerms: { summary: "SYNTHETIC terms" } };
   fs.writeFileSync(path.join(dir, "candidate.claims.json"), JSON.stringify(claims));
   r = await importDrop(run, { dropDir: dir, promptText: prompt });
   assert.ok(r.ok);
@@ -148,10 +148,23 @@ test("FileDrop: template has nothing pre-attested; incomplete, wrong-state and g
   assert.ok(r.problems.some((p) => p.code === "ATT_FLAG_FALSE"));
 });
 
+test("FileDrop: claims must carry the sha256 of the exact submitted prompt; a different prompt is refused before anything is written", async () => {
+  const dir = tmp("drop3");
+  fs.writeFileSync(path.join(dir, "candidate.png"), synthPng(1600, 1000, { seed: 7, chunks: [caBX()] }));
+  const claims = { generator: { system: "synthetic-generator", model: "synthetic-model-1", provider: "synthetic-provider" }, requestId: "r3", generationId: "g3", submittedPromptSha256: sha256(Buffer.from("A SHORTER PROMPT\n", "utf8")), attestation: goodAttestation(), imageInputs: [], inputHashes: [], contractAck: { mustNotDepictAcknowledged: true }, licenseTerms: { summary: "SYNTHETIC terms" } };
+  fs.writeFileSync(path.join(dir, "candidate.claims.json"), JSON.stringify(claims));
+  const run = newRun("drop3");
+  run.registerEP((await import(FIX)).fixtureEPBody()); run.evaluateEP(); run.compileContract({});
+  const before = snapshot(run.dir);
+  const r = await importDrop(run, { dropDir: dir, promptText: "SYNTHETIC PROMPT\n" });
+  assert.equal(r.code, "PROMPT_MISMATCH");
+  assert.deepEqual(snapshot(run.dir), before);
+});
+
 test("FileDrop: a truthful candidate becomes provenance-valid and awaits QA", async () => {
   const dir = tmp("drop2");
   fs.writeFileSync(path.join(dir, "candidate.png"), synthPng(1600, 1000, { seed: 5, chunks: [caBX()] }));
-  const claims = { generator: { system: "synthetic-generator", model: "synthetic-model-1", provider: "synthetic-provider" }, requestId: "r2", generationId: "g2", attestation: goodAttestation(), imageInputs: [], inputHashes: [], contractAck: { mustNotDepictAcknowledged: true }, licenseTerms: { summary: "SYNTHETIC terms" } };
+  const claims = { generator: { system: "synthetic-generator", model: "synthetic-model-1", provider: "synthetic-provider" }, requestId: "r2", generationId: "g2", submittedPromptSha256: sha256(Buffer.from("SYNTHETIC PROMPT\n", "utf8")), attestation: goodAttestation(), imageInputs: [], inputHashes: [], contractAck: { mustNotDepictAcknowledged: true }, licenseTerms: { summary: "SYNTHETIC terms" } };
   fs.writeFileSync(path.join(dir, "candidate.claims.json"), JSON.stringify(claims));
   const run = newRun("drop2");
   run.registerEP((await import(FIX)).fixtureEPBody()); run.evaluateEP(); run.compileContract({});

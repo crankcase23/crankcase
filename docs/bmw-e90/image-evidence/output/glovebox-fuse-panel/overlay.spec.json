@@ -12,6 +12,7 @@
     {
       "element": "fuse-cover-fasteners",
       "role": "hero",
+      "note": "Two round plastic quarter-turn fasteners (fastener type: quarter-turn) that hold the fuse panel cover; turned counterclockwise to unlock.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "fuse-cover",
       "role": "target",
+      "note": "The removable cover whose back carries the fuse chart sticker.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "fuse-panel",
       "role": "target",
+      "note": "The junction box fuse panel behind the glove box, reachable once the cover drops.",
       "label": null,
       "region": null,
       "arrowFrom": null,

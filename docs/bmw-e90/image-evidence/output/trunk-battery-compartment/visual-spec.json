@@ -51,5 +51,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "7650048b084b752727d0c2c191b9bea15183c7c719d7a65f150dbeda54e4c56f"
+  "sourcePromptSha256": "7650048b084b752727d0c2c191b9bea15183c7c719d7a65f150dbeda54e4c56f",
+  "callouts": [
+    {
+      "label": "battery",
+      "element": "battery",
+      "required": true
+    },
+    {
+      "label": "rear power distribution box",
+      "element": "rear-power-distribution-box",
+      "required": true
+    },
+    {
+      "label": "negative terminal with ibs",
+      "element": "negative-terminal-with-ibs",
+      "required": true
+    }
+  ]
 }

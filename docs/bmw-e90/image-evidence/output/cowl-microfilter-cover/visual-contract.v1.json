@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "microfilter-cover",
+      "label": "microfilter cover",
+      "required": true
+    },
+    {
+      "element": "cover-screw-points",
+      "label": "cover screw points",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "20add0fa6fd2a3ba15d030358207ea479ee5dac2def2f586b970ee46cef24cea",
+  "contentHash": "151bdcc90661e2110055d5402ebdfa998e801c4a6d69812e3ea7ae7ea60729a7",
   "createdAt": "2026-10-10T12:02:31.000Z",
   "createdBy": {
     "actor": "factory-code",

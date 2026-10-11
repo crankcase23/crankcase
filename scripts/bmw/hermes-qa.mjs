@@ -19,6 +19,10 @@
 //   node scripts/bmw/hermes-qa.mjs drop-import --runs DIR --visual ID --drop DIR
 //   node scripts/bmw/hermes-qa.mjs fit --in native.png --drop DIR      (pad native output to exact 16:10, never stretch)
 //   node scripts/bmw/hermes-qa.mjs gen-kit --runs DIR --out DIR         (one ready-to-run folder per locked visual)
+//   node scripts/bmw/hermes-qa.mjs intake --runs DIR --visual ID --native F --chat CHAT_ID --attest   (fit + claims + drop-import + QA packet)
+//   node scripts/bmw/hermes-qa.mjs finish --runs DIR --visual ID        (admit + normalize; needs independent QA pass)
+//   node scripts/bmw/hermes-qa.mjs overlay-set|overlay-render|overlay-export|overlay-import ...   (overlay QA, contract callouts)
+//   node scripts/bmw/hermes-qa.mjs sign-off --runs DIR --visual ID --step N --alt T --caption T --approved-by andy --approved-on DATE --owner-quote Q
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -231,6 +235,7 @@ export function writeDropTemplate(outDir) {
     _readme: "Copy to candidate.claims.json next to candidate.png after filling EVERY null. The attestation must be true: it is a statement by whoever generated the image. If any flag is not true the image is refused and the cycle may be spent. Do not attest to something that did not happen.",
     generator: { system: null, model: null, provider: null },
     requestId: null, generationId: null,
+    submittedPromptSha256: null, // sha256 of the exact text pasted into the generator; must equal the run's generation-prompt.txt
     attestation: { ...Object.fromEntries(ATTESTATION_FLAGS.map((f) => [f, null])), attestedBy: "image-generator", attestedOn: null, statement: null },
     imageInputs: [], inputHashes: [],
     contractAck: { mustNotDepictAcknowledged: null },
@@ -249,6 +254,7 @@ export async function importDrop(run, { dropDir, promptText }) {
   try { claims = JSON.parse(fs.readFileSync(claimsFile, "utf8")); } catch (e) { return fail("CLAIMS_JSON", `candidate.claims.json is not valid JSON: ${e.message}`); }
   const open = nulls(claims);
   if (open.length) return fail("CLAIMS_INCOMPLETE", `unfilled claim fields: ${open.join(", ")}`);
+  if (promptText != null && claims.submittedPromptSha256 !== sha256(Buffer.from(promptText, "utf8"))) return fail("PROMPT_MISMATCH", `claims.submittedPromptSha256 (${claims.submittedPromptSha256}) is not the sha256 of this run's generation-prompt.txt (${sha256(Buffer.from(promptText, "utf8"))}): the text submitted to the generator must be exactly the locked prompt`);
   const phase = run.state.phase;
   if (!["VC_LOCKED", "GEN_REQUESTED", "DELTA_ISSUED", "PROVENANCE_REJECTED"].includes(phase)) return fail("WRONG_STATE", `cannot accept a candidate in phase ${phase}`);
   try {
@@ -263,6 +269,122 @@ export async function importDrop(run, { dropDir, promptText }) {
     if (e instanceof ActorUnavailable) return fail("NO_CANDIDATE", e.message);
     throw e;
   }
+}
+
+
+// ---- INTAKE: one command from a native PNG to a factory-validated candidate + QA packet ----
+// Truthfulness: --attest means the person running this personally submitted exactly generation-prompt.txt as plain text to the
+// generator with no uploads. The prompt hash is computed here from the run's stored prompt, so what is recorded is the text that must have been pasted.
+export async function intake(run, { native, chat, model = "ChatGPT image generation (model name not shown in UI)", system = "ChatGPT image generation", provider = "OpenAI", attest, intakeRoot }) {
+  if (!attest) return fail("NO_ATTESTATION", "pass --attest only if the exact generation-prompt.txt was pasted as text with no uploads");
+  const id = run.visualId;
+  const { fitFile } = await import(path.join(ROOT, "scripts/bmw/fit-frame.mjs"));
+  const drop = path.join(intakeRoot, "drops", id);
+  fs.mkdirSync(drop, { recursive: true });
+  const f = fitFile(native, drop);
+  if (!f.ok) return { ...f, stage: "fit" };
+  const promptText = fs.readFileSync(path.join(run.dir, "generation-prompt.txt"), "utf8");
+  const t = JSON.parse(fs.readFileSync(writeDropTemplate(drop), "utf8")); delete t._readme;
+  const today = new Date().toISOString().slice(0, 10);
+  Object.assign(t, { generator: { system, model, provider }, requestId: chat, generationId: chat, submittedPromptSha256: sha256(Buffer.from(promptText, "utf8")) });
+  Object.assign(t.attestation, { generatedFromTextOnly: true, noReferenceImageInputs: true, noTracing: true, noThirdPartyCompositing: true, noBakedText: true, attestedOn: today, statement: "Generated in a fresh ChatGPT chat by pasting the run's generation-prompt.txt as text; no uploads. Baked-text claim is the generator's statement and is checked by the independent reviewer." });
+  t.contractAck.mustNotDepictAcknowledged = true;
+  t.licenseTerms.summary = "OpenAI ChatGPT usage terms: output rights per the provider terms; C2PA manifest recorded from the native file.";
+  fs.writeFileSync(path.join(drop, "candidate.claims.json"), JSON.stringify(t, null, 2) + "\n");
+  fs.mkdirSync(path.join(intakeRoot, "native"), { recursive: true });
+  fs.copyFileSync(native, path.join(intakeRoot, "native", `${id}.native.png`));
+  const imp = await importDrop(run, { dropDir: drop, promptText });
+  if (!imp.ok) return { ...imp, stage: "drop-import" };
+  const qaDir = path.join(intakeRoot, "qa", id);
+  const ex = exportPacket(run, qaDir, { fitRecord: f.record });
+  return { ok: ex.ok !== false && imp.provenance === "valid", provenance: imp.provenance, problems: imp.problems, fitted: f.record.fitted, pad: f.record.pad, packetDir: ex.dir, promptSha256: t.submittedPromptSha256 };
+}
+
+// ---- ADMIT + NORMALIZE (factory gates; refuses unless provenance-valid AND independently QA-passed) ----
+export function finish(run) {
+  try {
+    run.admit();
+    const n = run.normalize();
+    return { ok: true, phase: run.state.phase, normalized: n.normalized, downscaled: n.downscaled, hasCallouts: run.store().get(run.state.vc.ref.id).callouts.length > 0 };
+  } catch (e) { if (e instanceof Refused) return fail(e.code, e.message, e.problems); throw e; }
+}
+
+// ---- OVERLAY QA: callouts are real contract callouts; the reviewer judges the editable overlay composited on the NORMALIZED image ----
+const overlayPaths = (run) => ({ spec: path.join(run.dir, "overlay.spec.json"), svg: path.join(run.dir, "overlay.svg"), composite: path.join(run.dir, "overlay-preview.png") });
+
+export function overlaySet(run, { element, region, label }) {
+  const { spec } = overlayPaths(run);
+  const o = JSON.parse(fs.readFileSync(spec, "utf8"));
+  const h = o.highlights.find((x) => x.element === element);
+  if (!h) return fail("NO_ELEMENT", `no highlight for element ${element}; have ${o.highlights.map((x) => x.element).join(", ")}`);
+  const r = String(region).split(",").map(Number);
+  if (r.length !== 4 || r.some((n) => !Number.isFinite(n) || n < 0 || n > 1) || r[0] + r[2] > 1 || r[1] + r[3] > 1 || r[2] <= 0 || r[3] <= 0) return fail("BAD_REGION", "region must be x,y,w,h as fractions of the image, inside 0..1");
+  h.region = r; if (label) h.label = label;
+  fs.writeFileSync(spec, JSON.stringify(o, null, 2) + "\n");
+  return { ok: true, highlight: h };
+}
+
+export async function overlayRender(run) {
+  const s = run.state;
+  if (!["NORMALIZED", "OVERLAY_PASSED"].includes(s.phase)) return fail("WRONG_STATE", `overlay render needs a normalized image (phase ${s.phase})`);
+  const { renderOverlaySvg } = await import(path.join(ROOT, "scripts/bmw/visual-standard.mjs"));
+  const sharp = (await import("sharp")).default;
+  const P = overlayPaths(run);
+  const o = JSON.parse(fs.readFileSync(P.spec, "utf8"));
+  const unset = o.highlights.filter((h) => !h.region);
+  if (unset.length) return fail("REGION_UNSET", `set a region for: ${unset.map((h) => h.element).join(", ")}`);
+  const svg = renderOverlaySvg(o);
+  fs.writeFileSync(P.svg, svg);
+  const base = readBytes(run.dir, `normalized/${run.visualId}.png`.replace(/^/, ""));
+  await sharp(base).composite([{ input: Buffer.from(svg), top: 0, left: 0 }]).png().toFile(P.composite);
+  return { ok: true, composite: P.composite, svg: P.svg, sha256: sha256(fs.readFileSync(P.composite)) };
+}
+
+export function overlayPacket(run) {
+  const vc = run.store().get(run.state.vc.ref.id);
+  const P = overlayPaths(run);
+  if (!fs.existsSync(P.composite)) return fail("NO_COMPOSITE", "run overlay-render first");
+  const o = JSON.parse(fs.readFileSync(P.spec, "utf8"));
+  const text = `# Independent overlay QA: ${run.visualId}
+
+You are the INDEPENDENT reviewer. The attached image (overlay-preview.png, sha256 ${sha256(fs.readFileSync(P.composite))}) is an instructional illustration for a 2010 BMW 328i (E90) DIY guide with an editable guidance overlay drawn on top: a dark banner at the top-left, and orange outline box(es). Judge ONLY the overlay: does each orange outline sit on, and tightly enclose, the component it is meant to point at? Do not judge the illustration style or mechanical accuracy.
+
+Callouts (answer every one; PASS only if the orange box encloses that component and nothing else important, and does not cover it so much that it cannot be seen):
+${vc.callouts.map((c) => `- "${c.label}" (element ${c.element}) -> expected component: ${o.highlights.find((h) => h.element === c.element)?.note ?? c.label}`).join("\n")}
+
+Also FAIL if the banner or any overlay text is cut off, illegible, or covers a callout target.
+
+Reply with ONE JSON object in a single json code block and nothing else:
+{
+  "overlaySha256": "${sha256(fs.readFileSync(P.composite))}",
+  "results": [ ${vc.callouts.map((c) => `{"callout": "${c.label}", "result": "PASS|FAIL", "note": "short"}`).join(", ")} ]
+}
+`;
+  return { ok: true, text, composite: P.composite };
+}
+
+export function overlayImport(run, { rawText, model, system }) {
+  const x = extractReplyJson(rawText);
+  if (!x.ok) return x;
+  const P = overlayPaths(run);
+  if (!fs.existsSync(P.composite)) return fail("NO_COMPOSITE", "run overlay-render first");
+  const want = sha256(fs.readFileSync(P.composite));
+  if (x.reply.overlaySha256 !== want) return fail("WRONG_COMPOSITE", "reply is for a different overlay image");
+  if (!model || !system) return fail("REVIEWER_IDENTITY", "--model and --system are required");
+  if (!Array.isArray(x.reply.results)) return fail("REPLY_SHAPE", "results must be a list");
+  const reviewer = { actor: "hermes", model, system, rawResponseSha256: sha256(Buffer.from(String(rawText), "utf8")) };
+  try { const qr = run.overlayCheck({ reviewer, results: x.reply.results.map((r) => ({ callout: r.callout, result: r.result, note: r.note ?? "" })) }); return { ok: true, verdict: qr.verdict, phase: run.state.phase }; }
+  catch (e) { if (e instanceof Refused) return fail(e.code, e.message, e.problems); throw e; }
+}
+
+// ---- SIGN-OFF: assembles the Approved Artifact. Authority is the OWNER's; this command never invents it ----
+export function signOff(run, { step, alt, caption, approvedBy, approvedOn, ownerQuote }) {
+  if (approvedBy !== "andy" || !/^\d{4}-\d{2}-\d{2}$/.test(approvedOn ?? "") || !ownerQuote) return fail("NO_OWNER_AUTHORITY", "sign-off needs --approved-by andy --approved-on YYYY-MM-DD and --owner-quote with the owner's actual words from this session");
+  try {
+    const r = run.approve({ step, presentation: { alt, caption }, authority: { approvedBy, approvedOn } });
+    fs.writeFileSync(path.join(run.dir, "owner-approval.json"), JSON.stringify({ approvedBy, approvedOn, ownerQuote, recordedBy: "claude", note: "Quote copied from the owner's message in the session; not independently verifiable from this file." }, null, 2) + "\n");
+    return { ok: true, phase: run.state.phase, registry: r.registry?.id ?? null };
+  } catch (e) { if (e instanceof Refused) return fail(e.code, e.message, e.problems); throw e; }
 }
 
 // ---------------------------------------------------------------- CLI
@@ -297,5 +419,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const run = await runFor();
     const pf = path.join(run.dir, "generation-prompt.txt");
     show(await importDrop(run, { dropDir: path.resolve(need("drop")), promptText: fs.existsSync(pf) ? fs.readFileSync(pf, "utf8") : null }));
-  } else { console.error("usage: export | import | drop-template | drop-import (see header)"); process.exit(2); }
+  } else if (cmd === "intake") {
+    show(await intake(await runFor(), { native: path.resolve(need("native")), chat: need("chat"), model: arg("model"), system: arg("system"), attest: rest.includes("--attest"), intakeRoot: path.resolve(arg("intake") ?? path.join(ROOT, "docs/bmw-e90/image-intake")) }));
+  } else if (cmd === "finish") show(finish(await runFor()));
+  else if (cmd === "overlay-set") show(overlaySet(await runFor(), { element: need("element"), region: need("region"), label: arg("label") }));
+  else if (cmd === "overlay-render") show(await overlayRender(await runFor()));
+  else if (cmd === "overlay-export") { const r = overlayPacket(await runFor()); if (r.ok) { const o = path.resolve(need("out")); fs.mkdirSync(o, { recursive: true }); fs.writeFileSync(path.join(o, "OVERLAY-QA-PACKET.md"), r.text); fs.copyFileSync(r.composite, path.join(o, "overlay-preview.png")); show({ ok: true, dir: o }); } else show(r); }
+  else if (cmd === "overlay-import") show(overlayImport(await runFor(), { rawText: fs.readFileSync(path.resolve(need("response")), "utf8"), model: arg("model"), system: arg("system") }));
+  else if (cmd === "sign-off") show(signOff(await runFor(), { step: Number(need("step")), alt: need("alt"), caption: need("caption"), approvedBy: arg("approved-by"), approvedOn: arg("approved-on"), ownerQuote: arg("owner-quote") }));
+  else { console.error("usage: export | import | drop-template | drop-import | intake | finish | overlay-set | overlay-render | overlay-export | overlay-import | sign-off (see header)"); process.exit(2); }
 }

@@ -41,5 +41,12 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "2e7ae13f31568f51148df0f3f4d881329b2f59bde5bfcbb5a2603e3f06210974"
+  "sourcePromptSha256": "2e7ae13f31568f51148df0f3f4d881329b2f59bde5bfcbb5a2603e3f06210974",
+  "callouts": [
+    {
+      "label": "access hatch",
+      "element": "access-hatch",
+      "required": true
+    }
+  ]
 }

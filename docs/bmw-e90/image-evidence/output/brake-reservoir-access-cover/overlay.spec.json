@@ -12,6 +12,7 @@
     {
       "element": "microfilter-housing-cover",
       "role": "hero",
+      "note": "The long black plastic cover along the base of the windshield in front of the wipers, covering the cabin microfilter housing and the brake reservoir.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "cover-fastener-points",
       "role": "target",
+      "note": "The 8 mm screw locations that hold the cover; the count is unresolved so they are shown without a number.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "brake-reservoir",
       "role": "target",
+      "note": "The reservoir revealed when the cover is lifted, with MIN and MAX marks on its side.",
       "label": null,
       "region": null,
       "arrowFrom": null,

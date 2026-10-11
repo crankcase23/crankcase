@@ -45,5 +45,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "252db3c6adafe61cc82c59147fc1afa4aae1b7cfeec4322d3fc725cb6af989ec"
+  "sourcePromptSha256": "252db3c6adafe61cc82c59147fc1afa4aae1b7cfeec4322d3fc725cb6af989ec",
+  "callouts": [
+    {
+      "label": "front wheel liner",
+      "element": "front-wheel-liner",
+      "required": true
+    },
+    {
+      "label": "liner screws",
+      "element": "liner-screws",
+      "required": true
+    }
+  ]
 }

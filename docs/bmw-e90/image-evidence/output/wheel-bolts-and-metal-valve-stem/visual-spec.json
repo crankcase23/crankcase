@@ -45,5 +45,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "ace17ebfb1e4a58609b201fbd6118d11cd99236872ea45aaf92074bdd94be32f"
+  "sourcePromptSha256": "ace17ebfb1e4a58609b201fbd6118d11cd99236872ea45aaf92074bdd94be32f",
+  "callouts": [
+    {
+      "label": "wheel bolt fasteners",
+      "element": "wheel-bolt-fasteners",
+      "required": true
+    },
+    {
+      "label": "metal valve stem",
+      "element": "metal-valve-stem",
+      "required": true
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 # Generate: tpms-reset-controls
 
-Prompt sha256: `b67c691f68fe4cc3100b6a6bdc9c65ce64d8f09168bdbf91a8d44011a36dd340` (the factory records this; do not edit the prompt).
+Prompt sha256: `b7446655d426179e6b01c25a4d3c76b875f15ea160f2ef41c8e0580fc3c95256` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

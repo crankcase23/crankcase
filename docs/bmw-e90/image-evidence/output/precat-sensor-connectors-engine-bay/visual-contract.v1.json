@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "precat-sensor-connectors",
+      "label": "precat sensor connectors",
+      "required": true
+    },
+    {
+      "element": "connector-release-tab",
+      "label": "connector release tab",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "0f4e2b2041c6d112050267bee64c76385c5d12d573893ee4079c51b5e4b7bede",
+  "contentHash": "dfc2d64bb9d67cbc8a3ffd056c17afd76671cf168f95e5ff738dbde05d8f4f7a",
   "createdAt": "2026-10-10T12:00:42.000Z",
   "createdBy": {
     "actor": "factory-code",

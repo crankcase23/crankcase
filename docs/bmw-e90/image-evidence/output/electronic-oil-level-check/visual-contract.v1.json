@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "turn-signal-stalk-button-1",
+      "label": "turn signal stalk button 1",
+      "required": true
+    },
+    {
+      "element": "turn-signal-stalk-button-2",
+      "label": "turn signal stalk button 2",
+      "required": true
+    },
+    {
+      "element": "cluster-oil-readout",
+      "label": "cluster oil readout",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "1cb47cd7b737b7bb110b7e11b7490515dcc1e1de3ae3801ba78f28b15fa30a6b",
+  "contentHash": "2d38b06d3ada8bfc6b723192166f7e87a7f7dcebb32c452e85e9438c97d2b189",
   "createdAt": "2026-10-10T12:03:50.000Z",
   "createdBy": {
     "actor": "factory-code",

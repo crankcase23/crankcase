@@ -12,6 +12,7 @@
     {
       "element": "expansion-tank",
       "role": "hero",
+      "note": "The plastic coolant expansion tank with a screw-on filler cap and a filler neck carrying MIN and MAX level marks.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "filler-cap",
       "role": "target",
+      "note": "The screw cap on the expansion tank; turned slightly counter-clockwise first to release pressure, closed until it clicks.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "vent-screw",
       "role": "target",
+      "note": "A small M10 vent (bleeder) screw on the expansion tank, closed during venting and loosened only while filling.",
       "label": null,
       "region": null,
       "arrowFrom": null,

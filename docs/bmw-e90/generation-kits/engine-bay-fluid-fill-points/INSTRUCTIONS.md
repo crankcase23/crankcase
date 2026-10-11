@@ -1,6 +1,6 @@
 # Generate: engine-bay-fluid-fill-points
 
-Prompt sha256: `0315bd9fdd0e525b3206c8546565e67c62de17c95f6dfb3deb85e5feb09cceef` (the factory records this; do not edit the prompt).
+Prompt sha256: `d7dd47bb08c382ba2bc5474d9a1f35dbd053ea4f59e5b01da1edb55657eada43` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

@@ -12,6 +12,7 @@
     {
       "element": "valve-cover",
       "role": "hero",
+      "note": "The plastic cylinder head cover with the integrated crankcase vent and oil separator (one part), with an oil filler cap on top and a row of six ignition coils.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "breather-hose-connection",
       "role": "target",
+      "note": "The push-on breather hose connection at the back of the valve cover.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "breather-hose-release-tabs",
       "role": "target",
+      "note": "Two side tabs on the hose end that are squeezed to release it; the hose must not be pried.",
       "label": null,
       "region": null,
       "arrowFrom": null,

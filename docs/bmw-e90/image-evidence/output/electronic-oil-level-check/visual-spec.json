@@ -49,5 +49,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "dd0635ebb14c0ef06b85be97f8daad562e51ac3f4d28af2904969e86f268b8f9"
+  "sourcePromptSha256": "dd0635ebb14c0ef06b85be97f8daad562e51ac3f4d28af2904969e86f268b8f9",
+  "callouts": [
+    {
+      "label": "turn signal stalk button 1",
+      "element": "turn-signal-stalk-button-1",
+      "required": true
+    },
+    {
+      "label": "turn signal stalk button 2",
+      "element": "turn-signal-stalk-button-2",
+      "required": true
+    },
+    {
+      "label": "cluster oil readout",
+      "element": "cluster-oil-readout",
+      "required": true
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 # Generate: wiper-blade-release-hook
 
-Prompt sha256: `1449363a8ed4f5f2a5a5acd9e1b8cca4dcc0a3b508324652ef49d39ec3b7420c` (the factory records this; do not edit the prompt).
+Prompt sha256: `d6996437acb3a221a83794fbca7cb317f941051a25aaeae3bb26b7ba415fed36` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

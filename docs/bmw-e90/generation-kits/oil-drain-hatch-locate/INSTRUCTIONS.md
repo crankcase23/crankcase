@@ -1,6 +1,6 @@
 # Generate: oil-drain-hatch-locate
 
-Prompt sha256: `afd552d1d72e9c75377803e571266efdde83f311889a02edd7a83b02540b3e08` (the factory records this; do not edit the prompt).
+Prompt sha256: `840c0534fe50f1fca2ad9289d4452a99f5ed2fca68b51b044fcde977d565c63b` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

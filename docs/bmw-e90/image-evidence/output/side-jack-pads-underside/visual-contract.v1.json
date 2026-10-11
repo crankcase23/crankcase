@@ -6,12 +6,18 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "sill-jack-pad",
+      "label": "sill jack pad",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "aa19dfaa24fc4a2a7f6191668c110c7c9538249bb70ec7e1ebfa6d295463f60e",
+  "contentHash": "a6ab1274925938a55a3f3f653b419b8e09023441645be3b54a18ba0cb612acc2",
   "createdAt": "2026-10-10T12:03:04.000Z",
   "createdBy": {
     "actor": "factory-code",

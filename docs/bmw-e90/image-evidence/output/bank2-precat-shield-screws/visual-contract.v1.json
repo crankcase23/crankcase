@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "bank2-precat-sensor",
+      "label": "bank2 precat sensor",
+      "required": true
+    },
+    {
+      "element": "shield-e8-screws",
+      "label": "shield e8 screws",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "3d1d7cb5b95ec9de54ef7ada74a8996e4949011e005689c8daf73641e6d6b371",
+  "contentHash": "67a78a62a355dcdde2afdf7f09cbac91508eedc68aeab4b0285860802fb2de90",
   "createdAt": "2026-10-10T12:00:51.000Z",
   "createdBy": {
     "actor": "factory-code",

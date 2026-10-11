@@ -6,12 +6,18 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "filter-cap",
+      "label": "filter cap",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "1e08f482cb4d2273c5c8f21b20215c0572aa515d6ce4283419442385e6f4d360",
+  "contentHash": "e78d85c7493108a8096814f38bc5c72391cec73b467a9261faf8ccb571ea7fab",
   "createdAt": "2026-10-10T12:04:17.000Z",
   "createdBy": {
     "actor": "factory-code",

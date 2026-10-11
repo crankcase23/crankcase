@@ -51,5 +51,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "6dde516a310162b72d3b78f42d466a0b0fbf3cd6e4c5c7163025ead57c12236a"
+  "sourcePromptSha256": "6dde516a310162b72d3b78f42d466a0b0fbf3cd6e4c5c7163025ead57c12236a",
+  "callouts": [
+    {
+      "label": "valve cover",
+      "element": "valve-cover",
+      "required": true
+    },
+    {
+      "label": "breather hose connection",
+      "element": "breather-hose-connection",
+      "required": true
+    },
+    {
+      "label": "breather hose release tabs",
+      "element": "breather-hose-release-tabs",
+      "required": true
+    }
+  ]
 }

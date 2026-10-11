@@ -43,5 +43,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "be374124772590756e12084b12a13a70cb528faed12ecd0ef6ad15e8a8de197c"
+  "sourcePromptSha256": "be374124772590756e12084b12a13a70cb528faed12ecd0ef6ad15e8a8de197c",
+  "callouts": [
+    {
+      "label": "drain plug",
+      "element": "drain-plug",
+      "required": true
+    },
+    {
+      "label": "tool socket and ratchet",
+      "element": "tool-socket-and-ratchet",
+      "required": true
+    }
+  ]
 }

@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "expansion-tank",
+      "label": "expansion tank",
+      "required": true
+    },
+    {
+      "element": "filler-cap",
+      "label": "filler cap",
+      "required": true
+    },
+    {
+      "element": "vent-screw",
+      "label": "vent screw",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "170680f95144b27e1722167926b60617f7449407e2a8a624640cd00037cff10c",
+  "contentHash": "29df6ff9f5bb4ce1ca6b403419c2c7e5bc592100e2970b5512c3ef48ee297acf",
   "createdAt": "2026-10-10T12:01:59.000Z",
   "createdBy": {
     "actor": "factory-code",

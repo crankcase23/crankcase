@@ -6,12 +6,33 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "front-brake-caliper",
+      "label": "front brake caliper",
+      "required": true
+    },
+    {
+      "element": "anti-rattle-spring-clip",
+      "label": "anti rattle spring clip",
+      "required": true
+    },
+    {
+      "element": "guide-pin-dust-caps",
+      "label": "guide pin dust caps",
+      "required": true
+    },
+    {
+      "element": "guide-pin-bolt-fasteners",
+      "label": "guide pin bolt fasteners",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "97f7df5dea023f22b397e5c8bceb9d86d2a3801f66b5775a936304b66bf9f724",
+  "contentHash": "02d13769dbd702da7381c372512ab2a9626c9eab10cf05f84b11d2bcaba4f691",
   "createdAt": "2026-10-10T12:00:06.000Z",
   "createdBy": {
     "actor": "factory-code",

@@ -264,7 +264,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3336 chars)",
+          "detail": "compact prompt built from the locked contract (1893 chars; full spec prompt 3336 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -346,7 +346,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2983 chars)",
+          "detail": "compact prompt built from the locked contract (1700 chars; full spec prompt 2983 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -427,7 +427,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3196 chars)",
+          "detail": "compact prompt built from the locked contract (1813 chars; full spec prompt 3196 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -509,7 +509,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2971 chars)",
+          "detail": "compact prompt built from the locked contract (1714 chars; full spec prompt 2971 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -591,7 +591,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3354 chars)",
+          "detail": "compact prompt built from the locked contract (1904 chars; full spec prompt 3354 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -672,7 +672,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3201 chars)",
+          "detail": "compact prompt built from the locked contract (1750 chars; full spec prompt 3201 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -796,7 +796,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2887 chars)",
+          "detail": "compact prompt built from the locked contract (1646 chars; full spec prompt 2887 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -877,7 +877,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2880 chars)",
+          "detail": "compact prompt built from the locked contract (1710 chars; full spec prompt 2880 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -960,7 +960,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3209 chars)",
+          "detail": "compact prompt built from the locked contract (1849 chars; full spec prompt 3209 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1041,7 +1041,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3094 chars)",
+          "detail": "compact prompt built from the locked contract (1813 chars; full spec prompt 3094 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1125,7 +1125,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3074 chars)",
+          "detail": "compact prompt built from the locked contract (1759 chars; full spec prompt 3074 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1206,7 +1206,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2639 chars)",
+          "detail": "compact prompt built from the locked contract (1470 chars; full spec prompt 2639 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1292,7 +1292,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3008 chars)",
+          "detail": "compact prompt built from the locked contract (1764 chars; full spec prompt 3008 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1419,7 +1419,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3313 chars)",
+          "detail": "compact prompt built from the locked contract (1862 chars; full spec prompt 3313 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1499,7 +1499,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3055 chars)",
+          "detail": "compact prompt built from the locked contract (1806 chars; full spec prompt 3055 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1580,7 +1580,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2902 chars)",
+          "detail": "compact prompt built from the locked contract (1622 chars; full spec prompt 2902 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1705,7 +1705,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3104 chars)",
+          "detail": "compact prompt built from the locked contract (1805 chars; full spec prompt 3104 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1875,7 +1875,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2767 chars)",
+          "detail": "compact prompt built from the locked contract (1459 chars; full spec prompt 2767 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1957,7 +1957,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2838 chars)",
+          "detail": "compact prompt built from the locked contract (1582 chars; full spec prompt 2838 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2037,7 +2037,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2815 chars)",
+          "detail": "compact prompt built from the locked contract (1601 chars; full spec prompt 2815 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2119,7 +2119,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2948 chars)",
+          "detail": "compact prompt built from the locked contract (1595 chars; full spec prompt 2948 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2287,7 +2287,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (3150 chars)",
+          "detail": "compact prompt built from the locked contract (1827 chars; full spec prompt 3150 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2367,7 +2367,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2869 chars)",
+          "detail": "compact prompt built from the locked contract (1589 chars; full spec prompt 2869 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2448,7 +2448,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2899 chars)",
+          "detail": "compact prompt built from the locked contract (1597 chars; full spec prompt 2899 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2530,7 +2530,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2627 chars)",
+          "detail": "compact prompt built from the locked contract (1438 chars; full spec prompt 2627 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2610,7 +2610,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2823 chars)",
+          "detail": "compact prompt built from the locked contract (1604 chars; full spec prompt 2823 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2690,7 +2690,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2869 chars)",
+          "detail": "compact prompt built from the locked contract (1648 chars; full spec prompt 2869 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -2770,7 +2770,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2947 chars)",
+          "detail": "compact prompt built from the locked contract (1738 chars; full spec prompt 2947 chars kept internal)",
           "stage": "4b generation request",
           "status": "PASS"
         },

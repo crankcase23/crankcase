@@ -12,6 +12,7 @@
     {
       "element": "drain-plug",
       "role": "hero",
+      "note": "The engine oil drain plug seen end-on, a short external hex head with a copper-coloured crush washer, with the socket fitted over its head.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "tool-socket-and-ratchet",
       "role": "target",
+      "note": "A plain chrome 17 mm socket fitted over the plug head, on a plain ratchet whose handle extends away from the plug; no markings or engraving.",
       "label": null,
       "region": null,
       "arrowFrom": null,

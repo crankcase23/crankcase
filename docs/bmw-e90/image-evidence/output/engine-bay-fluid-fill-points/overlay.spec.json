@@ -12,6 +12,7 @@
     {
       "element": "coolant-expansion-tank-cap",
       "role": "hero",
+      "note": "The cap on the translucent coolant expansion tank, with a filler neck marked MAX and MIN; reported on the passenger side toward the firewall.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "washer-fluid-filler-cap",
       "role": "target",
+      "note": "The washer-fluid filler neck cap, reported black with a wiper symbol, serving window and headlamp washers.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "engine-oil-filler-cap",
       "role": "target",
+      "note": "The engine oil filler neck cap on top of the engine.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -36,6 +39,7 @@
     {
       "element": "brake-reservoir-under-cover",
       "role": "target",
+      "note": "The brake fluid reservoir at the driver-side base of the windshield, hidden under a long plastic cover.",
       "label": null,
       "region": null,
       "arrowFrom": null,

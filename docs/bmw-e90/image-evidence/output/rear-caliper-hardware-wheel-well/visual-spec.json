@@ -49,5 +49,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "37c973c05213698d951b57aba546997363db40d000ee34e5c5daa2cafb05ad5d"
+  "sourcePromptSha256": "37c973c05213698d951b57aba546997363db40d000ee34e5c5daa2cafb05ad5d",
+  "callouts": [
+    {
+      "label": "rear brake caliper",
+      "element": "rear-brake-caliper",
+      "required": true
+    },
+    {
+      "label": "caliper retaining clip",
+      "element": "caliper-retaining-clip",
+      "required": true
+    },
+    {
+      "label": "carrier bolt fasteners",
+      "element": "carrier-bolt-fasteners",
+      "required": true
+    }
+  ]
 }

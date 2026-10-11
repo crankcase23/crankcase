@@ -12,6 +12,7 @@
     {
       "element": "large-black-o-ring",
       "role": "hero",
+      "note": "A large black rubber ring around the cap perimeter, seated above the threaded section.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "small-green-o-ring",
       "role": "target",
+      "note": "A small green rubber ring on the tip of the cap's centre stem.",
       "label": null,
       "region": null,
       "arrowFrom": null,

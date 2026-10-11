@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "wheel-bolt-fasteners",
+      "label": "wheel bolt fasteners",
+      "required": true
+    },
+    {
+      "element": "metal-valve-stem",
+      "label": "metal valve stem",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "e863dbb1669e46259f77fc2dba40891d3e638b9548a0becb480d52e005ac11ce",
+  "contentHash": "3395dcc8c8902193708e06c368230dadcc520b6db4badf8121801be9251102d1",
   "createdAt": "2026-10-10T12:03:13.000Z",
   "createdBy": {
     "actor": "factory-code",

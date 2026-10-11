@@ -12,6 +12,7 @@
     {
       "element": "pad-wear-sensor-wire",
       "role": "hero",
+      "note": "A thin wear-sensor wire clipped into the inner brake pad, running up out of the caliper area.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "sensor-connector-junction-box",
       "role": "target",
+      "note": "A small plastic junction box with a door, high in the wheel well behind the strut, holding the sensor plug with a release tab.",
       "label": null,
       "region": null,
       "arrowFrom": null,

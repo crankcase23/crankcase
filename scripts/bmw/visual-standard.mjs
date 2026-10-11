@@ -70,7 +70,7 @@ export function overlaySpec(v, { stepNumber = 1, subtitle } = {}) {
     visualId: v.id,
     note: "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
     banner: { step: stepNumber, tag: v.imageType, subtitle: subtitle ?? TYPES[v.imageType].title },
-    highlights: [...hero, ...target].map((e, i) => ({ element: e.id, role: e.role, label: null, region: null, arrowFrom: null, primary: i === 0 })),
+    highlights: [...hero, ...target].map((e, i) => ({ element: e.id, role: e.role, note: e.describe, label: null, region: null, arrowFrom: null, primary: i === 0 })),
     palette: STANDARD.palette,
   };
 }

@@ -12,6 +12,7 @@
     {
       "element": "rear-pad-wear-sensor-wire",
       "role": "hero",
+      "note": "A wear-sensor wire clipped into the inner pad of the passenger-side rear caliper.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "sensor-connector-behind-arch-cover",
       "role": "target",
+      "note": "The sensor plug in a black box behind the wheel-arch cover, reached after removing its 10 mm fasteners.",
       "label": null,
       "region": null,
       "arrowFrom": null,

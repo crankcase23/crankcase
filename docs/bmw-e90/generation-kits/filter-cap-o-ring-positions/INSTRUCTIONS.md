@@ -1,6 +1,6 @@
 # Generate: filter-cap-o-ring-positions
 
-Prompt sha256: `cc34068fe5bca835c6af8c323da92898113220b7f83834b7fb52164d796cfedf` (the factory records this; do not edit the prompt).
+Prompt sha256: `b98cbc41786311fdcb5b8199e0229ea5018c6f495a9d23b1e787eff566698a24` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

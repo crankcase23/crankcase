@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "fuse-cover-fasteners",
+      "label": "fuse cover fasteners",
+      "required": true
+    },
+    {
+      "element": "fuse-cover",
+      "label": "fuse cover",
+      "required": true
+    },
+    {
+      "element": "fuse-panel",
+      "label": "fuse panel",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "0aa3302fcc0fc1bd9e35600aa9ca4e5c783719aed470c8a0b777b71c0659792c",
+  "contentHash": "54ef97c7e9c7520ef2012a6100a3d069be3528396897c4b0c227ea9f5afd1ae2",
   "createdAt": "2026-10-10T12:00:24.000Z",
   "createdBy": {
     "actor": "factory-code",

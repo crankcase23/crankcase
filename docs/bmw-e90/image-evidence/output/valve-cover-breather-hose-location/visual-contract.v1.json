@@ -6,12 +6,28 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "valve-cover",
+      "label": "valve cover",
+      "required": true
+    },
+    {
+      "element": "breather-hose-connection",
+      "label": "breather hose connection",
+      "required": true
+    },
+    {
+      "element": "breather-hose-release-tabs",
+      "label": "breather hose release tabs",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "e5bf787990577c356e758edc1bb4d783375a2e5b81d0694e510d725be3b4cdd2",
+  "contentHash": "4b20cc685d72d427b2989c7e391ad30b1392cc31a6a4025c0c22791bf20bb138",
   "createdAt": "2026-10-10T12:02:45.000Z",
   "createdBy": {
     "actor": "factory-code",

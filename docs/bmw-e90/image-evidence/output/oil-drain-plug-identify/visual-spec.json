@@ -44,5 +44,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "cba5bfffdbe87db98e6c9a5db01f23cf000f8059888c6273b1693e0a5ba5c39e"
+  "sourcePromptSha256": "cba5bfffdbe87db98e6c9a5db01f23cf000f8059888c6273b1693e0a5ba5c39e",
+  "callouts": [
+    {
+      "label": "drain plug",
+      "element": "drain-plug",
+      "required": true
+    },
+    {
+      "label": "crush washer",
+      "element": "crush-washer",
+      "required": true
+    }
+  ]
 }

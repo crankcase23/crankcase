@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "turn-signal-stalk-button",
+      "label": "turn signal stalk button",
+      "required": true
+    },
+    {
+      "element": "idrive-reset-tpm-menu",
+      "label": "idrive reset tpm menu",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "68ec3f8e9fa0a940c7991e23af9766eac7c2b54261d4ac8da368646a307fd917",
+  "contentHash": "434b1b52447da5829e4e77b0a58bd39abcb2a0636c6501282af517a60156ca3a",
   "createdAt": "2026-10-10T12:03:22.000Z",
   "createdBy": {
     "actor": "factory-code",

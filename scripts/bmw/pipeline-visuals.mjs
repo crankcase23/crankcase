@@ -224,9 +224,47 @@ export function buildPrompt(v, built = buildEP(v)) {
   return lines.join("\n") + "\n";
 }
 
+/**
+ * COMPACT GENERATION PROMPT (owner-approved 2026-10-11). The full contract, evidence ledger and the long spec prompt stay internal
+ * (buildPrompt -> spec-prompt.full.txt, parsed into the locked contract). What is SENT to the generator is this short text, derived from
+ * the same locked contract: hero and target descriptions, every "do not depict" for facts the ledger does not establish, the
+ * orientation rule, listed tools only, every exclusion, the CG-VS-1.0 look, the 8% margin and the clear space. It is stored as
+ * generation-prompt.txt, hashed by the factory, shown in the QA packet, and the claims file must carry its sha256.
+ * It deliberately avoids phrases that made ChatGPT's image tool misread a request as an edit ("reference image", "Text-only prompt").
+ */
+export function buildCompactPrompt(v, built = buildEP(v)) {
+  if (!VIEWPOINTS[v.viewpoint]) throw new Error(`visual ${v.id}: unknown viewpoint ${v.viewpoint}`);
+  if (!TYPES[v.imageType]) throw new Error(`visual ${v.id}: imageType must be LOCATE, IDENTIFY or DO (got ${v.imageType})`);
+  const { ep } = built;
+  const stepTitle = ep.canonicalStep.actions[0];
+  const ranked = [...v.elements.filter((e) => e.role === "hero"), ...v.elements.filter((e) => e.role === "target")];
+  const typeLine = { LOCATE: "Wide enough to find the part: the hero about 15-30% of the frame width, surroundings plain and simplified.", IDENTIFY: "Tight close-up: the hero fills about 40-60% of the frame on a plain simplified surface.", DO: "Tight close-up of the hero with the listed tool in working position; no hands." }[v.imageType];
+  const notEstablishedOrientation = ranked.some((e) => ep.ledger.some((r) => r.element === e.id && r.attribute === "orientation" && r.status === "not-established"));
+  const show = ranked.map((e) => {
+    const unknown = ep.ledger.filter((r) => r.element === e.id && r.status === "not-established" && r.attribute !== "existence" && r.attribute !== "location").map((r) => ATTR_PHRASE[r.attribute] ?? r.attribute);
+    const tail = unknown.length ? ` Do NOT depict ${[...new Set(unknown)].join(", ")}: keep it a plain generic shape.` : "";
+    return `${e.role === "hero" ? "HERO: " : ""}${oneLine(e.describe).replace(/\.+$/, "")}.${tail}`;
+  });
+  const may = v.elements.filter((e) => { if (e.role !== "context") return false; const r = ep.ledger.find((x) => x.element === e.id && x.attribute === "existence"); return r && r.render !== "omit"; }).map((e) => human(e.id));
+  const mustNot = [...built.exclusions.map((m) => `${human(m.of)}${m.of === m.element ? "" : " detail"}`), ...(TYPES[v.imageType].tools ? [] : ["wrench or socket"]), "hands", "people", "engine badges", "logos", "brand marks", "licence plates"];
+  const lines = [
+    `Generate a landscape 16:10 illustration (1600x1000 px or larger) for a DIY car-repair guide. ${oneLine(v.title)}, on a 2010 BMW 328i (E90), 3.0L inline-6. Step: "${oneLine(stepTitle)}".`,
+    `Look: clean realistic 3D technical illustration, light neutral studio background, matte materials, soft light and soft contact shadows, tight framing, minimal detail. Realism is for materials and light only: no invented detail, no orange or other saturated accent colours (copper parts may be copper).`,
+    `View: ${VIEWPOINTS[v.viewpoint]} ${typeLine}${notEstablishedOrientation && v.viewpoint !== "part-end-on" ? " Orientation of the hero is not established: view it end-on with no ground, horizon or body-edge cue." : ""}`,
+    `Show: ${show.join(" ")}`,
+    `Background only, simplified and dim: ${may.length ? may.join(", ") : "a plain light neutral ground plane"}.`,
+    `Leave out entirely: ${mustNot.join(", ")}.`,
+    `Layout: plain empty light margin of at least 8% of the width on the left and right and 8% of the height at the bottom; nothing touches those edges, the subject floats on the plain ground. Keep the top 3%-17% of the height plain light background.`,
+    `No text, letters, numbers, labels, arrows, callout lines or watermarks anywhere. Anything not described above stays a plain generic shape; if unsure how a real part looks, leave it out.`,
+  ];
+  return lines.join("\n") + "\n";
+}
+
 export async function runAll({ out = DEFAULT_OUT, only = null } = {}) {
-  fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(out, { recursive: true });
+  // A run that already holds a generation (GEN_SUBMITTED in its event log) is real work: never wipe or rebuild it.
+  const inFlight = (id) => { const ev = path.join(out, id, "events.jsonl"); return fs.existsSync(ev) && /"GEN_SUBMITTED"/.test(fs.readFileSync(ev, "utf8")); };
+  for (const e of fs.readdirSync(out, { withFileTypes: true })) if (e.isDirectory() && !inFlight(e.name)) fs.rmSync(path.join(out, e.name), { recursive: true, force: true });
   let t = Date.parse("2026-10-10T12:00:00.000Z");
   const clock = () => new Date((t += 1000)).toISOString();
   const visuals = loadVisuals().filter((v) => !only || only.includes(v.id));
@@ -237,10 +275,22 @@ export async function runAll({ out = DEFAULT_OUT, only = null } = {}) {
     const stage = (name, status, detail, extra = {}) => stages.push({ stage: name, status, detail, ...extra });
     const dir = path.join(out, v.id);
     const built = buildEP(v);
-    const promptText = buildPrompt(v, built);
+    if (inFlight(v.id)) {
+      const { FactoryRun: FR } = await import(path.join(ROOT, "scripts/visuals/factory-reconstructed/src/machine.mjs"));
+      const kept = new FR({ dir, visualId: v.id, application: APPLICATION, guideId, registry: { [guideId]: APPLICATION }, clock });
+      stage("0 preserved in-flight run", "PASS", `run already holds a generation (phase ${kept.state.phase}); not rebuilt`);
+      report.visuals.push({ visualId: v.id, imageType: v.imageType, guide: v.guideNo, guideName: v.guideName, evidenceSteps: v.evidenceSteps, phase: kept.state.phase, stages, certified: kept.state.phase === "APPROVED" ? "factory-approved, owner sign-off per approved artifact" : false, imageProduced: true });
+      continue;
+    }
+    const promptText = buildPrompt(v, built); // full spec prompt: internal, parsed into the locked contract
+    const compactText = buildCompactPrompt(v, built); // what is actually submitted to the generator
     fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "spec-prompt.full.txt"), promptText);
     const parsed = parseVisualSpecPrompt(promptText);
     stage("1 visual spec intake", parsed.ok ? "PASS" : "FAIL", parsed.ok ? `${parsed.spec.mustShow.length} must-show, ${parsed.spec.mustNotShow.length} must-not-show` : JSON.stringify(parsed.problems));
+    // Overlay guidance is a real contract callout per hero/target element, so the factory's overlay QA stage (independent review of the
+    // overlay on the normalized image) applies and the approved artifact cannot claim verified callouts without it.
+    if (parsed.ok) parsed.spec.callouts = [...v.elements.filter((e) => e.role === "hero"), ...v.elements.filter((e) => e.role === "target")].map((e) => ({ label: human(e.id), element: e.id, required: true }));
     const run = new FactoryRun({ dir, visualId: v.id, application: APPLICATION, guideId, registry: { [guideId]: APPLICATION }, clock });
     run.init();
     run.registerEP(built.ep, { role: "evidence-author" });
@@ -252,10 +302,10 @@ export async function runAll({ out = DEFAULT_OUT, only = null } = {}) {
       try { run.compileContract({ spec: parsed.spec }); stage("4 visual contract compile/lock", "PASS", "visual contract locked"); }
       catch (e) { stage("4 visual contract compile/lock", "FAIL", e instanceof Refused ? `refused ${e.code}: ${e.message} ${JSON.stringify(e.problems ?? [])}` : String(e)); }
       if (run.state.phase === "VC_LOCKED") {
-        const prompt = run.requestGeneration({ promptText }).prompt;
+        const prompt = run.requestGeneration({ promptText: compactText }).prompt;
         fs.writeFileSync(path.join(dir, "generation-prompt.txt"), prompt);
         fs.writeFileSync(path.join(dir, "overlay.spec.json"), JSON.stringify(overlaySpec(v, { stepNumber: v.evidenceSteps[0] }), null, 2) + "\n");
-        stage("4b generation request", "PASS", `prompt built from the locked contract (${prompt.length} chars)`);
+        stage("4b generation request", "PASS", `compact prompt built from the locked contract (${prompt.length} chars; full spec prompt ${promptText.length} chars kept internal)`);
         try { await new FileDropGenerator(path.join(out, "drop"), "no-drop-dir").generate({}); stage("5 image generation", "FAIL", "unexpected candidate"); }
         catch (e) { stage("5 image generation", "BLOCKED", e instanceof ActorUnavailable ? "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost." : String(e)); }
         for (const n of ["6 provenance checks", "7 no-source-pixels attestation", "8 admission gate", "9 normalization", "10 independent QA (Hermes) + overlay QA", "11 owner sign-off and approved artifact"]) stage(n, "BLOCKED", "no generated candidate exists yet");

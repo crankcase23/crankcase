@@ -1,6 +1,6 @@
 # Generate: expansion-tank-cap-and-vent-screw
 
-Prompt sha256: `3e6f081093887f3f33a8d7809fed7d6dd1a807fe8633ffbdc5f524206a752823` (the factory records this; do not edit the prompt).
+Prompt sha256: `fb579e8602b20a99c718812f0536b966cb2ecec66843bf8bdd547ab49f34d5e1` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

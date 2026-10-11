@@ -6,12 +6,18 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "side-jack-pad-rectangle",
+      "label": "side jack pad rectangle",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "890a8967655e99bafe06c0e2a6e3fa7b8dcefafe5070843bcf915175ae1efd04",
+  "contentHash": "0146db17b9784129e33685ec6ceaa47a1b24c994603d1f7857aad89d150b6e0a",
   "createdAt": "2026-10-10T12:03:59.000Z",
   "createdBy": {
     "actor": "factory-code",

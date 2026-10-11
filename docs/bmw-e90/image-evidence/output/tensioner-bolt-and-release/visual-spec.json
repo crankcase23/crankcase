@@ -49,5 +49,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "8c235eef7006252770290bbbb9abe805824994ce9f8d801d3624b1da8812a594"
+  "sourcePromptSha256": "8c235eef7006252770290bbbb9abe805824994ce9f8d801d3624b1da8812a594",
+  "callouts": [
+    {
+      "label": "tensioner assembly",
+      "element": "tensioner-assembly",
+      "required": true
+    },
+    {
+      "label": "tensioner mounting bolt",
+      "element": "tensioner-mounting-bolt",
+      "required": true
+    },
+    {
+      "label": "tensioner release socket",
+      "element": "tensioner-release-socket",
+      "required": true
+    }
+  ]
 }

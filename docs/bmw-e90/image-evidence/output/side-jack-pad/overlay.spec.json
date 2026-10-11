@@ -12,6 +12,7 @@
     {
       "element": "side-jack-pad-rectangle",
       "role": "hero",
+      "note": "A small rectangular plastic pad along the lower side of the body near a wheel; a hollow rectangle that is the lift and stand point.",
       "label": null,
       "region": null,
       "arrowFrom": null,

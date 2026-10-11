@@ -1,19 +1,8 @@
-Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
-
-SUBJECT: Rear pad wear sensor on the passenger rear only, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Passenger side only: free the wear sensor".
-
-FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). View into the wheel well with the wheel removed, from the side at hub height, mild perspective. LOCATE image: wide enough that a mechanic can find the part. Show the hero in its simplified surrounding structure, the hero taking roughly 15-30% of the frame width, the surroundings plain and simplified. MARGIN: leave a plain, empty, light neutral margin of at least 8% of the image width on the left and right and at least 8% of the height at the bottom; no part, panel, shadow or structure may touch or run off the left, right or bottom edge of the image. The subject floats on the plain ground, fully inside the frame. Style (CG-VS-1.0): clean, realistic 3D technical illustration; light neutral studio background (soft white to light grey); matte materials, soft light, soft contact shadows; tight component framing; minimal unnecessary detail. Realism applies to materials and lighting only: it does NOT license invented detail, so every part not listed below stays a plain generic shape. No orange or other saturated accent colours anywhere (a copper-coloured part may be copper); highlights and arrows are added later as an editable overlay.
-
-MUST SHOW (clearly, in this order of importance):
-1. HERO: A wear-sensor wire clipped into the inner pad of the passenger-side rear caliper.
-2. The sensor plug in a black box behind the wheel-arch cover, reached after removing its 10 mm fasteners. Do NOT depict the shape of its release mechanism: keep it a plain generic shape.
-
-MAY SHOW, SIMPLIFIED AND DIM (background only): a plain light neutral ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
-
-MUST NOT SHOW (leave these out entirely, do not substitute): sensor connector behind arch cover detail (Plug shape and cover outline are not established), rear pad wear sensor wire detail (Driver-side rear has no sensor), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
-
-NO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.
-
-CLEAR SPACE: keep one horizontal band plain and uncluttered (light neutral background only): the top 3%-17% of the height, across the full width. The step banner and labels are added later in software.
-
-Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.
+Generate a landscape 16:10 illustration (1600x1000 px or larger) for a DIY car-repair guide. Rear pad wear sensor on the passenger rear only, on a 2010 BMW 328i (E90), 3.0L inline-6. Step: "Passenger side only: free the wear sensor".
+Look: clean realistic 3D technical illustration, light neutral studio background, matte materials, soft light and soft contact shadows, tight framing, minimal detail. Realism is for materials and light only: no invented detail, no orange or other saturated accent colours (copper parts may be copper).
+View: View into the wheel well with the wheel removed, from the side at hub height, mild perspective. Wide enough to find the part: the hero about 15-30% of the frame width, surroundings plain and simplified.
+Show: HERO: A wear-sensor wire clipped into the inner pad of the passenger-side rear caliper. The sensor plug in a black box behind the wheel-arch cover, reached after removing its 10 mm fasteners. Do NOT depict the shape of its release mechanism: keep it a plain generic shape.
+Background only, simplified and dim: a plain light neutral ground plane.
+Leave out entirely: sensor connector behind arch cover detail, rear pad wear sensor wire detail, wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+Layout: plain empty light margin of at least 8% of the width on the left and right and 8% of the height at the bottom; nothing touches those edges, the subject floats on the plain ground. Keep the top 3%-17% of the height plain light background.
+No text, letters, numbers, labels, arrows, callout lines or watermarks anywhere. Anything not described above stays a plain generic shape; if unsure how a real part looks, leave it out.

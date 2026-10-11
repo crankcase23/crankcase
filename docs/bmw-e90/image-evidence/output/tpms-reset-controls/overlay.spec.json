@@ -12,6 +12,7 @@
     {
       "element": "turn-signal-stalk-button",
       "role": "hero",
+      "note": "The end button of the turn-signal stalk, used to scroll to TPMS RESET and hold for about 5 seconds.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "idrive-reset-tpm-menu",
       "role": "target",
+      "note": "An on-screen menu (Vehicle Info > Vehicle Status, or Settings > TPM) with a RESET TPM item.",
       "label": null,
       "region": null,
       "arrowFrom": null,

@@ -41,5 +41,12 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "cb06c5de2fd20d10f38c7d662056194a74dca6935d1f6dcbe41832882ea472dc"
+  "sourcePromptSha256": "cb06c5de2fd20d10f38c7d662056194a74dca6935d1f6dcbe41832882ea472dc",
+  "callouts": [
+    {
+      "label": "side jack pad rectangle",
+      "element": "side-jack-pad-rectangle",
+      "required": true
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 # Generate: tensioner-bolt-and-release
 
-Prompt sha256: `8c235eef7006252770290bbbb9abe805824994ce9f8d801d3624b1da8812a594` (the factory records this; do not edit the prompt).
+Prompt sha256: `a9876c3262dcaf9f79928d44824aa7e19b8521f3882d064bd733dfb29a92d22f` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

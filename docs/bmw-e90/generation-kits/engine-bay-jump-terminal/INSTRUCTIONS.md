@@ -1,6 +1,6 @@
 # Generate: engine-bay-jump-terminal
 
-Prompt sha256: `743ee1f3b3236170b41173dc0f4ef4836e6fbbfca1bb071b55b7ca2dcc91b806` (the factory records this; do not edit the prompt).
+Prompt sha256: `8698477362d240e6b3a4ec7a794b6c0c9dd7c9b123f4409d060c58ad5588a89a` (the factory records this; do not edit the prompt).
 
 1. Open a NEW ChatGPT chat (image generation). Paste the whole of `PROMPT.txt`. Do not attach any image.
 2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.

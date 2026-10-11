@@ -54,5 +54,27 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "0315bd9fdd0e525b3206c8546565e67c62de17c95f6dfb3deb85e5feb09cceef"
+  "sourcePromptSha256": "0315bd9fdd0e525b3206c8546565e67c62de17c95f6dfb3deb85e5feb09cceef",
+  "callouts": [
+    {
+      "label": "coolant expansion tank cap",
+      "element": "coolant-expansion-tank-cap",
+      "required": true
+    },
+    {
+      "label": "washer fluid filler cap",
+      "element": "washer-fluid-filler-cap",
+      "required": true
+    },
+    {
+      "label": "engine oil filler cap",
+      "element": "engine-oil-filler-cap",
+      "required": true
+    },
+    {
+      "label": "brake reservoir under cover",
+      "element": "brake-reservoir-under-cover",
+      "required": true
+    }
+  ]
 }

@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "front-wheel-liner",
+      "label": "front wheel liner",
+      "required": true
+    },
+    {
+      "element": "liner-screws",
+      "label": "liner screws",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "827c8574f5f10ca67920a7014fb1c769a168ce2d19b7e62028f422419a84dcc4",
+  "contentHash": "14a017e1820028b47e33f2dae6818a6f267769f217095955cd9643f29f54bd0d",
   "createdAt": "2026-10-10T12:00:33.000Z",
   "createdBy": {
     "actor": "factory-code",

@@ -48,5 +48,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "2f5a36c07cbdc5af5c69184f82c15a1c20927d5e578d43e080c13223b776b5a3"
+  "sourcePromptSha256": "2f5a36c07cbdc5af5c69184f82c15a1c20927d5e578d43e080c13223b776b5a3",
+  "callouts": [
+    {
+      "label": "precat sensor connectors",
+      "element": "precat-sensor-connectors",
+      "required": true
+    },
+    {
+      "label": "connector release tab",
+      "element": "connector-release-tab",
+      "required": true
+    }
+  ]
 }

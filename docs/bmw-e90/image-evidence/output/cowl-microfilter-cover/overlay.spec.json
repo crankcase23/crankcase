@@ -12,6 +12,7 @@
     {
       "element": "microfilter-cover",
       "role": "hero",
+      "note": "A long black plastic cover running along the base of the windshield in the engine bay, in front of the wipers.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "cover-screw-points",
       "role": "target",
+      "note": "The 8 mm screws that hold the cover and its ducts; shown as screw heads without a specific count.",
       "label": null,
       "region": null,
       "arrowFrom": null,

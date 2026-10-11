@@ -45,5 +45,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "cc34068fe5bca835c6af8c323da92898113220b7f83834b7fb52164d796cfedf"
+  "sourcePromptSha256": "cc34068fe5bca835c6af8c323da92898113220b7f83834b7fb52164d796cfedf",
+  "callouts": [
+    {
+      "label": "large black o ring",
+      "element": "large-black-o-ring",
+      "required": true
+    },
+    {
+      "label": "small green o ring",
+      "element": "small-green-o-ring",
+      "required": true
+    }
+  ]
 }

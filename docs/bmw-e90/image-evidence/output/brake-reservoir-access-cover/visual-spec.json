@@ -49,5 +49,22 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "8f634cad4c31984653139350eb949a9481c4e5a3604374534b0868279315f66e"
+  "sourcePromptSha256": "8f634cad4c31984653139350eb949a9481c4e5a3604374534b0868279315f66e",
+  "callouts": [
+    {
+      "label": "microfilter housing cover",
+      "element": "microfilter-housing-cover",
+      "required": true
+    },
+    {
+      "label": "cover fastener points",
+      "element": "cover-fastener-points",
+      "required": true
+    },
+    {
+      "label": "brake reservoir",
+      "element": "brake-reservoir",
+      "required": true
+    }
+  ]
 }

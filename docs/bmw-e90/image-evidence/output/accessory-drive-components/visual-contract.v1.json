@@ -6,12 +6,33 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "drive-belt",
+      "label": "drive belt",
+      "required": true
+    },
+    {
+      "element": "tensioner-pulley",
+      "label": "tensioner pulley",
+      "required": true
+    },
+    {
+      "element": "tensioner-release-point",
+      "label": "tensioner release point",
+      "required": true
+    },
+    {
+      "element": "deflection-pulley",
+      "label": "deflection pulley",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "fd87cf4c1afea6c9e88f0bc43c3eb3a6132911444954520a58b5d3e7af30a84d",
+  "contentHash": "77786f2b434301c86413e08ffdf794d723b531c2844fff3346592e8a077c584c",
   "createdAt": "2026-10-10T12:01:23.000Z",
   "createdBy": {
     "actor": "factory-code",

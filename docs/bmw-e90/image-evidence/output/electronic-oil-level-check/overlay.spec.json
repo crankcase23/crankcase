@@ -12,6 +12,7 @@
     {
       "element": "turn-signal-stalk-button-1",
       "role": "hero",
+      "note": "The small button on the turn-indicator lever that is pressed up or down repeatedly to step through the on-board computer displays until OIL appears.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "turn-signal-stalk-button-2",
       "role": "target",
+      "note": "The second button on the turn-indicator lever pressed once the OIL symbol is showing to start the oil level check.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -28,6 +30,7 @@
     {
       "element": "cluster-oil-readout",
       "role": "target",
+      "note": "The instrument cluster area where the OIL symbol and the level message (OK, being checked, below minimum, too high) appear.",
       "label": null,
       "region": null,
       "arrowFrom": null,

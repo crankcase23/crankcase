@@ -41,5 +41,12 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "012d0b83c8cb705e6787bc4bc52f36cfcb67ee0d168797d77ff53b8fe76add96"
+  "sourcePromptSha256": "012d0b83c8cb705e6787bc4bc52f36cfcb67ee0d168797d77ff53b8fe76add96",
+  "callouts": [
+    {
+      "label": "sill jack pad",
+      "element": "sill-jack-pad",
+      "required": true
+    }
+  ]
 }

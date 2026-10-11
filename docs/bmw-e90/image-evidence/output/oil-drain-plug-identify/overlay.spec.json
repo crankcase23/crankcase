@@ -12,6 +12,7 @@
     {
       "element": "drain-plug",
       "role": "hero",
+      "note": "The engine oil drain plug seen end-on: a short plain external hex head (17 mm size) with a flat copper-coloured crush washer under the head.",
       "label": null,
       "region": null,
       "arrowFrom": null,
@@ -20,6 +21,7 @@
     {
       "element": "crush-washer",
       "role": "target",
+      "note": "A thin flat copper-coloured crush washer sitting between the plug head and the oil pan surface.",
       "label": null,
       "region": null,
       "arrowFrom": null,

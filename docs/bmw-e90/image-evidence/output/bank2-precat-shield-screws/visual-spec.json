@@ -47,5 +47,17 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "9d1ade47b01ba47ead4e7d9ebafc5d286494d4c9cc75267361dadbafc6c5c9a5"
+  "sourcePromptSha256": "9d1ade47b01ba47ead4e7d9ebafc5d286494d4c9cc75267361dadbafc6c5c9a5",
+  "callouts": [
+    {
+      "label": "bank2 precat sensor",
+      "element": "bank2-precat-sensor",
+      "required": true
+    },
+    {
+      "label": "shield e8 screws",
+      "element": "shield-e8-screws",
+      "required": true
+    }
+  ]
 }

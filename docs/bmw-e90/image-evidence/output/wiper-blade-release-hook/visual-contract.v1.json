@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "blade-release-tab",
+      "label": "blade release tab",
+      "required": true
+    },
+    {
+      "element": "arm-hook-end",
+      "label": "arm hook end",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "9f8f06c2ff8efb4419569854a085da53443d0f1aa7c3ab3a358e3151a6e19127",
+  "contentHash": "14afeb84051bccdd3e2612edab70c21a43210140dc6ea8179ba726899bd9f15d",
   "createdAt": "2026-10-10T12:03:31.000Z",
   "createdBy": {
     "actor": "factory-code",

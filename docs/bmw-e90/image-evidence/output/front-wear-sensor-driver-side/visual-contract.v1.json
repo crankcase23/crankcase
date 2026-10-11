@@ -6,12 +6,23 @@
     "trim": "Sedan (E90)",
     "year": 2010
   },
-  "callouts": [],
+  "callouts": [
+    {
+      "element": "pad-wear-sensor-wire",
+      "label": "pad wear sensor wire",
+      "required": true
+    },
+    {
+      "element": "sensor-connector-junction-box",
+      "label": "sensor connector junction box",
+      "required": true
+    }
+  ],
   "composition": {
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "850383b266e1905a87d06956f36f9c534bf35bfd2f08fdf159973deaed49a541",
+  "contentHash": "1834d318835d5e2b487ae61f125d937f0251cb52a868cd125cc245288848ac17",
   "createdAt": "2026-10-10T12:00:15.000Z",
   "createdBy": {
     "actor": "factory-code",

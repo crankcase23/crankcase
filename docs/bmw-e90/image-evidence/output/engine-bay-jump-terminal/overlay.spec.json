@@ -12,6 +12,7 @@
     {
       "element": "b-plus-jump-terminal",
       "role": "hero",
+      "note": "A positive jump-start terminal in the engine compartment on the passenger side of the engine, marked B+ and fitted with a red cap.",
       "label": null,
       "region": null,
       "arrowFrom": null,
