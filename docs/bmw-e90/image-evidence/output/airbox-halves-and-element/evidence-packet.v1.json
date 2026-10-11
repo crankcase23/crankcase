@@ -14,8 +14,8 @@
     "stepNumber": 7,
     "title": "airbox-halves-and-element (BMW 328i draft Engine Air Filter guide; evidence step 7, 8)"
   },
-  "contentHash": "4dc576a7b9f93939bf19d045a53902456dbcad7a3099a2dcf574ae84effd1c91",
-  "createdAt": "2026-10-10T12:02:51.000Z",
+  "contentHash": "55e735dccaf45e20316dca638bfd9b985a7b2b921021c7804312f63d2db70674",
+  "createdAt": "2026-10-10T12:02:55.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"
@@ -95,9 +95,10 @@
       "element": "airbox-housing-screws",
       "evidence": [
         "ref-1",
-        "ref-2"
+        "ref-2",
+        "ref-3"
       ],
-      "note": "2 independent host(s)",
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -194,6 +195,17 @@
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "g42.bimmerpost.com",
       "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11949674",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "ETK diagram 13_1148: air filter element 13717542294, seven fillister-head screws 13717545438 on the assembly."
+      ],
+      "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=13_1148",
       "usage": "reference-only"
     }
   ],

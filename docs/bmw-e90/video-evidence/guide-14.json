@@ -1,0 +1,138 @@
+{
+  "guide": 14,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-ND3j-JBDVuY",
+      "url": "https://www.youtube.com/watch?v=ND3j-JBDVuY",
+      "titleAsListed": "How to Replace Windshield Wipers BMW 3 Series 2006-2011 - NO TOOLS!",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "2006",
+        "2011"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-Ez9vUDTk_fk",
+      "url": "https://www.youtube.com/watch?v=Ez9vUDTk_fk",
+      "titleAsListed": "How To Replace E90 BMW Windshield Wipers",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-SYwFZXn4uWA",
+      "url": "https://www.youtube.com/watch?v=SYwFZXn4uWA",
+      "titleAsListed": "BMW WINDSHIELD WIPERS REPLACEMENT e90 e91 e92 e93 325i 328i 330i 335i 335d 325xi 328xi",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "328I",
+        "325I",
+        "330I",
+        "335I"
+      ],
+      "titleConflictSignals": [
+        "335I"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-ixs6aKrjqy0",
+      "url": "https://www.youtube.com/watch?v=ixs6aKrjqy0",
+      "titleAsListed": "BMW E90 LCI Wiper blade Replacement / Bosch Aerotwin Wiper Blades",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "LCI"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-MxtHc8vWfVA",
+      "url": "https://www.youtube.com/watch?v=MxtHc8vWfVA",
+      "titleAsListed": "How to change wipers blades / window wipers BMW 3 (E90) [TUTORIAL AUTODOC]",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-B79foQkCgd8",
+      "url": "https://www.youtube.com/watch?v=B79foQkCgd8",
+      "titleAsListed": "FAST - How to Replace BMW 328i Wiper Blades",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "328I"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

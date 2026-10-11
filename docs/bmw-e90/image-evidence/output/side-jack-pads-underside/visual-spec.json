@@ -1,7 +1,7 @@
 {
   "schema": "reconstructed.visual-spec",
   "sourceKind": "documentation-derived-prompt",
-  "subject": "Plastic jack pads at the sill, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Loosen bolts on the ground, then lift and support\".",
+  "subject": "Plastic jack pads at the sill, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Lift at the side jack pads\".",
   "textOnly": true,
   "framing": {
     "aspect": [
@@ -41,5 +41,5 @@
       "toPct": 17
     }
   ],
-  "sourcePromptSha256": "95cf57df179148e9facc9df11a81bd7e187a1f43d05a150d824534266900fc2e"
+  "sourcePromptSha256": "fb8f877adccdf983d247244bbb3612f570541d299971bbcc885dcdda35a9bd77"
 }

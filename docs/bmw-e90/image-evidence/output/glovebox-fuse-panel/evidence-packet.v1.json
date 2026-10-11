@@ -14,7 +14,7 @@
     "stepNumber": 2,
     "title": "glovebox-fuse-panel (BMW 328i draft Fuse & Bulb Replacement guide; evidence step 2, 3)"
   },
-  "contentHash": "1670887852385a8cb28547c5281f73728836b0b73321fe5978589d4622eb6df4",
+  "contentHash": "f55a27ab8102aedb2a0e4199f16d9d284814d60195106dcfd5702660b9994276",
   "createdAt": "2026-10-10T12:00:20.000Z",
   "createdBy": {
     "actor": "claude-research",
@@ -108,10 +108,11 @@
       "attribute": "relationship",
       "element": "fuse-cover",
       "evidence": [
+        "ref-6",
         "ref-4",
         "ref-5"
       ],
-      "note": "2 independent host(s)",
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -138,11 +139,12 @@
       "attribute": "existence",
       "element": "fuse-cover",
       "evidence": [
+        "ref-6",
         "ref-3",
         "ref-4",
         "ref-5"
       ],
-      "note": "3 independent host(s)",
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -150,11 +152,12 @@
       "attribute": "location",
       "element": "fuse-cover",
       "evidence": [
+        "ref-6",
         "ref-3",
         "ref-4",
         "ref-5"
       ],
-      "note": "3 independent host(s)",
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -174,12 +177,13 @@
       "attribute": "location",
       "element": "fuse-panel",
       "evidence": [
+        "ref-6",
         "ref-2",
         "ref-1",
         "ref-3",
         "ref-5"
       ],
-      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -288,6 +292,17 @@
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "g42.bimmerpost.com",
       "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=31660252",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "US 2010 328i owner's manual p.236: open the cover in the glove compartment and remove it; plastic tweezers are on the distributor box; fuse assignment is on the rear of the cover."
+      ],
+      "id": "ref-6",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=fuses",
       "usage": "reference-only"
     }
   ],

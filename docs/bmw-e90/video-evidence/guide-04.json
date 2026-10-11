@@ -1,0 +1,146 @@
+{
+  "guide": 4,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-pkOfJtxwSe4",
+      "url": "https://www.youtube.com/watch?v=pkOfJtxwSe4",
+      "titleAsListed": "BMW N52 Oxygen Sensor Replacement DIY (325i, 328i, 528i)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "328I",
+        "325I",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-Xtu1G-A_--k",
+      "url": "https://www.youtube.com/watch?v=Xtu1G-A_--k",
+      "titleAsListed": "How To Replace BMW O2 Sensor Bank 2 Sensor 1 328i E90 E92",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E92",
+        "328I"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-gIRlbx90unU",
+      "url": "https://www.youtube.com/watch?v=gIRlbx90unU",
+      "titleAsListed": "HOW TO REMOVE AND REPLACE OXYGEN SENSOR BANK 1 BMW E90 E91 E92 E93",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-lCE57HYswxo",
+      "url": "https://www.youtube.com/watch?v=lCE57HYswxo",
+      "titleAsListed": "How To Replace Downstream O2 / Lambda Sensors on a BMW N52 / N54 E90,91,92 [DIY]",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "N52",
+        "N54"
+      ],
+      "titleConflictSignals": [
+        "N54"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-1DyyL0lMQKg",
+      "url": "https://www.youtube.com/watch?v=1DyyL0lMQKg",
+      "titleAsListed": "OXYGEN SENSOR REPLACEMENT LOCATION BMW N52 N53 N54 N55 ENGINE",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "N52",
+        "N54",
+        "N53",
+        "N55"
+      ],
+      "titleConflictSignals": [
+        "N54",
+        "N53",
+        "N55"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-cyR-HLVtlSw",
+      "url": "https://www.youtube.com/watch?v=cyR-HLVtlSw",
+      "titleAsListed": "P3027 & O2 Sensor Replacement - BMW N52 N51",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "N52",
+        "N51"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

@@ -9,13 +9,13 @@
   "canonicalStep": {
     "actions": [
       "Locate the cover",
-      "Remove the 8 mm fasteners"
+      "Remove the 8 mm screws"
     ],
     "stepNumber": 2,
     "title": "cowl-microfilter-cover (BMW 328i draft Cabin Air Filter guide; evidence step 2, 3)"
   },
-  "contentHash": "44127598c44661e002e6a3828956ef76cb997f363e7124e15b3f37f008e47cd8",
-  "createdAt": "2026-10-10T12:02:23.000Z",
+  "contentHash": "9a893e9261c6fecbded997ebc3be571ab049b31a4a86a58cc781fd8814eedbca",
+  "createdAt": "2026-10-10T12:02:27.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"
@@ -67,9 +67,10 @@
         "ref-1",
         "ref-2",
         "ref-3",
-        "ref-4"
+        "ref-4",
+        "ref-5"
       ],
-      "note": "3 independent host(s)",
+      "note": "4 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -77,10 +78,11 @@
       "attribute": "existence",
       "element": "microfilter-cover",
       "evidence": [
-        "ref-5",
-        "ref-6"
+        "ref-6",
+        "ref-7",
+        "ref-8"
       ],
-      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -90,9 +92,10 @@
       "evidence": [
         "ref-2",
         "ref-3",
-        "ref-4"
+        "ref-4",
+        "ref-5"
       ],
-      "note": "3 independent host(s)",
+      "note": "4 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -111,8 +114,8 @@
       "attribute": "action",
       "element": "wiper-arms-resting",
       "evidence": [
-        "ref-7",
-        "ref-8"
+        "ref-9",
+        "ref-10"
       ],
       "note": "1 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -125,9 +128,10 @@
         "ref-1",
         "ref-3",
         "ref-2",
-        "ref-4"
+        "ref-4",
+        "ref-5"
       ],
-      "note": "3 independent host(s)",
+      "note": "4 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -238,9 +242,20 @@
     },
     {
       "establishes": [
-        "E90 manual p.105: combined microfilter / activated-charcoal filter replaced during routine maintenance."
+        "Under the bonnet, upper cabin filter housing; six 8 mm screws on the upper housing (E82/E84/E87/E88/E90/E91/E92/E93 guide); three filter tabs; 64316946628 'charcoal', 64316946629 'standard'."
       ],
       "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "onlyeuro.com.au",
+      "sourceRef": "https://onlyeuro.com.au/blogs/only-euro/how-to-replace-a-cabin-filter-in-a-bmw-e82-e84-e87-e88-e90-e91-e92-e93",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 manual p.105: combined microfilter / activated-charcoal filter replaced during routine maintenance."
+      ],
+      "id": "ref-6",
       "kind": "oem-text",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "carmanualsonline.info",
@@ -251,7 +266,7 @@
       "establishes": [
         "64319313519 lists E90 328i N52."
       ],
-      "id": "ref-6",
+      "id": "ref-7",
       "kind": "parts-catalog",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "turnermotorsport.com",
@@ -260,9 +275,20 @@
     },
     {
       "establishes": [
+        "PH73 USA 09/2009 E90N 328i diagram 64_1428: carbon container 64319313519, upper housing 64316987498, lower housing 64316924277; hardware rows without cover assignment."
+      ],
+      "id": "ref-8",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=64_1428",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
         "E90 manual p.237: wiper arms against the windshield before opening the engine compartment."
       ],
-      "id": "ref-7",
+      "id": "ref-9",
       "kind": "oem-text",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "carmanualsonline.info",
@@ -273,7 +299,7 @@
       "establishes": [
         "E94 manual p.233: same wiper-arm instruction."
       ],
-      "id": "ref-8",
+      "id": "ref-10",
       "kind": "oem-text",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "carmanualsonline.info",

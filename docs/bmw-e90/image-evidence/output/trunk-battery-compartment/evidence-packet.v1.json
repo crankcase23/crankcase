@@ -17,7 +17,7 @@
     "stepNumber": 4,
     "title": "trunk-battery-compartment (BMW 328i draft Battery Replacement guide; evidence step 4, 5, 6, 7, 8)"
   },
-  "contentHash": "064fa389b538d2614eef6aec1874ddbd472178a18bc76f77f6b7a49d29866a61",
+  "contentHash": "10c193f00c0ca97cb1f35a5f50bbeed014bc3499b68373b4d50269770605d82a",
   "createdAt": "2026-10-10T12:01:37.000Z",
   "createdBy": {
     "actor": "claude-research",
@@ -82,9 +82,10 @@
         "ref-1",
         "ref-2",
         "ref-3",
-        "ref-4"
+        "ref-4",
+        "ref-5"
       ],
-      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -104,7 +105,7 @@
       "element": "rear-power-distribution-box",
       "evidence": [
         "ref-1",
-        "ref-5"
+        "ref-6"
       ],
       "note": "2 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -125,8 +126,8 @@
       "element": "negative-terminal-with-ibs",
       "evidence": [
         "ref-1",
-        "ref-6",
-        "ref-7"
+        "ref-7",
+        "ref-8"
       ],
       "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -137,7 +138,7 @@
       "element": "negative-terminal-with-ibs",
       "evidence": [
         "ref-3",
-        "ref-8"
+        "ref-9"
       ],
       "note": "2 independent host(s)",
       "render": "draw",
@@ -154,8 +155,8 @@
       "attribute": "existence",
       "element": "vent-hose",
       "evidence": [
-        "ref-9",
-        "ref-10"
+        "ref-10",
+        "ref-11"
       ],
       "note": "2 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -172,9 +173,9 @@
       "attribute": "existence",
       "element": "hold-down-bracket",
       "evidence": [
-        "ref-9",
+        "ref-10",
         "ref-3",
-        "ref-8"
+        "ref-9"
       ],
       "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -192,8 +193,8 @@
       "element": "rear-power-distribution-box",
       "evidence": [
         "ref-1",
-        "ref-7",
-        "ref-11"
+        "ref-8",
+        "ref-12"
       ],
       "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -204,9 +205,9 @@
       "element": "negative-terminal-with-ibs",
       "evidence": [
         "ref-1",
-        "ref-6",
         "ref-7",
-        "ref-12"
+        "ref-8",
+        "ref-13"
       ],
       "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -217,7 +218,7 @@
       "element": "negative-terminal-with-ibs",
       "evidence": [
         "ref-1",
-        "ref-6",
+        "ref-7",
         "ref-3"
       ],
       "note": "3 independent host(s), includes a BMW-document/catalog source",
@@ -315,9 +316,20 @@
     },
     {
       "establishes": [
-        "E90 thread: rear power distribution panel on top of the battery; battery in boot."
+        "2009 328i article: battery in the trunk on the right side under a removable trim panel, often partly under a plastic cover, held by a hold-down bracket."
       ],
       "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/where-is-the-battery-on-a-2009-bmw-328i/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90 thread: rear power distribution panel on top of the battery; battery in boot."
+      ],
+      "id": "ref-6",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "g42.bimmerpost.com",
@@ -328,7 +340,7 @@
       "establishes": [
         "BMW TIS 12 00: negative lead first, cars with IBS on negative terminal: do not pry pole shoes or loosen IBS socket cap screw."
       ],
-      "id": "ref-6",
+      "id": "ref-7",
       "kind": "oem-text",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "5series.net",
@@ -339,7 +351,7 @@
       "establishes": [
         "ETK cable diagram: negative cable with IBS and adapter, positive cable with SBK, rear power distribution box."
       ],
-      "id": "ref-7",
+      "id": "ref-8",
       "kind": "parts-catalog",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "realoem.com",
@@ -350,7 +362,7 @@
       "establishes": [
         "E82 DIY: red positive box clips, vent tube near positive terminal, hold-down plate near negative, front lip, 10 mm nuts."
       ],
-      "id": "ref-8",
+      "id": "ref-9",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "1addicts.com",
@@ -359,9 +371,9 @@
     },
     {
       "establishes": [
-        "ETK battery holder diagram: hold-down, vent hose, elbow, grommet, rollover protection cover and fasteners."
+        "ETK battery holder diagram: hold-down, vent hose, elbow, grommet, rollover protection cover and fasteners. Fresh read: hose and elbow unconditioned; grommet and distribution piece only with S146A; rollover protection cover 61217549425 and two M6x12 flange screws listed."
       ],
-      "id": "ref-9",
+      "id": "ref-10",
       "kind": "parts-catalog",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "realoem.com",
@@ -372,7 +384,7 @@
       "establishes": [
         "Retail listing of BMW battery vent hose 61-21-1-377-745 routing gases away through the factory vent path."
       ],
-      "id": "ref-10",
+      "id": "ref-11",
       "kind": "parts-catalog",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "pmbperformance.com",
@@ -383,7 +395,7 @@
       "establishes": [
         "Genuine BMW power distribution box w/ fuse 61146971370, fits E90 328i, described as sitting on top of the battery."
       ],
-      "id": "ref-11",
+      "id": "ref-12",
       "kind": "parts-catalog",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "bimmerworld.com",
@@ -394,7 +406,7 @@
       "establishes": [
         "E9x thread: the IBS is built into the negative battery terminal."
       ],
-      "id": "ref-12",
+      "id": "ref-13",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "g42.bimmerpost.com",

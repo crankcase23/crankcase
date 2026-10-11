@@ -14,7 +14,7 @@
     "stepNumber": 4,
     "title": "tensioner-bolt-and-release (BMW 328i draft Serpentine Belt guide; evidence step 4, 7)"
   },
-  "contentHash": "9a4c4fdcfc3ce42a0a76a679f96da0e89dad7f8aacfafca426247d1b1cf6a0ee",
+  "contentHash": "726838ff46638010d998f332d06d2ad4dca2c0a1cce9757af1bf72670989b7fa",
   "createdAt": "2026-10-10T12:01:28.000Z",
   "createdBy": {
     "actor": "claude-research",
@@ -229,7 +229,7 @@
     },
     {
       "establishes": [
-        "Mechanical belt tensioner with roller pulley; bolt sold separately."
+        "Mechanical belt tensioner with roller pulley listed for most 2006-2013 N51/N52 vehicles; bolt sold separately and cannot be reused."
       ],
       "id": "ref-3",
       "kind": "parts-catalog",

@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "ce64e1e33ddf0af68f3aabb013d48ac8f72eeb4b202e0104966385fdd5668020",
-  "createdAt": "2026-10-10T12:03:09.000Z",
+  "contentHash": "da258eb3c785c3c8e877ee4e2ae5a3d69b59ad3729381ac400cb6f213bb41e7a",
+  "createdAt": "2026-10-10T12:03:13.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -142,11 +142,11 @@
   "refs": [
     {
       "id": "EP-wheel-bolts-and-metal-valve-stem-v1",
-      "sha256": "a72795bbb4e6ee133fc8da38825535c39e45d935baaf520fbc7a8185f7d70844"
+      "sha256": "da1fe3bd0d8619937995081022bc41e8a1d40c8810e90eb9af1af394171aed9c"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "be0cca2819accd171d737147fca97dd81820079a717f71a8c8f370e8436ac9c0"
+      "sha256": "1d9b7149bf2b6c9c023bf55b5680e4a7c13e784d73ebd0941e312167897d1af2"
     }
   ],
   "schema": "guide-factory.visual-contract",

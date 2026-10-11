@@ -11,7 +11,7 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "f0a87ddc70d98044e03788ad8b571496cb4b583f7bc9dcacbca5db84fb6b20fd",
+  "contentHash": "d3fa079957b2c2f50ac3123efabe9ef635c7ab23836ad23d35813876376d2e0a",
   "createdAt": "2026-10-10T12:01:50.000Z",
   "createdBy": {
     "actor": "factory-code",
@@ -50,7 +50,8 @@
           "attribute": "location",
           "evidence": [
             "ref-2",
-            "ref-3"
+            "ref-3",
+            "ref-5"
           ],
           "render": "draw"
         }
@@ -97,7 +98,7 @@
   "refs": [
     {
       "id": "EP-engine-bay-jump-terminal-v1",
-      "sha256": "25276a12750976309f91a1166adf958a00d841833cddbc85f1be1e974ac5bba4"
+      "sha256": "2602d1075f945d3c97afe0f256c18c59a0db8b379de5c2251aaf0e238e27a470"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",

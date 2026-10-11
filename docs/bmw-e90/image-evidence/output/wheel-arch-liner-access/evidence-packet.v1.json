@@ -9,13 +9,13 @@
   "canonicalStep": {
     "actions": [
       "Halogen H7 low/high-beam bulb",
-      "Xenon low-beam bulb (D1S)",
+      "Xenon low-beam bulb (D1S), not expected for this car",
       "Fog bulb H8"
     ],
     "stepNumber": 7,
     "title": "wheel-arch-liner-access (BMW 328i draft Fuse & Bulb Replacement guide; evidence step 7, 8, 10)"
   },
-  "contentHash": "77d71a3cec5f24925c139cc9cf67e08955ef2897ce525ffd0989662bb2e63d31",
+  "contentHash": "245b39e83fe52c9fe736602dc59714607e9601bcfbc54548535b8a6a718f0ddb",
   "createdAt": "2026-10-10T12:00:29.000Z",
   "createdBy": {
     "actor": "claude-research",
@@ -72,9 +72,10 @@
       "element": "service-opening",
       "evidence": [
         "ref-4",
-        "ref-1"
+        "ref-5",
+        "ref-6"
       ],
-      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -113,7 +114,7 @@
       "attribute": "existence",
       "element": "liner-screws",
       "evidence": [
-        "ref-5",
+        "ref-1",
         "ref-2",
         "ref-3"
       ],
@@ -126,7 +127,7 @@
       "element": "liner-screws",
       "evidence": [
         "ref-3",
-        "ref-5"
+        "ref-1"
       ],
       "note": "2 independent host(s)",
       "render": "draw",
@@ -170,13 +171,13 @@
   "references": [
     {
       "establishes": [
-        "E90 fog light thread: turn wheels, remove 8 mm liner screws, peel back liner; low beams reached via small cover in front of the wheel."
+        "E9x fog-light thread: turn the wheel, remove the liner screws (8 mm per AndyR83; two lower screws at the front edge per Cali_Creez), peel the liner back; posters disagree whether a jack helps."
       ],
       "id": "ref-1",
-      "kind": "third-party-photo",
+      "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "g42.bimmerpost.com",
-      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=26172610",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
       "usage": "reference-only"
     },
     {
@@ -203,9 +204,20 @@
     },
     {
       "establishes": [
-        "Bulbs can be replaced without removing the headlight through service openings in the wheel arch covers."
+        "US 2010 328i owner's manual p.231-232: low-beam headlamp and front turn signal are reached through a flap in the wheel well (turn the wheel inward, turn the fastener counterclockwise with a coin); the high beam is reached from the engine compartment."
       ],
       "id": "ref-4",
+      "kind": "oem-text",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "carmanualsonline.info",
+      "sourceRef": "https://www.carmanualsonline.info/bmw-328i-sedan-2010-e90-owner-s-manual/?srch=wheel+well+flap",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "Bulbs can be replaced without removing the headlight through service openings in the wheel arch covers."
+      ],
+      "id": "ref-5",
       "kind": "oem-text",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "archive.org",
@@ -214,13 +226,13 @@
     },
     {
       "establishes": [
-        "E9x fog-light thread: 8 mm socket removes screws holding the black plastic wheel liner; two lower screws at the front edge; liner can be pulled back."
+        "E90Post angel-eye thread: one poster says to access the headlamp from the wheel arch you remove the panel under the arch; others say the bulbs can be changed from under the bonnet."
       ],
-      "id": "ref-5",
+      "id": "ref-6",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "g42.bimmerpost.com",
-      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=11847764",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=17230769",
       "usage": "reference-only"
     }
   ],

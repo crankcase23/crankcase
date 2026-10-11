@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "716ace96fe480cec0d2dbf98289f81833e9217a254841d3ebc44d40d4191cfac",
-  "createdAt": "2026-10-10T12:02:27.000Z",
+  "contentHash": "a66b1f9242c3fd6614fba00232ee64a683070adb1dffe7c377215e2d63e1c4f2",
+  "createdAt": "2026-10-10T12:02:31.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -48,15 +48,17 @@
             "ref-1",
             "ref-2",
             "ref-3",
-            "ref-4"
+            "ref-4",
+            "ref-5"
           ],
           "render": "draw"
         },
         {
           "attribute": "existence",
           "evidence": [
-            "ref-5",
-            "ref-6"
+            "ref-6",
+            "ref-7",
+            "ref-8"
           ],
           "render": "draw"
         }
@@ -73,7 +75,8 @@
           "evidence": [
             "ref-2",
             "ref-3",
-            "ref-4"
+            "ref-4",
+            "ref-5"
           ],
           "render": "draw"
         },
@@ -91,7 +94,8 @@
             "ref-1",
             "ref-3",
             "ref-2",
-            "ref-4"
+            "ref-4",
+            "ref-5"
           ],
           "render": "draw"
         },
@@ -155,11 +159,11 @@
   "refs": [
     {
       "id": "EP-cowl-microfilter-cover-v1",
-      "sha256": "44127598c44661e002e6a3828956ef76cb997f363e7124e15b3f37f008e47cd8"
+      "sha256": "9a893e9261c6fecbded997ebc3be571ab049b31a4a86a58cc781fd8814eedbca"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "3b379021c2067ebcf5e9153f9aa3464bd83cadd1d3ff63e98a31433cbbfea201"
+      "sha256": "3e0f01737499e3abdf48cd32b2afd20a2a16cfe197dc203dfb8c62263fadf7b0"
     }
   ],
   "schema": "guide-factory.visual-contract",

@@ -1,0 +1,139 @@
+{
+  "guide": 6,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-XXH2VBduPzQ",
+      "url": "https://www.youtube.com/watch?v=XXH2VBduPzQ",
+      "titleAsListed": "BMW E90 E92 Serpentine Belt Diagram & Replacement (N52 Engine 325i 328i DIY)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E92",
+        "328I",
+        "325I",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-0GpR3eOQN54",
+      "url": "https://www.youtube.com/watch?v=0GpR3eOQN54",
+      "titleAsListed": "E90 N52 BMW Accessory Serpentine Drive Belt and Tensioner Removal and Installation DIY",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-xwtodQMJdhA",
+      "url": "https://www.youtube.com/watch?v=xwtodQMJdhA",
+      "titleAsListed": "BMW N52 Serpentine Drive Belt Kit Replacement *COMPLETE GUIDE*",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-f-5xG9KMKAE",
+      "url": "https://www.youtube.com/watch?v=f-5xG9KMKAE",
+      "titleAsListed": "BMW N52 Serpentine Belt Tensioner Replacement DIY (E90, E91, E92, E93)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-RsWeUOqymX8",
+      "url": "https://www.youtube.com/watch?v=RsWeUOqymX8",
+      "titleAsListed": "How to Replace the Serpentine Belt and Tensioner on a 2004-2013 3 Series BMW E90 with N51/N52 3.0L",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "N52",
+        "N51",
+        "2013"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-jGjxvvwA4VY",
+      "url": "https://www.youtube.com/watch?v=jGjxvvwA4VY",
+      "titleAsListed": "BMW 3 Series E90 Belt And Tensioner Replacement DIY",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

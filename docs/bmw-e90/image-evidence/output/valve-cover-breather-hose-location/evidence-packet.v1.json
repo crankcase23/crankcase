@@ -15,8 +15,8 @@
     "stepNumber": 4,
     "title": "valve-cover-breather-hose-location (BMW 328i draft PCV / Crankcase Ventilation — Inspection & Diagnosis guide; evidence step 4, 5, 6)"
   },
-  "contentHash": "089f1e87df96936e9d3dd9a5c079d8ef2ba01e963dd4b0510eb1ed42c850a90c",
-  "createdAt": "2026-10-10T12:02:37.000Z",
+  "contentHash": "a534e033f5e835cdd1bcc839f18fdef680527032932d687626bd832bd4f53f4a",
+  "createdAt": "2026-10-10T12:02:41.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

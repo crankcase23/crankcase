@@ -15,6 +15,7 @@
     "bmw:pipeline": "node scripts/bmw/pipeline-visuals.mjs",
     "bmw:validate": "node scripts/bmw/validate-evidence.mjs",
     "bmw:qa": "node scripts/bmw/hermes-qa.mjs",
+    "bmw:video": "node scripts/bmw/video-evidence.mjs",
     "bmw:test": "node --test scripts/bmw/tests/*.test.mjs",
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
   },

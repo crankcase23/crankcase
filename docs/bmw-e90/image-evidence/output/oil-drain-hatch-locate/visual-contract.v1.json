@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "dd25f0c9591c608b62e512a2290052349744bc771b697b80b8f40aca96e03d05",
-  "createdAt": "2026-10-10T12:04:22.000Z",
+  "contentHash": "97f8c6cea7b62e69d3982ffb1a2e71486a7f5b01d544b0cf60106484b77f4486",
+  "createdAt": "2026-10-10T12:04:26.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -108,11 +108,11 @@
   "refs": [
     {
       "id": "EP-oil-drain-hatch-locate-v1",
-      "sha256": "ee80d932c986663cae25107a5ad33fc5ba827fb2961f40ce92e01ed7d3ae9fc0"
+      "sha256": "4a9202c63419e4ce022f96f9b35b992c0d8bea06018d3bf456cc85ee912bd296"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "1761412ce8cd88f294cfea7d1e734572e13b9669124289683eb3bbc9009c7eac"
+      "sha256": "aee8bacf8aee991a11ce74ed551ec75a9cd2cd4ba8eb0e459765f3de3446409e"
     }
   ],
   "schema": "guide-factory.visual-contract",

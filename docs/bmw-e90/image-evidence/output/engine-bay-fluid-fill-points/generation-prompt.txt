@@ -12,7 +12,7 @@ MUST SHOW (clearly, in this order of importance):
 
 MAY SHOW, SIMPLIFIED AND DIM (background only): windshield base and wipers. Keep every one of these generic and low-contrast. Never invent detail on them.
 
-MUST NOT SHOW (leave these out entirely, do not substitute): coolant expansion tank cap detail (Exact tank shape; cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank), brake reservoir under cover detail (The reservoir is hidden; do not show cover screw count or the reservoir's cap markings), washer fluid filler cap detail (Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+MUST NOT SHOW (leave these out entirely, do not substitute): coolant expansion tank cap detail (Exact tank shape; cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank), brake reservoir under cover detail (The reservoir is hidden; do not show cover screw count or the reservoir's cap markings), washer fluid filler cap detail (Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
 
 NO TEXT of any kind: no labels, letters, numbers, markings on tools, arrows, callout lines, highlight outlines, banners, watermarks or captions anywhere in the image.
 

@@ -98,23 +98,6 @@
       "deficits": [
         {
           "attribute": "location",
-          "criticality": "identification",
-          "element": "washer-fluid-filler-cap",
-          "haveHosts": 1,
-          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
-          "role": "target",
-          "urlsHave": [
-            "https://www.youcanic.com/add-windshield-washer-fluid-2004-2013-bmw-3-series/"
-          ]
-        }
-      ],
-      "guide": 9,
-      "visualId": "engine-bay-fluid-fill-points"
-    },
-    {
-      "deficits": [
-        {
-          "attribute": "location",
           "criticality": "procedure",
           "element": "element-retention-tabs",
           "haveHosts": 0,
@@ -129,27 +112,20 @@
     {
       "deficits": [
         {
-          "attribute": "location",
-          "criticality": "procedure",
-          "element": "airbox-mounting-fasteners",
-          "haveHosts": 0,
-          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
-          "role": "target",
-          "urlsHave": []
-        },
-        {
-          "attribute": "location",
-          "criticality": "critical",
-          "element": "maf-connector-clip",
-          "haveHosts": 0,
-          "need": "2+ distinct hosts",
-          "role": "target",
-          "urlsHave": []
-        },
-        {
           "attribute": "existence",
           "criticality": "procedure",
           "element": "snorkel-retention-tabs",
+          "haveHosts": 1,
+          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
+          "role": "target",
+          "urlsHave": [
+            "https://bavmods.com/pages/how-to-replace-air-filter-e90-e92-e93-328i-330i-335i-m3"
+          ]
+        },
+        {
+          "attribute": "location",
+          "criticality": "procedure",
+          "element": "airbox-mounting-fasteners",
           "haveHosts": 0,
           "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
           "role": "target",
@@ -240,8 +216,8 @@
       "LOCATE": 23
     },
     "certified": 0,
-    "contractLocked": 27,
-    "evidenceInsufficient": 8,
+    "contractLocked": 28,
+    "evidenceInsufficient": 7,
     "imagesProduced": 0,
     "visuals": 35
   },
@@ -435,7 +411,7 @@
           "status": "PASS"
         },
         {
-          "detail": "5 reference(s); 9 established / 5 not-established ledger rows",
+          "detail": "6 reference(s); 9 established / 5 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -517,7 +493,7 @@
           "status": "PASS"
         },
         {
-          "detail": "5 reference(s); 6 established / 3 not-established ledger rows",
+          "detail": "6 reference(s); 6 established / 3 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1133,7 +1109,7 @@
           "status": "PASS"
         },
         {
-          "detail": "12 reference(s); 11 established / 5 not-established ledger rows",
+          "detail": "13 reference(s); 11 established / 5 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1214,7 +1190,7 @@
           "status": "PASS"
         },
         {
-          "detail": "4 reference(s); 3 established / 1 not-established ledger rows",
+          "detail": "5 reference(s); 3 established / 1 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1419,7 +1395,7 @@
       "guideName": "Fluid Checks & Top-Offs",
       "imageProduced": false,
       "imageType": "LOCATE",
-      "phase": "EP_INSUFFICIENT",
+      "phase": "GEN_REQUESTED",
       "stages": [
         {
           "detail": "4 must-show, 10 must-not-show",
@@ -1427,25 +1403,63 @@
           "status": "PASS"
         },
         {
-          "detail": "11 reference(s); 9 established / 5 not-established ledger rows",
+          "detail": "16 reference(s); 10 established / 4 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
         {
-          "detail": "EP INSUFFICIENT: 1 hero/target fact(s) not established",
-          "problemCodes": [
-            "EP_HERO_NOT_ESTABLISHED"
-          ],
+          "detail": "every hero/target has established existence and location",
+          "problemCodes": [],
           "stage": "3b EP sufficiency (objective gate)",
-          "status": "BLOCKED"
+          "status": "PASS"
         },
         {
-          "detail": "needs a SUFFICIENT evidence packet",
+          "detail": "visual contract locked",
           "stage": "4 visual contract compile/lock",
+          "status": "PASS"
+        },
+        {
+          "detail": "prompt built from the locked contract (2995 chars)",
+          "stage": "4b generation request",
+          "status": "PASS"
+        },
+        {
+          "detail": "no image generator is connected to this run. Generating costs money (needs owner approval) and the original generator adapters were lost.",
+          "stage": "5 image generation",
           "status": "BLOCKED"
         },
         {
-          "detail": "2 events, 2 objects, problems=0",
+          "detail": "no generated candidate exists yet",
+          "stage": "6 provenance checks",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "7 no-source-pixels attestation",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "8 admission gate",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "9 normalization",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "10 independent QA (Hermes) + overlay QA",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "no generated candidate exists yet",
+          "stage": "11 owner sign-off and approved artifact",
+          "status": "BLOCKED"
+        },
+        {
+          "detail": "5 events, 3 objects, problems=0",
           "stage": "12 event log + directory integrity",
           "status": "PASS"
         }
@@ -1469,7 +1483,7 @@
           "status": "PASS"
         },
         {
-          "detail": "7 reference(s); 8 established / 3 not-established ledger rows",
+          "detail": "8 reference(s); 8 established / 3 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1550,7 +1564,7 @@
           "status": "PASS"
         },
         {
-          "detail": "8 reference(s); 7 established / 4 not-established ledger rows",
+          "detail": "10 reference(s); 7 established / 4 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1631,7 +1645,7 @@
           "status": "PASS"
         },
         {
-          "detail": "5 reference(s); 3 established / 5 not-established ledger rows",
+          "detail": "7 reference(s); 4 established / 4 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1759,12 +1773,12 @@
           "status": "PASS"
         },
         {
-          "detail": "4 reference(s); 9 established / 9 not-established ledger rows",
+          "detail": "5 reference(s); 11 established / 7 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
         {
-          "detail": "EP INSUFFICIENT: 4 hero/target fact(s) not established",
+          "detail": "EP INSUFFICIENT: 3 hero/target fact(s) not established",
           "problemCodes": [
             "EP_HERO_NOT_ESTABLISHED"
           ],
@@ -1802,7 +1816,7 @@
           "status": "PASS"
         },
         {
-          "detail": "2 reference(s); 3 established / 8 not-established ledger rows",
+          "detail": "3 reference(s); 3 established / 8 not-established ledger rows",
           "stage": "2-3 reference intake and ledger",
           "status": "PASS"
         },
@@ -1830,7 +1844,8 @@
     {
       "certified": false,
       "evidenceSteps": [
-        3
+        5,
+        6
       ],
       "guide": 13,
       "guideName": "Tire Rotation",
@@ -1860,7 +1875,7 @@
           "status": "PASS"
         },
         {
-          "detail": "prompt built from the locked contract (2472 chars)",
+          "detail": "prompt built from the locked contract (2449 chars)",
           "stage": "4b generation request",
           "status": "PASS"
         },
@@ -1910,9 +1925,9 @@
     {
       "certified": false,
       "evidenceSteps": [
-        4,
-        5,
-        7
+        7,
+        8,
+        10
       ],
       "guide": 13,
       "guideName": "Tire Rotation",
@@ -1992,7 +2007,7 @@
     {
       "certified": false,
       "evidenceSteps": [
-        7
+        10
       ],
       "guide": 13,
       "guideName": "Tire Rotation",

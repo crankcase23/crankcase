@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "73a43930c129326e00138f47a1954b4c98c97f6189a9ad32e40a3581ae7f5965",
-  "createdAt": "2026-10-10T12:04:40.000Z",
+  "contentHash": "801a2ebad5eeaa33035519704ee01ce7d4e02a7ddc138c851b8d8e5af4f14b52",
+  "createdAt": "2026-10-10T12:04:44.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -131,11 +131,11 @@
   "refs": [
     {
       "id": "EP-oil-drain-plug-loosen-v1",
-      "sha256": "41b3f7d00ca127d1424a983daf4949ead663bc99c886ddbc16b543df7ba6de91"
+      "sha256": "78acc69f9be1ecc86c3d5ef067ac33398d552c08dccfc04d19fa9185696f2225"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "011f9c8d91c85fbc9e0eafe5ca4c78bfbd7faccb215a443f9d9d421e65dbc285"
+      "sha256": "091d6a9ed146676d78802d11d3066c94e5e4e1690a058e583a0f298c532d38b2"
     }
   ],
   "schema": "guide-factory.visual-contract",

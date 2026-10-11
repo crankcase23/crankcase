@@ -4,7 +4,7 @@
   "visualId": "side-jack-pads-underside",
   "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
   "banner": {
-    "step": 3,
+    "step": 5,
     "tag": "LOCATE",
     "subtitle": "Find it"
   },

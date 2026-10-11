@@ -11,7 +11,7 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "3cb110a9d830a95713bf1914b1d3e6a42701d3e9bc825454a8b47d4352327c11",
+  "contentHash": "21c3cec56c8e86e2a3fdf91c66ef0412be778d1fccd2b88b04ee270312cd87dd",
   "createdAt": "2026-10-10T12:01:41.000Z",
   "createdBy": {
     "actor": "factory-code",
@@ -51,7 +51,8 @@
             "ref-1",
             "ref-2",
             "ref-3",
-            "ref-4"
+            "ref-4",
+            "ref-5"
           ],
           "render": "draw"
         },
@@ -75,7 +76,7 @@
           "attribute": "location",
           "evidence": [
             "ref-1",
-            "ref-5"
+            "ref-6"
           ],
           "render": "draw"
         },
@@ -90,8 +91,8 @@
           "attribute": "existence",
           "evidence": [
             "ref-1",
-            "ref-7",
-            "ref-11"
+            "ref-8",
+            "ref-12"
           ],
           "render": "draw"
         }
@@ -107,8 +108,8 @@
           "attribute": "relationship",
           "evidence": [
             "ref-1",
-            "ref-6",
-            "ref-7"
+            "ref-7",
+            "ref-8"
           ],
           "render": "draw"
         },
@@ -116,7 +117,7 @@
           "attribute": "fastener-head-type",
           "evidence": [
             "ref-3",
-            "ref-8"
+            "ref-9"
           ],
           "render": "draw"
         },
@@ -124,9 +125,9 @@
           "attribute": "existence",
           "evidence": [
             "ref-1",
-            "ref-6",
             "ref-7",
-            "ref-12"
+            "ref-8",
+            "ref-13"
           ],
           "render": "draw"
         },
@@ -134,7 +135,7 @@
           "attribute": "location",
           "evidence": [
             "ref-1",
-            "ref-6",
+            "ref-7",
             "ref-3"
           ],
           "render": "draw"
@@ -200,7 +201,7 @@
   "refs": [
     {
       "id": "EP-trunk-battery-compartment-v1",
-      "sha256": "064fa389b538d2614eef6aec1874ddbd472178a18bc76f77f6b7a49d29866a61"
+      "sha256": "10c193f00c0ca97cb1f35a5f50bbeed014bc3499b68373b4d50269770605d82a"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",

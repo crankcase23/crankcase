@@ -8,77 +8,79 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 
 | # | Guide | Tier | BMW doc | Readiness | Verified | Secondary | Single | Conflict | Missing | Visuals proposed |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | Front Brake Pads | safety-critical | no | NEEDS_EVIDENCE | 27 | 15 | 4 | 4 | 1 | 2 |
-| 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 16 | 2 | 12 | 2 | 2 | 2 |
-| 3 | Key Fob Battery | standard | yes | READY_FOR_QA | 9 | 0 | 6 | 0 | 0 | 0 |
-| 4 | Oxygen Sensor | safety-critical | yes | NEEDS_EVIDENCE | 15 | 7 | 7 | 0 | 4 | 3 |
-| 5 | Rear Brake Pads | safety-critical | no | NEEDS_EVIDENCE | 21 | 12 | 11 | 2 | 1 | 2 |
+| 1 | Front Brake Pads | safety-critical | yes | NEEDS_EVIDENCE | 36 | 15 | 2 | 2 | 1 | 2 |
+| 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 27 | 0 | 10 | 4 | 2 | 2 |
+| 3 | Key Fob Battery | standard | yes | READY_FOR_QA | 10 | 1 | 6 | 0 | 0 | 0 |
+| 4 | Oxygen Sensor | safety-critical | yes | NEEDS_EVIDENCE | 15 | 7 | 10 | 0 | 4 | 3 |
+| 5 | Rear Brake Pads | safety-critical | yes | NEEDS_EVIDENCE | 28 | 11 | 9 | 2 | 1 | 2 |
 | 6 | Serpentine Belt | safety-critical | yes | NEEDS_EVIDENCE | 7 | 9 | 10 | 3 | 3 | 2 |
-| 7 | Battery Replacement | safety-critical | yes | NEEDS_EVIDENCE | 14 | 5 | 12 | 1 | 5 | 2 |
-| 8 | Coolant Flush & Fill | safety-critical | yes | NEEDS_EVIDENCE | 22 | 9 | 9 | 1 | 3 | 2 |
-| 9 | Fluid Checks & Top-Offs | safety-critical | yes | NEEDS_EVIDENCE | 8 | 5 | 4 | 0 | 6 | 2 |
-| 10 | Cabin Air Filter | standard | yes | NEEDS_EVIDENCE | 8 | 1 | 4 | 1 | 1 | 2 |
-| 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | safety-critical | yes | READY_FOR_QA | 9 | 2 | 1 | 0 | 0 | 1 |
-| 12 | Engine Air Filter | standard | no | NEEDS_EVIDENCE | 9 | 0 | 7 | 3 | 1 | 2 |
-| 13 | Tire Rotation | safety-critical | no | NEEDS_EVIDENCE | 8 | 2 | 4 | 2 | 3 | 3 |
-| 14 | Wiper Blades | standard | no | NEEDS_EVIDENCE | 9 | 0 | 6 | 0 | 2 | 1 |
-| 15 | Differential / Transfer Case Fluid | safety-critical | yes | NEEDS_EVIDENCE | 13 | 6 | 8 | 1 | 5 | 2 |
-| 16 | Engine Oil & Filter Change | safety-critical | yes | NEEDS_EVIDENCE | 10 | 18 | 4 | 1 | 2 | 7 |
+| 7 | Battery Replacement | safety-critical | yes | NEEDS_EVIDENCE | 14 | 5 | 13 | 1 | 5 | 2 |
+| 8 | Coolant Flush & Fill | safety-critical | yes | NEEDS_EVIDENCE | 24 | 10 | 7 | 1 | 3 | 2 |
+| 9 | Fluid Checks & Top-Offs | safety-critical | yes | NEEDS_EVIDENCE | 10 | 5 | 6 | 2 | 2 | 2 |
+| 10 | Cabin Air Filter | standard | yes | NEEDS_EVIDENCE | 7 | 5 | 4 | 1 | 1 | 2 |
+| 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | safety-critical | yes | READY_FOR_QA | 10 | 2 | 0 | 0 | 0 | 1 |
+| 12 | Engine Air Filter | standard | yes | READY_FOR_QA | 10 | 4 | 10 | 0 | 1 | 2 |
+| 13 | Tire Rotation | safety-critical | no | NEEDS_EVIDENCE | 6 | 7 | 8 | 0 | 2 | 3 |
+| 14 | Wiper Blades | standard | yes | NEEDS_EVIDENCE | 12 | 2 | 3 | 1 | 2 | 1 |
+| 15 | Differential / Transfer Case Fluid | safety-critical | yes | NEEDS_EVIDENCE | 14 | 7 | 8 | 2 | 4 | 2 |
+| 16 | Engine Oil & Filter Change | safety-critical | yes | NEEDS_EVIDENCE | 15 | 14 | 4 | 2 | 2 | 7 |
 
-## 1. Front Brake Pads — BUILDABLE_WITH_OWNER_CHECKS (NEEDS_EVIDENCE)
+## 1. Front Brake Pads — BUILDABLE (NEEDS_EVIDENCE)
 
-**Blockers:** 4 conflicting item(s)
+**Blockers:** 1 conflicting item(s)
 
-**Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); safety-critical with no BMW document found; configuration items need owner confirmation
+**Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
+
+**BMW-document scope:** PRIMARY found for: (a) OE parts catalog (RealOEM, type code PH73 USA, selection 09/2009, E90N 328i): front pad kit 34116790759 (from 09/2009), driver-front wear sensor 34356789440 (up to 03/2010), 312x24 front rotor 34118848417 (up to 04/2011), carrier screw, guiding bolt, caps, retaining spring, anti-squeal paste, plus the catalog statements that pads, sensor and paste are mandatory together and that the retaining spring is to be replaced on cars over 48 months old; (b) BMW owner's manual text for a 2011 E90 328i (third-party text mirror; the 2010 US sedan manual itself only came back as an unreadable binary): brakes need an initial break-in of approx. 300 miles/500 km, jacking points are 'at the positions shown in the illustration' (positions are not described in the text), and the service display tracks front brake pads, rear brake pads and brake fluid. NO BMW primary found for any torque, for the rotor discard thickness, for the wheel-bolt torque (not in the retrievable owner's manual text) or for the wear-sensor/CBS reset procedure.
 
 **Missing or unresolved evidence**
-- No BMW primary document (TIS, Bentley, owner's manual) was reachable; all torques are secondary (workshop-manuals.com TIS mirror failed to load, owner's manual hosts truncated or robots-blocked).
-- Rotor minimum/discard thickness for the 312x24 front rotor: Pelican gives 22.4 mm in one article and an inconsistent 18.4 mm entry in another; no clean source. Read the MIN TH stamp.
-- Whether 34116790759 formally supersedes 34116780711 (no retailer states it).
+- No BMW torque document (TIS, Bentley) was reachable: all fastener torques are secondary. The BMW owner's manual text read does not state any torque (wheel-bolt torque not in the retrievable text).
+- Rotor discard thickness 22.4 mm comes from rotor-maker catalogs, not from a BMW document (febi lists 22.5).
+- Carrier bolt head type: RealOEM 'Torx screw with washer' vs Febi/guides 'hex 18 mm'; the external-Torx socket size was not found.
 - Factory torque for the wear-sensor liner fasteners (not specified anywhere found).
 - Which hex size is used on this exact car's guide pins is only 6-vs-7 mm unresolved in one staff reply; 7 mm is the majority.
+- Exact placement of the two guide pins (top/bottom or front/back) and the exact shape of the retaining spring are not established (visual gaps).
+- Positions of the four side jacking pads are described only by forum posts; the BMW manual text refers to an illustration that could not be read. Whether a front or rear center lift point is approved by BMW is unresolved (forums disagree).
+- Wheel-bolt re-check interval after installation is general practice; BMW's instruction is only attributed via Department 69.
 - FCP's front and rear video walkthroughs are not transcribed (video only).
 
 **Needs owner input**
-- Door-jamb production month/year (to pick sensor 34356789440 vs 34356792560, or xDrive 789441 vs 792561).
-- Confirm RWD vs xDrive (badge/differential; NHTSA suggests RWD for this VIN pattern).
-- Front rotor diameter and the stamped MIN TH on the rotor (and rotor thickness measured).
-- Whether the front sensor is plugged in on the driver side and whether the brake warning is lit.
-- Guide-pin head type (socket-head 7 mm vs hexagon-head) before applying torque.
+- none recorded
 
 ## 2. Fuse & Bulb Replacement — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
-**Blockers:** 2 conflicting item(s)
+**Blockers:** 4 conflicting item(s)
 
 **Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- Physical location, cover release and fuse layout of the engine-bay E-box / front power distribution box on the E90.
-- Where the fuse puller is stored.
-- A verified full 2010 glove-box fuse chart from a BMW document (owner's manual/ETK fuse map 71239232904 text); web charts are not independent.
-- Halogen low/high-beam bulb access beyond 'wheel arch service opening' (retainer type, rotation direction) for the E90 LCI.
-- Which rear lamp bulb position uses P21W, H21W or W16W on LCI lamps, and tail-lamp access on LCI.
-- Halo bulb type on halogen LCI lamps (H8 vs H10W).
+- Engine-bay E-box / front power distribution box: physical location, cover release and a verified fuse chart. The BMW owner's manual mentions only the glove-box fuse box; web sources disagree (rear near the wipers, passenger-side DME compartment, near the battery or left side).
+- A BMW-document glove-box fuse chart for this build (the manual says the chart is on the rear of the cover but the text read does not reproduce it; ETK gives only the part number 71239232904). The three web charts disagree, so no per-fuse functions are published.
+- Separate printed step list for the high-beam bulb (the manual text read gives the wire-bracket and plug steps for the low beam only; same sequence assumed).
+- Fog bulb replacement from a BMW document (the manual has none); the only procedure is one E90Post thread.
+- Which P21W sockets serve which tail-lamp function, and whether a 09/2009 build has the LED (positions 2, 3, 5) lamp or the older all-bulb lamp (ETK lamp revision at 03/2010; manual describes LED).
+- Halo / parking bulb type on halogen LCI lamps (H8 favoured; H10W and W5W also appear) and whether this car has halo rings at all (ETK halogen diagram includes light-ring units; the decode shows no angel-eye option).
+- Lamp maker (ZKW or VALEO) for cover part numbers.
+- Wheel-well flap fastener torque or tool beyond 'a coin, for example'; no torque value exists for any of the trim fasteners in these jobs.
+- The owner's manual was read through a third-party text mirror (carmanualsonline.info), not the BMW PDF itself.
 
 **Needs owner input**
-- Photo of the headlamp front and back cap (halogen vs xenon/adaptive) or VIN option list (S522A/S524A).
-- Old fog/halo bulb marking if replacing; photo of rear lamp interior to see bulb positions.
-- Photo of the fuse chart sticker on the glove-box cover.
-- Whether the car has the M Aerodynamics package (different fog lamp).
+- none recorded
 
 ## 3. Key Fob Battery — BUILDABLE_PARTIAL (READY_FOR_QA)
 
 **Caveats:** configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- Cell polarity/orientation for the CA key (no source states it).
-- BMW-issued re-sync/programming steps for the remote.
-- Authoritative non-CA rechargeable cell type/part number for E90 (VL2020 is forum-only).
-- Reliable charge time for the standard key.
+- Cell polarity/orientation for the Comfort Access CR2032 (no source states it; checked YouCanic, Motorwerks, E90Post, 1addicts).
+- BMW-issued re-sync/programming steps for the remote (only YouCanic's diamond-key sequence found).
+- Reliable charge time for the standard key (BMW gives none; owner figures conflict).
+- BMW owner's-manual text for the key battery/charging was not readable (manualslib page body not retrievable; BMW US 3-Series manual PDF found was a 2013 F30 edition, not E90).
+- Whether this specific car has Comfort Access: decode says not (probable); the user branch in step 1 resolves it by looking at the key.
+- BMW part number for the standard-key rechargeable cell (VL2020 is confirmed only by a forum and a parts seller).
 
 **Needs owner input**
-- Does the car have Comfort Access (push-button start without key in slot, handle sensors)? Or VIN option S322A.
-- Photo of the key front/back and whether it has a side tab/valet blade and a battery cover.
+- none recorded
 
 ## 4. Oxygen Sensor — BUILDABLE (NEEDS_EVIDENCE)
 
@@ -86,40 +88,42 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 
 **Caveats:** 2 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
-**BMW-document scope:** PRIMARY found for: sensor part numbers, lead lengths and the four-sensor layout (OE parts catalog, RealOEM type code PH73 USA, selection 09/2009: lambda probe fixings diagram 18_0610 and 18_2101), exhaust layout (ULEV2 manifolds with integrated catalysts, 18_0587), and sensor type/connector care (BMW AG training document ST055 Emissions Management: wideband pre-catalyst sensors Bosch LSH25/LSU planar mounted directly in front of the catalytic converters; post-catalyst monitor sensor Bosch LSF 4.2; connector sockets must be protected from contamination). NO primary found for the sensor torque: the 50 Nm value comes from a Pelican Parts E90 article, bavmods (37 ft-lb) and a z4-forum poster who says he read 50 Nm in TIS (a quote of TIS, not the document), so it is VERIFIED_SECONDARY, primary:false.
+**BMW-document scope:** PRIMARY found for: sensor part numbers, lead lengths and the four-sensor layout (OE parts catalog, RealOEM type code PH73 USA, selection 09/2009: lambda probe fixings diagram 18_0610 and 18_2101), exhaust layout (ULEV2 manifolds with integrated catalysts, 18_0587), and sensor type/connector care (BMW AG training document ST055 Emissions Management: wideband pre-catalyst sensors Bosch LSH25/LSU planar mounted directly in front of the catalytic converters; post-catalyst monitor sensor Bosch LSF 4.2; connector sockets must be protected from contamination). NO primary found for the sensor torque: the 50 Nm value comes from a Pelican Parts E90 article, bavmods (37 ft-lb) and a z4-forum poster who says he read 50 Nm in TIS (a quote of TIS, not the document), so it is VERIFIED_SECONDARY, primary:false. Pass 3: RealOEM group 18 for this selection has five diagrams (18_0587 manifold with catalyst, 18_0588 catalyst/front silencer, 18_0610 lambda probe fixings, 18_2101 welded-case repair kit for gas sensors, 18_0611 rear exhaust); 18_2101 repeats the same four sensor numbers and adds only a welded-case repair item, so no new sensor numbers exist. BMW training ST613 (bmwtechinfo.bmwgroup.com) says the N52K is the N52KP, more accurately N52B30O1, but gives no lambda sensor positions or connector details. Sensor torque is still NOT in any BMW document found.
 
 **Missing or unresolved evidence**
-- BMW TIS/Bentley oxygen sensor torque for this vehicle (four non-BMW sources agree on 50 Nm; one poster says 55 Nm).
-- A second independent source for the post-cat connector location (bracket at the bottom of the transmission bell housing is Pelican only) and for whether the bank 1 post-cat sensor needs the engine cover removed.
+- BMW TIS/Bentley oxygen sensor torque for this vehicle (four non-BMW sources agree on 50 Nm; one poster says 55 Nm from a generic torque PDF).
+- A second independent source for the post-cat connector location (bracket at the bottom of the transmission bell housing is Pelican only; the z4-forum E85 thread is speculation) and a reference frame for 'right side' pre-cat connectors.
 - Torque for the E8 shield/bracket screws, strut brace and heat shield fasteners; strut brace socket size (E14/E18/E20 reports conflict).
-- Screw type of the transmission splash shield.
-- N51B30 pre-cat part numbers (not needed if the engine label confirms N52).
+- Screw type of the transmission splash shield and jacking points.
+- Whether the Bentley tie-rod removal for bank 1 sensor 1 is required (one poster quoting it; others do not mention it).
+- N52K-specific catalog page for the sensor part numbers (decoders disagree N52K vs N52N; numbers here are from the N52N selection and N52 fitment tables).
+- Exact position of the post-cat sensors in the exhaust pipe (descriptions differ).
+- N51B30 pre-cat part numbers (not needed for this decoded N52 car).
 
 **Needs owner input**
-- Which sensor(s) or fault code(s) triggered this guide (bank and position).
-- Engine label check on the car: N52B30 (catalog indicates N52N) vs N51; and production date.
-- Transmission type (selects the lead holder and exhaust bracket variants, not the sensor numbers).
-- Approval to publish 50 Nm as a sourced-from-forums/training-guide torque with a warning, or to wait for a TIS page.
+- Approval to publish 50 Nm (37 ft-lb) as a sourced-from-forums/training-guide torque with a warning, or to hold the torque until a BMW TIS page is found.
 
-## 5. Rear Brake Pads — BUILDABLE_WITH_OWNER_CHECKS (NEEDS_EVIDENCE)
+## 5. Rear Brake Pads — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
 **Blockers:** 2 conflicting item(s)
 
-**Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); safety-critical with no BMW document found; configuration items need owner confirmation
+**Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
+
+**BMW-document scope:** PRIMARY found for: (a) OE parts catalog (RealOEM, type code PH73 USA, selection 09/2009, E90N 328i): rear pad kit 34216790761 (from 09/2009), rear sensor 34356789445 (up to 03/2010) with cable clip 34356767984, 300x20 rear rotor 34216855007 (09/2009 to 02/2011), carrier 'collar screw, micro-encapsulated' 34203414763 M10x26.5, guiding bolt 34111157041, retaining spring (clip) 34211157046, anti-squeal paste, and the catalog statements that pads, sensor and paste are mandatory and the retaining spring is to be replaced on cars over 48 months old; parking-brake shoe parts for the drum-in-hat brake; (b) BMW owner's manual text for a 2011 E90 328i (third-party text mirror; the 2010 manual only came back as an unreadable binary): brakes need an initial break-in of approx. 300 miles/500 km, jacking points are 'at the positions shown in the illustration', the parking brake is a hand lever that brakes the rear wheels, and the service display tracks front and rear brake pads and brake fluid. NO BMW primary found for any torque, the rotor discard thickness, the wheel-bolt torque, the guide-screw head type or tool size, or the parking-brake shoe adjustment procedure.
 
 **Missing or unresolved evidence**
-- No BMW primary document (TIS, Bentley, owner's manual) was reachable.
-- A second independent source for rear guide-screw torque (35 Nm hexagon / 30 Nm socket-head) and for rear guide-screw tool sizes.
-- Rear rotor minimum thickness: Pelican's 22.4 mm 'rear' value is impossible for a 20 mm new rotor and another Pelican article is inconsistent; read the MIN TH stamp.
-- Rear sensor 34356792564 fitment for a 328i built after 03/2010 beyond Turner listings.
-- Parking-brake shoe adjustment procedure details (Pelican has a separate article, not fetched).
-- Whether xDrive changes any rear hardware beyond rotor/pad part numbers.
+- No BMW torque document (TIS, Bentley) was reachable: all torques are secondary. The BMW owner's manual text read states no torque (wheel-bolt torque not in the retrievable text).
+- A second independent source for rear guide-screw torque (35 Nm hexagon / 30 Nm socket-head) and for rear guide-screw tool sizes; whether the rear screws on this car are hexagon or socket-head is unresolved (RealOEM lists one guiding-bolt number for both axles).
+- Rotor discard thickness 18.4 mm comes from rotor-maker catalogs, not a BMW document.
+- Parking-brake shoe adjustment procedure (Pelican has a separate article, not retrievable; no other source found).
+- Rear carrier collar screw 34203414763: whether BMW requires replacement after removal, and its head size (16 mm is how-to practice) were not found.
+- Whether xDrive changes any rear hardware beyond rotor/pad part numbers (not relevant to this RWD car).
+- Positions of the four side jacking pads are described only by forum posts; the BMW manual text refers to an illustration that could not be read. A rear center lift point is disputed by forums and left out.
+- Factory torque for the wear-sensor wheel-arch cover fasteners (not specified anywhere found).
+- Rear parking-brake shoe repair kit number: RealOEM 34416761291 vs Turner 34416761292 (not part of the pad job).
 
 **Needs owner input**
-- Door-jamb production month/year (rear sensor 789445 vs 792564).
-- RWD vs xDrive confirmation (rotor PN, pad listing).
-- Rear guide-screw head type (hexagon vs socket-head) and the rotor MIN TH stamp.
-- Whether the passenger-side rear sensor is currently plugged in and its length.
+- none recorded
 
 ## 6. Serpentine Belt — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
@@ -127,18 +131,20 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 
 **Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
+**BMW-document scope:** PRIMARY (OE parts catalog) found for: RealOEM ETK diagram 11_3740 'Belt drive generator/AC/power steering' for E90 LCI 328i, type code PH73 USA, 09/2009 selection: belt 6PK1990 11287628650, mechanical tensioner 11288624196, single-use aluminium M11x65 Torx screw 11287530315, deflection pulley 11287535860, caps 11287535867/11281435114, with no engine, transmission or option condition on any of them. NO BMW repair instruction (ISTA/TIS) was reachable for any torque, the lock pin, or the belt routing; the Bentley B310 manual update index confirms a 2015 correction to the N52/N52KP 'idler pulley to alternator housing' torque but the corrected value is not readable.
+
 **Missing or unresolved evidence**
-- BMW-issued repair instruction (ISTA) with torque for tensioner bolt, idler pulley bolt and alternator pulley.
-- Idler pulley bolt torque (40 Nm vs 80 Nm conflict).
-- Tensioner lock pin diameter and whether this tensioner uses one.
-- An official belt routing diagram and belt direction (ETK diagram image not readable as text).
-- Whether the E14 external Torx size for the tensioner bolt is correct (single source).
-- Any E90 sedan (not E82/E60/generic) video or photo confirming fan/intake removal order.
+- BMW-issued repair instruction (ISTA/TIS) with torque for tensioner bolt, idler pulley bolt and alternator pulley; not reachable remotely (workshop-manuals.com/Bentley content is behind a login).
+- Idler pulley bolt torque (40 Nm vs 80 Nm); Bentley's N52/N52KP erratum 121-20 proves a corrected value exists but it is not readable.
+- Tensioner lock pin diameter and whether this tensioner uses one (FCP yes, Pelican no); not resolvable without the part in hand or a BMW document.
+- An official belt routing diagram and rotation direction (ETK image not readable as text). YouTube titles show E90/N52 serpentine-belt 'diagram' videos, but video can only help identify and does not certify; none was used.
+- E14 external Torx size for the tensioner bolt (single source, FCP).
+- N52K vs N52N engine label remains a naming difference between VIN decoders and RealOEM; it changes no part or step found.
+- Replacement interval: no BMW figure; aftermarket sources disagree (30,000 km to about 80k miles).
+- Any E90 sedan-specific photo or video confirming the fan/intake removal order (the FCP and Pelican articles are N52/E90 text only).
 
 **Needs owner input**
-- Photo of the belt path and the old belt's printed part number/length (6PK1990 expected).
-- Whether the car is manual or automatic (T25 oil-cooler fastener on automatics) and whether it has A/C.
-- Condition/noise of tensioner and idler pulleys when the belt is off.
+- none recorded
 
 ## 7. Battery Replacement — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
@@ -147,17 +153,16 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 **Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- Tightening torque for battery terminal clamp nuts, hold-down screw and trunk bracket nuts (not in BMW TIS battery page, ST502, ETK or any how-to).
-- Which BCI group size (H7/94R vs H8/49) matches this car's tray; physical dimensions of the OE battery.
-- Which capacity/type was installed at the factory on VIN WBAPH7C58AA175760 (needs option-code decode).
+- Tightening torque for battery terminal clamp nuts, hold-down screw and trunk bracket nuts (not in BMW TIS battery page, ST502, ETK or any how-to). A single 5 Nm figure from a 2006 325i data table was seen and not adopted.
+- BCI group size has no OE tray-dimension source; 94R/H7 vs 49/H8 follows capacity (80 Ah vs 92 Ah) from retailer data only; compare the removed battery.
+- Capacity/type installed at the factory on VIN WBAPH7C58AA175760: probable 80 Ah flooded from the decoder's trailing B080 code (one host, truncated); not proven. No ISTA/FA readout was reachable.
 - Vent hose routing and clip locations on the E90 sedan (ETK diagram image not readable as text; only part numbers obtained).
 - Whether the IBS adapter 12517615476 ('Supp. 2010') applies to this 09/2009 build.
 - A BMW-issued repair instruction (ISTA RA 61 21 xxx) for battery replacement; ISTA not reachable.
+- Whether a cover over the positive terminal exists on the E90 sedan (only an E82 post; ETK lists an unlabeled 'Cover' 61126938508 x2 and 'Rollover protection' 61217549425).
 
 **Needs owner input**
-- Photo of the existing battery label and the trunk battery area (hose, power box, hold-down) before removal.
-- Which registration tool or shop will be used, and whether the owner can code (NCS Expert/ISTA) if switching to AGM or a different capacity.
-- Confirm transmission and option codes (VIN decode with S-codes) if the battery size or capacity must be matched to the build.
+- none recorded
 
 ## 8. Coolant Flush & Fill — BUILDABLE (NEEDS_EVIDENCE)
 
@@ -170,40 +175,34 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 **Missing or unresolved evidence**
 - BMW TIS/Bentley (or any BMW document) value for total cooling system capacity of the E90 328i N52 (manual vs automatic); the owner manual Capacities table has none.
 - A TIS/Bentley page specific to the E90 N52 venting routine (the BMW training document covers the N54 and states the circuit equals the N52; E60 PDFs add non-BMW above-MAX figures).
-- A second independent source naming the BMW coolant specification code (GS 94000 / N 600 69.0 appears on one retailer page only).
 - Undertray and radiator-cover fastener head sizes and count on the E90 (OE catalog gives fastener types only).
 - Torque (if any) for the plastic radiator drain plugs and the expansion tank vent screw.
 - BMW-stated coolant service interval (Turner suggests every two years; retailer only).
 - Expansion tank position in the engine bay (left/right) was not established by any fetched source.
+- Coolant spec code GS 94000 / N 600 69.0 now has two hosts (BimmerWorld; motordoctor.fr engine-level listing) but no BMW document and no E90-specific listing: stays VERIFIED_SECONDARY, not primary.
+- Which ZF/GM automatic (GA6L45R vs GA6HP19Z) is fitted; irrelevant to the coolant procedure and not resolvable from the VIN remotely.
 
 **Needs owner input**
-- Transmission type (manual or automatic) from the car or build data: selects radiator/pipe variants and the capacity row.
-- Confirm engine label N52B30 on the car and production date (RealOEM shows N52N, 09/2009 but does not say it was decoded from the VIN).
-- Look at the radiator bottom for one or two drain plugs and note the actual undertray fastener heads.
-- Decision on whether VERIFIED_SECONDARY forum-corroborated bleed steps are acceptable to publish until a BMW TIS copy is obtained.
+- none recorded
 
 ## 9. Fluid Checks & Top-Offs — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
-**Blockers:** 5 part/fluid/step item(s) not found
+**Blockers:** 2 conflicting item(s); 1 part/fluid/step item(s) not found
 
 **Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- BMW owner's-manual text for brake fluid (DOT 4) and its interval for an E9x; the retrievable MY2011 pages mention brake fluid only as a CBS item. MY2010 manual text unreadable.
-- E90 328i coolant capacity (only other-model figures).
-- Washer fluid spec/additives and exact filler position (only one source gives position).
-- Power steering: confirmation per VIN of hydraulic vs EPS, reservoir location, check procedure and fluid capacity.
-- Automatic transmission and differential/transfer case fluid info.
-- Expansion tank location from a second independent source.
-- Brake reservoir cover fastener count for a 2010 E90 (3, 4 and 6 reported).
-- Brake fluid capacity; reservoir cap torque.
+- BMW owner's-manual text for brake fluid (DOT 4) and its interval for an E9x; the retrievable MY2011 pages mention brake fluid only as a CBS item. MY2010 manual text unreadable. DOT 4 low-viscosity is retailer/catalog level only.
+- Coolant capacity for this exact car (approx 8.2 L MT / 8.4-8.5 L AT from secondary hosts; a 10 L PDF conflicts); not an owner item.
+- Washer fluid additive restriction beyond 'water plus antifreeze' (single host); reservoir capacity for a car without headlamp washers.
+- Power steering: reservoir position, level marks, capacity and BMW check procedure (type is hydraulic CHF 11S per the catalog; active steering S217A not decoded, presumed absent).
+- ATF type and fill procedure (Dexron VI per BMW catalog vs ZF Lifeguard 6 per retailer) and rear-differential fluid spec: not owner checks.
+- Expansion tank fore-aft position (passenger side confirmed by three pages, firewall vs front differs).
+- Brake reservoir cover screw count for a 2010 E90 is six per two hosts but conflicts with four and three; positions unknown. Brake fluid capacity; reservoir cap torque.
+- Exact washer-filler cap colour (black per youcanic, blue per tpautorepair).
 
 **Needs owner input**
-- Confirm manual vs automatic and RWD vs xDrive.
-- Open the hood and note whether a power steering reservoir exists (and whether it is active-steering type).
-- Photograph the coolant, brake and washer caps so the printed specs/markings can be recorded.
-- Count the screws on your cabin microfilter housing cover if you will reach the brake reservoir.
-- Provide the owner's manual fluid/capacity pages if available.
+- none recorded
 
 ## 10. Cabin Air Filter — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
@@ -212,96 +211,96 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 **Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- BMW/TIS/Bentley procedure for the cabin microfilter cover on a post-12/2007 E90 (Bentley page abstract is readable, steps and video are behind a login).
-- Fastener count and positions for a 2010 car (3, 4 and 6 reported).
-- Airflow arrow direction on the E90 filter.
-- BMW replacement interval for the microfilter (the manual says only 'routine maintenance'; retailers say yearly/15,000 miles).
-- Torque values (none exist in any source; hand-snug).
+- BMW/TIS/Bentley procedure for the cabin microfilter cover on a post-12/2007 E90 (Bentley page is a login-gated summary; its stated applicability is 'produced up to 12/2007').
+- Exact fastener count and positions for a 2010 car: six (bimmerpost 2010 thread, OnlyEuro) vs four (bavmods) vs three (E92 M3); RealOEM diagram 64_1428 lists screws and nuts without saying which hold the cover.
+- Airflow arrow direction on the E90 element (only a 2020 M550i TIS rule was found).
+- BMW's own replacement interval (the manual says only 'routine maintenance'; retailer figures are yearly / 15,000 miles / 10,000 km).
+- Element dimensions (no retrievable page gives length x width x height).
+- Relationship between carbon 64319313519 and the catalog 'fine-dust filter' 64316803970 on the same RealOEM diagram (option/market/supersession not stated).
+- Whether the cabin-filter CBS item exists on a 2010 US cluster (the reset path is from a 2011 bimmerpost reply).
+- Torque values: none exist in any source (hand-snug).
 
 **Needs owner input**
-- Confirm the car has the factory cowl cover (not an aftermarket cowl-delete or filter kit).
-- Count the fastener screws on your cover and photograph the old filter's arrow/orientation before removing it.
+- none recorded
 
 ## 11. PCV / Crankcase Ventilation — Inspection & Diagnosis — BUILDABLE_PARTIAL (READY_FOR_QA)
 
 **Caveats:** configuration items need owner confirmation
 
-**BMW-document scope:** PRIMARY found for the design question: (a) BMW AG training document ST501 Engine Mechanical (p.30, N52KP and N51): the crankcase ventilation valve and the oil-separating labyrinth are integrated in the plastic cylinder head cover, whereas the original N52 cover is cast magnesium (ST501) with an external electrically heated ventilation valve (ST055 Emissions Management, ST502 Powertrain); (b) OE parts catalog for this vehicle selection (RealOEM PH73 USA 09/2009, engine N52N): cylinder head cover 11127552281 and vent hose 11157559528 are listed, and no separate oil separator or PCV valve appears in the engine-group diagrams inspected (cylinder head cover, cylinder head, attached parts, intake manifold, vacuum pump, engine block). The catalog finding is absence-based and covers only the diagrams checked. NO primary found for valve cover bolt torque, tightening sequence or seal part numbers: torque is a CONFLICT among four non-BMW values.
+**BMW-document scope:** PRIMARY found for the design question: (a) BMW AG training document ST501 Engine Mechanical (p.30, N52KP and N51): the crankcase ventilation valve and the oil-separating labyrinth are integrated in the plastic cylinder head cover, whereas the original N52 cover is cast magnesium (ST501) with an external electrically heated ventilation valve (ST055 Emissions Management, ST502 Powertrain); (b) OE parts catalog for this vehicle selection (RealOEM PH73 USA 09/2009, engine N52N): cylinder head cover 11127552281 and vent hose 11157559528 are listed, and no separate oil separator or PCV valve appears in the engine-group diagrams inspected (cylinder head cover, cylinder head, attached parts, intake manifold, vacuum pump, engine block). The catalog finding is absence-based and covers only the diagrams checked. NO primary found for valve cover bolt torque, tightening sequence or seal part numbers: torque is a CONFLICT among four non-BMW values. Pass 3 additions: BMW training ST613 (bmwtechinfo.bmwgroup.com) states the N52 uses a magnesium cylinder head cover while new engines use plastic, that the N52KP and N51 use a crankcase ventilation valve with labyrinth oil separation, and that N52K is N52KP (N52B30O1); it does not mention N52N. BMW SIB B 11 03 08 (Sept 2009, as hosted on xoutpost.com) describes the pressure-controlled crankcase ventilation valve (spring and diaphragm), its fault symptoms and a crankcase pressure spec, with no step-by-step test. RealOEM diagrams additionally checked: 11_3736 (cylinder head electrical add-on parts) and 11_3730 (short engine): no separator or vent valve. The group 11 diagram titles contain nothing named crankcase ventilation or separator.
 
 **Missing or unresolved evidence**
-- OE catalog check of the intake-manifold side and crankcase group for a hidden separator (diagrams inspected: head cover, head, attached parts, intake manifold, vacuum pump, engine block, block mounting parts).
-- Whether N52N is the same cover generation as BMW training N52KP (BMW does not expand KP).
-- Whether a diaphragm exists inside the integrated valve (sources conflict: z4-forum poster says none/vortex type; an early forum post says rubber diaphragm). BMW ST501 describes a valve and labyrinth only.
-- Any official BMW inspection/test method for the integrated crankcase vent.
+- OE catalog check for a hidden separator: diagrams now inspected are head cover (11_3737), head, head attached parts, head electrical add-on parts (11_3736), short engine (11_3730), intake manifold, vacuum pump, engine block and block mounting parts; none lists a separator or vent valve. Group 13 and other groups were not searched.
+- Whether the catalog N52N engine equals BMW's N52K/N52KP (ST613 defines N52K = N52KP = N52B30O1 but does not mention N52N).
+- Which crankcase pressure spec (26.0 mbar N52 or 28.5 mbar N51/N52K, SIB B 11 03 08) applies to this car, and the measuring conditions.
+- Whether the SIB's spring-and-diaphragm description applies to this engine's integrated valve (sources conflict on a diaphragm; z4-forum says vortex type).
+- BMW SIB B 11 03 08 was read as hosted on a third-party forum attachment, not on a BMW site.
+- Any official BMW DIY inspection method for the integrated crankcase vent (none exists in the documents read).
 
 **Needs owner input**
-- Look at the engine: confirm the valve cover is plastic (later design) and read the engine label (N52B30).
-- Production date from the door-jamb or VIN decode, if any doubt about the build era.
 - Observed symptoms (oil use, smoke, rough idle, oil in intake) to tailor the diagnostic section.
 
-## 12. Engine Air Filter — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
-
-**Blockers:** 3 conflicting item(s)
+## 12. Engine Air Filter — BUILDABLE (READY_FOR_QA)
 
 **Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
+**BMW-document scope:** PRIMARY (OE parts catalog) found for parts only: RealOEM diagram 13_1148 'Intake muffler/Filter cartridge/HFM' for E90 LCI 328i, type code PH73 USA, 09/2009: air filter element 13717542294 (qty 1), intake muffler (airbox) 13717555288, fillister-head screw 13717545438 (qty 7), hex bolt with washer M6x25 07119905400 (qty 2) with decoupling elements 13717539911 (qty 2), rubber buffer 13717539903 (qty 1), rubber boot 13717536004, hose clamps 07119905469 (qty 3), hot-film air mass meter 13627551638 with two Torx 5x18 screws 13627531817 and O-ring 13627532318, suction hoods 13717541737/13717541738 with two plastic-thread Torx bolts 07147549513 (L=25). The diagram has no engine, date-range or option condition. NO BMW procedure document for the E90 was found (only an E89 N52K TIS excerpt quoted on a Z4 forum), and no BMW torque value exists in any source.
+
 **Missing or unresolved evidence**
-- BMW/TIS procedure for the E90 N52 airbox with fastener sizes and torque values (only an E89 N52K TIS excerpt on a forum, without sizes).
+- BMW/TIS procedure for the E90 N52 airbox with fastener sizes and torque values (only an E89 N52K TIS excerpt on a forum, without sizes); not reachable remotely.
 - BMW service interval for the engine air filter (retailers say 12,000-15,000 miles or yearly).
-- N51 (SULEV) airbox/element fitment stated by a retailer or BMW document.
-- Which airbox screws use T25 and how many (six housing screws per bavmods; a youcanic E9x article says two Torx; an M3 uses eight).
-- Whether battery disconnect or fault-memory readout is required (TIS: ignition off; bavmods: disconnect).
-- Side of the engine bay the airbox sits on (youcanic says driver's side; bimmerpost mentions bolts 'on the right side' at the fender; unresolved).
+- Airbox housing screw count and drive: six per bavmods, seven fillister screws in the ETK for the assembly, two Torx per a youcanic E9x article, T25 per bavmods/M3 thread.
+- Front snorkel fasteners: two retention tabs (bavmods) vs two Torx screws (FCP/Pelican belt articles, ETK Torx bolts); one source per method for size.
+- Whether the MAF sits on the lid or the intake tube: ETK groups the HFM with the intake muffler (airbox) diagram, exact mounting position not stated.
+- Torque for the two M6 airbox bolts, housing screws and hose clamps: none in any source.
+- N52K vs N52N label is a naming difference between VIN decoders and RealOEM; no procedure effect found. N51 excluded for this VIN by the RealOEM decode (single decode).
+- Whether a previous owner swapped the airbox (Euro box or aftermarket intake): not knowable remotely; the guide handles it by telling the user to compare the removed element with 13717542294.
 
 **Needs owner input**
-- Confirm engine code (N52 vs N51) from the engine cover/VIN.
-- Confirm stock airbox (not a Euro airbox or aftermarket intake).
-- Count the screws on your airbox lid when you open it and note whether the MAF is on the lid or the intake tube.
-- Choose OE-style (13717542294) or an equivalent brand.
+- none recorded
 
-## 13. Tire Rotation — BUILDABLE_WITH_OWNER_CHECKS (NEEDS_EVIDENCE)
+## 13. Tire Rotation — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
-**Blockers:** 2 conflicting item(s); 2 part/fluid/step item(s) not found
+**Blockers:** 1 part/fluid/step item(s) not found
 
 **Caveats:** 1 torque value(s) withheld (house VERIFY warning shows); safety-critical with no BMW document found; configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- No BMW primary document (owner's manual, TIS, Bentley) was readable: BMW TIS mirror (workshop-manuals.com) errored, manual PDFs were truncated, BMW rotation guidance not found.
-- Whether stock Sport-package tire is directional (forum disagreement, no tire-maker spec fetched).
-- US tire-pressure placard values and where the placard sits on this car.
-- Whether TPMS wheel positions auto-relearn after rotation (neither TPMS article addresses rotation directly).
-- Which jack point is permitted at the rear centre and front centre (forum conflict; the BMW TIS 'lifting with trolley jack' page is cited but its content was not readable).
-- BMW-recommended rotation interval.
+- No BMW primary document (owner's manual, TIS, Bentley) was readable: workshop-manuals.com TIS pages are blocked by the egress policy, manualslib shows only the table of contents, the BMW US 3-Series manual PDF found was a 2013 F30 edition, and other PDF hits were spam.
+- BMW rotation guidance and interval: none found (a poster says the manual says nothing; dealer 'do not rotate' advice is secondhand).
+- Whether the stock tire on this car is directional (forum disagreement; user reads the sidewall).
+- US tire-pressure placard values: only one third-party table (tirepressure.com) found; placard location is the driver's door area per two sources.
+- Whether TPMS wheel positions are relearned automatically after rotation: not stated; sources only say run the reset and no scan tool is needed.
+- Jack points: the side pads are supported, but rear-centre and front-centre jack points remain in conflict and the correct jack-stand position was not found in any source.
+- Whether this car has locking wheel bolts and where its key is (dealer option; trunk right side reported).
 
 **Needs owner input**
-- Tire sizes front and rear and any directional arrow (and run-flat markings if any).
-- Confirm RWD or xDrive.
-- Placard pressures from the car.
-- Metal valve stems present (confirms direct TPMS) and the iDrive menu or stalk layout.
-- Locking wheel bolt present and key available.
-- Which jack pads exist at the sill (some cars have missing plastic pads).
+- none recorded
 
 ## 14. Wiper Blades — BUILDABLE (NEEDS_EVIDENCE)
 
-**Blockers:** 1 part/fluid/step item(s) not found
+**Blockers:** 1 conflicting item(s); 1 part/fluid/step item(s) not found
 
 **Caveats:** configuration items need owner confirmation
 
+**BMW-document scope:** PRIMARY found for: (a) blade removal method and the arms-against-windshield warning (US 2010 BMW 328i owner's manual, printed p.229, read through a third-party text mirror, carmanualsonline.info, so not the BMW PDF itself); (b) part numbers, build-date splits and arm numbers (OE parts catalog ETK via RealOEM, type code PH73 USA, selection 09/2009: diagrams 61_1954 wiper arms/blades and 61_1955 wiper system). NO primary found for: blade lengths (ETK and the manual text read give none; lengths rest on three non-BMW sources), an E90 wiper service position, wiper-arm nut torque, washer fluid capacity.
+
 **Missing or unresolved evidence**
-- Exact release-tab geometry for the factory E90 blade connector: sources give a hook, press tab or 'I&L pinch tab' but no dimensions or photos.
-- No BMW document (owner's manual, parts catalog) for the part number; only retailers.
-- Whether the 2010 build month falls before or after the 09/2009 set split (VIN does not give month).
-- Washer fluid spec and capacity (not researched; not needed for the job).
-- A service/arm-lock position for the arms: no source mentions one.
+- BMW document for blade LENGTHS (ETK and the owner's manual text read give none); lengths rest on three non-BMW sources.
+- An E90 wiper service position or arm-lock position: none found (the manual text read has only the arms-against-windshield warning); a generic BMW article mentions a service mode on 'most modern BMWs' but not for the E90 and is not used.
+- Direction of the final pull when taking the blade off (BMW 'toward the front' vs YouCanic 'toward the rear').
+- Exact release-tab geometry for the factory E90 blade connector (no dimensions or photos).
+- Which of ETK sets 61612455435 and 61612468941 supersedes the other, and whether the build month is exactly 09/2009 (decoded, not proven).
+- Wiper arm nut torque (no BMW value; a Bolidenforum table lists several values without saying which fits this car, so none is used).
+- Washer fluid spec and capacity (not needed for the job; ETK 61_1879 gives container part numbers only).
+- The owner's manual was read through a third-party text mirror (carmanualsonline.info), not the BMW PDF itself.
 
 **Needs owner input**
-- Door-jamb production month/year (to pick 61612455435 over 61610427668).
-- Measure the existing passenger blade (19 in expected).
-- Check which connector type the arm ends have if the new blade does not click on.
+- none recorded
 
 ## 15. Differential / Transfer Case Fluid — BUILDABLE (NEEDS_EVIDENCE)
 
-**Blockers:** 1 conflicting item(s); 2 part/fluid/step item(s) not found
+**Blockers:** 2 conflicting item(s); 2 part/fluid/step item(s) not found
 
 **Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
@@ -309,16 +308,15 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 
 **Missing or unresolved evidence**
 - BMW document with the rear differential capacity for the E90 328i (TIS text gives only the level rule).
-- Proof from the car or build options that the rear differential is open (no LSD).
 - BMW service interval (BMW training says lifetime-fill; others give 40,000-60,000 mi).
 - E90-specific lower-brace and plug access detail (bimmerpost E93 poster only).
-- xDrive front differential and transfer case plug positions, capacities and torque for the E90 (out of scope if RWD is confirmed).
+- xDrive front differential and transfer case values for the E90: NOT APPLICABLE to this RWD 328i; intentionally not researched.
 - A copy of the BMW TIS page that names the E90 for the 60 Nm plug torque (the table available lists E30-E86).
+- Open differential is probable on four independent lines of evidence but no BMW document or E90 328i build sheet states 'open'; if a BMW TIS option page is later obtained, upgrade.
+- Transmission model (GA6L45R vs GA6HP19Z) and any automatic-transmission fluid values: out of scope of this guide, left unresolved on purpose.
 
 **Needs owner input**
-- Confirm RWD vs xDrive on the car (look for a front differential or transfer case).
-- Confirm open vs limited-slip rear differential from build options if unsure.
-- Look at the plug and underside: lower braces blocking access? plug head type and magnetic plug fitted?
+- none recorded
 
 ## 16. Engine Oil & Filter Change — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
@@ -327,19 +325,17 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 **Caveats:** configuration items need owner confirmation
 
 **Missing or unresolved evidence**
-- No BMW document (owner's manual capacity page, TIS, repair manual) was reachable for engine oil quantity and the 25 Nm drain-plug and filter-cap torques; these remain secondary-only. The MY2010 (08/09) owner's manual text at manualslib could not be read.
+- No BMW document (owner's manual capacity page, TIS, repair manual) was reachable for engine oil quantity and the 25 Nm drain-plug and filter-cap torques; these remain secondary-only. The MY2010 (08/09) owner's manual could not be read (Scribd needs JavaScript; manualslib extracts omit the capacity table).
+- Drain plug location and orientation on the AUTOMATIC pan 11137552414 (catalog lists the pan and plug numbers but no geometry); straight down vs sideways reports come from other models/engines.
+- Function and position of the extra screw plug with O-ring 11137553165, O-ring 11427548322 and protection cap 11137543122 listed on the automatic-pan diagram.
+- Which oil filter cap style (86 mm fluted vs 26-29 mm hex) fits a 2010 US 328i; Bimmerworld's own tool page shows two BMW numbers.
 - Whether the plastic engine cover must be removed to reach the oil filter housing cap (no source).
 - E90 undertray full-tray fastener type/size/count (hatch makes it unnecessary).
-- OE part number for the small centre-post O-ring (supplied in the kit).
+- OE part number for the small centre-post O-ring (not on the catalog diagram; supplied in retailer kits).
 - Whether BMW requires replacing the drain plug itself each change (single retailer says recommended).
 - N51 (SULEV) and xDrive engine oil capacity/drain orientation differences for E90.
-- Drain plug orientation: straight down vs sideways (conflict unresolved).
 - Exact BMW jacking-point illustration for the E90 (manual text only says 'as shown in the illustration').
 - Position of the oil filter housing cap on the engine (side/end) is not stated by any E90 source; do not illustrate a specific side.
-- Cap tool: unresolved 26/27 mm hex-cap reports for some caps versus the 86 mm 16-flute tool for E90 N52.
 
 **Needs owner input**
-- Confirm engine code (N52 vs SULEV N51) and RWD vs xDrive from the engine cover label or VIN decode.
-- Confirm there is no dipstick and whether the filter housing cap is the fluted type (86 mm) or hex type before buying the tool.
-- Read the oil-cap label or MY2010 owner's manual oil page to confirm LL-01 / High Performance 5W-30 approval and the capacity line.
-- Note whether the undertray hatch is a coin catch or screws, and which direction the drain plug faces on your car.
+- none recorded

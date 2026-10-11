@@ -14,7 +14,7 @@
     "stepNumber": 3,
     "title": "engine-bay-jump-terminal (BMW 328i draft Battery Replacement guide; evidence step 3, 6)"
   },
-  "contentHash": "25276a12750976309f91a1166adf958a00d841833cddbc85f1be1e974ac5bba4",
+  "contentHash": "2602d1075f945d3c97afe0f256c18c59a0db8b379de5c2251aaf0e238e27a470",
   "createdAt": "2026-10-10T12:01:46.000Z",
   "createdBy": {
     "actor": "claude-research",
@@ -60,9 +60,10 @@
       "element": "b-plus-jump-terminal",
       "evidence": [
         "ref-2",
-        "ref-3"
+        "ref-3",
+        "ref-5"
       ],
-      "note": "2 independent host(s)",
+      "note": "3 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -71,9 +72,10 @@
       "element": "red-terminal-cap",
       "evidence": [
         "ref-4",
-        "ref-3"
+        "ref-3",
+        "ref-5"
       ],
-      "note": "2 independent host(s)",
+      "note": "3 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -139,6 +141,17 @@
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "lr.sudovanilla.org",
       "sourceRef": "https://lr.sudovanilla.org/r/E90/comments/1friexo/whats_supposed_was_it_and_where/lpd4lt1/?context=3",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "2009 328i article: under the hood, the positive jump-start post has a red cap with a plus sign, passenger side near the firewall."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/where-is-the-battery-on-a-2009-bmw-328i/",
       "usage": "reference-only"
     }
   ],

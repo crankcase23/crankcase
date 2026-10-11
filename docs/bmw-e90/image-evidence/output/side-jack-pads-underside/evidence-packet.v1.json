@@ -8,13 +8,14 @@
   },
   "canonicalStep": {
     "actions": [
-      "Loosen bolts on the ground, then lift and support"
+      "Lift at the side jack pads",
+      "Support the car on stands, or use a shop lift"
     ],
-    "stepNumber": 3,
-    "title": "side-jack-pads-underside (BMW 328i draft Tire Rotation guide; evidence step 3)"
+    "stepNumber": 5,
+    "title": "side-jack-pads-underside (BMW 328i draft Tire Rotation guide; evidence step 5, 6)"
   },
-  "contentHash": "4e9fc033c5a58a61028ec89420cae285202cdfd38b9a1bc1ca7cf2d70aa1bc1c",
-  "createdAt": "2026-10-10T12:02:56.000Z",
+  "contentHash": "ea90fb66d0013fa68a9a5b721d1c5f1f7b59eb8bb17418a328645a2f72458399",
+  "createdAt": "2026-10-10T12:03:00.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

@@ -4,7 +4,7 @@
   "visualId": "wheel-bolts-and-metal-valve-stem",
   "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
   "banner": {
-    "step": 4,
+    "step": 7,
     "tag": "IDENTIFY",
     "subtitle": "This is it"
   },

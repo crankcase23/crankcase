@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "e4dd1c5f2ad74df257b7d1cd4de476faef27b83bae3173f4369e62033db2e76d",
-  "createdAt": "2026-10-10T12:04:04.000Z",
+  "contentHash": "d4730e0f0073a4d0cddb18d5e350fd1a598e49b0c0041871cf6e5e3739e2d3d5",
+  "createdAt": "2026-10-10T12:04:08.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -124,11 +124,11 @@
   "refs": [
     {
       "id": "EP-filter-cap-o-ring-positions-v1",
-      "sha256": "bdd8f49ab85dda658d4269de08e6e881fe7009fa1057153541db4823802c04e2"
+      "sha256": "6ea465b6df0f967908eb1c21e5d5395a0dccc7227e498ed32b7a822fb0e8be93"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "9108542dcb0fb579cb6669508405cfda30076bc6c92be016e722fc41a88b9d13"
+      "sha256": "c554c6ef184136a702f89310d09975f2e76fd86af60802efb21c6edd8575d5eb"
     }
   ],
   "schema": "guide-factory.visual-contract",

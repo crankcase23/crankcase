@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "7448b7c155637d69625b050284ad86d58b3148586552e9fdd91f336a1998f911",
-  "createdAt": "2026-10-10T12:03:18.000Z",
+  "contentHash": "061272abc6a1fecf7f3e3d2317ad185bb2684c0cb6f29d2868b8e9fbc251e876",
+  "createdAt": "2026-10-10T12:03:22.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -147,11 +147,11 @@
   "refs": [
     {
       "id": "EP-tpms-reset-controls-v1",
-      "sha256": "f47cef10d73756bd9c284cd5aac1426cd68f85fc0e79966396018a68b304b09c"
+      "sha256": "917c39ab852e07f72a79adf466a26026c12ec0588457c65a665a17057a48fe78"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "dce4a7acd7cb52450bce76f7973dd230f6729549cb4eeb8f64294a8f87b34d03"
+      "sha256": "2798a7f9d463baa3ecbc1996c985c952c04dbe15979237df891aac17193db956"
     }
   ],
   "schema": "guide-factory.visual-contract",

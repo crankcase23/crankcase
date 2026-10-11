@@ -13,8 +13,8 @@
     "stepNumber": 4,
     "title": "brake-reservoir-access-cover (BMW 328i draft Fluid Checks & Top-Offs guide; evidence step 4)"
   },
-  "contentHash": "7cf961a168f44ef6e019f95cedc6ca55672a9068ee7736066453bcc45a307696",
-  "createdAt": "2026-10-10T12:02:14.000Z",
+  "contentHash": "e1be260fc0e190e71312fa8297cb82376f5215f4135dd723e073faabc5a43e6a",
+  "createdAt": "2026-10-10T12:02:18.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"
@@ -113,9 +113,10 @@
       "evidence": [
         "ref-1",
         "ref-2",
-        "ref-3"
+        "ref-3",
+        "ref-6"
       ],
-      "note": "3 independent host(s)",
+      "note": "4 independent host(s)",
       "render": "draw",
       "status": "established"
     },
@@ -135,8 +136,8 @@
       "element": "brake-reservoir",
       "evidence": [
         "ref-3",
-        "ref-6",
-        "ref-7"
+        "ref-7",
+        "ref-8"
       ],
       "note": "3 independent host(s)",
       "render": "draw",
@@ -147,8 +148,8 @@
       "element": "brake-reservoir",
       "evidence": [
         "ref-3",
-        "ref-6",
-        "ref-7"
+        "ref-7",
+        "ref-8"
       ],
       "note": "3 independent host(s)",
       "render": "draw",
@@ -247,9 +248,20 @@
     },
     {
       "establishes": [
-        "E9x article: reservoir is below the plastic cover on the driver's side."
+        "E8x/E9x cabin filter guide: six screws on the upper housing, three retention tabs on the filter frame."
       ],
       "id": "ref-6",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "onlyeuro.com.au",
+      "sourceRef": "https://onlyeuro.com.au/blogs/only-euro/how-to-replace-a-cabin-filter-in-a-bmw-e82-e84-e87-e88-e90-e91-e92-e93",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x article: reservoir is below the plastic cover on the driver's side."
+      ],
+      "id": "ref-7",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "youcanic.com",
@@ -260,7 +272,7 @@
       "establishes": [
         "3-series article: brake fluid reservoir driver side behind a plastic cover."
       ],
-      "id": "ref-7",
+      "id": "ref-8",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "gearshifters.org",

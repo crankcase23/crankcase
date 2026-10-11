@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "e979009c1d579cf0fa82072513124a1c312a91cd65c54ac7bb004f437dce3ec0",
-  "createdAt": "2026-10-10T12:04:13.000Z",
+  "contentHash": "624aef5a8ecedcfcb2bf5833509ee52127a8e9e21e008bc0ef00f0767999adf6",
+  "createdAt": "2026-10-10T12:04:17.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -100,11 +100,11 @@
   "refs": [
     {
       "id": "EP-oil-filter-cap-v1",
-      "sha256": "8980ed0112b07ccc63f2fcb55334ce90300607772e7fff29d2ca63b207f31272"
+      "sha256": "6ebe58d35ed222b350fb51668ca31f57084df9f9f3df44908149731cfd245456"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "d6a086ef9f8338942e7afec2ef99e528016bc860ae2981cb8090d13c66876483"
+      "sha256": "6bfdc911ada6bec80485c87a83109caa669e9f618384dddb7fabed797ef8eb23"
     }
   ],
   "schema": "guide-factory.visual-contract",

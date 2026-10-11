@@ -10,15 +10,15 @@
     "actions": [
       "Loosen the intake hose band clamp",
       "Remove the two airbox mounting fasteners",
-      "Release the intake snorkel",
+      "Detach the front intake snorkel",
       "Handle the MAF connector",
       "Lift out the airbox"
     ],
     "stepNumber": 2,
     "title": "airbox-removal-points (BMW 328i draft Engine Air Filter guide; evidence step 2, 3, 4, 5, 6)"
   },
-  "contentHash": "2b5e53b8c4d13d3766bfaa18eb9e3f16414f96a4d145d6e7a971731bbf597acf",
-  "createdAt": "2026-10-10T12:02:46.000Z",
+  "contentHash": "44eaf17b9376154fb9a26abd8e7bf975eb19025cdc62d00bd27aae6a25fec58c",
+  "createdAt": "2026-10-10T12:02:50.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"
@@ -56,7 +56,7 @@
     },
     {
       "criticality": "procedure",
-      "describe": "Unestablished detail of airbox assembly: Side of the engine bay is unresolved; do not draw it on a specific side or in a specific position relative to the battery or strut towers.",
+      "describe": "Unestablished detail of airbox assembly: Driver's-side location is established by two hosts, but the position relative to the battery or strut towers, and the exact box shape, are not; do not draw those.",
       "id": "airbox-assembly-unestablished-detail",
       "role": "context"
     },
@@ -68,7 +68,7 @@
     },
     {
       "criticality": "procedure",
-      "describe": "Unestablished detail of airbox mounting fasteners: Count of two is established, but head size is single-website and exact positions on the fender side are not.",
+      "describe": "Unestablished detail of airbox mounting fasteners: Count of two and hex head are established (ETK, bavmods, bimmerpost); the 10 mm size is single-website and exact positions on the fender side are not.",
       "id": "airbox-mounting-fasteners-unestablished-detail",
       "role": "context"
     }
@@ -81,9 +81,10 @@
       "evidence": [
         "ref-1",
         "ref-2",
-        "ref-3"
+        "ref-3",
+        "ref-4"
       ],
-      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -91,7 +92,7 @@
       "attribute": "location",
       "element": "airbox-assembly",
       "evidence": [
-        "ref-4",
+        "ref-5",
         "ref-2"
       ],
       "note": "2 independent host(s)",
@@ -112,9 +113,13 @@
     {
       "attribute": "fastener-head-type",
       "element": "airbox-mounting-fasteners",
-      "note": "10 mm hex head; single website (two pages).",
-      "render": "omit",
-      "status": "not-established"
+      "evidence": [
+        "ref-1",
+        "ref-4"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
     },
     {
       "attribute": "hardware-type",
@@ -152,9 +157,10 @@
       "element": "airbox-mounting-fasteners",
       "evidence": [
         "ref-1",
-        "ref-2"
+        "ref-2",
+        "ref-4"
       ],
-      "note": "2 independent host(s)",
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -164,9 +170,10 @@
       "evidence": [
         "ref-1",
         "ref-2",
-        "ref-3"
+        "ref-3",
+        "ref-4"
       ],
-      "note": "3 independent host(s), includes a BMW-document/catalog source",
+      "note": "4 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -196,21 +203,25 @@
     },
     {
       "attribute": "location",
-      "element": "airbox-mounting-fasteners",
-      "note": "no source cited for this fact",
-      "render": "omit",
-      "status": "not-established"
-    },
-    {
-      "attribute": "location",
       "element": "maf-connector-clip",
-      "note": "no source cited for this fact",
-      "render": "omit",
-      "status": "not-established"
+      "evidence": [
+        "ref-4",
+        "ref-1"
+      ],
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "render": "draw",
+      "status": "established"
     },
     {
       "attribute": "existence",
       "element": "snorkel-retention-tabs",
+      "note": "Only bavmods describes two retention tabs; see gapFillNotes about the screw alternative.",
+      "render": "omit",
+      "status": "not-established"
+    },
+    {
+      "attribute": "location",
+      "element": "airbox-mounting-fasteners",
       "note": "no source cited for this fact",
       "render": "omit",
       "status": "not-established"
@@ -225,7 +236,7 @@
     {
       "attribute": "existence",
       "element": "airbox-assembly-unestablished-detail",
-      "note": "Side of the engine bay is unresolved; do not draw it on a specific side or in a specific position relative to the battery or strut towers.",
+      "note": "Driver's-side location is established by two hosts, but the position relative to the battery or strut towers, and the exact box shape, are not; do not draw those.",
       "render": "omit",
       "status": "not-established"
     },
@@ -239,7 +250,7 @@
     {
       "attribute": "existence",
       "element": "airbox-mounting-fasteners-unestablished-detail",
-      "note": "Count of two is established, but head size is single-website and exact positions on the fender side are not.",
+      "note": "Count of two and hex head are established (ETK, bavmods, bimmerpost); the 10 mm size is single-website and exact positions on the fender side are not.",
       "render": "omit",
       "status": "not-established"
     }
@@ -248,7 +259,7 @@
     {
       "element": "airbox-assembly-unestablished-detail",
       "id": "excl-airbox-assembly-unestablished-detail",
-      "reason": "Side of the engine bay is unresolved; do not draw it on a specific side or in a specific position relative to the battery or strut towers.",
+      "reason": "Driver's-side location is established by two hosts, but the position relative to the battery or strut towers, and the exact box shape, are not; do not draw those.",
       "trace": {
         "attribute": "existence",
         "element": "airbox-assembly-unestablished-detail"
@@ -266,7 +277,7 @@
     {
       "element": "airbox-mounting-fasteners-unestablished-detail",
       "id": "excl-airbox-mounting-fasteners-unestablished-detail",
-      "reason": "Count of two is established, but head size is single-website and exact positions on the fender side are not.",
+      "reason": "Count of two and hex head are established (ETK, bavmods, bimmerpost); the 10 mm size is single-website and exact positions on the fender side are not.",
       "trace": {
         "attribute": "existence",
         "element": "airbox-mounting-fasteners-unestablished-detail"
@@ -309,9 +320,20 @@
     },
     {
       "establishes": [
-        "E90-E93 general article: airbox on the driver's side, two Torx screws (different style from the N52 guides)."
+        "ETK diagram 13_1148 for this car: intake muffler, filter element, two M6x25 hex bolts, rubber buffer, three hose clamps, HFM with 5-pin socket, suction hoods with two Torx bolts."
       ],
       "id": "ref-4",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=13_1148",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90-E93 general article: airbox on the driver's side, two Torx screws (different style from the N52 guides)."
+      ],
+      "id": "ref-5",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "youcanic.com",

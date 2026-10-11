@@ -10,11 +10,11 @@
     "actions": [
       "Reset the tire pressure monitor"
     ],
-    "stepNumber": 7,
-    "title": "tpms-reset-controls (BMW 328i draft Tire Rotation guide; evidence step 7)"
+    "stepNumber": 10,
+    "title": "tpms-reset-controls (BMW 328i draft Tire Rotation guide; evidence step 10)"
   },
-  "contentHash": "f47cef10d73756bd9c284cd5aac1426cd68f85fc0e79966396018a68b304b09c",
-  "createdAt": "2026-10-10T12:03:14.000Z",
+  "contentHash": "917c39ab852e07f72a79adf466a26026c12ec0588457c65a665a17057a48fe78",
+  "createdAt": "2026-10-10T12:03:18.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

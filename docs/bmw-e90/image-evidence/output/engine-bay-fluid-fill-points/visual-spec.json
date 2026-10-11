@@ -1,0 +1,58 @@
+{
+  "schema": "reconstructed.visual-spec",
+  "sourceKind": "documentation-derived-prompt",
+  "subject": "Where the owner-serviceable fluid fill points are in the engine bay, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Engine oil level\".",
+  "textOnly": true,
+  "framing": {
+    "aspect": [
+      16,
+      10
+    ],
+    "minPx": [
+      1600,
+      1000
+    ]
+  },
+  "mustShow": [
+    {
+      "rank": 1,
+      "text": "HERO: The cap on the translucent coolant expansion tank, with a filler neck marked MAX and MIN; reported on the passenger side toward the firewall."
+    },
+    {
+      "rank": 2,
+      "text": "The washer-fluid filler neck cap, reported black with a wiper symbol, serving window and headlamp washers."
+    },
+    {
+      "rank": 3,
+      "text": "The engine oil filler neck cap on top of the engine."
+    },
+    {
+      "rank": 4,
+      "text": "The brake fluid reservoir at the driver-side base of the windshield, hidden under a long plastic cover."
+    }
+  ],
+  "maySimplify": [
+    "windshield base and wipers"
+  ],
+  "mustNotShow": [
+    "coolant expansion tank cap detail (Exact tank shape; cap color and whether marks are on the tank side or filler neck conflict; depict a generic translucent tank)",
+    "brake reservoir under cover detail (The reservoir is hidden; do not show cover screw count or the reservoir's cap markings)",
+    "washer fluid filler cap detail (Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour)",
+    "wrench or socket",
+    "hands",
+    "people",
+    "engine badges",
+    "logos",
+    "brand marks",
+    "licence plates"
+  ],
+  "noText": true,
+  "clearSpace": [
+    {
+      "band": "top",
+      "fromPct": 3,
+      "toPct": 17
+    }
+  ],
+  "sourcePromptSha256": "06d2fd99844a43cc6d5c464af1ae3e3e50ea11ce1a58855642cc3f7adf114ef1"
+}

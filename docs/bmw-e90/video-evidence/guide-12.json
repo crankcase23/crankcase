@@ -1,0 +1,160 @@
+{
+  "guide": 12,
+  "schema": "cg-video-evidence.v1",
+  "policy": "Video supports visual identification only. It never certifies torque, capacity, intervals or safety steps, and never alone establishes a critical fact. Frames and video are not downloaded, copied or published.",
+  "videos": [
+    {
+      "id": "yt-Taw0VaAYucg",
+      "url": "https://www.youtube.com/watch?v=Taw0VaAYucg",
+      "titleAsListed": "BMW 328i E90 How to Replace Engine Air FIlter N51/N52K E91 E92 E93 2006 - 2013",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "328I",
+        "N51",
+        "2006",
+        "2013"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-bRj3lLfbRkc",
+      "url": "https://www.youtube.com/watch?v=bRj3lLfbRkc",
+      "titleAsListed": "BMW 3 Series Air Filter Replacement - e90 e91 e92 e93 (N52)",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-vAHGcRh4zz0",
+      "url": "https://www.youtube.com/watch?v=vAHGcRh4zz0",
+      "titleAsListed": "BMW E90 E91 E92 E93 N52 328i 330i AIR INTAKE FILTER REPLACEMENT HOW TO",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "328I",
+        "330I",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-xw0itL7Fm8E",
+      "url": "https://www.youtube.com/watch?v=xw0itL7Fm8E",
+      "titleAsListed": "BMW E90 N52 Change Air Filter",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "N52"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-tZu6lk7IW1Y",
+      "url": "https://www.youtube.com/watch?v=tZu6lk7IW1Y",
+      "titleAsListed": "BMW E90 AIR FILTER REPLACEMENT E91 E92 E93 323I 325I 328I 330I 325XI 328XI",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "E93",
+        "328I",
+        "325I",
+        "330I"
+      ],
+      "titleConflictSignals": [],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    },
+    {
+      "id": "yt-htmZqawq77s",
+      "url": "https://www.youtube.com/watch?v=htmZqawq77s",
+      "titleAsListed": "How to replace Engine Air Filter on BMW 323i 325i 330i 125i 130i 525i 530i E90 E91 E92 E87 E60 E61",
+      "channel": null,
+      "foundVia": "WebSearch (domain-filtered to youtube.com), 2026-10-10",
+      "basis": "search-listing-title",
+      "titleSignals": [
+        "E90",
+        "E91",
+        "E92",
+        "325I",
+        "330I",
+        "E60",
+        "E87"
+      ],
+      "titleConflictSignals": [
+        "E60",
+        "E87"
+      ],
+      "configMatch": {
+        "status": "UNVERIFIED",
+        "evidence": null,
+        "note": "Title only. Generation, engine, drivetrain and trim are not established by anything viewed."
+      },
+      "observations": [],
+      "confidence": "candidate",
+      "viewed": false
+    }
+  ]
+}

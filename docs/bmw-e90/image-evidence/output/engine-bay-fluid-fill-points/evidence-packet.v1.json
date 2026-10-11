@@ -16,7 +16,7 @@
     "stepNumber": 2,
     "title": "engine-bay-fluid-fill-points (BMW 328i draft Fluid Checks & Top-Offs guide; evidence step 2, 3, 4, 5)"
   },
-  "contentHash": "2aca78f95f186436487afbab60726c6a9dbb6609328a6135dcbee5890615d83e",
+  "contentHash": "8c4a170613cbef6c7fef3dec8ec78e5f0516a1af782f71d5c48c0c1ba514bc67",
   "createdAt": "2026-10-10T12:02:09.000Z",
   "createdBy": {
     "actor": "claude-research",
@@ -67,7 +67,7 @@
     },
     {
       "criticality": "procedure",
-      "describe": "Unestablished detail of washer fluid filler cap: Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible.",
+      "describe": "Unestablished detail of washer fluid filler cap: Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour.",
       "id": "washer-fluid-filler-cap-unestablished-detail",
       "role": "context"
     }
@@ -79,9 +79,10 @@
       "element": "coolant-expansion-tank-cap",
       "evidence": [
         "ref-1",
-        "ref-2"
+        "ref-2",
+        "ref-3"
       ],
-      "note": "2 independent host(s), includes a BMW-document/catalog source",
+      "note": "3 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -90,7 +91,8 @@
       "element": "coolant-expansion-tank-cap",
       "evidence": [
         "ref-2",
-        "ref-3"
+        "ref-4",
+        "ref-5"
       ],
       "note": "2 independent host(s)",
       "render": "draw",
@@ -100,7 +102,7 @@
       "attribute": "fine-detail-geometry",
       "element": "coolant-expansion-tank-cap",
       "evidence": [
-        "ref-4",
+        "ref-6",
         "ref-2"
       ],
       "note": "2 independent host(s), includes a BMW-document/catalog source",
@@ -110,18 +112,23 @@
     {
       "attribute": "location",
       "element": "washer-fluid-filler-cap",
-      "note": "Single source: passenger side near the strut tower, black cap with a wiper symbol. BMW manuals confirm a filler neck exists for headlamp and window washers.",
-      "render": "omit",
-      "status": "not-established"
+      "evidence": [
+        "ref-7",
+        "ref-8"
+      ],
+      "note": "2 independent host(s)",
+      "render": "draw",
+      "status": "established"
     },
     {
       "attribute": "existence",
       "element": "washer-fluid-filler-cap",
       "evidence": [
         "ref-1",
-        "ref-4"
+        "ref-6",
+        "ref-9"
       ],
-      "note": "1 independent host(s), includes a BMW-document/catalog source",
+      "note": "2 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
       "status": "established"
     },
@@ -130,7 +137,7 @@
       "element": "engine-oil-filler-cap",
       "evidence": [
         "ref-1",
-        "ref-5"
+        "ref-10"
       ],
       "note": "2 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -140,10 +147,10 @@
       "attribute": "location",
       "element": "brake-reservoir-under-cover",
       "evidence": [
-        "ref-6",
-        "ref-7",
-        "ref-8",
-        "ref-9"
+        "ref-11",
+        "ref-12",
+        "ref-13",
+        "ref-14"
       ],
       "note": "4 independent host(s)",
       "render": "draw",
@@ -153,8 +160,8 @@
       "attribute": "relationship",
       "element": "brake-reservoir-under-cover",
       "evidence": [
-        "ref-6",
-        "ref-10"
+        "ref-11",
+        "ref-15"
       ],
       "note": "2 independent host(s)",
       "render": "draw",
@@ -164,8 +171,8 @@
       "attribute": "location",
       "element": "engine-oil-filler-cap",
       "evidence": [
-        "ref-5",
-        "ref-11"
+        "ref-10",
+        "ref-16"
       ],
       "note": "2 independent host(s), includes a BMW-document/catalog source",
       "render": "draw",
@@ -175,9 +182,9 @@
       "attribute": "existence",
       "element": "brake-reservoir-under-cover",
       "evidence": [
-        "ref-6",
-        "ref-7",
-        "ref-9"
+        "ref-11",
+        "ref-12",
+        "ref-14"
       ],
       "note": "3 independent host(s)",
       "render": "draw",
@@ -207,7 +214,7 @@
     {
       "attribute": "existence",
       "element": "washer-fluid-filler-cap-unestablished-detail",
-      "note": "Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible.",
+      "note": "Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour.",
       "render": "omit",
       "status": "not-established"
     }
@@ -234,7 +241,7 @@
     {
       "element": "washer-fluid-filler-cap-unestablished-detail",
       "id": "excl-washer-fluid-filler-cap-unestablished-detail",
-      "reason": "Position rests on one source; show only 'a filler in the engine bay' without exact placement if possible.",
+      "reason": "Side is supported (passenger) but exact position and cap colour (black vs blue) are not; show a filler on the passenger side without colour.",
       "trace": {
         "attribute": "existence",
         "element": "washer-fluid-filler-cap-unestablished-detail"
@@ -266,9 +273,20 @@
     },
     {
       "establishes": [
-        "E90-E93 article: expansion tank in the engine compartment in front of the passenger side."
+        "RealOEM E90 LCI 328i expansion tank diagram: tank 17137640514, screw cap 17117639020, level switch 17137553919."
       ],
       "id": "ref-3",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=17_0322",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E90-E93 article: expansion tank in the engine compartment in front of the passenger side."
+      ],
+      "id": "ref-4",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "youcanic.com",
@@ -277,9 +295,20 @@
     },
     {
       "establishes": [
+        "2011 328i article: expansion tank passenger side near the front, black cap with warning symbol; separate larger washer tank with a blue cap further toward the side or rear."
+      ],
+      "id": "ref-5",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "tpautorepair.net",
+      "sourceRef": "https://tpautorepair.net/where-is-the-coolant-in-a-2011-bmw-328i/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
         "E94 manual p.223-226: engine compartment items, coolant check, washer filler for headlamp and window systems."
       ],
-      "id": "ref-4",
+      "id": "ref-6",
       "kind": "oem-text",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "carmanualsonline.info",
@@ -288,9 +317,42 @@
     },
     {
       "establishes": [
+        "Washer filler passenger side near strut tower, black cap with wiper symbol."
+      ],
+      "id": "ref-7",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "youcanic.com",
+      "sourceRef": "https://www.youcanic.com/add-windshield-washer-fluid-2004-2013-bmw-3-series/",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "E9x thread: washer tank sits at the back of the passenger-side wheel well; headlamp-washer cars have two openings."
+      ],
+      "id": "ref-8",
+      "kind": "third-party-guide",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "g42.bimmerpost.com",
+      "sourceRef": "https://g42.bimmerpost.com/forums/showthread.php?p=21195767",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
+        "RealOEM filler pipe for wash container 61667135409 (existence of a washer filler pipe; no position)."
+      ],
+      "id": "ref-9",
+      "kind": "parts-catalog",
+      "rights": "Text consulted for facts only; no pixels or images from this source are used.",
+      "source": "realoem.com",
+      "sourceRef": "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1877",
+      "usage": "reference-only"
+    },
+    {
+      "establishes": [
         "Oil cap on top of the engine cover."
       ],
-      "id": "ref-5",
+      "id": "ref-10",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "bmwtuning.co",
@@ -301,7 +363,7 @@
       "establishes": [
         "E92 M3: brake master cylinder driver side near windshield base; access by removing cabin air filter housing."
       ],
-      "id": "ref-6",
+      "id": "ref-11",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "bmwblog.com",
@@ -312,7 +374,7 @@
       "establishes": [
         "Reservoir below plastic cover on driver's side."
       ],
-      "id": "ref-7",
+      "id": "ref-12",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "youcanic.com",
@@ -323,7 +385,7 @@
       "establishes": [
         "E82/E88: reservoir drivers side in front of the windshield, plastic cover popped off."
       ],
-      "id": "ref-8",
+      "id": "ref-13",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "1addicts.com",
@@ -334,7 +396,7 @@
       "establishes": [
         "Driver side, behind a plastic cover."
       ],
-      "id": "ref-9",
+      "id": "ref-14",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "gearshifters.org",
@@ -345,7 +407,7 @@
       "establishes": [
         "Newer models: plastic cover is the microfilter housing."
       ],
-      "id": "ref-10",
+      "id": "ref-15",
       "kind": "third-party-guide",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "youcanic.com",
@@ -356,7 +418,7 @@
       "establishes": [
         "RealOEM E90 328i cylinder head cover diagram lists the oil filler cap as part of the cover assembly."
       ],
-      "id": "ref-11",
+      "id": "ref-16",
       "kind": "parts-catalog",
       "rights": "Text consulted for facts only; no pixels or images from this source are used.",
       "source": "realoem.com",

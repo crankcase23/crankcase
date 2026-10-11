@@ -4,7 +4,7 @@
   "visualId": "tpms-reset-controls",
   "note": "Editable guidance layer. Nothing here is baked into the image. Fill each highlight region (normalised x,y,w,h) after the accepted image exists, then render with scripts/bmw/visual-standard.mjs overlay.",
   "banner": {
-    "step": 7,
+    "step": 10,
     "tag": "LOCATE",
     "subtitle": "Find it"
   },

@@ -3,15 +3,17 @@
   "name": "Oxygen Sensor",
   "evidenceTier": "safety-critical",
   "primarySourceFound": true,
-  "primaryScope": "PRIMARY found for: sensor part numbers, lead lengths and the four-sensor layout (OE parts catalog, RealOEM type code PH73 USA, selection 09/2009: lambda probe fixings diagram 18_0610 and 18_2101), exhaust layout (ULEV2 manifolds with integrated catalysts, 18_0587), and sensor type/connector care (BMW AG training document ST055 Emissions Management: wideband pre-catalyst sensors Bosch LSH25/LSU planar mounted directly in front of the catalytic converters; post-catalyst monitor sensor Bosch LSF 4.2; connector sockets must be protected from contamination). NO primary found for the sensor torque: the 50 Nm value comes from a Pelican Parts E90 article, bavmods (37 ft-lb) and a z4-forum poster who says he read 50 Nm in TIS (a quote of TIS, not the document), so it is VERIFIED_SECONDARY, primary:false.",
+  "primaryScope": "PRIMARY found for: sensor part numbers, lead lengths and the four-sensor layout (OE parts catalog, RealOEM type code PH73 USA, selection 09/2009: lambda probe fixings diagram 18_0610 and 18_2101), exhaust layout (ULEV2 manifolds with integrated catalysts, 18_0587), and sensor type/connector care (BMW AG training document ST055 Emissions Management: wideband pre-catalyst sensors Bosch LSH25/LSU planar mounted directly in front of the catalytic converters; post-catalyst monitor sensor Bosch LSF 4.2; connector sockets must be protected from contamination). NO primary found for the sensor torque: the 50 Nm value comes from a Pelican Parts E90 article, bavmods (37 ft-lb) and a z4-forum poster who says he read 50 Nm in TIS (a quote of TIS, not the document), so it is VERIFIED_SECONDARY, primary:false. Pass 3: RealOEM group 18 for this selection has five diagrams (18_0587 manifold with catalyst, 18_0588 catalyst/front silencer, 18_0610 lambda probe fixings, 18_2101 welded-case repair kit for gas sensors, 18_0611 rear exhaust); 18_2101 repeats the same four sensor numbers and adds only a welded-case repair item, so no new sensor numbers exist. BMW training ST613 (bmwtechinfo.bmwgroup.com) says the N52K is the N52KP, more accurately N52B30O1, but gives no lambda sensor positions or connector details. Sensor torque is still NOT in any BMW document found.",
   "recommendedStatus": "BUILDABLE",
-  "summary": "Closed since pass 1: (1) Torque CONFLICT resolved by weight of evidence: 50 Nm (37 ft-lb) for all four sensors appears in the E90-specific Pelican Parts article (pre-cat and post-cat), in bavmods (37 ft-lb, N52 bank 2 sensor 1) and as a quoted TIS value in a z4-forum thread, with the 55 Nm figure coming from one poster citing a generic torque PDF. Status VERIFIED_SECONDARY (no TIS page itself found, primary:false); the z4-forum poster notes an arm-style lambda socket needs correction, so the wrench reading differs from applied torque when a crowfoot or extension is used. (2) The four sensors, part numbers and lead lengths are now backed by the OE catalog: regulating (pre-cat) 11787558055 L=1400 mm and 11787558073 L=910 mm; monitor (post-cat) 11787545074 L=560 mm and 11787545075 L=490 mm; bank mapping comes from Turner/ECS (055 and 074 bank 1; 073 and 075 bank 2). (3) Connector locations: pre-cat connectors sit on the right side of the engine above the exhaust manifold in a mounting bracket and the harness runs under the engine cover (Pelican, bimmerpost); post-cat connectors sit on a bracket at the bottom of the transmission bell housing, reached from below after removing the transmission splash shield (Pelican only, SINGLE_SOURCE). (4) Bank 2 pre-cat is behind a metal shield held by two E8 screws (z4-forum, bavmods). (5) Sensor type: pre-cat wideband, post-cat narrow-band monitor (BMW training doc). (6) N51 pre-cat numbers: not found; the catalog selection for this VIN lists ULEV2 manifolds and engine N52N, so N51 numbers are not needed unless the engine label says N51. Still unresolved: no BMW torque document, post-cat connector location has one source, E8 shield/bracket screw torque not found, whether the bank 1 post-cat sensor needs the engine cover removed.",
+  "summary": "Closed since pass 1: (1) Torque CONFLICT resolved by weight of evidence: 50 Nm (37 ft-lb) for all four sensors appears in the E90-specific Pelican Parts article (pre-cat and post-cat), in bavmods (37 ft-lb, N52 bank 2 sensor 1) and as a quoted TIS value in a z4-forum thread, with the 55 Nm figure coming from one poster citing a generic torque PDF. Status VERIFIED_SECONDARY (no TIS page itself found, primary:false); the z4-forum poster notes an arm-style lambda socket needs correction, so the wrench reading differs from applied torque when a crowfoot or extension is used. (2) The four sensors, part numbers and lead lengths are now backed by the OE catalog: regulating (pre-cat) 11787558055 L=1400 mm and 11787558073 L=910 mm; monitor (post-cat) 11787545074 L=560 mm and 11787545075 L=490 mm; bank mapping comes from Turner/ECS (055 and 074 bank 1; 073 and 075 bank 2). (3) Connector locations: pre-cat connectors sit on the right side of the engine above the exhaust manifold in a mounting bracket and the harness runs under the engine cover (Pelican, bimmerpost); post-cat connectors sit on a bracket at the bottom of the transmission bell housing, reached from below after removing the transmission splash shield (Pelican only, SINGLE_SOURCE). (4) Bank 2 pre-cat is behind a metal shield held by two E8 screws (z4-forum, bavmods). (5) Sensor type: pre-cat wideband, post-cat narrow-band monitor (BMW training doc). (6) N51 pre-cat numbers: not found; the catalog selection for this VIN lists ULEV2 manifolds and engine N52N, so N51 numbers are not needed unless the engine label says N51. Still unresolved: no BMW torque document, post-cat connector location has one source, E8 shield/bracket screw torque not found, whether the bank 1 post-cat sensor needs the engine cover removed. Pass 3 additions: (a) RealOEM 18_0610 re-read: also lists universal 6-pole socket housing 12527505669, bracket bolts 07129905030 (M6x12, 2), clips, holders 11787533565 and 11787547163, hex bolt 07119902900, cable tie 61131367599 (catalog only). (b) A bimmerpost poster states post-cat sensors do not need the engine cover removed (single source); pre-cat plugs still need the cover and cowl off. (c) Post-cat connector location is still Pelican only; a z4-forum E85 N52 thread only speculates (some connectors clipped under the engine cover, others in an underside bracket near the bell housing) so it is not confirmation. (d) A poster quoting the Bentley manual says the right tie rod is removed from the steering rack for bank 1 sensor 1; not reconfirmed and not needed according to other posters. (e) Torque stays VERIFIED_SECONDARY at 50 Nm (37 ft-lb). (f) The guide branches on the engine-label and transmission uncertainty through the part-number check in step 8 and the holder note in step 10.",
   "variantDependencies": [
     "Engine: OE catalog selection for this VIN shows engine N52N (block N52B30A) and ULEV2 exhaust manifolds with catalysts (cyl 1-3 18407646694, cyl 4-6 18407646693, valid from 03/2009), consistent with the N52 and not the N51 SULEV. The RealOEM VIN page does not state whether the 09/2009 production month is decoded from the VIN. N51 pre-cat sensor numbers were not found; Turner lists post-cat 11787545074/5 for N51, N52, N52N, N54.",
     "Pre-cat sensors for N52 only on Turner; 11787537984 (M3) and 11787558087 (335i N54) must not be used on a 328i.",
     "Drive type/transmission: OE catalog holder 11787548283 (manual) vs 11787556835 (automatic S205A) for the sensor lead holder; automatic exhaust variants add flange, clamps and brackets (18_0588). Sensor numbers do not change.",
     "Pelican staff: do not swap bank 1 and bank 2 sensors; wiring lengths differ and harness stress can cause failure. Turner/OE catalog lead lengths: pre-cat 1400 mm vs 910 mm, post-cat 560 mm vs 490 mm.",
-    "Aftermarket (Bosch 17098/17099 pre-cat, Bosch 560/490 mm post-cat, Meyle) equivalents are listed by Turner; OE-equivalent Bosch is the usual alternative."
+    "Aftermarket (Bosch 17098/17099 pre-cat, Bosch 560/490 mm post-cat, Meyle) equivalents are listed by Turner; OE-equivalent Bosch is the usual alternative.",
+    "Engine label unresolved between decoders (N52K per bimmer.work, N52N per RealOEM). BMW training ST613 states N52K = N52KP = N52B30O1; N52N is not defined in that document. The sensor numbers above come from the RealOEM N52N selection plus Turner/ECS N52 3.0 L fitment tables; no N52K-specific catalog page was read. To identify: compare the number printed on the old sensor (or its lead length) with step 8 before buying; if it does not match 11787558055, 11787558073, 11787545074 or 11787545075, stop and match the old part, do not guess.",
+    "Transmission (decoded automatic S205A, probable not proven): the OE catalog lists holder 11787556835 for S205A=Yes and 11787548283 otherwise; reuse the existing holder and, if it is broken, buy the one that matches the old part."
   ],
   "tools": [
     {
@@ -95,6 +97,22 @@
         "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
         "https://blog.bavauto.com/16267/bmw-and-mini-diy-video-replacing-oxygen-sensors-o2-obd-ii-how-to/"
       ]
+    },
+    {
+      "item": "10 mm socket (listed by bavmods in its tool list; use not stated)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide"
+      ],
+      "note": "bavmods lists 8 mm, 10 mm and E8 sockets but gives no fastener for the 10 mm."
+    },
+    {
+      "item": "Flat-head screwdriver (listed in Pelican's tool list; use not stated)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm"
+      ],
+      "note": "Pelican lists it with the O2 socket and 22 mm wrench; its purpose is not described."
     }
   ],
   "parts": [
@@ -198,6 +216,16 @@
         "https://www.realoem.com/bmw/enUS/select?vin=WBAPH7C58AA175760"
       ],
       "note": "Not found in any source; catalog selection for this VIN lists engine N52N and ULEV2 manifolds, so not needed unless the engine label says N51."
+    },
+    {
+      "item": "Lambda wiring-side hardware (socket housing, bracket bolts, holders, clips, cable tie)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=18_0610"
+      ],
+      "partNumber": "socket housing 6-pole 12527505669; bracket bolts M6x12 07129905030 (2); holders 11787533565 and 11787547163; hex bolt M8x16 07119902900; cable clamp 11787549563 (2); clip 07147568538 (2); cable tie 61131367599",
+      "primary": true,
+      "note": "OE catalog 18_0610 only; fitment per item is not stated beyond the 328i selection, and which of these are on a given sensor was not shown."
     }
   ],
   "fluids": [],
@@ -276,7 +304,8 @@
       "instruction": "Take off the engine cover (three screws). For bank 2 pre-cat via the bavmods route, also remove the cabin air filter housing, HVAC cowl and ECU covers (8 mm screws).",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Pre-cat sensor wiring runs in channels and clips under the engine cover (bimmerpost), so the cover must come off for pre-cat work."
+        "Pre-cat sensor wiring runs in channels and clips under the engine cover (bimmerpost), so the cover must come off for pre-cat work.",
+        "Post-cat-only work does not need the engine cover off according to one bimmerpost poster (single source); pre-cat work does."
       ],
       "sources": [
         "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide",
@@ -309,7 +338,8 @@
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Protect the connector socket from dirt and oil; BMW training notes contaminated sockets cause trouble.",
-        "Reference frame for right side is not stated; one source says bank 1 plug is further toward the rear."
+        "Reference frame for right side is not stated; one source says bank 1 plug is further toward the rear.",
+        "A poster quoting the Bentley manual says the right tie rod is removed from the steering rack for bank 1 sensor 1; other posters on the same thread did not confirm it. Not required by Pelican or bavmods; stop and ask a shop if a socket cannot reach."
       ],
       "sources": [
         "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
@@ -385,7 +415,7 @@
     {
       "n": 10,
       "title": "Reconnect and secure the harness",
-      "instruction": "Plug the connector together until the tab clicks, route the lead back through its channels and clips away from the exhaust, tie up slack with cable ties and refit the bracket and shields.",
+      "instruction": "Plug the connector together until the tab clicks, route the lead back through its channels and clips away from the exhaust, tie up slack with cable ties and refit the bracket and shields. The OE catalog lists a lead holder 11787556835 for the automatic (S205A) and 11787548283 otherwise; reuse the old holder and clips and only replace a broken one with the matching part.",
       "status": "VERIFIED",
       "warnings": [
         "A lead resting on the exhaust will melt."
@@ -393,35 +423,40 @@
       "sources": [
         "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide",
         "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
-        "https://blog.bavauto.com/16267/bmw-and-mini-diy-video-replacing-oxygen-sensors-o2-obd-ii-how-to/"
+        "https://blog.bavauto.com/16267/bmw-and-mini-diy-video-replacing-oxygen-sensors-o2-obd-ii-how-to/",
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=18_0610"
       ],
       "primary": false
     },
     {
       "n": 11,
       "title": "Post-cat sensors (from below)",
-      "instruction": "Raise and support the car, remove the transmission splash shield, find the post-cat connectors on a bracket at the bottom of the transmission bell housing, label and disconnect them and release the harness from its clips. The sensors carry an insulating foil shield that must be compressed slightly so the socket fits over the hex. Remove, install with anti-seize and tighten to 50 Nm as in steps 7-10.",
+      "instruction": "Raise and support the car, remove the transmission splash shield, find the post-cat connectors on a bracket at the bottom of the transmission bell housing, label and disconnect them and release the harness from its clips. The engine cover does not need to come off for the post-cat sensors (one bimmerpost poster). The sensors carry an insulating foil shield that must be compressed slightly so the socket fits over the hex. Remove, install with anti-seize and tighten to 50 Nm as in steps 7-10.",
       "status": "SINGLE_SOURCE",
       "warnings": [
-        "One source only; the connector bracket position was not confirmed by a second site.",
-        "Support the car on stands or a lift, never on a jack alone."
+        "One source (Pelican) gives the connector bracket position; a z4-forum thread on the E85 N52 only speculates (some connectors clipped under the engine cover, others on an underside bracket or near the bell housing), so treat the position as unconfirmed. If the connectors are not where described, follow each sensor lead from the sensor to its plug rather than guessing.",
+        "The no-engine-cover statement is one bimmerpost poster.",
+        "Support the car on stands or a lift, never on a jack alone. Jacking points and splash shield screw type were not found."
       ],
       "sources": [
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm"
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14115692",
+        "https://z4-forum.com/threads/e85-n52-post-cat-lambda-sensors.122362/"
       ],
       "primary": false
     },
     {
       "n": 12,
       "title": "Reassemble, reconnect the battery and clear codes",
-      "instruction": "Refit covers in reverse, reconnect the battery if it was disconnected, clear codes with the scan tool, start and idle the engine, and check for rough running or a returning check-engine light.",
+      "instruction": "Refit covers in reverse, reconnect the battery if it was disconnected, clear codes with the scan tool, start and idle the engine, and check for rough running or a returning check-engine light. BMW training ST055 lists oxygen sensor monitoring and oxygen sensor heater monitoring among the readiness bits, so expect these monitors to need normal driving before an emissions test; the exact drive cycle was not found.",
       "status": "VERIFIED",
       "warnings": [
         "If a code returns, re-check connector seating and that the correct bank was replaced."
       ],
       "sources": [
         "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm"
+        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
+        "https://archive.org/download/BMWTechnicalTrainingDocuments/ST055%20Engine%20Electronics/10_Emissions%20Management.pdf"
       ],
       "primary": false
     }
@@ -436,17 +471,17 @@
     "Keep connector sockets clean; a contaminated or oxidised plug can cause faults (BMW training)."
   ],
   "missingEvidence": [
-    "BMW TIS/Bentley oxygen sensor torque for this vehicle (four non-BMW sources agree on 50 Nm; one poster says 55 Nm).",
-    "A second independent source for the post-cat connector location (bracket at the bottom of the transmission bell housing is Pelican only) and for whether the bank 1 post-cat sensor needs the engine cover removed.",
+    "BMW TIS/Bentley oxygen sensor torque for this vehicle (four non-BMW sources agree on 50 Nm; one poster says 55 Nm from a generic torque PDF).",
+    "A second independent source for the post-cat connector location (bracket at the bottom of the transmission bell housing is Pelican only; the z4-forum E85 thread is speculation) and a reference frame for 'right side' pre-cat connectors.",
     "Torque for the E8 shield/bracket screws, strut brace and heat shield fasteners; strut brace socket size (E14/E18/E20 reports conflict).",
-    "Screw type of the transmission splash shield.",
-    "N51B30 pre-cat part numbers (not needed if the engine label confirms N52)."
+    "Screw type of the transmission splash shield and jacking points.",
+    "Whether the Bentley tie-rod removal for bank 1 sensor 1 is required (one poster quoting it; others do not mention it).",
+    "N52K-specific catalog page for the sensor part numbers (decoders disagree N52K vs N52N; numbers here are from the N52N selection and N52 fitment tables).",
+    "Exact position of the post-cat sensors in the exhaust pipe (descriptions differ).",
+    "N51B30 pre-cat part numbers (not needed for this decoded N52 car)."
   ],
   "ownerInputsNeeded": [
-    "Which sensor(s) or fault code(s) triggered this guide (bank and position).",
-    "Engine label check on the car: N52B30 (catalog indicates N52N) vs N51; and production date.",
-    "Transmission type (selects the lead holder and exhaust bracket variants, not the sensor numbers).",
-    "Approval to publish 50 Nm as a sourced-from-forums/training-guide torque with a warning, or to wait for a TIS page."
+    "Approval to publish 50 Nm (37 ft-lb) as a sourced-from-forums/training-guide torque with a warning, or to hold the torque until a BMW TIS page is found."
   ],
   "visuals": [
     {
@@ -887,5 +922,17 @@
       ],
       "imageType": "LOCATE"
     }
+  ],
+  "resolutionNotes": [
+    "Re-read RealOEM 18_0610 and 18_2101: sensor numbers and lead lengths reconfirmed; added socket housing, bolts, holders, clips and cable tie part numbers (catalog only).",
+    "Confirmed 18_2101 is a welded-case repair-kit diagram with the same four sensors; no new sensor numbers.",
+    "Post-cat engine-cover question: bimmerpost says not needed (single source); added to steps 3 and 11.",
+    "Post-cat connector location remains SINGLE_SOURCE (Pelican); z4-forum E85 thread is speculative and recorded as such.",
+    "Engine label: BMW ST613 equates N52K with N52KP (N52B30O1); N52N not defined by BMW in that document; guide now branches via part-number check in step 8.",
+    "Torque not upgraded: no BMW document found; stays VERIFIED_SECONDARY (Pelican, bavmods, z4-forum quoting TIS, bavauto).",
+    "Added tie-rod removal claim (Bentley quote by a poster) as an unconfirmed warning in step 5.",
+    "Added readiness-monitor note to step 12 from BMW training ST055; drive cycle not found.",
+    "ownerInputsNeeded reduced to the torque publication decision; no vehicle-inspection requests.",
+    "Not resolved: BMW torque, E8/strut brace torques and sizes, splash shield screw type, jacking points, N51 numbers."
   ]
 }

@@ -6,7 +6,7 @@ FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Hig
 
 MUST SHOW (clearly, in this order of importance):
 1. HERO: A flat pleated filter element with a charcoal layer, sitting in its plastic frame or the lifted cover.
-2. Small plastic tabs on the frame that are pressed to free the element; three are reported. Do NOT depict the shape of its release mechanism: keep it a plain generic shape.
+2. Small plastic tabs on the frame that are pressed to free the element; three are reported.
 
 MAY SHOW, SIMPLIFIED AND DIM (background only): a plain light neutral ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
 

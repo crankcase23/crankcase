@@ -5,15 +5,18 @@
   "primarySourceFound": true,
   "primaryScope": "PRIMARY found for: (a) BMW TIS text for the rear differential oil check/fill (5series.net PDF carrying BMW AG TIS footers and operation codes 33 11 3AZ/9AZ): remove the filler plug, check the level, fill to the lower edge of the filler plug opening, use only approved gear oils; plug torque table 3AZ (oil fill/drain plug with sealing ring) 65 Nm and 9AZ (plugs with O-ring, replace plugs) 60 Nm. The table lists series E30 to E86 and does NOT name the E90, so it applies to the E90 by plug-type match only; (b) OE parts catalog (RealOEM PH73 USA 09/2009): final drive housing type 188L, ratios 3.23 (row not tied to an option) and 3.73 (automatic S205A), one screw plug with O-ring M22x1.5 33117525064, synthetic gear oil 1 L 83222365987 (valid to 07/2011), no front differential or transfer case groups for this 328i; (c) BMW AG training doc ST502 Powertrain: 188L final drive, lifetime-fill differential oil, ratio table. NO primary found for: rear differential capacity (TIS text and owner manual give none), open vs limited-slip confirmation, service interval, or any xDrive value.",
   "recommendedStatus": "BUILDABLE",
-  "summary": "Closed since pass 1: (1) Plug torque: BMW TIS text (via a forum PDF) gives 60 Nm for oil filler/drain plugs WITH an O-ring (replace the plug) and 65 Nm for plugs with a sealing ring; the OE catalog lists the E90 plug as \"screw plug with O-ring\" (33117525064), so 60 Nm (44 ft-lb) applies, matching bimmersport (E90), bavmods (E9X) and FCP (F30). The earlier E60 poster's claim of 65 Nm with O-ring / 60 Nm without is reversed relative to the TIS table. Caveat: the TIS table does not name the E90 and says replace the plug. (2) Fill method now has a PRIMARY: fill to the lower edge of the filler opening; single filler/drain plug confirmed by 4 sources and one screw plug in the catalog. (3) Capacity: 1.0 L for the N52 (bimmerpost, bimmersport, 5series N52 poster; measured 0.95 L out and 1.1 L in) versus 1.2 L for the N54/335i/diesel (bimmerpost, bimmersport) and a generic bavmods 1.2 L; status VERIFIED_SECONDARY about 1.0 L, but the level at the opening governs (BMW TIS). (4) Fluid: OE catalog lists synthetic gear oil 83222365987 and Turner cross-references it to SAF-XO 75W-90 GL-5 07512293972 (also listed by ECS and FCP); FCP says 75W-140 only for M3/LSD. (5) Open vs limited-slip: nothing in the OE catalog or BMW training doc for this 328i indicates an LSD (single rear axle assembly listed with only ratio variants); 75W-140 is for M3/LSD cars per FCP. Not proven for the VIN, so one owner check remains. (6) Drive type: the catalog model 328i has no front differential or transfer case groups, indicating RWD; xDrive content is therefore out of scope for this VIN and kept only as reference data (transfer case DTF-1, about 1 L; front differential 60 Nm and 700-1000 ml are from F30 data, not E90). (7) Service interval: BMW training says lifetime-fill; retailers/forums say 40,000-60,000 mi or 75,000-100,000 km; no BMW scheduled interval found.",
+  "summary": "Closed since pass 1: (1) Plug torque: BMW TIS text (via a forum PDF) gives 60 Nm for oil filler/drain plugs WITH an O-ring (replace the plug) and 65 Nm for plugs with a sealing ring; the OE catalog lists the E90 plug as \"screw plug with O-ring\" (33117525064), so 60 Nm (44 ft-lb) applies, matching bimmersport (E90), bavmods (E9X) and FCP (F30). The earlier E60 poster's claim of 65 Nm with O-ring / 60 Nm without is reversed relative to the TIS table. Caveat: the TIS table does not name the E90 and says replace the plug. (2) Fill method now has a PRIMARY: fill to the lower edge of the filler opening; single filler/drain plug confirmed by 4 sources and one screw plug in the catalog. (3) Capacity: 1.0 L for the N52 (bimmerpost, bimmersport, 5series N52 poster; measured 0.95 L out and 1.1 L in) versus 1.2 L for the N54/335i/diesel (bimmerpost, bimmersport) and a generic bavmods 1.2 L; status VERIFIED_SECONDARY about 1.0 L, but the level at the opening governs (BMW TIS). (4) Fluid: OE catalog lists synthetic gear oil 83222365987 and Turner cross-references it to SAF-XO 75W-90 GL-5 07512293972 (also listed by ECS and FCP); FCP says 75W-140 only for M3/LSD. (5) Open vs limited-slip: nothing in the OE catalog or BMW training doc for this 328i indicates an LSD (single rear axle assembly listed with only ratio variants); 75W-140 is for M3/LSD cars per FCP. Not proven for the VIN, so one owner check remains. (6) Drive type: the catalog model 328i has no front differential or transfer case groups, indicating RWD; xDrive content is therefore out of scope for this VIN and kept only as reference data (transfer case DTF-1, about 1 L; front differential 60 Nm and 700-1000 ml are from F30 data, not E90). (7) Service interval: BMW training says lifetime-fill; retailers/forums say 40,000-60,000 mi or 75,000-100,000 km; no BMW scheduled interval found. Pass 4 (remote only): open differential now rests on four lines of evidence (catalog, VIN decode, Turner, BimmerWorld) so the owner no longer needs to inspect it; final-drive ratio recorded as 3.73 automatic / 3.23 catalog with 3.46 explicitly NOT found; automatic transmission fluid documented as a separate sealed unit not covered here (BMW 'lifetime' vs ZF/GM intervals, transmission model unproven); xDrive items marked not applicable. Still open: BMW capacity figure (1.0 L vs 1.2 L, level governs), BMW service interval, E90-named TIS torque table (60 Nm is primary by plug-type match). Usable as an UNCERTIFIED draft.",
   "variantDependencies": [
-    "DECODED CONFIG: rear-wheel drive automatic (S205), no limited-slip option code found. Probably an open differential, so the standard-differential fluid path applies, not the LSD/M3 one. Final-drive ratio is not decodable: read the diff tag. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable and verify at the car.]",
     "Drive type: OE catalog model 328i lists only a rear axle drive (final drive 188L) and no front axle differential, front drive shaft or transfer case; VIN positions 4-6 (PH7) match the catalog type code PH73. RWD is therefore indicated; xDrive (328xi) would add a front differential and ATC transfer case (not applicable, not verified for this VIN).",
     "Ratio/transmission: final drive ratio 3.23 (catalog row not tied to an option, likely non-automatic) and 3.73 with automatic (S205A) per the OE catalog; both are TYP 188L; sources do not show capacity differing by ratio.",
-    "Open vs limited-slip: no LSD variant appears in the OE catalog for this selection; FCP says an M3 or LSD car needs 75W-140 (BMW 83222282583, 5 L). UNCONFIRMED for the VIN.",
     "Engine/model: 1.0 L is cited for N52 cars and 1.2 L for N54, diesel and 335i cars (bimmerpost, bimmersport); 328i N52 is the 1.0 L group.",
     "Plug type: the catalog lists a screw plug with O-ring for the E90 188L; the BMW TIS torque table uses different values (60 Nm O-ring, 65 Nm sealing ring) by plug type.",
-    "Access: bimmerpost (E93 328i) says the plug can be obstructed by lower braces; a snub-nose 14 mm hex or crowfoot may be needed."
+    "Access: bimmerpost (E93 328i) says the plug can be obstructed by lower braces; a snub-nose 14 mm hex or crowfoot may be needed.",
+    "Open vs limited-slip: RESOLVED to 'open, probable'. No LSD option in the VIN decode, no LSD variant in the OE catalog for this car, Turner states BMW dropped true limited-slip on the E9X (M3 excepted), and BimmerWorld sells the 328i 3.73 as an open carrier with LSD units as a separate upgrade. The 75W-140 fluid is for M3/LSD cars only and does not apply.",
+    "DECODED CONFIG: rear-wheel drive automatic (S205), no limited-slip option code. Decoded from the VIN by one free decoder (bimmer.work, 2026-10-10), cross-checked by NHTSA (328i 3.0 L sedan, not xDrive) and the RealOEM PH73 catalog (no front differential or transfer case groups). Treat as probable.",
+    "Final-drive ratio: catalog 3.73 for automatic (S205A), 3.23 otherwise; 3.46 was not found in any source and is not asserted. The ratio does not change the fluid, the filler/drain plug (M22x1.5 with O-ring) or the 60 Nm value in any source.",
+    "Transfer case and front differential: NOT APPLICABLE. They exist only on xDrive; this is a 328i (NHTSA decode and catalog show no front axle). Step 8 is kept only as a stop sign for a mis-identified xDrive car.",
+    "Automatic transmission fluid: NOT part of this guide. It is a separate sealed unit with its own fill/drain, 'lifetime' per BMW but with shorter intervals from ZF and GM; the transmission model (GA6L45R vs GA6HP19Z) was not proven for this VIN."
   ],
   "tools": [
     {
@@ -74,9 +77,13 @@
     },
     {
       "item": "Jack stands, ramps or lift on level ground",
-      "status": "MISSING",
-      "sources": [],
-      "note": "No source gives E90 jacking points; use the owner manual."
+      "status": "VERIFIED",
+      "sources": [
+        "https://club.autodoc.co.uk/manuals/how-to-change-front-brake-pads-on-bmw-e90-replacement-guide-13138",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=19280433",
+        "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59"
+      ],
+      "note": "Generic safety equipment; sources are E90 jacking guides (rated stands, level ground). Not diff-specific."
     },
     {
       "item": "Rag/brake cleaner to clean the plug and area",
@@ -171,9 +178,11 @@
         "https://www.fcpeuro.com/blog/bmw-transmission-steering-differential-fluid-specifications-e90-e82-e84",
         "https://5series.net/forums/topic/126110-differential-oil-change",
         "https://g42.bimmerpost.com/forums/showthread.php?p=15935789",
-        "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/"
+        "https://www.ecstuning.com/BMW-E90-325i-N52_3.0L/Drivetrain/Differential/",
+        "https://www.bimmerworld.com/Driveline-Shifter/Differentials-Accessories/E82-128i-E9X-325i-328i-373-Differential-Upgrade.html",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1317-bmw-limited-slip-differentials/m-151-genuine-bmw?Nrpp=12"
       ],
-      "spec": "BMW synthetic hypoid gear oil: SAE 75W-90, API GL-5 (Castrol SAF-XO). BMW TIS: use only approved gear oils; other oils can cause serious damage.",
+      "spec": "BMW synthetic hypoid gear oil: SAE 75W-90, API GL-5 (Castrol SAF-XO). BMW TIS: use only approved gear oils; other oils can cause serious damage. Open-differential evidence for the 328i: RealOEM lists one final-drive assembly (188L) with only ratio variants for this car; Turner (E9X limited-slip category page) states BMW stopped using truly limited-slip differentials with the E9X and E60 platforms and sells only a ratio swap there; BimmerWorld sells the E9X 325i/328i 3.73 as an open carrier and sells limited-slip versions separately as an upgrade. No 328i LSD option code was found in the VIN decode.",
       "capacity": "n/a (see capacity row)",
       "primary": true
     },
@@ -200,7 +209,8 @@
       ],
       "spec": "75W-140 per FCP Euro for M3 or LSD cars. No evidence an LSD is fitted to a 328i.",
       "capacity": "MISSING",
-      "primary": false
+      "primary": false,
+      "note": "Not applicable to this car: no source shows a factory LSD on the 328i (see open-differential row). Retained for reference only; do not use 75W-140 on this car."
     },
     {
       "item": "Rear differential service interval",
@@ -214,7 +224,7 @@
       "spec": "BMW training doc (ST502): differential oil is lifetime-fill. Retailers/forums: 40,000-60,000 mi (bavmods), 75,000-100,000 km (bimmersport), transfer case every 5th engine oil service (BimmerWorld).",
       "capacity": "n/a",
       "primary": true,
-      "note": "No BMW scheduled interval found."
+      "note": "No BMW scheduled interval found. Status honest: BMW training says lifetime fill, retailers and forums say 40,000-60,000 mi; no BMW interval exists. The guide treats a change as owner-optional maintenance, not a BMW requirement."
     },
     {
       "item": "Front differential (xDrive only; not applicable to this VIN)",
@@ -240,6 +250,33 @@
       "spec": "DTF-1 (formerly TF0870), API GL-4, SAE 75W.",
       "capacity": "just under 1 L (BimmerWorld, 328xi); about 1 L (X5 E70); less than 1 L (X3 E83)",
       "primary": false
+    },
+    {
+      "item": "Rear differential final-drive ratio (identification only; does not change fluid, capacity or plug torque)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=33_1250",
+        "https://www.bimmerworld.com/Driveline-Shifter/Differentials-Accessories/E82-128i-E9X-325i-328i-373-Differential-Upgrade.html",
+        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1317-bmw-limited-slip-differentials/m-151-genuine-bmw?Nrpp=12"
+      ],
+      "spec": "OE catalog: 3.73 with automatic (S205A) and 3.23 (row not tied to an option, likely manual) on the 188L final drive. BimmerWorld: stock E9X 328i ratio is 3.23 (manual context). Turner: stock manual gearing 3.15 or 3.23. A ratio of 3.46 was checked and appears in none of these sources, so it is NOT asserted for this car. The 3.73 for the automatic is catalog-level inference from the VIN decode, not proven for the VIN.",
+      "capacity": "n/a",
+      "primary": false,
+      "note": "The ratio is only an identification detail. All fluid/plug facts in this guide hold for either catalog ratio on the 188L housing."
+    },
+    {
+      "item": "Automatic transmission fluid (separate sealed unit; NOT serviced by this guide)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.fcpeuro.com/blog/bmw-lifetime-transmission-fluid-isnt-lifetime",
+        "https://www.turnermotorsport.com/p-13332225-automatic-transmission-service-kit-lifeguard-6-fluid/",
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Maintenance/Drivetrain/Transmission/Service_Kit/",
+        "https://www.bimmerworld.com/Driveline-Shifter/Transmissions-Accessories/Mechatronic-Unit-BMW-E82-E9X-E83-24607623882.html"
+      ],
+      "spec": "The automatic's fluid is not the differential oil and is not changed by this procedure; the transmission has its own pan, fill plug and fluid. BMW treats it as 'lifetime' fill; FCP says BMW's rating is about 100,000 miles, ZF's own interval for 6HP units is 8 years/80,000 km (about 50,000 mi) and GM's service data for the 6L45 is under 45,000 mi; Turner repeats ZF's 50,000 mi or 8 years. Which unit is in this car was not proven: ECS lists both GA6HP19Z (ZF) and GA6L45R (GM) kits for the E90 328i N52, and BimmerWorld lists the GM GA6L45R as used on 328i from 9/2008, so this 09/2009 build is probably the GA6L45R.",
+      "capacity": "MISSING (not researched for this guide; Turner's ZF kit is 7 L of ZF M-1375.4 but that is a retailer kit, not a capacity)",
+      "primary": false,
+      "note": "No transmission procedure, capacity, fluid number or torque is given here. Do not drain the transmission under the differential steps. A transmission service is a different guide's job and needs the transmission type, which was not proven."
     }
   ],
   "torque": [
@@ -426,21 +463,19 @@
     "Use only BMW-approved synthetic gear oil (SAF-XO 75W-90 GL-5 for open diffs).",
     "Use 60 Nm only for an O-ring plug and replace the plug; the sealing-ring plug value is 65 Nm per TIS.",
     "Contain and recycle used gear oil.",
-    "Do not apply xDrive or other-chassis values to this car."
+    "Do not apply xDrive or other-chassis values to this car.",
+    "Do not drain or open the automatic transmission as part of this job; the transmission fluid is a separate sealed system and is not covered here."
   ],
   "missingEvidence": [
     "BMW document with the rear differential capacity for the E90 328i (TIS text gives only the level rule).",
-    "Proof from the car or build options that the rear differential is open (no LSD).",
     "BMW service interval (BMW training says lifetime-fill; others give 40,000-60,000 mi).",
     "E90-specific lower-brace and plug access detail (bimmerpost E93 poster only).",
-    "xDrive front differential and transfer case plug positions, capacities and torque for the E90 (out of scope if RWD is confirmed).",
-    "A copy of the BMW TIS page that names the E90 for the 60 Nm plug torque (the table available lists E30-E86)."
+    "xDrive front differential and transfer case values for the E90: NOT APPLICABLE to this RWD 328i; intentionally not researched.",
+    "A copy of the BMW TIS page that names the E90 for the 60 Nm plug torque (the table available lists E30-E86).",
+    "Open differential is probable on four independent lines of evidence but no BMW document or E90 328i build sheet states 'open'; if a BMW TIS option page is later obtained, upgrade.",
+    "Transmission model (GA6L45R vs GA6HP19Z) and any automatic-transmission fluid values: out of scope of this guide, left unresolved on purpose."
   ],
-  "ownerInputsNeeded": [
-    "Confirm RWD vs xDrive on the car (look for a front differential or transfer case).",
-    "Confirm open vs limited-slip rear differential from build options if unsure.",
-    "Look at the plug and underside: lower braces blocking access? plug head type and magnetic plug fitted?"
-  ],
+  "ownerInputsNeeded": [],
   "visuals": [
     {
       "id": "rear-diff-fill-plug-location",
@@ -704,5 +739,16 @@
       ],
       "imageType": "DO"
     }
+  ],
+  "resolutionNotes": [
+    "RESOLVED: open vs limited-slip. Four lines: OE catalog (single 188L assembly, ratio variants only), VIN decode (no LSD option), Turner (BMW stopped true limited-slip on E9X; only a ratio swap is sold for 325i/328i/330i), BimmerWorld (3.73 for 328i is an open carrier; LSDs are a separate upgrade). Status: open, probable. No owner inspection needed; step 1 remains a stop sign for a mis-identified car.",
+    "RESOLVED: final-drive ratio question. Catalog 3.73 with automatic (S205A) and 3.23 otherwise; BimmerWorld stock 3.23; Turner manual 3.15 or 3.23. The suggested 3.46 does not appear in any retrievable source and is not asserted. It is identification-only; fluid, plug and torque do not depend on it.",
+    "RESOLVED: automatic transmission fluid is a separate sealed unit and is not part of the differential job (new fluids row, CONFLICT: BMW 'lifetime' vs ZF 50,000 mi/8 yr and GM under 45,000 mi). Transmission model (GA6L45R vs GA6HP19Z) is UNRESOLVED: ECS lists both for the E90 328i N52 and BimmerWorld ties GA6L45R to 328i from 9/2008, so GA6L45R is likely for the 09/2009 build but unproven. No transmission procedure or number is added.",
+    "RESOLVED (applicability): xDrive transfer case and front differential rows are NOT APPLICABLE (RWD 328i: NHTSA decode, catalog without front axle, decoder). Kept as reference with a stop warning; not researched further.",
+    "RESOLVED: jack stand tool row gained E90 jacking sources (generic safety equipment).",
+    "NOT RESOLVED: capacity. 1.0 L for N52 per bimmerpost, bimmersport, 5series; 1.2 L for N54/335i/diesel and one generic E9X article. No BMW number (TIS gives only the level rule), so fill to the lower edge of the filler opening and treat 1.0 L as an estimate.",
+    "NOT RESOLVED: service interval (BMW training: lifetime fill; retailers 40,000-60,000 mi / 75,000-100,000 km) and the E90-named TIS torque table. 60 Nm (O-ring plug, replace plug) stays VERIFIED via the BMW TIS text applied by plug-type match plus three E90/E9X/F30 secondary hosts; the 65 Nm sealing-ring value is not the type listed for this car.",
+    "NOT RESOLVED: lower-brace access on the E90 (bimmerpost E93 poster only); step 3 already says to remove braces only if they block the plug and gives the snub-nose 14 mm hex or crowfoot workaround.",
+    "ownerInputsNeeded emptied: RWD, open diff and plug/brace questions are answered remotely or handled by branching text; guide is a usable UNCERTIFIED draft."
   ]
 }

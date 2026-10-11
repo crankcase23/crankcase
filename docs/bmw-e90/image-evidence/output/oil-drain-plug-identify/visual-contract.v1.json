@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "6115560cb8f46f6d104dec87b6df47b254f13a0c3e4ce5ec8a5445beec4fddd6",
-  "createdAt": "2026-10-10T12:04:31.000Z",
+  "contentHash": "b458da56fc46a5bfa260829722966a4c785f81e480793ec78d961d368eb1cd07",
+  "createdAt": "2026-10-10T12:04:35.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -130,11 +130,11 @@
   "refs": [
     {
       "id": "EP-oil-drain-plug-identify-v1",
-      "sha256": "ceeb8cd34f0741690d31b1468eac2e619814b072590d19a27c877bbe93c61146"
+      "sha256": "3347084ad8345e07a7980b86535b451105a39db0b5358b7c9668040a0fd73171"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "1b6f820e3e7b96302ceb6711b006fe1498bdac766f2f74827ced8268cfebb237"
+      "sha256": "2a6d77cf1b44a0c52364db883f7d47093b87e4adf3aa36122ccff0ecf7251a45"
     }
   ],
   "schema": "guide-factory.visual-contract",

@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "6a3c2242a40ea51b6ceb9aea0f3b74b863b988fda0ef6a3357dca23146051608",
-  "createdAt": "2026-10-10T12:03:27.000Z",
+  "contentHash": "91fc571d5212e3cdf3ab7c9add6c9df32ae1e9a54056d1bb2a2aa9aa535b1a7e",
+  "createdAt": "2026-10-10T12:03:31.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -159,11 +159,11 @@
   "refs": [
     {
       "id": "EP-wiper-blade-release-hook-v1",
-      "sha256": "b5ea7324a7a77ba4bab72215266c3f9676b0de62ddb343973bbd994eddd24e51"
+      "sha256": "09f64d2ee5dd5e4781b3fc260f89391eb6992a1ec3b5f362bdf31b67d69e8c05"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "2e2b1d924f7f7d853f40ff48e56bc239ee16a0be4ad0d7e8245db50ac1a49c24"
+      "sha256": "09d986b5389a8931a6d3133fc45776fff99703296c930245ce2b697f69d5d0f8"
     }
   ],
   "schema": "guide-factory.visual-contract",

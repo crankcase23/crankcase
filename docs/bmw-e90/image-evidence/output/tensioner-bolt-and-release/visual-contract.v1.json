@@ -11,7 +11,7 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "140392d57f82232ef7dc31773b1a553b85a50e366b020134a01a2b4e0a5bb147",
+  "contentHash": "6c601e4117e2a889bd51bc2caefab3d5ae0aec3017a725678109fe286701cd35",
   "createdAt": "2026-10-10T12:01:32.000Z",
   "createdBy": {
     "actor": "factory-code",
@@ -174,7 +174,7 @@
   "refs": [
     {
       "id": "EP-tensioner-bolt-and-release-v1",
-      "sha256": "9a4c4fdcfc3ce42a0a76a679f96da0e89dad7f8aacfafca426247d1b1cf6a0ee"
+      "sha256": "726838ff46638010d998f332d06d2ad4dca2c0a1cce9757af1bf72670989b7fa"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
