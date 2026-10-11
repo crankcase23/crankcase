@@ -1,0 +1,311 @@
+{
+ "guide": 8,
+ "name": "Coolant Flush & Fill",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "The electric-pump automatic venting routine (ignition on, heater max, fan low, accelerator floored 10 s, roughly 12 min, battery charger connected, cap closed) is corroborated by multiple independent forum sources including two E90/E92 threads and an E60 N52 document, and the BMW coolant part number 82141467704 (50/50 with distilled water) is corroborated by two retailers. Not verified: total system capacity (sources disagree and none is BMW), whether the N52 has a block drain plug (sources flatly contradict), post-bleed top-up level (100 ml vs 250 ml vs a ball-indicator target), BMW coolant spec code, and every torque value. Guide can be built as a drain-at-radiator, refill, and run-the-automatic-bleed procedure, with capacity shown as a range, block drain omitted or flagged, and fastener torques omitted until BMW TIS or a Bentley value is supplied. All primary procedure sources are forum or retailer; no BMW TIS/ISTA document was reachable.",
+ "variantDependencies": [
+  "Electric water pump applies to N52 (verified by z4-forum and bimmerpost threads); N51 SULEV cooling layout not researched, treat as UNCONFIRMED.",
+  "Transmission (auto vs manual) changes capacity: Rick's article lists 8.6 qt manual vs 8.9 qt auto for 3.0L 328i; the E60 PDF quotes 10 L for an automatic (different chassis).",
+  "xDrive vs RWD: no source found that differentiates cooling drain procedure or capacity; treat as UNCONFIRMED.",
+  "Most procedure text is from E60 (5-series) N52 documents; the E90-specific bleed is corroborated by two bimmerpost threads (E90/E92) but those are forum posts quoting a DIY, not BMW documents.",
+  "Build date not confirmed: expansion-tank cap/part variants and N52 vs N52N details unverified."
+ ],
+ "tools": [
+  {
+   "item": "Drain pan(s), total capacity above system volume (at least about 9 L / 2.5 gal)",
+   "status": "SINGLE_SOURCE (sizing inferred from capacity figures; not stated as a tool by a source)",
+   "sources": [
+    "https://ricksfreeautorepairadvice.com/bmw-coolant-type-and-capacity/"
+   ]
+  },
+  {
+   "item": "Undertray (splash shield) screw driver/socket: screw type and size",
+   "status": "MISSING",
+   "sources": []
+  },
+  {
+   "item": "Battery charger/maintainer connected at under-hood jump-start posts (not trunk posts)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://5series.net/forums/attachments/diy-do-yourself-14/29909d1174763887-cooling-system-bleeding-cooling_system_bleeding_e60_n52.pdf",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=16271124",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=17368106"
+   ]
+  },
+  {
+   "item": "Clear hose for radiator drain (optional)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://5series.net/forums/diy-do-yourself-14/coolant-flush-2006-530i-n52-108642"
+   ]
+  },
+  {
+   "item": "Funnel and distilled water",
+   "status": "VERIFIED",
+   "sources": [
+    "https://5series.net/forums/attachments/diy-do-yourself-14/116065d1294591996-coolant-flush-2006-530i-n52-coolant-draining-filling-procedures-bmw-n52-engine..pdf",
+    "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/coolant_antifreeze/flush_coolant",
+    "https://www.turnermotorsport.com/p-1474-bmw-coolant-antifreeze-1-gallon-jug/"
+   ]
+  },
+  {
+   "item": "Coolant hydrometer or refractometer (optional, to check 50/50)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=26533510"
+   ]
+  },
+  {
+   "item": "Vehicle lift, ramps or jack stands",
+   "status": "MISSING (no source specifies method or points for E90)",
+   "sources": []
+  }
+ ],
+ "parts": [
+  {
+   "item": "BMW Coolant/Antifreeze concentrate, 1 gal",
+   "partNumber": "82141467704",
+   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM)",
+   "sources": [
+    "https://www.turnermotorsport.com/p-1474-bmw-coolant-antifreeze-1-gallon-jug/",
+    "https://www.fcpeuro.com/BMW-parts/328i/Engine-Coolant/"
+   ]
+  },
+  {
+   "item": "BMW Coolant/Antifreeze concentrate, 1 L",
+   "partNumber": "82142209769",
+   "status": "SINGLE_SOURCE (FCP Euro listing only)",
+   "sources": [
+    "https://www.fcpeuro.com/BMW-parts/328i/Engine-Coolant/"
+   ]
+  },
+  {
+   "item": "Expansion tank cap, E90 328i N52 (Rein/Febi-type, 1.4 bar)",
+   "partNumber": "17117639020",
+   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM); ECS/Turner list 17117639021 for E90 M3 only (S65), so do not use 021 without VIN check",
+   "sources": [
+    "https://www.bimmerworld.com/BMW-Coolant-Expansion-Tank-Cap-E90-E92-F30-F32-F10-F12-F06-17117639020.html",
+    "https://www.turnermotorsport.com/p-56001934-coolant-expansion-tank-cap/",
+    "https://www.ecstuning.com/b-genuine-bmw-parts/expansion-tank-cap/17117639021/",
+    "https://www.turnermotorsport.com/p-382437-expansion-tank-cap/"
+   ]
+  },
+  {
+   "item": "Febi aftermarket expansion tank cap",
+   "partNumber": "46221",
+   "status": "SINGLE_SOURCE (Turner lists it as replacing OE 17117639020)",
+   "sources": [
+    "https://www.turnermotorsport.com/p-56001934-coolant-expansion-tank-cap/"
+   ]
+  },
+  {
+   "item": "Distilled water",
+   "partNumber": null,
+   "status": "VERIFIED",
+   "sources": [
+    "https://5series.net/forums/attachments/diy-do-yourself-14/116065d1294591996-coolant-flush-2006-530i-n52-coolant-draining-filling-procedures-bmw-n52-engine..pdf",
+    "https://www.turnermotorsport.com/p-1474-bmw-coolant-antifreeze-1-gallon-jug/"
+   ]
+  },
+  {
+   "item": "Thermostat (only if replacing; not part of a flush)",
+   "partNumber": "11537549476",
+   "status": "SINGLE_SOURCE (forum quote, not a retailer or BMW listing; fitment to this VIN unconfirmed)",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=27399875"
+   ]
+  }
+ ],
+ "fluids": [
+  {
+   "item": "Coolant",
+   "spec": "BMW coolant concentrate mixed 50/50 with distilled water; Turner lists it as nitrite- and phosphate-free. BMW specification code (e.g., N600 69.0/HT-12) NOT found for this vehicle; Turner cross-ref list names G11/G48/LC-87 without definition.",
+   "capacity": "n/a",
+   "status": "50/50 mix with BMW coolant: VERIFIED (Turner, bimmerpost E90 thread, 5series PDF, carcarekiosk). Spec code: MISSING.",
+   "sources": [
+    "https://www.turnermotorsport.com/p-1474-bmw-coolant-antifreeze-1-gallon-jug/",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=16271124",
+    "https://5series.net/forums/attachments/diy-do-yourself-14/116065d1294591996-coolant-flush-2006-530i-n52-coolant-draining-filling-procedures-bmw-n52-engine..pdf",
+    "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/coolant_antifreeze/flush_coolant"
+   ]
+  },
+  {
+   "item": "Total system capacity",
+   "spec": "Two non-BMW figures for a 3.0L E90 328i, plus E60 N52 figures that do not apply",
+   "capacity": "Rick's article: 8.6 qt manual / 8.9 qt auto (about 8.1 / 8.4 L US). A bimmerpost 2009 328i auto owner: just under 2 gal (about 7.5 L). E60 PDF: 10 L auto (different chassis, excluded). Note: a full flush leaves residual coolant in the block, so refill volume is less than total.",
+   "status": "CONFLICT (no BMW document found)",
+   "sources": [
+    "https://ricksfreeautorepairadvice.com/bmw-coolant-type-and-capacity/",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=27399875",
+    "https://5series.net/forums/attachments/diy-do-yourself-14/116065d1294591996-coolant-flush-2006-530i-n52-coolant-draining-filling-procedures-bmw-n52-engine..pdf"
+   ]
+  }
+ ],
+ "torque": [
+  {
+   "fastener": "Radiator drain screw (plastic)",
+   "value": "No value found. Forum advice: hand-tighten only because it is plastic.",
+   "status": "SINGLE_SOURCE (qualitative only)",
+   "sources": [
+    "https://5series.net/forums/diy-do-yourself-14/coolant-flush-2006-530i-n52-108642"
+   ],
+   "conflicts": null
+  },
+  {
+   "fastener": "Engine block drain plug (if present)",
+   "value": "MISSING",
+   "status": "CONFLICT",
+   "sources": [
+    "https://5series.net/forums/e60-discussion-2/engine-drain-plug-bleeder-screw-141355",
+    "https://5series.net/forums/e60-discussion-2/bentley-manual-bought-where-n52-engine-block-coolant-drain-plug-128956/",
+    "https://www.zhpmafia.com/forums/archive/index.php/t-8206.html"
+   ],
+   "conflicts": "Two 5series.net threads say the N52 has no block drain plug (one cites the Bentley manual's contents). zhpmafia thread says one poster found a flush driver-side plug on a 2007 3.0 and another disagrees. Do NOT include a block drain step."
+  },
+  {
+   "fastener": "Expansion tank cap",
+   "value": "Hand close and align cap/tank marks (per one source); no torque",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://5series.net/forums/attachments/diy-do-yourself-14/116065d1294591996-coolant-flush-2006-530i-n52-coolant-draining-filling-procedures-bmw-n52-engine..pdf"
+   ],
+   "conflicts": null
+  },
+  {
+   "fastener": "Undertray screws",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Prepare the car cold",
+   "instruction": "Work only with a fully cold engine on level ground; raise and support the front so the splash shield and radiator drain are reachable.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Hot coolant under pressure can cause scalding (general practice; no source quoted for E90).",
+    "Support the car on proper stands or ramps, never on a jack alone."
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Connect a battery charger",
+   "instruction": "Attach a charger/maintainer to the under-hood jump-start posts before the bleed routine; do not use the trunk posts.",
+   "status": "VERIFIED",
+   "warnings": [
+    "One bimmerpost poster warns that jumping from the trunk posts can damage the junction box."
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Remove undertray",
+   "instruction": "Take out the screws on the engine splash shield (one E60 N52 document counts 8), lower the rear and slide it from the bumper cover. E90 screw count/type unconfirmed.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 4,
+   "title": "Open expansion tank cap",
+   "instruction": "With the engine cold, release the expansion tank cap to let air in for draining.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 5,
+   "title": "Drain at radiator",
+   "instruction": "Open the radiator drain petcock (plastic, turn by hand; red per one source) or detach the lower radiator hose and drain into a pan. Expect only part of the system (reports of about 65 percent) to come out this way.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Plastic drain screw can be damaged by overtightening.",
+    "Coolant is toxic and attractive to animals; clean spills (carcarekiosk)."
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Block drain",
+   "instruction": "Do not rely on a block drain: sources conflict on whether the N52 has one. Use the automatic bleed and optional distilled-water rinse cycles instead.",
+   "status": "CONFLICT",
+   "warnings": []
+  },
+  {
+   "n": 7,
+   "title": "Optional distilled water rinse",
+   "instruction": "Close the drain, fill with distilled water, run the bleed routine, drain again, repeat until the drain runs clear (described by posters for N52 and by carcarekiosk for a 328xi, but not in a BMW document).",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 8,
+   "title": "Mix and fill",
+   "instruction": "Mix BMW coolant 50/50 with distilled water and pour slowly into the expansion tank; one source says to fill to the lower edge of the filler neck before venting.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 9,
+   "title": "Run automatic venting",
+   "instruction": "Close the cap. Switch ignition on without starting the engine. Heater to maximum temperature, fan on lowest. Press the accelerator fully for about 10 seconds; the electric pump then runs a cycle of about 12 minutes. Keep the cap closed throughout; opening it means starting over.",
+   "status": "VERIFIED",
+   "warnings": [
+    "The routine is the documented method for electric-pump cars: a z4-forum poster says NewTIS requires it (single source).",
+    "Keep the charger connected."
+   ]
+  },
+  {
+   "n": 10,
+   "title": "Top up after venting",
+   "instruction": "After the cycle, open the cap and top up. Target level CONFLICTS: 100 ml above MAX (E60 PDF), 250 ml above MAX (E60 bleeding PDF, about 18 mm), or ball indicator 6 mm above filler neck top (bimmerpost E90 thread). Guide must give a method, not a fixed number, until BMW TIS is checked.",
+   "status": "CONFLICT",
+   "warnings": [
+    "Cap may hiss when opened after the cycle."
+   ]
+  },
+  {
+   "n": 11,
+   "title": "Check for leaks and repeat if needed",
+   "instruction": "Start engine, bring to temperature (about 95 C per one poster), inspect for leaks. To repeat the bleed routine, turn the ignition fully off for about 3 minutes first so the DME shuts down.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 12,
+   "title": "Re-check level over following days",
+   "instruction": "Check the level cold again after driving and top up; posters repeated the bleed 2-3 times until stable.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 13,
+   "title": "Close cap",
+   "instruction": "Install cap, aligning the marks on cap and tank.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  }
+ ],
+ "safety": [
+  "Never open the expansion tank cap on a hot engine or while the electric pump is cycling.",
+  "Coolant is toxic; keep from pets and children and dispose per local rules.",
+  "Use a battery charger during the roughly 12-minute pump routine to prevent a dead battery.",
+  "Support the vehicle correctly when under it (general practice, not source-derived).",
+  "Wrong or mixed coolant type can cause problems; one bimmerpost thread cites a BMW bulletin about silicate gel formation (unverified, secondary)."
+ ],
+ "missingEvidence": [
+  "BMW TIS/Bentley/owner's manual coolant capacity for the E90 328i N52 (manual vs automatic).",
+  "BMW coolant specification code for this VIN.",
+  "Whether the N52 has an engine block drain plug; if it does, location, size, torque.",
+  "Radiator drain screw torque; undertray screw type and size and count on E90.",
+  "Authoritative post-venting top-up level.",
+  "Flush interval from BMW (Turner suggests every two years; single retailer).",
+  "E90-specific radiator bleed screw presence (one bimmerpost thread mentions a bleed screw; others unsure).",
+  "VIN-decoded confirmation of expansion tank cap part number (17117639020 vs 17117639021)."
+ ],
+ "ownerInputsNeeded": [
+  "Transmission type (manual or automatic) and drive type (RWD or xDrive) to select a capacity.",
+  "Production date and engine code on the engine bay/VIN decode (N52B30 vs N51B30).",
+  "Whether to treat forum-corroborated bleed steps as acceptable until BMW TIS is checked.",
+  "Whether to publish a capacity range or require a TIS value first."
+ ]
+}

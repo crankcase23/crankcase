@@ -1,0 +1,266 @@
+{
+  "guide": 2,
+  "name": "Fuse & Bulb Replacement",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Glove-box fuse box location and general fuse rules are corroborated. Trunk and engine-bay fuse locations, fuse puller location, a verified fuse chart, and halogen bulb access procedure are missing. Bulb type is variant-dependent: xenon cars use D1S (3 sources); halogen LCI 328xi reported H7 (single thread). Fog bulb type is in conflict. Xenon bulb steps came from a single retailer how-to. Publish fuse section (glove box only, with owner-chart caveat) and a bulb section gated on headlight type.",
+  "variantDependencies": [
+    "Headlights: xenon (D1S, adaptive in some cars) vs halogen (reported H7) - must be identified on the car; sources do not give the option code (e.g. S522 xenon) mapping.",
+    "Fog lights: H8, H11 or HB4/9006 reported - depends on build/bumper (M-Tech vs standard) and pre-/post-LCI; CONFLICT.",
+    "Fuse layouts differ by production year and options; fuseandrelay shows two glove-box layouts; use the diagram on the car's cover.",
+    "Tail lamp bulbs differ pre-LCI vs LCI (Turner listings mention LCI from 09/2008); 2010 build date vs LCI split not confirmed from VIN.",
+    "Angel-eye bulbs: H8 35W (Turner), ZKW variant for builds up to 09/2008."
+  ],
+  "tools": [
+    {
+      "item": "Fuse puller (location in car not found)",
+      "status": "MISSING",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://fuseandrelay.com/bmw/e90.html"
+      ]
+    },
+    {
+      "item": "Flat/coin to turn glove-box fuse cover screws (two quarter-turn fasteners)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+      ]
+    },
+    {
+      "item": "8 mm and 10 mm sockets, ratchet, T20 and T30 Torx (xenon bulb job via fender liner, per bavmods)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
+      ]
+    },
+    {
+      "item": "Floor jack, jack stands, wheel wrench (xenon bulb job per bavmods)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
+      ]
+    },
+    {
+      "item": "Halogen bulb access tools",
+      "status": "MISSING",
+      "sources": []
+    },
+    {
+      "item": "Clean gloves (do not touch bulb glass)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.carcarekiosk.com/video/2008_BMW_328xi_3.0L_6_Cyl._Sedan_(4_Door)/lights/headlight",
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "Xenon low beam bulb D1S (Osram 63217217509; Genuine BMW with ignition element listed with same number)",
+      "partNumber": "63217217509",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ]
+    },
+    {
+      "item": "Xenon bulb TYPE = D1S",
+      "partNumber": null,
+      "status": "VERIFIED",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11473721",
+        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ]
+    },
+    {
+      "item": "Halogen headlight bulb H7 (LCI 328xi thread; no OE number found)",
+      "partNumber": null,
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=23520229"
+      ]
+    },
+    {
+      "item": "Fog bulb: H8 35W (07119906503, Turner lists for 2009+ E91) vs H11 vs HB4/9006 (63217160786)",
+      "partNumber": "07119906503",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=11473721",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=23520229"
+      ]
+    },
+    {
+      "item": "Angel eye bulb H8 35W",
+      "partNumber": "07119906503",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ]
+    },
+    {
+      "item": "Turn signal amber bulb (Genuine BMW, listed E90)",
+      "partNumber": "07119905468",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ]
+    },
+    {
+      "item": "Tail light bulb 16W longlife (LCI from 09/2008 listed)",
+      "partNumber": "63217160935",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ]
+    },
+    {
+      "item": "Tail/brake bulb 21W longlife (E90 listed)",
+      "partNumber": "63217160790",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.turnermotorsport.com/BMW-E91/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights"
+      ]
+    },
+    {
+      "item": "Assorted fuses (blade, same rating as the failed fuse)",
+      "partNumber": null,
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+      ]
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "None found (fuse/bulb jobs; fender liner screws unspecified)",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null
+    }
+  ],
+  "specs": [
+    {
+      "item": "Glove-box fuse box location",
+      "value": "Behind passenger glove box, two quarter-turn plastic fasteners release cover",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://fuseandrelay.com/bmw/e90.html",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=31660252"
+      ]
+    },
+    {
+      "item": "Fuse chart (e.g. F30 cigarette lighter 20 A)",
+      "value": "F30 = 20 A in both fuseandrelay layouts and YouCanic; other values vary by layout",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/2004-2013-bmw-3-series-fuses-location-chart-diagram/",
+        "https://fuseandrelay.com/bmw/e90.html"
+      ]
+    },
+    {
+      "item": "Trunk (rear power distribution) and engine-bay (E-box) fuse locations",
+      "value": "Named by fuseandrelay but no physical access instructions found",
+      "status": "MISSING",
+      "sources": [
+        "https://fuseandrelay.com/bmw/e90.html"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Identify the failed circuit",
+      "instruction": "Switch ignition off, identify the circuit and consult the diagram on the glove-box cover or the owner's manual.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Layout differs by year/options."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Open the glove-box fuse panel",
+      "instruction": "Open the glove box, turn the two round plastic fasteners a quarter turn to drop the cover, photograph the layout.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Panel is tight to reach; a fuse puller helps."
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Swap the fuse",
+      "instruction": "Pull the suspect fuse, compare with the chart, fit a fuse of identical rating.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never fit a higher amp rating; a repeat blow means a short."
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Trunk / engine-bay fuses",
+      "instruction": "No sourced access steps.",
+      "status": "MISSING",
+      "warnings": [
+        "Do not publish locations without evidence."
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Confirm headlight type",
+      "instruction": "Determine whether the car has xenon (D1S) or halogen headlights before ordering any bulb.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Xenon units are high voltage; ballast can stay energized."
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Xenon low-beam bulb (single retailer procedure)",
+      "instruction": "Disconnect the battery, remove the front wheel and fender liner screws, remove the bulb cover screws (six T20 per source), press the retaining clips, pull and replace the D1S, plug in, test lights before reassembly, replace both sides together.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Battery disconnect on E90 triggers registration/reset issues only if the battery is replaced; confirm with owner.",
+        "Support car on jack stands.",
+        "Do not touch bulb glass."
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Halogen H7 bulb",
+      "instruction": "No sourced E90 access procedure.",
+      "status": "MISSING",
+      "warnings": []
+    },
+    {
+      "n": 8,
+      "title": "Tail/turn/fog bulbs",
+      "instruction": "No sourced access procedure for E90 sedan.",
+      "status": "MISSING",
+      "warnings": []
+    }
+  ],
+  "safety": [
+    "Ignition off before fuse work.",
+    "Same-rating fuses only.",
+    "HID systems carry high voltage; disconnect before touching bulbs or ballast.",
+    "Do not handle halogen/xenon glass with bare fingers.",
+    "Use jack stands, never just a jack."
+  ],
+  "missingEvidence": [
+    "OE/BMW part numbers for halogen H7 and standard fog bulbs.",
+    "Authoritative fuse chart for the 2010 E90 (all three fuse locations) from BMW owner's manual (mirror PDFs not trusted).",
+    "Trunk and engine compartment fuse access steps and fuse puller location.",
+    "Halogen headlight access procedure; tail light access procedure.",
+    "Mapping of headlight option code to xenon/halogen for this VIN."
+  ],
+  "ownerInputsNeeded": [
+    "Do the headlights look like adaptive xenon (D1S) or halogen? Photo of bulb cap/ballast.",
+    "Fog light bulb marking on the old bulb.",
+    "VIN option decode (SA codes: xenon, comfort access, cold weather) from a trusted decoder."
+  ]
+}

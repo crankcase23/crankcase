@@ -1,0 +1,258 @@
+{
+ "guide": 4,
+ "name": "Oxygen Sensor",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "The N52 E90 has four oxygen sensors: two pre-catalyst (upstream, one per bank) and two post-catalyst (downstream). Part numbers 11787558055 (bank 1 pre-cat), 11787558073 (bank 2 pre-cat), 11787545074 (bank 1 post-cat, 560 mm lead) and 11787545075 (bank 2 post-cat, 490 mm lead) are corroborated across multiple retailers, with 328i/328xi fitment on the pre-cat listings; none were VIN-decoded. Socket is 22 mm (7/8 in) and an offset or crowfoot 22 mm tool is needed because of heat shield and tight access. Torque has a mild conflict (50 Nm per a quoted TIS value and 37 ft-lb, about 50 Nm, in one DIY, vs 55 Nm from another poster); both torque sources are not E90-specific TIS documents. Step-by-step connector locations are only partially documented (bank 2 pre-cat shield with two E8 screws; bank 1 plug toward the rear under engine cover), so the guide can be built with those sections flagged.",
+ "variantDependencies": [
+  "N52B30 verified for these part numbers by Turner/ECS; N51B30 SULEV: Genuine BMW post-cat 11787545074/5 list N51, but N51 pre-cat sensor part numbers were NOT confirmed.",
+  "xDrive (328xi): Turner E90 listing shows 328xi for the pre-cat sensors; no differences in sensor routing found.",
+  "Sensor part numbers 11787537984 (M3) and 11787558087 (335i only) must not be used on a 328i.",
+  "Early-style 'silver top' Bosch sensors are mentioned for N52B; later sensor revisions/supersessions not verified.",
+  "Post-cat leads differ in length by bank (560 mm bank 1, 490 mm bank 2): wrong-bank orders will not fit."
+ ],
+ "tools": [
+  {
+   "item": "22 mm (7/8 in) crowfoot or offset O2 sensor wrench (slim, not a flare-type)",
+   "status": "VERIFIED (22 mm: z4-forum; 7/8 in: bimmerpost; offset wrench: bavmods)",
+   "sources": [
+    "https://z4-forum.com/posts/2118334",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=14115692",
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide"
+   ]
+  },
+  {
+   "item": "E8 (external Torx) socket for bank 2 pre-cat heat shield (two screws) and the bank 2 post-cat bracket",
+   "status": "VERIFIED (z4-forum and bavmods both mention E8 screws on shield/bracket)",
+   "sources": [
+    "https://z4-forum.com/posts/2118334",
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide"
+   ]
+  },
+  {
+   "item": "8 mm socket for HVAC cowl/ECU covers (access)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide"
+   ]
+  },
+  {
+   "item": "Torque wrench able to read about 50 Nm with the offset-wrench correction considered",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://z4-forum.com/threads/torque-settings.89600"
+   ]
+  },
+  {
+   "item": "Anti-seize (thin line on threads only; many new sensors ship with it pre-applied)",
+   "status": "VERIFIED (bavmods; bimmerpost mention)",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=14115692"
+   ]
+  },
+  {
+   "item": "OBD-II/BMW-capable scan tool to clear codes and confirm bank/sensor",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide"
+   ]
+  },
+  {
+   "item": "Strut tower brace and large aluminum heat shield removal tools (needed to reach bank 2 shield screws per one DIY): sizes",
+   "status": "MISSING",
+   "sources": [
+    "https://z4-forum.com/posts/2118334"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "Bank 1 pre-cat (upstream) sensor, front, N52",
+   "partNumber": "11787558055",
+   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E91/c-1139-bmw-oxygen-sensors",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1139-bmw-oxygen-sensors",
+    "https://www.go-parts.com/garage/ps-2008-2013-bmw-325i-oxygen-sensor"
+   ]
+  },
+  {
+   "item": "Bank 2 pre-cat (upstream) sensor, rear downpipe, N52",
+   "partNumber": "11787558073",
+   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E91/c-1139-bmw-oxygen-sensors",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1139-bmw-oxygen-sensors",
+    "https://www.ecstuning.com/b-genuine-bmw-parts/oxygen-sensor-rear-manifold/11787558073/",
+    "https://www.turnermotorsport.com/p-5944212-lambda-probe/",
+    "https://www.go-parts.com/garage/ps-2008-2013-bmw-325i-oxygen-sensor"
+   ]
+  },
+  {
+   "item": "Bank 1 post-cat (downstream) sensor, 560 mm lead",
+   "partNumber": "11787545074",
+   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E91/c-1139-bmw-oxygen-sensors",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1139-bmw-oxygen-sensors",
+    "https://www.go-parts.com/garage/ps-2008-2013-bmw-325i-oxygen-sensor"
+   ]
+  },
+  {
+   "item": "Bank 2 post-cat (downstream) sensor, 490 mm lead",
+   "partNumber": "11787545075",
+   "status": "VERIFIED (retailer catalogs only; not VIN-decoded via ETK/RealOEM)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E91/c-1139-bmw-oxygen-sensors",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1139-bmw-oxygen-sensors",
+    "https://www.go-parts.com/garage/ps-2008-2013-bmw-325i-oxygen-sensor"
+   ]
+  },
+  {
+   "item": "Bosch N52 pre-cat set (banks 1 and 2)",
+   "partNumber": "11787558055KT",
+   "status": "SINGLE_SOURCE (Turner kit, E91 page; E90 fitment not stated)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E91/c-1139-bmw-oxygen-sensors"
+   ]
+  },
+  {
+   "item": "Bosch rear (post-cat) set for N52/N54",
+   "partNumber": "11787545074/5KT2",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E91/c-1139-bmw-oxygen-sensors"
+   ]
+  }
+ ],
+ "fluids": [],
+ "torque": [
+  {
+   "fastener": "Oxygen sensor into exhaust (all four)",
+   "value": "50 Nm (about 37 ft-lb) vs 55 Nm",
+   "status": "CONFLICT",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide",
+    "https://z4-forum.com/threads/torque-settings.89600"
+   ],
+   "conflicts": "bavmods DIY gives 37 ft-lb (about 50 Nm). A z4-forum thread quotes a TIS value of 50 Nm for a lambda socket with arm style (Z4 chassis, not E90) and a different poster citing 55 Nm; the poster says a straight socket would need slightly more. Neither is an E90 TIS document. Do not publish a number without BMW TIS."
+  },
+  {
+   "fastener": "Bank 2 pre-cat heat shield E8 screws (two)",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [
+    "https://z4-forum.com/posts/2118334"
+   ],
+   "conflicts": null
+  },
+  {
+   "fastener": "Post-cat bracket E8 screws",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-bmw-bank-2-sensor-2-o2-sensor-e90-e92-e82-e60-and-more-e-chassis-n52-n54-n55-diy-guide"
+   ],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Confirm which sensor is bad",
+   "instruction": "Read stored codes with a scan tool and confirm bank and position (sensor 1 pre-cat vs sensor 2 post-cat) before buying parts; one bavmods page contradicts itself about sensor 1 vs 2.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 2,
+   "title": "Let the exhaust cool; disconnect battery",
+   "instruction": "Work cold. Disconnect the battery per the bavmods procedure.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Hot exhaust causes burns; sensors can seize and round off if forced."
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Remove engine cover and access panels",
+   "instruction": "Take off the three-screw engine cover; for the bank 2 post-cat sensor the DIY also removes the cabin filter housing, HVAC cowl and ECU covers (8 mm). Pre-cat sensor wiring runs under the engine cover, so the cover must come off; post-cat sensors may not need it.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 4,
+   "title": "Locate sensors",
+   "instruction": "Four sensors: bank 1 (cyl 1-3, front) and bank 2 (cyl 4-6) each have an upstream (before cat) and downstream (after cat) sensor. Bank 1 upstream sits at the top of the front manifold with its plug further back; bank 2 upstream is behind a stainless shield held by two E8 screws; the post-cat sensors are between the manifolds area.",
+   "status": "VERIFIED (count and bank layout); SINGLE_SOURCE (individual locations)",
+   "warnings": []
+  },
+  {
+   "n": 5,
+   "title": "Unplug the connector",
+   "instruction": "Press the retaining tab and separate the plug; pre-cat leads are in channels/clips under the engine cover; some connectors must be freed before turning the sensor.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 6,
+   "title": "Free the shield if needed",
+   "instruction": "For bank 2 upstream, remove the strut-tower-to-firewall brace and the large heat shield, then the two E8 shield screws (magnetic), to give the tool access.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 7,
+   "title": "Loosen the sensor",
+   "instruction": "Seat the 22 mm crowfoot or offset wrench squarely and turn counter-clockwise; stop and escalate to a stronger tool only if it will not move, to avoid rounding the hex.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "A rusted sensor may need penetrating oil; one poster hammered a cut-down wrench (risky)."
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Prepare and install new sensor",
+   "instruction": "Apply a thin line of anti-seize to the threads only (not the tip), hand-thread to flush, then torque to the value confirmed from BMW TIS.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Torque value CONFLICT; do not publish until resolved."
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Reconnect and secure wiring",
+   "instruction": "Plug in the connector, secure the lead away from the exhaust with ties/clips, refit shield and brackets.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 10,
+   "title": "Reassemble, reconnect battery, clear codes",
+   "instruction": "Refit covers in reverse, reconnect battery, clear codes with scan tool, check for return of codes and rough idle.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  }
+ ],
+ "safety": [
+  "Exhaust components retain heat; allow to cool fully before work.",
+  "Disconnect the battery as the cited DIY does before touching sensor wiring.",
+  "Keep anti-seize off the sensor tip and out of the sensor's reference holes.",
+  "Do not use cheap flare-style sockets; they round the hex (z4-forum author).",
+  "Support the vehicle correctly if raising it (general practice, not source-derived)."
+ ],
+ "missingEvidence": [
+  "BMW TIS or other official oxygen sensor torque for this vehicle.",
+  "VIN/production-date-decoded sensor part numbers for this exact car (RealOEM/ETK access was blocked or not available).",
+  "Exact connector locations for each of the four sensors on an E90 (only partial text found).",
+  "Whether the bank 1 post-cat sensor (560 mm) is reachable without removing the engine cover or the heat shield.",
+  "N51B30 pre-cat part numbers.",
+  "Torque for E8 shield/bracket screws.",
+  "Number and type of access covers on E90 for the bank 2 post-cat route (bavmods text, single source)."
+ ],
+ "ownerInputsNeeded": [
+  "Which sensor(s) or fault code(s) triggered this guide.",
+  "Engine confirmation (N52B30 or N51B30) from the engine label/VIN decode.",
+  "Approval to publish a torque only after a BMW TIS value is supplied, or to use a range with a warning."
+ ]
+}

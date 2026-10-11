@@ -1,0 +1,380 @@
+{
+ "guide": 1,
+ "name": "Front Brake Pads",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "Generic floating-caliper pad swap and cluster CBS reset are supported by multiple sources. Front pad/sensor part numbers depend on brake package, drivetrain and build date and could not be pinned to this VIN. No 328i-specific torque for caliper guide bolts or carrier bolts was found; do not publish torque values for them. Front-specific written procedure is thin (only generic E9x/M3 forum text plus a rear-focused guide).",
+ "variantDependencies": [
+  "Engine (N52B30 vs N51B30 SULEV) UNCONFIRMED: no evidence found that the brake/tire/wiper jobs differ by engine; not a tracked dependency but unverified.",
+  "RWD vs xDrive UNCONFIRMED: front wear sensor part number differs (34356789441 listed for xi/xDrive vs 34356789440 for non-xi); front jack point differs on xDrive.",
+  "Production date UNCONFIRMED: retailer fitment splits at 03/2010 (wear sensors) and 09/2009 (wipers); a 2010 model year car may fall on either side.",
+  "Brake package UNCONFIRMED: retailers split fitment between 'standard' and 'M Performance' front brakes (larger front brake); front pad part number depends on it.",
+  "Transmission (manual vs auto) UNCONFIRMED: no evidence it affects these jobs.",
+  "Front sensor: 34356789440 (non-xDrive) vs 34356789441 (xDrive/xi) per retailers; 34356792560 appears as another front sensor with no fitment given; build-date cutoff 03/2010 on 789440 listing.",
+  "Front pad PN candidates differ by brake package/date (see parts); 34116794917 is listed by a retailer for 330/335-class cars, not 328i.",
+  "Front caliper guide hardware: M3 thread describes 7 mm hex guide bolts with different lengths front; not confirmed for 328i."
+ ],
+ "tools": [
+  {
+   "item": "Jack and jack stands (4 recommended by one poster)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=19280433"
+   ]
+  },
+  {
+   "item": "17 mm socket, 1/2 in drive, for wheel bolts",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://blog.ecstuning.com/?p=1238",
+    "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html"
+   ]
+  },
+  {
+   "item": "Hex (Allen) socket for caliper guide bolts: 7 mm (E9x M3 thread) vs 17 mm hex (rear, Team-BHP) vs 5/8 in socket (rear, bmwtuning); size for 328i FRONT not confirmed",
+   "status": "CONFLICT",
+   "sources": [
+    "https://www.m3post.com/forums/showthread.php?p=4835403",
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/"
+   ]
+  },
+  {
+   "item": "Piston retraction tool or C-clamp / spreader",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/",
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ]
+  },
+  {
+   "item": "Flat-blade screwdrivers (anti-rattle spring, plastic caps, sensor clip)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/",
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ]
+  },
+  {
+   "item": "10 mm socket and 8 mm for wheel-liner fasteners to reach sensor box",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pad-sensor-replacement/"
+   ]
+  },
+  {
+   "item": "Torque wrench (range to 120+ Nm for wheel bolts)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://blog.ecstuning.com/?p=1238"
+   ]
+  },
+  {
+   "item": "Brake cleaner, anti-squeal paste, caliper-guide grease",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/",
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ]
+  },
+  {
+   "item": "Cluster reset method needs no tool; scan tool optional backup (BMW-capable, generic OBD may not reset CBS)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.techtips.ie/Hella-Ireland/bmw---service-reset-condition-based-service-cbs--brake-pads.pdf",
+    "https://www.youcanic.com/bmw-brake-light-service-reset-instructions/",
+    "https://bmwtuning.co/e90-brake-pad-sensor-replacement/"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "Front pad set, 328i/328xi (BimmerWorld lists E9x 328i and 328xi 06-13; description says 2009+)",
+   "partNumber": "34116790759",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.bimmerworld.com/Brakes/Street-Performance-Brake-Pads/OEM-BMW-Brakes-Repair-Kit-Brake-Pads-34116790759.html"
+   ]
+  },
+  {
+   "item": "Front pad set, 328i 2007-2010 / 328i xDrive 2009-2010 (PMB; says match brake package and VIN)",
+   "partNumber": "34116780711",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://pmbperformance.com/products/bmw-brake-pad-set-17"
+   ]
+  },
+  {
+   "item": "Front pad set named in Team-BHP parts list",
+   "partNumber": "34116794917",
+   "status": "CONFLICT",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://r44performance.com/products/genuine-bmw-e90-e93-z4-e89-oem-front-brake-pads-34116794917"
+   ]
+  },
+  {
+   "item": "Pagid OEM front pads (328i/328xi only up to 09/2007 production)",
+   "partNumber": "34116799166",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/p-15878-oem-front-brake-pads-e82-e9x-e89/"
+   ]
+  },
+  {
+   "item": "Front pad wear sensor, non-xDrive",
+   "partNumber": "34356789440",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pad-sensor-replacement/",
+    "https://www.turnermotorsport.com/p-361173-front-brake-pad-wear-sensor/",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-751-bremmen-parts?Nrpp=50"
+   ]
+  },
+  {
+   "item": "Front pad wear sensor, xDrive/xi",
+   "partNumber": "34356789441",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.bimmerworld.com/Brakes/Sensors-ABS-Wear/Brake-Pad-Sensor-34356789441.html",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-266-bowa?Nrpp=48"
+   ]
+  },
+  {
+   "item": "Front pad wear sensor alternate; fitment not stated (possibly later-build supersession; unverified)",
+   "partNumber": "34356792560",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-266-bowa?Nrpp=48"
+   ]
+  },
+  {
+   "item": "Pad anti-squeal paste (BMW)",
+   "partNumber": "83192158851",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+   ]
+  },
+  {
+   "item": "Caliper carrier Torx bolt M12x1.5x43 (replace-when-removed; only if carrier removed, not needed for pads only)",
+   "partNumber": "34106864424",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/p-394625-torx-screw-with-wash/",
+    "https://www.turnermotorsport.com/p-47096357-caliper-hex-bolt/"
+   ]
+  },
+  {
+   "item": "Front rotors / rotor+pad kit 34116855006KIT (FCP page references it for 328i xDrive; kit contents not confirmed)",
+   "partNumber": "34116855006KIT",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.fcpeuro.com/blog/front-bmw-e90-brake-replacement-diy-video"
+   ]
+  }
+ ],
+ "fluids": [
+  {
+   "item": "Brake fluid (top-off only; spec/capacity not researched)",
+   "spec": "MISSING",
+   "capacity": "MISSING",
+   "status": "MISSING",
+   "sources": []
+  }
+ ],
+ "torque": [
+  {
+   "fastener": "Wheel bolts (M12x1.5, 17 mm hex)",
+   "value": "120 Nm (89 lb-ft)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://blog.ecstuning.com/?p=1238",
+    "https://www.m3post.com/forums/showthread.php?p=25539406",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=6673488",
+    "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
+   ],
+   "conflicts": "All secondary sources (retailer article for M3, two forum lists, one blog); no BMW owner's manual or TIS document found. BimmerWorld lists 75 ft-lb for its aftermarket NUTS only (not bolts)."
+  },
+  {
+   "fastener": "Front caliper guide bolts (328i)",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ],
+   "conflicts": "One M3-thread poster gives 22 ft-lb for guide bolts front and rear; single forum source, E9x M3 context, not 328i-verified."
+  },
+  {
+   "fastener": "Front caliper carrier (bracket) bolts, only if carrier removed",
+   "value": "MISSING for 328i",
+   "status": "MISSING",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=5223168",
+    "https://blog.ecstuning.com/?p=1238"
+   ],
+   "conflicts": "Bimmerpost: 110 Nm (BMW Performance 135i-style caliper) vs about 80 Nm advice (unsourced); ECS M3/F10 big-brake kit article: bracket 110 Nm, mounting 115 Nm. Different calipers; not applicable to a 328i without confirmation."
+  },
+  {
+   "fastener": "Wear sensor, wheel-liner screws/nuts",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Prepare and loosen wheel bolts",
+   "instruction": "Park on level ground, loosen the 17 mm wheel bolts a turn while the car is on the ground, then lift and support the car on stands at the proper jack points.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Never work under a car supported only by a jack.",
+    "xDrive center-front jack point differs from RWD (single forum source); confirm location."
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Remove wheel and expose sensor",
+   "instruction": "Take the wheel off. Pad wear sensor wiring runs to a small junction box high in the wheel well; liner fasteners may need removing to reach it.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 3,
+   "title": "Unclip wear sensor from pad",
+   "instruction": "Pull the sensor from the pad face with a small screwdriver. On a car with a sensor, the small spring clip often stays on the old pad; keep it if the new sensor lacks one. Only one front sensor is listed per car (not per wheel) by several retailers; confirm which side on your car.",
+   "status": "CONFLICT",
+   "warnings": [
+    "Sources disagree whether front sensors exist on one or both sides; M3 thread mentions both pads on M3."
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Remove anti-rattle spring",
+   "instruction": "Pry the anti-rattle clip out of the caliper with screwdrivers or pliers, shielding paint.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Spring can fly out; wear eye protection."
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Release caliper",
+   "instruction": "Pop the plastic caps off the guide bolts, back each bolt out with the correct hex socket until the caliper slides off the carrier (in the M3 thread the bolts only need unthreading).",
+   "status": "VERIFIED",
+   "warnings": [
+    "Hex size for the 328i front guide bolts is not confirmed (7 mm vs 17 mm vs 5/8 in reported across sources)."
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Support caliper and remove pads",
+   "instruction": "Hang or rest the caliper so the hose carries no load. Slide out the outer pad, then pry the inner pad from the piston retaining clips.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Do not let the caliper hang by its brake hose."
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Retract piston",
+   "instruction": "Use the old inner pad as a pressure spreader and push the piston back gently with a clamp or spreader. Watch the reservoir level so it does not overflow; opening the cap may help.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Piston can be stiff; check fluid level."
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Clean and lubricate",
+   "instruction": "Clean the carrier with brake cleaner, avoiding rubber and paint. Lightly lubricate guide bolts and apply a thin film of anti-squeal paste to metal-to-metal contact points only, never on friction faces or the rotor.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Keep grease and paste off pad friction material and rotor."
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Inspect rotor",
+   "instruction": "Check rotor condition and thickness; replace or resurface if scored or worn. Rotor minimum thickness values were not researched.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Rotor minimum thickness specs: MISSING."
+   ]
+  },
+  {
+   "n": 10,
+   "title": "Install new pads, sensor, and spring",
+   "instruction": "Fit the pads, reinstall the anti-rattle spring, clip in the new wear sensor and route its cable as the old one ran.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 11,
+   "title": "Refit caliper and torque",
+   "instruction": "Slide the caliper back, tighten guide bolts, refit caps. Torque value for the 328i: MISSING (do not state a number).",
+   "status": "MISSING",
+   "warnings": [
+    "Torque to BMW specification obtained from owner-approved source before publication."
+   ]
+  },
+  {
+   "n": 12,
+   "title": "Wheel on and torque",
+   "instruction": "Mount wheel, snug bolts, lower the car, then torque the wheel bolts to 120 Nm in a star pattern.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Torque value is secondary-source only."
+   ]
+  },
+  {
+   "n": 13,
+   "title": "Seat pads",
+   "instruction": "Before driving, pump the brake pedal until firm. Then bed in with a gentle drive and several firm stops for non-OEM or performance pads (OEM pad bed-in not required per one source).",
+   "status": "VERIFIED",
+   "warnings": [
+    "Check pedal feel and fluid level before moving the car."
+   ]
+  },
+  {
+   "n": 14,
+   "title": "Reset CBS brake service",
+   "instruction": "With a new wear sensor fitted, ignition on engine off, use the instrument-cluster trip/odometer reset button to reach the brake service item, hold until RESET appears, press again until the indicator clears. If it fails, use a BMW-capable scan tool (Service > Maintenance > CBS reset, choose front brake).",
+   "status": "VERIFIED",
+   "warnings": [
+    "Reset only works with a new wear sensor fitted (Hella). Reader reports of failure on some 2010 328i displays."
+   ]
+  }
+ ],
+ "safety": [
+  "Support car on rated jack stands; never rely on the jack.",
+  "Brake dust: do not blow with compressed air; use brake cleaner and wet wipe.",
+  "Do not let the caliper hang by the brake hose.",
+  "After the job, test brakes at low speed before driving normally.",
+  "Wheel bolts must be torqued; re-check after first drive (general practice; not source-verified)."
+ ],
+ "missingEvidence": [
+  "Front pad PN for this exact car (brake package, build date, xDrive or not): candidates conflict.",
+  "328i front caliper guide bolt torque and hex size; carrier bolt torque.",
+  "Authoritative BMW (TIS/owner's manual) wheel bolt torque; only secondary sources for 120 Nm.",
+  "Front-specific step-by-step for 328i (FCP video not transcribed).",
+  "Rotor minimum thickness and discard thickness.",
+  "Brake fluid spec and DOT level.",
+  "Which side(s) have front wear sensors on a 328i.",
+  "Whether N51B30/transmission/xDrive alters any step."
+ ],
+ "ownerInputsNeeded": [
+  "Production date (door jamb sticker) to split sensor/pad fitment at 03/2010.",
+  "Drivetrain: RWD or xDrive (VIN decode or badge).",
+  "Front brake size/package (rotor diameter and thickness stamped on rotor).",
+  "Whether front wear sensor is currently installed and if warning light is on.",
+  "Approve source for torque values (BMW TIS/Bentley) before publishing."
+ ]
+}

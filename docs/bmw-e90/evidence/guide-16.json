@@ -1,0 +1,304 @@
+{
+  "guide": 16,
+  "name": "Engine Oil & Filter Change",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Capacity (about 6.9 US qt / ~6.5 L with filter), 25 Nm torque for both drain plug and filter-housing cap, 17 mm drain plug, 86 mm 16-flute cap tool, and OE filter element 11427566327 (Mann HU816x equivalent) are each backed by 2+ independent secondary sources. No BMW/OEM document (owner's manual, TIS, repair manual) for this E90 was obtainable; the only BMW doc found is a 2003-04 E46 handbook (different chassis/engine). All fitment evidence is for N52; N51 and xDrive are unverified. Oil approval is reported as BMW Longlife-01 by several forum sources but one source disputes it, so the owner should confirm against the car's manual or oil-cap/service label. Drain washer OE number is single-source. Service-interval reset procedure was not researched.",
+  "variantDependencies": [
+    "Engine: all numbers here are for N52B30 (3.0L). N51B30 oil capacity, filter and housing fitment were NOT found. Engine code must be confirmed from VIN/engine cover/underhood label.",
+    "Drivetrain: xDrive (328xi) may have different pan/undertray/front-axle clearance and capacity. The only xi data found is 6.2 L for E46 325xi/330xi (a different chassis/engine, so not applicable). E90 xDrive capacity is MISSING.",
+    "Transmission: manual vs auto does not change the oil service, but one source (Z4 forum, E89 N52) hints a slightly different fill with manual gearbox; no E90 numbers. Treat capacity as transmission-independent only as an assumption.",
+    "Sources list the 2.5L N52 only for early cars; a 2010 328i is expected to be N52B30 but this is UNCONFIRMED.",
+    "Oil approval (LL-01 vs LL-04 vs other) differs by market and model year; US 2010 spec not confirmed from a BMW document."
+  ],
+  "tools": [
+    {
+      "item": "86 mm, 16-flute oil filter housing cap socket (aluminum preferred; CTA 2489 named by FCP Euro)",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
+      ]
+    },
+    {
+      "item": "17 mm socket for drain plug",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/"
+      ]
+    },
+    {
+      "item": "Torque wrench (reads 25 Nm / 18 lb-ft range)",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
+      ]
+    },
+    {
+      "item": "Jack stands / ramps; jack at all four jacking points",
+      "status": "SINGLE_SOURCE (jack/stands mentioned in several threads; lift-point procedure only in BP1)",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=14552462"
+      ]
+    },
+    {
+      "item": "Drain pan, rags, turkey baster for residual oil in housing",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+      ]
+    },
+    {
+      "item": "Torx bits T20/T25 (FCP lists these for the gasket job; whether they fit the E90 undertray is not stated)",
+      "status": "MISSING (undertray fastener type/size not confirmed)",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "Oil filter element (cartridge), N52/N54/N55 6-cyl",
+      "partNumber": "11427566327 (alternate/previous 11427541827)",
+      "status": "VERIFIED (secondary: Turner, BMWBlog for E83 X3 N52 which lists same OE number)",
+      "sources": [
+        "https://www.turnermotorsport.com/p-4162-oem-mahlemann-oil-filter-most-2006-6-cylinder-n52n54n55s55/",
+        "https://www.bmwblog.com/?p=243123"
+      ]
+    },
+    {
+      "item": "Mann HU816x equivalent filter",
+      "partNumber": "HU816x",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "sources": [
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://www.turnermotorsport.com/p-4162-oem-mahlemann-oil-filter-most-2006-6-cylinder-n52n54n55s55/"
+      ]
+    },
+    {
+      "item": "Filter housing cap O-rings (large outer and small center-post O-rings)",
+      "partNumber": null,
+      "status": "MISSING (O-ring OE numbers not found; forums say replace both and seat correctly)",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=25725625",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+      ]
+    },
+    {
+      "item": "Oil drain plug crush washer (12x17 mm)",
+      "partNumber": "07119963151",
+      "status": "SINGLE_SOURCE (Turner lists it for E90 328i N52; ECS shows Victor Reinz equivalent under the same number but does not label it OE)",
+      "sources": [
+        "https://www.turnermotorsport.com/p-6488-gasket-ring-07119963151/",
+        "https://www.ecstuning.com/b-victor-reinz-parts/drain-plug-washer/07119963151~vic/"
+      ]
+    },
+    {
+      "item": "Drain plug itself",
+      "partNumber": null,
+      "status": "MISSING (reuse is reported; BMW replacement requirement not found)",
+      "sources": [
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/"
+      ]
+    },
+    {
+      "item": "Oil filter housing gasket kit incl. oil pressure sensor (NOT part of a routine change)",
+      "partNumber": "11428637821KT",
+      "status": "SINGLE_SOURCE (ECS)",
+      "sources": [
+        "https://www.ecstuning.com/BMW-E90-328i-N52_3.0L/Maintenance/Engine/Oil/2"
+      ]
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Engine oil approval",
+      "spec": "BMW Longlife-01 reported (LL-04 also accepted per one post); one source says LL-01 is obsolete and suggests API-SP 5W-30; another recommends MB 229.5-class oil",
+      "capacity": "n/a",
+      "status": "CONFLICT (LL-01 per BP2, S5b, BP3; disputed by Z4; BMW document MISSING)",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=25725625",
+        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15773480",
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+      ]
+    },
+    {
+      "item": "Viscosity",
+      "spec": "Reported: 5W-30, 0W-30, 5W-40, 0W-40 all in use; not one agreed value",
+      "capacity": "n/a",
+      "status": "CONFLICT (no BMW doc to choose)",
+      "sources": [
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=15773480",
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
+        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
+        "https://getjerry.com/car-repair/2010-bmw-328i-oil-capacity"
+      ]
+    },
+    {
+      "item": "Engine oil quantity incl. filter, N52",
+      "spec": "n/a",
+      "capacity": "about 6.9 US qt (~6.5 L); many owners put in ~7 qt and check electronically",
+      "status": "VERIFIED (secondary sources only, no BMW document); E46 BMW handbook shows 6.5 L for 325i/330i but is a different chassis and not used as a source",
+      "sources": [
+        "https://5series.net/forums/e60-discussion-2/quick-oil-change-question-140524/",
+        "https://5series.net/forums/e60-discussion-2/oil-change-question-78967/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=25725625",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
+        "https://www.bmwblog.com/?p=243123"
+      ]
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Oil filter housing cap",
+      "value": "25 Nm (18 lb-ft)",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "sources": [
+        "https://www.fcpeuro.com/blog/how-to-replace-the-oil-filter-housing-gasket-bmw-e90",
+        "https://5series.net/forums/e60-discussion-2/torque-specs-2006-530i-n52-engine-136240/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+        "https://5series.net/forums/e60-discussion-2/anyone-have-torque-specs-oil-filter-housing-525i-108875/"
+      ],
+      "conflicts": "S5d notes 'hand tight' for an M54; no numeric disagreement found"
+    },
+    {
+      "fastener": "Oil drain plug",
+      "value": "25 Nm (18 lb-ft)",
+      "status": "VERIFIED (secondary sources only, no BMW document) (S5a is an E60 N52 list, not E90)",
+      "sources": [
+        "https://5series.net/forums/e60-discussion-2/torque-specs-2006-530i-n52-engine-136240/",
+        "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+      ],
+      "conflicts": "FCP gave no torque value for the plug"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Position and lift",
+      "instruction": "Park on level ground and raise the car at all four jacking points, then support on stands so it sits level. Confirm the E90 jacking points from the owner's manual; they were not documented in the sources.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Never work under a car supported only by a jack."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Loosen filter cap",
+      "instruction": "From the top, loosen the oil filter housing cap with the 86 mm cap tool and leave it sitting loosely so the housing can drain back into the pan.",
+      "status": "SINGLE_SOURCE",
+      "warnings": []
+    },
+    {
+      "n": 3,
+      "title": "Open the undertray access hatch",
+      "instruction": "Reach the drain plug through the small access hatch in the lower undertray, near the front-centre of the underside. Removing the whole undertray gives cleaner access, but the hatch is enough. Sources disagree on how the hatch is held (three screws versus a coin-operated catch), so check what your car has.",
+      "status": "CONFLICT (hatch fastener: three screws vs coin-operated; full-tray fasteners not found)",
+      "warnings": []
+    },
+    {
+      "n": 4,
+      "title": "Drain the sump",
+      "instruction": "Place pan under the plug and remove the 17 mm plug; allow full drain.",
+      "status": "VERIFIED (17 mm size from 3 sources)",
+      "warnings": [
+        "Oil may be hot if the engine was recently run."
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Remove old cartridge",
+      "instruction": "Unscrew the cap, pull the cartridge out with it, and suck out residual oil from the housing with a baster.",
+      "status": "SINGLE_SOURCE",
+      "warnings": []
+    },
+    {
+      "n": 6,
+      "title": "Replace O-rings and clean",
+      "instruction": "Fit new O-rings on the cap (large seal and small center-post seals), clean mating surfaces, and make sure each O-ring is seated correctly; poor seating is the commonly reported cause of leaks.",
+      "status": "VERIFIED (BP1, BP2, S5d agree)",
+      "warnings": [
+        "A kinked or pinched O-ring leaks."
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Lubricate and install new cartridge",
+      "instruction": "Lightly lubricate the O-rings with fresh oil, install the new cartridge on the cap, thread the cap in by hand first.",
+      "status": "VERIFIED (FCP, BP1)",
+      "warnings": []
+    },
+    {
+      "n": 8,
+      "title": "Torque cap",
+      "instruction": "Torque the cap to 25 Nm (about 18 lb-ft). More torque does not improve the seal.",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "warnings": [
+        "Do not over-tighten the plastic-and-aluminum housing cap."
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Refit drain plug with new washer",
+      "instruction": "Install the plug with a new crush washer and torque to 25 Nm.",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "warnings": []
+    },
+    {
+      "n": 10,
+      "title": "Refill",
+      "instruction": "Add roughly 6.9 US quarts (about 6.5 L) of the chosen oil through the filler cap; avoid going above about 7 qt.",
+      "status": "VERIFIED (secondary sources only, no BMW document)",
+      "warnings": [
+        "Overfill is a reported mistake; the electronic gauge can lag."
+      ]
+    },
+    {
+      "n": 11,
+      "title": "Start, inspect for leaks, verify level",
+      "instruction": "Run the engine briefly, check for leaks at the cap and plug, then confirm the level with the electronic readout after the engine has rested: with the ignition on, press the turn-signal stalk button until OIL shows in the instrument cluster, then press the end button to read the level. The iDrive route for the level is not established for this car.",
+      "status": "VERIFIED (BP2, S5c, BP1; menu path not documented)",
+      "warnings": []
+    },
+    {
+      "n": 12,
+      "title": "Reset the oil service reminder",
+      "instruction": "Close the doors and switch the ignition on without starting the engine. Hold the instrument-cluster reset button for about five seconds until the service display appears, cycle to the oil item, then hold the button until RESET confirms.",
+      "status": "VERIFIED (two independent secondary guides agree; iDrive route single-source)",
+      "warnings": []
+    }
+  ],
+  "safety": [
+    "Support the car on stands; do not rely on a jack alone.",
+    "Hot oil and exhaust parts can burn; let the engine cool or wear gloves.",
+    "Dispose of used oil and filter properly.",
+    "Do not overfill: no dipstick on N52, level is judged electronically."
+  ],
+  "missingEvidence": [
+    "Any BMW/TIS/owner's-manual document for this E90 (capacity, approval, torque, procedure).",
+    "E90-specific undertray fastener size and count.",
+    "OE part number for the filter cap O-rings.",
+    "Whether BMW requires replacing the drain plug itself.",
+    "N51B30 and xDrive capacity/filter/undertray differences.",
+    "Official oil approval and viscosity for a 2010 US 328i.",
+    "BMW jacking-point procedure for the E90.",
+    "Position of the oil filter housing cap on the engine (side/end) is not stated by any source; do not illustrate a specific side.",
+    "Whether the N52 has a decorative engine cover that must come off is not stated by any source.",
+    "Drain plug orientation conflicts (pointing straight down vs facing sideways).",
+    "One retailer lists a 26 mm hex cap socket for the E90 N52 housing, which conflicts with the 86 mm 16-flute cap tool from three other sources."
+  ],
+  "ownerInputsNeeded": [
+    "Confirm engine code (N52 vs N51) and drivetrain (RWD vs xDrive) from the vehicle/VIN decode.",
+    "Provide a photo of the oil filler cap or the owner's manual page showing the approved oil spec and capacity.",
+    "Decide viscosity choice once approval is confirmed."
+  ]
+}

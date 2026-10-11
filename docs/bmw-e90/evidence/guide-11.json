@@ -1,0 +1,217 @@
+{
+ "guide": 11,
+ "name": "PCV Valve",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "Owner decision: category retained. Evidence says the N52 (later production) has no standalone, user-replaceable PCV valve: crankcase ventilation (oil separation/pressure regulation, with a rubber diaphragm per one forum source) is integrated in the plastic valve cover, sold as a complete cover kit, OE 11127552281 (Turner x2, Febi 194977 per Turner, URO/Turner, bavmods cross-reference). Early-production N52 (2006 and some 2007) had a separate separator under the intake manifold, reported only by one retailer. Therefore the guide should be an inspect/diagnose/serviceability guide (symptoms, hose and cap checks, vent hose 11157559528, when to replace the whole valve cover) and must NOT contain a standalone valve procedure. A full valve-cover replacement procedure (step order, torque, sequence, seals, required disassembly such as Valvetronic motor, throttle body seal part number) was NOT found and is MISSING; the only torque (7 Nm + 90 degrees, single-use aluminum bolts) is single-source and uncertain.",
+ "variantDependencies": [
+  "Early N52 (2006 and some 2007 production): replaceable oil separator under the intake manifold (kit 11617531423 etc. per one Turner page). A 2010 build is expected to be the later integrated design, but the build date is UNCONFIRMED.",
+  "N51B30 SULEV: URO page says the same plastic valve cover fits N51 SULEV and N52; N51 CCV differences otherwise unresearched.",
+  "N52K (black-top) cover redesign mentioned by one forum poster as different/harder to service; unverified and may not apply to a 2010 US 328i.",
+  "xDrive vs RWD and manual vs auto: no effect found."
+ ],
+ "tools": [
+  {
+   "item": "10 mm hex socket (only size seen for accessible valve-cover bolts)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
+   ]
+  },
+  {
+   "item": "Torque wrench (for valve cover bolts, value unverified)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
+   ]
+  },
+  {
+   "item": "Torx E-sockets for engine cover and ancillary covers",
+   "status": "MISSING (sizes)",
+   "sources": []
+  },
+  {
+   "item": "Hose clamp pliers/plastic trim tools for CCV hose removal",
+   "status": "MISSING",
+   "sources": []
+  },
+  {
+   "item": "Blue (not red) thread locker, if the owner chooses the forum practice",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "Valve cover kit with integrated oil separator / vent valve, N51/N52 (E90 328i)",
+   "partNumber": "11127552281",
+   "status": "VERIFIED (Turner x2 plus URO/Turner page and bavmods cross-reference; Turner and bavmods lists include E90 328i/328xi; not VIN-decoded)",
+   "sources": [
+    "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50",
+    "https://www-graviton.turnermotorsport.com/p-395230-valve-cover/",
+    "https://bavmods.com/products/bmw-1-3-x-z-series-replacement-engine-valve-cover-crankcase-pcv-valve-n51-n52-engine-e90-e91-e92-e93-e60-e81-z4-x3-x5"
+   ]
+  },
+  {
+   "item": "Febi Bilstein aftermarket cover with vent valve",
+   "partNumber": "194977",
+   "status": "SINGLE_SOURCE (Turner)",
+   "sources": [
+    "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/"
+   ]
+  },
+  {
+   "item": "URO valve cover kit",
+   "partNumber": "URO-011833",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www-graviton.turnermotorsport.com/p-395230-valve-cover/"
+   ]
+  },
+  {
+   "item": "CCV vent hose (replace with cover)",
+   "partNumber": "11157559528",
+   "status": "VERIFIED (cited on two Turner pages; same retailer, so SINGLE_SOURCE by org)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50",
+    "https://www-graviton.turnermotorsport.com/p-395230-valve-cover/"
+   ]
+  },
+  {
+   "item": "Valve cover and PCV replacement kit",
+   "partNumber": "11127552281PCVKT",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50"
+   ]
+  },
+  {
+   "item": "Throttle body seal (replace on disturbance)",
+   "partNumber": null,
+   "status": "MISSING (part number; a forum poster only says to always replace it)",
+   "sources": [
+    "https://z4-forum.com/threads/n52-ccv-replacement.82633"
+   ]
+  },
+  {
+   "item": "Early-production separator kit (E90 325xi/330xi early N52 only; NOT for a 2010 328i unless build date confirms)",
+   "partNumber": "11617531423 (separator); kit TMS221962",
+   "status": "SINGLE_SOURCE (Turner)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1135-bmw-oil-separation-breather-system/m-1241-packaged-by-turner?Nrpp=50"
+   ]
+  },
+  {
+   "item": "Valve cover gasket / spark plug tube seals",
+   "partNumber": null,
+   "status": "MISSING (Turner says its kit includes a gasket and jiggle pin; seal part numbers not collected)",
+   "sources": [
+    "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/"
+   ]
+  }
+ ],
+ "fluids": [],
+ "torque": [
+  {
+   "fastener": "Valve cover bolts (N52, aluminum single-use bolts)",
+   "value": "7 Nm + 90 degrees (poster says this feels like about 10 Nm)",
+   "status": "SINGLE_SOURCE (NZ forum thread, not BMW; unverified)",
+   "sources": [
+    "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
+   ],
+   "conflicts": null
+  },
+  {
+   "fastener": "Valve cover tightening sequence",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  },
+  {
+   "fastener": "Hose/clamp fasteners, throttle body bolts",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Understand what is serviceable",
+   "instruction": "The N52 crankcase ventilation oil separator and pressure regulator are built into the plastic valve cover; no standalone PCV valve is sold. The serviceable items are the external vent hoses and the complete valve cover. Do not attempt to remove or replace a standalone valve.",
+   "status": "VERIFIED (3 independent sources: Turner/URO, bavmods, xoutpost forum)",
+   "warnings": []
+  },
+  {
+   "n": 2,
+   "title": "Check build era",
+   "instruction": "Confirm production date: early N52 (2006, some 2007) had a separate separator under the intake manifold; later engines do not.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 3,
+   "title": "Observe symptoms",
+   "instruction": "Possible signs: rough idle, whistling or vacuum leak, higher oil consumption, sooty tailpipe, oil in the intake path, CEL; oil at throttle body is an easier check than the separator itself.",
+   "status": "VERIFIED (symptom lists vary; retailer/forum sources)",
+   "warnings": []
+  },
+  {
+   "n": 4,
+   "title": "Inspect hoses and breather connection",
+   "instruction": "With engine cold and cover off, check CCV hoses for brittleness, cracks or oil seepage; the nipple on the diaphragm housing is described as an atmospheric vent, not for a hose (single forum source).",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 5,
+   "title": "Optional blow-through test",
+   "instruction": "One poster suggests disconnecting the CCV pipes and blowing through to check the path to the sump; not verified for E90 N52.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Do not blow into coolant or oil vapor lines by mouth; avoid ingesting oil mist."
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Decide: replace valve cover",
+   "instruction": "If the diaphragm/passages are suspected failed or clogged, the fix described by multiple sources is the whole valve cover (OE 11127552281) plus vent hose 11157559528; cleaning is described as nearly impossible.",
+   "status": "VERIFIED (retailer sources)",
+   "warnings": []
+  },
+  {
+   "n": 7,
+   "title": "Valve cover replacement procedure",
+   "instruction": "Ordered removal/installation steps, required disassembly (for example Valvetronic motor for the middle bolt, throttle body seal), torque and sequence were NOT found in usable form.",
+   "status": "MISSING",
+   "warnings": [
+    "Aluminum bolts are reported single-use; reusing them or overtightening can strip or break them."
+   ]
+  }
+ ],
+ "safety": [
+  "Engine must be cold before removing the cover or hoses.",
+  "Oil leaks onto hot exhaust parts can cause smoke or fire; clean spills fully.",
+  "Do not publish torque values for valve cover bolts without a BMW source; forum values are single-source.",
+  "Use only OE or quality cover assemblies; one forum describes problems with no-name covers (single source).",
+  "Do not fabricate or imply a standalone PCV valve procedure."
+ ],
+ "missingEvidence": [
+  "BMW TIS/ETK confirmation that the vehicle's valve cover is 11127552281 and not a different revision.",
+  "Torque, sequence and bolt/seal parts for valve cover replacement.",
+  "Whether the Valvetronic motor must be removed for cover replacement on this E90.",
+  "Throttle body seal and spark plug tube seal part numbers.",
+  "Confirmation of production-date cutoff for the early separate-separator design (only one retailer).",
+  "Whether the N52 diaphragm exists as a rubber diaphragm (sources conflict: z4-forum poster says none/vortex, xoutpost says rubber diaphragm).",
+  "Official inspection/test method for the CCV."
+ ],
+ "ownerInputsNeeded": [
+  "Confirm scope: inspect/diagnose/hose-check guide with whole-valve-cover replacement flagged as shop or advanced, or block replacement steps until sourced.",
+  "Production month/year and engine code (N52B30 vs N51B30).",
+  "Observed symptoms, if any, to tailor the diagnostic section."
+ ]
+}

@@ -1,0 +1,187 @@
+{
+  "guide": 3,
+  "name": "Key Fob Battery",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "The fob type decides everything. Comfort Access keys use a replaceable CR2032 (3 sources, general BMW, not E90-specific). Standard E90 keys are rechargeable (3 sources): charged by driving with the key in the ignition, inductive charging suggested by forums, battery not owner-replaceable without cutting/soldering. Part number for a rechargeable cell (66126912985) found at one retailer only. Opening steps for a CA fob are corroborated at a general level. VIN option (Comfort Access) not decoded.",
+  "variantDependencies": [
+    "Comfort Access (SA 322) key: CR2032 coin cell, user replaceable (YouCanic, Motorwerks, 1addicts thread).",
+    "Non-Comfort Access key: rechargeable cell, charges in ignition; case not designed to open (YouCanic, Jerry, reddit E90).",
+    "Some E90 keys have the cell spot-welded; replacement needs soldering (reddit E90 thread). One YouCanic comment claims VL2020 on E90 - unverified.",
+    "CR2450 applies to other smart keys (YouCanic, FCP Euro for other models); not shown for E90."
+  ],
+  "tools": [
+    {
+      "item": "CR2032 battery (Comfort Access key only)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
+        "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
+        "https://1addicts.com/forums/showthread.php?p=18176241"
+      ]
+    },
+    {
+      "item": "Emergency/valet key blade or small flat screwdriver (tape tip) to open",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
+        "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/"
+      ]
+    },
+    {
+      "item": "Soldering iron, knife, glue, multimeter (rechargeable key cell swap only)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
+        "https://reddit.birdcat.cafe/r/E90/comments/1jzdopr/key_battery"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "item": "CR2032 coin cell",
+      "partNumber": null,
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
+        "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
+        "https://1addicts.com/forums/showthread.php?p=18176241"
+      ]
+    },
+    {
+      "item": "BMW rechargeable key battery 3.2V (listed for 328i at FCP Euro; fitment year not given)",
+      "partNumber": "66126912985",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/Key-Fob-Battery/"
+      ]
+    },
+    {
+      "item": "CR2450 BMW keyless remote battery (listed for other models)",
+      "partNumber": "61319217643",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/Key-Fob-Battery/"
+      ]
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "None applicable",
+      "value": "N/A",
+      "status": "VERIFIED",
+      "sources": [],
+      "conflicts": null
+    }
+  ],
+  "specs": [
+    {
+      "item": "Comfort Access fob battery",
+      "value": "CR2032, not rechargeable",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
+        "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
+        "https://1addicts.com/forums/showthread.php?p=18176241"
+      ]
+    },
+    {
+      "item": "Standard E90 fob battery",
+      "value": "Rechargeable, charged via ignition or inductive pad",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
+        "https://getjerry.com/questions/how-do-i-charge-my-bmw-e90-key",
+        "https://reddit.birdcat.cafe/r/E90/comments/1jzdopr/key_battery"
+      ]
+    },
+    {
+      "item": "Charge time guidance",
+      "value": "Jerry: about 30 minutes driving gives limited use, dead key long; YouCanic suggests ~2 h trip. Numbers differ.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://getjerry.com/questions/how-do-i-charge-my-bmw-e90-key",
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/"
+      ]
+    },
+    {
+      "item": "Re-sync after dead/rechargeable service",
+      "value": "YouCanic describes ignition-position/lock-button sequence; no second source",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Identify key type",
+      "instruction": "If the key opens with a valet blade and a coin cell, it is Comfort Access; if the case has no access and is a sealed rechargeable, it is the standard key.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Check the car for Comfort Access door-handle sensors; owner to confirm."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Comfort Access: open fob",
+      "instruction": "Press the side tab, withdraw the valet key, use the blade or a taped small screwdriver in the gap to separate the case.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Avoid scratching the case."
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Swap CR2032 and close",
+      "instruction": "Note polarity, replace cell, snap halves together, test lock/unlock.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Dead key can still start the car from the dash slot (1addicts thread, single source)."
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Standard key: charge",
+      "instruction": "Leave key in ignition position 1/2 while driving or set on a wireless charger for hours.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Wireless-charger tip is forum advice only."
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Standard key: cell replacement",
+      "instruction": "Not a DIY-safe step: requires cutting case seam, desoldering and soldering a new cell and gluing; recommend dealer/locksmith.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Case damage, cut risk, polarity, dud cells."
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Re-sync procedure",
+      "instruction": "If remote does not respond, YouCanic describes an ignition and button sequence.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "May require retries; if it fails, see dealer."
+      ]
+    }
+  ],
+  "safety": [
+    "Keep coin cells away from children and pets.",
+    "Wear gloves and cut away from body if opening a sealed key.",
+    "Note polarity before removing the old cell."
+  ],
+  "missingEvidence": [
+    "E90-specific (not generic BMW) confirmation of CR2032 for the Comfort Access key.",
+    "Confirmation of the rechargeable cell part number and fitment to this VIN.",
+    "BMW owner's manual wording and any official re-sync steps.",
+    "Whether this specific car has Comfort Access."
+  ],
+  "ownerInputsNeeded": [
+    "Does the car have Comfort Access (push start without key in dash slot, sensors in door handles)?",
+    "Photo of the key front/back and how it opens."
+  ]
+}

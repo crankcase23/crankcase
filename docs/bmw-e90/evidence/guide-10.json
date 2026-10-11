@@ -1,0 +1,148 @@
+{
+ "guide": 10,
+ "name": "Cabin Air Filter",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "The E90 cabin microfilter is in the engine bay under the cowl at the base of the windshield (not behind the glovebox), confirmed by three sources. 8 mm socket confirmed by three. Fastener count is a CONFLICT (4 vs 6). Part numbers: 64319313519 (genuine BMW carbon, Turner only) and 64316946628 (two forum threads, now listed as superseded by Turner) are both in circulation; aftermarket 64319142115 also listed. The Bentley page indicates the cover procedure applies to E90/E91 built up to 12/2007, which suggests a possible production-date difference; the content (a video) could not be read. No torque specs, no airflow-arrow direction for E90 found.",
+ "variantDependencies": [
+  "Engine/transmission/drive: no source indicates dependence.",
+  "Production date: Bentley page title says applies to E90/E91 produced up to 12/2007; 2010 car is later, so cover/housing details may differ and are unconfirmed.",
+  "Filter type: plain pollen vs activated-carbon element; which one the car has from factory is unknown (Turner fitment covers both numbers).",
+  "Cowl-delete/cowl filter kits exist (aftermarket) and change the procedure; check whether the car has one."
+ ],
+ "tools": [
+  {
+   "item": "8 mm socket and ratchet",
+   "status": "VERIFIED (3 sources)",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=13127589",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=7276455"
+   ]
+  },
+  {
+   "item": "Plastic pry tool (optional)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-upgrade-your-bmw-cabin-air-filter-filter-delete-kit-install-e90-e91-e92-e93"
+   ]
+  },
+  {
+   "item": "Screwdriver/socket for duct screws (size unconfirmed)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=7276455"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "Genuine BMW activated-carbon cabin microfilter",
+   "partNumber": "64319313519",
+   "status": "SINGLE_SOURCE (Turner only; E90 listed 325i through 335d)",
+   "sources": [
+    "https://www.turnermotorsport.com/p-183846-genuine-bmw-microfilteractivated-carbon",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-964-bmw-cabin-filters"
+   ]
+  },
+  {
+   "item": "Pollen microfilter (older number, superseded per Turner)",
+   "partNumber": "64316946628",
+   "status": "VERIFIED (BP1 and BP2 posters; Turner lists number as superseded and sells Hengst 64316946628BF/64316946629)",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=13127589",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=7276455",
+    "https://www.turnermotorsport.com/p-183846-genuine-bmw-microfilteractivated-carbon",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-964-bmw-cabin-filters"
+   ]
+  },
+  {
+   "item": "Aftermarket Mann/Hengst carbon filter",
+   "partNumber": "64319142115",
+   "status": "SINGLE_SOURCE (Turner)",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-964-bmw-cabin-filters"
+   ]
+  }
+ ],
+ "fluids": [],
+ "torque": [
+  {
+   "fastener": "Housing cover/duct screws",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Open hood and locate cover",
+   "instruction": "The microfilter housing is the long black plastic cover at the base of the windshield in the engine bay, in front of the wipers.",
+   "status": "VERIFIED (BW, BP1, BP2)",
+   "warnings": []
+  },
+  {
+   "n": 2,
+   "title": "Remove fasteners",
+   "instruction": "Remove the 8 mm screws securing the cover: BP2 says six total (two per duct for two air ducts, plus two through front tabs); BP1 also says six; BW says four 8 mm screws for the housing after removing the cover.",
+   "status": "CONFLICT (4 vs 6; likely differences in what counts)",
+   "warnings": [
+    "Plastic threads strip easily; do not over-tighten. Do not drop screws into the cowl."
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Lift out assembly",
+   "instruction": "Lift the cover (or filter assembly) free of the cowl.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 4,
+   "title": "Release and remove filter",
+   "instruction": "Press the retention tabs/clips and pull the old filter out. Note its orientation first; E90-specific arrow direction not found.",
+   "status": "VERIFIED (BW, BP2) for removal; orientation MISSING",
+   "warnings": [
+    "Do not reinstall a dirty filter."
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Install new filter",
+   "instruction": "Seat the new filter fully in its frame/cover, confirm it sits flat and seals.",
+   "status": "VERIFIED (BW, BP1, BP2)",
+   "warnings": []
+  },
+  {
+   "n": 6,
+   "title": "Reassemble",
+   "instruction": "Refit cover, tighten all screws snugly, check seating and seal.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 7,
+   "title": "Reset service reminder",
+   "instruction": "One poster describes holding the trip reset button, using the left stalk to scroll to the cabin-filter/fan icon, then holding the BC button to reset. Not confirmed for a 2010 car.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  }
+ ],
+ "safety": [
+  "Keep screws and debris out of the cowl drains and ducts.",
+  "Work with engine off and cool; wiper arms/cowl area is close."
+ ],
+ "missingEvidence": [
+  "BMW/TIS procedure and torque specs.",
+  "Cover removal details for post-12/2007 E90 (Bentley page unreadable).",
+  "Airflow direction arrow on the filter.",
+  "Factory filter type (pollen vs carbon) for this VIN.",
+  "Second independent source for 64319313519.",
+  "BMW replacement interval."
+ ],
+ "ownerInputsNeeded": [
+  "Confirm whether the car has OEM cowl cover (not a cowl-delete kit).",
+  "Choose carbon vs pollen element."
+ ]
+}

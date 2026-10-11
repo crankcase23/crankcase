@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin/rbac";
-import { findAdminTestGuide } from "@/data/admin-test-guides/charger-2016-sxt-multi-job";
+import { findAdminTestGuide } from "@/data/admin-test-guides";
 import GuideWithWrenchMode from "@/components/GuideWithWrenchMode";
 import { vehicleTitle } from "@/lib/guideOverview";
 

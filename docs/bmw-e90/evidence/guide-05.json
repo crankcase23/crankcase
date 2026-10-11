@@ -1,0 +1,334 @@
+{
+ "guide": 5,
+ "name": "Rear Brake Pads",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "Rear pad job on the E90 uses a floating caliper with a separate mechanical drum-in-hat parking brake, so no electronic parking brake retraction is needed. Rear pad PN 34216774692 and rear sensor 34356789445 are verified by two retailers each, with a build-date split (03/2010 onward has other numbers). Caliper bolt torque is not verified and a conflict exists on tool size and which side carries the rear sensor.",
+ "variantDependencies": [
+  "Engine (N52B30 vs N51B30 SULEV) UNCONFIRMED: no evidence found that the brake/tire/wiper jobs differ by engine; not a tracked dependency but unverified.",
+  "RWD vs xDrive UNCONFIRMED: front wear sensor part number differs (34356789441 listed for xi/xDrive vs 34356789440 for non-xi); front jack point differs on xDrive.",
+  "Production date UNCONFIRMED: retailer fitment splits at 03/2010 (wear sensors) and 09/2009 (wipers); a 2010 model year car may fall on either side.",
+  "Brake package UNCONFIRMED: retailers split fitment between 'standard' and 'M Performance' front brakes (larger front brake); front pad part number depends on it.",
+  "Transmission (manual vs auto) UNCONFIRMED: no evidence it affects these jobs.",
+  "Rear sensor: 34356789445 (through about 03/2010 build) vs 34356792564 (listed for builds from 03/2010; 328i not named).",
+  "Rear pad PN: 34216774692 listed to 2009 (Turner) vs 2010 (PMB); 34216790761 (Jurid) lists 2009-2012 328i xDrive; Team-BHP lists 34216791938 and 34216769105. Brake package/rotor size may matter.",
+  "xDrive: fitment tables list 328i xDrive rear pads from 2009; xDrive-specific differences in rear brake hardware not established.",
+  "Parking brake: mechanical cable drum-in-hat on E90 per two retailer/forum sources (Turner shoe set and adjusting screw for E90 325i/328i sedan; bimmerpost thread); no electronic parking brake on this chassis. Not verified against a BMW document."
+ ],
+ "tools": [
+  {
+   "item": "Jack and stands; rear jack point is the black cast-iron differential housing, not the aluminum cover (forum)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=19280433",
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+   ]
+  },
+  {
+   "item": "17 mm socket for wheel bolts",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://blog.ecstuning.com/?p=1238",
+    "https://www.bimmerworld.com/Wheels-Tires/Studs-Lug-bolts/Black-Lug-Nut-M12-17mm.html"
+   ]
+  },
+  {
+   "item": "Guide-bolt tool: 17 mm hex socket (Team-BHP) vs 5/8 in socket (bmwtuning) -- conflict",
+   "status": "CONFLICT",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/"
+   ]
+  },
+  {
+   "item": "Piston retraction: spreader or C-clamp (plain push-back; no rotate/wind-back tool required per the sources found)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/",
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ]
+  },
+  {
+   "item": "Flat-blade screwdriver (anti-rattle clip, plastic caps, sensor clip)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/"
+   ]
+  },
+  {
+   "item": "10 mm socket for wheel-liner bolts to reach sensor",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+   ]
+  },
+  {
+   "item": "Brake cleaner, guide-pin grease, anti-squeal paste",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://bmwtuning.co/e90-brake-pads-replacement/",
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ]
+  },
+  {
+   "item": "Torque wrench",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://blog.ecstuning.com/?p=1238"
+   ]
+  },
+  {
+   "item": "No EPB service-mode tool needed (mechanical handbrake)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=31775138",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1254-bmw-parking-brake-shoes/m-151-genuine-bmw"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "Rear pad set, genuine/OEM-equivalent (Pagid listing: 328i/328xi/328i xDrive sedan 2006-2009; PMB: 328i 2007-2010, 328i xDrive 2009-2010)",
+   "partNumber": "34216774692",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.turnermotorsport.com/p-19687-oem-rear-brake-pads-e9x-325ixi-328ixi-06-09-e82-128i-08-10/",
+    "https://pmbperformance.com/products/bmw-brake-pad-set-46"
+   ]
+  },
+  {
+   "item": "Rear pad set named in Team-BHP list (alt)",
+   "partNumber": "34216791938",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+   ]
+  },
+  {
+   "item": "Rear pad set named in Team-BHP list (alt)",
+   "partNumber": "34216769105",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+   ]
+  },
+  {
+   "item": "Jurid rear pads listed 2009-2012 328i xDrive",
+   "partNumber": "34216790761",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://alleuro.com/Parts/Jurid/34216790761"
+   ]
+  },
+  {
+   "item": "Rear pad wear sensor (one required)",
+   "partNumber": "34356789445",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-266-bowa?Nrpp=48",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-751-bremmen-parts?Nrpp=50"
+   ]
+  },
+  {
+   "item": "Rear pad wear sensor for builds from 03/2010 (328i not named; unverified)",
+   "partNumber": "34356792564",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-751-bremmen-parts?Nrpp=50",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1069-bmw-brake-pad-wear-sensors/m-266-bowa?Nrpp=48"
+   ]
+  },
+  {
+   "item": "Pad paste",
+   "partNumber": "83192158851",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.team-bhp.com/forum/diy-do-yourself/125538-diy-change-brake-pads-bmw-e90-e91-e92-e93.html"
+   ]
+  },
+  {
+   "item": "Parking-brake shoe set (only if inspecting/replacing; not part of pad job)",
+   "partNumber": "34416761292",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1254-bmw-parking-brake-shoes/m-151-genuine-bmw"
+   ]
+  },
+  {
+   "item": "Rear rotors (optional; PN not researched)",
+   "partNumber": null,
+   "status": "MISSING",
+   "sources": []
+  }
+ ],
+ "fluids": [
+  {
+   "item": "Brake fluid (top-off only)",
+   "spec": "MISSING",
+   "capacity": "MISSING",
+   "status": "MISSING",
+   "sources": []
+  }
+ ],
+ "torque": [
+  {
+   "fastener": "Wheel bolts",
+   "value": "120 Nm (89 lb-ft)",
+   "status": "VERIFIED",
+   "sources": [
+    "https://blog.ecstuning.com/?p=1238",
+    "https://www.m3post.com/forums/showthread.php?p=25539406",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=6673488",
+    "https://tpautorepair.net/what-size-are-bmw-3-series-wheel-nuts/"
+   ],
+   "conflicts": "Secondary sources only; no BMW document."
+  },
+  {
+   "fastener": "Rear caliper guide bolts",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [
+    "https://www.m3post.com/forums/showthread.php?p=4835403"
+   ],
+   "conflicts": "One M3 poster gives 22 ft-lb front and rear; single source, M3 context."
+  },
+  {
+   "fastener": "Rear caliper carrier bolts (only if removed)",
+   "value": "MISSING",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Loosen wheel bolts, lift, support",
+   "instruction": "Loosen wheel bolts on the ground, lift using the rear differential housing point and place stands at the jacking points, remove wheels.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Do not lift on the aluminum diff cover."
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Optional: open reservoir cap",
+   "instruction": "Opening the reservoir lid under the hood eases piston retraction; watch the level.",
+   "status": "SINGLE_SOURCE",
+   "warnings": []
+  },
+  {
+   "n": 3,
+   "title": "Remove anti-rattle clip",
+   "instruction": "Pry the clip out by working between the hub and the caliper.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Wear eye protection."
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Unclip rear sensor (one side only)",
+   "instruction": "One source says only the left rear has a sensor; another says passenger side. Check both wheel wells and free the cable from the pad.",
+   "status": "CONFLICT",
+   "warnings": [
+    "Left vs passenger-side conflict; US left = driver side."
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Remove guide bolts and caliper",
+   "instruction": "Pop the caps, loosen then remove the two guide bolts (top and bottom), lift the caliper off the rotor and support it.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Hex/socket size conflict (17 mm vs 5/8 in).",
+    "Do not hang caliper from hose."
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Remove pads",
+   "instruction": "Pull the outer pad, then pry the inner pad from the piston clips.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 7,
+   "title": "Retract piston",
+   "instruction": "Push the piston back with a spreader/clamp using the old pad as backing. No parking-brake mechanism is inside the caliper; the handbrake shoes sit inside the rotor hat.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Check reservoir level."
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Clean and lube",
+   "instruction": "Clean the carrier and sliding surfaces, grease guide pins, apply paste only to metal contact points.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Keep brake cleaner off rubber and paint."
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Fit sensor and new pads",
+   "instruction": "Remove wheel-liner bolts if needed to reach the sensor mounting; fit the correct-length rear sensor and route the cable as before.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "A wrong-length sensor was fitted first by the Team-BHP author; check length."
+   ]
+  },
+  {
+   "n": 10,
+   "title": "Reassemble and torque",
+   "instruction": "Refit caliper and guide bolts to specification (value MISSING), caps on, then wheels torqued to 120 Nm.",
+   "status": "MISSING",
+   "warnings": [
+    "Torque for guide bolts unverified."
+   ]
+  },
+  {
+   "n": 11,
+   "title": "Seat pads and test",
+   "instruction": "Pump the pedal until firm and test at low speed.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 12,
+   "title": "Reset rear brake service",
+   "instruction": "Use cluster reset (rear brake symbol) with a new rear sensor, or a BMW-capable scan tool via Service > Maintenance > CBS reset, rear brake.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Reset needs a new sensor fitted."
+   ]
+  }
+ ],
+ "safety": [
+  "Rated jack stands only.",
+  "Parking brake is mechanical drum-in-hat (no EPB retract procedure needed); do not rely on it as sole restraint on stands.",
+  "Chock front wheels.",
+  "Do not let the caliper hang from the brake hose.",
+  "Do not contaminate friction surfaces with grease."
+ ],
+ "missingEvidence": [
+  "Rear caliper guide bolt torque and carrier bolt torque.",
+  "Tool size for rear guide bolts (17 mm vs 5/8 in).",
+  "Which rear side carries the wear sensor.",
+  "Whether PN 34216774692 covers a 2010 build; PN split for 03/2010 builds.",
+  "Rear rotor PN and minimum thickness.",
+  "Parking brake shoe inspection/adjust procedure (beyond mechanical type).",
+  "Whether xDrive changes rear hardware."
+ ],
+ "ownerInputsNeeded": [
+  "Production date.",
+  "RWD vs xDrive.",
+  "Brake package/rotor diameter.",
+  "Which side the existing rear sensor is on and its length."
+ ]
+}

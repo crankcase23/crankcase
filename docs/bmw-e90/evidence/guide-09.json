@@ -1,0 +1,228 @@
+{
+ "guide": 9,
+ "name": "Fluid Checks & Top-Offs",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "Verified (secondary): N52 has no dipstick and oil level is read electronically; coolant should be BMW-type blue G48-style mixed about 50/50 with distilled water and checked only on a cold engine; brake fluid is DOT 4 with a roughly 2-year change interval. Single-source or conflicting: coolant capacity (8.2 L manual / 8.5 L auto from an E89 Z4 thread), expansion tank and brake reservoir locations, power steering type (one source says hydraulic, another implies EPS was available), brake-fluid reservoir access via cabin filter housing. Missing: washer fluid spec/capacity, power steering fluid spec, automatic transmission and differential service info, exact iDrive/cluster path for the oil level check, and any BMW document. This guide is safe to build only as 'check levels and top off' with owner-confirmed locations; no full flush procedures.",
+ "variantDependencies": [
+  "Engine: oil-level is electronic on N52; N51 not confirmed but assumed similar (UNVERIFIED).",
+  "Transmission: manual vs auto affects coolant capacity (8.2 vs 8.5 L, per Z4 forum for E89, NOT E90) and trans fluid; auto fluid spec MISSING.",
+  "Drive: xDrive adds transfer case/front diff fluids; sources only cover RWD diff in search listings (unread).",
+  "Steering: hydraulic vs electric power steering may depend on build date; the car must be inspected for a PS reservoir.",
+  "Cabin-filter housing at base of windshield may need removal to reach the brake reservoir (E92 M3 source)."
+ ],
+ "tools": [
+  {
+   "item": "Funnel, clean rags",
+   "status": "MISSING (no source; generic)",
+   "sources": []
+  },
+  {
+   "item": "8 mm socket (to move cabin filter housing for brake reservoir access, per E92 M3 article)",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.bmwblog.com/?p=177771"
+   ]
+  },
+  {
+   "item": "Distilled water (for 50/50 coolant mix)",
+   "status": "VERIFIED (BPW, TP)",
+   "sources": [
+    "https://www.bimmerworld.com/Fluids/BMW-Coolant-Antifreeze/Genuine-BMW-Blue-Antifreeze.html",
+    "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "BMW blue antifreeze (G48-type), 1 gal",
+   "partNumber": "82141467704",
+   "status": "SINGLE_SOURCE (Bimmerworld; page notes BMW changed formula for 2018+ cars)",
+   "sources": [
+    "https://www.bimmerworld.com/Fluids/BMW-Coolant-Antifreeze/Genuine-BMW-Blue-Antifreeze.html"
+   ]
+  },
+  {
+   "item": "DOT 4 brake fluid, BMW-spec",
+   "partNumber": null,
+   "status": "MISSING (no part number found)",
+   "sources": [
+    "https://www.bmwblog.com/?p=177771",
+    "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/"
+   ]
+  },
+  {
+   "item": "Washer fluid",
+   "partNumber": null,
+   "status": "MISSING",
+   "sources": []
+  },
+  {
+   "item": "Power steering fluid (if hydraulic)",
+   "partNumber": null,
+   "status": "MISSING (type and part number not found)",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=29821386"
+   ]
+  }
+ ],
+ "fluids": [
+  {
+   "item": "Engine oil level check",
+   "spec": "Electronic readout only; N52 has no dipstick; reads top quart, needs warm engine, driving above ~1000 rpm and several minutes; display updates about every 20 min; add ~1 L only when '+1 qt' type message appears",
+   "capacity": "see guide 16 (about 6.9 qt total)",
+   "status": "VERIFIED (S5c, Z4L, BP)",
+   "sources": [
+    "https://5series.net/forums/e60-discussion-2/oil-change-question-78967/?nojs=1",
+    "https://z4-forum.com/threads/oil-level.146358/",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+   ]
+  },
+  {
+   "item": "Coolant",
+   "spec": "BMW-approved blue ethylene glycol (G48 type), 50/50 with distilled water; do not mix coolant types; check cold",
+   "capacity": "8.2 L manual / 8.5 L auto (E89 Z4 thread, NOT E90)",
+   "status": "Spec: VERIFIED (BPW, Z4C, TP); capacity: SINGLE_SOURCE and wrong chassis",
+   "sources": [
+    "https://www.bimmerworld.com/Fluids/BMW-Coolant-Antifreeze/Genuine-BMW-Blue-Antifreeze.html",
+    "https://z4-forum.com/threads/e89-30i-sdrive-oil-oil-filter-sump-plug-washer-and-coolant-specs.151264/",
+    "https://tpautorepair.net/where-is-the-coolant-in-a-bmw-328i/"
+   ]
+  },
+  {
+   "item": "Brake fluid",
+   "spec": "DOT 4; change about every 2 years (gearshifters also says 30,000 mi); do not mix DOT 3 into DOT 4",
+   "capacity": "MISSING",
+   "status": "VERIFIED for DOT 4 and 2-yr interval (BB is E92 M3, GS cites a reader comment); BMW document MISSING",
+   "sources": [
+    "https://www.bmwblog.com/?p=177771",
+    "https://gearshifters.org/bmw/where-is-the-brake-fluid-reservoir-on-a-bmw-3-series/"
+   ]
+  },
+  {
+   "item": "Washer fluid",
+   "spec": "MISSING",
+   "capacity": "MISSING",
+   "status": "MISSING",
+   "sources": []
+  },
+  {
+   "item": "Power steering fluid",
+   "spec": "MISSING",
+   "capacity": "MISSING",
+   "status": "MISSING; system type is CONFLICT/UNCLEAR",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=29821386",
+    "https://g42.bimmerpost.com/forums/showthread.php?p=31509669"
+   ]
+  },
+  {
+   "item": "Manual transmission fluid (reference only)",
+   "spec": "author used Royal Purple Synchromax; no OE spec given",
+   "capacity": "just under 2 qt",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.billswebspace.com/BMWe90ManualTransmissionFluidChange.htm"
+   ]
+  },
+  {
+   "item": "Automatic transmission / differential / transfer case fluid",
+   "spec": "MISSING",
+   "capacity": "MISSING",
+   "status": "MISSING",
+   "sources": []
+  }
+ ],
+ "torque": [
+  {
+   "fastener": "Expansion tank cap, reservoir caps",
+   "value": "MISSING (one thread: cap not fully seated caused a coolant leak; no torque given)",
+   "status": "MISSING",
+   "sources": [
+    "https://g42.bimmerpost.com/forums/showthread.php?p=28134150"
+   ],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Prep",
+   "instruction": "Park on level ground, engine off. For coolant, wait until the engine is fully cold.",
+   "status": "VERIFIED (TP)",
+   "warnings": [
+    "Never open the expansion tank cap on a hot engine."
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Engine oil",
+   "instruction": "Read the electronic oil level after the engine has been warm and driven for several minutes; wait roughly 20 min of driving after adding before judging again. Menu path in iDrive/cluster for this car is not confirmed.",
+   "status": "VERIFIED for behavior (S5c, Z4L); menu path MISSING",
+   "warnings": [
+    "Do not overfill from a stale reading."
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Coolant",
+   "instruction": "Locate the translucent expansion tank (TP: passenger side near the firewall on E90; single source). With engine cold, open cap slowly and check level against MIN/MAX; top up only with the correct blue 50/50 mix; refit cap fully.",
+   "status": "Location SINGLE_SOURCE; procedure VERIFIED (TP, BPW)",
+   "warnings": [
+    "Do not mix coolant types. Low levels repeatedly = leak."
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Brake fluid",
+   "instruction": "Find the brake reservoir at the driver's side base of the windshield; it is reported to be under a plastic cover and (E92 M3) accessed by removing the cabin-filter housing. Fill only to just below MAX with DOT 4.",
+   "status": "CONFLICT/SINGLE_SOURCE (BB: remove cabin filter housing; GS: plastic cover)",
+   "warnings": [
+    "Brake fluid damages paint; wipe spills with water.",
+    "A falling level may mean worn pads or a leak."
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Washer fluid",
+   "instruction": "Fill the washer reservoir. Location, capacity and any additive requirements not found.",
+   "status": "MISSING",
+   "warnings": []
+  },
+  {
+   "n": 6,
+   "title": "Power steering",
+   "instruction": "Only if the car has a hydraulic pump and reservoir; inspect and top up with the type printed on the cap. Existence on this car is unconfirmed.",
+   "status": "MISSING",
+   "warnings": []
+  },
+  {
+   "n": 7,
+   "title": "Transmission/differential",
+   "instruction": "Not a routine owner check; out of scope until BMW service data is obtained.",
+   "status": "MISSING",
+   "warnings": []
+  }
+ ],
+ "safety": [
+  "Engine cold before opening coolant cap.",
+  "Brake fluid is corrosive to paint and is hygroscopic; keep containers sealed.",
+  "Brake system leaks or low fluid are safety-critical; seek inspection.",
+  "Coolant is toxic to pets; clean spills."
+ ],
+ "missingEvidence": [
+  "Any BMW/TIS/owner's-manual source for fluid specs and capacities.",
+  "E90-specific coolant capacity (only an E89 Z4 forum figure).",
+  "Washer fluid location, capacity and spec.",
+  "Power steering type (hydraulic vs EPS) for this VIN and fluid spec.",
+  "Auto transmission and differential/transfer case fluid info.",
+  "Exact iDrive/cluster menu path for oil level.",
+  "Brake master cylinder reservoir access on a 2010 E90 from an E90 source (BB is E92 M3).",
+  "Torque/seating spec for expansion tank cap."
+ ],
+ "ownerInputsNeeded": [
+  "Confirm manual vs auto and RWD vs xDrive.",
+  "Open the hood and confirm whether a power steering reservoir exists.",
+  "Photograph reservoir caps (coolant, brake, washer) so the spec printed on them can be recorded.",
+  "Provide owner's manual fluid page if available."
+ ]
+}

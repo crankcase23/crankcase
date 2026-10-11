@@ -1,0 +1,282 @@
+{
+  "guide": 7,
+  "name": "Battery Replacement",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Battery location (trunk, right side), mandatory battery registration, terminal order and general removal flow are corroborated for E9x. No BMW OE battery part number, no OE Ah/CCA/AGM spec for this VIN, no torque values and no E90-specific vent-hose evidence were found. Procedure can be published as a general flow with a registration warning, but the battery spec must come from the owner's existing battery label or BMW ETK/dealer lookup. The BMW training document (ST502 E90 Voltage Supply) could not be retrieved (fetch blocked), so no OEM-document corroboration was obtained.",
+  "variantDependencies": [
+    "Engine N52B30 vs N51B30: not confirmed from VIN; battery guidance found does not distinguish them.",
+    "Battery type (flooded vs AGM) and Ah rating: depends on build/options and any prior replacement; coding to AGM may be needed if type changes (1addicts E82 thread, BimmerForums thread).",
+    "Vent hose routing/position and battery tray fit: only evidenced on E82/E70 threads; E90 sedan not confirmed. Vent connection positions can differ between battery brands (E70 thread).",
+    "Registration tool: dealer ISTA, INPA/NCS Expert, BimmerLink/BimmerCode, or professional scan tools (threads); capability depends on tool chosen."
+  ],
+  "tools": [
+    {
+      "item": "10 mm socket + ratchet (terminal clamp nuts, bracket nuts)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://www.1addicts.com/forums/showthread.php?p=22173925"
+      ]
+    },
+    {
+      "item": "13 mm socket (listed by YouCanic; 1addicts E82 author says not needed on his car)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://www.1addicts.com/forums/showthread.php?p=22173925"
+      ]
+    },
+    {
+      "item": "Socket extension (hold-down bolt on some cars; E82 thread)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22173925"
+      ]
+    },
+    {
+      "item": "Flat screwdriver (release clips on positive power box; E82 thread)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22173925"
+      ]
+    },
+    {
+      "item": "Terminal cleaning brush, terminal protector/grease",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/"
+      ]
+    },
+    {
+      "item": "Scan tool capable of BMW battery registration (BimmerLink/INPA/ISTA/Autel etc.)",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://ricksfreeautorepairadvice.com/why-you-have-to-register-a-battery-in-your-bmw/",
+        "https://gearshifters.org/bmw/what-size-battery-for-bmw-e90/",
+        "https://www.bimmerforums.com/forum/archive/index.php/t-2454605.html"
+      ]
+    },
+    {
+      "item": "Memory saver / maintenance charger",
+      "status": "MISSING",
+      "sources": []
+    }
+  ],
+  "parts": [
+    {
+      "item": "Replacement battery (spec for this VIN)",
+      "partNumber": null,
+      "status": "MISSING",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://gearshifters.org/bmw/what-size-battery-for-bmw-e90/",
+        "https://www.bimmerforums.com/forum/archive/index.php/t-2454605.html",
+        "https://www.fcpeuro.com/BMW-parts/328i/Battery/"
+      ]
+    },
+    {
+      "item": "Battery hold-down (URO 61217566618, aftermarket cross-ref listed for 325i/328i)",
+      "partNumber": "61217566618",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/328i/Battery/"
+      ]
+    },
+    {
+      "item": "Battery terminal bolt (URO 61128373946T)",
+      "partNumber": "61128373946T",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/328i/Battery/"
+      ]
+    },
+    {
+      "item": "Negative cable with IBS (Hella 61127616200, listed 325i/328i/330i; fitment to this VIN unverified)",
+      "partNumber": "61127616200",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/328i/Battery/"
+      ]
+    },
+    {
+      "item": "Positive battery lead (Genuine BMW 61129205520, listed 328i/328i xDrive/328xi) - only if cable damaged",
+      "partNumber": "61129205520",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fcpeuro.com/BMW-parts/328i/Battery/"
+      ]
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Battery terminal clamp nuts",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null
+    },
+    {
+      "fastener": "Battery hold-down bolt",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null
+    },
+    {
+      "fastener": "Bracket nuts over battery (10 mm)",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null
+    }
+  ],
+  "specs": [
+    {
+      "item": "Battery location",
+      "value": "Trunk, right side under cover/panel",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://gearshifters.org/bmw/what-size-battery-for-bmw-e90/"
+      ]
+    },
+    {
+      "item": "Group size",
+      "value": "YouCanic lists H8; also says minimum H6/L3/Group 48 with >=570 CCA; gearshifters says H6, H7 or H8 without picking one",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://gearshifters.org/bmw/what-size-battery-for-bmw-e90/"
+      ]
+    },
+    {
+      "item": "Original Ah/type",
+      "value": "Forum posts: 90 Ah flooded (720 CCA) original on an unspecified car; 80 Ah/640 CCA on an E82; E70 original 100 Ah. Not tied to this VIN.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.bimmerforums.com/forum/archive/index.php/t-2454605.html",
+        "https://www.1addicts.com/forums/showthread.php?p=22173925",
+        "https://xoutpost.com/912621-post1.html"
+      ]
+    },
+    {
+      "item": "Registration required on 2006+ E9x",
+      "value": "Yes; skipping lets alternator charge at old battery's profile, shortening battery life",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
+        "https://ricksfreeautorepairadvice.com/why-you-have-to-register-a-battery-in-your-bmw/",
+        "https://gearshifters.org/bmw/what-size-battery-for-bmw-e90/"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Prepare",
+      "instruction": "Switch ignition off and keep the key away from the ignition/cabin range during the work; test charging system first if the battery fault is not confirmed; photograph the cable and hose layout.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Voltage drops can upset electronics (YouCanic)."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Open the trunk battery area",
+      "instruction": "Remove the right-side trunk trim cover and the panel over the battery.",
+      "status": "VERIFIED",
+      "warnings": []
+    },
+    {
+      "n": 3,
+      "title": "Disconnect negative first, then positive",
+      "instruction": "Loosen and remove the negative clamp, then the positive; keep metal tools from bridging terminals or touching body metal.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Short-circuit and spark risk."
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Release vent hose and positive power box (if fitted)",
+      "instruction": "Detach the vent hose near the positive side and lift off the positive terminal power box after unclipping it.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Evidence is from an E82 thread; E90 sedan layout not confirmed."
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Remove hold-down and lift out battery",
+      "instruction": "Remove the hold-down plate/bracket and lift the battery straight out.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Battery is heavy; lift with legs."
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Clean and install",
+      "instruction": "Clean terminal clamps, seat the new battery against the front lip, move the vent hose to the new battery's vent port as needed, refit hold-down.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Vent port positions can differ between batteries (E70 thread)."
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Reconnect positive then negative",
+      "instruction": "Connect positive, refit its cover/power box, then negative; coat posts with a protectant.",
+      "status": "VERIFIED",
+      "warnings": []
+    },
+    {
+      "n": 8,
+      "title": "Register battery with the car",
+      "instruction": "Using a BMW-capable tool, register the new battery (and set AGM/flooded type and Ah if the tool/coding supports it).",
+      "status": "VERIFIED",
+      "warnings": [
+        "Do not skip; do not claim a specific tool menu path (E70 INPA path is not E90-verified)."
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Post-install checks",
+      "instruction": "Start the engine; YouCanic advises turning the steering wheel lock to lock a few times to reset the steering angle/DSC warnings. Check for dash faults.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Elcuerpo3 case (BimmerForums, 2006 325i) showed IBS ground fault lights after a swap; fault-check if lights persist."
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Torque values for terminals/hold-down",
+      "instruction": "No sourced torque; tighten snug without over-torquing lead posts.",
+      "status": "MISSING",
+      "warnings": [
+        "Do not publish a number."
+      ]
+    }
+  ],
+  "safety": [
+    "Eye protection and gloves; battery acid and hydrogen gas.",
+    "Disconnect negative first; never let a tool bridge terminals.",
+    "Keep the vent hose connected so gas vents outside (general principle; E90 routing unverified).",
+    "Do not skip registration."
+  ],
+  "missingEvidence": [
+    "BMW OE battery part number and OE Ah/CCA/AGM spec for VIN WBAPH7C58AA175760.",
+    "Any torque values (terminals, hold-down).",
+    "E90-sedan-specific vent hose routing and clip locations.",
+    "Whether Safety Battery Terminal (SBK) is fitted/needs attention on this car (not verified).",
+    "BMW OEM document corroboration (ST502 training PDF blocked by proxy/permission).",
+    "Registration button/menu steps for a specific tool on E90."
+  ],
+  "ownerInputsNeeded": [
+    "Photo of existing battery label (Ah, CCA, type, group size).",
+    "Which registration tool/app the owner has, or whether a shop will register it.",
+    "Confirm engine and drivetrain (N52/N51, RWD/xDrive) if later guides depend on it."
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "guide": 6,
+  "name": "Serpentine Belt",
+  "recommendedStatus": "BLOCKED",
+  "summary": "Not publishable yet. The N52 idler pulley number (11287535860) and the single-use tensioner bolt are corroborated, but the belt part number conflicts between retailers (11287549150 vs 11287628650/6PK1990), the tensioner number is ambiguous, tensioner bolt torque conflicts (22 Nm vs 25 Nm + 90 deg), and the only procedure found is one E82 forum post with no sourced tension-release tool size, lock-pin size or routing diagram. Engine is unconfirmed (N52B30 vs N51B30). Recommend pulling BMW ETK/repair data for the VIN before building this guide.",
+  "variantDependencies": [
+    "Engine N52B30 vs N51B30 (SULEV): kits are listed as N52; N51 fit is described only generically by BimmerWorld.",
+    "xDrive vs RWD: Turner lists xDrive models in the description and 325xi/328xi/330xi in the table, notes to verify fitment.",
+    "A/C compressor runs on the same main belt and tensioner on N52 (Turner); belt length/part may differ with options (Turner notes exclusions for X5 with Adaptive Drive/4-zone climate).",
+    "Alternator pulley removal may need a special tool (BimmerWorld); depends on Bosch alternator."
+  ],
+  "tools": [
+    {
+      "item": "16 mm socket (E82 poster: pulley under alternator)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22769621"
+      ]
+    },
+    {
+      "item": "Torque wrench reading from low values/in-lb plus builder's square or torque-angle gauge for the 90 degree step",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.1addicts.com/forums/showthread.php?p=23331035"
+      ]
+    },
+    {
+      "item": "Alternator pulley removal tool (CTA-8088 suggested for Bosch alternators)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ]
+    },
+    {
+      "item": "Torx socket for M11 tensioner bolt (size not stated)",
+      "status": "MISSING",
+      "sources": [
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html"
+      ]
+    },
+    {
+      "item": "Belt tension release tool/socket size and tensioner lock-pin size",
+      "status": "MISSING",
+      "sources": []
+    }
+  ],
+  "parts": [
+    {
+      "item": "Main drive belt, Continental in Turner kit ADK0022P",
+      "partNumber": "11287549150",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ]
+    },
+    {
+      "item": "Main drive belt, 6PK1990 in BimmerWorld/INA kit",
+      "partNumber": "11287628650",
+      "status": "CONFLICT",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ]
+    },
+    {
+      "item": "Mechanical belt tensioner with pulley (Turner)",
+      "partNumber": "11287530314",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ]
+    },
+    {
+      "item": "Tensioner number as labeled by BimmerWorld (same number is the kit number)",
+      "partNumber": "11288624196",
+      "status": "CONFLICT",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ]
+    },
+    {
+      "item": "Deflection (idler) pulley",
+      "partNumber": "11287535860",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
+      ]
+    },
+    {
+      "item": "Tensioner bolt M11x65 Torx, single use",
+      "partNumber": "11287530315",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ]
+    },
+    {
+      "item": "Alternator pulley (in BimmerWorld kit)",
+      "partNumber": "12317560483",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ]
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Tensioner mounting bolt (N52, aluminum one-time-use per forum)",
+      "value": "25 Nm + 90 deg (E82 posters) vs 22 Nm (5series thread, tensioner spring mounting bolt)",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22769621",
+        "https://www.1addicts.com/forums/showthread.php?p=23331035",
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811"
+      ],
+      "conflicts": "1addicts E82 posts: 25 Nm (18 ft-lb) then 90 deg; 5series thread asks about 22 Nm and a poster states 25 Nm + 90 deg for N52 aluminum bolt. All forum, none OEM. N54 thread shows other numbers (40/38 Nm) - not applicable."
+    },
+    {
+      "fastener": "Idler pulley bolt",
+      "value": "MISSING (thread unresolved: 80 Nm vs 19 Nm asked, no answer)",
+      "status": "MISSING",
+      "sources": [
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811"
+      ],
+      "conflicts": null
+    },
+    {
+      "fastener": "Alternator pulley",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": null
+    }
+  ],
+  "specs": [
+    {
+      "item": "Tensioner bolt reuse",
+      "value": "Single use; replace whenever loosened",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.bimmerworld.com/Engine/Gaskets/Belt-Tensioner-Bolt-Rein-E82-E9X-N52-11287530315.html",
+        "https://5series.net/forums/e60-discussion-2/belt-tensioner-idler-pulleys-mounting-torque-specs-153811"
+      ]
+    },
+    {
+      "item": "Belt routing",
+      "value": "One belt drives alternator, power steering pump and A/C on N52 (BimmerWorld lists alternator/PS/AC; Turner says A/C on same belt); diagram not found",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html"
+      ]
+    },
+    {
+      "item": "Replacement interval",
+      "value": "BimmerWorld: tensioner at every belt change, 40-60k miles; forum opinion differs",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
+        "https://www.1addicts.com/forums/showthread.php?p=23331035"
+      ]
+    },
+    {
+      "item": "Job duration",
+      "value": "about 1.5 h in one E82 post",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.1addicts.com/forums/showthread.php?p=22769621"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Photograph belt routing",
+      "instruction": "Before removing, photograph or diagram the belt path.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "No official routing diagram sourced."
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Relieve tension and remove belt",
+      "instruction": "Rotate the tensioner to slack the belt; slip belt off.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Tool size and lock-pin method not sourced."
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Inspect",
+      "instruction": "Fold belt ribs outward and look for cracks; check tensioner for play/noise.",
+      "status": "SINGLE_SOURCE",
+      "warnings": []
+    },
+    {
+      "n": 4,
+      "title": "Replace tensioner/idler (optional kit)",
+      "instruction": "Remove tensioner and pulley; install the new unit with a new single-use bolt; kit instructions say remove the retaining disc on the back of the pulley.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Torque conflict, do not publish a number until resolved."
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Route new belt",
+      "instruction": "Seat the belt on the crank pulley by sliding in sideways; last loop on the tensioner pulley.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Check every rib seats in each groove before starting."
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Verify",
+      "instruction": "Start engine, check alignment, noise, charging.",
+      "status": "MISSING",
+      "warnings": []
+    }
+  ],
+  "safety": [
+    "Disconnect battery or ensure engine cannot crank; keep hands clear of belt and fan.",
+    "Let engine cool.",
+    "Support torque-to-yield procedure properly; do not reuse bolt.",
+    "Battery disconnect may trigger need for registration only if battery replaced (not for belt)."
+  ],
+  "missingEvidence": [
+    "Authoritative belt part number for VIN (ETK).",
+    "Tensioner OE number.",
+    "Tensioner/idler bolt torque from BMW data.",
+    "Tension release tool size, lock pin size, Torx size, routing diagram, fan/intake access notes for E90.",
+    "Confirmation of N52 vs N51 and xDrive fitment.",
+    "Any E90 (not E82) procedure."
+  ],
+  "ownerInputsNeeded": [
+    "Confirm engine code from under-hood label/VIN decode (N52B30 vs N51B30) and RWD vs xDrive.",
+    "Read part number printed on existing belt and tensioner.",
+    "Does the car have A/C and any option affecting belt length?"
+  ]
+}

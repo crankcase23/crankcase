@@ -1,0 +1,159 @@
+{
+ "guide": 14,
+ "name": "Wiper Blades",
+ "recommendedStatus": "BUILDABLE_PARTIAL",
+ "summary": "Front-only job (E90 sedan has no rear wiper). Replacement set PN 61612455435 is listed for 2010+ builds by BimmerWorld and Turner (supersedes 61612159627); pre-09/2009 cars use 61610427668. Driver blade 24 in is supported by two sources; passenger blade 19 in (youcanic) vs 18 in (autopadre) conflicts. Procedure is simple and consistent across sources; no tools or torque needed.",
+ "variantDependencies": [
+  "Engine (N52B30 vs N51B30 SULEV) UNCONFIRMED: no evidence found that the brake/tire/wiper jobs differ by engine; not a tracked dependency but unverified.",
+  "RWD vs xDrive UNCONFIRMED: front wear sensor part number differs (34356789441 listed for xi/xDrive vs 34356789440 for non-xi); front jack point differs on xDrive.",
+  "Production date UNCONFIRMED: retailer fitment splits at 03/2010 (wear sensors) and 09/2009 (wipers); a 2010 model year car may fall on either side.",
+  "Brake package UNCONFIRMED: retailers split fitment between 'standard' and 'M Performance' front brakes (larger front brake); front pad part number depends on it.",
+  "Transmission (manual vs auto) UNCONFIRMED: no evidence it affects these jobs.",
+  "Build date: pre-09/2009 sets use 61610427668; 09/2009+ (2010+) sets use 61612455435 (supersedes 61612159627) per retailer listings. Passenger wiper ARM differs from 09/2009 (61619449924, Turner). BimmerWorld says 'not for 4-door models before 2010'.",
+  "Body style: sedan passenger blade 19 in (youcanic); coupe/convertible passenger 17 in; this is a sedan so sedan applies.",
+  "Drivetrain/engine: no evidence either affects wipers; unconfirmed.",
+  "Rear wiper: none on sedan (sedan has no rear wiper; one source lists none; not independently verified for this VIN)."
+ ],
+ "tools": [
+  {
+   "item": "No tools required",
+   "status": "VERIFIED",
+   "sources": [
+    "https://bavmods.com/pages/how-to-replace-bmw-windshield-wiper-blades-e-chassis-diy-repair-guide-e60-e90-e82-f30-e46-f80-more",
+    "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
+   ]
+  },
+  {
+   "item": "Towel or cardboard under arm to protect windshield",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.youcanic.com/2004-2013-bmw-3-series-wiper-blades-replacement/"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "item": "Front wiper blade set (driver+passenger), 2010+ E90 incl. 328i/328i xDrive",
+   "partNumber": "61612455435",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.bimmerworld.com/Body-Aero/Wiper-Blades/Wiper-Blade-Set-E90-328i-xi-335i-xi-M3-Sedan-BMW-61612159627.html",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+   ]
+  },
+  {
+   "item": "Prior revision of that set (listed 2010-2011 by a Valeo retailer; Valeo mfr nos. 900-24-8B / 900-19-6B)",
+   "partNumber": "61612159627",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.bimmerworld.com/Body-Aero/Wiper-Blades/Wiper-Blade-Set-E90-328i-xi-335i-xi-M3-Sedan-BMW-61612159627.html",
+    "https://www.idparts.com/valeo-complete-wiper-blade-set-2010-e90-61612159627-900-900-p-4183.html"
+   ]
+  },
+  {
+   "item": "Pre-09/2009 E90 set (not for a 2010 build)",
+   "partNumber": "61610427668",
+   "status": "VERIFIED",
+   "sources": [
+    "https://www.turnermotorsport.com/p-5991-oem-bosch-wiper-blade-set-e90-325ixi-328ixi-330ixi-335ixi-m3-sedan/",
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+   ]
+  },
+  {
+   "item": "Another genuine E90 set listed without production date",
+   "partNumber": "61612468941",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+   ]
+  },
+  {
+   "item": "Passenger wiper arm for builds from 09/2009 (only if arm is damaged)",
+   "partNumber": "61619449924",
+   "status": "SINGLE_SOURCE",
+   "sources": [
+    "https://www.turnermotorsport.com/BMW-E90-Parts/c-1171-bmw-windshield-wipers"
+   ]
+  }
+ ],
+ "fluids": [],
+ "torque": [
+  {
+   "fastener": "Wiper arm nut (not needed for blade swap)",
+   "value": "MISSING (not required)",
+   "status": "MISSING",
+   "sources": [],
+   "conflicts": null
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "Park and prepare",
+   "instruction": "Park on level ground, ignition off. Fold a towel over the glass below the arm as a safeguard.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Dropped arm can crack the windshield."
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Lift arm",
+   "instruction": "Lift the wiper arm from the glass and hold it upright.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Hold the arm; do not let it snap back onto the glass."
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Release old blade",
+   "instruction": "Press the release tab and swing the blade perpendicular to the arm, then slide it off the hook/peg.",
+   "status": "VERIFIED",
+   "warnings": [
+    "Exact E90 release tab design not shown in sources; one source describes a plastic cover on the hook."
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Fit new blade",
+   "instruction": "Slide the correct length blade on until it clicks. Driver 24 in, passenger 19 in (18 in per one source; verify against old blade).",
+   "status": "CONFLICT",
+   "warnings": [
+    "Passenger length conflict."
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Lower arm and repeat",
+   "instruction": "Lower the arm gently and repeat on the other side.",
+   "status": "VERIFIED",
+   "warnings": []
+  },
+  {
+   "n": 6,
+   "title": "Test",
+   "instruction": "Run wipers with washer fluid to check for chatter, clean glass first if streaking.",
+   "status": "SINGLE_SOURCE",
+   "warnings": [
+    "Do not run wipers dry on dirty glass."
+   ]
+  }
+ ],
+ "safety": [
+  "Support the arm; a spring-loaded arm snapping back can crack the windshield.",
+  "Do not run wipers on dry glass."
+ ],
+ "missingEvidence": [
+  "Passenger blade length: 19 in vs 18 in; only the Valeo mfr code 900-19-6B hints 19 in (inference, not stated).",
+  "E90-specific blade release mechanism and any arm-lock/service position.",
+  "BMW document for part number; only retailers.",
+  "Whether a 2010 US sedan production date falls before or after the 09/2009 split (VIN decode needed).",
+  "Washer fluid spec and capacity (not researched)."
+ ],
+ "ownerInputsNeeded": [
+  "Production date from door-jamb sticker.",
+  "Measure existing passenger blade length.",
+  "Confirm sedan (not wagon) and no rear wiper."
+ ]
+}
