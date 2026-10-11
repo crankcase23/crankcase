@@ -1,0 +1,28 @@
+{
+  "_readme": "Copy to candidate.claims.json next to candidate.png after filling EVERY null. The attestation must be true: it is a statement by whoever generated the image. If any flag is not true the image is refused and the cycle may be spent. Do not attest to something that did not happen.",
+  "generator": {
+    "system": null,
+    "model": null,
+    "provider": null
+  },
+  "requestId": null,
+  "generationId": null,
+  "attestation": {
+    "generatedFromTextOnly": null,
+    "noReferenceImageInputs": null,
+    "noTracing": null,
+    "noThirdPartyCompositing": null,
+    "noBakedText": null,
+    "attestedBy": "image-generator",
+    "attestedOn": null,
+    "statement": null
+  },
+  "imageInputs": [],
+  "inputHashes": [],
+  "contractAck": {
+    "mustNotDepictAcknowledged": null
+  },
+  "licenseTerms": {
+    "summary": null
+  }
+}

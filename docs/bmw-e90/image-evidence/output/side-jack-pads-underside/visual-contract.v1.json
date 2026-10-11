@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "68d6362f91c61bddbd3527ffcab5994c17aafa8a3049d997bc8f0cc05d8dd8ef",
-  "createdAt": "2026-10-10T12:03:10.000Z",
+  "contentHash": "cee2330b20dfec2ded09a3a31022657898e85549fdaa6fbab0c498e2685e7597",
+  "createdAt": "2026-10-10T12:03:00.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -111,11 +111,11 @@
   "refs": [
     {
       "id": "EP-side-jack-pads-underside-v1",
-      "sha256": "55d20b59843a7e11fe8169e63f85102b264231082ed870636d985f96285a6551"
+      "sha256": "4e9fc033c5a58a61028ec89420cae285202cdfd38b9a1bc1ca7cf2d70aa1bc1c"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "730a34e79a55b1830bebdc5a27b6bd42d0ec045e44f25c16899993fdfeb5f535"
+      "sha256": "a444c957f70e6e28711781d4609266f82b119aa9d574b69bef89fea978a574d4"
     }
   ],
   "schema": "guide-factory.visual-contract",

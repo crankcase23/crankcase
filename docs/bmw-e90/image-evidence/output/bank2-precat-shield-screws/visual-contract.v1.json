@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "45fe55641f0adfad153ce71f824361225a87d21349057b36f36050d1d4e92318",
-  "createdAt": "2026-10-10T12:01:01.000Z",
+  "contentHash": "b177a350814a26c7d9e71e8bf975ffbc27ac6b1b878f2b9a38da23811a8e8081",
+  "createdAt": "2026-10-10T12:00:51.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -168,11 +168,11 @@
   "refs": [
     {
       "id": "EP-bank2-precat-shield-screws-v1",
-      "sha256": "dc7918244102dc7679760f5411df0b40715590fbc37beaec471e31f171a51ad6"
+      "sha256": "67aa602875d53f17c826be04b231b091703830ea7d880eadca402dc5e9c5a574"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "ff97d6e2ae98c29cbf306a1000eb7a4f6d00cb62349048ffbb1807efd4389d48"
+      "sha256": "e707882752637d549e5be8844b235ca746fa5c2bddc98b7612294cc226b80eeb"
     }
   ],
   "schema": "guide-factory.visual-contract",

@@ -9,8 +9,8 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 | # | Guide | Tier | BMW doc | Readiness | Verified | Secondary | Single | Conflict | Missing | Visuals proposed |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 1 | Front Brake Pads | safety-critical | no | NEEDS_EVIDENCE | 27 | 15 | 4 | 4 | 1 | 2 |
-| 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 16 | 2 | 12 | 2 | 2 | 3 |
-| 3 | Key Fob Battery | standard | yes | READY_FOR_QA | 9 | 0 | 6 | 0 | 0 | 1 |
+| 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 16 | 2 | 12 | 2 | 2 | 2 |
+| 3 | Key Fob Battery | standard | yes | READY_FOR_QA | 9 | 0 | 6 | 0 | 0 | 0 |
 | 4 | Oxygen Sensor | safety-critical | yes | NEEDS_EVIDENCE | 15 | 7 | 7 | 0 | 4 | 3 |
 | 5 | Rear Brake Pads | safety-critical | no | NEEDS_EVIDENCE | 21 | 12 | 11 | 2 | 1 | 2 |
 | 6 | Serpentine Belt | safety-critical | yes | NEEDS_EVIDENCE | 7 | 9 | 10 | 3 | 3 | 2 |
@@ -18,7 +18,7 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 | 8 | Coolant Flush & Fill | safety-critical | yes | NEEDS_EVIDENCE | 22 | 9 | 9 | 1 | 3 | 2 |
 | 9 | Fluid Checks & Top-Offs | safety-critical | yes | NEEDS_EVIDENCE | 8 | 5 | 4 | 0 | 6 | 2 |
 | 10 | Cabin Air Filter | standard | yes | NEEDS_EVIDENCE | 8 | 1 | 4 | 1 | 1 | 2 |
-| 11 | PCV Valve | safety-critical | yes | NEEDS_EVIDENCE | 12 | 12 | 12 | 2 | 1 | 1 |
+| 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | safety-critical | yes | READY_FOR_QA | 9 | 2 | 1 | 0 | 0 | 1 |
 | 12 | Engine Air Filter | standard | no | NEEDS_EVIDENCE | 9 | 0 | 7 | 3 | 1 | 2 |
 | 13 | Tire Rotation | safety-critical | no | NEEDS_EVIDENCE | 8 | 2 | 4 | 2 | 3 | 3 |
 | 14 | Wiper Blades | standard | no | NEEDS_EVIDENCE | 9 | 0 | 6 | 0 | 2 | 1 |
@@ -222,20 +222,15 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 - Confirm the car has the factory cowl cover (not an aftermarket cowl-delete or filter kit).
 - Count the fastener screws on your cover and photograph the old filter's arrow/orientation before removing it.
 
-## 11. PCV Valve — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
+## 11. PCV / Crankcase Ventilation — Inspection & Diagnosis — BUILDABLE_PARTIAL (READY_FOR_QA)
 
-**Blockers:** 2 conflicting item(s)
-
-**Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
+**Caveats:** configuration items need owner confirmation
 
 **BMW-document scope:** PRIMARY found for the design question: (a) BMW AG training document ST501 Engine Mechanical (p.30, N52KP and N51): the crankcase ventilation valve and the oil-separating labyrinth are integrated in the plastic cylinder head cover, whereas the original N52 cover is cast magnesium (ST501) with an external electrically heated ventilation valve (ST055 Emissions Management, ST502 Powertrain); (b) OE parts catalog for this vehicle selection (RealOEM PH73 USA 09/2009, engine N52N): cylinder head cover 11127552281 and vent hose 11157559528 are listed, and no separate oil separator or PCV valve appears in the engine-group diagrams inspected (cylinder head cover, cylinder head, attached parts, intake manifold, vacuum pump, engine block). The catalog finding is absence-based and covers only the diagrams checked. NO primary found for valve cover bolt torque, tightening sequence or seal part numbers: torque is a CONFLICT among four non-BMW values.
 
 **Missing or unresolved evidence**
-- BMW torque and tightening order for the valve cover fasteners (non-BMW values range from about 4 to 9 Nm).
 - OE catalog check of the intake-manifold side and crankcase group for a hidden separator (diagrams inspected: head cover, head, attached parts, intake manifold, vacuum pump, engine block, block mounting parts).
 - Whether N52N is the same cover generation as BMW training N52KP (BMW does not expand KP).
-- Which cover screws are aluminium single-use (OE catalog row does not say).
-- Seal and sleeve part numbers other than the catalog "Sleeve" qty 6; Valvetronic motor seal numbers.
 - Whether a diaphragm exists inside the integrated valve (sources conflict: z4-forum poster says none/vortex type; an early forum post says rubber diaphragm). BMW ST501 describes a valve and labyrinth only.
 - Any official BMW inspection/test method for the integrated crankcase vent.
 
@@ -243,7 +238,6 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 - Look at the engine: confirm the valve cover is plastic (later design) and read the engine label (N52B30).
 - Production date from the door-jamb or VIN decode, if any doubt about the build era.
 - Observed symptoms (oil use, smoke, rough idle, oil in intake) to tailor the diagnostic section.
-- Confirm the guide should present valve cover replacement as ADVANCED/shop with torque withheld.
 
 ## 12. Engine Air Filter — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 

@@ -17,6 +17,8 @@
 //   node scripts/bmw/hermes-qa.mjs import --runs DIR --visual ID --response FILE --model "GPT-..." --system "ChatGPT" [--packet DIR]
 //   node scripts/bmw/hermes-qa.mjs drop-template --out DIR
 //   node scripts/bmw/hermes-qa.mjs drop-import --runs DIR --visual ID --drop DIR
+//   node scripts/bmw/hermes-qa.mjs fit --in native.png --drop DIR      (pad native output to exact 16:10, never stretch)
+//   node scripts/bmw/hermes-qa.mjs gen-kit --runs DIR --out DIR         (one ready-to-run folder per locked visual)
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -44,13 +46,15 @@ export async function openRun({ dir, visualId, clock = () => new Date().toISOStr
 }
 
 /** Everything the independent reviewer needs, derived from the locked contract. No internal-QA content. */
-export function buildPacket(run) {
+export function buildPacket(run, { fitRecord = null, preview = false } = {}) {
   const s = run.state;
-  if (!QA_PHASES.includes(s.phase)) return fail("WRONG_STATE", `QA packet needs a provenance-valid candidate awaiting QA (phase is ${s.phase})`);
+  const isPreview = preview && s.phase === "GEN_REQUESTED";
+  if (!QA_PHASES.includes(s.phase) && !isPreview) return fail("WRONG_STATE", `QA packet needs a provenance-valid candidate awaiting QA (phase is ${s.phase})`);
   const store = run.store();
-  const gr = store.get(s.pendingGR.id), vc = store.get(s.vc.ref.id), ep = store.get(s.ep.ref.id);
-  const bytes = readBytes(run.dir, gr.artifact.file);
-  if (sha256(bytes) !== gr.artifact.sha256) return fail("CANDIDATE_TAMPERED", "candidate file no longer matches its recorded hash");
+  // PREVIEW: the contract is locked and the prompt is issued, but no candidate exists yet. The packet is complete except for the image.
+  const gr = isPreview ? null : store.get(s.pendingGR.id), vc = store.get(s.vc.ref.id), ep = store.get(s.ep.ref.id);
+  const bytes = isPreview ? null : readBytes(run.dir, gr.artifact.file);
+  if (!isPreview && sha256(bytes) !== gr.artifact.sha256) return fail("CANDIDATE_TAMPERED", "candidate file no longer matches its recorded hash");
   const refById = new Map(ep.references.map((r) => [r.id, r]));
   const items = [];
   for (const m of vc.mustDepict) {
@@ -62,15 +66,26 @@ export function buildPacket(run) {
   }
   for (const m of vc.mustNotDepict) items.push({ contractItemId: m.id, kind: "must-not-depict", element: m.element, reason: m.reason });
   items.push({ contractItemId: "PROVENANCE", kind: "provenance", rule: "Answer PASS only if the image shows no sign of copied/traced source imagery, and contains no baked-in text. The generator's attestation is in the packet." });
-  const prompt = readBytes(run.dir, gr.promptFile).toString("utf8");
+  const prompt = isPreview ? fs.readFileSync(path.join(run.dir, "generation-prompt.txt"), "utf8") : readBytes(run.dir, gr.promptFile).toString("utf8");
+  const technical = [];
+  for (const m of vc.mustDepict) {
+    const el = ep.elements.find((e) => e.id === m.element);
+    const rows = ep.ledger.filter((r) => r.element === m.element);
+    technical.push({
+      element: m.element, role: m.visibility, criticality: m.criticality, describe: el?.describe ?? null,
+      established: rows.filter((r) => r.status === "established").map((r) => ({ attribute: r.attribute, sources: r.evidence.map((id) => ({ url: refById.get(id)?.sourceRef, kind: refById.get(id)?.kind, says: refById.get(id)?.establishes?.[0] })) })),
+      notEstablished: rows.filter((r) => r.status === "not-established").map((r) => ({ attribute: r.attribute, render: r.render, note: r.note })),
+    });
+  }
   const packet = {
     schema: "bmw-image-qa-packet.v1", rubricVersion: RUBRIC_VERSION, visualId: run.visualId, application: run.application,
-    candidate: { generationId: gr.id, file: "candidate.png", sha256: gr.artifact.sha256, width: gr.artifact.width, height: gr.artifact.height, cycle: gr.cycle },
+    status: isPreview ? "AWAITING_CANDIDATE_IMAGE" : "READY_FOR_REVIEW",
+    candidate: isPreview ? { generationId: null, file: "candidate.png", sha256: "(set when the image exists)", width: null, height: null, cycle: null } : { generationId: gr.id, file: "candidate.png", sha256: gr.artifact.sha256, width: gr.artifact.width, height: gr.artifact.height, cycle: gr.cycle },
     contract: { id: vc.id, contentHash: vc.contentHash ?? null, frame: vc.output, clearSpace: vc.overlay.clearSpaceRegions },
-    items, prompt, attestation: gr.attestation, generator: { system: gr.generator.system, model: gr.generator.model },
+    fit: fitRecord, items, technical, prompt, attestation: isPreview ? null : gr.attestation, generator: isPreview ? null : { system: gr.generator.system, model: gr.generator.model },
     reviewerIdentityRequired: INDEPENDENT_IDENTITY.canonicalName,
     replyFormat: {
-      candidateSha256: gr.artifact.sha256, rubricVersion: RUBRIC_VERSION,
+      candidateSha256: isPreview ? "(sha256 of candidate.png)" : gr.artifact.sha256, rubricVersion: RUBRIC_VERSION,
       provenanceCheck: { validated: "true|false", notes: "short" },
       checks: items.map((i) => ({ contractItemId: i.contractItemId, result: `one of ${CHECK_RESULTS.join("|")}` })),
       findings: [{ id: "F1", severity: SEVERITY.join("|"), contractItemRef: "an item id above", element: "element id", attribute: "e.g. location", description: "what is wrong", requiredChange: "what to change", fixType: FIX_TYPES.join("|"), gate: "VISUAL_ACCURACY", evidenceDeficiency: false, regression: false }],
@@ -82,7 +97,7 @@ export function buildPacket(run) {
 
 const QA_MD = (p) => `# Independent image QA: ${p.visualId}
 
-You are the INDEPENDENT reviewer for an instructional illustration in a DIY car-repair app (${p.application.year} ${p.application.make} ${p.application.model}, ${p.application.trim}). You are not the author of the image or of the contract. Review the attached image (candidate.png, sha256 ${p.candidate.sha256}, ${p.candidate.width}x${p.candidate.height}) against the contract below and nothing else. Do not give general design feedback. Do not be generous: one failed required item means the image fails.
+You are the INDEPENDENT reviewer for an instructional illustration in a DIY car-repair app (${p.application.year} ${p.application.make} ${p.application.model}, ${p.application.trim}). You are not the author of the image or of the contract. ${p.status === "AWAITING_CANDIDATE_IMAGE" ? "**PREVIEW: the contract is locked but the candidate image has not been generated yet. Do not review anything from this file; the final packet is issued with the image.**\n\n" : ""}Review the attached image (candidate.png, sha256 ${p.candidate.sha256}, ${p.candidate.width ? `${p.candidate.width}x${p.candidate.height}` : "size set when the image exists"}) against the contract below and nothing else. Do not give general design feedback. Do not be generous: one failed required item means the image fails.
 
 ## How to judge
 - Every **must-depict** item must be clearly visible and plausible as described. FAIL if absent. NOT_VISIBLE if present but too small/occluded to judge.
@@ -99,6 +114,15 @@ ${p.items.map((i) => {
   return `- **PROVENANCE** ${i.rule}`;
 }).join("\n")}
 
+## Technical details to verify independently
+For each must-depict part, the facts below were established from the cited sources (the car is a 2010 BMW 328i E90, N52 3.0L inline-6, rear-wheel drive and automatic, halogen headlights and standard key as decoded from its option codes by one free decoder; treat those three as probable, not proven). Check the image against them using your own knowledge and any source you can open. "Not established" attributes must appear only as plain generic shapes; if the image shows specific detail there, that is a finding.
+${p.technical.map((t) => `- **${t.element}** (${t.role}, ${t.criticality})${t.describe ? `: ${t.describe}` : ""}
+${t.established.map((e) => `  - established ${e.attribute}: ${e.sources.map((x) => `${x.url} (${x.kind}: ${x.says})`).join("; ")}`).join("\n")}
+${t.notEstablished.map((e) => `  - NOT established ${e.attribute} (${e.render}): ${e.note}`).join("\n")}`).join("\n")}
+${p.fit ? `
+## How the image was prepared
+The generator's native file (${p.fit.native.width}x${p.fit.native.height}) was padded, not stretched or cropped, to an exact 16:10 canvas (${p.fit.fitted.width}x${p.fit.fitted.height}): padding left ${p.fit.pad.left}, right ${p.fit.pad.right}, top ${p.fit.pad.top}, bottom ${p.fit.pad.bottom} px of edge-replicated background. Judge the illustration, not the padding. Native sha256 ${p.fit.native.sha256}.
+` : ""}
 ## Prompt the image was generated from
 \`\`\`
 ${p.prompt.trim()}
@@ -113,14 +137,14 @@ ${JSON.stringify(p.replyFormat, null, 2)}
 `;
 
 /** Write the packet folder: QA-PACKET.md, packet.json, candidate.png, response.template.json. */
-export function exportPacket(run, outDir) {
-  const r = buildPacket(run);
+export function exportPacket(run, outDir, { fitRecord = null, preview = false } = {}) {
+  const r = buildPacket(run, { fitRecord, preview });
   if (!r.ok) return r;
   const dir = path.join(outDir, run.visualId);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "candidate.png"), r.bytes);
+  if (r.bytes) fs.writeFileSync(path.join(dir, "candidate.png"), r.bytes);
   fs.writeFileSync(path.join(dir, "packet.json"), JSON.stringify(r.packet, null, 2) + "\n");
-  fs.writeFileSync(path.join(dir, "QA-PACKET.md"), QA_MD(r.packet));
+  fs.writeFileSync(path.join(dir, r.packet.status === "READY_FOR_REVIEW" ? "QA-PACKET.md" : "QA-PACKET.PREVIEW.md"), QA_MD(r.packet));
   fs.writeFileSync(path.join(dir, "response.template.json"), JSON.stringify(r.packet.replyFormat, null, 2) + "\n");
   return { ok: true, dir, packet: r.packet };
 }
@@ -168,6 +192,36 @@ export function importReview(run, { rawText, packetDir = null, model, system }) 
     fs.writeFileSync(path.join(rdir, `${sub.reviewer.rawResponseSha256}.txt`), String(rawText));
   }
   return { ok: true, verdict: res.qr.verdict, qr: res.qr, delta: res.cd, rawResponseSha256: sub.reviewer.rawResponseSha256 };
+}
+
+// ---- Generation kit: everything a person needs to run ONE locked visual through ChatGPT image generation ----
+export function writeGenKit(run, outDir) {
+  const s = run.state;
+  if (s.phase !== "GEN_REQUESTED") return fail("WRONG_STATE", `generation kit needs a locked contract with a generation request (phase is ${s.phase})`);
+  const pf = path.join(run.dir, "generation-prompt.txt");
+  if (!fs.existsSync(pf)) return fail("NO_PROMPT", "generation-prompt.txt missing from the run");
+  const prompt = fs.readFileSync(pf, "utf8");
+  const dir = path.join(outDir, run.visualId);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "PROMPT.txt"), prompt);
+  writeDropTemplate(dir);
+  const md = `# Generate: ${run.visualId}
+
+Prompt sha256: \`${sha256(Buffer.from(prompt, "utf8"))}\` (the factory records this; do not edit the prompt).
+
+1. Open a NEW ChatGPT chat (image generation). Paste the whole of \`PROMPT.txt\`. Do not attach any image.
+2. If ChatGPT asks about size, choose landscape. Native sizes such as 3:2 are fine: the image is padded to 16:10 afterwards, never stretched. Square or portrait will be refused.
+3. If the first result shows text, labels, arrows, brand marks, or parts the prompt says not to show, regenerate (each regeneration is a cycle; the factory allows an initial generation plus 3 corrections).
+4. Download the image as **PNG** and save it in this folder as \`native.png\`. Keep the C2PA/metadata: do not re-save or edit it.
+5. Fill every \`null\` in \`candidate.claims.template.json\` and save it as \`candidate.claims.json\`. The attestation flags are your statement that it is true: text-only prompt, no reference images, no tracing, no other imagery composited, no baked-in text. Put the provider and model that actually made the image (for example system "ChatGPT image generation") and the provider's usage terms in \`licenseTerms.summary\`.
+6. Run:
+   \`npm run bmw:qa -- fit --in <this folder>/native.png --drop <this folder>\`
+   \`npm run bmw:qa -- drop-import --runs <runs dir> --visual ${run.visualId} --drop <this folder>\`
+   \`npm run bmw:qa -- export --runs <runs dir> --visual ${run.visualId} --drop <this folder>\`
+7. Give the exported \`QA-PACKET.md\` and \`candidate.png\` to Hermes / ChatGPT in a **separate, fresh chat** (not the one that made the image), then save its reply and run \`npm run bmw:qa -- import ... --response reply.txt --model "<model>" --system "<system>"\`.
+`;
+  fs.writeFileSync(path.join(dir, "INSTRUCTIONS.md"), md);
+  return { ok: true, dir, promptSha256: sha256(Buffer.from(prompt, "utf8")) };
 }
 
 // ---- FileDrop candidate import (a person or another system produced the image; this only validates and submits) ----
@@ -218,7 +272,24 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const need = (n) => { const v = arg(n); if (!v) { console.error(`missing --${n}`); process.exit(2); } return v; };
   const show = (r) => { console.log(JSON.stringify(r, (k, v) => (k === "qr" || k === "delta" || k === "packet" ? undefined : v), 2)); process.exitCode = r.ok ? 0 : 1; };
   const runFor = () => openRun({ dir: path.resolve(need("runs"), need("visual")), visualId: need("visual") });
-  if (cmd === "export") show(exportPacket(await runFor(), path.resolve(arg("out") ?? path.join(need("runs"), "..", "hermes-qa"))));
+  const fitRecordOf = (drop) => { const f = drop && path.join(path.resolve(drop), "candidate.fit-record.json"); return f && fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null; };
+  if (cmd === "export") show(exportPacket(await runFor(), path.resolve(arg("out") ?? path.join(need("runs"), "..", "hermes-qa")), { fitRecord: fitRecordOf(arg("drop")), preview: rest.includes("--preview") }));
+  else if (cmd === "fit") {
+    const { fitFile } = await import(path.join(ROOT, "scripts/bmw/fit-frame.mjs"));
+    const drop = path.resolve(need("drop"));
+    const r = fitFile(path.resolve(need("in")), drop);
+    show(r.ok ? { ok: true, native: r.record.native, fitted: r.record.fitted, pad: r.record.pad } : r);
+  } else if (cmd === "gen-kit") {
+    const runs = path.resolve(need("runs")), out = path.resolve(need("out"));
+    const rows = [];
+    const FIRST = "oil-drain-plug-access"; // most valuable guide, both hero facts established by 2+ hosts: run this one first
+    for (const id of fs.readdirSync(runs).filter((d) => fs.existsSync(path.join(runs, d, "template.json"))).sort((a, b) => (b === FIRST) - (a === FIRST) || a.localeCompare(b))) {
+      const r = writeGenKit(await openRun({ dir: path.join(runs, id), visualId: id }), out);
+      rows.push({ visualId: id, ok: r.ok, ...(r.ok ? { promptSha256: r.promptSha256 } : { skipped: r.message }) });
+    }
+    fs.writeFileSync(path.join(out, "INDEX.md"), `# Generation kits\n\nOne folder per visual. Follow INSTRUCTIONS.md in each. The first one is the pilot: do it end to end, including the independent review, before spending effort on the rest. "<runs dir>" in the instructions is docs/bmw-e90/image-evidence/output.\n\n${rows.filter((x) => x.ok).map((x, i) => `${i + 1}. ${x.visualId}`).join("\n")}\n\nSkipped (evidence not sufficient yet): ${rows.filter((x) => !x.ok).map((x) => x.visualId).join(", ") || "none"}\n`);
+    show({ ok: true, kits: rows.filter((x) => x.ok).length, skipped: rows.filter((x) => !x.ok).length });
+  }
   else if (cmd === "import") show(importReview(await runFor(), { rawText: fs.readFileSync(path.resolve(need("response")), "utf8"), packetDir: arg("packet") ? path.resolve(arg("packet")) : null, model: arg("model"), system: arg("system") }));
   else if (cmd === "drop-template") console.log(writeDropTemplate(path.resolve(need("out"))));
   else if (cmd === "drop-import") {

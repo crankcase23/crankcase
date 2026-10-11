@@ -1,0 +1,46 @@
+{
+  "candidateSha256": "(sha256 of candidate.png)",
+  "rubricVersion": "CG-QA-v1.0",
+  "provenanceCheck": {
+    "validated": "true|false",
+    "notes": "short"
+  },
+  "checks": [
+    {
+      "contractItemId": "MD-drain-plug",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MD-access-hatch",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MN-excl-hatch-fasteners-unestablished-detail",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "MN-excl-engine-cover-unestablished-detail",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+      "contractItemRef": "an item id above",
+      "element": "element id",
+      "attribute": "e.g. location",
+      "description": "what is wrong",
+      "requiredChange": "what to change",
+      "fixType": "modify|remove|suppress|simplify|relocate|add",
+      "gate": "VISUAL_ACCURACY",
+      "evidenceDeficiency": false,
+      "regression": false
+    }
+  ],
+  "regressionCheck": []
+}

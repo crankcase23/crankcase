@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "313cecc47c456b6b3416bffb482572a7197b3294a609abf1ceda166f0f113441",
-  "createdAt": "2026-10-10T12:02:09.000Z",
+  "contentHash": "7e0c5d0ca458fb02bae7bdd5f58d3b42e1f90f283d06bcb290e8bb99d8eba8c7",
+  "createdAt": "2026-10-10T12:01:59.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -175,11 +175,11 @@
   "refs": [
     {
       "id": "EP-expansion-tank-cap-and-vent-screw-v1",
-      "sha256": "4222d722721f3c149eb1fd479e2ce9dad3eccb019af831d9dab5c1f759a908a4"
+      "sha256": "d0b039cfe01606e8f86b2a4f201f88c34676d24793bcad0e1f57bb66df890d98"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "ea30d9f7092fff1ca4067f83eb3c94552d46cf0072f7e1a974c2bbaf487fc9f3"
+      "sha256": "90cbe22d8b429c392245289aedb785c9b51dc9f242ee22ae568f190e276bd306"
     }
   ],
   "schema": "guide-factory.visual-contract",

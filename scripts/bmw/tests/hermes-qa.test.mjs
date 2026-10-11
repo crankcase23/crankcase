@@ -160,3 +160,27 @@ test("FileDrop: a truthful candidate becomes provenance-valid and awaits QA", as
   assert.equal(r.provenance, "valid");
   assert.equal(run.state.phase, "QA_PENDING");
 });
+
+test("preview packet: a locked contract with a prompt but no image yields a scaffold that cannot be reviewed; kit writes prompt and instructions", async () => {
+  const { writeGenKit } = await import(path.join(ROOT, "scripts/bmw/hermes-qa.mjs"));
+  const run = newRun("prev");
+  run.registerEP((await import(FIX)).fixtureEPBody()); run.evaluateEP(); run.compileContract({});
+  const promptText = "SYNTHETIC PROMPT TEXT";
+  run.requestGeneration({ promptText });
+  assert.equal(run.state.phase, "GEN_REQUESTED");
+  fs.writeFileSync(path.join(run.dir, "generation-prompt.txt"), promptText);
+  // without preview: refused as before
+  assert.equal(buildPacket(run).ok, false);
+  const out = tmp("prevout");
+  const r = exportPacket(run, out, { preview: true });
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.equal(r.packet.status, "AWAITING_CANDIDATE_IMAGE");
+  assert.ok(fs.existsSync(path.join(r.dir, "QA-PACKET.PREVIEW.md")));
+  assert.ok(!fs.existsSync(path.join(r.dir, "candidate.png")) && !fs.existsSync(path.join(r.dir, "QA-PACKET.md")), "no image, no reviewable packet");
+  assert.match(fs.readFileSync(path.join(r.dir, "QA-PACKET.PREVIEW.md"), "utf8"), /PREVIEW/);
+  const k = writeGenKit(run, tmp("kit"));
+  assert.ok(k.ok);
+  for (const f of ["PROMPT.txt", "INSTRUCTIONS.md", "candidate.claims.template.json"]) assert.ok(fs.existsSync(path.join(k.dir, f)), f);
+  assert.equal(fs.readFileSync(path.join(k.dir, "PROMPT.txt"), "utf8"), promptText);
+  assert.equal(k.promptSha256, sha256(Buffer.from(promptText, "utf8")));
+});

@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "843816341e5ec8214b11b8e78b4ce14a810eba1935741b0767f6231b56415706",
-  "createdAt": "2026-10-10T12:01:15.000Z",
+  "contentHash": "843d7987f86a45567b54a00969ddd7fa36f41c9b2ba0f803d8594810b3c25272",
+  "createdAt": "2026-10-10T12:01:05.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -180,11 +180,11 @@
   "refs": [
     {
       "id": "EP-rear-caliper-hardware-wheel-well-v1",
-      "sha256": "7ff23e554be1bded687c28242d772c8c92b389f51c4c7bacd4e36365066dd8aa"
+      "sha256": "81aabcc39e81774895389b9c5b3976b547c1c0504954c57c3b0ec6e4952bb39e"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "2fea5b51da6df4b743e280110c7f89fcdbba56b2426b639fe3285177da29aaa4"
+      "sha256": "0a0dbefc08267de04e387944124233db67a0c82ba5134a2f4aaaef661d92e068"
     }
   ],
   "schema": "guide-factory.visual-contract",

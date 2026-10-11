@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "05a816e96b06217084b20856140b9a8a79bea27e87e622b6cbaaa303a1b3a0d6",
-  "createdAt": "2026-10-10T12:01:24.000Z",
+  "contentHash": "677be1f5c7c756b0930e4d318ba047ba0b464801f6b1064c0bdba3a3dd8f5915",
+  "createdAt": "2026-10-10T12:01:14.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -139,11 +139,11 @@
   "refs": [
     {
       "id": "EP-rear-wear-sensor-passenger-side-v1",
-      "sha256": "921ae2c295ba01029c7a9e5e4513fdf5fb41f7c339f0dd146b0eeb2b966302d5"
+      "sha256": "bc4fa4afbdc1ede96eb53b57499c5c9ca6279b474ddb9b1ddb9f406efb5b0266"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "c924330ad26a6dd7731813a81b41f672f9b6669514710649603366781af2d606"
+      "sha256": "18a9d3db33a1119c104f86ccb23eed7143fc7d388be3356b0d3dee5874c92717"
     }
   ],
   "schema": "guide-factory.visual-contract",

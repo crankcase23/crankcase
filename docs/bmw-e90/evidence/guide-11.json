@@ -1,11 +1,11 @@
 {
   "guide": 11,
-  "name": "PCV Valve",
+  "name": "PCV / Crankcase Ventilation — Inspection & Diagnosis",
   "evidenceTier": "safety-critical",
   "primarySourceFound": true,
   "primaryScope": "PRIMARY found for the design question: (a) BMW AG training document ST501 Engine Mechanical (p.30, N52KP and N51): the crankcase ventilation valve and the oil-separating labyrinth are integrated in the plastic cylinder head cover, whereas the original N52 cover is cast magnesium (ST501) with an external electrically heated ventilation valve (ST055 Emissions Management, ST502 Powertrain); (b) OE parts catalog for this vehicle selection (RealOEM PH73 USA 09/2009, engine N52N): cylinder head cover 11127552281 and vent hose 11157559528 are listed, and no separate oil separator or PCV valve appears in the engine-group diagrams inspected (cylinder head cover, cylinder head, attached parts, intake manifold, vacuum pump, engine block). The catalog finding is absence-based and covers only the diagrams checked. NO primary found for valve cover bolt torque, tightening sequence or seal part numbers: torque is a CONFLICT among four non-BMW values.",
   "recommendedStatus": "BUILDABLE_PARTIAL",
-  "summary": "Scope ASSUMED by the builder, not owner-confirmed: inspect/diagnose/serviceability guide; no standalone valve procedure exists. Closed since pass 1: (1) Early vs later N52 is now established by BMW documents: the original N52 had a cast-magnesium cover with an external electrically heated crankcase vent valve (ST055, ST501, ST502); the later N52KP/N51 designs have the vent valve and labyrinth oil separator integrated in a plastic cylinder head cover (ST501 p.30), the same split FCP Euro and Turner describe (FCP: early N52 magnesium cover with external vent valve; Turner: early separate CCV on 2006 and some 2007 builds, later integrated). The OE catalog for this 328i (engine N52N, 09/2009 selection, 2010 model year by VIN position 10) lists the cover as a single part with no separate separator. (2) Part numbers now OE-catalog backed: cover 11127552281, vent hose 11157559528, profile gasket 11127582245; cover fasteners are 19 perimeter M7 Torx screws of several lengths plus 3 centre fasteners (one M7x46 hex bolt, two M7x75 studs), matching Pelican (19 perimeter + 3 centre) and FCP (3 centre studs). (3) Throttle body seal is NOT needed for a cover job: FCP, Pelican, RM European and bavmods describe the job without removing the throttle body (the z4-forum seal advice was an M54 post). (4) The Valvetronic motor must come out for the cover (FCP, bavmods, RM European remove the camshaft adjuster motor; Pelican if equipped) and a relearn or key cycling follows. (5) Tightening sequence: centre-out criss-cross/star (Pelican, RM, bavmods; FCP says Z pattern). Remaining CONFLICT: valve cover bolt torque (FCP 9 Nm quoting TIS text, Pelican staff 8.5 Nm and 63/75 in-lb, bimmersport 7 Nm + 90 deg, bavmods 3 lb-ft); no BMW torque found, so it is not published. Remaining unverified: the N52N vs N52KP naming equivalence (inferred), diaphragm presence, any BMW test method.",
+  "summary": "Scope DECIDED by the owner: keep the PCV category as an integrated crankcase-ventilation inspection and diagnosis procedure; no standalone PCV valve replacement and no valve cover replacement procedure. Evidence: BMW training documents ST501/ST055/ST502 show the later N52 has the vent valve and oil-separating labyrinth integrated in a plastic cylinder head cover (the early N52 had a magnesium cover with an external heated valve). The OE catalog for this car lists the cover (11127552281) and vent hose (11157559528) with no separate separator or valve in the diagrams inspected. No fastener torque is given because nothing in this procedure tightens a torqued fastener. Remaining unverified: N52N vs N52KP naming equivalence, diaphragm presence, any BMW test method.",
   "variantDependencies": [
     "Early N52 (2006, some 2007 builds): cast-magnesium valve cover and an external electrically heated crankcase vent valve (BMW ST055/ST502/ST501) and a replaceable separator under the intake manifold on E90 325xi/330xi/E91/E60 xi (Turner early-production kit 11617531423 / TMS221962, fitment from 10/2005). Not expected for a 2010 328i.",
     "Later N52 (N52KP/N52N) and N51: plastic cylinder head cover with the vent valve and labyrinth integrated (BMW ST501 p.30); N51 SULEV and N52 share the cover per URO/Turner. The equivalence N52N = N52KP is an inference: ST501 uses KP and does not expand it; RealOEM uses N52N for this car.",
@@ -15,69 +15,6 @@
   ],
   "tools": [
     {
-      "item": "Torx E10 external socket for the 19 perimeter valve cover screws",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
-      ],
-      "primary": false,
-      "note": "bavmods and FCP list E10; Pelican says E8 for the 19 perimeter fasteners (conflict); the OE catalog lists them as M7 Torx screws, which is consistent with an E10 external Torx head but the catalog does not state the head size."
-    },
-    {
-      "item": "10 mm socket (deep) for the three centre fasteners",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
-      ],
-      "note": "Pelican: three 10 mm centre fasteners; bavmods: 10 mm deep for the centre bolt under the Valvetronic motor; FCP: deep sockets for one inner stud."
-    },
-    {
-      "item": "4 mm hex (Allen) key or bit for the Valvetronic motor",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ]
-    },
-    {
-      "item": "E8/T30 sockets for the Valvetronic motor flange and seal screws",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ],
-      "note": "FCP: T30 for the motor seal screws and an E8/E10 set; bavmods: E8 for the Valvetronic motor bolts; Pelican: T30 for the Valvetronic gasket. Sizes differ by site; match to the fasteners seen."
-    },
-    {
-      "item": "Snap-ring pliers for the spark plug tube sleeves",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ]
-    },
-    {
-      "item": "Torque wrench (value not established)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
-      ],
-      "note": "Needed for any cover work; torque value CONFLICT, see torque."
-    },
-    {
-      "item": "Blue (not red) thread locker, only if the owner follows the one-forum practice",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
-      ]
-    },
-    {
       "item": "Hose-tab release: finger pressure on the side tabs, no pry tool",
       "status": "VERIFIED",
       "sources": [
@@ -86,19 +23,11 @@
         "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
       ],
       "note": "All three say squeeze/depress the side tabs and do not pry; RM European warns the breather connection on the cover breaks easily."
-    },
-    {
-      "item": "Pick tool for injector harness clips; flat screwdriver for coil connectors (last resort)",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ]
     }
   ],
   "parts": [
     {
-      "item": "Valve cover with integrated crankcase vent (oil separator/pressure regulator)",
+      "item": "Valve cover with integrated crankcase vent (oil separator/pressure regulator) — reference only, replacement not covered by this guide",
       "status": "VERIFIED",
       "sources": [
         "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
@@ -121,157 +50,15 @@
       ],
       "partNumber": "11157559528",
       "primary": true
-    },
-    {
-      "item": "Valve cover profile gasket",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
-      ],
-      "partNumber": "11127582245",
-      "primary": true,
-      "note": "OE catalog item 02; FCP links 11127582245 as the gasket; other gaskets in the diagram: 11127559699 (item 03), 11127565165 (item 13)."
-    },
-    {
-      "item": "Valve cover fasteners (19 perimeter Torx M7 in several lengths: 11127558448 x15, 11127558449, 11127558450, 11127558454 x2; centre: hex bolt M7x46 11127558453, studs M7x75 11127558451 x2)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
-      ],
-      "partNumber": "see item",
-      "primary": true,
-      "note": "OE catalog only. Pelican counts 19 perimeter + 3 centre and bavmods says two lower bolts have no retention sleeve and must be transferred to the new cover, so lengths are not interchangeable: note positions."
-    },
-    {
-      "item": "Aluminium cover bolt set (single-use) if the cover uses them",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ],
-      "partNumber": null,
-      "note": "Pelican says replace aluminium fasteners; bimmersport says the cover bolts are single-use aluminium. The OE catalog row does not mark the cover screws single-use. UNCONFIRMED which screws are aluminium."
-    },
-    {
-      "item": "Spark plug tube sleeves/seals (single-use)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737",
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
-      ],
-      "partNumber": "11127575422 (catalog item 20 \"Sleeve\", qty 6; relation to the spark plug sleeves is an inference)",
-      "primary": true,
-      "note": "FCP and Pelican say remove the old sleeves and fit new ones; the catalog does not label them as spark plug sleeves."
-    },
-    {
-      "item": "Throttle body seal",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
-      ],
-      "partNumber": null,
-      "note": "CLOSED: not required. None of the four cover articles removes the throttle body; the z4-forum advice to replace the seal was written for an M54 and is disregarded."
-    },
-    {
-      "item": "Valvetronic motor/eccentric-shaft sensor seals",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ],
-      "partNumber": null,
-      "note": "Articles describe replacing them; part numbers not collected."
-    },
-    {
-      "item": "Febi aftermarket cover with vent valve",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.turnermotorsport.com/p-56580207-valve-cover-with-vent-valve-and-gasket/"
-      ],
-      "partNumber": "194977"
-    },
-    {
-      "item": "URO valve cover kit",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www-graviton.turnermotorsport.com/p-395230-valve-cover/"
-      ],
-      "partNumber": "URO-011833"
-    },
-    {
-      "item": "Valve cover and PCV replacement kit",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.turnermotorsport.com/BMW-E90-Parts/c-1219-bmw-valve-cover-assembly/m-151-genuine-bmw?Nrpp=50"
-      ],
-      "partNumber": "11127552281PCVKT"
-    },
-    {
-      "item": "Early-production separator kit (E90 325xi/330xi early N52 only; NOT for this car unless the cover is magnesium)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.turnermotorsport.com/p-221962-crankcase-oil-separator-and-vent-hose-kit-e90-325xi330xi-e60-525xi530xi-early-production/"
-      ],
-      "partNumber": "11617531423 (separator); kit TMS221962"
     }
   ],
   "fluids": [],
-  "torque": [
-    {
-      "fastener": "Valve cover perimeter and centre fasteners",
-      "value": "CONFLICT: 9 Nm (FCP, says it is from the TIS manual, wording garbled) / 8.5 Nm (Pelican staff reply, plastic cover N52B25) / 63 in-lb (about 7.1 Nm, normally aspirated) and 75 in-lb (turbocharged) (Pelican staff reply) / 7 Nm + 90 degrees (bimmersport, single-use aluminium bolts, says it feels like about 10 Nm) / 3 lb-ft (about 4.1 Nm, bavmods)",
-      "status": "CONFLICT",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
-      ],
-      "conflicts": "Four independent non-BMW sources give values from about 4 Nm to 9 Nm and one adds an angle; Pelican staff replies disagree with each other and another reply says they have no torque data. No BMW document found. Do not publish a number; do not use thread locker or sealant unless a BMW source supports it.",
-      "primary": false
-    },
-    {
-      "fastener": "Valve cover tightening sequence",
-      "value": "Centre-out criss-cross/star pattern; hand-start all screws first",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
-      ],
-      "conflicts": null,
-      "primary": false,
-      "note": "Pelican: finger-tight then criss-cross, staff: start at the centre; RM European: centre outward in a circular pattern; bavmods: star pattern; FCP: Z pattern. No exact order from BMW."
-    },
-    {
-      "fastener": "Valvetronic motor flange screws",
-      "value": "10 Nm",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement"
-      ],
-      "conflicts": null,
-      "primary": false
-    },
-    {
-      "fastener": "Hose clamp fasteners, other covers",
-      "value": "MISSING",
-      "status": "MISSING",
-      "sources": [],
-      "conflicts": null,
-      "primary": false
-    }
-  ],
+  "torque": [],
   "steps": [
     {
       "n": 1,
       "title": "Understand what is and is not serviceable",
-      "instruction": "On this car (later N52, plastic cover) the crankcase ventilation valve and the oil separator are built into the cylinder head cover; no standalone PCV valve, diaphragm or separator is sold or serviced. User-serviceable: external inspection, the breather hose to the back of the cover, and the engine cover. Replacing the whole valve cover is an advanced job (steps 9 to 14). Do not look for a separate valve.",
+      "instruction": "On this car (later N52, plastic cover) the crankcase ventilation valve and the oil separator are built into the cylinder head cover; no standalone PCV valve, diaphragm or separator is sold or serviced. User-serviceable: external inspection, the breather hose to the back of the cover, and the engine cover. Replacing the whole valve cover is a separate shop-level job that this guide does not cover. Do not look for a separate valve.",
       "status": "VERIFIED",
       "warnings": [
         "Do not buy or fit an early-production separator kit on a later engine."
@@ -373,8 +160,8 @@
     },
     {
       "n": 7,
-      "title": "Optional blow-through test (not verified)",
-      "instruction": "One z4-forum poster blows through disconnected CCV pipes to check the path; no BMW or retailer source confirms this as a test for the integrated valve on an N52N. Prefer the visual checks above and a shop diagnosis.",
+      "title": "Skip the DIY blow-through test",
+      "instruction": "One z4-forum poster blows through disconnected crankcase vent pipes to check the path. No BMW or retailer source supports that as a test for the integrated valve on this engine, so this guide does not use it. Rely on the visual checks above and a shop diagnosis.",
       "status": "SINGLE_SOURCE",
       "warnings": [
         "Do not blow into oil-vapour lines by mouth; avoid ingesting oil mist."
@@ -386,8 +173,8 @@
     },
     {
       "n": 8,
-      "title": "Decide what to replace",
-      "instruction": "Cracked or oily vent hose: replace 11157559528. Suspected internal failure of the integrated vent valve or oil separator, or a cracked cover: replace the whole valve cover 11127552281 with gasket and seals; cleaning is reported as impractical (single forum).",
+      "title": "Decide what happens next",
+      "instruction": "Cracked or oily vent hose: replace hose 11157559528 (step 6). Suspected internal failure of the integrated vent valve or oil separator, a cracked cover, or a broken hose nipple on the cover: the fix is the whole valve cover, which is a separate job this guide does not cover. Take it to a shop with your findings. Cleaning the integrated valve is reported as impractical (single forum).",
       "status": "VERIFIED",
       "warnings": [
         "No official test procedure exists in the sources."
@@ -403,28 +190,11 @@
     },
     {
       "n": 9,
-      "title": "ADVANCED: access and disconnect",
-      "instruction": "Cold engine, battery negative disconnected. Remove cabin filter housing, wiper cowl, strut brace and engine acoustic cover as needed; unplug coil connectors, eccentric shaft sensor and Valvetronic motor connectors, lift off all six ignition coils, move the injector and ignition harnesses and ground straps aside, release the breather hose, remove the coil sleeves with snap-ring pliers (single-use).",
+      "title": "What this guide does not cover",
+      "instruction": "Replacing the valve cover is not covered. It needs the Valvetronic motor removed and set up again, 19 perimeter screws of several lengths plus 3 centre fasteners, new gasket and spark plug tube seals, and a tightening torque that no BMW source gave us (reported values disagree from about 4 to 9 Nm). There is no standalone PCV valve to buy or fit on this engine.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Forcing the injector harness can damage an injector (Pelican). Oil in the eccentric shaft sensor connector means the sensor must be replaced (Pelican)."
-      ],
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx"
-      ],
-      "primary": false
-    },
-    {
-      "n": 10,
-      "title": "ADVANCED: remove the Valvetronic motor and the cover",
-      "instruction": "Set the motor to its service position (ISTA/INPA, or turn it with the 4 mm key until tension is felt), remove its screws and withdraw it; then loosen the 19 perimeter screws and the 3 centre fasteners (10 mm) and lift the cover out, noting the position of each differing screw and bolts without retention sleeves.",
-      "status": "VERIFIED_SECONDARY",
-      "warnings": [
-        "Replace single-use aluminium fasteners; do not mix up different lengths.",
-        "Gasket orientation: the new gasket tab sits toward the front/intake side (FCP)."
+        "Do not attempt to remove or replace a separate PCV valve: it is not a separate part on this engine."
       ],
       "sources": [
         "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
@@ -434,91 +204,25 @@
         "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3737"
       ],
       "primary": false
-    },
-    {
-      "n": 11,
-      "title": "ADVANCED: clean and prepare",
-      "instruction": "Clean the mating surfaces with a lint-free rag and cleaner, fit the new gasket, new spark plug sleeves and new eccentric shaft/Valvetronic seals.",
-      "status": "VERIFIED_SECONDARY",
-      "warnings": [],
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
-      ],
-      "primary": false
-    },
-    {
-      "n": 12,
-      "title": "ADVANCED: install and tighten",
-      "instruction": "Seat the cover without rolling the gasket, start all screws by hand, then tighten in a centre-out criss-cross/star pattern. TORQUE IS NOT PUBLISHED: reported values conflict (about 4 to 9 Nm; 7 Nm + 90 degrees from one poster) and no BMW value was found.",
-      "status": "CONFLICT",
-      "warnings": [
-        "Overtightening plastic covers or aluminium screws can strip or crack; undertightening causes oil leaks and loosening (reported on bimmersport)."
-      ],
-      "sources": [
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://www.rmeuropean.com/bmw-e90-valve-cover-replacement.aspx",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://bimmersport.co.nz/topic/68107-n52-valve-cover-bolts-coming-loose-all-on-their-own/"
-      ],
-      "primary": false
-    },
-    {
-      "n": 13,
-      "title": "ADVANCED: reassemble and relearn",
-      "instruction": "Refit the Valvetronic motor (4 mm key until resistance, then its screws), coils, connectors, hose and covers; reconnect the battery; perform the Valvetronic relearn with ISTA/INPA or follow the key-cycle method (key on 30 s, off, on 30 s) before starting; the engine may run rough for a while as it relearns.",
-      "status": "VERIFIED_SECONDARY",
-      "warnings": [
-        "Relearn is described as \"not always needed\" for a gasket-only job (Pelican) and as required before starting (bavmods); follow the stricter guidance."
-      ],
-      "sources": [
-        "https://www.fcpeuro.com/blog/n51-n52n-valve-cover-gasket-replacement",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm",
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1"
-      ],
-      "primary": false
-    },
-    {
-      "n": 14,
-      "title": "ADVANCED: test",
-      "instruction": "Idle 5 to 10 minutes and look for oil leaks, burnt smell (normal briefly) and rough running; re-check the engine bay after a drive.",
-      "status": "VERIFIED_SECONDARY",
-      "warnings": [
-        "Clean all spilled oil from hot parts to avoid smoke or fire."
-      ],
-      "sources": [
-        "https://bavmods.com/pages/how-to-replace-bmw-valve-cover-and-gasket-n51-n52-engine-e90-e91-e92-e93-e90-e91-e92-e93-e60-e61-e87-e88-e81-e82-x3-x5-z4-328i-128i-528i-1",
-        "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Valve_Cover_Replacement/ENGINE-Valve_Cover_Replacement.htm"
-      ],
-      "primary": false
     }
   ],
   "safety": [
     "Engine must be cold before removing the cover or hoses.",
     "Oil spilled on hot exhaust parts can smoke or catch fire; clean fully.",
     "The vent valve is not a separate part on this engine: do not attempt to extract or replace one.",
-    "Do not publish a valve cover torque; reported values conflict and none is from BMW.",
     "Never blow or suck on crankcase vent hoses by mouth.",
-    "Aluminium cover screws are reported single-use; replace as supplied with the new cover.",
-    "Use OE or quality covers; one forum reports problems with no-name covers (single source)."
+    "Pushing or prying on the plastic hose nipple can break it, and a broken nipple means a new valve cover."
   ],
   "missingEvidence": [
-    "BMW torque and tightening order for the valve cover fasteners (non-BMW values range from about 4 to 9 Nm).",
     "OE catalog check of the intake-manifold side and crankcase group for a hidden separator (diagrams inspected: head cover, head, attached parts, intake manifold, vacuum pump, engine block, block mounting parts).",
     "Whether N52N is the same cover generation as BMW training N52KP (BMW does not expand KP).",
-    "Which cover screws are aluminium single-use (OE catalog row does not say).",
-    "Seal and sleeve part numbers other than the catalog \"Sleeve\" qty 6; Valvetronic motor seal numbers.",
     "Whether a diaphragm exists inside the integrated valve (sources conflict: z4-forum poster says none/vortex type; an early forum post says rubber diaphragm). BMW ST501 describes a valve and labyrinth only.",
     "Any official BMW inspection/test method for the integrated crankcase vent."
   ],
   "ownerInputsNeeded": [
     "Look at the engine: confirm the valve cover is plastic (later design) and read the engine label (N52B30).",
     "Production date from the door-jamb or VIN decode, if any doubt about the build era.",
-    "Observed symptoms (oil use, smoke, rough idle, oil in intake) to tailor the diagnostic section.",
-    "Confirm the guide should present valve cover replacement as ADVANCED/shop with torque withheld."
+    "Observed symptoms (oil use, smoke, rough idle, oil in intake) to tailor the diagnostic section."
   ],
   "visuals": [
     {

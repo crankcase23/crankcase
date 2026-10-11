@@ -37,7 +37,7 @@ const META = {
   8: { slug: "coolant", job: "coolant", diff: "Moderate", time: "About 2–3 hours including bleeding" },
   9: { slug: "fluid-checks", job: "fluid-checks", diff: "Easy", time: "About 15–30 minutes" },
   10: { slug: "cabin-air-filter", job: "cabin-air-filter", diff: "Easy", time: "About 15–30 minutes" },
-  11: { slug: "pcv-valve", job: "pcv-valve", diff: "Moderate", time: "Inspection about 30 minutes; valve cover replacement (advanced) about 3–4 hours" },
+  11: { slug: "pcv-valve", job: "pcv-valve", diff: "Easy", time: "About 30 minutes (inspection and hose check only)" },
   12: { slug: "engine-air-filter", job: "engine-air-filter", diff: "Easy", time: "About 15–30 minutes" },
   13: { slug: "tire-rotation", job: "tire-rotation", diff: "Easy", time: "About 45–60 minutes" },
   14: { slug: "wiper-blades", job: "wiper-blades", diff: "Easy", time: "About 10 minutes" },
@@ -45,7 +45,7 @@ const META = {
   16: { slug: "oil-change", job: "oil-change", diff: "Easy", time: "About 45–75 minutes" },
 };
 // Jobs with no torqued fastener anywhere in the procedure (types.ts noFasteners rule). Everything else keeps its torque list.
-const NO_FASTENERS = new Set([3, 14]);
+const NO_FASTENERS = new Set([3, 11, 14]);
 
 // Normalised evidence class. "secondary" = VERIFIED_SECONDARY (2+ independent hosts, no BMW document).
 // Compound strings such as "VERIFIED (capacity); MISSING (spec)" classify by their first token, then downgrade if they

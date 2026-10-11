@@ -144,3 +144,23 @@ test("pipeline: every visual is run; contract-locked ones stop at the generation
   assert.ok(!files.some((f) => /\.(png|jpe?g|webp|svg)$/i.test(f)), "no image may exist");
   assert.equal(fs.readFileSync(path.join(tmp, "PIPELINE-REPORT.json"), "utf8"), fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"), "committed run record is stale: run npm run bmw:pipeline");
 });
+
+test("PCV guide stays inspection/diagnosis only: no valve-cover job, no torque, no standalone valve replacement", async () => {
+  const fs = await import("node:fs");
+  const g = JSON.parse(fs.readFileSync(new URL("../../../docs/bmw-e90/evidence/guide-11.json", import.meta.url), "utf8"));
+  assert.match(g.name, /Inspection/);
+  assert.deepEqual(g.torque, [], "nothing in this guide tightens a torqued fastener");
+  const text = g.steps.map((s) => `${s.title} ${s.instruction}`).join(" ");
+  assert.ok(!/ADVANCED|remove the Valvetronic motor and the cover|tighten in a centre/i.test(text));
+  assert.match(g.steps.at(-1).title, /does not cover/i);
+  assert.ok(g.parts.every((p) => !/gasket|fastener|sleeve|seal|kit|Febi|URO/i.test(p.item)));
+});
+
+test("withdrawn visuals are not proposed and carry a reason", async () => {
+  const fs = await import("node:fs");
+  for (const [n, id] of [[2, "headlight-halo-cap-engine-bay"], [3, "comfort-access-key-opening"]]) {
+    const g = JSON.parse(fs.readFileSync(new URL(`../../../docs/bmw-e90/evidence/guide-${String(n).padStart(2, "0")}.json`, import.meta.url), "utf8"));
+    assert.ok(!g.visuals.some((v) => v.id === id), `${id} still proposed`);
+    assert.ok(g.withdrawnVisuals.some((v) => v.id === id && v.reason.length > 20));
+  }
+});

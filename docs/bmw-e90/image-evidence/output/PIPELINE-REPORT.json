@@ -12,60 +12,6 @@
       "deficits": [
         {
           "attribute": "existence",
-          "criticality": "identification",
-          "element": "finned-round-cap",
-          "haveHosts": 1,
-          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
-          "role": "hero",
-          "urlsHave": [
-            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
-          ]
-        },
-        {
-          "attribute": "location",
-          "criticality": "identification",
-          "element": "finned-round-cap",
-          "haveHosts": 1,
-          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
-          "role": "hero",
-          "urlsHave": [
-            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
-          ]
-        }
-      ],
-      "guide": 2,
-      "visualId": "headlight-halo-cap-engine-bay"
-    },
-    {
-      "deficits": [
-        {
-          "attribute": "location",
-          "criticality": "identification",
-          "element": "key-body",
-          "haveHosts": 0,
-          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
-          "role": "hero",
-          "urlsHave": []
-        },
-        {
-          "attribute": "location",
-          "criticality": "procedure",
-          "element": "side-release-tab",
-          "haveHosts": 0,
-          "need": "2+ distinct hosts, or 1 BMW-document/parts-catalog/own-photo source",
-          "role": "target",
-          "urlsHave": []
-        }
-      ],
-      "guide": 3,
-      "visualId": "comfort-access-key-opening"
-    },
-    {
-      "deficits": [
-        {
-          "attribute": "existence",
           "criticality": "procedure",
           "element": "strut-brace-and-large-heat-shield",
           "haveHosts": 1,
@@ -290,9 +236,9 @@
   "summary": {
     "certified": 0,
     "contractLocked": 25,
-    "evidenceInsufficient": 10,
+    "evidenceInsufficient": 8,
     "imagesProduced": 0,
-    "visuals": 35
+    "visuals": 33
   },
   "visuals": [
     {
@@ -542,47 +488,6 @@
     {
       "certified": false,
       "evidenceSteps": [
-        9
-      ],
-      "guide": 2,
-      "guideName": "Fuse & Bulb Replacement",
-      "imageProduced": false,
-      "phase": "EP_INSUFFICIENT",
-      "stages": [
-        {
-          "detail": "1 must-show, 10 must-not-show",
-          "stage": "1 visual spec intake",
-          "status": "PASS"
-        },
-        {
-          "detail": "3 reference(s); 1 established / 7 not-established ledger rows",
-          "stage": "2-3 reference intake and ledger",
-          "status": "PASS"
-        },
-        {
-          "detail": "EP INSUFFICIENT: 2 hero/target fact(s) not established",
-          "problemCodes": [
-            "EP_HERO_NOT_ESTABLISHED"
-          ],
-          "stage": "3b EP sufficiency (objective gate)",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "needs a SUFFICIENT evidence packet",
-          "stage": "4 visual contract compile/lock",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "2 events, 2 objects, problems=0",
-          "stage": "12 event log + directory integrity",
-          "status": "PASS"
-        }
-      ],
-      "visualId": "headlight-halo-cap-engine-bay"
-    },
-    {
-      "certified": false,
-      "evidenceSteps": [
         7,
         8,
         10
@@ -660,48 +565,6 @@
         }
       ],
       "visualId": "wheel-arch-liner-access"
-    },
-    {
-      "certified": false,
-      "evidenceSteps": [
-        2,
-        3
-      ],
-      "guide": 3,
-      "guideName": "Key Fob Battery",
-      "imageProduced": false,
-      "phase": "EP_INSUFFICIENT",
-      "stages": [
-        {
-          "detail": "4 must-show, 11 must-not-show",
-          "stage": "1 visual spec intake",
-          "status": "PASS"
-        },
-        {
-          "detail": "4 reference(s); 9 established / 9 not-established ledger rows",
-          "stage": "2-3 reference intake and ledger",
-          "status": "PASS"
-        },
-        {
-          "detail": "EP INSUFFICIENT: 2 hero/target fact(s) not established",
-          "problemCodes": [
-            "EP_HERO_NOT_ESTABLISHED"
-          ],
-          "stage": "3b EP sufficiency (objective gate)",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "needs a SUFFICIENT evidence packet",
-          "stage": "4 visual contract compile/lock",
-          "status": "BLOCKED"
-        },
-        {
-          "detail": "2 events, 2 objects, problems=0",
-          "stage": "12 event log + directory integrity",
-          "status": "PASS"
-        }
-      ],
-      "visualId": "comfort-access-key-opening"
     },
     {
       "certified": false,
@@ -1772,7 +1635,7 @@
         6
       ],
       "guide": 11,
-      "guideName": "PCV Valve",
+      "guideName": "PCV / Crankcase Ventilation — Inspection & Diagnosis",
       "imageProduced": false,
       "phase": "GEN_REQUESTED",
       "stages": [

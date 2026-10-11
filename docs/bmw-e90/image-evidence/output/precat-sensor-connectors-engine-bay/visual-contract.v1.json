@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "d7f40b21a0e0d73becc997560080221f713531273fa2edd70f67c27f74888def",
-  "createdAt": "2026-10-10T12:00:52.000Z",
+  "contentHash": "bac52bbf5873ad4dade51bce0959809a7545fa92a43ca3c387b8c75149e84feb",
+  "createdAt": "2026-10-10T12:00:42.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -181,11 +181,11 @@
   "refs": [
     {
       "id": "EP-precat-sensor-connectors-engine-bay-v1",
-      "sha256": "620557eaebd7bb38e964bebcc0cc7b474ecc3c0121c64de30ecf905244866a22"
+      "sha256": "be1ef1ca7a01f7feba469503025652ed128fbf17af44a2769314c79528f99b22"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "556de40af756f4ccc15aab9543ae717b06c11c5770b2e962b3f4a2aab7c67eb5"
+      "sha256": "f129752a5c2d17edefeb1eea96f54022af27a98d0cb1cf9c0a81e682300fbe89"
     }
   ],
   "schema": "guide-factory.visual-contract",

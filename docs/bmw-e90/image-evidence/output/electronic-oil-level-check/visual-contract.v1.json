@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "e94d6e6dbb8887611259594e9941ab3cbe5b79fd1ec87aa062fae270ca5f7f04",
-  "createdAt": "2026-10-10T12:03:56.000Z",
+  "contentHash": "4dca00a95b469d4594cbb63452c09276dd445fc114f283060e2f84b7ed2d81bf",
+  "createdAt": "2026-10-10T12:03:46.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -169,11 +169,11 @@
   "refs": [
     {
       "id": "EP-electronic-oil-level-check-v1",
-      "sha256": "4a3013f8b83853e7bdfb3423a6f4a3cc904b9af01a6490a79ef6ce848b49342b"
+      "sha256": "3f7fa0475ae520e402c073c6c22f7447c61135fec60ffcdd8588f9f0bfa9e52f"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "8a607bfe79c544a4215859c8ec6c2b8001a97752ef7bcb5aff497b99a6493620"
+      "sha256": "3586cf9e7f9574d6fca2c92e6362014f61a43fc5f4718b24aaf24ebe977763d1"
     }
   ],
   "schema": "guide-factory.visual-contract",

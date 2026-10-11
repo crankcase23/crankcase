@@ -6,6 +6,7 @@
   "recommendedStatus": "BUILDABLE_PARTIAL",
   "summary": "Closed with BMW material: the BMW ETK catalog for E90 LCI 328i (radio remote control diagram) lists key battery 66126912985 as '3.2 V, CR2032' for Comfort Access cars (S322A=Yes), and BMW ST502 states the Comfort Access ID transmitter has a user-replaceable battery (service life about 2 years) while the regular remote control has an integrated rechargeable battery charged by a transponder coil in the ignition key holder. This also CORRECTS the earlier ledger, which described 66126912985 as a rechargeable cell: it is the CR2032 for Comfort Access keys. CA key opening steps are corroborated by two dealer/guide sources. Non-CA (rechargeable) key: not designed to be opened; cell type VL2020 is only reported by a forum poster and an unverified comment; cell replacement is a solder job and is not recommended as DIY. Charge-time numbers and the re-sync sequence remain weakly sourced. Whether this car has Comfort Access cannot be told from the VIN tail; ETK option code is S322A.",
   "variantDependencies": [
+    "DECODED CONFIG: no Comfort Access (S322 absent), so the car most likely has the standard remote with a built-in rechargeable battery charged in the ignition slot, not a CR2032 key. Steps 2 and 3 (CR2032 swap) most likely do not apply; steps 5 to 7 do. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable and verify at the car.]",
     "Comfort Access (ETK option S322A): key battery is a user-replaceable CR2032 (ETK 66126912985 '3.2 V, CR2032'; BMW ST502; YouCanic; Motorwerks BMW; E90Post/1addicts E90 threads).",
     "No Comfort Access: regular remote with integrated rechargeable battery charged in the ignition key holder (ST502, YouCanic, Jerry, E90Post, reddit r/E90). Case is glued; cell is soldered; cell reported as Panasonic VL2020 (single E90Post post).",
     "The two key types look alike (a 5series.net poster could not tell them apart), so identify by whether the key has a battery cover and by option code, not by appearance.",
@@ -314,190 +315,12 @@
     "Does the car have Comfort Access (push-button start without key in slot, handle sensors)? Or VIN option S322A.",
     "Photo of the key front/back and whether it has a side tab/valet blade and a battery cover."
   ],
-  "visuals": [
+  "visuals": [],
+  "withdrawnVisuals": [
     {
       "id": "comfort-access-key-opening",
       "title": "Comfort Access key: valet key release and battery cover",
-      "evidenceSteps": [
-        2,
-        3
-      ],
-      "viewpoint": "key-fob",
-      "elements": [
-        {
-          "id": "key-body",
-          "role": "hero",
-          "criticality": "identification",
-          "describe": "A BMW key fob with a rear cover that opens to a battery compartment."
-        },
-        {
-          "id": "side-release-tab",
-          "role": "target",
-          "criticality": "procedure",
-          "describe": "A small tab on the side of the fob that is pressed to release the metal valet key."
-        },
-        {
-          "id": "valet-key-blade",
-          "role": "context",
-          "criticality": "identification",
-          "describe": "A metal emergency key blade that slides out of the fob; it can be used to pry the cover."
-        },
-        {
-          "id": "battery-cover-gap",
-          "role": "target",
-          "criticality": "procedure",
-          "describe": "The gap/access port left after the valet key is removed where a blade is inserted to lift the battery cover."
-        },
-        {
-          "id": "coin-cell",
-          "role": "target",
-          "criticality": "critical",
-          "describe": "A round CR2032 coin cell inside; orientation not established."
-        }
-      ],
-      "facts": [
-        {
-          "element": "side-release-tab",
-          "attribute": "existence",
-          "urls": [
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/"
-          ],
-          "note": "Two sources describe a small tab that frees the valet key."
-        },
-        {
-          "element": "side-release-tab",
-          "attribute": "release-mechanism-geometry",
-          "urls": [],
-          "note": "Exact tab position/shape not established."
-        },
-        {
-          "element": "valet-key-blade",
-          "attribute": "action",
-          "urls": [
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/"
-          ],
-          "note": "Slides out; blade or taped screwdriver pries the cover."
-        },
-        {
-          "element": "battery-cover-gap",
-          "attribute": "action",
-          "urls": [
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/"
-          ],
-          "note": "Pry in the gap/access port."
-        },
-        {
-          "element": "coin-cell",
-          "attribute": "hardware-type",
-          "urls": [
-            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=41_1639",
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/"
-          ],
-          "note": "CR2032."
-        },
-        {
-          "element": "coin-cell",
-          "attribute": "orientation",
-          "urls": [],
-          "note": "No source states polarity or which face is up."
-        },
-        {
-          "element": "key-body",
-          "attribute": "fine-detail-geometry",
-          "urls": [],
-          "note": "Shape of the E90 CA key body (diamond vs other) not established in text."
-        },
-        {
-          "element": "key-body",
-          "attribute": "existence",
-          "urls": [
-            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=41_1639"
-          ],
-          "note": "RealOEM E90 LCI 328i catalog lists the Radio remote control for Comfort Access cars, an integrated (emergency) key, and the CR2032 battery installed in the key."
-        },
-        {
-          "element": "battery-cover-gap",
-          "attribute": "existence",
-          "urls": [
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
-            "https://getjerry.com/questions/how-can-i-change-the-battery-for-my-bmw-car-key"
-          ],
-          "note": "YouCanic and Jerry: small access port after the valet key is out; Motorwerks: a small gap to separate the casing."
-        },
-        {
-          "element": "battery-cover-gap",
-          "attribute": "location",
-          "urls": [
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
-            "https://getjerry.com/questions/how-can-i-change-the-battery-for-my-bmw-car-key"
-          ],
-          "note": "The gap/port is exposed where the valet key sat once it is slid out of the fob."
-        },
-        {
-          "element": "coin-cell",
-          "attribute": "existence",
-          "urls": [
-            "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=41_1639",
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
-            "https://getjerry.com/questions/how-can-i-change-the-battery-for-my-bmw-car-key"
-          ],
-          "note": "All four state a CR2032 coin battery in Comfort Access keys."
-        },
-        {
-          "element": "coin-cell",
-          "attribute": "location",
-          "urls": [
-            "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/",
-            "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/",
-            "https://getjerry.com/questions/how-can-i-change-the-battery-for-my-bmw-car-key"
-          ],
-          "note": "Inside the fob case under the battery cover that is levered off via the access port."
-        }
-      ],
-      "mustNotDepict": [
-        {
-          "element": "coin-cell",
-          "reason": "Polarity/orientation is not established; do not show + or - facing."
-        },
-        {
-          "element": "side-release-tab",
-          "reason": "Exact position on the case is not established."
-        },
-        {
-          "element": "key-body",
-          "reason": "Do not imply the standard (non-CA) key opens the same way; it is sealed."
-        }
-      ],
-      "sources": {
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=41_1639": {
-          "kind": "parts-catalog",
-          "establishes": "ETK: key battery 66126912985 3.2 V CR2032 for Comfort Access cars (S322A=Yes)."
-        },
-        "https://www.youcanic.com/bmw-key-fob-battery-replacement-instructions/": {
-          "kind": "third-party-guide",
-          "establishes": "CA key: press tab, pull valet key, use blade/flat screwdriver in access port to remove cover, swap CR2032."
-        },
-        "https://www.motorwerksbmw.com/service/diy-car-care/how-to-replace-the-battery-from-your-bmw-key-fob/": {
-          "kind": "third-party-guide",
-          "establishes": "Dealer guide: depress side tab, slide out valet key, use it or taped screwdriver in the gap to separate casing; CA keys use CR2032."
-        },
-        "https://getjerry.com/questions/how-can-i-change-the-battery-for-my-bmw-car-key": {
-          "kind": "third-party-guide",
-          "establishes": "Smart/comfort-access key: press the tab to release the valet key, lever the battery cover off at the access port, CR2032 inside."
-        }
-      },
-      "gapFillNotes": [
-        "side-release-tab location NOT established: only Motorwerks says the tab is on the side; YouCanic and Jerry do not say where. Show a small side tab generically.",
-        "key-body location left out: a hand-held item has no mounting location. Coin-cell polarity still not stated by any source.",
-        "Motorwerks says CA keys use CR2032; it does not mention the E90 specifically (RealOEM confirms for this car)."
-      ]
+      "reason": "Decoded configuration shows no Comfort Access (S322 absent), so the car most likely has the sealed rechargeable standard key. This visual shows the Comfort Access CR2032 key opening. Withdrawn until the key type is confirmed at the car."
     }
   ]
 }

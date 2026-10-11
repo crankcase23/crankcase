@@ -13,10 +13,10 @@
       "Remove the breather hose only if replacing it"
     ],
     "stepNumber": 4,
-    "title": "valve-cover-breather-hose-location (BMW 328i draft PCV Valve guide; evidence step 4, 5, 6)"
+    "title": "valve-cover-breather-hose-location (BMW 328i draft PCV / Crankcase Ventilation — Inspection & Diagnosis guide; evidence step 4, 5, 6)"
   },
-  "contentHash": "0f49bd2d1b08d08a0a02c179310882aacbb4abf260b2e049e71599391f62fa00",
-  "createdAt": "2026-10-10T12:02:47.000Z",
+  "contentHash": "089f1e87df96936e9d3dd9a5c079d8ef2ba01e963dd4b0510eb1ed42c850a90c",
+  "createdAt": "2026-10-10T12:02:37.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

@@ -17,8 +17,8 @@
     "stepNumber": 4,
     "title": "trunk-battery-compartment (BMW 328i draft Battery Replacement guide; evidence step 4, 5, 6, 7, 8)"
   },
-  "contentHash": "c5616e4ba0582a310f630445b80a35e24c9be0b5e275657e7704661c7c129d9a",
-  "createdAt": "2026-10-10T12:01:47.000Z",
+  "contentHash": "064fa389b538d2614eef6aec1874ddbd472178a18bc76f77f6b7a49d29866a61",
+  "createdAt": "2026-10-10T12:01:37.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "f7a8b47c69183a501e6aace87276d39ebe3facc5374275c642abd3e6c3d24ae9",
-  "createdAt": "2026-10-10T12:01:51.000Z",
+  "contentHash": "ea3b8abe0e068a94e32e4bc8d5ef6d2e4011fc0ab07a1f94edebb1dfe34790f7",
+  "createdAt": "2026-10-10T12:01:41.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -205,11 +205,11 @@
   "refs": [
     {
       "id": "EP-trunk-battery-compartment-v1",
-      "sha256": "c5616e4ba0582a310f630445b80a35e24c9be0b5e275657e7704661c7c129d9a"
+      "sha256": "064fa389b538d2614eef6aec1874ddbd472178a18bc76f77f6b7a49d29866a61"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "60d9cba0356d9a61d9977759aeeeef72b3e935b6ce39c44d418c77f329af2b4e"
+      "sha256": "4969aa3c34d1d3a507c2222b861e234abd0d800db6b85c6fdb69458c19944cc4"
     }
   ],
   "schema": "guide-factory.visual-contract",

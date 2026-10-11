@@ -6,6 +6,7 @@
   "recommendedStatus": "BUILDABLE_PARTIAL",
   "summary": "Second pass used the BMW ST502 E90 training documents and the BMW ETK catalog (RealOEM decode of the VIN tail: E90 LCI 328i sedan, N52N, built 09/2009, US) to close most bulb and fuse gaps. CLOSED: fog bulb conflict (H8 12V 35W on 2009+ LCI; H11 was the 2006-2008 bulb); halogen headlight bulb is H7 12V 55W (ETK, 4 per car) and front turn signal bulb PY24W; xenon bulb is D1 12V 35W (D1S); option codes S522A (xenon) and S524A (adaptive headlights) identified in ETK; trunk fuse situation (rear power distribution box on top of the battery has non-replaceable fusible links); glove-box junction box location (BMW ST502 plus 4 secondary); fuse colour/amp coding (ETK); fuse numbering differs by build date. STILL OPEN: engine-bay E-box/front power distribution box physical location and access, fuse puller location, a verified full fuse chart for this exact build (two web charts agree with each other but are not independent and not BMW documents), halogen low-beam access detail beyond 'service openings in the wheel arch cover', tail light bulb-to-function mapping on LCI, and the halo/angel-eye bulb type on halogen LCI lamps (H8 vs H10W conflict). Publish fuse section (glove box + 'follow the cover diagram') and a bulb section gated on headlight type.",
   "variantDependencies": [
+    "DECODED CONFIG: halogen headlights (no S522 xenon, no S524 adaptive), fog lights S520 present, S563 lights package, S5AC automatic high beam. Use the halogen H7 / fog H8 paths; the xenon D1 and halo-ring paths are probably not this car. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable and verify at the car.]",
     "Headlights: standard halogen (ETK: H7 12V 55W, qty 4 for low+high beam, PY24W yellow front turn bulb) vs bi-xenon (ETK: D1 12V 35W) which BMW ST502 says is only installed with Adaptive Headlight Control on the launch E90; ETK option codes S522A = Xenon Light, S524A = Adaptive Headlights. Which the car has needs the VIN option list or a look at the lamp.",
     "Fog lights: H8 12V 35W (ETK diagram for build 2009; Turner lists E90 2009+). Pre-LCI 2006-2008 used H11 55W (Turner). M Aerodynamics fog lamps are a separate ETK diagram. Conflict with earlier ledger resolved for this 09/2009 build.",
     "Angel-eye/halo bulb: H8 on xenon/adaptive lamps (E90Post, Turner); on LCI HALOGEN lamps one retailer guide says H10W - CONFLICT.",
@@ -753,111 +754,6 @@
       ]
     },
     {
-      "id": "headlight-halo-cap-engine-bay",
-      "title": "Halo bulb cap on the back of the headlight (under the hood)",
-      "evidenceSteps": [
-        9
-      ],
-      "viewpoint": "engine-bay-top",
-      "elements": [
-        {
-          "id": "headlight-rear-housing",
-          "role": "context",
-          "criticality": "identification",
-          "describe": "The back of the headlight housing seen from under the hood."
-        },
-        {
-          "id": "finned-round-cap",
-          "role": "hero",
-          "criticality": "identification",
-          "describe": "A circular finned plastic cap on the back of the headlight covering the halo (angel-eye) bulb; twists off."
-        },
-        {
-          "id": "top-cover-compartment",
-          "role": "context",
-          "criticality": "identification",
-          "describe": "A separate upper compartment on adaptive-headlight cars holding the cornering light bulb behind its own cover."
-        }
-      ],
-      "facts": [
-        {
-          "element": "finned-round-cap",
-          "attribute": "existence",
-          "urls": [
-            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
-          ],
-          "note": "Two E90Post threads."
-        },
-        {
-          "element": "finned-round-cap",
-          "attribute": "action",
-          "urls": [
-            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
-          ],
-          "note": "Twist off, no tools."
-        },
-        {
-          "element": "finned-round-cap",
-          "attribute": "location",
-          "urls": [
-            "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
-            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
-          ],
-          "note": "Back of headlight, accessed from engine bay."
-        },
-        {
-          "element": "top-cover-compartment",
-          "attribute": "existence",
-          "urls": [
-            "https://g42.bimmerpost.com/forums/showthread.php?p=26172610",
-            "https://bavmods.com/pages/how-to-replace-bmw-angel-eye-halo-bulbs-e90-e92-e93-e82-e88-easy-e-chassis-diy-guide",
-            "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_H8_Install_E92.pdf"
-          ],
-          "note": "Bimmerpost: top compartment with 3 screws holding the halogen cornering bulb; BAVMods and LUX: a top cover on the headlight (two press tabs) opened with the hood up gives access to the H8 halo bulb; so a top cover exists, but its contents differ by headlight type."
-        },
-        {
-          "element": "finned-round-cap",
-          "attribute": "fine-detail-geometry",
-          "urls": [],
-          "note": "Exact position relative to the low-beam cap is not established."
-        }
-      ],
-      "mustNotDepict": [
-        {
-          "element": "finned-round-cap",
-          "reason": "Position relative to low/high beam caps and the headlight's mounting points is not established; also varies between halogen and xenon lamps."
-        },
-        {
-          "element": "top-cover-compartment",
-          "reason": "Adaptive-headlight cars only; do not show on a generic car."
-        }
-      ],
-      "sources": {
-        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642": {
-          "kind": "third-party-photo",
-          "establishes": "E90 thread: round halo cap on the rear of the headlight twists off; H8 bulb; H3 cornering bulb behind top cover."
-        },
-        "https://g42.bimmerpost.com/forums/showthread.php?p=26172610": {
-          "kind": "third-party-photo",
-          "establishes": "335i adaptive-xenon thread: circular finned cap twists off from under the hood; H8 12V 35W bulb; no wheel well needed."
-        },
-        "https://bavmods.com/pages/how-to-replace-bmw-angel-eye-halo-bulbs-e90-e92-e93-e82-e88-easy-e-chassis-diy-guide": {
-          "kind": "third-party-guide",
-          "establishes": "E9x halo bulb job: remove the halo bulb cover on top of the headlight by pressing two retention tabs, then twist the bulb counterclockwise."
-        },
-        "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_H8_Install_E92.pdf": {
-          "kind": "third-party-guide",
-          "establishes": "E92/E93/M3 H8 halo kit: open the hood, remove the headlight top cover by pressing out outer tabs, untwist H8 bulb counterclockwise."
-        }
-      },
-      "gapFillNotes": [
-        "finned-round-cap (existence and location) NOT established: only Bimmerpost threads (one host) describe a circular finned twist-off cap on the back of the headlight; BAVMods and LUX describe halo access through a TOP cover instead, and a Bimmerpost reply says the top cover is for the H3 cornering bulb on adaptive cars. The round rear cap likely belongs to adaptive/xenon pre-LCI lamps; this 2010 (LCI) 328i may be halogen (top cover for the halo) or xenon. Headlight type for this VIN is unverified; depict generically or confirm headlight option.",
-        "robots blocked e90post.com and 1addicts.com fetches, so no second-host confirmation was possible; web search budget ran out."
-      ]
-    },
-    {
       "id": "wheel-arch-liner-access",
       "title": "Front wheel-arch liner screws for fog/low-beam access",
       "evidenceSteps": [
@@ -987,6 +883,13 @@
       "gapFillNotes": [
         "Screw count and head type conflict across sources (9 screws+1 nut vs 3 vs two lower front; 8 mm vs 10 mm nut; T20 applies to the headlight bulb cover, not the liner). Keep screws generic."
       ]
+    }
+  ],
+  "withdrawnVisuals": [
+    {
+      "id": "headlight-halo-cap-engine-bay",
+      "title": "Halo bulb cap on the back of the headlight (under the hood)",
+      "reason": "Decoded configuration shows halogen headlights without the xenon/adaptive angel-eye lamps this visual depicted; it would show a part this car probably does not have. Withdrawn until the lamp type is confirmed at the car."
     }
   ]
 }

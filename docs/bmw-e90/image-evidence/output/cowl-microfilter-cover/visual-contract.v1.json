@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "c794f379e6eddd895550f3677f0172f9e94c4799872d5a642edd33695cc36f90",
-  "createdAt": "2026-10-10T12:02:37.000Z",
+  "contentHash": "b286db30e0460476d7b7bfd735dab958e879a945797c5110e94d8a3cf53fb423",
+  "createdAt": "2026-10-10T12:02:27.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -160,11 +160,11 @@
   "refs": [
     {
       "id": "EP-cowl-microfilter-cover-v1",
-      "sha256": "c206d0e942ffb31ac254f08fe0a47f81cec9dc0ca11a618e9eba6afb41fc4a60"
+      "sha256": "44127598c44661e002e6a3828956ef76cb997f363e7124e15b3f37f008e47cd8"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "0e5cb0c763f23bb8ab83d78d3f9d73d749c30ff9a3de922a35381e87e1e5ac2c"
+      "sha256": "3b379021c2067ebcf5e9153f9aa3464bd83cadd1d3ff63e98a31433cbbfea201"
     }
   ],
   "schema": "guide-factory.visual-contract",

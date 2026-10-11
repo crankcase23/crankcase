@@ -15,8 +15,8 @@
     "stepNumber": 3,
     "title": "precat-sensor-connectors-engine-bay (BMW 328i draft Oxygen Sensor guide; evidence step 3, 4, 5)"
   },
-  "contentHash": "620557eaebd7bb38e964bebcc0cc7b474ecc3c0121c64de30ecf905244866a22",
-  "createdAt": "2026-10-10T12:00:48.000Z",
+  "contentHash": "be1ef1ca7a01f7feba469503025652ed128fbf17af44a2769314c79528f99b22",
+  "createdAt": "2026-10-10T12:00:38.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

@@ -1,0 +1,20 @@
+Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.
+
+SUBJECT: Rear caliper: clip, guide screws and carrier bolts, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: "Remove the anti-rattle clip".
+
+FRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). View into the wheel well with the wheel removed, from the side at hub height, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.
+
+MUST SHOW (clearly, in this order of importance):
+1. HERO: A floating disc-brake caliper on the rear rotor seen from the outboard side with the wheel removed.
+2. A spring clip on the front of the caliper that comes off by hand or with a screwdriver.
+3. Two hex-head bolts (16 mm) on the back side of the caliper carrier.
+
+MAY SHOW, SIMPLIFIED AND DIM (background only): a plain dark ground plane. Keep every one of these generic and low-contrast. Never invent detail on them.
+
+MUST NOT SHOW (leave these out entirely, do not substitute): guide screw fasteners (Head type and exact position are only single-sourced), caliper retaining clip detail (Exact shape and engagement not established), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.
+
+NO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.
+
+CLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.
+
+Do not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.

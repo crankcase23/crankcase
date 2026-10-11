@@ -16,3 +16,6 @@ Commands: `npm run bmw:validate` (ledger schema), `npm run bmw:drafts` (regenera
 To update a guide: edit its `evidence/guide-NN.json`, run `npm run bmw:validate && npm run bmw:drafts && npm run bmw:pipeline`, commit all outputs. Never edit `src/data/admin-test-guides/bmw-2010-328i-drafts.ts` by hand.
 
 Live image work should use `npm run bmw:pipeline -- --out <untracked dir>` so real candidates never land in the committed output folder.
+
+## Running an image through the factory (ChatGPT route)
+Kits for all contract-locked visuals are in `generation-kits/` (start with `INDEX.md`; `oil-drain-plug-access` is the pilot and has a QA packet preview). Per visual: paste `PROMPT.txt` into a new ChatGPT image chat, save the PNG as `native.png`, fill the claims file, then `npm run bmw:qa -- fit`, `drop-import`, `export`, and give the packet to ChatGPT in a separate fresh chat for the independent review. `fit` pads the native image to exact 16:10 (never stretches, crops or upscales; refuses busy edges and wrong ratios), the factory normaliser then downscales to 1600x1000. Nothing is certified until the factory gates and owner sign-off pass. See `VIN-DECODE.md` for the decoded configuration and what still needs checking at the car.

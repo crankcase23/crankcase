@@ -13,8 +13,8 @@
     "stepNumber": 7,
     "title": "tpms-reset-controls (BMW 328i draft Tire Rotation guide; evidence step 7)"
   },
-  "contentHash": "02a14a2eec579471ce604fd0b7be705cf70fa873dffadca72df7f207176d12ae",
-  "createdAt": "2026-10-10T12:03:24.000Z",
+  "contentHash": "f47cef10d73756bd9c284cd5aac1426cd68f85fc0e79966396018a68b304b09c",
+  "createdAt": "2026-10-10T12:03:14.000Z",
   "createdBy": {
     "actor": "claude-research",
     "role": "evidence-author"

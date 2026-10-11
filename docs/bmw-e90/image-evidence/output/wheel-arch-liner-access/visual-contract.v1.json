@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "f4869e6c1178f2469ee19a5f4b6bf0d441770d0c3af9180b26a15ec78d02a804",
-  "createdAt": "2026-10-10T12:00:38.000Z",
+  "contentHash": "f221f2829905c7f3c4e38b385e728c49fa4b11eb4d9f3747b8d6a7ecdc272024",
+  "createdAt": "2026-10-10T12:00:33.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -148,11 +148,11 @@
   "refs": [
     {
       "id": "EP-wheel-arch-liner-access-v1",
-      "sha256": "5439f11a392c2e89893da06ea0c5fe945adbad0ca4e2a57936932ed24905f6a9"
+      "sha256": "77d71a3cec5f24925c139cc9cf67e08955ef2897ce525ffd0989662bb2e63d31"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "cadfa846122fcb60a4b61d637a1e5b009aa5d6786aa1048a3e3a902d66eed4d4"
+      "sha256": "95e1a939d1a053c6266ec52249e98826f84fc482d95301de91521ee144207973"
     }
   ],
   "schema": "guide-factory.visual-contract",

@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "fdca90b358ec8a34ddda471ca292cdbb9bdfc2f38cf7655b7e9507e3cac8f44e",
-  "createdAt": "2026-10-10T12:02:51.000Z",
+  "contentHash": "461aa9987cf537099ad14eb2ed26e7e6b7188bd0c92db6c2d37804f80a659d46",
+  "createdAt": "2026-10-10T12:02:41.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -202,11 +202,11 @@
   "refs": [
     {
       "id": "EP-valve-cover-breather-hose-location-v1",
-      "sha256": "0f49bd2d1b08d08a0a02c179310882aacbb4abf260b2e049e71599391f62fa00"
+      "sha256": "089f1e87df96936e9d3dd9a5c079d8ef2ba01e963dd4b0510eb1ed42c850a90c"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "2c92c58e6469c69dee74af201687ba7b71704dd44f1133cb67cd4cde28e4013b"
+      "sha256": "73518e638dbe32cfdaa54dc61ffa15f07d6e0269d0ebff2d614b35c632765af5"
     }
   ],
   "schema": "guide-factory.visual-contract",

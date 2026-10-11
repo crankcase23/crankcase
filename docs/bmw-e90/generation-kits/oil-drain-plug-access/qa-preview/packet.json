@@ -1,0 +1,277 @@
+{
+  "schema": "bmw-image-qa-packet.v1",
+  "rubricVersion": "CG-QA-v1.0",
+  "visualId": "oil-drain-plug-access",
+  "application": {
+    "year": 2010,
+    "make": "BMW",
+    "model": "328i",
+    "trim": "Sedan (E90)",
+    "engine": "3.0L inline-6 (engine code not confirmed)"
+  },
+  "status": "AWAITING_CANDIDATE_IMAGE",
+  "candidate": {
+    "generationId": null,
+    "file": "candidate.png",
+    "sha256": "(set when the image exists)",
+    "width": null,
+    "height": null,
+    "cycle": null
+  },
+  "contract": {
+    "id": "VC-oil-drain-plug-access-v1",
+    "contentHash": "a48596f0a7196cdf10225aef10029b27c84e8d593241b92047b6fbb0005ff565",
+    "frame": {
+      "height": 1000,
+      "maxBytes": 12582912,
+      "mediaTypes": [
+        "png"
+      ],
+      "noBakedText": true,
+      "width": 1600
+    },
+    "clearSpace": [
+      {
+        "band": "top",
+        "fromPct": 3,
+        "toPct": 17
+      },
+      {
+        "band": "bottom",
+        "fromPct": 83,
+        "toPct": 97
+      }
+    ]
+  },
+  "fit": null,
+  "items": [
+    {
+      "contractItemId": "MD-drain-plug",
+      "kind": "must-depict",
+      "element": "drain-plug",
+      "criticality": "critical",
+      "visibility": "hero",
+      "describe": "The engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape.",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.1addicts.com/forums/showthread.php?p=6151834",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        },
+        {
+          "attribute": "location",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        }
+      ]
+    },
+    {
+      "contractItemId": "MD-access-hatch",
+      "kind": "must-depict",
+      "element": "access-hatch",
+      "criticality": "critical",
+      "visibility": "target",
+      "describe": "The small access hatch in the lower undertray near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it.",
+      "requirements": [
+        {
+          "attribute": "existence",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+            "https://g42.bimmerpost.com/forums/showthread.php?p=29969477"
+          ]
+        },
+        {
+          "attribute": "location",
+          "render": "draw",
+          "sources": [
+            "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+            "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html"
+          ]
+        }
+      ]
+    },
+    {
+      "contractItemId": "MN-excl-hatch-fasteners-unestablished-detail",
+      "kind": "must-not-depict",
+      "element": "hatch-fasteners-unestablished-detail",
+      "reason": "Sources conflict on how the hatch is fastened."
+    },
+    {
+      "contractItemId": "MN-excl-engine-cover-unestablished-detail",
+      "kind": "must-not-depict",
+      "element": "engine-cover-unestablished-detail",
+      "reason": "An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture."
+    },
+    {
+      "contractItemId": "PROVENANCE",
+      "kind": "provenance",
+      "rule": "Answer PASS only if the image shows no sign of copied/traced source imagery, and contains no baked-in text. The generator's attestation is in the packet."
+    }
+  ],
+  "technical": [
+    {
+      "element": "drain-plug",
+      "role": "hero",
+      "criticality": "critical",
+      "describe": "The engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape.",
+      "established": [
+        {
+          "attribute": "existence",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
+            },
+            {
+              "url": "https://www.1addicts.com/forums/showthread.php?p=6151834",
+              "kind": "third-party-guide",
+              "says": "N52 DIY: remove the oil filter housing cap with a cap wrench, drop in new cartridge with two O-rings, refit until marks align."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
+            }
+          ]
+        },
+        {
+          "attribute": "location",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
+            }
+          ]
+        }
+      ],
+      "notEstablished": [
+        {
+          "attribute": "orientation",
+          "render": "omit",
+          "note": "Sources conflict: slightly left of centre facing right vs vertical vs oil exits sideways."
+        },
+        {
+          "attribute": "fastener-head-type",
+          "render": "omit",
+          "note": "Only the 17 mm socket size is established, not the head shape."
+        }
+      ]
+    },
+    {
+      "element": "access-hatch",
+      "role": "target",
+      "criticality": "critical",
+      "describe": "The small access hatch in the lower undertray near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it.",
+      "established": [
+        {
+          "attribute": "existence",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
+            },
+            {
+              "url": "https://g42.bimmerpost.com/forums/showthread.php?p=29969477",
+              "kind": "third-party-guide",
+              "says": "17mm plug with copper crush washer; oil exits sideways."
+            }
+          ]
+        },
+        {
+          "attribute": "location",
+          "sources": [
+            {
+              "url": "https://5series.net/forums/diy-do-yourself-14/n52-oil-change-question-wheres-drain-plug-97653",
+              "kind": "third-party-guide",
+              "says": "N52: drain plug is behind a small removable access panel on the underside; one poster says slightly left of center (driver side); orientation reports differ (down vs right); links a RealOEM diagram (not retrieved)."
+            },
+            {
+              "url": "https://www.team-bhp.com/forum/diy-do-yourself/70233-diy-oil-change-bmw-e90-e91-e92-e93.html",
+              "kind": "third-party-guide",
+              "says": "General E90 DIY: with bonnet open remove filler cap before draining (engine type not named)."
+            }
+          ]
+        }
+      ],
+      "notEstablished": [
+        {
+          "attribute": "fastener-position",
+          "render": "omit",
+          "note": "Conflict: three screws vs coin-operated catch."
+        }
+      ]
+    }
+  ],
+  "prompt": "Create ONE clean, polished, instructional illustration for a DIY car-repair guide. Text-only prompt: do not use, request or trace any reference image.\n\nSUBJECT: Oil drain plug and the undertray access hatch, on a 2010 BMW 328i (E90) with the 3.0L inline-6, shown so a home mechanic can see what the step is about. Step: \"Open the undertray access hatch\".\n\nFRAMING: Landscape, exactly 16:10 (deliver 1600x1000 px or larger at 16:10). Low view from beneath the front of the car looking rearward, mild perspective. Soft studio lighting, contact shadows, dark graphite context with the hero part clearly brightest. Modern flat-shaded technical-illustration look. Simplified, NOT photorealistic.\n\nMUST SHOW (clearly, in this order of importance):\n1. HERO: The engine oil drain plug at the underside of the oil pan, drawn as a small plain plug shape. Do NOT depict its orientation, its fastener head shape: keep it a plain generic shape.\n2. The small access hatch in the lower undertray near the front-centre of the underside, drawn as a plain rectangular panel with the plug visible through or beside it. Do NOT depict where its fasteners sit: keep it a plain generic shape.\n\nMAY SHOW, SIMPLIFIED AND DIM (background only): oil pan, hatch fasteners, engine cover. Keep every one of these generic and low-contrast. Never invent detail on them.\n\nMUST NOT SHOW (leave these out entirely, do not substitute): hatch fasteners detail (Sources conflict on how the hatch is fastened), engine cover detail (An engine cover exists on the N52 but its exact shape is not established; it is left out of the picture), wrench or socket, hands, people, engine badges, logos, brand marks, licence plates.\n\nNO TEXT of any kind: no labels, letters, numbers, arrows, callout lines, watermarks or captions anywhere in the image.\n\nCLEAR SPACE: keep two horizontal bands plain and uncluttered (dark, low-contrast background only): the top 3%-17% of the height and the bottom 83%-97% of the height, across almost the full width. Labels will be added later in software.\n\nDo not add any part not listed above. If unsure how a real part looks, draw a plain generic shape or leave it out.\n",
+  "attestation": null,
+  "generator": null,
+  "reviewerIdentityRequired": "Hermes / ChatGPT / GPT-5.6 Sol",
+  "replyFormat": {
+    "candidateSha256": "(sha256 of candidate.png)",
+    "rubricVersion": "CG-QA-v1.0",
+    "provenanceCheck": {
+      "validated": "true|false",
+      "notes": "short"
+    },
+    "checks": [
+      {
+        "contractItemId": "MD-drain-plug",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MD-access-hatch",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-hatch-fasteners-unestablished-detail",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "MN-excl-engine-cover-unestablished-detail",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      },
+      {
+        "contractItemId": "PROVENANCE",
+        "result": "one of PASS|FAIL|NOT_VISIBLE|NA"
+      }
+    ],
+    "findings": [
+      {
+        "id": "F1",
+        "severity": "CRITICAL|CONTRACT|COSMETIC|IGNORE",
+        "contractItemRef": "an item id above",
+        "element": "element id",
+        "attribute": "e.g. location",
+        "description": "what is wrong",
+        "requiredChange": "what to change",
+        "fixType": "modify|remove|suppress|simplify|relocate|add",
+        "gate": "VISUAL_ACCURACY",
+        "evidenceDeficiency": false,
+        "regression": false
+      }
+    ],
+    "regressionCheck": []
+  }
+}

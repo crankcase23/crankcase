@@ -11,8 +11,8 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "38f984222a959f63c0b3a33cd96f5264e147c653f1e78e3c68bd19f8c3c20140",
-  "createdAt": "2026-10-10T12:01:33.000Z",
+  "contentHash": "1938c9ef8d9e22f58b5e970b92f6065ff2f5adb2347136058a2eafcd7f185641",
+  "createdAt": "2026-10-10T12:01:23.000Z",
   "createdBy": {
     "actor": "factory-code",
     "role": "contract-compiler"
@@ -236,11 +236,11 @@
   "refs": [
     {
       "id": "EP-accessory-drive-components-v1",
-      "sha256": "20524ca6be555e53f5575c8cf5a6037ffd419aa79cac1e69c07a160ca968e17e"
+      "sha256": "14efa433b3af64a797453fbcbe69f195cce5aabd93c095482567448958adedf9"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",
-      "sha256": "adbfab20e6bd95ebd761253d91987ee6976fc97d8d719f18624cf03f5fbd7432"
+      "sha256": "847f98b49b30235218fb093ccd1808e3419cbf569859243ed9e092e43ab97297"
     }
   ],
   "schema": "guide-factory.visual-contract",
