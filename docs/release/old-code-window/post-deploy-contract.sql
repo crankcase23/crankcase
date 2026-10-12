@@ -3,7 +3,7 @@
 --   * Any same-customer duplicate rows the OLD code created during the window are NOT touched: the unique index is skipped with a
 --     NOTICE that names how many, support merges them by hand (the new code lists them like any other cars), then re-run this file.
 --   * The canonical CHECK is safe: the pre-deploy trigger has kept every VIN upper case.
--- Idempotent; one transaction. Locks garage_entries briefly while the indexes build.
+-- Idempotent. Locks garage_entries briefly while the indexes build. Ends by dropping the temporary trigger from pre-2 (see bottom).
 DO $$
 DECLARE
   dup_vin integer;
@@ -27,6 +27,18 @@ BEGIN
     CREATE UNIQUE INDEX IF NOT EXISTS garage_entries_user_vin_uq ON garage_entries (user_id, vin) WHERE vin IS NOT NULL;
   ELSE
     RAISE NOTICE 'SKIPPED garage_entries_user_vin_uq: % customer/VIN pairs have more than one row. Nothing changed; resolve by hand, then re-run.', dup_vin;
+  END IF;
+END
+$$;
+
+-- Remove the temporary upper-casing trigger that pre-2-vin-canonical.sql installed. The CHECK above is the permanent guard and the
+-- new code upper-cases every VIN itself. Do this only once NO old-code instance can still be serving (the deploy is fully live).
+-- It is dropped only if the CHECK exists, so there is never a moment with neither guard.
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'garage_entries_vin_canonical_chk') THEN
+    DROP TRIGGER IF EXISTS garage_entries_canonical_vin ON garage_entries;
+    DROP FUNCTION IF EXISTS garage_entries_canonical_vin();
   END IF;
 END
 $$;
