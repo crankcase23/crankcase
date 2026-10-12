@@ -4,25 +4,24 @@ Status 2026-10-12: PR #50 is **draft**. Nothing here has been run against produc
 
 ## 1. PR dependency chain (reconciled 2026-10-12 against live GitHub)
 
-`main` is now **86e26ca** (was 79cf395): PR #49 (preview databases, `claude/preview-db-env`) was merged by the owner at 03:34Z. #49 touches only `package.json`, `src/db/index.ts`, `src/db/resolveDatabaseUrl.ts` and a db test.
+`main` is now **bd66933** (was 79cf395 when the stack was cut). Merged to `main` since, not by this session: **#49** preview databases (86e26ca), **#44** Next.js 16.3.4 to 16.3.8 (fa3e061), **#51** three stale garage e2e tests fixed for main's old add-vehicle flow (904e66c), **#52** sharp/source-map-js lockfile bumps (bd66933).
 
 ```
-main 86e26ca  (= 79cf395 + #49)
- +- #44 a7d2a52  Next.js security patch. Independent.
+main bd66933  (= 79cf395 + #49 + #44 + #51 + #52)
  +- #42 2edee0d  vehicle configuration + same-model migration fix
      +- #43 627d47a  VIN-required + photo scan                         (latest #43 head; in #50)
          +- #46 82ec96c  VIN isolation (cut from an older #43)
              +- #47 4502077  permanent per-car ids
                  +- #48 9af13ca  = #47 + #45 (ba2650f, entitlements PR-A) + 2 commits
-                     +- #50 (draft, base claude/keys-entitlements-v2) = #48 + #43 627d47a + release-readiness work + main 86e26ca
+                     +- #50 (draft, base claude/keys-entitlements-v2) = #48 + #43 627d47a + release-readiness work + main bd66933
 ```
-Checked by SHA and `git merge-tree`:
-- #42, #43, #45, #46, #47, #48 heads are all ancestors of #50. None of those PRs changed since the last check (heads above).
-- #50 + new main: one conflict, `package.json` scripts (`db:test` from main vs `config:test`/`keys:test`/`release:gate`). Resolved in merge commit `598e3c3` on the #50 branch (all four scripts kept).
-- #44 + #50: clean. #44 + new main: clean.
-- All PRs target `main`, not each other, so GitHub will not enforce order. The owner must.
+Checked by SHA and `git merge-tree` (2026-10-12 04:40Z):
+- #42, #43, #45, #46, #47, #48 heads are all ancestors of #50 and unchanged on GitHub.
+- main merged into #50 twice (`598e3c3` for #49; `461ae65` for #44/#51/#52). Conflicts: `package.json` scripts (resolved, all scripts kept) and `tests/e2e/garage.spec.ts` (#51 repaired the old add-vehicle flow that #43 replaces; the stack's version is kept; **#51's fixes become irrelevant once the stack merges**).
+- #50 now builds on Next 16.3.8 (`npm ci`, tsc clean, build OK, release gate PASS).
+- Remaining risk: any further commit to `main` needs the same merge-tree check before the stack merges.
 
-Merge order: **(1) #44 alone**, own deploy and smoke test; **(2) the whole stack as ONE merge: #50** (it carries #42 #43 #45 #46 #47 #48). Never merge #42 or #43 alone (#43 alone ships the global VIN block and the "We Know This Vehicle" teaser that #46 removes). `claude/vin-required-garage-alt` is a parallel PR-less branch: do not merge. Recommend converting #42/#43 to draft or closing them as superseded so a stray merge click cannot ship them alone.
+Merge order: **(1) #44 is already on main; confirm its production deploy and smoke test passed**; **(2) the whole stack as ONE merge: #50** (it carries #42 #43 #45 #46 #47 #48). Never merge #42 or #43 alone (#43 alone ships the global VIN block and the "We Know This Vehicle" teaser that #46 removes). `claude/vin-required-garage-alt` is a parallel PR-less branch: do not merge. Recommend converting #42/#43 to draft or closing them as superseded so a stray merge click cannot ship them alone.
 
 Preview databases (from #49): Preview deployments use `PREVIEW_DB_DATABASE_URL` and fail closed; they never touch production data. That database currently has only the base schema + M1. **Before anyone opens a Preview of #50 (or #46-#48) the preview DB needs M2-M5** (owner, Vercel Storage > crankcase-preview > Query, same files and order as section 4, without the production approvals). Until then previews of the new code will error. This replaces the old "is DATABASE_URL shared with Preview?" worry; verify the scopes once in Vercel (section 3).
 
@@ -68,7 +67,7 @@ Option B was proven against the real old `main` app over HTTP (section 5). Optio
 
 **Option B, each numbered step needs owner approval; run VERIFY after every SQL file:**
 1. Gates green on the exact SHA (section 2). Owner checks done (section 3). Neon branch rehearsal done.
-2. **#44 alone**: merge, deploy, smoke test (home, login, garage, a guide).
+2. **#44** is already merged to `main`; confirm its production deploy is healthy (home, login, garage, a guide) before continuing.
 3. **EXPAND** (production DB, old code still live and still fully working):
    `docs/release/old-code-window/pre-1-vehicle-configuration.sql` > `pre-2-vin-canonical.sql` > `migrations/2026-10-11-vin-entitlements.sql` (M3) > `2026-10-11-vin-entitlement-events.sql` (M4) > `2026-10-12-legacy-unlock-holds.sql` (M5).
    `pre-2` STOPS with "N customer/VIN pairs would become duplicates", changing nothing, if an account has the same VIN twice (old code allows it). Resolve those rows by hand, re-run. M3 refuses to run without the canonical guard; M5 refuses to run without M3.
@@ -95,7 +94,7 @@ Option B was proven against the real old `main` app over HTTP (section 5). Optio
 | D | new app, final schema | raw lower-case insert **refused by the CHECK**; raw duplicate insert **refused by the unique index**; new app same VIN / lower-case VIN returns < 500 and one row; deleting a car that carries an entitlement keeps the entitlement (`gift|true`), holds stay 3, paid entitlement stays `purchase|true`; re-adding the VIN is unlocked again; event log intact |
 | schema | final transition schema vs the all-at-once chain (`M1 > M2 > M3 > M4 > M5`) from the same start | **SCHEMA IDENTICAL** (pg_dump -s diff empty). Triggers on `garage_entries`: only `garage_entries_preserve_legacy_unlocks`. The temporary function `garage_entries_canonical_vin` is gone. |
 
-Results on the merged build (main 86e26ca merged into the branch): full Playwright 158 passed / 0 failed / 11 skipped (the 11 are `ops-snapshot`, tokens not set); transition rehearsal repeated, all phases pass, SCHEMA IDENTICAL again.
+Results on the build merged with main 86e26ca: full Playwright 158 passed / 0 failed / 11 skipped (the 11 are `ops-snapshot`, tokens not set); transition rehearsal repeated, all phases pass, SCHEMA IDENTICAL again. After the second merge (main bd66933, Next 16.3.8) only tsc, build, the keys suites and the release gate were re-run (PASS); the full 17-minute Playwright run and the rehearsal were not repeated and should be before the production request.
 
 Not covered: real Neon (unreachable from the sandbox), real browsers on a phone, real payments (none exist).
 
