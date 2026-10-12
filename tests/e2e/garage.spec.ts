@@ -76,13 +76,15 @@ test.describe("garage — add your own vehicle", () => {
     await page.getByText("Tire Rotation", { exact: true }).click();
     await page.getByRole("button", { name: "Add entry" }).click();
 
-    const row = page.getByRole("listitem").filter({ hasText: "42,000 mi" }).last();
+    // Scope to the Service History list: "Recent work" on the hub echoes the same entry.
+    const row = page.locator("#history").getByRole("listitem").filter({ hasText: "42,000 mi" });
     await expect(row).toBeVisible();
     await expect(row.getByText("Tire Rotation")).toBeVisible();
   });
 
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
-    await addViaManualForm(page, "2018", "Honda", "Civic");
+    await fillForm(page, "2018", "Honda", "Civic");
+    await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
 
     await page.goto("/garage");
