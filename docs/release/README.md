@@ -35,8 +35,8 @@ Scratch DB `cc_test` with M1-M5 applied; app built and served with `next start -
 | Types / build | `npx tsc --noEmit`, `npm run build` | clean |
 | Lint | `npx eslint` | exactly the 3 baseline errors (printify-publish.js x2, AddVehicleClient.tsx) |
 | Unit | `npm run vin:test`, `npm run config:test`, `npm run db:test` | all pass |
-| **Release gate (MANDATORY)** | `DATABASE_URL=postgres://postgres@127.0.0.1:5544/<scratch db> npm run release:gate -- --full-report <playwright-json>` | PASS (see below) |
-| Full e2e | `DATABASE_URL=... npx playwright test --workers=2 --reporter=json > full.json` (about 17 min, background) | 0 failed; only the `ops-snapshot` tests skipped |
+| **Release gate (MANDATORY)** | `npm run release:gate -- --full-report <playwright-json>` with DATABASE_URL set to the local scratch database (127.0.0.1) | PASS (see below) |
+| Full e2e | `npx playwright test --workers=2 --reporter=json > full.json` (DATABASE_URL set to the local scratch database) (about 17 min, background) | 0 failed; only the `ops-snapshot` tests skipped |
 | Transition rehearsal | `OLD_DIR=<built checkout of main> scripts/release/transition-rehearsal.sh` | all phases pass, `SCHEMA IDENTICAL` |
 
 `npm run release:gate` fails (exit 1) unless ALL of these hold:

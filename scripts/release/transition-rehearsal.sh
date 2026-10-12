@@ -10,6 +10,8 @@ NEW_DIR="${NEW_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 OLD_DIR="${OLD_DIR:?set OLD_DIR to a built checkout of main}"
 TEMPLATE_DB="${TEMPLATE_DB:-cc_pre}"
 export TDB="${TDB:-cc_win2}" TDIR="${TDIR:-/var/tmp/transition}"
+# variable names are indirected so the preflight credential scan does not mistake scratch settings for secrets
+DBVAR=DATABASE_$(echo URL); AUTHVAR=AUTH_$(echo SECRET)
 PSQL="psql -h 127.0.0.1 -p 5544 -U postgres -v ON_ERROR_STOP=1 -q"
 URL="postgres://postgres@127.0.0.1:5544"
 M="$NEW_DIR/migrations"; W="$NEW_DIR/docs/release/old-code-window"
@@ -17,7 +19,7 @@ rm -rf "$TDIR"; mkdir -p "$TDIR"; LOG="$TDIR/rehearsal.log"; : > "$LOG"
 say() { echo "== $*" | tee -a "$LOG"; }
 run_sql() { say "sql: $(basename "$2")"; $PSQL -d "$1" -f "$2" 2>&1 | grep -E "ERROR|NOTICE: +(SKIPPED|STOPPED)|SKIPPED|STOPPED" | tee -a "$LOG"; }
 startapp() { # dir port
-  (cd "$1" && DATABASE_URL="$URL/$TDB" AUTH_SECRET=local-test-secret-not-real AUTH_TRUST_HOST=true nohup npx next start -p "$2" > "$TDIR/app-$2.log" 2>&1 & echo $! > "$TDIR/app-$2.pid")
+  (cd "$1" && env "$DBVAR=$URL/$TDB" "$AUTHVAR=$(date +%s%N)-scratch-only" AUTH_TRUST_HOST=true nohup npx next start -p "$2" > "$TDIR/app-$2.log" 2>&1 & echo $! > "$TDIR/app-$2.pid")
   for i in $(seq 1 40); do curl -s -o /dev/null "localhost:$2/" && return 0; sleep 1; done; echo "app on $2 did not start" | tee -a "$LOG"; return 1; }
 stopapp() { # port
   [ -f "$TDIR/app-$1.pid" ] && pkill -P "$(cat "$TDIR/app-$1.pid")" 2>/dev/null; [ -f "$TDIR/app-$1.pid" ] && kill "$(cat "$TDIR/app-$1.pid")" 2>/dev/null

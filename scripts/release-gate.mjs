@@ -1,6 +1,6 @@
 // MANDATORY release gate. It FAILS unless every check below ran and passed. A skipped, filtered-out, missing or unrunnable
 // check is a FAIL, never a pass. Run against a built app on :3100 and a migrated scratch DB named cc_test (docs/release/README.md):
-//   DATABASE_URL=postgres://postgres@127.0.0.1:5544/cc_dev npm run release:gate
+//   run `npm run release:gate` with DATABASE_URL pointing at a local scratch database (127.0.0.1)
 //   ... -- --full-report path/to/playwright-full-run.json     (also validate a full `--reporter=json` run: 0 failed, no unexpected skips)
 //
 //   1. DATABASE_URL must be set and LOCAL. Without it the database-backed suites skip themselves silently.
