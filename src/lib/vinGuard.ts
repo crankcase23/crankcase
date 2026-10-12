@@ -8,10 +8,9 @@ import { EVENT_TYPES } from "@/lib/events";
 // ---------------------------------------------------------------------------
 // Protection against VIN enumeration and ownership probing. Free, no new service, no new table.
 //
-// The risk: "add this VIN" answers differently when another account already holds it (a generic "claim required"
-// instead of a normal add). A script holding an account could walk VINs and learn which exist on the platform. We can
-// not remove that one bit without breaking the product (a customer must be told why their add did not work), so we make
-// it expensive to collect:
+// Since 2026-10-12 an add never depends on whether another account holds the VIN, so there is no ownership oracle to
+// probe any more (the "collision" counters below are legacy and nothing records collisions now). What remains worth
+// limiting is VIN-guessing and hammering of the NHTSA decoder through the add and fallback paths, so:
 //   - every VIN that passes the format rules and reaches the lookup is counted per account and per network address;
 //   - collisions (the 409 answer) are counted separately and tolerated only a few times;
 //   - past the limits the answer is a plain 429 that says nothing about the VIN, with a Retry-After.

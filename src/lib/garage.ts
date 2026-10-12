@@ -74,6 +74,44 @@ const addCustomVehicle = useCallback(async (info: CustomVehicleInfo & { vin: str
   return { id: entry.id as string, created: Boolean(created), configKept: Boolean(configKept) };
 }, []);
 
+// NHTSA-outage fallback (off unless the server says so): add by typed details. The SERVER checks NHTSA itself and decides
+// whether this becomes an UNVERIFIED vehicle, a VERIFIED one, or a refusal; the message of a refusal is shown as is.
+const addUnverifiedVehicle = useCallback(async (info: { vin: string; year: string; make: string; model: string; trim?: string; engine?: string }, config: ConfigChoice): Promise<AddOutcome> => {
+  const res = await fetch("/api/garage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ kind: "custom-unverified", custom: info, config }),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Could not add that vehicle to your garage.");
+  const { entry, created, configKept } = await res.json();
+  await globalMutate(KEY, (current: GarageEntry[] = []) =>
+    current.some((e) => e.id === entry.id) ? current.map((e) => (e.id === entry.id ? entry : e)) : [...current, entry],
+    { revalidate: false });
+  return { id: entry.id as string, created: Boolean(created), configKept: Boolean(configKept) };
+}, []);
+
+// Re-check an unverified vehicle (server asks NHTSA). Resolves with the verified entry, or throws the server's plain message.
+const verifyVehicle = useCallback(async (id: string) => {
+  const res = await fetch(`/api/garage/${encodeURIComponent(id)}/verify`, { method: "POST" });
+  const body = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(body?.error ?? "Could not check that vehicle.");
+  await globalMutate(KEY, (current: GarageEntry[] = []) => current.map((e) => (e.id === body.entry.id ? body.entry : e)), { revalidate: false });
+  return body.entry as GarageEntry;
+}, []);
+
+// Correct the typed details of an unverified vehicle. The VIN is never editable.
+const editUnverifiedDetails = useCallback(async (id: string, details: { year: string; make: string; model: string; trim?: string; engine?: string }) => {
+  const res = await fetch(`/api/garage/${encodeURIComponent(id)}/details`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(details),
+  });
+  const body = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(body?.error ?? "Could not save those details.");
+  await globalMutate(KEY, (current: GarageEntry[] = []) => current.map((e) => (e.id === body.entry.id ? body.entry : e)), { revalidate: false });
+  return body.entry as GarageEntry;
+}, []);
+
 // VIN completion for an older record that has none. Only ever attaches a VIN to this customer's own entry.
 const completeVin = useCallback(async (id: string, vin: string) => {
   const res = await fetch(`/api/garage/${encodeURIComponent(id)}/vin`, {
@@ -113,7 +151,7 @@ const findCustom = useCallback(
   [entries],
   );
 
-  return { entries, addCatalogVehicle, addCustomVehicle, completeVin, updateConfig, removeEntry, findCustom, isLoading, error };
+  return { entries, addCatalogVehicle, addCustomVehicle, addUnverifiedVehicle, verifyVehicle, editUnverifiedDetails, completeVin, updateConfig, removeEntry, findCustom, isLoading, error };
 }
 
 

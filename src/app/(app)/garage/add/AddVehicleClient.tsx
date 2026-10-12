@@ -16,10 +16,11 @@ import {
 import { useGarage, type ConfigChoice } from "@/lib/garage";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
 import VinField from "@/components/vin/VinField";
+import VinFallbackForm from "@/components/vin/VinFallbackForm";
 
-export default function AddVehiclePage() {
+export default function AddVehiclePage({ fallbackEnabled = false }: { fallbackEnabled?: boolean }) {
 const router = useRouter();
-const { addCatalogVehicle, addCustomVehicle } = useGarage();
+const { addCatalogVehicle, addCustomVehicle, addUnverifiedVehicle } = useGarage();
 // --- VIN decode: the primary path (2026-09-19 redesign, see
 // claude/crankcase-v1-build-notes.md) — decoding now checks the real
 // catalog first, so a matching vehicle routes to its real specs/guides
@@ -28,6 +29,10 @@ const [decoding, setDecoding] = useState(false);
 const [decodeError, setDecodeError] = useState<string | null>(null);
 const [decoded, setDecoded] = useState<DecodedVin | null>(null);
 const [pickedMatchId, setPickedMatchId] = useState<string | null>(null);
+// True only when the browser could not reach NHTSA at all (not when NHTSA answered "no read"). It is what lets the
+// outage fallback form appear, and only if the server has the fallback switched on.
+const [outage, setOutage] = useState(false);
+const [lastVin, setLastVin] = useState("");
 
 const matches = decoded ? matchCatalogVehicles(decoded) : [];  const exactMatch = decoded && matches.length === 1 ? catalogMatchLooksExact(decoded, matches[0]) : true;
 
@@ -35,6 +40,8 @@ async function handleDecode(vin: string) {
 setDecodeError(null);
 setDecoded(null);
 setPickedMatchId(null);
+setOutage(false);
+setLastVin(vin);
 setDecoding(true);
 try {
 // `vin` already passed the format and check-digit rules and, if it came from a photo, the customer confirmed it.
@@ -49,6 +56,7 @@ setDecoded(result);
 const found = matchCatalogVehicles(result);
 if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(result, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
 } catch {
+setOutage(true);
 setDecodeError(
 "Couldn't reach the NHTSA VIN decoder right now. Your VIN is fine; try again in a moment. Nothing was added."
 );
@@ -61,7 +69,7 @@ setDecoding(false);
 // when the customer confirms transmission and drivetrain there (or says Not sure).
 type Confirming =
   | { kind: "catalog"; vehicle: Vehicle; vin: string; label: string; decoded?: DecodedVin | null }
-  | { kind: "custom"; info: CustomVehicleInfo & { vin: string }; label: string; make?: string; decoded?: DecodedVin | null };
+  | { kind: "custom"; info: CustomVehicleInfo & { vin: string }; label: string; make?: string; decoded?: DecodedVin | null; unverified?: boolean };
 const [confirming, setConfirming] = useState<Confirming | null>(null);
 
 function handleAddMatch() {
@@ -81,6 +89,10 @@ async function confirmAdd(choice: ConfigChoice) {
   if (!confirming) throw new Error("Nothing to add.");
   if (confirming.kind === "catalog") {
     return addCatalogVehicle(confirming.vehicle.id, confirming.vin, choice);
+  }
+  if (confirming.unverified) {
+    const i = confirming.info;
+    return addUnverifiedVehicle({ vin: i.vin, year: i.year ?? "", make: i.make ?? "", model: i.model ?? "", trim: i.trim, engine: i.engine }, choice);
   }
   return addCustomVehicle(confirming.info, choice);
 }
@@ -227,6 +239,21 @@ registration, insurance card, or the driver-side door jamb.
 <div className="mt-4 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
 {decodeError}
 </div>
+)}
+
+{fallbackEnabled && outage && lastVin && (
+<VinFallbackForm
+vin={lastVin}
+onContinue={(d) =>
+setConfirming({
+kind: "custom",
+unverified: true,
+make: d.make,
+label: [d.year, d.make, d.model, d.trim].filter(Boolean).join(" "),
+info: { vin: lastVin, year: d.year, make: d.make, model: d.model, trim: d.trim, engine: d.engine },
+})
+}
+/>
 )}
 
 {decoded && matches.length > 0 && (

@@ -33,6 +33,9 @@ export const EVENT_TYPES = {
   // Abuse-protection bookkeeping for adding / completing a VIN (src/lib/vinGuard.ts). Never carries the VIN itself.
   VIN_ATTEMPT: "vin.attempt",
   VIN_COLLISION: "vin.collision",
+  // A vehicle added through the NHTSA-outage fallback (src/lib/vinFallbackServer.ts). Counted for the daily cap, so it
+  // survives the vehicle being removed. Never carries the VIN.
+  VIN_FALLBACK_ADD: "vin.fallback_add",
   GUIDE_PURCHASED: "guide.purchased",
   SUBSCRIPTION_CREATED: "subscription.created",
   SUBSCRIPTION_CANCELLED: "subscription.cancelled",
@@ -59,6 +62,7 @@ export const EVENT_LABELS: Record<string, string> = {
   "vin.decoded": "VIN decoded",
   "vin.attempt": "VIN add attempt",
   "vin.collision": "VIN claim required",
+  "vin.fallback_add": "Vehicle added by hand (NHTSA down)",
   "guide.purchased": "Guide purchased",
   "subscription.created": "Subscription created",
   "subscription.cancelled": "Subscription cancelled",

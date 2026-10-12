@@ -1,6 +1,7 @@
 "use client";
 
 import { isValidVin } from "@/lib/vin";
+import UnverifiedBadge from "@/components/vin/UnverifiedBadge";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Vehicle } from "@/types/vehicle";
@@ -29,7 +30,7 @@ import { configState, summaryLine, summaryParts, type VehicleConfig } from "@/li
 
 type Props =
   | { id: string; kind: "catalog"; vehicle: Vehicle; config: VehicleConfig; vin?: string; onRemove: () => void }
-  | { id: string; kind: "custom"; custom: CustomVehicleInfo; config: VehicleConfig; vin?: string; onRemove: () => void };
+  | { id: string; kind: "custom"; custom: CustomVehicleInfo; config: VehicleConfig; vin?: string; vinStatus?: "verified" | "unverified" | null; onRemove: () => void };
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -142,6 +143,7 @@ export default function GarageVehicleCard(props: Props) {
         <h3 className="mt-0.5 text-[2rem] font-extrabold leading-[0.98] text-slate-50" style={display}>
           {[make, model].filter(Boolean).join(" ")}
         </h3>
+        {kind === "custom" && props.vinStatus === "unverified" && <div className="mt-1.5"><UnverifiedBadge /></div>}
         {specLine ? (
           <p className="mt-2 text-sm leading-snug text-slate-300">{specLine}</p>
         ) : (
