@@ -4066,6 +4066,53 @@ spec: "All-season washer fluid",
         notes: "Filler is on the passenger side near the strut tower. Single-source figure.",
       },
     ],
+  },
+  {
+    id: "2021-chrysler-300-3.6l",
+    keys: { platform: "chrysler-lx-la", engine: "chrysler-pentastar-3.6-gen3", driveline: "chrysler-lx-rwd" },
+    year: 2021,
+    make: "Chrysler",
+    model: "300",
+    trim: "Touring",
+    engine: "3.6L Pentastar V6, 292 hp / 260 lb-ft",
+    drivetrain: "RWD (AWD optional on this generation)",
+    transmission: "8-speed automatic (845RE, ZF-sourced TorqueFlite 8)",
+    specs: [
+      { label: "Engine", value: "3.6L Pentastar V6 (Gen III), 292 hp / 260 lb-ft" },
+      { label: "Drivetrain", value: "RWD (AWD optional on this generation)" },
+      { label: "Transmission", value: "8-speed automatic (845RE, ZF-sourced TorqueFlite 8)" },
+      { label: "Curb weight", value: "~4,013 lb (Touring RWD)" },
+      { label: "Fuel tank", value: "18.5 gal" },
+      { label: "Battery", value: "Group H6/94R -- mounted in the trunk, driver's side, near the spare-tire well, not under the hood. Same LX-platform quirk as this catalog's Charger and Challenger entries." },
+      { label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm) for 2015-2022 model years, per a third-party wheel-fitment lookup -- curated, not yet independently pulled via Open Labor Project under this vehicle's own make/model. Worth flagging: the same lookup lists 111 ft-lb (150 Nm) for the earlier 2011-2014 300, which is the exact figure this catalog's Charger confirmed via OLP for its own 2020 model year. Two real possibilities -- a genuine mid-cycle spec change on the 300 itself, or a platform-twin divergence like the Challenger/Charger lug-nut split already seen in this catalog -- neither assumed here without this vehicle's own cross-check." },
+      { label: "Front tire size (Touring, 17-in wheel package)", value: "215/65R17" },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "5.9 qt (5.6 L) with filter change",
+        spec: "5W-20 full synthetic, API SN, Chrysler Mopar MS-6395",
+        notes: "Cartridge-style filter housing, same family as this catalog's other 3.6L Pentastar entries (Grand Cherokee, Wrangler, Cherokee, Compass, Charger, Challenger, Durango). Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+      },
+      {
+        name: "Engine Coolant",
+        capacity: "~11.5 qt (10.9 L) system capacity",
+        spec: "Mopar OAT antifreeze/coolant (orange), 50/50 premix",
+        notes: "Reference figure only.",
+      },
+      {
+        name: "Automatic Transmission Fluid (845RE 8-speed)",
+        capacity: "~5.5-6.0 qt (5.2-5.7 L) for a pan drain-and-fill (service fill)",
+        spec: "ZF Lifeguard 8 -- NOT Mopar ATF+4",
+        notes: "This 8-speed is ZF-sourced (shared architecture with some BMW/Audi/Jaguar transmissions); it takes ZF's own fluid, unlike the ATF+4 used in older Chrysler automatics. Using ATF+4 here would be a real mistake, not just a suboptimal choice. Reference figure only; total dry-fill is higher than a pan service recovers.",
+      },
+      {
+        name: "Rear Differential Fluid",
+        capacity: "~1.5 pt (0.7 L)",
+        spec: "SAE 75W-140 synthetic gear oil (plus friction modifier if limited-slip / Super Track Pak)",
+        notes: "Reference figure only; confirm against the axle tag before buying fluid.",
+      },
+    ],
   }
 ];
 
