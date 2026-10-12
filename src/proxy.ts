@@ -75,6 +75,6 @@ export const config = {
     // ids. See src/app/api/integrations/ops/snapshot/route.ts. The same
     // revisit rule applies: any write verb or looser check on that route
     // means this line changes too.
-    "/((?!_next/static|_next/image|favicon.ico|icons/|manifest.json|api/admin/report|api/integrations/ops/snapshot).*)",
+    "/((?!_next/static|_next/image|favicon.ico|icons/|manifest.json|api/admin/report|api/integrations/ops/snapshot|api/egress-probe).*)",
   ],
 };
