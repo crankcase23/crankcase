@@ -138,15 +138,6 @@
       "note": "Catalog sells the plug with O-ring as one part; a forum poster cites a McMaster-Carr Viton O-ring (9263K587)."
     },
     {
-      "item": "Rear differential service kit (2 qt Red Line 75W-90 + Rein plug)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.turnermotorsport.com/p-42133544-rear-differential-service-kit"
-      ],
-      "partNumber": "T#42133544",
-      "note": "Turner lists E90 325xi/328xi but not 328i for the kit; do not rely on it for fitment."
-    },
-    {
       "item": "BMW 75W-140 differential fluid, 5 L (M3/LSD cars only)",
       "status": "SINGLE_SOURCE",
       "sources": [

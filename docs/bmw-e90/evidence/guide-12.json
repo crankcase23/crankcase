@@ -83,14 +83,6 @@
       "primary": true
     },
     {
-      "item": "Mann alternative element (E60/E82/E90/E92/Z4)",
-      "partNumber": "13717556961",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.turnermotorsport.com/BMW-E90-Parts/c-92-bmw-air-intake-filters/m-35-mann?Nrpp=50"
-      ]
-    },
-    {
       "item": "Euro airbox / alternate element (Turner: 'Mann N52 Euro airbox'; FCP: Mahle LX1035): EXCLUDED, not this car's part",
       "partNumber": "13717536006",
       "status": "VERIFIED",
@@ -170,7 +162,7 @@
     {
       "n": 1,
       "title": "Prep",
-      "instruction": "Engine off and cool. BMW's TIS excerpt (E89 N52K, quoted on a Z4 forum) says switch the ignition off, and read fault memory first if you have a reader. Battery disconnect is optional: only bavmods asks for it (to protect the MAF), the TIS does not, and no registration is needed after disconnecting. Before ordering parts, check that the old element is 13717542294 (stock airbox); the ETK lists only that element for this car.",
+      "instruction": "Engine off and cool. The TIS excerpt (E89 N52K, quoted on a Z4 forum) says switch the ignition off, and read fault memory first if you have a reader. Battery disconnect is optional: only bavmods asks for it (to protect the MAF), the TIS does not, and no registration is needed after disconnecting. Before ordering parts, check that the old element is 13717542294 (stock airbox); the ETK lists only that element for this car.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Battery disconnect resets some settings (clock/radio/windows)."
@@ -270,7 +262,7 @@
     {
       "n": 8,
       "title": "Close the airbox",
-      "instruction": "Align the screw holes, refit the six screws by hand in a star pattern to seat the element evenly. If you have MAF cleaner, 3-5 short bursts on the sensor are suggested by bavmods (optional).",
+      "instruction": "Align the screw holes, refit every screw you removed (sources say six or seven) by hand in a star pattern to seat the element evenly. If you have MAF cleaner, 3-5 short bursts on the sensor are suggested by bavmods (optional).",
       "status": "SINGLE_SOURCE",
       "warnings": [
         "No torque spec; hand-tighten only."

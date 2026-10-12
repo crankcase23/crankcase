@@ -153,8 +153,14 @@ test("pipeline: every visual is run; contract-locked ones stop at the generation
   const committed = JSON.parse(fs.readFileSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output/PIPELINE-REPORT.json"), "utf8"));
   const inFlightIds = new Set(committed.visuals.filter((v) => v.imageProduced).map((v) => v.visualId));
   for (const v of committed.visuals.filter((x) => inFlightIds.has(x.visualId))) {
-    assert.ok(["GEN_ACCEPTED", "QA_PASSED", "NORMALIZED", "OVERLAY_PASSED", "NEEDS_ANDY"].includes(v.phase), `in-flight ${v.visualId} in unexpected phase ${v.phase}`);
-    assert.equal(v.certified, false, `${v.visualId} must not be recorded as certified before owner sign-off`);
+    assert.ok(["GEN_ACCEPTED", "QA_PASSED", "NORMALIZED", "OVERLAY_PASSED", "NEEDS_ANDY", "APPROVED"].includes(v.phase), `in-flight ${v.visualId} in unexpected phase ${v.phase}`);
+    if (v.phase === "APPROVED") {
+      // APPROVED is legal only with the owner's signed approval on disk (oil-drain-hatch-locate was signed off in c412b2f; the committed report predated it,
+      // so regenerating the report, as the README says to, failed this test before the sign-off was allowed for).
+      assert.ok(fs.existsSync(path.join(ROOT, "docs/bmw-e90/image-evidence/output", v.visualId, "owner-approval.json")), `${v.visualId} is APPROVED without owner-approval.json`);
+    } else {
+      assert.equal(v.certified, false, `${v.visualId} must not be recorded as certified before owner sign-off`);
+    }
   }
   const sortKeys = (_k, v) => (v && typeof v === "object" && !Array.isArray(v) ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, v[k]])) : v);
   const strip = (rep) => JSON.stringify({ visuals: rep.visuals.filter((v) => !inFlightIds.has(v.visualId)), gaps: rep.gaps.filter((g) => !inFlightIds.has(g.visualId)), standard: rep.visualStandard }, sortKeys);
