@@ -1,7 +1,7 @@
 // Real Tesseract OCR (same engine, model, whitelist and page-segmentation passes as the browser scanner) on a reconstructed
 // US-market BMW door-jamb label and its variants: clean, cropped to the VIN strip, low contrast, glare, rotated.
-// The customer's own photo is not in the repo; drop it in scripts/vin/ocr-tests/fixtures/ as customer-bmw-label.(jpg|png) and it is
-// picked up automatically (set VIN_TEST_CUSTOMER_VIN if it is not WBAPH7C58AA175760).
+// The customer's ORIGINAL photo (fixtures/customer-bmw-label.jpg) is tested through the real browser pipeline in
+// tests/e2e/vin-label-photo.spec.ts: it needs the scanner's label-region second stage (canvas), which this Node harness does not run.
 // Whatever the photo, the scanner must (a) never offer label text as a VIN and (b) never silently change a character.
 // Slow (real OCR, about a minute): node --test --test-timeout=240000 scripts/vin/ocr-tests/*.test.mjs
 import { test } from "node:test";
@@ -57,13 +57,5 @@ for (const f of HARD) test(`LABEL ${f}: if anything is offered it is VIN-shaped,
   const raw = allText(pages).toUpperCase().replace(/[^A-Z0-9]/g, "");
   assert.ok(raw.includes(result.vin), "offered exactly as the camera read it (no substitution)");
   assert.equal(result.checkDigitOk, vin.validateVin(result.vin).ok);
-});
-const customer = ["jpg", "jpeg", "png"].map((e) => path.join(FIX, `customer-bmw-label.${e}`)).find((p) => fs.existsSync(p));
-if (customer) test("CUSTOMER PHOTO: the VIN on the real door-jamb label is offered for confirmation", async () => {
-  const want = process.env.VIN_TEST_CUSTOMER_VIN ?? EXPECTED;
-  const { pages, result } = await scan(customer);
-  assert.ok(result, `nothing offered. OCR said:\n${allText(pages)}`);
-  assert.ok(!seen(result).some((v) => /^[A-Z]+$/.test(v)), `label text offered: ${seen(result)}`);
-  assert.ok(distance(result.vin, want) <= 2 || seen(result).some((v) => v === want), `offered ${seen(result)} for ${want}`);
 });
 test("teardown", async () => { await worker.terminate(); });

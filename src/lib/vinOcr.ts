@@ -53,7 +53,8 @@ export function declaredPixels(bytes: Uint8Array, kind: "jpeg" | "png" | "webp")
 }
 
 type Sym = { text: string; confidence: number };
-type OcrLine = { words?: { symbols?: Sym[] }[] };
+type Box = { x0: number; y0: number; x1: number; y1: number };
+type OcrLine = { bbox?: Box; words?: { symbols?: Sym[] }[] };
 type OcrPage = { text?: string; blocks?: { paragraphs?: { lines?: OcrLine[] }[] }[] };
 
 export type VinRead = { vin: string; confidences: (number | undefined)[]; afterVinLabel: boolean };
@@ -115,6 +116,58 @@ export function rankVinReads(pages: OcrPage[]): RankedVin | null {
     alternatives: ranked.slice(1, 4).map((r) => r.vin),
     checkDigitOk: validateVin(best.vin).ok,
   };
+}
+
+/**
+ * Where the printed label is, as the OCR engine itself saw it: the box around every line made of label words (GVWR, STANDARDS,
+ * EFFECT, MANUFACTURE ...), in the coordinates of the photo (`pad` is the margin the engine was given). A dusty door jamb or a
+ * dark photo makes one threshold over the whole picture wipe out the text; reading the label region on its own, with its own
+ * contrast, is what recovers the VIN. Returns null when no label text was recognised. Exported for tests.
+ */
+export function labelHull(pages: OcrPage[], pad = 0): Box | null {
+  let hull: Box | null = null;
+  for (const page of pages) {
+    for (const line of (page.blocks ?? []).flatMap((b) => (b.paragraphs ?? []).flatMap((p) => p.lines ?? []))) {
+      if (!line.bbox) continue;
+      const text = (line.words ?? []).map((w) => (w.symbols ?? []).map((s) => s.text).join("")).join("").toUpperCase();
+      if (text.length < 4 || !looksLikeLabelText(text)) continue;
+      const b = line.bbox;
+      hull = hull ? { x0: Math.min(hull.x0, b.x0), y0: Math.min(hull.y0, b.y0), x1: Math.max(hull.x1, b.x1), y1: Math.max(hull.y1, b.y1) } : { ...b };
+    }
+  }
+  return hull && { x0: hull.x0 - pad, y0: hull.y0 - pad, x1: hull.x1 - pad, y1: hull.y1 - pad };
+}
+
+/** The region to re-read: the label-text hull grown on every side (the VIN is printed just outside the legal text), kept inside the photo. */
+export function plateCropBox(hull: Box, width: number, height: number): Box {
+  const w = hull.x1 - hull.x0, h = hull.y1 - hull.y0;
+  const mx = Math.max(40, Math.round(w * 0.18)), my = Math.max(40, Math.round(h * 0.45));
+  return { x0: Math.max(0, Math.round(hull.x0 - mx)), y0: Math.max(0, Math.round(hull.y0 - my)), x1: Math.min(width, Math.round(hull.x1 + mx)), y1: Math.min(height, Math.round(hull.y1 + my)) };
+}
+
+/** A copy of the region `box` of a greyscale canvas, stretched on its own 1st-99.5th percentile range (dust and glare outside the label cannot flatten it). */
+function cropStretched(src: HTMLCanvasElement, box: Box): HTMLCanvasElement | null {
+  const w = box.x1 - box.x0, h = box.y1 - box.y0;
+  if (w < 50 || h < 30) return null;
+  const out = document.createElement("canvas");
+  out.width = w;
+  out.height = h;
+  const ctx = out.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.drawImage(src, box.x0, box.y0, w, h, 0, 0, w, h);
+  const img = ctx.getImageData(0, 0, w, h);
+  const d = img.data;
+  const hist = new Array<number>(256).fill(0);
+  for (let i = 0; i < d.length; i += 4) hist[d[i] | 0]++;
+  const total = d.length / 4;
+  let acc = 0, lo = 0, hi = 255;
+  for (let t = 0; t < 256; t++) { acc += hist[t]; if (acc >= total * 0.01) { lo = t; break; } }
+  acc = 0;
+  for (let t = 0; t < 256; t++) { acc += hist[t]; if (acc >= total * 0.995) { hi = t; break; } }
+  const span = Math.max(1, hi - lo);
+  for (let i = 0; i < d.length; i += 4) { const v = Math.max(0, Math.min(255, ((d[i] - lo) * 255) / span)); d[i] = d[i + 1] = d[i + 2] = v; }
+  ctx.putImageData(img, 0, 0);
+  return out;
 }
 
 /** Greyscale + contrast stretch of a decoded photo, on a canvas of its own. Etched/embossed plates read far better with it. */
@@ -204,17 +257,18 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
   try {
     const { createWorker, PSM } = await import("tesseract.js");
     let passDone = 0;
-    const passes: { img: HTMLCanvasElement; psm: (typeof PSM)[keyof typeof PSM] }[] = [];
+    let passTotal = 6;
+    const PSMS = [PSM.SINGLE_BLOCK, PSM.SPARSE_TEXT, PSM.AUTO];
     const bin = variant(canvas, true), grey = variant(canvas, false);
     made.push(bin, grey);
-    for (const img of [bin, grey]) for (const psm of [PSM.SINGLE_BLOCK, PSM.SPARSE_TEXT, PSM.AUTO]) passes.push({ img, psm });
+    const pad = Math.round(Math.max(canvas.width, canvas.height) * 0.04); // the margin variant() adds around the photo
     worker = await createWorker("eng", 1, {
       workerPath: "/ocr/worker.min.js",
       corePath: "/ocr/core",
       langPath: "/ocr/lang",
       workerBlobURL: false,
       logger: (m: { status?: string; progress?: number }) => {
-        if (m.status === "recognizing text" && typeof m.progress === "number") onProgress?.((passDone + m.progress) / passes.length);
+        if (m.status === "recognizing text" && typeof m.progress === "number") onProgress?.(Math.min(1, (passDone + m.progress) / passTotal));
       },
     });
     // Letters and digits only. I, O and Q stay allowed on purpose: when the camera reads one, the customer is shown it.
@@ -223,13 +277,31 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
     // ends the search; otherwise every read is ranked by evidence (see rankVinReads) and the best is offered, flagged, for
     // the customer to check. Text that does not look like a VIN is never offered.
     const pages: OcrPage[] = [];
-    for (const pass of passes) {
-      await worker.setParameters({ tessedit_pageseg_mode: pass.psm });
-      const { data } = await worker.recognize(pass.img, {}, { blocks: true, text: true });
+    const run = async (img: HTMLCanvasElement, psm: (typeof PSMS)[number]) => {
+      await worker!.setParameters({ tessedit_pageseg_mode: psm });
+      const { data } = await worker!.recognize(img, {}, { blocks: true, text: true });
       passDone++;
       pages.push(data as unknown as OcrPage);
-      const so_far = rankVinReads(pages);
+      return rankVinReads(pages);
+    };
+    // Stage 1: the whole photo.
+    for (const img of [bin, grey]) for (const psm of PSMS) {
+      const so_far = await run(img, psm);
       if (so_far?.checkDigitOk) return { ok: true, ...so_far };
+    }
+    // Stage 2: read the label region on its own, with its own contrast, where the engine saw label text.
+    const hull = labelHull(pages, pad);
+    const box = hull && plateCropBox(hull, canvas.width, canvas.height);
+    const crop = box && cropStretched(canvas, box);
+    if (crop) {
+      made.push(crop);
+      const cropBin = variant(crop, true), cropGrey = variant(crop, false);
+      made.push(cropBin, cropGrey);
+      passTotal += 6;
+      for (const img of [cropGrey, cropBin]) for (const psm of PSMS) {
+        const so_far = await run(img, psm);
+        if (so_far?.checkDigitOk) return { ok: true, ...so_far };
+      }
     }
     const result = rankVinReads(pages);
     if (!result) return fail("unreadable");

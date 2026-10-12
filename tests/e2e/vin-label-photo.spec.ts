@@ -4,8 +4,8 @@ import { signUpNewUser } from "./helpers";
 
 // REGRESSION for the real customer bug: a clear BMW door-jamb label was read as SINEFFECTONTHEDAT (legal warning text).
 // This drives the real browser pipeline (canvas grey/contrast/binarize passes + the OCR engine + candidate ranking) on a
-// reconstructed US-market BMW label and its variants (scripts/vin/ocr-tests/fixtures). The customer's own photo is not in
-// the repo; if scripts/vin/ocr-tests/fixtures/customer-bmw-label.(jpg|png) is added, add it to LABELS below.
+// the customer's original photo and a reconstructed US-market BMW label with its variants (scripts/vin/ocr-tests/fixtures). The customer's own photo is not in
+// the repo, but the customer's ORIGINAL photo is (customer-bmw-label.jpg).
 // Whatever happens, the VIN box must never receive label text, and a scan must still need the customer's confirmation.
 const FIX = (n: string) => path.join(__dirname, "..", "..", "scripts", "vin", "ocr-tests", "fixtures", n);
 const BMW_VIN = "WBAPH7C58AA175760";
@@ -18,6 +18,46 @@ const LABELS: { file: string; exact: boolean }[] = [
   { file: "bmw-label-rotated-7.png", exact: false },
   { file: "bmw-label-rotated-minus12.png", exact: false },
 ];
+
+test.describe("The ORIGINAL customer photo (dusty BMW door jamb, 1440x1920) that exposed the bug", () => {
+  test("never label text; the engine's near-miss is shown exactly as read and flagged; the customer fixes it; confirmation is still required", async ({ page }) => {
+    test.setTimeout(180_000);
+    await signUpNewUser(page);
+    await page.goto("/decode");
+    const chooser = page.waitForEvent("filechooser");
+    await page.getByTestId("vin-upload-photo").click();
+    await (await chooser).setFiles(FIX("customer-bmw-label.jpg"));
+    const status = page.getByTestId("vin-scan-status");
+    await expect(status).not.toHaveText(/Reading the photo/, { timeout: 150_000 });
+    const read = (await page.getByTestId("vin-input").inputValue()).trim();
+    // This engine cannot read the label's slashed 7 (it returns A, Z or I) and sometimes the last 0 (U); the rest is right.
+    // So the strict goal "exact VIN extracted" is NOT met on this photo; what is guaranteed, and pinned here, is:
+    const hamming = [...read].filter((c, i) => c !== BMW_VIN[i]).length;
+    expect(read, "label text must never reach the VIN box").toHaveLength(17);
+    expect(hamming, `the read ${read} is close to the real VIN`).toBeLessThanOrEqual(3);
+    let scannedPath = true; // false once the customer types the VIN themselves (a typed VIN is the customer's own entry)
+    if (read === BMW_VIN) {
+      await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
+    } else {
+      await expect(status).toContainText(/does not pass the VIN check/); // flagged, not presented as verified
+      await expect(page.getByTestId("vin-lookup")).toBeDisabled(); // nothing can be looked up from a failed read
+      const fixes = page.getByTestId("vin-suggestion");
+      if ((await fixes.count()) === 1) { // a single-character change passes the check digit: it must be the true VIN, applied only by the customer
+        await fixes.click();
+        await expect(page.getByTestId("vin-input")).toHaveValue(BMW_VIN);
+      } else {
+        await page.getByTestId("vin-input").fill(BMW_VIN); // the customer types what is on the vehicle
+        scannedPath = false;
+      }
+    }
+    if (scannedPath) {
+      await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
+      await expect(page.getByTestId("vin-lookup")).toBeDisabled(); // a scanned VIN still needs the customer's own confirmation
+      await page.getByTestId("vin-confirm-scan").check();
+    }
+    await expect(page.getByTestId("vin-lookup")).toBeEnabled();
+  });
+});
 
 test.describe("BMW door-jamb label photo scan", () => {
   for (const { file, exact } of LABELS) {

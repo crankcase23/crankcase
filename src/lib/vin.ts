@@ -78,11 +78,11 @@ export const isValidVin = (input: unknown): boolean => validateVin(input).ok;
 
 // Characters a camera or a tired eye mixes up. Used to HIGHLIGHT doubt and to OFFER a correction; never to apply one.
 const CONFUSABLE: Record<string, string[]> = {
-  "0": ["D"], "1": ["L"], "2": ["Z"], "5": ["S"], "6": ["G"], "8": ["B"],
-  D: ["0"], L: ["1"], Z: ["2"], S: ["5"], G: ["6"], B: ["8"],
+  "0": ["D"], "1": ["L", "7"], "2": ["Z"], "5": ["S"], "6": ["G"], "7": ["1", "T", "A"], "8": ["B"],
+  A: ["7"], D: ["0"], L: ["1"], Z: ["2", "7"], S: ["5"], G: ["6"], B: ["8"], T: ["7"],
   U: ["V"], V: ["U"], M: ["N"], N: ["M"], E: ["F"], F: ["E"], H: ["N"], K: ["X"], X: ["K"], P: ["R"], R: ["P"],
   // I, O and Q are not legal VIN characters; they are what the camera reads where a 1, 0 or 0 should be.
-  I: ["1"], O: ["0"], Q: ["0"],
+  I: ["1", "7"], O: ["0"], Q: ["0"], // a slashed 7 is read as I, Z or T on some labels (found on a real BMW door-jamb photo)
 };
 
 export const isConfusable = (ch: string) => ch in CONFUSABLE;

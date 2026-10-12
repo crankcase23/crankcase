@@ -143,3 +143,33 @@ test("CAND-10 a 17-wide window that overlaps a label word is label text (AWRFRT2
   assert.deepEqual(vin.extractVinCandidates("VINWBAPH7C58AA175760"), [BMW]);
   assert.equal(vin.extractVinCandidates("AWBAPH7C58AA175760X")[0], BMW, "a VIN with a stray character each side still ranks first (valid check digit)");
 });
+
+test("CAND-11 the original customer photo: the engine reads the label's slashed 7 as A, Z or I; the true VIN is OFFERED as a suggestion, never applied", () => {
+  // reads of the real WBAPH7C58AA175760 label by the real engine (browser pipeline and Node); every other character was right
+  for (const read of ["WBAPHAC58AA175760", "WBAPHZC58AA175760", "WBAPHIC58AA175760"]) {
+    const r = ocr.rankVinReads([page(["MANUFACTURE SHOWN ABOVE", read])]);
+    assert.ok(r, `${read} is offered`);
+    assert.equal(r.vin, read, "returned exactly as read, not corrected");
+    assert.equal(r.checkDigitOk, false);
+    const fixes = vin.suggestCorrections(read);
+    assert.ok(fixes.some((f) => f.vin === BMW && f.position === 5), `the exact VIN is offered for ${read}: ${JSON.stringify(fixes)}`);
+    assert.ok(fixes.every((f) => vin.validateVin(f.vin).ok), "only fixes that pass the check digit are offered");
+  }
+});
+
+test("CAND-12 label region: the engine's own label-word lines locate the plate; the crop grows around them and stays inside the photo", () => {
+  const line = (text, x0, y0, x1, y1) => ({ bbox: { x0, y0, x1, y1 }, words: [{ symbols: [...text].map((t) => sym(t)) }] });
+  const pg = { text: "", blocks: [{ paragraphs: [{ lines: [
+    line("FEDERALMOTORVEHICLESAFETY", 664, 1134, 1143, 1184),
+    line("EFFECTONTHEDATEOF", 683, 1173, 1127, 1229),
+    line("ABCDEFGHJKLMNPRST", 10, 100, 900, 150), // not label text: ignored
+  ] }] }] };
+  const hull = ocr.labelHull([pg], 20);
+  assert.deepEqual(hull, { x0: 644, y0: 1114, x1: 1123, y1: 1209 });
+  assert.equal(ocr.labelHull([{ text: "", blocks: [{ paragraphs: [{ lines: [line("WBAPH7C58AA175760", 0, 0, 500, 60)] }] }] }]), null, "no label text, no region");
+  const box = ocr.plateCropBox(hull, 1440, 1920);
+  assert.ok(box.x0 < hull.x0 && box.y0 < hull.y0 && box.x1 > hull.x1 && box.y1 > hull.y1, "grown on every side");
+  assert.ok(box.x0 >= 0 && box.y0 >= 0 && box.x1 <= 1440 && box.y1 <= 1920, "inside the photo");
+  const edge = ocr.plateCropBox({ x0: 5, y0: 5, x1: 100, y1: 40 }, 120, 80);
+  assert.deepEqual([edge.x0, edge.y0, edge.x1, edge.y1], [0, 0, 120, 80]);
+});
