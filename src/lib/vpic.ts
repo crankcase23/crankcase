@@ -61,17 +61,30 @@ function tidyDisplacement(value: string): string {
   return String(Math.round(n * 10) / 10);
 }
 
+export const VPIC_TIMEOUT_MS = 12_000;
+
 export async function decodeVin(vin: string): Promise<DecodedVin> {
   const cleaned = vin.trim().toUpperCase();
   const url = `https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${encodeURIComponent(
     cleaned
     )}?format=json`;
 
-const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`NHTSA vPIC API request failed (${res.status})`);
+// vPIC normally answers in well under a second. Without a limit a stalled connection leaves the customer on
+  // "Decoding…" forever with no way forward, and a VIN is required to add a vehicle, so give up after 12 seconds and let
+  // the caller show its plain "couldn't reach the decoder" message (the VIN is kept, so a retry is one click).
+  // The timer covers the response body too: a stalled body would hang just as long as a stalled connection.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), VPIC_TIMEOUT_MS);
+  let json: { Results?: Record<string, unknown>[] };
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) {
+      throw new Error(`NHTSA vPIC API request failed (${res.status})`);
+    }
+    json = await res.json();
+  } finally {
+    clearTimeout(timer);
   }
-  const json = await res.json();
   const row = json?.Results?.[0] ?? {};
 
 const result: Record<string, string> = { vin: cleaned };

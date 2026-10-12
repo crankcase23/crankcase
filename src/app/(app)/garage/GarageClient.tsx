@@ -148,7 +148,7 @@ export default function GarageClient() {
                 Add a vehicle
               </span>
               <span className="max-w-[16rem] text-sm text-slate-200">
-                Enter a VIN or select manually to add a new vehicle to your garage.
+                Enter your VIN, or scan it from a photo, to add a vehicle to your garage.
               </span>
               <span className="mt-1 rounded-lg border border-white/25 bg-black/30 px-5 py-2 text-sm font-semibold text-slate-50 group-hover:border-white/50">
                 Add a vehicle <span aria-hidden>&rarr;</span>
