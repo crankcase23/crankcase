@@ -481,6 +481,60 @@ test.describe("Photo VIN scan on a phone-sized screen", () => {
 // ----------------------------------------------------------------------- probe protection (enumeration / ownership probing)
 test.describe("VIN attempts are rate limited and the limit reveals nothing", () => {
 
+  // Replaces the deleted "collisions run out of budget" test. Collisions no longer exist, so the property that matters is:
+  // probing VINs another account holds is neither blocked early nor distinguishable from probing free VINs.
+  test("probing VINs another account holds gets the same answers, the same budget and the same 429 as probing free VINs", async ({ page, browser }) => {
+    const holderEmail = await signUpNewUser(page);
+    const held: string[] = [];
+    for (let i = 0; i < 7; i++) {
+      const v = validVin("1HG");
+      held.push(v);
+      expect((await post(page, catalog(v, CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).ok()).toBeTruthy();
+    }
+    const cfg = { transmission: "cvt", drivetrain: "fwd" };
+    const shape = async (r: Awaited<ReturnType<typeof post>>) => ({ status: r.status(), keys: Object.keys(await r.json()).sort() });
+
+    const ctxP = await browser.newContext();
+    const prober = await ctxP.newPage();
+    const probeEmail = await signUpNewUser(prober);
+    const ctxF = await browser.newContext();
+    const control = await ctxF.newPage();
+    await signUpNewUser(control);
+
+    // 7 held VINs for the prober and 7 free VINs for the control: identical status and body shape every time
+    for (let i = 0; i < 7; i++) {
+      const a = await shape(await post(prober, catalog(held[i], CIVIC, cfg)));
+      const b = await shape(await post(control, catalog(validVin("1HG"), CIVIC, cfg)));
+      expect(a, `attempt ${i}`).toEqual(b);
+      expect(a.status).toBe(200);
+    }
+    // no collision bookkeeping exists any more
+    expect(sql(`select count(*) from app_events where type='vin.collision' and user_id='${uidOf(probeEmail)}'`)).toBe("0");
+    expect(countFor(probeEmail)).toBe(7);
+
+    // both run out of the same attempt budget at the same point, with the same plain 429
+    let probeLast: Awaited<ReturnType<typeof post>> | null = null;
+    let controlLast: Awaited<ReturnType<typeof post>> | null = null;
+    const pStatuses: number[] = [];
+    const cStatuses: number[] = [];
+    for (let i = 0; i < 15; i++) {
+      probeLast = await post(prober, catalog(i < 7 ? held[i] : validVin("1HG"), CIVIC, cfg)); // re-adds of its own held VINs, then new
+      controlLast = await post(control, catalog(validVin("1HG"), CIVIC, cfg));
+      pStatuses.push(probeLast.status());
+      cStatuses.push(controlLast.status());
+    }
+    expect(pStatuses).toEqual(cStatuses);
+    expect(pStatuses.slice(-2)).toEqual([429, 429]);
+    const pBody = await probeLast!.text();
+    expect(pBody).toBe(await controlLast!.text());
+    expect(JSON.parse(pBody)).toEqual({ code: "VIN_RATE_LIMITED", error: expect.any(String) });
+    for (const secret of [held[0], holderEmail, probeEmail, "Civic", uidOf(holderEmail)]) expect(pBody).not.toContain(secret);
+    // the VIN is never written to the abuse bookkeeping
+    expect(sql(`select count(*) from app_events where type like 'vin.%' and (metadata::text ilike '%${held[0]}%' or object_id ilike '%${held[0]}%')`)).toBe("0");
+    await ctxP.close();
+    await ctxF.close();
+  });
+
   test("an account has a budget of VIN attempts per hour, whatever the outcome", async ({ page }) => {
     const email = await signUpNewUser(page);
     const out: number[] = [];
