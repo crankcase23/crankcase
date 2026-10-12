@@ -1,11 +1,19 @@
 -- PROPOSAL (not in migrations/). Undo of post-deploy-contract.sql ("re-expand"): use ONLY if the new code has been rolled back to the
 -- OLD code AFTER the contract step ran, so the old code must be able to add the same VIN twice / a lower-case VIN without a 500.
--- Drops the CHECK and the two unique indexes and re-installs the temporary upper-casing trigger. Deletes no rows. Idempotent.
+-- Drops the CHECK and any unique index the contract file created (never an index that existed before it) and re-installs the temporary upper-casing trigger. Deletes no rows. Idempotent.
 -- The permanent full rollback files (vin-canonical-ROLLBACK, vehicle-configuration-ROLLBACK) are separate and also safe to run.
 DO $$
 BEGIN
-  DROP INDEX IF EXISTS garage_entries_user_vin_uq;
-  DROP INDEX IF EXISTS garage_entries_user_catalog_novin_uq;
+  -- Only the indexes post-deploy-contract.sql itself created (marked by COMMENT). Indexes that came from the full
+  -- vehicle-configuration migration (as in production) are NOT ours to drop: that migration's own ROLLBACK removes them.
+  IF to_regclass('garage_entries_user_vin_uq') IS NOT NULL
+     AND obj_description(to_regclass('garage_entries_user_vin_uq'), 'pg_class') = 'created by post-deploy-contract.sql' THEN
+    DROP INDEX garage_entries_user_vin_uq;
+  END IF;
+  IF to_regclass('garage_entries_user_catalog_novin_uq') IS NOT NULL
+     AND obj_description(to_regclass('garage_entries_user_catalog_novin_uq'), 'pg_class') = 'created by post-deploy-contract.sql' THEN
+    DROP INDEX garage_entries_user_catalog_novin_uq;
+  END IF;
   ALTER TABLE garage_entries DROP CONSTRAINT IF EXISTS garage_entries_vin_canonical_chk;
 END
 $$;

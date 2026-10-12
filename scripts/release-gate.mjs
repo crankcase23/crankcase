@@ -10,7 +10,7 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 
-const MIN_KEYS_TESTS = 30;       // keys:test as of PR #50; raise when tests are added, never lower
+const MIN_KEYS_TESTS = 33;       // keys:test as of the Option B contract-rollback fix (30 + 3 contract tests); raise when tests are added, never lower
 const MIN_LEGACY_HOLDS_TESTS = 12;
 const ALLOWED_SKIPS = [/^ops snapshot bridge/i]; // needs tokens that are not set in the rehearsal environment
 const REQUIRED = [
