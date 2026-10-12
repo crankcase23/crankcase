@@ -23,7 +23,7 @@ import { normalizeConfig, type AxisChoice, type TransmissionChoice, type Drivetr
 // src/db/schema.ts. A custom GarageEntry's client-facing `id` IS the DB
 // row's generated id, since there's no other natural key for it.
 
-type GarageEntryRow = typeof garageEntries.$inferSelect;
+export type GarageEntryRow = typeof garageEntries.$inferSelect;
 
 function configOf(row: GarageEntryRow) {
   return normalizeConfig({
@@ -41,6 +41,7 @@ function mapRow(row: GarageEntryRow, isOldest = true): GarageEntry {
       kind: "custom",
       addedAt: row.createdAt.toISOString(),
       config: configOf(row),
+      vinStatus: row.vinStatus === "verified" || row.vinStatus === "unverified" ? row.vinStatus : null,
       custom: {
         vin: row.vin ?? undefined,
         year: row.year ?? undefined,
@@ -120,7 +121,7 @@ export async function vinHeldByAnotherAccount(userId: string, vin: string): Prom
   return rows.length > 0;
 }
 
-async function ownRowForVin(userId: string, vin: string): Promise<GarageEntryRow | undefined> {
+export async function ownRowForVin(userId: string, vin: string): Promise<GarageEntryRow | undefined> {
   return (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), sameVin(vin))).limit(1))[0];
 }
 const isUniqueViolation = (e: unknown) => {
@@ -144,7 +145,7 @@ export async function listGarageEntries(userId: string): Promise<GarageEntry[]> 
 }
 
 /** Map one row to its client entry, working out whether it is the customer's oldest car of that model. */
-async function entryFor(row: GarageEntryRow): Promise<GarageEntry> {
+export async function entryFor(row: GarageEntryRow): Promise<GarageEntry> {
   if (row.kind !== "catalog" || !row.vehicleId) return mapRow(row);
   const oldest = (
     await db
@@ -275,6 +276,9 @@ export async function addCustomEntry(
   userId: string,
   custom: { vin: string; year?: string; make?: string; model?: string; trim?: string; engine?: string },
   config: ConfigInput,
+  // Set only by the NHTSA-outage fallback (src/lib/vinFallbackServer.ts). Written on INSERT only: an add that finds the
+  // customer's own row for this VIN leaves its status alone. Every other caller omits it and the column stays NULL.
+  opts?: { vinStatus?: "verified" | "unverified" },
 ): Promise<AddResult | Blocked> {
   const mine = await ownRowForVin(userId, custom.vin);
   if (mine) return updateExisting(mine, undefined, config);
@@ -295,6 +299,7 @@ export async function addCustomEntry(
         transmission: config.transmission,
         drivetrain: config.drivetrain,
         configConfirmedAt: new Date(),
+        ...(opts?.vinStatus ? { vinStatus: opts.vinStatus, vinStatusAt: new Date() } : {}),
       })
       .returning();
     return { entry: mapRow(created), created: true, configKept: false };

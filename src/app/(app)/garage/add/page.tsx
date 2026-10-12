@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import AddVehicleClient from "./AddVehicleClient";
+import { fallbackEnabled } from "@/lib/vinFallback";
+
+// Read per request: whether the NHTSA-outage fallback is on is a server setting the owner flips without a rebuild.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Add a Vehicle",
@@ -7,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function AddVehiclePage() {
-  return <AddVehicleClient />;
+  return <AddVehicleClient fallbackEnabled={fallbackEnabled()} />;
 }
