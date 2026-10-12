@@ -9,7 +9,7 @@
     "DECODED CONFIG: S570 'stronger electricity supply' is coded, which points to a larger battery and alternator than base; AGM is not indicated and battery size/type is NOT decoded. Read the battery label before buying. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable and verify at the car.] UPDATE: the same option list ends with VO code B080 (trailing, truncated on the decoder page; see VIN-DECODE.md). B080 = BATTERIE_80AH in BMW coding lists (5series.net NCS list, E90Post -B080 to -A080 thread), so an 80 Ah flooded factory battery is the probable configuration; ETK offers matching 80 Ah numbers (Exide 61217586961, Douglas 61218381749).",
     "Engine: RealOEM VIN-tail decode of WBAPH7C58AA175760 gives E90 LCI 328i sedan, type code PH73, engine N52N, production 09/2009, US market, so N52B30 family is now supported by an OE-catalog decode (N51 is not indicated). Battery guidance does not differ by engine anyway.",
     "Transmission and option codes (S-codes) are not shown by the decode; they do not change the battery location.",
-    "Battery capacity/type: BMW ETK lists 70, 80 and 90 Ah flooded and 70, 80 and 92 Ah AGM options for 2009 E90 LCI 328i; which one this car left the factory with depends on its option codes (not decoded). Changing type (flooded vs AGM) or capacity requires coding in addition to registration (1addicts, E90Post, 5series.net, BMW statement quoted by AllEuro, ETK notice).",
+    "Battery capacity/type: the ETK lists 70, 80 and 90 Ah flooded and 70, 80 and 92 Ah AGM options for 2009 E90 LCI 328i; which one this car left the factory with depends on its option codes (not decoded). Changing type (flooded vs AGM) or capacity requires coding in addition to registration (1addicts, E90Post, 5series.net, BMW statement quoted by AllEuro, ETK notice).",
     "BCI group size depends on capacity: Bosch 80 Ah AGM is 94R/H7 and Bosch 92 Ah AGM is 49/H8 on FCP's BMW listing; an 80 Ah Exide is 315x175x190 mm; tpautorepair's 2009 328i example is 94R/H7 and an E90Post replier calls H8/49 proper (consistent with a 90-92 Ah car). For a probable 80 Ah (B080) car, 94R/H7 is the expected size, but compare the old battery's footprint and vent-port side before buying.",
     "Registration tool: ISTA/Rheingold, INPA/Tool32, NCS Expert (coding) or an aftermarket app/scanner; capability depends on the tool and on the DME file (MSV80 vs MSD80 naming varies).",
     "Safety battery terminal (SBK/BST) is part of the E90 positive cable assembly per ST502, ETK (61129217031 'SBK', from 03/2006) and a parts listing.",
@@ -637,7 +637,9 @@
     "Do not open, cut or modify the safety battery terminal or the rear power distribution box on top of the battery.",
     "Keep the vent hose connected so gas vents outside; never replace with a hose of unknown spec.",
     "Register the battery; code the car if type/capacity changes.",
-    "Never apply a jump source to the positive jump point if the positive cable has been disconnected and is touching chassis (E90Post)."
+    "Never apply a jump source to the positive jump point if the positive cable has been disconnected and is touching chassis (E90Post).",
+    "Jump-start only from the engine-compartment jump terminal and a bare metal ground; never clamp onto the trunk battery or the rear power distribution box.",
+    "Take the old battery to a recycler or a parts-store core return; never throw it out. Keep it upright, and keep sparks and flame away from it."
   ],
   "missingEvidence": [
     "Tightening torque for battery terminal clamp nuts, hold-down screw and trunk bracket nuts (not in BMW TIS battery page, ST502, ETK or any how-to). A single 5 Nm figure from a 2006 325i data table was seen and not adopted.",

@@ -32,7 +32,7 @@
     "regionsHint": [],
     "viewpoint": null
   },
-  "contentHash": "cbf6febc35a72eed1b212db9c26d20343887bae7ea26f9733a380e1d2450c78e",
+  "contentHash": "617b43aa8b9ba808b5840f4a3925a8287982808e606cfb2b96ab145fc54e1442",
   "createdAt": "2026-10-10T12:00:06.000Z",
   "createdBy": {
     "actor": "factory-code",
@@ -240,7 +240,7 @@
   "refs": [
     {
       "id": "EP-front-caliper-hardware-wheel-well-v1",
-      "sha256": "00679161a0f14d6956b7f108e908b7659188875cac152cba778da6799379bebc"
+      "sha256": "65d5c380f36e119a8221cc4ea97b30fbad45cb371bbbdd53cd8be4ed8acc3ba8"
     },
     {
       "id": "TPL-2010-bmw-328i-sedan-e90-3.0l-inline-6-engine-code-not-confirmed-v1",

@@ -9,20 +9,20 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 | # | Guide | Tier | BMW doc | Readiness | Verified | Secondary | Single | Conflict | Missing | Visuals proposed |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 1 | Front Brake Pads | safety-critical | yes | NEEDS_EVIDENCE | 36 | 15 | 2 | 2 | 1 | 2 |
-| 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 27 | 0 | 10 | 4 | 2 | 2 |
+| 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 24 | 0 | 6 | 4 | 2 | 2 |
 | 3 | Key Fob Battery | standard | yes | READY_FOR_QA | 10 | 1 | 6 | 0 | 0 | 0 |
 | 4 | Oxygen Sensor | safety-critical | yes | NEEDS_EVIDENCE | 15 | 7 | 10 | 0 | 4 | 3 |
 | 5 | Rear Brake Pads | safety-critical | yes | NEEDS_EVIDENCE | 28 | 11 | 9 | 2 | 1 | 2 |
-| 6 | Serpentine Belt | safety-critical | yes | NEEDS_EVIDENCE | 7 | 9 | 10 | 3 | 3 | 2 |
+| 6 | Serpentine Belt | safety-critical | yes | NEEDS_EVIDENCE | 6 | 8 | 9 | 3 | 3 | 2 |
 | 7 | Battery Replacement | safety-critical | yes | NEEDS_EVIDENCE | 14 | 5 | 13 | 1 | 5 | 2 |
 | 8 | Coolant Flush & Fill | safety-critical | yes | NEEDS_EVIDENCE | 24 | 10 | 7 | 1 | 3 | 2 |
 | 9 | Fluid Checks & Top-Offs | safety-critical | yes | NEEDS_EVIDENCE | 10 | 5 | 6 | 2 | 2 | 2 |
 | 10 | Cabin Air Filter | standard | yes | NEEDS_EVIDENCE | 7 | 5 | 4 | 1 | 1 | 2 |
 | 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | safety-critical | yes | READY_FOR_QA | 10 | 2 | 0 | 0 | 0 | 1 |
-| 12 | Engine Air Filter | standard | yes | READY_FOR_QA | 10 | 4 | 10 | 0 | 1 | 2 |
+| 12 | Engine Air Filter | standard | yes | READY_FOR_QA | 10 | 4 | 9 | 0 | 1 | 2 |
 | 13 | Tire Rotation | safety-critical | no | NEEDS_EVIDENCE | 6 | 7 | 8 | 0 | 2 | 3 |
 | 14 | Wiper Blades | standard | yes | NEEDS_EVIDENCE | 12 | 2 | 3 | 1 | 2 | 1 |
-| 15 | Differential / Transfer Case Fluid | safety-critical | yes | NEEDS_EVIDENCE | 14 | 7 | 8 | 2 | 4 | 2 |
+| 15 | Differential / Transfer Case Fluid | safety-critical | yes | NEEDS_EVIDENCE | 14 | 7 | 7 | 2 | 4 | 2 |
 | 16 | Engine Oil & Filter Change | safety-critical | yes | NEEDS_EVIDENCE | 15 | 14 | 4 | 2 | 2 | 7 |
 
 ## 1. Front Brake Pads — BUILDABLE (NEEDS_EVIDENCE)
