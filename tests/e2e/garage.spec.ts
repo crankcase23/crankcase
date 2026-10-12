@@ -63,7 +63,8 @@ test.describe("garage — add your own vehicle", () => {
     await page.getByText("Tire Rotation", { exact: true }).click();
     await page.getByRole("button", { name: "Add entry" }).click();
 
-    const row = page.getByRole("listitem").filter({ hasText: "42,000 mi" }).last();
+    // Scope to the Service History list: "Recent work" on the hub echoes the same entry.
+    const row = page.locator("#history").getByRole("listitem").filter({ hasText: "42,000 mi" });
     await expect(row).toBeVisible();
     await expect(row.getByText("Tire Rotation")).toBeVisible();
   });

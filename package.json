@@ -21,15 +21,16 @@
     "vin:test": "node --test scripts/vin/tests/*.test.mjs",
     "bmw:test": "node --test scripts/bmw/tests/*.test.mjs",
     "bmw:preview": "node scripts/bmw/preview/run.mjs",
-    "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs",
-    "config:test": "node --test scripts/config/tests/*.test.mjs"
+    "db:test": "node --test scripts/db/tests/*.test.mjs",
+    "config:test": "node --test scripts/config/tests/*.test.mjs",
+    "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",
     "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.2",
-    "next": "16.3.4",
+    "next": "16.3.8",
     "next-auth": "^5.0.0-beta.32",
     "pg": "^8.23.0",
     "react": "19.2.8",
@@ -48,7 +49,7 @@
     "drizzle-kit": "^0.31.10",
     "esbuild": "0.25.12",
     "eslint": "^9",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
