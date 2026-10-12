@@ -30,7 +30,7 @@ specs: [
 { label: "Fuel tank", value: "24.6 gal" },
 { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
 { label: "Battery", value: "Group H7 (94R) AGM, ~800 CCA" },
-{ label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm)" },
+{ label: "Wheel lug nut torque", value: "105 ft-lb (142 Nm) -- corrected 2026-10-12: this entry previously carried this catalog's Ram HD truck figure (130 ft-lb / 176 Nm), the same copy-paste mismatch found and fixed on the Charger and Challenger. Open Labor Project data pulled under this vehicle's own 2014 Grand Cherokee 3.6L Pentastar make/model confirms 105 ft-lb (142 Nm), oem_verified confidence, consistent across all 124 job entries that carry a lug-nut spec." },
 { label: "Front tire size (base)", value: "245/70R17" },
 ],
 fluids: [
@@ -2426,7 +2426,7 @@ specs: [
 { label: "Fuel tank", value: "~21.5 gal" },
 { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
 { label: "Battery", value: "Group size H7 (94R), ~800 CCA -- eTorque builds add a second auxiliary battery" },
-{ label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm)" },
+{ label: "Wheel lug nut torque", value: "130 ft-lb (176 Nm) -- confirmed 2026-10-12: Open Labor Project data pulled under this vehicle's own 2021 Wrangler 3.6L Pentastar make/model independently confirms this exact figure, high confidence, consistent across all 101 job entries that carry a lug-nut spec. This is the same figure flagged catalog-wide as a suspect Ram HD truck spec (see the 2026-10-07 audit note) -- for the Wrangler specifically it checks out as correct, the same pattern already seen on the Durango." },
 { label: "Front tire size (Sport base)", value: "245/75R17" },
 ],
 fluids: [
@@ -3960,7 +3960,7 @@ spec: "All-season washer fluid",
       { label: "Engine", value: "3.6L Pentastar V6, 283 hp / 260 lb-ft" },
       { label: "Drivetrain", value: "FWD (AWD optional on this generation; AWD-specific driveline fluids are out of scope here)" },
       { label: "Transmission", value: "6-speed automatic (62TE) -- a genuinely different unit from the ZF-sourced 845RE/850RE 8-speeds in this catalog's Charger/Challenger/Durango. Takes Mopar ATF+4, not ZF Lifeguard 8 -- flagged explicitly so a reader doesn't grab the wrong fluid on the strength of a shared Chrysler Pentastar badge alone." },
-      { label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm) -- curated estimate for this FWD unibody platform. The Journey has no real platform-mate elsewhere in this catalog to cross-check against, and this figure is deliberately NOT carried over from the Ram HD truck figure already flagged catalog-wide as suspect (see the 2026-10-07 lug-nut audit note). Needs its own independent Open Labor Project cross-check before being trusted as more than a reasonable estimate." },
+      { label: "Wheel lug nut torque", value: "100 ft-lb (136 Nm) -- confirmed 2026-10-12: Open Labor Project data pulled under this vehicle's own 2017 Journey 3.6L make/model independently confirms this exact figure, high confidence, agreeing across 61 of 66 job entries that carry a lug-nut spec (a handful of rear drum-brake-related job entries returned a different 105 ft-lb value -- an unexplained inconsistency in Open Labor Project's own data, not used here). This was originally a curated estimate deliberately not carried over from the Ram HD truck figure already flagged catalog-wide as suspect, and it holds up under its own cross-check." },
       { label: "Tire size (SXT)", value: "225/65R17" },
     ],
     fluids: [
