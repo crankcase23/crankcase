@@ -1,7 +1,7 @@
-import { and, asc, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, eq, isNull, or, sql } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
-import { vinEntitlements, vinEntitlementEvents } from "@/db/schema";
+import { legacyUnlockHolds, vinEntitlements, vinEntitlementEvents } from "@/db/schema";
 import { findOwnRow } from "@/lib/garageEntries";
 import { keysPriceCentsForNthVehicle } from "@/lib/keysPricing";
 import { canonicalVin, isValidVin } from "@/lib/vin";
@@ -248,4 +248,239 @@ export async function keysStatusForOwnVehicle(userId: string, id: string): Promi
   if (await hasEntitlement(userId, vin)) return { hasVin: true, unlocked: true, nextPriceCents: null, nextRung: null };
   const next = await nextUnlockPrice(userId);
   return { hasVin: true, unlocked: false, nextPriceCents: next.priceCents, nextRung: next.rung };
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Legacy unlock holds: no historical purchase or gift is ever silently dropped.
+//
+// Before VIN entitlements, admin gifts lived in vehicle_unlocks, keyed to the garage row and deleted with it. A legacy unlock
+// whose car has no canonical, valid VIN (or whose car was deleted before the copy) is preserved as a HOLD
+// (migrations/2026-10-12-legacy-unlock-holds.sql; the table has no foreign key to garage_entries and database triggers refuse
+// deletion and any change to its original facts). A hold turns into a real entitlement, with the ORIGINAL source and grant time,
+// when it is resolved. Nothing here expires or closes a hold on its own: only resolveLegacyHold() (convert) or
+// waiveLegacyHold() (admin, with a written reason) ends one. See docs/release/README.md for who does what.
+// ---------------------------------------------------------------------------------------------------------------------
+
+export type LegacyHold = typeof legacyUnlockHolds.$inferSelect;
+
+export type LegacyHoldErrorCode = "NOT_FOUND" | "NOT_PENDING" | "VIN_REQUIRED" | "VIN_INVALID" | "REVOKED_EXISTS";
+export class LegacyHoldError extends Error {
+  constructor(public code: LegacyHoldErrorCode, message: string) {
+    super(message);
+    this.name = "LegacyHoldError";
+  }
+}
+
+/** This account's own legacy holds (never another account's). Oldest first. */
+export async function listLegacyHolds(userId: string, opts: { pendingOnly?: boolean } = {}): Promise<LegacyHold[]> {
+  return db
+    .select()
+    .from(legacyUnlockHolds)
+    .where(opts.pendingOnly ? and(eq(legacyUnlockHolds.userId, userId), eq(legacyUnlockHolds.status, "pending_vin")) : eq(legacyUnlockHolds.userId, userId))
+    .orderBy(asc(legacyUnlockHolds.grantedAt), asc(legacyUnlockHolds.id));
+}
+
+const resolvedFields = (actor: Actor, note: string | null | undefined) => ({
+  resolvedAt: new Date(),
+  resolvedBy: actor.id ?? actor.type,
+  resolutionNote: note ?? null,
+});
+
+/**
+ * INTERNAL. Turns one pending hold into a real entitlement for `vin` (default: the VIN stored on the hold when that is already a
+ * valid one). The entitlement keeps the hold's ORIGINAL source ("gift" or "purchase") and original grant time, never counts
+ * differently from the unlock it replaces, and is logged as an event with the actor. One transaction, under the account lock.
+ * - The account already holds that VIN actively: no second entitlement; the hold is closed and says so. Nothing is lost,
+ *   because the access already exists.
+ * - The account holds that VIN but it was revoked: refused (REVOKED_EXISTS), the hold stays pending, and an admin decides.
+ * Throws LegacyHoldError; never silently skips.
+ */
+export async function resolveLegacyHold(input: {
+  holdId: string;
+  userId: string;
+  vin?: string | null;
+  actor: Actor;
+  note?: string | null;
+}): Promise<{ hold: LegacyHold; entitlement: Entitlement; created: boolean }> {
+  return db.transaction(async (tx) => {
+    await lockAccount(tx, input.userId);
+    const [hold] = await tx
+      .select()
+      .from(legacyUnlockHolds)
+      .where(and(eq(legacyUnlockHolds.id, input.holdId), eq(legacyUnlockHolds.userId, input.userId)))
+      .limit(1);
+    if (!hold) throw new LegacyHoldError("NOT_FOUND", "No such legacy unlock hold for this account.");
+    if (hold.status !== "pending_vin") throw new LegacyHoldError("NOT_PENDING", "This legacy unlock is already resolved.");
+
+    const vin = canonicalVin(input.vin ?? hold.vinAtSnapshot ?? "");
+    if (!vin) throw new LegacyHoldError("VIN_REQUIRED", "A valid VIN is needed to restore this unlock.");
+    if (!isValidVin(vin)) throw new LegacyHoldError("VIN_INVALID", "That is not a valid VIN.");
+
+    const [existing] = await lookup(tx, input.userId, vin);
+    if (existing && existing.revokedAt) {
+      throw new LegacyHoldError("REVOKED_EXISTS", "This account's access to that VIN was revoked; an admin must decide.");
+    }
+    let entitlement: Entitlement;
+    let created = false;
+    if (existing) {
+      entitlement = existing;
+    } else {
+      const [row] = await tx
+        .insert(vinEntitlements)
+        .values({ id: randomUUID(), userId: input.userId, vin, source: hold.source, rung: null, priceCents: null, purchaseId: null, grantedAt: hold.grantedAt })
+        .returning();
+      // A JS Date carries milliseconds, the database microseconds: copy the original grant time across inside the database so it is exact.
+      await tx.execute(sql`update vin_entitlements set granted_at = (select granted_at from legacy_unlock_holds where id = ${hold.id}) where id = ${row.id}`);
+      [entitlement] = await tx.select().from(vinEntitlements).where(eq(vinEntitlements.id, row.id)).limit(1);
+      created = true;
+      await recordEvent(tx, {
+        userId: input.userId,
+        vin,
+        type: hold.source === "purchase" ? "purchased" : "gifted",
+        entitlement,
+        actor: input.actor,
+        reason: `legacy unlock reconciled${input.note ? `: ${input.note}` : ""}`,
+        detail: { holdId: hold.id, garageEntryId: hold.garageEntryId, originalGrantedAt: hold.grantedAt },
+      });
+    }
+    const note = created ? input.note : `account already held this VIN (${existing!.source}); no second entitlement created${input.note ? `. ${input.note}` : ""}`;
+    const [closed] = await tx
+      .update(legacyUnlockHolds)
+      .set({ status: "converted", resolvedVin: vin, ...resolvedFields(input.actor, note) })
+      .where(eq(legacyUnlockHolds.id, hold.id))
+      .returning();
+    return { hold: closed, entitlement, created };
+  });
+}
+
+/**
+ * INTERNAL (admin only, a written reason is mandatory). Closes a hold WITHOUT restoring access, for the rare case the admin has
+ * established the unlock should not exist (e.g. a gift the customer asked to give up). The hold row stays forever as the record.
+ */
+export async function waiveLegacyHold(input: { holdId: string; userId: string; actor: Actor; note: string }): Promise<LegacyHold> {
+  if (input.actor.type !== "admin" || !input.actor.id) throw new Error("waiveLegacyHold: only an admin can waive a hold.");
+  if (!input.note || input.note.trim().length < 5) throw new Error("waiveLegacyHold: a written reason is required.");
+  return db.transaction(async (tx) => {
+    await lockAccount(tx, input.userId);
+    const [hold] = await tx
+      .select()
+      .from(legacyUnlockHolds)
+      .where(and(eq(legacyUnlockHolds.id, input.holdId), eq(legacyUnlockHolds.userId, input.userId)))
+      .limit(1);
+    if (!hold) throw new LegacyHoldError("NOT_FOUND", "No such legacy unlock hold for this account.");
+    if (hold.status !== "pending_vin") throw new LegacyHoldError("NOT_PENDING", "This legacy unlock is already resolved.");
+    const [closed] = await tx
+      .update(legacyUnlockHolds)
+      .set({ status: "waived", ...resolvedFields(input.actor, input.note.trim()) })
+      .where(eq(legacyUnlockHolds.id, hold.id))
+      .returning();
+    return closed;
+  });
+}
+
+/**
+ * Called after a customer has put a VIN on one of THEIR OWN cars. Restores what is safe to restore without a person deciding:
+ *   - a legacy GIFT held for this very car (same row), or any hold whose stored VIN is exactly this VIN;
+ *   - a legacy PURCHASE only when its stored VIN is exactly this VIN (the same car, unchanged).
+ * A paid hold tied only to the car (not to this VIN) stays pending for an admin: the customer typing a VIN is not proof it is
+ * the VIN that was paid for. Never throws for the VIN route's sake: returns what happened.
+ */
+export async function reconcileHoldsForVehicle(userId: string, garageId: string, vinInput: string): Promise<{ restored: number; needsReview: number }> {
+  const row = await findOwnRow(userId, garageId);
+  const vin = canonicalVin(vinInput);
+  if (!row || !isValidVin(vin)) return { restored: 0, needsReview: 0 };
+  const pending = await listLegacyHolds(userId, { pendingOnly: true });
+  let restored = 0;
+  let needsReview = 0;
+  for (const h of pending) {
+    const sameCar = h.garageEntryId === row.id;
+    const sameVin = !!h.vinAtSnapshot && canonicalVin(h.vinAtSnapshot) === vin;
+    if (!sameCar && !sameVin) continue;
+    const safe = sameVin || (sameCar && h.source === "gift");
+    if (!safe) {
+      needsReview++;
+      continue;
+    }
+    try {
+      await resolveLegacyHold({ holdId: h.id, userId, vin, actor: { type: "customer" }, note: "customer completed the VIN" });
+      restored++;
+    } catch (e) {
+      if (e instanceof LegacyHoldError) needsReview++;
+      else throw e;
+    }
+  }
+  return { restored, needsReview };
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Checkout eligibility: nobody pays for a VIN they already have.
+//
+// No checkout exists yet (no Stripe, no payments). When it does, it MUST call checkoutEligibilityForOwnVehicle() before it creates
+// a payment session, and the payment webhook MUST call settleCapturedPayment() and refund on "refund-required". Owner decision
+// 2026-10-11: an already-unlocked VIN (by gift, prior payment or a legacy unlock) is refused at checkout; a gift is never converted
+// into a sale.
+// ---------------------------------------------------------------------------------------------------------------------
+
+export type CheckoutRefusal = "not-in-garage" | "no-vin" | "invalid-vin" | "already-unlocked" | "legacy-unlock-pending";
+export type CheckoutEligibility =
+  | { eligible: true; vin: string; priceCents: number; rung: number }
+  | { eligible: false; reason: CheckoutRefusal; message: string };
+
+const REFUSAL_TEXT: Record<CheckoutRefusal, string> = {
+  "not-in-garage": "That vehicle is not in your garage.",
+  "no-vin": "Add this vehicle's VIN first. An unlock belongs to the VIN.",
+  "invalid-vin": "The VIN on this vehicle is not valid. Correct it first.",
+  "already-unlocked": "This VIN is already unlocked for your account. There is nothing to buy.",
+  "legacy-unlock-pending": "This vehicle has an earlier unlock that is waiting to be restored. Support will finish it; you do not need to pay.",
+};
+
+/** Is this account allowed to be sent to payment for this car of its own? Server decides; the browser sends no price and no VIN. */
+export async function checkoutEligibilityForOwnVehicle(userId: string, garageId: string): Promise<CheckoutEligibility> {
+  const row = await findOwnRow(userId, garageId);
+  const refuse = (reason: CheckoutRefusal): CheckoutEligibility => ({ eligible: false, reason, message: REFUSAL_TEXT[reason] });
+  if (!row) return refuse("not-in-garage");
+  const vin = row.vin ? canonicalVin(row.vin) : "";
+  if (!vin) return refuse("no-vin");
+  if (!isValidVin(vin)) return refuse("invalid-vin");
+  if (await hasEntitlement(userId, vin)) return refuse("already-unlocked");
+  const [pending] = await db
+    .select({ id: legacyUnlockHolds.id })
+    .from(legacyUnlockHolds)
+    .where(and(eq(legacyUnlockHolds.userId, userId), eq(legacyUnlockHolds.status, "pending_vin"), or(eq(legacyUnlockHolds.garageEntryId, row.id), eq(legacyUnlockHolds.vinAtSnapshot, vin))))
+    .limit(1);
+  if (pending) return refuse("legacy-unlock-pending");
+  const next = await nextUnlockPrice(userId);
+  return { eligible: true, vin, priceCents: next.priceCents, rung: next.rung };
+}
+
+export type SettlementOutcome =
+  | { outcome: "granted"; entitlement: Entitlement }
+  | { outcome: "refund-required"; reason: "already-unlocked" | "legacy-unlock-pending"; entitlement: Entitlement | null };
+
+/**
+ * INTERNAL, for the future payment webhook, called only after money was actually captured. Grants the purchase unless the account
+ * already holds the VIN (gift, earlier payment, or a legacy unlock waiting on a hold), in which case it grants NOTHING and tells
+ * the caller to refund. Money is never silently kept for access that already existed.
+ */
+export async function settleCapturedPayment(input: { userId: string; vin: string; purchaseId?: string | null }): Promise<SettlementOutcome> {
+  const vin = canonicalVin(input.vin);
+  const [pending] = await db
+    .select({ id: legacyUnlockHolds.id })
+    .from(legacyUnlockHolds)
+    .where(
+      and(
+        eq(legacyUnlockHolds.userId, input.userId),
+        eq(legacyUnlockHolds.status, "pending_vin"),
+        or(
+          eq(legacyUnlockHolds.vinAtSnapshot, vin),
+          sql`${legacyUnlockHolds.garageEntryId} in (select id from garage_entries where user_id = ${input.userId} and vin = ${vin})`,
+        ),
+      ),
+    )
+    .limit(1);
+  if (pending) return { outcome: "refund-required", reason: "legacy-unlock-pending", entitlement: null };
+  const result = await grantPurchasedEntitlement({ userId: input.userId, vin, purchaseId: input.purchaseId ?? null, actor: { type: "system" } });
+  return result.created
+    ? { outcome: "granted", entitlement: result.entitlement }
+    : { outcome: "refund-required", reason: "already-unlocked", entitlement: result.entitlement };
 }

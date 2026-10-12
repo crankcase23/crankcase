@@ -23,7 +23,8 @@
     "bmw:preview": "node scripts/bmw/preview/run.mjs",
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs",
     "config:test": "node --test scripts/config/tests/*.test.mjs",
-    "keys:test": "node --test scripts/keys/tests/*.test.mjs"
+    "keys:test": "node --test scripts/keys/tests/*.test.mjs",
+    "release:gate": "node scripts/release-gate.mjs"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",

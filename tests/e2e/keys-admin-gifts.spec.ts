@@ -102,6 +102,7 @@ test.describe("Admin gifts are permanent, VIN-linked, logged, and isolated", () 
   });
 
   test("same VIN in two accounts: a gift unlocks only the account it was given to, and the admin screens say so", async ({ browser }) => {
+    test.setTimeout(120_000); // exports the whole vehicles table twice; about 20 s alone on the 200k-row scratch copy, more under parallel load
     const ctxA = await browser.newContext(); const adminPage = await ctxA.newPage(); await makeAdmin(adminPage);
     const ctxX = await browser.newContext(); const x = await ctxX.newPage();
     const emailX = await signUpNewUser(x); const xid = uid(emailX);

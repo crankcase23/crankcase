@@ -403,6 +403,39 @@ export const vinEntitlementEvents = pgTable(
       }),
       );
 
+// A legacy admin unlock (the old vehicle_unlocks table, keyed to a garage row and deleted with it) that cannot be a VIN entitlement
+// yet because its car has no canonical, valid VIN, or whose car was deleted before it could be copied. Preserved here so that no
+// historical purchase or gift is silently dropped. Deliberately NO foreign key to garage_entries, so deleting the car cannot delete
+// it. Created by migrations/2026-10-12-legacy-unlock-holds.sql (which also installs the triggers that make rows undeletable and
+// their original facts immutable); resolved only through resolveLegacyHold() in src/lib/keysEntitlements.ts.
+export const legacyUnlockHolds = pgTable(
+      "legacy_unlock_holds",
+      {
+            id: text("id").primaryKey(),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            garageEntryId: text("garage_entry_id").notNull(),
+            source: text("source").notNull(), // "purchase" | "gift"
+            grantedAt: timestamp("granted_at").notNull(),
+            vehicleId: text("vehicle_id"),
+            vehicleLabel: text("vehicle_label"),
+            vinAtSnapshot: text("vin_at_snapshot"),
+            status: text("status").notNull().default("pending_vin"), // "pending_vin" | "converted" | "waived"
+            resolvedVin: text("resolved_vin"),
+            resolvedAt: timestamp("resolved_at"),
+            resolvedBy: text("resolved_by"),
+            resolutionNote: text("resolution_note"),
+            createdAt: timestamp("created_at").notNull().defaultNow(),
+      },
+      (table) => ({
+            onePerCar: uniqueIndex("legacy_unlock_holds_user_garage_uq").on(table.userId, table.garageEntryId),
+            sourceKnown: check("legacy_unlock_holds_source_chk", sql`${table.source} in ('purchase','gift')`),
+            statusKnown: check("legacy_unlock_holds_status_chk", sql`${table.status} in ('pending_vin','converted','waived')`),
+            pending: index("legacy_unlock_holds_pending_idx").on(table.userId).where(sql`${table.status} = 'pending_vin'`),
+      }),
+      );
+
 // A recurring plan. Nothing sells subscriptions today; MRR/churn in
 // /admin/revenue are computed from this table and read zero until it fills.
 export const subscriptions = pgTable("subscriptions", {

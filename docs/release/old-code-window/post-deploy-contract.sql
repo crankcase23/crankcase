@@ -1,0 +1,32 @@
+-- PROPOSAL (not in migrations/). POST-DEPLOY ("contract") step: run AFTER the new code is live and smoke-tested.
+-- Adds the constraints the new code relies on as a backstop. Nothing is deleted or merged.
+--   * Any same-customer duplicate rows the OLD code created during the window are NOT touched: the unique index is skipped with a
+--     NOTICE that names how many, support merges them by hand (the new code lists them like any other cars), then re-run this file.
+--   * The canonical CHECK is safe: the pre-deploy trigger has kept every VIN upper case.
+-- Idempotent; one transaction. Locks garage_entries briefly while the indexes build.
+DO $$
+DECLARE
+  dup_vin integer;
+  dup_novin integer;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'garage_entries_vin_canonical_chk') THEN
+    ALTER TABLE garage_entries ADD CONSTRAINT garage_entries_vin_canonical_chk CHECK (vin IS NULL OR vin = upper(vin));
+  END IF;
+
+  SELECT count(*) INTO dup_novin FROM (
+    SELECT 1 FROM garage_entries WHERE kind = 'catalog' AND vin IS NULL GROUP BY user_id, vehicle_id HAVING count(*) > 1) d;
+  IF dup_novin = 0 THEN
+    CREATE UNIQUE INDEX IF NOT EXISTS garage_entries_user_catalog_novin_uq ON garage_entries (user_id, vehicle_id) WHERE kind = 'catalog' AND vin IS NULL;
+  ELSE
+    RAISE NOTICE 'SKIPPED garage_entries_user_catalog_novin_uq: % customer/vehicle pairs have more than one VIN-less catalog row. Nothing changed; resolve by hand, then re-run.', dup_novin;
+  END IF;
+
+  SELECT count(*) INTO dup_vin FROM (
+    SELECT 1 FROM garage_entries WHERE vin IS NOT NULL GROUP BY user_id, vin HAVING count(*) > 1) d;
+  IF dup_vin = 0 THEN
+    CREATE UNIQUE INDEX IF NOT EXISTS garage_entries_user_vin_uq ON garage_entries (user_id, vin) WHERE vin IS NOT NULL;
+  ELSE
+    RAISE NOTICE 'SKIPPED garage_entries_user_vin_uq: % customer/VIN pairs have more than one row. Nothing changed; resolve by hand, then re-run.', dup_vin;
+  END IF;
+END
+$$;

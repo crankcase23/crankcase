@@ -34,12 +34,20 @@ An entitlement is (account, VIN). A transfer never copies it: the recipient buys
 - Keys status resolves a car through the same permanent garage ids as the rest of the garage (`findOwnRow`); a bare model id with several cars is refused (409), never answered for some other car.
 - Migration `migrations/2026-10-11-vin-entitlement-events.sql` (+ VERIFY, ROLLBACK): idempotent; creates the table and triggers and writes a starting event for every existing entitlement. Run after `2026-10-11-vin-entitlements.sql`. **DRAFT, rehearsed on a scratch copy only; production needs owner approval.** Full order for the stack: vehicle-configuration, vin-canonical, vin-entitlements, vin-entitlement-events, then deploy code.
 
-## Open items (owner decisions, see PR description)
-- Refund = revoke (here: row kept, `revoked_at` set, ladder drops back). The `refunded` event type exists; no payment path calls it yet.
-- A customer who already holds a VIN by **gift** and then pays for it: today `grantPurchasedEntitlement` returns `created:false` and changes nothing (no double access), so a captured payment would not be recorded. Decide before payments exist: convert the gift to a purchase at the next rung, or refuse the checkout up front.
-- `vehicle_unlocks` rows whose vehicle has no VIN stay in the old table (VERIFY lists the count); decide whether support asks those customers for a VIN or they are dropped.
-- A legacy `vehicle_unlocks` row with source `purchase` would be copied by the earlier migration as a purchase without a price and would count on the ladder. Nothing sells today so expect zero; VERIFY flags it.
-- `SAME_MODEL_OTHER_VIN` limit from #42/#43 no longer exists after the VIN-isolation work (any number of same-model cars), so the ladder is not capped by it.
+## Legacy unlocks are never dropped (PR #49, 2026-10-12)
+Older admin gifts / purchases lived in `vehicle_unlocks`, keyed to the garage row with `ON DELETE CASCADE`. They are now carried like this:
+- **Valid canonical VIN** (`cc_vin_ok()` = strip, upper-case, 17 chars, no I/O/Q, check digit; same answer as the JS validator, proven on 3000 strings): copied to `vin_entitlements` with the original source and grant time.
+- **Anything else** (VIN-less car, junk or invalid VIN, not-yet-canonical VIN): snapshotted into `legacy_unlock_holds` (`pending_vin`). The table has no foreign key to `garage_entries`, refuses DELETE/TRUNCATE (except account deletion), and its original facts are immutable.
+- A BEFORE DELETE trigger on `garage_entries` snapshots any remaining unlock into a hold before the cascade can remove it, so deleting a car can never lose paid or gifted access (test: 12 car/state combinations).
+- The migration VERIFY has an "unaccounted (MUST be 0)" check: every legacy purchase/gift is either an entitlement or a hold.
 
-## Run
-`npm run keys:test` with `DATABASE_URL` pointed at the local scratch database (host 127.0.0.1, port 5544, database cc_test; the runner refuses non-local databases) and Playwright `keys-entitlements` + `keys-admin-gifts`.
+### How a hold gets resolved
+- **Customer:** completes the VIN on the car (`POST /api/garage/[id]/vin`). A gift tied to that car, or any hold whose stored VIN equals the VIN entered, is restored automatically (same source, same grant time, event "legacy unlock reconciled"). The response carries `legacyUnlock: {restored, needsReview}`. A **paid** hold tied only to the car (no stored VIN) is NOT restored by an arbitrary typed VIN; it waits for an admin.
+- **Admin** (`unlocks.manage`): Admin > Users > user > Garage tab > "Legacy unlocks". **Restore** (optional VIN + reason) or **Waive** (reason of 5+ chars; for a deliberate decision such as a refunded purchase). Both are audited (`legacy_hold.convert` / `legacy_hold.waive`, VIN last six only). A resolved hold cannot be reopened.
+
+### Checkout eligibility (no real payments exist yet)
+`GET /api/garage/[id]/keys/checkout` (read-only) returns `{eligible:true, priceCents, rung}` or `{eligible:false, reason}` with reason `not-in-garage | no-vin | invalid-vin | already-unlocked | legacy-unlock-pending`. A VIN already unlocked by gift, earlier payment or legacy unlock is refused; a gift is never converted into a sale. If a payment was nevertheless captured (race, double click), `settleCapturedPayment` returns `refund-required` instead of granting; the future webhook must refund it. Owner decision recorded 2026-10-11: block, do not convert.
+
+## Remaining open items
+- Refund = revoke (row kept, `revoked_at` set). The `refunded` event type exists; no payment path calls it yet.
+- Expected paid holds in production: 0 (the VERIFY reports the count; any paid hold needs an admin decision).
