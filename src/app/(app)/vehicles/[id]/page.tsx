@@ -4,7 +4,8 @@ import StickyVehicleBar from "@/components/app/StickyVehicleBar";
 import ManufacturerService from "@/components/ManufacturerService";
 import { buildNextServiceData } from "@/lib/nextService";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import ChooseYourCar from "@/components/app/ChooseYourCar";
 import type { Metadata } from "next";
 import { findVehicle, listRepairsForVehicle, listVehicles } from "@/lib/data";
 import { SpecTable, FluidTable } from "@/components/tables";
@@ -58,7 +59,13 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   // VIN is visible on the page, not just stored. This page is shared
   // across every user who has this catalog vehicle, so the VIN has to
   // come from THIS viewer's own garage entry, not the catalog record.
-  const { config, vin, inGarage } = await getViewerVehicle(id);
+  const viewer = await getViewerVehicle(id);
+  // A legacy bare model id never guesses a car: one car -> its permanent id; several -> the customer chooses.
+  if (viewer.redirectTo) redirect(`/vehicles/${viewer.redirectTo}`);
+  if (viewer.choose) {
+    return <ChooseYourCar vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`} cars={viewer.choose} hrefFor={(g) => `/vehicles/${g}`} />;
+  }
+  const { config, vin, inGarage } = viewer;
 
   // How this customer's saved configuration affects each guide (all guides stay listed: every category is accounted for).
   const guideStatuses = Object.fromEntries(

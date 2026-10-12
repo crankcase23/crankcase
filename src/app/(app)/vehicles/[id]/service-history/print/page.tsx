@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import ChooseYourCar from "@/components/app/ChooseYourCar";
 import { catalogIdOf } from "@/lib/garageId";
 import { findVehicle, listVehicles } from "@/lib/data";
 import PrintServiceHistory from "@/components/PrintServiceHistory";
@@ -16,7 +17,12 @@ export default async function ServiceHistoryPrintPage(
   const vehicle = findVehicle(catalogIdOf(id));
   if (!vehicle) notFound();
 
-  const { config } = await getViewerVehicle(id);
+  const viewer = await getViewerVehicle(id);
+  if (viewer.redirectTo) redirect(`/vehicles/${viewer.redirectTo}/service-history/print`);
+  if (viewer.choose) {
+    return <ChooseYourCar vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`} cars={viewer.choose} hrefFor={(g) => `/vehicles/${g}/service-history/print`} />;
+  }
+  const { config } = viewer;
 
   return (
     <PrintServiceHistory

@@ -19,7 +19,7 @@ export default function GuideWithServiceSave({
 }: {
   guide: ResolvedGuide;
   vehicle: Vehicle;
-  /** The customer's garage id for this car (differs from vehicle.id for a second car of the same model). */
+  /** The customer's permanent garage id for this car (differs from vehicle.id; two cars of one model have two ids). */
   garageId: string;
   breadcrumb?: BreadcrumbItem[];
 }) {
@@ -34,5 +34,5 @@ export default function GuideWithServiceSave({
       if (!res.ok) throw new Error(`save failed (${res.status})`);
     },
   };
-  return <GuideWithWrenchMode guide={guide} vehicle={vehicle} breadcrumb={breadcrumb} completion={completion} />;
+  return <GuideWithWrenchMode guide={guide} vehicle={vehicle} breadcrumb={breadcrumb} completion={completion} garageId={garageId} />;
 }

@@ -55,7 +55,7 @@ async function addBmw(page: Page, trans: string, drive: string, theVin = vin()) 
   await pick(page, "Transmission", trans);
   await pick(page, "Drivetrain", drive);
   await page.getByRole("button", { name: /and add to garage$/ }).click();
-  await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}$`));
+  await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}~[^/]+$`));
   return { email, vin: theVin };
 }
 async function login(ctx: BrowserContext, email: string) {
@@ -93,7 +93,7 @@ test.describe("1-3. VIN Lookup -> Confirm Your Ride -> Add to Garage", () => {
     await expect(page.getByRole("button", { name: "Confirm Automatic · Standard RWD and add to garage" })).toBeEnabled();
     await shot(page, "03-confirm-your-ride-automatic-rwd");
     await page.getByRole("button", { name: "Confirm Automatic · Standard RWD and add to garage" }).click();
-    await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}$`));
+    await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}~[^/]+$`));
     expect(rows(email)).toMatch(new RegExp(`^${BMW}\\|[A-Z0-9]{17}\\|automatic\\|rwd\\|t$`));
   });
 
@@ -259,7 +259,7 @@ test.describe("7/8. Existing garage preserved; persistence across logins and dev
     await expect(p2.getByText(/Automatic · RWD/)).toBeVisible();
     const api = await p2.request.get("/api/garage");
     const body = await api.json();
-    const entry = (body.entries ?? body).find((e: { id: string }) => e.id === BMW);
+    const entry = (body.entries ?? body).find((e: { id: string }) => e.id.startsWith(`${BMW}~`));
     expect(entry.config).toMatchObject({ transmission: "automatic", drivetrain: "rwd" });
     // sign out and back in on the first device
     await page.context().clearCookies();
@@ -339,9 +339,9 @@ test.describe("15. Other vehicles are unaffected", () => {
     await pick(page, "Transmission", "Automatic");
     await pick(page, "Drivetrain", "4WD");
     await page.getByRole("button", { name: /and add to garage$/ }).click();
-    await expect(page).toHaveURL(new RegExp(`/vehicles/${JEEP}$`));
+    await expect(page).toHaveURL(new RegExp(`/vehicles/${JEEP}~[^/]+$`));
     expect(rows(email)).toMatch(/\|automatic\|4wd\|t$/);
-    await expect(page).toHaveURL(new RegExp(`/vehicles/${JEEP}$`)); // the guides are listed on the vehicle page
+    await expect(page).toHaveURL(new RegExp(`/vehicles/${JEEP}~[^/]+$`)); // the guides are listed on the vehicle page
     const guideLinks = page.locator(`a[href^="/vehicles/${JEEP}/repairs/"]`);
     const href = await guideLinks.first().getAttribute("href");
     await page.goto(href!);
@@ -424,7 +424,7 @@ test.describe("16. All 16 BMW categories open for every configuration", () => {
       test.setTimeout(150_000);
       await addBmw(page, t, d);
       await page.goto(`/vehicles/${BMW}`);
-      const links = await page.locator(`a[href^="/vehicles/${BMW}/repairs/bmw-2010-328i-"]`).evaluateAll((els) => [...new Set(els.map((e) => (e as HTMLAnchorElement).getAttribute("href")))]);
+      const links = await page.locator(`a[href^="/vehicles/${BMW}~"][href*="/repairs/bmw-2010-328i-"]`).evaluateAll((els) => [...new Set(els.map((e) => (e as HTMLAnchorElement).getAttribute("href")))]);
       expect(links.length).toBe(16);
       for (const href of links as string[]) {
         const res = await page.goto(href);
@@ -446,14 +446,15 @@ test.describe("16. Two cars of the same year/make/model coexist", () => {
   const CIVIC = "2018-honda-civic-1.5t";
   const cfg = { transmission: "cvt", drivetrain: "fwd" };
 
-  test("different VINs are separate cars with separate history, config, edit and delete; legacy ids keep working", async ({ page }) => {
+  test("different VINs are separate cars with separate history, config, edit and delete; the old bare model link asks which car", async ({ page }) => {
     const email = await signUpNewUser(page);
     const a = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICA"), config: cfg } })).json();
     const b = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICB"), config: { transmission: "manual", drivetrain: "fwd" } } })).json();
     expect(a.created).toBe(true); expect(b.created).toBe(true);
-    // the oldest keeps the plain id every old link/record uses; the extra car gets its own
-    expect(a.entry.id).toBe(CIVIC);
+    // each car has its own permanent id: <model>~<rowId>
+    expect(a.entry.id).toMatch(new RegExp(`^${CIVIC.replace(/\./g, "\\.")}~[0-9a-f-]{36}$`));
     expect(b.entry.id).toMatch(new RegExp(`^${CIVIC.replace(/\./g, "\\.")}~[0-9a-f-]{36}$`));
+    expect(a.entry.id).not.toBe(b.entry.id);
     expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='${CIVIC}'`)).toBe("2");
 
     // each car has its own Service History
@@ -468,8 +469,11 @@ test.describe("16. Two cars of the same year/make/model coexist", () => {
     // each car's page loads under its own id and shows its own history
     await page.goto(`/vehicles/${encodeURIComponent(b.entry.id)}`);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
-    await page.goto(`/vehicles/${CIVIC}`);
+    await page.goto(`/vehicles/${encodeURIComponent(a.entry.id)}`);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
+    // the old bare model link no longer guesses between two cars: it asks which one
+    await page.goto(`/vehicles/${CIVIC}`);
+    await expect(page.getByTestId("choose-your-car")).toBeVisible();
 
     // editing one car's configuration leaves the other alone
     expect((await page.request.patch(`/api/garage/${encodeURIComponent(b.entry.id)}`, { data: { transmission: "automatic" } })).ok()).toBeTruthy();
@@ -495,8 +499,8 @@ test.describe("16. Two cars of the same year/make/model coexist", () => {
     await page.request.post(`/api/garage/${CIVIC}/service`, { data: { date: "2026-02-01", mileage: 500, title: "Legacy history" } });
     const first = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICC"), config: cfg } })).json();
     expect(first.created).toBe(false);          // completed the existing record, did not create a second one
-    expect(first.entry.id).toBe(CIVIC);
-    const hist = (await (await page.request.get(`/api/garage/${CIVIC}/service`)).json()).entries;
+    expect(first.entry.id).toMatch(/^2018-honda-civic-1\.5t~/);
+    const hist = (await (await page.request.get(`/api/garage/${encodeURIComponent(first.entry.id)}/service`)).json()).entries;
     expect(hist).toHaveLength(1);                // history stayed with the record
     const second = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICD"), config: cfg } })).json();
     expect(second.created).toBe(true);

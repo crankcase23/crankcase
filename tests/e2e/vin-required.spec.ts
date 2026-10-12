@@ -93,8 +93,9 @@ test.describe("A VIN is required by the server, not just the screen", () => {
     const a = await (await post(page, catalog(v1, CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).json();
     const b = await (await post(page, catalog(v2, CIVIC, { transmission: "manual", drivetrain: "fwd" }))).json();
     expect(a.created).toBe(true); expect(b.created).toBe(true);
-    expect(a.entry.id).toBe(CIVIC);                 // oldest keeps the plain legacy id
-    expect(b.entry.id).toContain("~");               // the second car has its own id
+    expect(a.entry.id).toContain("~");               // every car has its own permanent id
+    expect(b.entry.id).toContain("~");
+    expect(a.entry.id).not.toBe(b.entry.id);
     expect(countFor(email)).toBe(2);
     expect(sql(`select count(distinct vin) from garage_entries where user_id='${uidOf(email)}'`)).toBe("2");
 
@@ -112,7 +113,7 @@ test.describe("A VIN is required by the server, not just the screen", () => {
     // the garage lists both, and each car's page opens
     await page.goto("/garage");
     await expect(page.getByRole("button", { name: /^Remove .*Civic.* from garage$/ })).toHaveCount(2);
-    await expect(page.locator(`a[href="/vehicles/${CIVIC}"]`).first()).toBeVisible();
+    await expect(page.locator(`a[href="/vehicles/${a.entry.id}"]`).first()).toBeVisible();
     await expect(page.locator(`a[href="/vehicles/${b.entry.id}"]`).first()).toBeVisible();
     await page.goto(`/vehicles/${enc(b.entry.id)}`);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
@@ -137,9 +138,10 @@ test.describe("A VIN is required by the server, not just the screen", () => {
     const v1 = validVin("1HG");
     const first = await (await post(page, catalog(v1, CIVIC))).json();
     expect(first.created).toBe(false);
-    expect(first.entry.id).toBe(CIVIC);
+    expect(first.entry.id).toMatch(/^2018-honda-civic-1\.5t~/);
     expect(countFor(email)).toBe(1);
-    expect((await (await page.request.get(`/api/garage/${CIVIC}/service`)).json()).entries).toHaveLength(1);
+    expect((await (await page.request.get(`/api/garage/${CIVIC}/service`)).json()).entries).toHaveLength(1);       // old bare id: still this one car
+    expect((await (await page.request.get(`/api/garage/${enc(first.entry.id)}/service`)).json()).entries).toHaveLength(1); // permanent id: same car
     const second = await (await post(page, catalog(validVin("1HG"), CIVIC))).json();
     expect(second.created).toBe(true);
     expect(countFor(email)).toBe(2);

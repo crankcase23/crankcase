@@ -198,3 +198,18 @@ test("canonical VIN: storage and lookups use one spelling", () => {
   assert.equal(vin.validateVin(v.toLowerCase()).vin, v);
   assert.equal(vin.canonicalVin(v), vin.canonicalVin(vin.canonicalVin(v)), "idempotent");
 });
+
+test("same-model identity: ids are permanent, bare ids never guess, and the wrench-mode config follows the car", () => {
+  const ge = fs.readFileSync(path.join(ROOT, "src/lib/garageEntries.ts"), "utf8");
+  assert.ok(!/isOldest|oldest\.id/.test(ge), "no 'oldest row keeps the plain id' scheme");
+  assert.ok(/composeGarageId\(row\.vehicleId, row\.id\)/.test(ge), "every catalog car gets <model>~<rowId>");
+  assert.ok(/throw new AmbiguousGarageId/.test(ge), "a bare id with several cars throws");
+  for (const f of ["route.ts", "odometer/route.ts", "service/route.ts", "service/[entryId]/route.ts", "vin/route.ts"]) {
+    const r = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]", f), "utf8");
+    assert.ok(!/export async function/.test(r) && /withGarageId\(/.test(r), `${f}: every handler is wrapped so an ambiguous id becomes a 409`);
+  }
+  const save = fs.readFileSync(path.join(ROOT, "src/components/GuideWithServiceSave.tsx"), "utf8");
+  assert.ok(/garageId=\{garageId\}/.test(save), "GuideWithServiceSave hands the car's id to Wrench Mode");
+  const wm = fs.readFileSync(path.join(ROOT, "src/components/GuideWithWrenchMode.tsx"), "utf8");
+  assert.ok(/useVehicleConfig\(garageId \?\? vehicle\.id\)/.test(wm), "live config is read for THIS car, not the shared catalog id");
+});

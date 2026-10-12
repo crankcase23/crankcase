@@ -9,6 +9,7 @@ export default function PrintVehicleSpecSheet({
   specs,
   fluids,
   subline,
+  backHref,
 }: {
   vehicle: Vehicle;
   repairGuides: ResolvedGuide[];
@@ -16,6 +17,8 @@ export default function PrintVehicleSpecSheet({
   specs: SpecItem[];
   fluids: FluidCapacity[];
   subline: string;
+  /** Where Back goes: the customer's own car page (its permanent id), not the shared catalog id. */
+  backHref?: string;
 }) {
   const printedOn = new Date().toLocaleDateString(undefined, {
     year: "numeric",
@@ -28,7 +31,7 @@ export default function PrintVehicleSpecSheet({
   return (
     <div className="mx-auto max-w-3xl px-6 py-10 print:px-0 print:py-0">
       <div className="no-print mb-6 flex items-center justify-between">
-        <Link href={`/vehicles/${vehicle.id}`} className="text-sm text-slate-400 hover:text-slate-200">
+        <Link href={backHref ?? `/vehicles/${vehicle.id}`} className="text-sm text-slate-400 hover:text-slate-200">
           &larr; Back to {vehicle.year} {vehicle.make} {vehicle.model}
         </Link>
         <button

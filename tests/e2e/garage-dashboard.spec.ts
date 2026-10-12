@@ -31,7 +31,7 @@ test.describe("My Garage dashboard", () => {
     // The whole card is reachable through one link; the Add tile and the
     // "Don't see your vehicle?" panel close the grid.
     await page.getByRole("link", { name: /Open vehicle/ }).click();
-    await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
+    await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t~[^/]+$/);
     await page.goto("/garage");
     const tiles = page.getByRole("region", { name: "Your vehicles" }).locator("> *");
     await expect(tiles.last()).toContainText("Don't see your vehicle?");

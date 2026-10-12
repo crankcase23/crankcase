@@ -45,17 +45,20 @@ export default function GuideWithWrenchMode({
   vehicle,
   breadcrumb,
   completion,
+  garageId,
 }: {
   guide: ResolvedGuide;
   vehicle: Vehicle;
   breadcrumb?: BreadcrumbItem[];
   completion?: WrenchCompletionConfig;
+  /** The customer's permanent garage id for THIS car. Live configuration is read from it, never from the shared catalog id. */
+  garageId?: string;
 }) {
   const router = useRouter();
   // The configuration this guide was resolved under, and what the customer's garage says now (revalidated on focus).
   const guideKey = (guide as Partial<ConfigResolvedGuide>).configResolution?.key ?? null;
   const dependsOnConfig = (guide as Partial<ConfigResolvedGuide>).configResolution?.status !== undefined && (guide as Partial<ConfigResolvedGuide>).configResolution?.status !== "none";
-  const { config: liveConfig, ready: liveReady } = useVehicleConfig(vehicle.id);
+  const { config: liveConfig, ready: liveReady } = useVehicleConfig(garageId ?? vehicle.id);
   const liveKey = liveReady && liveConfig ? configKey(liveConfig) : null;
   const stale = dependsOnConfig && guideKey !== null && liveKey !== null && liveKey !== guideKey;
   useEffect(() => {

@@ -39,7 +39,7 @@ test.describe("garage — add your own vehicle", () => {
 
     await addByVin(page, "1C4", JEEP_ROW);
     await confirmNotSure(page);
-    await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l$/);
+    await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l~[^/]+$/);
 
     await page.goto("/garage");
     await expect(page.getByText("Your garage is empty")).toHaveCount(0);
@@ -71,7 +71,7 @@ test.describe("garage — add your own vehicle", () => {
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
     await addByVin(page, "2HG", CIVIC_ROW);
     await confirmNotSure(page);
-    await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
+    await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t~[^/]+$/);
 
     await page.goto("/garage");
     await expect(page.getByText("Civic")).toBeVisible();
