@@ -1,4 +1,4 @@
-import { sql, and, gte, lt, eq, isNotNull, type SQL } from "drizzle-orm";
+import { sql, and, gte, lt, eq, isNotNull, isNull, type SQL } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
 import { db } from "@/db";
 import {
@@ -10,7 +10,7 @@ import {
   purchases,
   subscriptions,
   paymentEvents,
-  vehicleUnlocks,
+  vinEntitlements,
 } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
 import type { PeriodRange } from "./periods";
@@ -259,7 +259,7 @@ export async function getCommandCenterMetrics(range: PeriodRange): Promise<Comma
         .from(subscriptions)
         .where(eq(subscriptions.status, "active"))
     ),
-    scalar(db.select({ n: sql<number>`count(*)::int` }).from(vehicleUnlocks)),
+    scalar(db.select({ n: sql<number>`count(*)::int` }).from(vinEntitlements).where(isNull(vinEntitlements.revokedAt))),
   ]);
 
   return {

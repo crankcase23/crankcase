@@ -352,7 +352,10 @@ export default async function AdminUserDetailPage({
                       </div>
                     </div>
 
-                    {canManageUnlocks && (
+                    {canManageUnlocks && !v.vin && (
+                      <span className="shrink-0 text-xs text-slate-500">No VIN, so it can&apos;t be unlocked yet</span>
+                    )}
+                    {canManageUnlocks && v.vin && (
                       <form action="/api/admin/unlocks" method="post" className="shrink-0">
                         <input type="hidden" name="userId" value={user.id} />
                         <input type="hidden" name="garageEntryId" value={v.id} />

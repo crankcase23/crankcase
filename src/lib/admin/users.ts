@@ -4,7 +4,6 @@ import {
   users,
   garageEntries,
   serviceEntries,
-  vehicleUnlocks,
   loginEvents,
   subscriptions,
   purchases,
@@ -56,7 +55,11 @@ export interface ListUsersOptions {
 // Correlated subqueries -- one indexed lookup per row on the page only.
 const vehicleCountSql = sql<number>`(select count(*)::int from ${garageEntries} where ${garageEntries.userId} = ${users.id})`;
 const serviceCountSql = sql<number>`(select count(*)::int from ${serviceEntries} where ${serviceEntries.userId} = ${users.id})`;
-const unlockCountSql = sql<number>`(select count(*)::int from ${vehicleUnlocks} where ${vehicleUnlocks.userId} = ${users.id})`;
+// Active entitlements (purchases and gifts), the same table paid access uses. Revoked rows are history, not unlocks.
+// NOTE: the outer table is named explicitly ("users"."id"). Drizzle renders interpolated columns WITHOUT a table prefix inside
+// a single-table select, and vin_entitlements has its own id / user_id / vin columns, so an unqualified reference would bind to
+// the inner table and silently compare it with itself.
+const unlockCountSql = sql<number>`(select count(*)::int from vin_entitlements e where e.user_id = "users"."id" and e.revoked_at is null)`;
 const subscriptionStatusSql = sql<
   string | null
 >`(select ${subscriptions.status} from ${subscriptions} where ${subscriptions.userId} = ${users.id} order by ${subscriptions.createdAt} desc limit 1)`;
@@ -218,7 +221,7 @@ export async function getUserDetail(userId: string): Promise<UserDetail | null> 
         createdAt: garageEntries.createdAt,
         unlockSource: sql<
           string | null
-        >`(select ${vehicleUnlocks.source} from ${vehicleUnlocks} where ${vehicleUnlocks.garageEntryId} = ${garageEntries.id} and ${vehicleUnlocks.userId} = ${garageEntries.userId} limit 1)`,
+        >`(select e.source from vin_entitlements e where e.user_id = "garage_entries"."user_id" and e.vin = "garage_entries"."vin" and e.revoked_at is null limit 1)`,
         serviceCount: sql<number>`(select count(*)::int from ${serviceEntries} where ${serviceEntries.garageEntryId} = ${garageEntries.id})`,
         odometer: sql<
           number | null

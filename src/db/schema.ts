@@ -16,6 +16,7 @@ import {
       primaryKey,
       jsonb,
       uniqueIndex,
+      index,
       check,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
@@ -370,6 +371,37 @@ export const vinEntitlements = pgTable(
       }),
       );
 
+
+// Append-only history of every change to a vin_entitlements row: purchases, gifts, revocations, refunds and
+// reacquisitions. vin_entitlements says what an account holds NOW; this says how it got there. Rows are only ever inserted:
+// a database trigger (migrations/2026-10-11-vin-entitlement-events.sql) rejects UPDATE and direct DELETE, so reinstating a
+// VIN can never erase what happened before. Rows go away only with the account itself (ON DELETE CASCADE, privacy deletion).
+export const vinEntitlementEvents = pgTable(
+      "vin_entitlement_events",
+      {
+            id: text("id").primaryKey(),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            vin: text("vin").notNull(), // canonical VIN, never a garage row id: the history outlives vehicles
+            eventType: text("event_type").notNull(), // "purchased" | "gifted" | "revoked" | "refunded" | "reacquired"
+            source: text("source").notNull(), // the entitlement's source after this event: "purchase" | "gift"
+            rung: integer("rung"),
+            priceCents: integer("price_cents"),
+            purchaseId: text("purchase_id").references(() => purchases.id, { onDelete: "set null" }),
+            actorType: text("actor_type").notNull(), // "system" (payment webhook, backfill) | "admin" | "customer"
+            actorId: text("actor_id"), // the admin's user id when actorType = "admin"
+            reason: text("reason"),
+            detail: jsonb("detail"), // what this event replaced (e.g. the revoked grant a reacquisition supersedes)
+            createdAt: timestamp("created_at").notNull().defaultNow(),
+      },
+      (table) => ({
+            byAccountVin: index("vin_entitlement_events_user_vin_idx").on(table.userId, table.vin, table.createdAt),
+            typeKnown: check("vin_entitlement_events_type_chk", sql`${table.eventType} in ('purchased','gifted','revoked','refunded','reacquired')`),
+            sourceKnown: check("vin_entitlement_events_source_chk", sql`${table.source} in ('purchase','gift')`),
+            actorKnown: check("vin_entitlement_events_actor_chk", sql`${table.actorType} in ('system','admin','customer')`),
+      }),
+      );
 
 // A recurring plan. Nothing sells subscriptions today; MRR/churn in
 // /admin/revenue are computed from this table and read zero until it fills.

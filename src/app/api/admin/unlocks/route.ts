@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { vehicleUnlocks, garageEntries, users } from "@/db/schema";
+import { garageEntries, users } from "@/db/schema";
+import { giftEntitlement, revokeEntitlement } from "@/lib/keysEntitlements";
+import { canonicalVin, isValidVin } from "@/lib/vin";
 import { requireAdmin } from "@/lib/admin/rbac";
 import { recordAudit } from "@/lib/admin/audit";
 import { recordError } from "@/lib/errors";
@@ -9,6 +11,12 @@ import { recordError } from "@/lib/errors";
 // Handles the grant/revoke forms on /admin/users/[id] -- plain HTML form
 // posts (no JS), so this redirects back to that page when done rather than
 // returning JSON like the other /api routes.
+//
+// Unlocks are permanent and tied to (account, canonical VIN), the same table paid unlocks use (vin_entitlements), so a gift
+// survives the vehicle being removed and re-added, and every grant/revoke is appended to the entitlement history
+// (vin_entitlement_events) with this admin as the actor. The garage row only tells us WHICH vehicle's VIN is meant; a
+// vehicle with no valid VIN cannot be unlocked. Revoking sets revoked_at; nothing is deleted. The older vehicle_unlocks
+// table is no longer written.
 //
 // Changed with the command center: authorization is now the specific
 // "unlocks.manage" permission rather than a blanket admin check, the target
@@ -34,6 +42,7 @@ export async function POST(request: Request) {
       .select({
         id: garageEntries.id,
         userId: garageEntries.userId,
+        vin: garageEntries.vin,
         vehicleId: garageEntries.vehicleId,
         year: garageEntries.year,
         make: garageEntries.make,
@@ -53,33 +62,41 @@ export async function POST(request: Request) {
     const vehicleLabel =
       entry.vehicleId ?? [entry.year, entry.make, entry.model].filter(Boolean).join(" ") ?? garageEntryId;
 
+    if (action !== "grant" && action !== "revoke") {
+      return NextResponse.json({ error: "Unknown action." }, { status: 400 });
+    }
+    const vin = entry.vin ? canonicalVin(entry.vin) : "";
+    if (!vin || !isValidVin(vin)) {
+      return NextResponse.json(
+        { error: "This vehicle has no valid VIN. Unlocks are tied to the VIN, so the customer needs to add it first." },
+        { status: 400 },
+      );
+    }
+    const actor = { type: "admin" as const, id: ctx.userId };
+    const reason = String(formData.get("reason") ?? "").trim().slice(0, 500) || null;
+
     if (action === "grant") {
-      await db
-        .insert(vehicleUnlocks)
-        .values({ userId, garageEntryId, source: "gift" })
-        .onConflictDoNothing();
+      const gift = await giftEntitlement({ userId, vin, actor, reason });
 
       await recordAudit({
         ctx,
         action: "unlock.grant",
         objectType: "garage_entry",
         objectId: garageEntryId,
-        summary: `Gifted unlock for ${vehicleLabel} to ${targetEmail}`,
-        metadata: { userId, email: targetEmail, vehicle: vehicleLabel, source: "gift" },
+        summary: gift.created ? `Gifted unlock for ${vehicleLabel} to ${targetEmail}` : `Gift requested for ${vehicleLabel} to ${targetEmail}; already unlocked, no change`,
+        metadata: { userId, email: targetEmail, vehicle: vehicleLabel, source: "gift", vinLast6: vin.slice(-6), changed: gift.created },
         request,
       });
-    } else if (action === "revoke") {
-      await db
-        .delete(vehicleUnlocks)
-        .where(and(eq(vehicleUnlocks.userId, userId), eq(vehicleUnlocks.garageEntryId, garageEntryId)));
+    } else {
+      const result = await revokeEntitlement({ userId, vin, actor, reason, kind: "revoked" });
 
       await recordAudit({
         ctx,
         action: "unlock.revoke",
         objectType: "garage_entry",
         objectId: garageEntryId,
-        summary: `Revoked unlock for ${vehicleLabel} from ${targetEmail}`,
-        metadata: { userId, email: targetEmail, vehicle: vehicleLabel },
+        summary: result.revoked ? `Revoked unlock for ${vehicleLabel} from ${targetEmail}` : `Revoke requested for ${vehicleLabel} from ${targetEmail}; nothing was unlocked, no change`,
+        metadata: { userId, email: targetEmail, vehicle: vehicleLabel, vinLast6: vin.slice(-6), changed: result.revoked },
         request,
       });
     }
