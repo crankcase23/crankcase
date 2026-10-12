@@ -1,7 +1,7 @@
 // Get the Keys PR-A: DB-backed regression tests for permanent VIN entitlements and server-side Garage Rewards pricing.
 // Runs against a THROWAWAY Postgres whose schema came from `drizzle-kit push` (DATABASE_URL). Skips when it is unset, and
 // refuses to run against anything that is not localhost so it can never touch a real database.
-// Run: DATABASE_URL=postgres://postgres@127.0.0.1:5544/cc_test npm run keys:test
+// Run: npm run keys:test, with DATABASE_URL set to the local scratch database (127.0.0.1:5544, database cc_test).
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";

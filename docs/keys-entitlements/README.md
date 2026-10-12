@@ -42,4 +42,4 @@ An entitlement is (account, VIN). A transfer never copies it: the recipient buys
 - `SAME_MODEL_OTHER_VIN` limit from #42/#43 no longer exists after the VIN-isolation work (any number of same-model cars), so the ladder is not capped by it.
 
 ## Run
-`DATABASE_URL=postgres://postgres@127.0.0.1:5544/cc_test npm run keys:test` (refuses non-local databases) and Playwright `keys-entitlements` + `keys-admin-gifts`.
+`npm run keys:test` with `DATABASE_URL` pointed at the local scratch database (host 127.0.0.1, port 5544, database cc_test; the runner refuses non-local databases) and Playwright `keys-entitlements` + `keys-admin-gifts`.
