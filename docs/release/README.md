@@ -1,4 +1,4 @@
-# Release runbook: VIN / keys / per-car-id stack (#42 #43 #45 #46 #47 #48 + #49)
+# Release runbook: VIN / keys / per-car-id stack (#42 #43 #45 #46 #47 #48 + #50) (the PR was requested as "#49"; GitHub numbered it #50)
 
 Supersedes the per-PR runbook for #44/#42/#43. **Nothing here has been run against production.** Every production step needs its own explicit owner approval. Rehearsed on scratch Postgres 16 only (200k garage rows / 20k users).
 
@@ -14,10 +14,10 @@ main 79cf395
          +- #46 82ec96c  VIN isolation (cut from an older #43)
              +- #47 4502077  permanent per-car ids
                  +- #48 9af13ca  = #47 + #45 (entitlements PR-A) + 2 commits
-                     +- #49  = #48 + latest #43 merged in + this release-readiness work (base branch: claude/keys-entitlements-v2)
+                     +- #50  = #48 + latest #43 merged in + this release-readiness work (base branch: claude/keys-entitlements-v2)
 ```
 1. **#44 first, alone**, own deploy and smoke test.
-2. **Then the whole stack as one merge**: merge #49 into `main` (it carries #42 #43 #45 #46 #47 #48). Never merge #42 or #43 alone: #43 alone ships the global VIN block and the "We Know This Vehicle" teaser that #46 removes.
+2. **Then the whole stack as one merge**: merge #50 into `main` (it carries #42 #43 #45 #46 #47 #48). Never merge #42 or #43 alone: #43 alone ships the global VIN block and the "We Know This Vehicle" teaser that #46 removes.
 3. `claude/vin-required-garage-alt` is a parallel PR-less branch for the same feature. Do not merge it.
 4. Recommend converting #42/#43 to draft (or closing as superseded) so a stray merge click cannot ship them alone.
 
@@ -54,7 +54,7 @@ All migrations are additive, idempotent, one transaction each, and refuse to run
 | M4 | `2026-10-11-vin-entitlement-events.sql` | M3 | one starting event per entitlement |
 | M5 | `2026-10-12-legacy-unlock-holds.sql` | M3 | **unaccounted legacy unlocks MUST be 0**; paid holds (expected 0); trigger count 3 |
 
-Then deploy (merge #49). **After the deploy is live and smoke-tested, re-run M3, M4, M5 once** (idempotent; they never reinstate a revoked row and never reopen a hold) to capture any gift the OLD admin code wrote into `vehicle_unlocks` during the window. Compare VERIFY counts; "unaccounted" must again be 0.
+Then deploy (merge #50). **After the deploy is live and smoke-tested, re-run M3, M4, M5 once** (idempotent; they never reinstate a revoked row and never reopen a hold) to capture any gift the OLD admin code wrote into `vehicle_unlocks` during the window. Compare VERIFY counts; "unaccounted" must again be 0.
 
 Smoke test: sign up; add a car by VIN; add a second car of the same model; open each by its own URL; open an old bare `/vehicles/<id>` link; admin-gift a VIN and confirm the customer sees it unlocked; remove and re-add the car, still unlocked; `GET /api/garage/<id>/keys/checkout` on the unlocked car says `already-unlocked`.
 
@@ -62,7 +62,7 @@ Smoke test: sign up; add a car by VIN; add a second car of the same model; open 
 
 **Finding (measured on the live `main` build against the final schema):** the only migration with a visible old-code effect is the VIN uniqueness/canonical constraints. Old code gets a raw 500 (no data change) for (a) the same VIN added twice in one account (unique index) and (b) a lower-case VIN via a crafted request (canonical CHECK; the UI always sends upper-case). Valid add, no-VIN add and garage listing are 200 either way. The 500s last from the end of M1/M2 to the end of the deploy.
 
-**Option A (default, simplest): shrink the window.** Freeze admin gifting, run M1 to M5 back to back (about 2 s of SQL at 200k rows), merge #49 immediately, smoke test, re-run M3/M4/M5. Exposure: minutes, two odd request shapes, no data harm.
+**Option A (default, simplest): shrink the window.** Freeze admin gifting, run M1 to M5 back to back (about 2 s of SQL at 200k rows), merge #50 immediately, smoke test, re-run M3/M4/M5. Exposure: minutes, two odd request shapes, no data harm.
 
 **Option B (zero old-code errors): expand/contract**, proposal in `docs/release/old-code-window/`:
 1. Pre-deploy: `pre-1-vehicle-configuration.sql` (columns and CHECKs, NO unique indexes), `pre-2-vin-canonical.sql` (same collision abort, upper-case backfill, plus a BEFORE INSERT/UPDATE trigger that upper-cases VINs instead of a CHECK), then M3, M4, M5 (M3 accepts either the CHECK or the trigger).

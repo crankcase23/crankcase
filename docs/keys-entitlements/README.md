@@ -34,7 +34,7 @@ An entitlement is (account, VIN). A transfer never copies it: the recipient buys
 - Keys status resolves a car through the same permanent garage ids as the rest of the garage (`findOwnRow`); a bare model id with several cars is refused (409), never answered for some other car.
 - Migration `migrations/2026-10-11-vin-entitlement-events.sql` (+ VERIFY, ROLLBACK): idempotent; creates the table and triggers and writes a starting event for every existing entitlement. Run after `2026-10-11-vin-entitlements.sql`. **DRAFT, rehearsed on a scratch copy only; production needs owner approval.** Full order for the stack: vehicle-configuration, vin-canonical, vin-entitlements, vin-entitlement-events, then deploy code.
 
-## Legacy unlocks are never dropped (PR #49, 2026-10-12)
+## Legacy unlocks are never dropped (PR #50, 2026-10-12)
 Older admin gifts / purchases lived in `vehicle_unlocks`, keyed to the garage row with `ON DELETE CASCADE`. They are now carried like this:
 - **Valid canonical VIN** (`cc_vin_ok()` = strip, upper-case, 17 chars, no I/O/Q, check digit; same answer as the JS validator, proven on 3000 strings): copied to `vin_entitlements` with the original source and grant time.
 - **Anything else** (VIN-less car, junk or invalid VIN, not-yet-canonical VIN): snapshotted into `legacy_unlock_holds` (`pending_vin`). The table has no foreign key to `garage_entries`, refuses DELETE/TRUNCATE (except account deletion), and its original facts are immutable.
