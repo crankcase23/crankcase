@@ -17,7 +17,9 @@ export async function signUpNewUser(page: Page, ip: string = randomIp()): Promis
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill("testpassword123");
   await page.getByRole("button", { name: "Create Account" }).click();
-  await expect(page).toHaveURL(/\/garage$/);
+  // Signup hashes the password with bcrypt cost 12 (and signs in, which verifies it again). On a busy CPU, such as several
+  // Playwright workers sharing one box, that takes longer than the default 5 s assertion timeout, which made this flaky.
+  await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
   return email;
 }
 
