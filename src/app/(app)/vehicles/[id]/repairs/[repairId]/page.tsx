@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { catalogIdOf } from "@/lib/garageId";
+import { notFound, redirect } from "next/navigation";
+import ChooseYourCar from "@/components/app/ChooseYourCar";
 import type { Metadata } from "next";
 import { findVehicle, findRepair, allRepairs } from "@/lib/data";
 import { DifficultyBadge, TierBadge } from "@/components/tables";
@@ -21,7 +23,7 @@ export async function generateMetadata(
   props: PageProps<"/vehicles/[id]/repairs/[repairId]">
 ): Promise<Metadata> {
   const { id, repairId } = await props.params;
-  const vehicle = findVehicle(id);
+  const vehicle = findVehicle(catalogIdOf(id));
   const guide = findRepair(repairId);
   if (!vehicle || !guide) return {};
   return {
@@ -34,16 +36,21 @@ export default async function RepairGuidePage(
   props: PageProps<"/vehicles/[id]/repairs/[repairId]">
 ) {
   const { id, repairId } = await props.params;
-  const vehicle = findVehicle(id);
+  const vehicle = findVehicle(catalogIdOf(id));
   const authored = findRepair(repairId);
   if (!vehicle || !authored || authored.vehicleId !== vehicle.id) notFound();
 
   // The guide this customer is shown: the authored guide resolved against THEIR saved transmission/drivetrain.
   // A guide that does not depend on the build comes back with its content unchanged.
-  const { config, inGarage } = await getViewerVehicle(vehicle.id);
+  const viewer = await getViewerVehicle(id);
+  if (viewer.redirectTo) redirect(`/vehicles/${viewer.redirectTo}/repairs/${repairId}`);
+  if (viewer.choose) {
+    return <ChooseYourCar vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`} cars={viewer.choose} hrefFor={(g) => `/vehicles/${g}/repairs/${repairId}`} />;
+  }
+  const { config, inGarage } = viewer;
   const guide = resolveGuideForConfig(authored, config, vehicle.make);
   const configNotice = (
-    <GuideConfigNotice resolution={guide.configResolution} config={config} make={vehicle.make} vehicleId={vehicle.id} inGarage={inGarage} />
+    <GuideConfigNotice resolution={guide.configResolution} config={config} make={vehicle.make} vehicleId={id} inGarage={inGarage} />
   );
 
   const previewBanner = isPreview(guide) && (
@@ -72,8 +79,9 @@ export default async function RepairGuidePage(
         <GuideWithServiceSave
           guide={guide}
           vehicle={vehicle}
+          garageId={id}
           breadcrumb={[
-            { label: `${vehicle.year} ${vehicle.make} ${vehicle.model}`, href: `/vehicles/${vehicle.id}` },
+            { label: `${vehicle.year} ${vehicle.make} ${vehicle.model}`, href: `/vehicles/${id}` },
           ]}
         />
         <FeedbackWidget vehicleId={vehicle.id} guideId={guide.id} />
@@ -86,7 +94,7 @@ export default async function RepairGuidePage(
       {/* Records the view for admin analytics. Renders nothing. */}
       <ViewTracker type="guide.viewed" objectId={guide.id} objectType="guide" />
       <Link
-        href={`/vehicles/${vehicle.id}`}
+        href={`/vehicles/${id}`}
         className="text-sm text-slate-400 hover:text-slate-200"
       >
         &larr; Back to {vehicle.year} {vehicle.make} {vehicle.model}

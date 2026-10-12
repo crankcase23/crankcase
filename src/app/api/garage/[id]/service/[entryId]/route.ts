@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
+import { withGarageId } from "@/lib/garageRoute";
 import { requireUserId } from "@/lib/apiAuth";
 import { resolveGarageEntryId } from "@/lib/garageEntries";
 import { deleteServiceEntry } from "@/lib/serviceEntriesDb";
 
-export async function DELETE(
+export const DELETE = withGarageId(async (
   _request: Request,
   { params }: { params: Promise<{ id: string; entryId: string }> },
-) {
+) => {
   const userId = await requireUserId();
   if (!userId) return NextResponse.json({ error: "Not signed in." }, { status: 401 });
 
@@ -25,4 +26,4 @@ export async function DELETE(
 
   await deleteServiceEntry(garageEntryId, entryId);
   return NextResponse.json({ ok: true });
-}
+});

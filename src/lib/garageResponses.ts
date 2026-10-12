@@ -2,20 +2,12 @@ import { NextResponse } from "next/server";
 import type { Blocked } from "@/lib/garageEntries";
 import type { validateVin } from "@/lib/vin";
 
-/** The one answer for "not added": says what the customer can do, nothing about anyone else. */
+/** Why an add did not happen. Both answers concern only the customer's own garage; nothing about any other account. */
 export function blockedResponse(b: Blocked) {
   switch (b.blocked) {
-    case "vin-claim-required":
+    case "vin-already-in-garage":
       return NextResponse.json(
-        {
-          code: "VIN_CLAIM_REQUIRED",
-          error: "This VIN can't be added to your garage yet. It needs a verified ownership claim, which isn't available yet. Nothing was added and nothing was shared.",
-        },
-        { status: 409 },
-      );
-    case "same-model-other-vin":
-      return NextResponse.json(
-        { code: "SAME_MODEL_OTHER_VIN", error: "Your garage already has this model under a different VIN. Holding two of the same model isn't supported yet." },
+        { code: "VIN_ALREADY_IN_GARAGE", error: "This VIN is already on another vehicle in your garage, so it can't be used for a second one." },
         { status: 409 },
       );
     default:

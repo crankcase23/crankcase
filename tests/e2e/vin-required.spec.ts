@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { signUpNewUser, validVin } from "./helpers";
+import { breakCheckDigit, randomIp, signUpNewUser, validVin } from "./helpers";
 
 // VIN-required garage + photo VIN scanning, in a real browser on a production build and a THROWAWAY Postgres.
 // NHTSA is unreachable from the sandbox, so its vPIC response is mocked at the network layer. The photo scan itself is real:
@@ -86,84 +86,226 @@ test.describe("A VIN is required by the server, not just the screen", () => {
     expect(countFor(email)).toBe(0);
   });
 
-  test("a second car of a model already in the garage, under a different VIN, is refused clearly (not silently merged)", async ({ page }) => {
+  test("two cars of the same year/make/model with different VINs coexist, each with its own history, VIN and removal", async ({ page }) => {
     const email = await signUpNewUser(page);
-    expect((await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).ok()).toBeTruthy();
-    const r = await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }));
-    expect(r.status()).toBe(409);
-    expect((await r.json()).code).toBe("SAME_MODEL_OTHER_VIN");
+    const v1 = validVin("1HG");
+    const v2 = validVin("1HG");
+    const a = await (await post(page, catalog(v1, CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).json();
+    const b = await (await post(page, catalog(v2, CIVIC, { transmission: "manual", drivetrain: "fwd" }))).json();
+    expect(a.created).toBe(true); expect(b.created).toBe(true);
+    expect(a.entry.id).toContain("~");               // every car has its own permanent id
+    expect(b.entry.id).toContain("~");
+    expect(a.entry.id).not.toBe(b.entry.id);
+    expect(countFor(email)).toBe(2);
+    expect(sql(`select count(distinct vin) from garage_entries where user_id='${uidOf(email)}'`)).toBe("2");
+
+    // separate Service History and odometer
+    const enc = encodeURIComponent;
+    await page.request.post(`/api/garage/${enc(a.entry.id)}/service`, { data: { date: "2026-01-01", mileage: 10, title: "Car A job" } });
+    await page.request.post(`/api/garage/${enc(b.entry.id)}/service`, { data: { date: "2026-01-02", mileage: 20, title: "Car B job" } });
+    await page.request.put(`/api/garage/${enc(b.entry.id)}/odometer`, { data: { value: 777 } });
+    const titles = async (id: string) => (await (await page.request.get(`/api/garage/${enc(id)}/service`)).json()).entries.map((e: { title: string }) => e.title);
+    expect(await titles(a.entry.id)).toEqual(["Car A job"]);
+    expect(await titles(b.entry.id)).toEqual(["Car B job"]);
+    const odoA = await (await page.request.get(`/api/garage/${enc(a.entry.id)}/odometer`)).json();
+    expect(JSON.stringify(odoA)).not.toContain("777");
+
+    // the garage lists both, and each car's page opens
+    await page.goto("/garage");
+    await expect(page.getByRole("button", { name: /^Remove .*Civic.* from garage$/ })).toHaveCount(2);
+    await expect(page.locator(`a[href="/vehicles/${a.entry.id}"]`).first()).toBeVisible();
+    await expect(page.locator(`a[href="/vehicles/${b.entry.id}"]`).first()).toBeVisible();
+    await page.goto(`/vehicles/${enc(b.entry.id)}`);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Civic/);
+
+    // the same VIN again is the same car; a lowercase spelling too
+    const again = await (await post(page, catalog(v2.toLowerCase(), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).json();
+    expect(again.created).toBe(false); expect(again.entry.id).toBe(b.entry.id);
+    expect(countFor(email)).toBe(2);
+
+    // removing one car leaves the other (and its history) alone
+    expect((await page.request.delete(`/api/garage/${enc(b.entry.id)}`)).ok()).toBeTruthy();
     expect(countFor(email)).toBe(1);
+    expect(await titles(a.entry.id)).toEqual(["Car A job"]);
+  });
+
+  test("an older VIN-less record is completed by the first VIN (history kept); the next different VIN is a second car", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    sql(`insert into garage_entries (id,user_id,kind,vehicle_id) values (gen_random_uuid()::text,'${uidOf(email)}','catalog','${CIVIC}')`);
+    const enc = encodeURIComponent;
+    // the older record already has history under the plain id
+    sql(`insert into service_entries (id,user_id,garage_entry_id,date,mileage,title) select gen_random_uuid()::text,user_id,id,'2026-01-01',5,'Old job' from garage_entries where user_id='${uidOf(email)}'`);
+    const v1 = validVin("1HG");
+    const first = await (await post(page, catalog(v1, CIVIC))).json();
+    expect(first.created).toBe(false);
+    expect(first.entry.id).toMatch(/^2018-honda-civic-1\.5t~/);
+    expect(countFor(email)).toBe(1);
+    expect((await (await page.request.get(`/api/garage/${CIVIC}/service`)).json()).entries).toHaveLength(1);       // old bare id: still this one car
+    expect((await (await page.request.get(`/api/garage/${enc(first.entry.id)}/service`)).json()).entries).toHaveLength(1); // permanent id: same car
+    const second = await (await post(page, catalog(validVin("1HG"), CIVIC))).json();
+    expect(second.created).toBe(true);
+    expect(countFor(email)).toBe(2);
+    expect((await (await page.request.get(`/api/garage/${enc(second.entry.id)}/service`)).json()).entries).toHaveLength(0);
   });
 });
 
-// ----------------------------------------------------------------------- cross-account collisions, privacy, no claims
-test.describe("Cross-account VIN collisions reveal nothing and grant nothing", () => {
-  test("another account adding a VIN that is already held gets a generic claim-required answer and no access", async ({ browser }) => {
+// ----------------------------------------------------------------------- cross-account isolation (VIN identity != ownership)
+// A VIN names a vehicle; it is not a lock. Any number of accounts may keep their own private record for the same VIN.
+// Nothing an account does with a VIN can be seen, blocked or influenced by another account.
+const stable = (b: { entry: Record<string, unknown>; created: boolean; configKept: boolean }) =>
+  JSON.stringify({ created: b.created, configKept: b.configKept, entry: { ...b.entry, id: "<id>", addedAt: "<t>", vin: "<vin>", config: { ...(b.entry.config as object), confirmedAt: "<t>" } } });
+const rowsForVin = (v: string) => Number(sql(`select count(*) from garage_entries where vin='${v}'`));
+
+test.describe("Accounts are isolated: the same VIN in two garages shares nothing and blocks nothing", () => {
+  test("a VIN another account already holds adds normally: own row, own history, nothing visible across accounts", async ({ browser }) => {
     const ctxA = await browser.newContext();
     const A = await ctxA.newPage();
     const emailA = await signUpNewUser(A);
     const v = validVin("WBA");
-    const added = await (await post(A, catalog(v))).json();
-    expect(added.created).toBe(true);
-    const svc = await A.request.post(`/api/garage/${BMW}/service`, { data: { date: "2026-01-02", mileage: 61000, title: "A private record" } });
-    expect(svc.ok()).toBeTruthy();
+    const addedA = await (await post(A, catalog(v))).json();
+    expect(addedA.created).toBe(true);
+    expect((await A.request.post(`/api/garage/${BMW}/service`, { data: { date: "2026-01-02", mileage: 61000, title: "A private record" } })).ok()).toBeTruthy();
+    expect((await A.request.put(`/api/garage/${BMW}/odometer`, { data: { value: 61000 } })).ok()).toBeTruthy();
     const idA = uidOf(emailA);
 
     const ctxB = await browser.newContext();
     const B = await ctxB.newPage();
     const emailB = await signUpNewUser(B);
-
+    const idB = uidOf(emailB);
     for (const [name, data] of [
       ["catalog, same VIN", catalog(v)],
-      ["catalog, lower case with spaces", catalog(v.toLowerCase().replace(/^(.{3})/, "$1 "))],
-      ["custom, same VIN", { kind: "custom", custom: { vin: v, make: "BMW", model: "328i" }, config: OK }],
     ] as [string, unknown][]) {
       const r = await post(B, data);
-      expect(r.status(), name).toBe(409);
+      expect(r.status(), name).toBe(200);
       const text = await r.text();
-      const body = JSON.parse(text);
-      expect(Object.keys(body).sort(), name).toEqual(["code", "error"]);
-      expect(body.code).toBe("VIN_CLAIM_REQUIRED");
-      // nothing about the other account or its vehicle
-      for (const secret of [emailA, idA, "A private record", "61000", "2010", "328i", BMW]) expect(text, `${name}: leaks ${secret}`).not.toContain(secret);
+      for (const secret of [emailA, idA, "A private record", "61000"]) expect(text, `${name}: leaks ${secret}`).not.toContain(secret);
     }
-    // a malformed VIN gets the same format error whoever holds anything: the collision check is not a VIN oracle for bad input
-    expect((await post(B, catalog(v.slice(0, 16) + "Z"))).status()).toBe(400);
-
-    expect(countFor(emailB)).toBe(0);
-    // B cannot read or touch A's records by id
-    const list = await (await B.request.get("/api/garage")).json();
-    expect(list.entries).toEqual([]);
-    expect((await B.request.get(`/api/garage/${BMW}/service`)).status()).toBe(200);
+    expect(countFor(emailB)).toBe(1);
+    expect(rowsForVin(v)).toBe(2);
+    // two separate rows, one per account
+    expect(sql(`select count(distinct id) from garage_entries where vin='${v}'`)).toBe("2");
+    // B starts with an empty history and odometer; A's is untouched
     expect((await (await B.request.get(`/api/garage/${BMW}/service`)).json()).entries).toEqual([]);
-    expect((await B.request.patch(`/api/garage/${BMW}`, { data: { drivetrain: "awd" } })).status()).toBe(404);
-    expect((await B.request.post(`/api/garage/${BMW}/vin`, { data: { vin: v } })).status()).toBe(404);
-    await B.request.delete(`/api/garage/${BMW}`);
-    // A is untouched
+    expect((await (await B.request.get(`/api/garage/${BMW}/odometer`)).json()).odometer).toBeNull();
+    expect((await (await A.request.get(`/api/garage/${BMW}/service`)).json()).entries).toHaveLength(1);
+    expect(sql(`select count(*) from service_entries where garage_entry_id in (select id from garage_entries where user_id='${idB}')`)).toBe("0");
+    // B writing to its own record does not appear in A's
+    expect((await B.request.post(`/api/garage/${BMW}/service`, { data: { date: "2026-02-02", mileage: 100, title: "B private record" } })).ok()).toBeTruthy();
+    const aList = JSON.stringify((await (await A.request.get(`/api/garage/${BMW}/service`)).json()).entries);
+    expect(aList).not.toContain("B private record");
+    // B's config edit does not touch A's
+    expect((await B.request.patch(`/api/garage/${BMW}`, { data: { drivetrain: "awd" } })).ok()).toBeTruthy();
     expect(sql(`select vin,transmission,drivetrain from garage_entries where user_id='${idA}'`)).toBe(`${v}|automatic|rwd`);
-    expect(sql(`select count(*) from service_entries where garage_entry_id in (select id from garage_entries where user_id='${idA}')`)).toBe("1");
+    // removing one account's record never removes the other's
+    await A.request.delete(`/api/garage/${BMW}`);
+    expect(countFor(emailB)).toBe(1);
+    expect((await (await B.request.get(`/api/garage/${BMW}/service`)).json()).entries).toHaveLength(1);
     await ctxA.close();
     await ctxB.close();
   });
 
-  test("a claim-required answer is not a permanent ruling: once the holder lets go, the VIN adds normally", async ({ browser }) => {
+  test("no VIN squatting: someone adding a VIN first (any spelling, either endpoint) cannot block its real owner", async ({ browser }) => {
+    const ctxS = await browser.newContext();
+    const S = await ctxS.newPage();
+    const emailS = await signUpNewUser(S);
+    const v = validVin("WBA");
+    // the squatter takes the VIN first, every way there is
+    expect((await post(S, catalog(v.toLowerCase().replace(/^(.{3})/, "$1 ")))).ok()).toBeTruthy();
+    const ctxO = await browser.newContext();
+    const O = await ctxO.newPage();
+    const emailO = await signUpNewUser(O);
+    for (const [name, data] of [
+      ["catalog, same spelling", catalog(v)],
+    ] as [string, unknown][]) {
+      const r = await post(O, data);
+      expect(r.status(), name).toBe(200);
+      expect((await r.json()).created, name).toBe(true);
+      await O.request.delete(`/api/garage/${BMW}`);
+    }
+    // custom entry for the same VIN and an older VIN-less record completed with it work too
+    const custom = await post(O, { kind: "custom", custom: { vin: v, make: "BMW", model: "328i" }, config: OK });
+    expect(custom.status()).toBe(200);
+    expect((await custom.json()).created).toBe(true);
+    const uidO = uidOf(emailO);
+    sql(`insert into garage_entries(id,user_id,kind,vehicle_id) values ('legacy-${uidO}','${uidO}','catalog','${JEEP}')`);
+    const dupOwn = await O.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: v } }); // already on O's own custom row
+    expect(dupOwn.status()).toBe(409);
+    expect((await dupOwn.json()).code).toBe("VIN_ALREADY_IN_GARAGE");
+    expect(countFor(emailS)).toBe(1);
+    expect(rowsForVin(v)).toBe(3 - 1); // S's row + O's custom row (the VIN-less legacy row stayed VIN-less)
+    await ctxS.close();
+    await ctxO.close();
+  });
+
+  test("the answer never depends on whether another account holds the VIN (no oracle), and completion works the same way", async ({ browser }) => {
     const ctxA = await browser.newContext();
     const A = await ctxA.newPage();
     await signUpNewUser(A);
-    const v = validVin("WBA");
-    await post(A, catalog(v));
     const ctxB = await browser.newContext();
     const B = await ctxB.newPage();
     const emailB = await signUpNewUser(B);
-    expect((await post(B, catalog(v))).status()).toBe(409);
-    // the holder removes the vehicle: nothing was ever recorded against the VIN for B, and B can now add it normally
-    await A.request.delete(`/api/garage/${BMW}`);
-    const r = await post(B, catalog(v));
-    expect(r.ok()).toBeTruthy();
-    expect((await r.json()).created).toBe(true);
-    expect(countFor(emailB)).toBe(1);
+    const held = validVin("WBA");
+    const free = validVin("WBA");
+    await post(A, catalog(held));
+    const rHeld = await post(B, catalog(held));
+    const rFree = await post(B, catalog(free));
+    expect(rHeld.status()).toBe(200);
+    expect(rFree.status()).toBe(200);
+    expect(stable(await rHeld.json())).toBe(stable(await rFree.json()));
+    // completion of a legacy record with a held VIN answers exactly as with a free one
+    const uid = uidOf(emailB);
+    sql(`insert into garage_entries(id,user_id,kind,vehicle_id) values ('old-jeep-${uid}','${uid}','catalog','${JEEP}')`);
+    sql(`insert into garage_entries(id,user_id,kind,vehicle_id) values ('old-civic-${uid}','${uid}','catalog','${CIVIC}')`);
+    const heldElsewhere = validVin("1C4");
+    await A.request.post("/api/garage", { data: { kind: "custom", custom: { vin: heldElsewhere, make: "Jeep", model: "Grand Cherokee" }, config: OK } });
+    const c1 = await B.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: heldElsewhere } });
+    const c2 = await B.request.post(`/api/garage/${CIVIC}/vin`, { data: { vin: validVin("1HG") } });
+    expect(c1.status()).toBe(200);
+    expect(c2.status()).toBe(200);
+    expect(sql(`select vin from garage_entries where id='old-jeep-${uid}'`)).toBe(heldElsewhere);
+    // malformed input (only the check digit wrong, so this cannot accidentally be valid) gets the same format error whoever holds what
+    const broken = await post(B, catalog(breakCheckDigit(held)));
+    expect(broken.status()).toBe(400);
+    expect((await broken.json()).problem).toBe("check-digit");
     await ctxA.close();
     await ctxB.close();
+  });
+
+  test("simultaneous adds of one VIN by two accounts both succeed, every time", async ({ browser }) => {
+    test.setTimeout(180_000);
+    const ctxA = await browser.newContext();
+    const A = await ctxA.newPage();
+    const emailA = await signUpNewUser(A);
+    const ctxB = await browser.newContext();
+    const B = await ctxB.newPage();
+    const emailB = await signUpNewUser(B);
+    for (let round = 0; round < 8; round++) {
+      const v = validVin("WBA");
+      const [ra, rb] = await Promise.all([post(A, catalog(v)), post(B, catalog(v))]);
+      expect([ra.status(), rb.status()], `round ${round}`).toEqual([200, 200]);
+      expect(rowsForVin(v), `round ${round}`).toBe(2);
+      expect(sql(`select count(distinct user_id) from garage_entries where vin='${v}'`), `round ${round}`).toBe("2");
+    }
+    expect(countFor(emailA)).toBe(8);
+    expect(countFor(emailB)).toBe(8);
+    await ctxA.close();
+    await ctxB.close();
+  });
+
+  test("a lookup by (account, VIN) is served by the unique index, not a table scan, on a populated table", async ({ page }) => {
+    test.setTimeout(120_000);
+    const email = await signUpNewUser(page);
+    const uid = uidOf(email);
+    // 40k synthetic rows under this account only, removed afterwards
+    sql(`insert into garage_entries(id,user_id,kind,vehicle_id,vin) select 'plan-${uid}-'||g, '${uid}', 'catalog', 'plan-model-'||g, 'PLAN'||lpad(g::text,13,'0') from generate_series(1,40000) g`);
+    try {
+      sql("analyze garage_entries");
+      const plan = sql(`explain select id from garage_entries where user_id='${uid}' and vin='PLAN0000000000042'`);
+      expect(plan).toMatch(/garage_entries_user_vin_uq/);
+      expect(plan).not.toMatch(/Seq Scan/);
+    } finally {
+      sql(`delete from garage_entries where id like 'plan-${uid}-%'`);
+    }
   });
 });
 
@@ -200,25 +342,15 @@ test.describe("Older records are kept and can be completed with a VIN", () => {
     await expect(page.getByTestId("card-vin-needed")).toHaveCount(0);
   });
 
-  test("VIN completion with a VIN another account holds gives the generic answer and attaches nothing; a saved VIN cannot be swapped", async ({ browser }) => {
+  test("a saved VIN cannot be swapped, and bad or foreign-record VIN completions are refused", async ({ browser }) => {
     const ctxA = await browser.newContext();
     const A = await ctxA.newPage();
     await signUpNewUser(A);
-    const held = validVin("WBA");
-    await post(A, catalog(held));
-
     const ctxB = await browser.newContext();
     const B = await ctxB.newPage();
     const emailB = await signUpNewUser(B);
     const uid = uidOf(emailB);
     sql(`insert into garage_entries(id,user_id,kind,vehicle_id,vin) values ('old-jeep-${uid}','${uid}','catalog','${JEEP}',null)`);
-    const r = await B.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: held } });
-    expect(r.status()).toBe(409);
-    const body = await r.json();
-    expect(Object.keys(body).sort()).toEqual(["code", "error"]);
-    expect(body.code).toBe("VIN_CLAIM_REQUIRED");
-    expect(sql(`select vin is null from garage_entries where id='old-jeep-${uid}'`)).toBe("t");
-
     const mine = validVin("1C4");
     expect((await B.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: mine } })).ok()).toBeTruthy();
     const swap = await B.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: validVin("1C4") } });
@@ -226,7 +358,8 @@ test.describe("Older records are kept and can be completed with a VIN", () => {
     expect((await swap.json()).code).toBe("VIN_ALREADY_SET");
     expect(sql(`select vin from garage_entries where id='old-jeep-${uid}'`)).toBe(mine);
     expect((await B.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: "nope" } })).status()).toBe(400);
-    expect((await ctxA.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: mine } })).status()).toBe(404);
+    // another account cannot complete or touch B's record
+    expect((await A.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: mine } })).status()).toBe(404);
     await ctxA.close();
     await ctxB.close();
   });
@@ -401,5 +534,57 @@ test.describe("Photo VIN scan on a phone-sized screen", () => {
     await expect(page).toHaveURL(/\/garage\/custom\//);
     expect(sql(`select vin,transmission,drivetrain from garage_entries where user_id='${uidOf(email)}'`)).toBe(`${CLEAN_VIN}|automatic|unknown`);
     await shot(page, "27-mobile-journey-saved");
+  });
+});
+
+// ----------------------------------------------------------------------- probe protection (enumeration / ownership probing)
+test.describe("VIN submissions have a plain volume limit that reveals nothing", () => {
+  const retryAfter = (r: { headers(): Record<string, string> }) => Number(r.headers()["retry-after"]);
+
+  test("an account has a budget of VIN attempts per hour, whatever the outcome", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    const out: number[] = [];
+    for (let i = 0; i < 22; i++) out.push((await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).status());
+    expect(out.slice(0, 20).every((s) => s === 200)).toBeTruthy();
+    expect(out.slice(20)).toEqual([429, 429]);
+    expect(countFor(email)).toBe(20);
+    const limited = await post(page, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }));
+    expect(limited.status()).toBe(429);
+    expect(retryAfter(limited)).toBeGreaterThan(0);
+    expect(Object.keys(await limited.json()).sort()).toEqual(["code", "error"]);
+    // malformed VINs are refused before any lookup and cost no budget (they reveal nothing)
+    const bad = await post(page, catalog("NOTAVIN", CIVIC));
+    expect(bad.status()).toBe(400);
+  });
+
+  test("the same network address shares a budget across accounts", async ({ browser }) => {
+    test.setTimeout(240_000);
+    const ip = randomIp();
+    const statuses: number[] = [];
+    for (let u = 0; u < 8; u++) {
+      const ctx = await browser.newContext();
+      const pg = await ctx.newPage();
+      await signUpNewUser(pg, ip);
+      // 19 attempts each: under the 20-per-account budget, but 8 x 19 = 152 is over the 150-per-address budget
+      for (let i = 0; i < 19; i++) statuses.push((await post(pg, catalog(validVin("1HG"), CIVIC, { transmission: "cvt", drivetrain: "fwd" }))).status());
+      await ctx.close();
+    }
+    expect(statuses.filter((s) => s === 200)).toHaveLength(150);
+    expect(statuses.filter((s) => s === 429)).toHaveLength(2);
+    expect(statuses.slice(-2).every((s) => s === 429)).toBeTruthy();
+  });
+
+  test("VIN completion is limited the same way and answers generically", async ({ page }) => {
+    const email = await signUpNewUser(page);
+    sql(`insert into garage_entries (id,user_id,kind,vehicle_id) values (gen_random_uuid()::text,'${uidOf(email)}','catalog','${JEEP}')`);
+    const out: number[] = [];
+    for (let i = 0; i < 22; i++) {
+      const r = await page.request.post(`/api/garage/${JEEP}/vin`, { data: { vin: validVin("1J4") } });
+      out.push(r.status());
+      if (r.status() === 429) expect(Object.keys(await r.json()).sort()).toEqual(["code", "error"]);
+    }
+    expect(out[0]).toBe(200);              // the first valid VIN completes the record
+    expect(out[1]).toBe(409);              // a different VIN cannot replace it (VIN_ALREADY_SET)
+    expect(out.slice(20)).toEqual([429, 429]);
   });
 });

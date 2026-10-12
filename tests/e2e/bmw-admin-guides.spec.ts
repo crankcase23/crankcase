@@ -1,4 +1,4 @@
-import { validVin } from "./helpers";
+import { randomIp, validVin } from "./helpers";
 import { test, expect, type Page } from "@playwright/test";
 import { Pool } from "pg";
 import { bmwDraftGuides } from "../../src/data/admin-test-guides/bmw-2010-328i-drafts";
@@ -25,6 +25,7 @@ test.afterAll(async () => { await pool.end(); });
 
 /** Sign up through the normal form (retrying through the normal login form if the dev server was still compiling). */
 async function signUpNew(page: Page) {
+  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": randomIp() }); // own address per context, like real customers
   const email = `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
   const password = "testpassword123";
   await page.goto("/signup");

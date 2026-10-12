@@ -5,7 +5,13 @@ import { Page, expect } from "@playwright/test";
 // a session. Each e2e test that touches the garage signs up its own
 // throwaway account here so tests stay isolated from each other's data
 // instead of sharing one seeded user.
-export async function signUpNewUser(page: Page): Promise<string> {
+// Every browser context in the suite gets its own network address (x-forwarded-for), the way real customers do. Without
+// this all local traffic shares one address and the per-address VIN-attempt budget (src/lib/vinGuard.ts) would be spent
+// by the suite itself. Pass an address to put several accounts behind the same one on purpose.
+export const randomIp = () => `10.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${1 + Math.floor(Math.random() * 254)}`;
+
+export async function signUpNewUser(page: Page, ip: string = randomIp()): Promise<string> {
+  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": ip });
   const email = `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
   await page.goto("/signup");
   await page.getByLabel("Email").fill(email);
@@ -27,10 +33,15 @@ export function checkDigit(v: string): string {
 }
 export function validVin(prefix = "1HG"): string {
   // Six random characters (34^6 values) so VINs from parallel workers and from earlier runs never collide. The database
-  // persists across runs and VINs are unique across accounts, so a weaker serial makes the suite flaky.
+  // persists across runs and one account cannot hold a VIN twice, so a weaker serial makes the suite flaky.
   let serial = "";
   for (let i = 0; i < 6; i++) serial += ALPHA[Math.floor(Math.random() * ALPHA.length)];
   const body = prefix.toUpperCase().slice(0, 3).padEnd(3, "1") + "CM826" + "0" + "3A" + serial;
   const v = body.split("").map((c) => (ALPHA.includes(c) ? c : "1")).join("").slice(0, 17);
   return v.slice(0, 8) + checkDigit(v.slice(0, 8) + "0" + v.slice(9)) + v.slice(9);
+}
+
+/** Same VIN with ONLY the check digit changed, so it is guaranteed to fail the check-digit rule (and nothing else). */
+export function breakCheckDigit(v: string): string {
+  return v.slice(0, 8) + (v[8] === "0" ? "1" : "0") + v.slice(9);
 }

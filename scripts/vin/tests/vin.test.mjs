@@ -144,9 +144,72 @@ test("server: every add validates the VIN first, no other code inserts a garage 
     assert.ok(!/create:\s*true/.test(r) && /NOT_IN_GARAGE/.test(r), f);
   }
   const resp = fs.readFileSync(path.join(ROOT, "src/lib/garageResponses.ts"), "utf8");
-  assert.ok(/VIN_CLAIM_REQUIRED/.test(resp) && !/userId|email|another (customer|user|owner)'s/i.test(resp.replace(/ownership claim/g, "")), "the claim response names no one");
+  assert.ok(!/VIN_CLAIM_REQUIRED|vin-claim-required/.test(resp + ge), "no cross-account claim-required answer exists");
+  assert.ok(!/vinHeldByAnotherAccount|ne\(garageEntries\.userId/.test(ge), "no query looks at other accounts' rows by VIN");
+  assert.ok(!/upper\(\$\{garageEntries\.vin\}\)/.test(ge), "VIN lookups are plain equality on the canonical column (index friendly)");
+  assert.ok(!/userId|email|another (customer|user|owner|account)/i.test(resp), "blocked answers name no one");
 });
 
 test("only text is a VIN: numbers, arrays and objects that stringify to 17 characters are refused", () => {
   for (const v of [12345678901234567, [GOOD], { toString: () => GOOD }, null, undefined, true]) assert.equal(vin.validateVin(v).ok, false);
+});
+
+test("abuse throttle: every VIN lookup is guarded first, there is no collision counter, and the VIN itself is never stored", () => {
+  const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
+  assert.ok(route.indexOf("guardVinAttempt(request") < route.indexOf("addCatalogEntry(userId"), "catalog add is guarded before the lookup");
+  assert.ok(route.indexOf("guardVinAttempt(request", route.indexOf("addCatalogEntry(userId")) < route.indexOf("addCustomEntry(userId"), "custom add is guarded before the lookup");
+  assert.ok(!/noteVinCollision|VIN_COLLISION/.test(route), "no collision bookkeeping");
+  const comp = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/vin/route.ts"), "utf8");
+  assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId") && !/noteVinCollision/.test(comp), "completion is guarded too");
+  const g = fs.readFileSync(path.join(ROOT, "src/lib/vinGuard.ts"), "utf8");
+  assert.ok(/VIN_RATE_LIMITED/.test(g) && /Retry-After/.test(g));
+  assert.ok(!/metadata:\s*\{[^}]*vin\b/i.test(g), "no VIN in stored metadata");
+  assert.ok(/createHash\("sha256"\)/.test(g), "network address stored only as a salted hash");
+  assert.ok(!/another (customer|user|owner|account)/i.test(g.split("NextResponse.json(")[1] ?? ""), "the 429 body names no one");
+});
+
+test("regression: breaking ONLY the check digit always yields an invalid VIN, and changing any other single character of a valid VIN never keeps it valid unless the weights allow", () => {
+  // The old e2e fixture replaced the last character with "Z"; that is still VALID when the character was already "Z" or "9"
+  // (both transliterate to 9 at the same weight), which made a test flaky about 1 run in 17. Mutating only the check digit
+  // cannot do that.
+  const ALPHA = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
+  let n = 0;
+  for (let i = 0; i < 5000; i++) {
+    let body = "";
+    for (let k = 0; k < 17; k++) body += ALPHA[Math.floor(Math.random() * ALPHA.length)];
+    const v = withCheck(body);
+    assert.equal(vin.validateVin(v).ok, true, v);
+    const broken = v.slice(0, 8) + (v[8] === "0" ? "1" : "0") + v.slice(9);
+    const r = vin.validateVin(broken);
+    assert.equal(r.ok, false, broken);
+    assert.equal(r.problem, "check-digit", broken);
+    n++;
+  }
+  assert.equal(n, 5000);
+  // and the old shape really was flaky: "Z"/"9" collide on the last position
+  const z = withCheck("1HGCM82633A00435" + "Z");
+  assert.equal(vin.validateVin(z.slice(0, 16) + "Z").ok, true, "replacing a trailing Z with Z is a no-op, not a break");
+  assert.equal(vin.validateVin(z.slice(0, 16) + "9").ok, true, "Z and 9 weigh the same, so swapping them keeps the VIN valid");
+});
+
+test("canonical VIN: storage and lookups use one spelling", () => {
+  const v = withCheck("1HGCM82633A00435" + "2");
+  assert.equal(vin.canonicalVin(` ${v.toLowerCase().slice(0, 5)}-${v.slice(5).toLowerCase()} `), v);
+  assert.equal(vin.validateVin(v.toLowerCase()).vin, v);
+  assert.equal(vin.canonicalVin(v), vin.canonicalVin(vin.canonicalVin(v)), "idempotent");
+});
+
+test("same-model identity: ids are permanent, bare ids never guess, and the wrench-mode config follows the car", () => {
+  const ge = fs.readFileSync(path.join(ROOT, "src/lib/garageEntries.ts"), "utf8");
+  assert.ok(!/isOldest|oldest\.id/.test(ge), "no 'oldest row keeps the plain id' scheme");
+  assert.ok(/composeGarageId\(row\.vehicleId, row\.id\)/.test(ge), "every catalog car gets <model>~<rowId>");
+  assert.ok(/throw new AmbiguousGarageId/.test(ge), "a bare id with several cars throws");
+  for (const f of ["route.ts", "odometer/route.ts", "service/route.ts", "service/[entryId]/route.ts", "vin/route.ts"]) {
+    const r = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]", f), "utf8");
+    assert.ok(!/export async function/.test(r) && /withGarageId\(/.test(r), `${f}: every handler is wrapped so an ambiguous id becomes a 409`);
+  }
+  const save = fs.readFileSync(path.join(ROOT, "src/components/GuideWithServiceSave.tsx"), "utf8");
+  assert.ok(/garageId=\{garageId\}/.test(save), "GuideWithServiceSave hands the car's id to Wrench Mode");
+  const wm = fs.readFileSync(path.join(ROOT, "src/components/GuideWithWrenchMode.tsx"), "utf8");
+  assert.ok(/useVehicleConfig\(garageId \?\? vehicle\.id\)/.test(wm), "live config is read for THIS car, not the shared catalog id");
 });

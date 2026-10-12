@@ -15,13 +15,16 @@ SELECT 'check constraints present',
          WHERE conname IN ('garage_entries_transmission_chk','garage_entries_drivetrain_chk')),
        '0', '2'
 UNION ALL
-SELECT 'unique indexes present',
-       (SELECT count(*)::text FROM pg_indexes
-         WHERE indexname IN ('garage_entries_user_catalog_vehicle_uq','garage_entries_user_vin_uq')),
-       '0', '2 (0 or 1 only if the duplicate checks below are not 0; the migration prints a NOTICE and skips)'
+SELECT 'one-row-per-model index (must NOT exist: same-model cars are allowed)',
+       (SELECT count(*)::text FROM pg_indexes WHERE indexname = 'garage_entries_user_catalog_vehicle_uq'),
+       '0', '0'
 UNION ALL
-SELECT 'duplicate catalog rows (customer/vehicle pairs)',
-       (SELECT count(*)::text FROM (SELECT 1 FROM garage_entries WHERE kind = 'catalog'
+SELECT 'duplicate-prevention indexes present',
+       (SELECT count(*)::text FROM pg_indexes WHERE indexname IN ('garage_entries_user_vin_uq','garage_entries_user_catalog_novin_uq')),
+       '0', '2 (fewer only if a duplicate check below is not 0; the migration prints a NOTICE and skips)'
+UNION ALL
+SELECT 'duplicate VIN-less catalog rows (customer/vehicle pairs)',
+       (SELECT count(*)::text FROM (SELECT 1 FROM garage_entries WHERE kind = 'catalog' AND vin IS NULL
          GROUP BY user_id, vehicle_id HAVING count(*) > 1) d),
        '0 (else resolve by hand first)', '0'
 UNION ALL

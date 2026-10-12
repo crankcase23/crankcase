@@ -14,16 +14,19 @@ import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
 export default function GuideWithServiceSave({
   guide,
   vehicle,
+  garageId,
   breadcrumb,
 }: {
   guide: ResolvedGuide;
   vehicle: Vehicle;
+  /** The customer's permanent garage id for this car (differs from vehicle.id; two cars of one model have two ids). */
+  garageId: string;
   breadcrumb?: BreadcrumbItem[];
 }) {
   const completion: WrenchCompletionConfig = {
     vehicleLabel: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
     save: async (entry) => {
-      const res = await fetch(`/api/garage/${encodeURIComponent(vehicle.id)}/service`, {
+      const res = await fetch(`/api/garage/${encodeURIComponent(garageId)}/service`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: entry.date, mileage: entry.mileage, title: entry.title, guideId: entry.guideId }),
@@ -31,5 +34,5 @@ export default function GuideWithServiceSave({
       if (!res.ok) throw new Error(`save failed (${res.status})`);
     },
   };
-  return <GuideWithWrenchMode guide={guide} vehicle={vehicle} breadcrumb={breadcrumb} completion={completion} />;
+  return <GuideWithWrenchMode guide={guide} vehicle={vehicle} breadcrumb={breadcrumb} completion={completion} garageId={garageId} />;
 }
