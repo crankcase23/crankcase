@@ -41,7 +41,7 @@ try {
 const result = { ...(await decodeVin(vin)), vin };
 if (!result.make || !result.model || !result.year) {
 setDecodeError(
-"Couldn't get a clean read on that VIN — double-check it, or add your vehicle manually below."
+"Couldn't get a clean read on that VIN. Double-check each character, or use Take photo to scan it. Nothing was added."
 );
 return;
 }
@@ -50,7 +50,7 @@ const found = matchCatalogVehicles(result);
 if (found.length === 1) { setPickedMatchId(found[0].id); } else if (found.length > 1) { const exact = found.filter((v) => catalogMatchLooksExact(result, v)); if (exact.length === 1) setPickedMatchId(exact[0].id); }
 } catch {
 setDecodeError(
-"Couldn't reach the NHTSA VIN decoder right now. Try again in a moment, or add your vehicle manually below."
+"Couldn't reach the NHTSA VIN decoder right now. Your VIN is fine; try again in a moment. Nothing was added."
 );
 } finally {
 setDecoding(false);
