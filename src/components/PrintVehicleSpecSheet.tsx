@@ -1,14 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { Vehicle, ResolvedGuide } from "@/types/vehicle";
+import { Vehicle, ResolvedGuide, SpecItem, FluidCapacity } from "@/types/vehicle";
 
 export default function PrintVehicleSpecSheet({
   vehicle,
   repairGuides,
+  specs,
+  fluids,
+  subline,
 }: {
   vehicle: Vehicle;
   repairGuides: ResolvedGuide[];
+  /** The vehicle's spec and fluid rows as resolved for this customer's saved configuration. */
+  specs: SpecItem[];
+  fluids: FluidCapacity[];
+  subline: string;
 }) {
   const printedOn = new Date().toLocaleDateString(undefined, {
     year: "numeric",
@@ -41,7 +48,7 @@ export default function PrintVehicleSpecSheet({
             {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.trim}
           </h1>
           <p className="mt-1 text-sm text-slate-600">
-            {vehicle.engine} · {vehicle.drivetrain} · {vehicle.transmission}
+            {subline}
           </p>
           <p className="mt-3 text-xs text-slate-500">
             Printed {printedOn} via Crankcase Garage — reference figures only, always confirm
@@ -56,7 +63,7 @@ export default function PrintVehicleSpecSheet({
             </h2>
             <table className="w-full border-collapse text-sm">
               <tbody>
-                {vehicle.specs.map((s) => (
+                {specs.map((s) => (
                   <tr key={s.label} className="border-b border-slate-300">
                     <td className="py-2 pr-4 text-slate-600">{s.label}</td>
                     <td className="py-2 text-right font-medium">{s.value}</td>
@@ -79,7 +86,7 @@ export default function PrintVehicleSpecSheet({
                 </tr>
               </thead>
               <tbody>
-                {vehicle.fluids.map((f) => (
+                {fluids.map((f) => (
                   <tr key={f.name} className="border-b border-slate-300 align-top">
                     <td className="py-2 pr-4 font-medium">{f.name}</td>
                     <td className="py-2 pr-4">{f.capacity}</td>

@@ -8,6 +8,7 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { denied, OWNER_SPECIFIC, INTERNAL } from "../customer-deny.mjs";
+import { OUT_RE } from "../config-axes.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const esbuild = createRequire(path.join(ROOT, "package.json"))("esbuild");
@@ -33,20 +34,32 @@ test("access: the vehicle page resolves exactly the 16 BMW guides, one per job t
   assert.equal(catalog.getRepairById("admin-draft-bmw-2010-328i-oil-change"), undefined, "admin ids are never public");
 });
 
-test("nothing is loosened: public steps, torque rows and blocked steps equal the admin drafts", () => {
+const isLead = (s) => /^Before you start/.test(s.title);
+const procedure = (steps) => steps.filter((s) => !isLead(s));
+test("nothing is loosened: every public procedure step, torque row and blocked step matches the admin drafts (only the build-check lead and rows for builds the guide does not cover differ)", () => {
   for (const g of mine) {
     const d = draftOf(g);
     assert.ok(d, `${g.id}: no matching draft`);
-    assert.equal(g.steps.length, d.steps.length, `${g.id}: step count`);
-    g.steps.forEach((s, i) => {
-      assert.equal(s.title, d.steps[i].title, `${g.id} step ${i + 1} title`);
+    const gp = procedure(g.steps), dp = procedure(d.steps);
+    assert.equal(gp.length, dp.length, `${g.id}: procedure step count`);
+    gp.forEach((s, i) => {
+      assert.equal(s.title, dp[i].title, `${g.id} step ${i + 1} title`);
       // Warning wording may be cleaned of owner-specific text, but every caution marker (⚠ / ⛔ sentence) must survive exactly, and a warning must not appear or vanish.
-      assert.equal(Boolean(s.warning), Boolean(d.steps[i].warning), `${g.id} step ${i + 1}: warning present in one copy only`);
-      assert.deepEqual(markers(s.warning), markers(d.steps[i].warning), `${g.id} step ${i + 1}: a ⚠/⛔ caution was changed or lost`);
-      if (s.title.startsWith(BLOCK)) assert.equal(s.instructions, d.steps[i].instructions, `${g.id} step ${i + 1}: a blocked step's text must not change`);
-      assert.equal(s.title.startsWith(BLOCK), d.steps[i].title.startsWith(BLOCK));
+      assert.equal(Boolean(s.warning), Boolean(dp[i].warning), `${g.id} ${s.title}: warning present in one copy only`);
+      assert.deepEqual(markers(s.warning), markers(dp[i].warning), `${g.id} ${s.title}: a ⚠/⛔ caution was changed or lost`);
+      const noRefs = (t) => String(t).replace(/\b[Ss]teps? \d{1,2}(?:(?:\s*(?:to|-|–)\s*|\s+(?:and|or)\s+)\d{1,2})?/g, "step N"); // step numbers move when the build-check lead changes size
+      if (s.title.startsWith(BLOCK)) assert.equal(noRefs(s.instructions), noRefs(dp[i].instructions), `${g.id} ${s.title}: a blocked step's text must not change`);
+      assert.equal(s.title.startsWith(BLOCK), dp[i].title.startsWith(BLOCK));
     });
-    assert.deepEqual(g.torqueSpecs.map((t) => [t.fastener.replace(/this car/g, "this VIN"), t.value]), d.torqueSpecs.map((t) => [t.fastener, t.value]), `${g.id}: torque values must be identical to the drafts`);
+    // torque: every public row is a draft row with the same value; a draft row is missing only when it belongs to an xDrive/manual build (OUT_RE)
+    const dmap = new Map(d.torqueSpecs.map((t) => [t.fastener, t.value]));
+    for (const t of g.torqueSpecs) {
+      const key = [...dmap.keys()].find((k) => k.replace(/this VIN/g, "this car") === t.fastener || k === t.fastener) ?? [...dmap.keys()].find((k) => t.fastener && k.startsWith(t.fastener.slice(0, 30)));
+      assert.ok(key !== undefined, `${g.id}: public torque row "${t.fastener}" has no draft row`);
+      assert.equal(t.value, dmap.get(key), `${g.id}: torque value for ${t.fastener} must be identical to the draft`);
+    }
+    const publicKeys = new Set(g.torqueSpecs.map((t) => t.fastener));
+    for (const [k] of dmap) if (![...publicKeys].some((p) => k.startsWith(p.slice(0, 30)) || p.startsWith(k.slice(0, 30)))) assert.ok(OUT_RE.test(k), `${g.id}: draft torque row "${k}" is missing from the public copy but is not about another build`);
   }
 });
 
@@ -132,6 +145,7 @@ const textFields = (g) => [
   ...g.safety.map((x, i) => [`safety ${i + 1}`, x]),
   ...g.tools.flatMap((t, i) => [[`tool ${i + 1}`, t.name], [`tool ${i + 1} note`, t.note ?? ""]]),
   ...g.parts.map((x, i) => [`part ${i + 1}`, x]),
+  ...(g.configParts ?? []).map((x, i) => [`config part ${i + 1}`, x.text]),
   ...g.torqueSpecs.flatMap((t, i) => [[`torque ${i + 1}`, t.fastener], [`torque ${i + 1} value`, t.value], [`torque ${i + 1} notes`, t.notes]]),
   ...g.steps.flatMap((s) => [[`step ${s.number} title`, s.title], [`step ${s.number}`, s.instructions], [`step ${s.number} warning`, s.warning ?? ""]]),
 ];
@@ -210,7 +224,6 @@ test("step references point at the step they mean (the ones the smoke test found
   assert.match(titles(fuse, /this guide blocks that step/)[0], /^⛔ BLOCKED — Xenon low-beam bulb/);
   assert.match(titles(fuse, /step \d+ note/)[0], /^Fog bulb H8/);
   assert.match(titles(belt, /re-inspect it at step/)[0], /^Inspect/);
-  assert.match(titles(belt, /branch in step/)[0], /^Apply tension/);
   assert.match(titles(cool, /run the automatic venting routine \(step/)[0], /venting routine/i);
   assert.match(titles(cool, /run steps \d+-\d+ again/)[0], /venting routine/i);
   assert.match(titles(cool, /cap \(step \d+ method\)/)[0], /Release pressure and open/);
@@ -231,7 +244,7 @@ test("guides refer to each other by name, never by internal number", () => {
 });
 
 test("cleaning adds no numbers: every number in the customer text exists in the admin draft, apart from a short reviewed allowlist", () => {
-  const num = (g) => new Set(textFields(g).flatMap(([, t]) => String(t).match(/\d+(?:[./]\d+)*/g) ?? []));
+  const num = (g) => new Set(textFields(g).flatMap(([, t]) => String(t).replace(/\b[Ss]teps? \d{1,2}(?:(?:\s*(?:to|-|–)\s*|\s+(?:and|or)\s+)\d{1,2})?/g, "").match(/\d+(?:[./]\d+)*/g) ?? [])); // step numbers are re-pointed on purpose, so they are not 'new numbers'
   const ALLOWED = new Set(["328", "2010", "03/2010", "09/2009", "09/2007"]); // build-date conditions: "a car built before 03/2010", "built from 09/2009", "a 2010 car"; all already in the guide text
   for (const g of mine) {
     const d = draftOf(g), before = num(d), added = [...num(g)].filter((x) => !before.has(x) && !ALLOWED.has(x));

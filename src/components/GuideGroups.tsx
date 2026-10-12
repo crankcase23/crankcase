@@ -3,6 +3,7 @@ import type { JobTypeId, RepairGuide } from "@/types/vehicle";
 import { DifficultyBadge, TierBadge } from "@/components/tables";
 import Section from "@/components/app/Section";
 import { display } from "@/components/app/AppKit";
+import type { ConfigStatus } from "@/lib/guideConfig";
 
 /**
  * Guides are authored one job type at a time across the whole catalog, so the
@@ -50,9 +51,11 @@ const GROUPS: { title: string; jobs: JobTypeId[] }[] = [
 function GuideCard({
   vehicleId,
   guide,
+  status,
 }: {
   vehicleId: string;
   guide: RepairGuide;
+  status?: ConfigStatus;
 }) {
   return (
     <Link
@@ -70,6 +73,12 @@ function GuideCard({
         <TierBadge tier={guide.tier} preview={guide.preview} />
         <span className="text-xs text-slate-400">{guide.estTime}</span>
       </div>
+      {status === "needs-confirmation" && (
+        <p className="mt-2 text-xs font-semibold text-amber-300">Some steps wait for your configuration</p>
+      )}
+      {status === "unavailable" && (
+        <p className="mt-2 text-xs font-semibold text-rose-300">No verified procedure for your configuration yet</p>
+      )}
       <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{guide.summary}</p>
       <span className="mt-4 inline-flex min-h-6 items-center text-sm font-semibold text-orange-400 group-hover:text-orange-300">
         Open guide &rarr;
@@ -81,9 +90,12 @@ function GuideCard({
 export default function GuideGroups({
   vehicleId,
   guides,
+  statuses,
 }: {
   vehicleId: string;
   guides: RepairGuide[];
+  /** guide id -> how the viewer's saved configuration affects it (see resolveGuideForConfig). Omitted: no notes. */
+  statuses?: Record<string, ConfigStatus>;
 }) {
   if (guides.length === 0) {
     return (
@@ -145,6 +157,7 @@ export default function GuideGroups({
                   key={guide.id}
                   vehicleId={vehicleId}
                   guide={guide}
+                  status={statuses?.[guide.id]}
                 />
               ))}
             </div>

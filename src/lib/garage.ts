@@ -3,6 +3,20 @@
 import { useCallback, useMemo } from "react";
 import useSWR, { mutate as globalMutate } from "swr";
 import { GarageEntry, CustomVehicleInfo } from "@/types/garage";
+import { EMPTY_CONFIG, normalizeConfig, type AxisChoice, type DrivetrainChoice, type TransmissionChoice, type VehicleConfig } from "@/lib/vehicleConfig";
+
+/** What the customer confirmed on the Confirm Your Ride screen. Both axes are required: "unknown" is the Not sure answer. */
+export interface ConfigChoice {
+  transmission: TransmissionChoice;
+  drivetrain: DrivetrainChoice;
+}
+
+/** The outcome of an add, so the screen can tell the customer the truth about a vehicle that was already theirs. */
+export interface AddOutcome {
+  id: string;
+  created: boolean;
+  configKept: boolean;
+}
 
 const EMPTY_ENTRIES: GarageEntry[] = [];
 
@@ -32,30 +46,45 @@ export function useGarage() {
 // alongside the fix for VINs silently matching the wrong cab/trim. It's
 // never asked for from the manual dropdown "add a vehicle" flow, which has
 // no VIN to give.
-const addCatalogVehicle = useCallback(async (vehicleId: string, vin?: string) => {
+const addCatalogVehicle = useCallback(async (vehicleId: string, vin: string | undefined, config: ConfigChoice): Promise<AddOutcome> => {
   const res = await fetch("/api/garage", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind: "catalog", vehicleId, vin }),
+    body: JSON.stringify({ kind: "catalog", vehicleId, vin, config }),
   });
-  if (!res.ok) throw new Error("Could not add that vehicle to your garage.");
-  const { entry } = await res.json();
+  if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Could not add that vehicle to your garage.");
+  const { entry, created, configKept } = await res.json();
   await globalMutate(KEY, (current: GarageEntry[] = []) =>
-    current.some((e) => e.id === entry.id) ? current : [...current, entry],
+    current.some((e) => e.id === entry.id) ? current.map((e) => (e.id === entry.id ? entry : e)) : [...current, entry],
                      { revalidate: false });
-  return entry.id as string;
+  return { id: entry.id as string, created: Boolean(created), configKept: Boolean(configKept) };
 }, []);
 
-const addCustomVehicle = useCallback(async (info: CustomVehicleInfo): Promise<string> => {
+const addCustomVehicle = useCallback(async (info: CustomVehicleInfo, config: ConfigChoice): Promise<AddOutcome> => {
   const res = await fetch("/api/garage", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind: "custom", custom: info }),
+    body: JSON.stringify({ kind: "custom", custom: info, config }),
   });
-  if (!res.ok) throw new Error("Could not add that vehicle to your garage.");
+  if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Could not add that vehicle to your garage.");
+  const { entry, created, configKept } = await res.json();
+  await globalMutate(KEY, (current: GarageEntry[] = []) =>
+    current.some((e) => e.id === entry.id) ? current.map((e) => (e.id === entry.id ? entry : e)) : [...current, entry],
+    { revalidate: false });
+  return { id: entry.id as string, created: Boolean(created), configKept: Boolean(configKept) };
+}, []);
+
+// Edit Configuration. Only the axes given change; the server touches nothing else on the vehicle.
+const updateConfig = useCallback(async (id: string, change: { transmission?: AxisChoice; drivetrain?: AxisChoice }) => {
+  const res = await fetch(`/api/garage/${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(change),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Could not save your configuration.");
   const { entry } = await res.json();
-  await globalMutate(KEY, (current: GarageEntry[] = []) => [...current, entry], { revalidate: false });
-  return entry.id as string;
+  await globalMutate(KEY, (current: GarageEntry[] = []) => current.map((e) => (e.id === entry.id ? entry : e)), { revalidate: false });
+  return entry as GarageEntry;
 }, []);
 
 const removeEntry = useCallback(async (id: string) => {
@@ -71,6 +100,19 @@ const findCustom = useCallback(
   [entries],
   );
 
-  return { entries, addCatalogVehicle, addCustomVehicle, removeEntry, findCustom, isLoading, error };
+  return { entries, addCatalogVehicle, addCustomVehicle, updateConfig, removeEntry, findCustom, isLoading, error };
 }
 
+
+/**
+ * The saved configuration of one of the customer's vehicles (a catalog vehicleId or a custom entry's id).
+ *   config   null until loaded, and null when it cannot be known (signed out, or the vehicle is not in this garage):
+ *            guides then treat every axis as unconfirmed and restrict build-dependent content.
+ *   ready    false only while the first load is in flight.
+ */
+export function useVehicleConfig(id: string): { config: VehicleConfig | null; entry: GarageEntry | undefined; ready: boolean } {
+  const { entries, isLoading, error } = useGarage();
+  const entry = useMemo(() => entries.find((e) => e.id === id), [entries, id]);
+  const config = useMemo(() => (entry ? normalizeConfig(entry.config ?? EMPTY_CONFIG) : null), [entry]);
+  return { config, entry, ready: !isLoading || Boolean(error) };
+}

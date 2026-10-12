@@ -3,11 +3,45 @@
 // the JSON data files for a real database or external API without
 // touching any page/component code — everything reads through src/lib/data.ts.
 
+// ---------------------------------------------------------------------------
+// Vehicle configuration (platform-wide).
+//
+// Two build facts decide which procedure variant, parts, fluids and torque
+// figures are right for a particular car: its transmission and its drivetrain.
+// The customer confirms both when they add a vehicle (or later, via Edit
+// Configuration) and the choice is stored on their garage entry. Guide content
+// that depends on either axis carries a `forConfig` scope; src/lib/guideConfig.ts
+// resolves a guide against the saved configuration. See src/lib/vehicleConfig.ts.
+// ---------------------------------------------------------------------------
+
+export type TransmissionKind = "automatic" | "manual" | "cvt" | "dct";
+export type DrivetrainKind = "fwd" | "rwd" | "awd" | "4wd" | "2wd";
+export type ConfigAxis = "transmission" | "drivetrain";
+
+/**
+ * Which builds a piece of guide content applies to. An omitted axis means "every
+ * value" (the content does not depend on that axis). Present means ONLY those
+ * values. A scope that names an axis the customer has not confirmed cannot be
+ * decided, so the content is restricted until they confirm it.
+ */
+export interface ConfigScope {
+  transmission?: TransmissionKind[];
+  drivetrain?: DrivetrainKind[];
+}
+
+/** A part or fluid line whose presence depends on the build (plain parts stay in `parts`). */
+export interface ConfigPart {
+  text: string;
+  forConfig: ConfigScope;
+}
+
 export interface Tool {
   name: string;
   note?: string;
   /** Only show this tool when one of these variant option ids is selected. */
   onlyFor?: string[];
+  /** Only for these transmission / drivetrain builds (see ConfigScope). */
+  forConfig?: ConfigScope;
 }
 
 /**
@@ -60,6 +94,8 @@ export interface TorqueSpec {
   provenance?: Provenance;
   /** Only show this figure when one of these variant option ids is selected. */
   onlyFor?: string[];
+  /** Only for these transmission / drivetrain builds (see ConfigScope). */
+  forConfig?: ConfigScope;
 }
 
 export interface FluidCapacity {
@@ -68,11 +104,19 @@ export interface FluidCapacity {
   spec: string; // e.g. "0W-20 API SN synthetic"
   notes?: string;
   provenance?: Provenance;
+  /** Only for these transmission / drivetrain builds (see ConfigScope). */
+  forConfig?: ConfigScope;
 }
 
 export interface SpecItem {
   label: string;
   value: string;
+  /**
+   * Marks this row as the vehicle's transmission or drivetrain. Shown to a customer who has confirmed it as THEIR
+   * confirmed value; until then it says what is still to be confirmed. Without this a catalog row can only describe
+   * the model in general, and a general sentence ("might be RWD or xDrive") must not outlive the customer's answer.
+   */
+  configAxis?: ConfigAxis;
 }
 
 export interface RepairStep {
@@ -90,6 +134,12 @@ export interface RepairStep {
   rotorsOnly?: boolean;
   /** Only show this step when one of these variant option ids is selected. */
   onlyFor?: string[];
+  /**
+   * Only for these transmission / drivetrain builds (see ConfigScope). A step for
+   * another build is removed and the rest renumbered; a step whose axis is not
+   * confirmed yet is restricted (title kept, instructions withheld) until it is.
+   */
+  forConfig?: ConfigScope;
 }
 
 export type Difficulty = "Easy" | "Moderate" | "Advanced";
@@ -272,6 +322,23 @@ export interface RepairGuide {
    */
   wrenchMode?: boolean;
   /**
+   * Parts and fluids that only apply to some builds. Kept apart from `parts`
+   * (like variantParts) so that field stays a plain string[]. Resolved against
+   * the customer's saved configuration by resolveGuideForConfig().
+   */
+  configParts?: ConfigPart[];
+  /**
+   * The builds the evidence behind this guide actually covers. An omitted axis
+   * means the evidence says the job does not depend on that axis. A customer
+   * whose CONFIRMED configuration is outside this scope is not shown the guide's
+   * procedure: it was never researched for their build, and this guide does not
+   * guess. (The guide still exists as a category, with a plain explanation.)
+   * An unconfirmed axis shows the guide with a confirm-your-configuration prompt.
+   */
+  evidenceFor?: ConfigScope;
+  /** One plain sentence on why evidenceFor is what it is. Shown in the refusal. */
+  evidenceNote?: string;
+  /**
    * Which covered service job this guide satisfies. Drives the Coverage tab.
    *
    * Optional so a guide is never rejected for lacking it, but a guide without
@@ -344,6 +411,14 @@ export interface Vehicle {
    * the guide catalog both say "shoes" instead.
    */
   rearBrakes?: "disc" | "drum";
+  /**
+   * The transmission and drivetrain builds this model/year really came in. The
+   * Confirm Your Ride screen offers exactly these (plus Not sure) and never an
+   * impossible one. Omitted on a vehicle whose catalog entry is itself the one
+   * build: the options then come from the entry's own transmission/drivetrain
+   * text (see configOptionsFor in src/lib/vehicleConfig.ts).
+   */
+  configSpec?: ConfigScope;
   image?: string;
   specs: SpecItem[];
   fluids: FluidCapacity[];

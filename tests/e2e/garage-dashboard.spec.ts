@@ -14,9 +14,9 @@ test.describe("My Garage dashboard", () => {
     await expect(page.getByText("Your garage is empty")).toBeVisible();
     await expect(page.getByRole("link", { name: /Add your first vehicle/ })).toBeVisible();
 
-    const add = await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2018-honda-civic-1.5t" } });
+    const add = await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2018-honda-civic-1.5t", config: { transmission: "unknown", drivetrain: "unknown" } } });
     expect(add.ok()).toBeTruthy();
-    await page.request.post("/api/garage", { data: { kind: "custom", custom: { year: "2013", make: "Nissan", model: "Pathfinder", engine: "3.5L V6" } } });
+    await page.request.post("/api/garage", { data: { kind: "custom", custom: { year: "2013", make: "Nissan", model: "Pathfinder", engine: "3.5L V6" }, config: { transmission: "unknown", drivetrain: "unknown" } } });
     await page.request.put("/api/garage/2018-honda-civic-1.5t/odometer", { data: { value: 48800 } });
 
     await page.goto("/garage");
@@ -43,7 +43,7 @@ test.describe("My Garage dashboard", () => {
 
   test("no horizontal overflow on a phone", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2018-honda-civic-1.5t" } });
+    await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2018-honda-civic-1.5t", config: { transmission: "unknown", drivetrain: "unknown" } } });
     await page.goto("/garage");
     await expect(page.getByText("Guides available")).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);

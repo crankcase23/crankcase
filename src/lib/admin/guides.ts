@@ -59,7 +59,7 @@ const CHECKS: {
   { field: "difficulty", severity: "required", test: (g) => Boolean(g.difficulty), message: "Difficulty rating not set." },
   { field: "estTime", severity: "required", test: (g) => g.estTime.trim().length > 0, message: "Estimated time not set." },
   { field: "tools", severity: "required", test: (g) => g.tools.length > 0, message: "No tools listed — a DIY user can't prepare." },
-  { field: "parts", severity: "required", test: (g) => g.parts.length > 0, message: "No parts or supplies listed." },
+  { field: "parts", severity: "required", test: (g) => g.parts.length > 0 || (g.configParts?.length ?? 0) > 0, message: "No parts or supplies listed." },
   { field: "safety", severity: "required", test: (g) => g.safety.length > 0, message: "No safety warnings. Required on every guide." },
   { field: "steps", severity: "required", test: (g) => g.steps.length >= 3, message: "Fewer than 3 steps — procedure looks incomplete." },
   {

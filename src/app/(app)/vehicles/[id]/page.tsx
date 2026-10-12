@@ -1,4 +1,5 @@
 import Section from "@/components/app/Section";
+import { catalogIdOf } from "@/lib/garageId";
 import StickyVehicleBar from "@/components/app/StickyVehicleBar";
 import ManufacturerService from "@/components/ManufacturerService";
 import { buildNextServiceData } from "@/lib/nextService";
@@ -21,8 +22,10 @@ import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
 import { maintenanceItemsFor } from "@/lib/reminders";
 import { getServiceSchedule } from "@/data/service-schedules";
-import { auth } from "@/auth";
-import { listGarageEntries } from "@/lib/garageEntries";
+import { getViewerVehicle } from "@/lib/viewerConfig";
+import { specRowsForConfig, fluidsForConfig, summaryLine } from "@/lib/vehicleConfig";
+import { resolveGuideForConfig } from "@/lib/guideConfig";
+import VehicleConfigPanel from "@/components/config/VehicleConfigPanel";
 
 export function generateStaticParams() {
   return listVehicles().map((v) => ({ id: v.id }));
@@ -32,7 +35,7 @@ export async function generateMetadata(
   props: PageProps<"/vehicles/[id]">
 ): Promise<Metadata> {
   const { id } = await props.params;
-  const vehicle = findVehicle(id);
+  const vehicle = findVehicle(catalogIdOf(id));
   if (!vehicle) return {};
   const label = `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? ` ${vehicle.trim}` : ""}`;
   return {
@@ -43,7 +46,7 @@ export async function generateMetadata(
 
 export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   const { id } = await props.params;
-  const vehicle = findVehicle(id);
+  const vehicle = findVehicle(catalogIdOf(id));
   if (!vehicle) notFound();
 
   const repairGuides = listRepairsForVehicle(vehicle.id);
@@ -53,13 +56,12 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
   // VIN is visible on the page, not just stored. This page is shared
   // across every user who has this catalog vehicle, so the VIN has to
   // come from THIS viewer's own garage entry, not the catalog record.
-  const session = await auth();
-  let vin: string | undefined;
-  if (session?.user?.id) {
-      const entries = await listGarageEntries(session.user.id);
-      const entry = entries.find((e) => e.kind === "catalog" && e.id === vehicle.id);
-      if (entry && entry.kind === "catalog") vin = entry.vin;
-  }
+  const { config, vin, inGarage } = await getViewerVehicle(id);
+
+  // How this customer's saved configuration affects each guide (all guides stay listed: every category is accounted for).
+  const guideStatuses = Object.fromEntries(
+    repairGuides.map((g) => [g.id, resolveGuideForConfig(g, config, vehicle.make).configResolution.status])
+  );
 
   const items = maintenanceItemsFor(vehicle);
 
@@ -72,7 +74,9 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
   const label = `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? ` ${vehicle.trim}` : ""}`;
   const schedule = getServiceSchedule(vehicle);
-  const specRows = vin ? [{ label: "VIN", value: vin }, ...vehicle.specs] : vehicle.specs;
+  const vehicleSpecs = specRowsForConfig(vehicle, config);
+  const vehicleFluids = fluidsForConfig(vehicle, config);
+  const specRows = vin ? [{ label: "VIN", value: vin }, ...vehicleSpecs] : vehicleSpecs;
   const JUMPS = [
     { href: "#info", label: "Specs" },
     { href: "#fluids", label: "Fluids" },
@@ -127,16 +131,17 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
             {vehicle.trim ? <span className="text-slate-400"> {vehicle.trim}</span> : null}
           </h1>
           <p className="mt-3 text-slate-300">
-            {vehicle.engine} &middot; {vehicle.drivetrain} &middot; {vehicle.transmission}
+            {[vehicle.engine, ...summaryLine(vehicle, config)].join(" · ")}
           </p>
+          {inGarage && <VehicleConfigPanel vehicleId={id} make={vehicle.make} vehicle={vehicle} initial={config} />}
           <div className="mt-2">
-            <OdometerLine vehicleId={vehicle.id} href="#odo" />
+            <OdometerLine vehicleId={id} href="#odo" />
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4">
           <FreeChip />
           <Link
-            href={`/vehicles/${vehicle.id}/spec-sheet/print`}
+            href={`/vehicles/${id}/spec-sheet/print`}
             target="_blank"
             className={`inline-flex items-center gap-1.5 text-sm font-medium text-slate-200 hover:text-white ${FOCUS}`}
           >
@@ -151,7 +156,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#0b0908]" />
       </section>
 
-      <StickyVehicleBar vehicleId={vehicle.id} label={label} />
+      <StickyVehicleBar vehicleId={id} label={label} />
 
     <div className="relative z-[1] mx-auto max-w-6xl px-4 pb-12 pt-5 sm:pb-14">
       <nav aria-label="Jump to section" className="-mx-4 mb-7 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
@@ -169,7 +174,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
       <div className="grid items-start gap-x-8 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
         <HubTiles tiles={tiles} />
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <HubSidePanels vehicleId={vehicle.id} items={items} maintainHref="#maintenance" historyHref="#history" />
+          <HubSidePanels vehicleId={id} items={items} maintainHref="#maintenance" historyHref="#history" />
         </div>
         <div className="lg:col-start-1 lg:row-start-2">
           <KeysPanel vehicleName={`${vehicle.model}`} backdrop={<VehicleBackdrop vehicleId={vehicle.id} />} />
@@ -178,7 +183,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
       <Section
         id="info"
-        vehicleId={vehicle.id}
+        vehicleId={id}
         eyebrow="The numbers"
         title="Vehicle Specs"
         summary={`${specRows.length} specs available`}
@@ -196,20 +201,20 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
 
       <Section
         id="fluids"
-        vehicleId={vehicle.id}
+        vehicleId={id}
         eyebrow="Before you pour"
         title="Fluid Capacities"
-        summary={`${vehicle.fluids.length} ${vehicle.fluids.length === 1 ? "capacity" : "capacities"}`}
+        summary={`${vehicleFluids.length} ${vehicleFluids.length === 1 ? "capacity" : "capacities"}`}
         glow="right"
         chip={<FreeChip />}
       >
-        <FluidTable fluids={vehicle.fluids} />
+        <FluidTable fluids={vehicleFluids} />
       </Section>
 
       <div id="maintenance" className="scroll-mt-32">
         {schedule ? (
           <ManufacturerService
-            vehicleId={vehicle.id}
+            vehicleId={id}
             data={buildNextServiceData(schedule)}
             sourceLabel={schedule.sourceLabel}
             fullSchedule={<ServiceSchedule vehicle={vehicle} guides={repairGuides} />}
@@ -220,16 +225,16 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
             its schedule -- otherwise the panel would contradict the Factory
             Service Schedule. */}
         <MaintenanceReminders
-          vehicleId={vehicle.id}
+          vehicleId={id}
           items={items}
           hasFactorySchedule={schedule !== null}
         />
       </div>
 
-      <GuideGroups vehicleId={vehicle.id} guides={repairGuides} />
+      <GuideGroups vehicleId={id} guides={repairGuides} statuses={guideStatuses} />
 
       <ServiceHistory
-        vehicleId={vehicle.id}
+        vehicleId={id}
         vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
         guideTitles={repairGuides.map((g) => g.title)}
       />

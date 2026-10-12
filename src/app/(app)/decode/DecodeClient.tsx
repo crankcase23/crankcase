@@ -4,8 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { decodeVin, DecodedVin } from "@/lib/vpic";
-import { matchCatalogVehicles, catalogMatchLooksExact } from "@/lib/data";
-import { useGarage } from "@/lib/garage";
+import { matchCatalogVehicles, catalogMatchLooksExact, findVehicle } from "@/lib/data";
+import { useGarage, type ConfigChoice } from "@/lib/garage";
+import type { Vehicle } from "@/types/vehicle";
+import type { CustomVehicleInfo } from "@/types/garage";
+import ConfirmYourRide from "@/components/config/ConfirmYourRide";
 
 export default function DecodePage() {
   const router = useRouter();
@@ -32,13 +35,33 @@ const matches = result ? matchCatalogVehicles(result) : [];
 const exactMatch =
   result && matches.length === 1 ? catalogMatchLooksExact(result, matches[0]) : true;
 
-async function handleAddMatch() {
+// Nothing is saved from the buttons below: they open Confirm Your Ride, and the vehicle is added only when the
+// customer confirms transmission and drivetrain there (or says Not sure).
+type Confirming =
+  | { kind: "catalog"; vehicle: Vehicle; vin?: string; label: string }
+  | { kind: "custom"; info: CustomVehicleInfo; label: string };
+const [confirming, setConfirming] = useState<Confirming | null>(null);
+
+function handleAddMatch() {
   if (!pickedMatchId) return;
-  await addCatalogVehicle(pickedMatchId, result?.vin);
-  router.push(`/vehicles/${pickedMatchId}`);
+  const vehicle = findVehicle(pickedMatchId);
+  if (!vehicle) return;
+  setConfirming({ kind: "catalog", vehicle, vin: result?.vin, label: `${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? " " + vehicle.trim : ""}` });
 }
 
-async function handleAddToGarage() {
+async function confirmAdd(choice: ConfigChoice) {
+  if (!confirming) throw new Error("Nothing to add.");
+  return confirming.kind === "catalog"
+    ? addCatalogVehicle(confirming.vehicle.id, confirming.vin, choice)
+    : addCustomVehicle(confirming.info, choice);
+}
+
+function doneAdding(outcome: { id: string }) {
+  if (!confirming) return;
+  router.push(confirming.kind === "catalog" ? `/vehicles/${outcome.id}` : `/garage/custom/${outcome.id}`);
+}
+
+function handleAddToGarage() {
   if (!result) return;
   const engine = [
     result.displacementL ? `${result.displacementL}L` : null,
@@ -46,15 +69,11 @@ async function handleAddToGarage() {
     ]
   .filter(Boolean)
   .join(" ");
-  const id = await addCustomVehicle({
-    vin: result.vin,
-    year: result.year,
-    make: result.make,
-    model: result.model,
-    trim: result.trim,
-    engine: engine || undefined,
+  setConfirming({
+    kind: "custom",
+    label: [result.year, result.make, result.model, result.trim].filter(Boolean).join(" "),
+    info: { vin: result.vin, year: result.year, make: result.make, model: result.model, trim: result.trim, engine: engine || undefined },
   });
-  router.push(`/garage/custom/${id}`);
 }
 
 async function handleSubmit(e: React.FormEvent) {
@@ -77,6 +96,23 @@ async function handleSubmit(e: React.FormEvent) {
   } finally {
     setLoading(false);
   }
+}
+
+if (confirming) {
+  return (
+    <div className="mx-auto max-w-2xl px-4 py-10">
+      <h1 className="text-3xl font-bold text-slate-50">VIN Lookup</h1>
+      <ConfirmYourRide
+        label={confirming.label}
+        make={confirming.kind === "catalog" ? confirming.vehicle.make : confirming.info.make}
+        vehicle={confirming.kind === "catalog" ? confirming.vehicle : undefined}
+        decoded={result}
+        onConfirm={confirmAdd}
+        onDone={doneAdding}
+        onCancel={() => setConfirming(null)}
+      />
+    </div>
+  );
 }
 
 return (

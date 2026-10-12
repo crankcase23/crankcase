@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Vehicle } from "@/types/vehicle";
+import { summaryLine } from "@/lib/vehicleConfig";
 
 export default function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   return (
@@ -16,8 +17,9 @@ export default function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       <div className="text-sm text-slate-400">{vehicle.trim}</div>
       <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-300">
         <span className="rounded-full bg-slate-800 px-2.5 py-1">{vehicle.engine}</span>
-        <span className="rounded-full bg-slate-800 px-2.5 py-1">{vehicle.drivetrain}</span>
-        <span className="rounded-full bg-slate-800 px-2.5 py-1">{vehicle.transmission}</span>
+        {summaryLine(vehicle, null).map((part) => (
+          <span key={part} className="rounded-full bg-slate-800 px-2.5 py-1">{part}</span>
+        ))}
       </div>
       <div className="mt-4 text-sm font-medium text-orange-400 group-hover:text-orange-300">
         View specs & repair guides &rarr;

@@ -1,6 +1,14 @@
 import { test, expect, type Page } from "@playwright/test";
 import { signUpNewUser } from "./helpers";
 
+// Every add now goes through Confirm Your Ride; these tests answer "Not sure" so they stay about the garage itself.
+async function confirmNotSure(page: Page) {
+  await expect(page.getByTestId("confirm-your-ride")).toBeVisible();
+  await page.getByRole("radiogroup", { name: "Transmission" }).getByText("Not sure", { exact: true }).click();
+  await page.getByRole("radiogroup", { name: "Drivetrain" }).getByText("Not sure", { exact: true }).click();
+  await page.getByRole("button", { name: /and add to garage$/ }).click();
+}
+
 // /garage/add is VIN decode plus type-to-search Year/Make/Model fields (no catalog
 // button list). Model options come from NHTSA vPIC; stub it so the tests never
 // depend on the network. The catalog match is local (src/data/vehicles.ts).
@@ -19,14 +27,12 @@ async function stubVpicModels(page: Page) {
   );
 }
 
-// Fill the manual form and submit. A year/make/model we have curated data for
-// goes straight to /vehicles/<id>; anything else becomes a custom entry.
-async function addViaManualForm(page: Page, year: string, make: string, model: string) {
+async function fillForm(page: Page, year: string, make: string, model: string) {
   await page.goto("/garage/add");
   await page.getByLabel("Year").fill(year);
   await page.getByLabel("Make").fill(make);
   await page.getByLabel("Model").fill(model);
-  await page.getByRole("button", { name: "+ Add to garage", exact: true }).click();
+  await page.getByRole("button", { name: "Continue: confirm your ride" }).click();
 }
 
 test.describe("garage — add your own vehicle", () => {
@@ -44,7 +50,8 @@ test.describe("garage — add your own vehicle", () => {
     await page.getByRole("link", { name: "Add your first vehicle" }).click();
     await expect(page).toHaveURL(/\/garage\/add$/);
 
-    await addViaManualForm(page, "2014", "Jeep", "Grand Cherokee");
+    await fillForm(page, "2014", "Jeep", "Grand Cherokee");
+    await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l$/);
 
     await page.goto("/garage");
@@ -53,10 +60,11 @@ test.describe("garage — add your own vehicle", () => {
   });
 
   test("can add a custom vehicle we don't have data for and still log service history", async ({ page }) => {
-    await addViaManualForm(page, "2016", "Toyota", "Tacoma");
+    await fillForm(page, "2016", "Toyota", "Tacoma");
+    await confirmNotSure(page);
 
     await expect(page).toHaveURL(/\/garage\/custom\//);
-    await expect(page.getByText(/We're working on getting full data for this car/i)).toBeVisible();
+    await expect(page.getByText(/We don.t have specs, fluid capacities, or torque values pulled in for this one yet/i)).toBeVisible();
     await expect(page.getByRole("heading", { name: "Maintenance Reminders" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Service History" })).toBeVisible();
 
@@ -75,7 +83,8 @@ test.describe("garage — add your own vehicle", () => {
   });
 
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
-    await addViaManualForm(page, "2018", "Honda", "Civic");
+    await fillForm(page, "2018", "Honda", "Civic");
+    await confirmNotSure(page);
     await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
 
     await page.goto("/garage");

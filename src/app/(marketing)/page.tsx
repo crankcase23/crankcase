@@ -4,6 +4,7 @@ import path from "node:path";
 import type { Metadata } from "next";
 import { allRepairs, findRepair, findVehicle } from "@/lib/data";
 import type { JobTypeId, Vehicle } from "@/types/vehicle";
+import { summaryLine } from "@/lib/vehicleConfig";
 import CrankcaseMark from "@/components/CrankcaseMark";
 import { CinematicScene, PhotoScene } from "@/components/marketing/Cinematic";
 import {
@@ -379,7 +380,7 @@ export default function MarketingHome() {
                   {vehicle.trim ? <span className="text-slate-400"> {vehicle.trim}</span> : null}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                  {vehicle.engine} · {vehicle.transmission} · {vehicle.drivetrain}
+                  {[vehicle.engine, ...summaryLine(vehicle, null)].join(" · ")}
                 </p>
               </div>
 
