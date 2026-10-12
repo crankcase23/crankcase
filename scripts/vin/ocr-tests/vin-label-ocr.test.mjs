@@ -36,7 +36,6 @@ async function scan(file) {
   }
   return { pages, result: ocr.rankVinReads(pages) };
 }
-const distance = (a, b) => { let d = Math.abs(a.length - b.length); for (let i = 0; i < Math.min(a.length, b.length); i++) if (a[i] !== b[i]) d++; return d; };
 const allText = (pages) => pages.map((p) => p.text).join("\n");
 const seen = (res) => [res?.vin, ...(res?.alternatives ?? [])].filter(Boolean);
 
