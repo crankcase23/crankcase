@@ -3,7 +3,7 @@ import { requireUserId } from "@/lib/apiAuth";
 import { listGarageEntries, addCatalogEntry, addCustomEntry, isBlocked } from "@/lib/garageEntries";
 import { validateVin } from "@/lib/vin";
 import { blockedResponse, vinProblem } from "@/lib/garageResponses";
-import { guardVinAttempt, noteVinCollision } from "@/lib/vinGuard";
+import { guardVinAttempt } from "@/lib/vinGuard";
 import { fallbackEnabled, parseFallbackDetails, FALLBACK_DAILY_CAP } from "@/lib/vinFallback";
 import { addViaFallback } from "@/lib/vinFallbackServer";
 import { recordEvent, EVENT_TYPES } from "@/lib/events";
@@ -40,7 +40,6 @@ if (body?.kind === "catalog" && typeof body.vehicleId === "string" && body.vehic
   if (limited) return limited;
   const outcome = await addCatalogEntry(userId, body.vehicleId, vinCheck.vin, cfg.value);
   if (isBlocked(outcome)) {
-    if (outcome.blocked === "vin-claim-required") await noteVinCollision(userId);
     return blockedResponse(outcome);
   }
   const { entry, created, configKept } = outcome;
@@ -73,7 +72,6 @@ if (body?.kind === "custom" && body.custom && typeof body.custom === "object") {
     engine: str(c.engine),
   }, cfg.value);
   if (isBlocked(outcome)) {
-    if (outcome.blocked === "vin-claim-required") await noteVinCollision(userId);
     return blockedResponse(outcome);
   }
   const { entry, created, configKept } = outcome;
@@ -122,7 +120,6 @@ if (body?.kind === "custom-unverified" && body.custom && typeof body.custom === 
     );
   }
   if (isBlocked(outcome)) {
-    if (outcome.blocked === "vin-claim-required") await noteVinCollision(userId);
     return blockedResponse(outcome);
   }
   const { entry, created, configKept, verified } = outcome;

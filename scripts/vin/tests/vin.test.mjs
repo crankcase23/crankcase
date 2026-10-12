@@ -148,26 +148,44 @@ test("server: every add validates the VIN first, no other code inserts a garage 
     assert.ok(!/create:\s*true/.test(r) && /NOT_IN_GARAGE/.test(r), f);
   }
   const resp = fs.readFileSync(path.join(ROOT, "src/lib/garageResponses.ts"), "utf8");
-  assert.ok(/VIN_CLAIM_REQUIRED/.test(resp) && !/userId|email|another (customer|user|owner)'s/i.test(resp.replace(/ownership claim/g, "")), "the claim response names no one");
+  assert.ok(/VIN_IN_GARAGE/.test(resp) && !/VIN_CLAIM_REQUIRED/.test(resp) && !/userId|email|another (customer|user|owner|account)/i.test(resp), "the blocked response names no one");
+  // No VIN squatting: nothing may look at OTHER accounts' rows by VIN. The only VIN lookups are scoped to the caller.
+  for (const f of ["src/lib/garageEntries.ts", "src/lib/vinFallbackServer.ts", "src/app/api/garage/route.ts", "src/app/api/garage/[id]/vin/route.ts"]) {
+    const src = fs.readFileSync(path.join(ROOT, f), "utf8");
+    assert.ok(!/vinHeldByAnotherAccount|vin-claim-required|VIN_CLAIM_REQUIRED/.test(src), `${f}: no cross-account VIN check`);
+    assert.ok(!/ne\(garageEntries\.userId/.test(src), `${f}: no query over other accounts' rows`);
+  }
+  assert.ok(/eq\(garageEntries\.userId, userId\), sameVin\(vin\)/.test(ge), "the one VIN lookup is scoped to the caller");
 });
 
 test("only text is a VIN: numbers, arrays and objects that stringify to 17 characters are refused", () => {
   for (const v of [12345678901234567, [GOOD], { toString: () => GOOD }, null, undefined, true]) assert.equal(vin.validateVin(v).ok, false);
 });
 
-test("probe protection: every VIN lookup is guarded first, collisions are counted, and the VIN itself is never stored", () => {
+test("probe protection: every VIN lookup is guarded first, and the VIN itself is never stored", () => {
   const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
   assert.ok(route.indexOf("guardVinAttempt(request") < route.indexOf("addCatalogEntry(userId"), "catalog add is guarded before the lookup");
   assert.ok(route.indexOf("guardVinAttempt(request", route.indexOf("addCatalogEntry(userId")) < route.indexOf("addCustomEntry(userId"), "custom add is guarded before the lookup");
-  assert.equal((route.match(/noteVinCollision\(/g) ?? []).length, 3, "catalog, custom and fallback adds all count collisions");
+  assert.equal((route.match(/noteVinCollision\(/g) ?? []).length, 0, "there are no cross-account collisions to count any more");
   assert.ok(route.lastIndexOf("guardVinAttempt(request") < route.indexOf("addViaFallback(userId"), "the fallback add is guarded before the lookup");
   const verify = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/verify/route.ts"), "utf8");
   assert.ok(verify.indexOf("guardVinAttempt(request") < verify.indexOf("verifyOwnEntry(userId"), "re-check is guarded before it asks NHTSA");
   const comp = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/vin/route.ts"), "utf8");
-  assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId") && /noteVinCollision\(/.test(comp), "completion is guarded too");
+  assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId"), "completion is guarded too");
   const g = fs.readFileSync(path.join(ROOT, "src/lib/vinGuard.ts"), "utf8");
   assert.ok(/VIN_RATE_LIMITED/.test(g) && /Retry-After/.test(g));
   assert.ok(!/metadata:\s*\{[^}]*vin\b/i.test(g), "no VIN in stored metadata");
   assert.ok(/createHash\("sha256"\)/.test(g), "network address stored only as a salted hash");
   assert.ok(!/another (customer|user|owner|account)/i.test(g.split("NextResponse.json(")[1] ?? ""), "the 429 body names no one");
+});
+
+test("fallback cap is reserve-then-count: the allowance is claimed before the lookup and released on every non-adding path", () => {
+  const fb = fs.readFileSync(path.join(ROOT, "src/lib/vinFallbackServer.ts"), "utf8");
+  const reserve = fb.indexOf("insert(appEvents)");
+  const count = fb.indexOf("fallbackAddsInLastDay(userId)) >");
+  const probe = fb.indexOf("await probe(vin)");
+  const add = fb.indexOf("await addCustomEntry(\n        userId");
+  assert.ok(reserve > 0 && reserve < count && count < probe && probe < add, "reserve, then count (including the reservation), then probe, then add");
+  assert.ok(/> FALLBACK_DAILY_CAP/.test(fb) && !/>= FALLBACK_DAILY_CAP/.test(fb), "the count includes this request's own reservation");
+  assert.ok((fb.match(/await release\(\)/g) ?? []).length >= 5, "cap, not-decodable, mismatch, blocked/existing and error paths all release");
 });

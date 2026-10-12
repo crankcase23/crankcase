@@ -189,7 +189,7 @@ test.describe("NHTSA outage fallback (enabled)", () => {
     expect(countFor(email)).toBe("1");
   });
 
-  test("a VIN another account holds gets the SAME generic answer as a normal add, reveals nothing, and changes nothing", async ({ page, browser }) => {
+  test("a VIN another account holds does not matter: each account gets its own separate row, and A's row is untouched", async ({ page, browser }) => {
     const vin = validVin("1G1");
     expect((await addApi(page, vin, HONDA, "custom")).status).toBe(200); // account A: a normal (legacy-style) custom add
     const rowBefore = rowOf(vin);
@@ -197,13 +197,51 @@ test.describe("NHTSA outage fallback (enabled)", () => {
     const b = await ctx.newPage();
     const emailB = await signUpNewUser(b);
     const viaFallback = await addApi(b, vin, JEEP);
-    const viaNormal = await addApi(b, vin, JEEP, "custom");
-    expect(viaFallback.status).toBe(409);
-    expect(viaFallback.body.code).toBe("VIN_CLAIM_REQUIRED");
-    expect(viaFallback.body).toEqual(viaNormal.body); // identical, so the fallback is not a second oracle
-    expect(JSON.stringify(viaFallback.body)).not.toMatch(/Honda|Civic|nhtsa|unverified|decoder/i);
-    expect(rowOf(vin)).toBe(rowBefore);
-    expect(countFor(emailB)).toBe("0");
+    expect(viaFallback.status).toBe(200);
+    expect(viaFallback.body.created).toBe(true);
+    expect(JSON.stringify(viaFallback.body)).not.toMatch(/Honda|Civic/i); // nothing of A's details comes back
+    expect(countFor(emailB)).toBe("1");
+    expect(psql(`select count(*) from garage_entries where vin='${vin}'`)).toBe("2");
+    expect(psql(`select kind, coalesce(vehicle_id,'-'), coalesce(vin_status,'NULL'), coalesce(year,''), coalesce(make,''), coalesce(model,'') from garage_entries where vin='${vin}' and user_id=(select id from users where email='${email}')`)).toBe(rowBefore);
+    await ctx.close();
+  });
+
+  test("the 5/day cap holds under parallel requests: 12 at once let at most 5 through, and a refused request leaves no reservation behind", async ({ page }) => {
+    const vins = Array.from({ length: 12 }, () => validVin("1G1"));
+    const results = await Promise.all(vins.map((v) => addApi(page, v, HONDA)));
+    const ok = results.filter((r) => r.status === 200 && r.body.created === true).length;
+    const capped = results.filter((r) => r.status === 429).length;
+    expect(ok, JSON.stringify(results.map((r) => r.status))).toBeLessThanOrEqual(5);
+    expect(ok + capped, "every request is either added or told the cap").toBe(12);
+    expect(countFor(email)).toBe(String(ok));
+    // the stored allowance matches exactly what was added: refused requests released theirs
+    expect(psql(`select count(*) from app_events where type='vin.fallback_add' and user_id=(select id from users where email='${email}')`)).toBe(String(ok));
+    // once settled, the cap is real: sequentially, the allowance left is 5 - ok
+    const more = await addApi(page, validVin("1G1"), HONDA);
+    expect(more.status).toBe(ok >= 5 ? 429 : 200);
+  });
+
+  test("parallel adds of the SAME VIN (a double-click, a retry storm) create one row and cost one allowance", async ({ page }) => {
+    const vin = validVin("1G1");
+    const results = await Promise.all(Array.from({ length: 4 }, () => addApi(page, vin, HONDA)));
+    expect(results.map((r) => r.status), "a handful of parallel duplicates must never be capped or fail").toEqual([200, 200, 200, 200]);
+    expect(results.filter((r) => r.body.created === true)).toHaveLength(1);
+    expect(countFor(email)).toBe("1");
+    expect(psql(`select count(*) from app_events where type='vin.fallback_add' and user_id=(select id from users where email='${email}')`)).toBe("1");
+  });
+
+  test("parallel adds of the same VIN from two accounts both succeed, every time", async ({ page, browser }) => {
+    const ctx = await browser.newContext();
+    const b = await ctx.newPage();
+    const emailB = await signUpNewUser(b);
+    for (let i = 0; i < 4; i++) {
+      const vin = validVin("1G1");
+      const [ra, rb] = await Promise.all([addApi(page, vin, HONDA), addApi(b, vin, HONDA)]);
+      expect([ra.status, rb.status], `round ${i}`).toEqual([200, 200]);
+      expect([ra.body.created, rb.body.created]).toEqual([true, true]);
+    }
+    expect(countFor(email)).toBe("4");
+    expect(countFor(emailB)).toBe("4");
     await ctx.close();
   });
 

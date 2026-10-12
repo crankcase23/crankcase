@@ -3,7 +3,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { appEvents, garageEntries } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
-import { addCustomEntry, entryFor, findOwnRow, ownRowForVin, vinHeldByAnotherAccount, type Blocked, type AddResult, type ConfigInput } from "@/lib/garageEntries";
+import { addCustomEntry, entryFor, findOwnRow, ownRowForVin, type Blocked, type AddResult, type ConfigInput } from "@/lib/garageEntries";
 import { FALLBACK_DAILY_CAP, identityMatches, type TypedDetails } from "@/lib/vinFallback";
 import { probeVin, type DecodedIdentity, type ProbeResult } from "@/lib/vpicServer";
 import type { GarageEntry } from "@/types/garage";
@@ -16,9 +16,8 @@ import type { GarageEntry } from "@/types/garage";
 //  5. Decoder unreachable: add as UNVERIFIED (custom vehicle: Service History and reminders only).
 //  6. At most FALLBACK_DAILY_CAP additions per account per rolling 24 hours, counted from events so removing a vehicle
 //     does not refund the allowance.
-// VIN uniqueness, ownership privacy and the existing-row behavior are exactly addCustomEntry's: the first account to
-// hold a VIN holds it (unverified or not), the answer for a held VIN is the generic claim-required one, and nothing
-// here deletes, reassigns or overwrites any row.
+// One VIN per account, private histories: the existing-row behavior is exactly addCustomEntry's. Another account holding
+// the same VIN is irrelevant and never visible; nothing here deletes, reassigns or overwrites any row.
 
 export type ProbeFn = (vin: string) => Promise<ProbeResult>;
 
@@ -55,8 +54,7 @@ async function secondsUntilAllowance(userId: string): Promise<number> {
 const describe = (d: DecodedIdentity) => [d.year, d.make, d.model].filter(Boolean).join(" ");
 
 /**
- * Add a vehicle by typed details. `vin` is already validated and normalized by the route. Returns Blocked (the generic
- * claim-required answer), a FallbackRefusal, or the added/existing entry.
+ * Add a vehicle by typed details. `vin` is already validated and normalized by the route. Returns Blocked, a FallbackRefusal, or the added/existing entry.
  */
 export async function addViaFallback(
   userId: string,
@@ -72,42 +70,63 @@ export async function addViaFallback(
     if ("blocked" in r) return r;
     return { ...r, verified: mine.vinStatus === "verified" };
   }
-  if (await vinHeldByAnotherAccount(userId, vin)) return { blocked: "vin-claim-required" };
+  // RESERVE, THEN COUNT. The allowance is claimed with an event row BEFORE anything else happens, and the count includes
+  // that row. Count-then-add let parallel requests all read "4 used" and all proceed; here, of any set of parallel
+  // requests, the one whose reservation landed last sees every other live reservation, so at most FALLBACK_DAILY_CAP can
+  // ever hold one. The price is that two requests racing at the very edge can both be refused (never both let through).
+  // A reservation is released on every path that does not end in a newly created vehicle.
+  const reservationId = randomUUID();
+  await db.insert(appEvents).values({
+    id: reservationId,
+    type: EVENT_TYPES.VIN_FALLBACK_ADD,
+    userId,
+    objectType: "garage_entry",
+    metadata: { reservation: true },
+  });
+  const release = () => db.delete(appEvents).where(eq(appEvents.id, reservationId));
+  try {
+    if ((await fallbackAddsInLastDay(userId)) > FALLBACK_DAILY_CAP) {
+      await release();
+      return { refused: "cap", retryAfterSeconds: await secondsUntilAllowance(userId) };
+    }
 
-  if ((await fallbackAddsInLastDay(userId)) >= FALLBACK_DAILY_CAP) {
-    return { refused: "cap", retryAfterSeconds: await secondsUntilAllowance(userId) };
-  }
+    const result = await probe(vin);
+    if (result.kind === "unknown") {
+      await release();
+      return { refused: "not-decodable" };
+    }
 
-  const result = await probe(vin);
-  if (result.kind === "unknown") return { refused: "not-decodable" };
-
-  let outcome: AddResult | Blocked;
-  let verified = false;
-  if (result.kind === "ok") {
-    if (!identityMatches(typed, result.decoded)) return { refused: "decoder-available", nhtsaReads: describe(result.decoded) };
-    verified = true;
-    const d = result.decoded;
-    outcome = await addCustomEntry(
-      userId,
-      { vin, year: d.year, make: d.make, model: d.model, trim: d.trim ?? typed.trim, engine: d.engine ?? typed.engine },
-      config,
-      { vinStatus: "verified" },
-    );
-  } else {
-    outcome = await addCustomEntry(userId, { vin, ...typed }, config, { vinStatus: "unverified" });
+    let outcome: AddResult | Blocked;
+    let verified = false;
+    if (result.kind === "ok") {
+      if (!identityMatches(typed, result.decoded)) {
+        await release();
+        return { refused: "decoder-available", nhtsaReads: describe(result.decoded) };
+      }
+      verified = true;
+      const d = result.decoded;
+      outcome = await addCustomEntry(
+        userId,
+        { vin, year: d.year, make: d.make, model: d.model, trim: d.trim ?? typed.trim, engine: d.engine ?? typed.engine },
+        config,
+        { vinStatus: "verified" },
+      );
+    } else {
+      outcome = await addCustomEntry(userId, { vin, ...typed }, config, { vinStatus: "unverified" });
+    }
+    if ("blocked" in outcome || !outcome.created) {
+      await release();
+      return "blocked" in outcome ? outcome : { ...outcome, verified };
+    }
+    await db
+      .update(appEvents)
+      .set({ objectId: outcome.entry.id, metadata: { verification: verified ? "verified" : "unverified" } })
+      .where(eq(appEvents.id, reservationId));
+    return { ...outcome, verified };
+  } catch (e) {
+    await release().catch(() => {});
+    throw e;
   }
-  if ("blocked" in outcome) return outcome;
-  if (outcome.created) {
-    await db.insert(appEvents).values({
-      id: randomUUID(),
-      type: EVENT_TYPES.VIN_FALLBACK_ADD,
-      userId,
-      objectType: "garage_entry",
-      objectId: outcome.entry.id,
-      metadata: { verification: verified ? "verified" : "unverified" },
-    });
-  }
-  return { ...outcome, verified };
 }
 
 export type VerifyOutcome =

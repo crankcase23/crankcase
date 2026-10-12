@@ -5,12 +5,9 @@ import type { validateVin } from "@/lib/vin";
 /** The one answer for "not added": says what the customer can do, nothing about anyone else. */
 export function blockedResponse(b: Blocked) {
   switch (b.blocked) {
-    case "vin-claim-required":
+    case "vin-in-garage":
       return NextResponse.json(
-        {
-          code: "VIN_CLAIM_REQUIRED",
-          error: "This VIN can't be added to your garage yet. It needs a verified ownership claim, which isn't available yet. Nothing was added and nothing was shared.",
-        },
+        { code: "VIN_IN_GARAGE", error: "This VIN is already on another vehicle in your garage. A VIN names one vehicle, so it can only be added once. Nothing was changed." },
         { status: 409 },
       );
     default:
@@ -20,4 +17,3 @@ export function blockedResponse(b: Blocked) {
 
 export const vinProblem = (check: Exclude<ReturnType<typeof validateVin>, { ok: true }>) =>
   NextResponse.json({ code: "VIN_INVALID", problem: check.problem, error: check.message, badPositions: check.badPositions }, { status: 400 });
-
