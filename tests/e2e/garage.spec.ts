@@ -9,6 +9,24 @@ async function confirmNotSure(page: Page) {
   await page.getByRole("button", { name: /and add to garage$/ }).click();
 }
 
+// /garage/add is VIN decode plus type-to-search Year/Make/Model fields (no catalog
+// button list). Model options come from NHTSA vPIC; stub it so the tests never
+// depend on the network. The catalog match is local (src/data/vehicles.ts).
+async function stubVpicModels(page: Page) {
+  await page.route("**/vpic.nhtsa.dot.gov/**", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        Results: [
+          { Model_Name: "Grand Cherokee" },
+          { Model_Name: "Civic" },
+          { Model_Name: "Tacoma" },
+        ],
+      }),
+    })
+  );
+}
+
 async function fillForm(page: Page, year: string, make: string, model: string) {
   await page.goto("/garage/add");
   await page.getByLabel("Year").fill(year);
@@ -21,6 +39,7 @@ test.describe("garage — add your own vehicle", () => {
   // Each test signs up its own account so garage state doesn't leak between
   // tests running in parallel against the same Postgres database.
   test.beforeEach(async ({ page }) => {
+    await stubVpicModels(page);
     await signUpNewUser(page);
   });
 
@@ -63,8 +82,7 @@ test.describe("garage — add your own vehicle", () => {
   });
 
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
-    await fillForm(page, "2018", "Honda", "Civic");
-    await confirmNotSure(page);
+    await addViaManualForm(page, "2018", "Honda", "Civic");
     await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
 
     await page.goto("/garage");
