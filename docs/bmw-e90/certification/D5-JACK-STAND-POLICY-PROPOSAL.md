@@ -1,6 +1,6 @@
-# D5: one jack-stand policy for the 2010 BMW 328i guides (PROPOSAL, nothing changed yet)
+# D5: one jack-stand policy for the 2010 BMW 328i guides (APPROVED and applied)
 
-Status: proposed 2026-10-12, waiting for Boss. No guide text was changed for D5. No stand location is published anywhere in this proposal.
+Status: APPROVED by the owner 2026-10-12 as proposed, and applied to guides 1, 2, 4, 5, 6, 8, 13, 15 and 16 from their ledgers. Permanent coverage: `scripts/bmw/tests/jack-stand-policy.test.mjs` (4 tests; all 4 fail on the pre-D5 guides). Nothing here is mechanically certified. No stand location is published anywhere in this proposal.
 
 ## What the evidence supports
 

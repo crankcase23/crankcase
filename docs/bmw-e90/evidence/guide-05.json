@@ -412,13 +412,13 @@
     },
     {
       "n": 2,
-      "title": "Loosen wheel bolts, lift at the side jacking points and support the rear",
-      "instruction": "Break the 17 mm wheel bolts loose on the ground. Use the four side jacking points: small rectangular plastic pads at the sills, one just behind each front wheel and one ahead of each rear wheel (the BMW owner's manual shows their positions only in an illustration). Raise the rear at the pad ahead of the wheel you are working on, place a rated jack stand under the same pad, chock the front wheels (and the wheel opposite the one being lifted), and check the car is level and stable before removing the wheel. A wood block or hockey puck between jack and pad protects the pad. Center lifting is not used in this procedure: sources disagree about a rear center point (crossmember vs not allowed), so it is left out. Never lift on the aluminium/cast differential housing or cover.",
+      "title": "Loosen wheel bolts, lift the rear and support it on stands (or a lift)",
+      "instruction": "Break the 17 mm wheel bolts loose on the ground. Lift the rear using the jacking points shown in the jacking illustration in your owner's manual (small rectangular plastic pads at the sills), with a pad or adapter, or a wood block or hockey puck, between the jack and the plastic pad. Support the car on rated jack stands on hard, level ground; if you cannot identify a safe place for the stand from your manual, stop and use a shop lift. Chock the front wheels (and the wheel opposite the one being lifted), and check the car is level and stable before removing the wheel. Center lifting is not used in this procedure: sources disagree about a rear center point (crossmember vs not allowed), so it is left out. Never lift on the aluminium/cast differential housing or cover.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Never work under a car on a jack alone.",
         "Do not rely on the parking brake to hold a car on stands.",
-        "Position of the four side pads is secondary-sourced; the BMW manual text only says 'positions shown in the illustration'."
+        "Jacking point positions come from your owner's manual illustration; no source we read gives the stand position."
       ],
       "sources": [
         "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/?srch=jack",
@@ -651,7 +651,8 @@
     }
   ],
   "safety": [
-    "Rated jack stands at the side jacking points only; do not jack on the differential cover or housing.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Do not jack on the differential cover or housing.",
     "Parking brake is a mechanical drum-in-hat lever on the rear wheels; do not rely on it as the only restraint and release it before pulling a rotor.",
     "Chock front wheels; do not let the caliper hang from the hose.",
     "Keep grease off friction surfaces and rotor.",
@@ -970,6 +971,7 @@
     "NOT RESOLVED: second source for rear guide-screw torque (searched m3post, bimmersport, Bimmerpost: only M3/318i/unspecified cars, not counted); parking-brake shoe adjustment procedure; all torques remain secondary; workshop-manuals.com TIS, archive.org training index and e90post TIS attachments were unreachable.",
     "Step 6 now prefers Method B (two-source torque); status set to SINGLE_SOURCE because Method A tool sizes are single-sourced. recommendedStatus BUILDABLE_WITH_OWNER_CHECKS -> BUILDABLE_PARTIAL. ownerInputsNeeded emptied; head-type choices are handled by branching text in steps 6 and 12.",
     "Visual gap: rear carrier fastener naming added as gapFillNotes; visual elements and facts not changed.",
-    "2026-10-12 owner decision D2: rear pad replacement RESTRICTED. 13 mm / 15 mm back-up / 35 Nm and the 'preferred Method B' line removed from the customer guide; steps 6 and 12 BLOCKED; parking-brake hold test and shop referral added; automatic left in Park. Nothing here is mechanically certified."
+    "2026-10-12 owner decision D2: rear pad replacement RESTRICTED. 13 mm / 15 mm back-up / 35 Nm and the 'preferred Method B' line removed from the customer guide; steps 6 and 12 BLOCKED; parking-brake hold test and shop referral added; automatic left in Park. Nothing here is mechanically certified.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published. Step 2 no longer places a stand under a named pad."
   ]
 }

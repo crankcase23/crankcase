@@ -341,7 +341,7 @@
       "instruction": "Park on level ground and support the car securely. A short drive helps the oil flow; one poster warms the new oil in a bowl of warm water. bavmods starts from a cold engine, so this is optional.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Gear oil and exhaust parts can be hot; support the vehicle on stands or a lift."
+        "Gear oil and exhaust parts can be hot; follow the jack-stand rule in the safety notes if you raise the car."
       ],
       "sources": [
         "https://bimmersport.co.nz/topic/60049-e90-differential-fluid-change-diy/",
@@ -450,7 +450,7 @@
   ],
   "safety": [
     "Always confirm the fill plug can be removed before draining.",
-    "Support the car on stands, ramps or a lift on level ground.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
     "Use only BMW-approved synthetic gear oil (SAF-XO 75W-90 GL-5 for open diffs).",
     "Use 60 Nm only for an O-ring plug and replace the plug; the sealing-ring plug value is 65 Nm per TIS.",
     "Contain and recycle used gear oil.",
@@ -740,6 +740,7 @@
     "NOT RESOLVED: capacity. 1.0 L for N52 per bimmerpost, bimmersport, 5series; 1.2 L for N54/335i/diesel and one generic E9X article. No BMW number (TIS gives only the level rule), so fill to the lower edge of the filler opening and treat 1.0 L as an estimate.",
     "NOT RESOLVED: service interval (BMW training: lifetime fill; retailers 40,000-60,000 mi / 75,000-100,000 km) and the E90-named TIS torque table. 60 Nm (O-ring plug, replace plug) stays VERIFIED via the BMW TIS text applied by plug-type match plus three E90/E9X/F30 secondary hosts; the 65 Nm sealing-ring value is not the type listed for this car.",
     "NOT RESOLVED: lower-brace access on the E90 (bimmerpost E93 poster only); step 3 already says to remove braces only if they block the plug and gives the snub-nose 14 mm hex or crowfoot workaround.",
-    "ownerInputsNeeded emptied: RWD, open diff and plug/brace questions are answered remotely or handled by branching text; guide is a usable UNCERTIFIED draft."
+    "ownerInputsNeeded emptied: RWD, open diff and plug/brace questions are answered remotely or handled by branching text; guide is a usable UNCERTIFIED draft.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }

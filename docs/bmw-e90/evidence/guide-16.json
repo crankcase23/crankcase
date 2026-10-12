@@ -178,7 +178,7 @@
       "note": "All three list E90 328i N52. Whether BMW REQUIRES replacing the plug each time: Turner's filter page says BMW recommends replacing it with the filter (single source); a Z4 thread says reuse is common. Treat as optional; always replace the washer. RealOEM diagram 11_3994 (automatic pan 11137552414, S205A=Yes, this car) lists 'Screw plug' 11137535106, M12X16. The manual pan diagram (11_3834) lists a different plug 11137553918 (M12x1.5), so do not buy by the manual-pan number."
     },
     {
-      "item": "Jack support pad (lifting platform) for the four side jacking points",
+      "item": "Jack support pad (lifting platform) for the plastic jacking pads",
       "partNumber": "51717123311",
       "status": "SINGLE_SOURCE",
       "sources": [
@@ -308,7 +308,7 @@
     {
       "n": 2,
       "title": "Lift and support the car",
-      "instruction": "Raise the car by the factory jacking points (rectangular plastic pads along the sides; a front-centre jack point is also reported) and set it on stands at the four side points, or drive onto ramps. Use jack pads or a pad adapter so the plastic pads are not crushed. Check the owner's manual jacking illustration for exact positions.",
+      "instruction": "Raise the car using the jacking points shown in the jacking illustration in your owner's manual (rectangular plastic pads along the sides), with a pad or adapter between the jack and the plastic pad so the pads are not crushed. Support it on rated jack stands on hard, level ground, or drive onto ramps. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Never work under a car held only by a jack.",
@@ -421,7 +421,8 @@
     }
   ],
   "safety": [
-    "Support the car on stands; do not rely on a jack alone, and do not leave it partly raised on a side jack point.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Do not leave the car partly raised on one side jack point; it can roll off.",
     "Hot oil and exhaust parts can burn; let the engine cool a few minutes or wear gloves.",
     "Do not overfill: the N52 has no dipstick and the electronic gauge needs a warm engine, a drive and a few minutes to read correctly.",
     "Add no more than 1 US quart after the display requests it, and use only BMW-approved oil (no additives).",
@@ -1283,6 +1284,7 @@
     "RESOLVED (undertray access): coin/screwdriver half-turn hatch just behind the front-centre jack point (Team-BHP, bmwtuning.co; bimmerpost's N51 thread calls it an 'access flap'); full undertray removal not needed and no fastener spec found.",
     "CHANGED (cap tool): status now CONFLICT. Bimmerworld lists the 86 mm 16-flat tool for plastic caps on N51/N52 E90 328i, but Team-BHP's first post says a 29 mm socket, bavmods says 27 mm wrench or the tool, and one retailer said 26 mm hex; Bimmerworld's own page shows two different BMW numbers. Steps 3 and 6 say to use whichever tool fits. Whether the engine cover must come off for the cap is still unestablished (no source mentions it).",
     "ownerInputsNeeded emptied: engine code/drivetrain/cap style/hatch type are now handled by step wording (use the tool that fits; angle the pan; hatch described as coin catch) and listed as unresolved in missingEvidence and variantDependencies; the owner will not inspect the car.",
-    "recommendedStatus stays BUILDABLE_PARTIAL: usable uncertified draft; safety-critical so the unverified torques, capacity and drain-plug orientation must stay flagged and no certification is implied."
+    "recommendedStatus stays BUILDABLE_PARTIAL: usable uncertified draft; safety-critical so the unverified torques, capacity and drain-plug orientation must stay flagged and no certification is implied.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published. The reported front-centre jack point and the 'four side points' stand wording were removed."
   ]
 }

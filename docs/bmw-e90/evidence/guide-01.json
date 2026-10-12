@@ -462,13 +462,13 @@
     },
     {
       "n": 3,
-      "title": "Lift the front at the side jacking points and support it on stands",
-      "instruction": "Use the four side jacking points: small rectangular plastic pads at the sills, one just behind each front wheel and one ahead of each rear wheel (the BMW owner's manual shows their positions only in an illustration). Raise the front at the pad behind the wheel you are working on, place a rated jack stand under the same pad (or the pad behind the other front wheel as well), chock the opposite wheel as well as the rears, and check the car is level and stable before removing a wheel. A wood block or hockey puck between jack and pad protects the pad. Center lifting is not used in this procedure: a front center point is described in forum posts, but sources disagree about any rear center point (crossmember vs not allowed), so it is left out. Never lift on the differential.",
+      "title": "Lift the front and support it on stands (or a lift)",
+      "instruction": "Lift the front using the jacking points shown in the jacking illustration in your owner's manual (small rectangular plastic pads at the sills), with a pad or adapter, or a wood block or hockey puck, between the jack and the plastic pad. Support the car on rated jack stands on hard, level ground; if you cannot identify a safe place for the stand from your manual, stop and use a shop lift. Chock the opposite wheel as well as the rears, and check the car is level and stable before removing a wheel. Center lifting is not used in this procedure: sources disagree about any rear center point (crossmember vs not allowed), so it is left out. Never lift on the differential.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Never work under a car held only by a jack.",
         "Do not jack on the rear differential cover or housing.",
-        "Position of the four side pads is secondary-sourced; the BMW manual text only says 'positions shown in the illustration'."
+        "Jacking point positions come from your owner's manual illustration; no source we read gives the stand position."
       ],
       "sources": [
         "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/?srch=jack",
@@ -745,7 +745,8 @@
     }
   ],
   "safety": [
-    "Support the car on rated jack stands at the side jacking points on a level surface; never rely on the jack. Do not jack on the rear differential cover.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Do not jack on the rear differential cover or housing.",
     "Never let the caliper hang by its brake hose and never press the pedal with the caliper off.",
     "Brake dust may be hazardous: wet-wipe or use brake cleaner; do not blow it off with compressed air.",
     "Do not put grease on friction surfaces; use silicone-based grease on pins and keep mineral oil off rubber boots.",
@@ -1126,6 +1127,7 @@
     "NEW CONFLICT (tool): carrier-bolt head type, catalog 'Torx' vs guides '18 mm hex'; tool row set to CONFLICT and step 15 branches on the head the user sees.",
     "NOT RESOLVED: all torques remain VERIFIED_SECONDARY (no BMW torque document); wheel-bolt torque is not in the retrievable BMW owner's manual text; liner-fastener torque MISSING; guide-pin hex 6 vs 7 mm; guide-pin position; workshop-manuals.com TIS pages, archive.org BMW training index and e90post TIS attachments were unreachable (errors, blocked or robots).",
     "ownerInputsNeeded emptied: variant choices are now handled by the branching text in steps 1, 14 and 15; unresolved facts are in missingEvidence.",
-    "Visual gap: carrier-bolt head naming added as gapFillNotes; visual elements and facts not changed."
+    "Visual gap: carrier-bolt head naming added as gapFillNotes; visual elements and facts not changed.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published. Step 3 no longer places a stand under a named pad."
   ]
 }

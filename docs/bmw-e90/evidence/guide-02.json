@@ -651,7 +651,7 @@
       "status": "SINGLE_SOURCE",
       "warnings": [
         "High voltage; BMW says BMW center only. If you do disconnect the battery, expect the power-failure items in the owner's manual p.236 (clock, radio, memory seats, compass, glass roof initialization at a BMW center).",
-        "Support the car on stands; do not touch bulb glass."
+        "If a wheel is removed, follow the jack-stand rule in the safety notes; do not touch bulb glass."
       ],
       "sources": [
         "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
@@ -694,7 +694,7 @@
       "instruction": "Not described in the BMW owner's manual (which says to contact a BMW center for bulbs it does not describe). Owner-post route: turn the front wheels toward the side being worked on, remove the wheel-liner screws (8 mm per one poster; two bottom screws at the front of the liner per another), peel the liner back, twist out the H8 35 W bulb, replace, refit the liner.",
       "status": "SINGLE_SOURCE",
       "warnings": [
-        "Posters disagree whether a jack helps; use stands if lifting.",
+        "Posters disagree whether a jack helps; if you lift the car, follow the jack-stand rule in the safety notes.",
         "BMW manual: front turn-signal bulb (PY24W 24 W) uses the same wheel-well flap as the low beam; rotate the socket left and remove it, press gently and turn the bulb left, refit the socket, close the flap."
       ],
       "sources": [
@@ -745,7 +745,7 @@
     "H7 halogen bulbs are pressurized: wear gloves and eye protection, change only when cool, never touch new glass with bare fingers.",
     "Refit headlamp covers carefully (leaks damage the lamp) and have headlamp aim checked only through a BMW center.",
     "Wiper arms must be against the windshield before the hood is opened (BMW manual p.229).",
-    "Use jack stands, never just a jack, if a wheel is removed (fog-lamp route).",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
     "If the battery is disconnected: time/date, radio, memory seats and compass reset and the glass roof may only open partly until a BMW center initializes it (manual p.236).",
     "After replacing adaptive-headlight components the lamps need coding and aim check."
   ],
@@ -1106,6 +1106,7 @@
     "CORRECTION: E90Post p=26172610 does not say what an earlier pass attributed to it (liner screws, 8 mm socket, gloves, cover in front of the wheel). Those claims were re-pointed to p=11847764 (fog bulb: 8 mm screws, peel the liner back, jack optional) or the BMW manual, and the visual wheel-arch-liner-access facts/sources were updated accordingly. The fog bulb procedure stays SINGLE_SOURCE (one thread, one host).",
     "ownerInputsNeeded emptied (it asked the owner to photograph/inspect the car); variant identification is now inside steps 6, 9 and 11 as how-to-identify branches.",
     "COULD NOT RESOLVE: engine-bay E-box location/access (BMW manual silent; BMWGuide, RPM Motorsport and Car-Box disagree; status CONFLICT, step 5 is now 'not an owner step'); a BMW-document fuse chart; high-beam printed step list; fog bulb from a BMW document; which tail-lamp sockets map to which function beyond the manual; whether the 09/2009 build has LED or all-bulb tail lamps; halo bulb type; lamp maker ZKW vs VALEO. Withdrawn visual headlight-halo-cap-engine-bay left withdrawn (decode inference; ETK shows light-ring units, so it may be reinstated if halo rings are confirmed).",
-    "Source caveat: the owner's manual was read through a third-party text mirror (carmanualsonline.info) via its search pages, not the BMW PDF; ETK data from RealOEM for type PH73 USA 09/2009."
+    "Source caveat: the owner's manual was read through a third-party text mirror (carmanualsonline.info) via its search pages, not the BMW PDF; ETK data from RealOEM for type PH73 USA 09/2009.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }
