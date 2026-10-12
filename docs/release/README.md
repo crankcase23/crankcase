@@ -1,96 +1,126 @@
-# Release runbook: VIN / keys / per-car-id stack (#42 #43 #45 #46 #47 #48 + #50) (the PR was requested as "#49"; GitHub numbered it #50)
+# Release runbook: VIN / keys / per-car-id stack (#42 #43 #45 #46 #47 #48 + #50)
 
-Supersedes the per-PR runbook for #44/#42/#43. **Nothing here has been run against production.** Every production step needs its own explicit owner approval. Rehearsed on scratch Postgres 16 only (200k garage rows / 20k users).
+Status 2026-10-12: PR #50 is **draft**. Nothing here has been run against production. Every production step needs its own explicit owner approval. All rehearsals ran on scratch Postgres 16 (200k garage rows / 20k users). Supersedes `claude/crankcase-release-runbook-44-42-43-2026-10-11.md`.
 
-## 1. PR dependency order
+## 1. PR dependency chain (reconciled 2026-10-12 against live GitHub)
 
-All PRs were opened against `main`; GitHub will not enforce order. The owner must.
+`main` is now **86e26ca** (was 79cf395): PR #49 (preview databases, `claude/preview-db-env`) was merged by the owner at 03:34Z. #49 touches only `package.json`, `src/db/index.ts`, `src/db/resolveDatabaseUrl.ts` and a db test.
 
 ```
-main 79cf395
- +- #44 a7d2a52  Next.js security patch. Independent; merges clean into the stack.
+main 86e26ca  (= 79cf395 + #49)
+ +- #44 a7d2a52  Next.js security patch. Independent.
  +- #42 2edee0d  vehicle configuration + same-model migration fix
-     +- #43 627d47a  VIN-required + photo scan
+     +- #43 627d47a  VIN-required + photo scan                         (latest #43 head; in #50)
          +- #46 82ec96c  VIN isolation (cut from an older #43)
              +- #47 4502077  permanent per-car ids
-                 +- #48 9af13ca  = #47 + #45 (entitlements PR-A) + 2 commits
-                     +- #50  = #48 + latest #43 merged in + this release-readiness work (base branch: claude/keys-entitlements-v2)
+                 +- #48 9af13ca  = #47 + #45 (ba2650f, entitlements PR-A) + 2 commits
+                     +- #50 (draft, base claude/keys-entitlements-v2) = #48 + #43 627d47a + release-readiness work + main 86e26ca
 ```
-1. **#44 first, alone**, own deploy and smoke test.
-2. **Then the whole stack as one merge**: merge #50 into `main` (it carries #42 #43 #45 #46 #47 #48). Never merge #42 or #43 alone: #43 alone ships the global VIN block and the "We Know This Vehicle" teaser that #46 removes.
-3. `claude/vin-required-garage-alt` is a parallel PR-less branch for the same feature. Do not merge it.
-4. Recommend converting #42/#43 to draft (or closing as superseded) so a stray merge click cannot ship them alone.
+Checked by SHA and `git merge-tree`:
+- #42, #43, #45, #46, #47, #48 heads are all ancestors of #50. None of those PRs changed since the last check (heads above).
+- #50 + new main: one conflict, `package.json` scripts (`db:test` from main vs `config:test`/`keys:test`/`release:gate`). Resolved in merge commit `598e3c3` on the #50 branch (all four scripts kept).
+- #44 + #50: clean. #44 + new main: clean.
+- All PRs target `main`, not each other, so GitHub will not enforce order. The owner must.
 
-## 2. Mandatory gates (all must PASS before any migration is approved)
+Merge order: **(1) #44 alone**, own deploy and smoke test; **(2) the whole stack as ONE merge: #50** (it carries #42 #43 #45 #46 #47 #48). Never merge #42 or #43 alone (#43 alone ships the global VIN block and the "We Know This Vehicle" teaser that #46 removes). `claude/vin-required-garage-alt` is a parallel PR-less branch: do not merge. Recommend converting #42/#43 to draft or closing them as superseded so a stray merge click cannot ship them alone.
 
-Run against the exact commit that will be merged, on a scratch DB named `cc_test` that has M1-M5 applied (see section 4), app built and served with `next start -p 3100`:
+Preview databases (from #49): Preview deployments use `PREVIEW_DB_DATABASE_URL` and fail closed; they never touch production data. That database currently has only the base schema + M1. **Before anyone opens a Preview of #50 (or #46-#48) the preview DB needs M2-M5** (owner, Vercel Storage > crankcase-preview > Query, same files and order as section 4, without the production approvals). Until then previews of the new code will error. This replaces the old "is DATABASE_URL shared with Preview?" worry; verify the scopes once in Vercel (section 3).
+
+## 2. Mandatory gates (all PASS on the exact SHA before any migration is approved)
+
+Scratch DB `cc_test` with M1-M5 applied; app built and served with `next start -p 3100` against it (`DATABASE_URL`, `AUTH_SECRET`, `AUTH_TRUST_HOST=true`).
 
 | Gate | Command | Required |
 |---|---|---|
 | Types / build | `npx tsc --noEmit`, `npm run build` | clean |
-| Lint | `npx eslint` | exactly the 3 baseline errors (printify-publish.js x2, AddVehicleClient.tsx); anything else is new |
-| Unit suites | `npm run vin:test`, `npm run config:test`, and `DATABASE_URL=<scratch db with M3-M5 applied> npm run keys:test` | all pass, **skipped = 0**. Without `DATABASE_URL` every keys test (including `legacy-holds.test.mjs`, the permanent "paid access cannot disappear" tests) is SKIPPED, and a skipped run is not a pass. |
-| **Admin cross-account isolation (MANDATORY)** | `npm run release:gate` | PASS. Runs the three isolation specs (admin gift on the same VIN in two accounts; entitlement ISOLATION; no-oracle VIN check). A skipped, filtered-out or missing test is a FAIL. Never waive, never `.skip`, never edit out. Mutation-checked 2026-10-12: removing the account from the admin vehicles export's unlock key turns the first spec red and the gate prints FAIL. |
-| Full e2e | `npx playwright test --workers=2` (about 17 min; run in the background) | all pass |
-| Migration VERIFY | each `*-VERIFY.sql` after its migration | see section 4 |
+| Lint | `npx eslint` | exactly the 3 baseline errors (printify-publish.js x2, AddVehicleClient.tsx) |
+| Unit | `npm run vin:test`, `npm run config:test`, `npm run db:test` | all pass |
+| **Release gate (MANDATORY)** | `DATABASE_URL=postgres://postgres@127.0.0.1:5544/<scratch db> npm run release:gate -- --full-report <playwright-json>` | PASS (see below) |
+| Full e2e | `DATABASE_URL=... npx playwright test --workers=2 --reporter=json > full.json` (about 17 min, background) | 0 failed; only the `ops-snapshot` tests skipped |
+| Transition rehearsal | `OLD_DIR=<built checkout of main> scripts/release/transition-rehearsal.sh` | all phases pass, `SCHEMA IDENTICAL` |
+
+`npm run release:gate` fails (exit 1) unless ALL of these hold:
+1. `DATABASE_URL` is set and points at 127.0.0.1/localhost (otherwise database-backed suites skip silently).
+2. keys unit suite: 0 failed, **0 skipped**, at least 30 tests; the `legacy-holds` suite ("historical paid access cannot disappear when a garage vehicle is deleted") at least 12 tests, 0 skipped.
+3. The three admin cross-account isolation specs each RAN and PASSED (admin gift on the same VIN in two accounts; entitlement ISOLATION; no-oracle VIN answer). A skipped, filtered-out or missing spec is a FAIL. Never waive, `.skip` or edit these out.
+4. With `--full-report`: 0 failed/flaky and no unexpected skips (the BMW admin-guide specs skip when `DATABASE_URL` is not local; that is a FAIL).
+
+Proofs that the gate bites (2026-10-12, scratch):
+| Break | Gate result |
+|---|---|
+| `DATABASE_URL` unset, or non-local host | FAIL immediately, exit 1 |
+| isolation spec turned into `test.skip` | FAIL: "isolation ... FAIL" and "1 test(s) skipped"; exit 1 |
+| full report from a run without a local DB (76 BMW admin tests skipped) | FAIL: "76 unexpected skips"; exit 1 |
+| admin vehicles export keyed by VIN only (account dropped from the unlock key) | FAIL on the first isolation spec, other checks PASS, exit 1 (re-proved on the merged build) |
+| healthy merged tree, real full-run report | PASS: keys 30/30 (0 skipped), legacy-holds 12/12, 3/3 isolation, full run 169 tests 0 failed, 0 unexpected skips |
 
 ## 3. Owner-only checks (cannot be done from the sandbox)
 
-1. **Vercel, Settings, Environment Variables: is `DATABASE_URL` shared with Preview?** Previews exist for #46-#48 (status success). If Preview shares the production DB they run new code against an un-migrated production schema and anyone signing up there writes to production. Do not open previews until known.
-2. **Neon: plan, branch permission, restore window.** Confirm you can branch production (copy-on-write) and the point-in-time-restore window.
-3. **Neon branch rehearsal** of the whole chain with VERIFY after each step, then ROLLBACKs in reverse, then delete the branch. Never point an app env at the branch. Record: pairs blocked by `vin-canonical` collision abort; duplicate VIN / VIN-less catalog rows (skipped indexes); legacy unlock inventory (total, by source, VIN-less, invalid VIN, **how many `purchase`, expected 0**); garage rows without a VIN; wall-clock per step.
-4. Vercel build command not overridden (the `prebuild` step copies OCR assets).
-5. Who runs SQL: Neon SQL editor, Read-only ON for VERIFY, OFF for the migration.
+1. Vercel: Production `DATABASE_*` is Production-scoped only; Preview uses `PREVIEW_DB_*` (per the #49 doc). Re-check after any Neon/Vercel integration change.
+2. Neon: plan, branch permission, point-in-time-restore window; **rehearse the whole chain on a Neon branch of production** with VERIFY after each step and the ROLLBACKs in reverse; delete the branch; never point an app env at it. Record: pairs blocked by the collision guard; duplicate VIN / VIN-less catalog rows; legacy unlock inventory (total, by source, VIN-less, invalid VIN, **how many `purchase`, expected 0**); garage rows without a VIN; wall-clock per step.
+3. Vercel build command not overridden (the `prebuild` step copies OCR assets).
+4. Who runs SQL: Neon/Vercel Query editor, Read-only ON for VERIFY, OFF for the migration.
+5. Apply M2-M5 to the **preview** database before opening previews (section 1).
 
-## 4. Migration order and VERIFY (production, each step approved separately)
+## 4. Deployment order (recommended: Option B, expand / deploy / contract)
 
-All migrations are additive, idempotent, one transaction each, and refuse to run (changing nothing) if a precondition is missing.
+Option B was proven against the real old `main` app over HTTP (section 5). Option A (everything back to back, accept a short old-code error window) is the fallback.
 
-| # | File | Needs | VERIFY says |
-|---|---|---|---|
-| M1 | `2026-10-11-vehicle-configuration.sql` | - | new columns/CHECKs present; unique-index NOTICEs (skipped when duplicates exist) |
-| M2 | `2026-10-11-vin-canonical.sql` | M1 | aborts, changing nothing, if one account has the same VIN in two letter-cases; then upper-cases VINs and adds the CHECK |
-| M3 | `2026-10-11-vin-entitlements.sql` | M2 (CHECK, or the staged pre-2 trigger) | refuses to run without it. Copies a legacy unlock only for a canonical, valid VIN (`cc_vin_ok`). VERIFY main query runs BEFORE; the `AFTER` block counts copyable / not-copyable |
-| M4 | `2026-10-11-vin-entitlement-events.sql` | M3 | one starting event per entitlement |
-| M5 | `2026-10-12-legacy-unlock-holds.sql` | M3 | **unaccounted legacy unlocks MUST be 0**; paid holds (expected 0); trigger count 3 |
+**Option B, each numbered step needs owner approval; run VERIFY after every SQL file:**
+1. Gates green on the exact SHA (section 2). Owner checks done (section 3). Neon branch rehearsal done.
+2. **#44 alone**: merge, deploy, smoke test (home, login, garage, a guide).
+3. **EXPAND** (production DB, old code still live and still fully working):
+   `docs/release/old-code-window/pre-1-vehicle-configuration.sql` > `pre-2-vin-canonical.sql` > `migrations/2026-10-11-vin-entitlements.sql` (M3) > `2026-10-11-vin-entitlement-events.sql` (M4) > `2026-10-12-legacy-unlock-holds.sql` (M5).
+   `pre-2` STOPS with "N customer/VIN pairs would become duplicates", changing nothing, if an account has the same VIN twice (old code allows it). Resolve those rows by hand, re-run. M3 refuses to run without the canonical guard; M5 refuses to run without M3.
+4. **DEPLOY**: merge #50 (one merge, Vercel production deploy). Smoke test: sign up; add a car by VIN; add a second car of the same model; open each by its own URL; open an old bare `/vehicles/<id>` link; admin-gift a VIN; customer sees it unlocked; remove and re-add the car, still unlocked; `GET /api/garage/<id>/keys/checkout` says `already-unlocked`.
+5. **STRAGGLERS**: re-run M3, M4, M5 once (idempotent; never reinstate a revoked row, never reopen a hold). They capture any gift the OLD admin wrote to `vehicle_unlocks` during the window. VERIFY: "unaccounted" must be 0.
+6. **CONTRACT**, only when no old deployment can still serve: `post-deploy-contract.sql`. Adds the canonical CHECK and the two unique indexes and drops the temporary upper-casing trigger. If it prints `SKIPPED ... N customer/VIN pairs`, the old code created same-account duplicates during the window: nothing was changed, support merges those rows (the new code lists them like any other cars), then re-run. Final VERIFY: only trigger on `garage_entries` is `garage_entries_preserve_legacy_unlocks`; CHECK and both indexes present.
+7. Watch error logs for a day.
 
-Then deploy (merge #50). **After the deploy is live and smoke-tested, re-run M3, M4, M5 once** (idempotent; they never reinstate a revoked row and never reopen a hold) to capture any gift the OLD admin code wrote into `vehicle_unlocks` during the window. Compare VERIFY counts; "unaccounted" must again be 0.
+**Option A:** M1 `2026-10-11-vehicle-configuration.sql` > M2 `2026-10-11-vin-canonical.sql` > M3 > M4 > M5 back to back (about 2 s of SQL at 200k rows), merge #50 immediately, smoke test, re-run M3/M4/M5. Until the deploy finishes, old code returns a raw 500 (no data change) for "same VIN twice in one account" and "lower-case VIN via a crafted request". Freeze admin gifting during the window.
 
-Smoke test: sign up; add a car by VIN; add a second car of the same model; open each by its own URL; open an old bare `/vehicles/<id>` link; admin-gift a VIN and confirm the customer sees it unlocked; remove and re-add the car, still unlocked; `GET /api/garage/<id>/keys/checkout` on the unlocked car says `already-unlocked`.
+## 5. Transition rehearsal: real old app over HTTP (2026-10-12)
 
-## 5. The old-code 500 window
+`scripts/release/transition-rehearsal.sh` (spec: `tests/transition/transition.spec.ts`). Old app = built `main` at 79cf395 (`next start`, port 3201); new app = built #50 head (port 3202); one scratch Postgres database throughout, copied from the pre-release schema with 200k garage rows.
 
-**Finding (measured on the live `main` build against the final schema):** the only migration with a visible old-code effect is the VIN uniqueness/canonical constraints. Old code gets a raw 500 (no data change) for (a) the same VIN added twice in one account (unique index) and (b) a lower-case VIN via a crafted request (canonical CHECK; the UI always sends upper-case). Valid add, no-VIN add and garage listing are 200 either way. The 500s last from the end of M1/M2 to the end of the deploy.
+| Phase | App / schema | Result |
+|---|---|---|
+| A | old app, original schema | valid add 200, **same VIN twice 200 (2 rows)**, **lower-case VIN 200 (stored lower-case)**, no-VIN add 200, list 200 |
+| guard | before EXPAND | `pre-2` STOPPED ("2 customer/VIN pairs would become duplicates"), nothing changed; support merged them |
+| B | old app, after EXPAND (pre-1, pre-2, M3, M4, M5) | the same five calls all **200**; same VIN twice still 200 (2 rows); lower-case VIN now **stored upper-case** (trigger). Old admin gifted 2 cars (writes `vehicle_unlocks`); a purchased VIN-less car and a gifted junk-VIN car were seeded. The OLD app then **deleted three of them**: result 3 holds (`gift`, `gift`, `purchase`, all `pending_vin`), 1 undeleted legacy unlock left, 0 entitlements. Nothing lost. |
+| deploy | old app stopped, new app started, M3/M4/M5 re-run | |
+| C | new app, expand schema + in-window duplicates | list 200 with the duplicate rows; add valid 200; same VIN again < 500; lower-case < 500. The still-present gifted car (carried by the re-run) is **unlocked** and checkout says `already-unlocked`. Admin page shows 3 holds; admin **restored the paid hold** (entitlement `purchase`, event `purchased:purchase:admin: legacy unlock reconciled: <reason>`), restored the gift, **waived** the junk-VIN gift with a reason. All 3 hold rows still exist (`gift:converted`, `gift:waived`, `purchase:converted`); 3 audit rows (`legacy_hold.convert` x2, `legacy_hold.waive`). A resolved hold cannot be reopened (400). |
+| contract #1 | duplicates present | `SKIPPED garage_entries_user_vin_uq: 1 customer/VIN pairs have more than one row. Nothing changed` |
+| contract #2, #3 | after support merged them; second run proves idempotence | clean |
+| D | new app, final schema | raw lower-case insert **refused by the CHECK**; raw duplicate insert **refused by the unique index**; new app same VIN / lower-case VIN returns < 500 and one row; deleting a car that carries an entitlement keeps the entitlement (`gift|true`), holds stay 3, paid entitlement stays `purchase|true`; re-adding the VIN is unlocked again; event log intact |
+| schema | final transition schema vs the all-at-once chain (`M1 > M2 > M3 > M4 > M5`) from the same start | **SCHEMA IDENTICAL** (pg_dump -s diff empty). Triggers on `garage_entries`: only `garage_entries_preserve_legacy_unlocks`. The temporary function `garage_entries_canonical_vin` is gone. |
 
-**Option A (default, simplest): shrink the window.** Freeze admin gifting, run M1 to M5 back to back (about 2 s of SQL at 200k rows), merge #50 immediately, smoke test, re-run M3/M4/M5. Exposure: minutes, two odd request shapes, no data harm.
+Results on the merged build (main 86e26ca merged into the branch): full Playwright 158 passed / 0 failed / 11 skipped (the 11 are `ops-snapshot`, tokens not set); transition rehearsal repeated, all phases pass, SCHEMA IDENTICAL again.
 
-**Option B (zero old-code errors): expand/contract**, proposal in `docs/release/old-code-window/`:
-1. Pre-deploy: `pre-1-vehicle-configuration.sql` (columns and CHECKs, NO unique indexes), `pre-2-vin-canonical.sql` (same collision abort, upper-case backfill, plus a BEFORE INSERT/UPDATE trigger that upper-cases VINs instead of a CHECK), then M3, M4, M5 (M3 accepts either the CHECK or the trigger).
-2. Deploy.
-3. Post-deploy: `post-deploy-contract.sql` adds the CHECK and both unique indexes. If the old code created same-account duplicates during the window, an index is SKIPPED with a NOTICE naming the count and nothing is changed; support merges the rows by hand, re-run.
+Not covered: real Neon (unreachable from the sandbox), real browsers on a phone, real payments (none exist).
 
-**Proof (scratch, SQL level, 2026-10-12):** after the pre-deploy chain, the exact INSERT shapes old code issues (lower-case VIN, same VIN twice, same catalog model twice, an admin gift to `vehicle_unlocks`) all succeeded; the VIN was stored upper-case; the post-deploy file printed two SKIPPED notices while duplicates existed, created both indexes once removed, and was idempotent on re-run; re-running M3 turned the in-window gift into an entitlement. Final schema diff against the all-at-once chain: only the extra upper-casing trigger and its function (harmless, can be dropped after contract). Not yet proven: a full old-app build driven against the Option B schema over HTTP (the earlier HTTP probe was run for the all-at-once schema). Recommendation: Option A unless the owner wants zero tolerance, then B after the Neon rehearsal.
+## 6. Rollback, in order
 
-## 6. Rollback
+- **Code first, always** (Vercel Instant Rollback / promote the previous deployment). The schema is additive and stays.
+- **Before the deploy (EXPAND done):** nothing to roll back for code. Phase B proves old code runs fine on the expanded schema.
+- **After the deploy, before CONTRACT:** roll code back; old code keeps working on the expanded schema (phase B). Gifts and revokes made by the new code stay in `vin_entitlements` and reappear on re-deploy.
+- **After CONTRACT, then code rolled back to OLD code:** the old 500 cases return unless you first run `docs/release/old-code-window/post-deploy-contract-ROLLBACK.sql` (drops the CHECK and the two indexes, re-installs the upper-casing trigger; deletes no rows; tested on scratch). Re-run `post-deploy-contract.sql` when moving forward again.
+- **Only if a migration itself is the problem**, reverse order: `2026-10-12-legacy-unlock-holds-ROLLBACK` > `2026-10-11-vin-entitlement-events-ROLLBACK` > `2026-10-11-vin-entitlements-ROLLBACK` (also drops `cc_vin_ok`) > `2026-10-11-vin-canonical-ROLLBACK` (drops the CHECK; upper-cased VINs stay) > `2026-10-11-vehicle-configuration-ROLLBACK`; Option B extra: drop trigger `garage_entries_canonical_vin` and its function if still present. **Export `legacy_unlock_holds`, `vin_entitlement_events` and `vin_entitlements` first**: dropping them destroys paid/gifted history.
 
-- **Code first, always:** Vercel Instant Rollback / promote the previous deployment.
-- **Schema: leave it.** Everything is additive; the old app ignores extra tables and columns, and gifts/revokes made by new code stay safe in `vin_entitlements` and reappear on re-deploy.
-- Only if a migration itself is the problem, run the ROLLBACK files in reverse: `2026-10-12-legacy-unlock-holds-ROLLBACK`, `vin-entitlement-events-ROLLBACK`, `vin-entitlements-ROLLBACK` (also drops `cc_vin_ok`), `vin-canonical-ROLLBACK` (drops the CHECK; upper-cased VINs stay), `vehicle-configuration-ROLLBACK`. **Export `legacy_unlock_holds`, `vin_entitlement_events` and `vin_entitlements` first**; dropping them loses paid/gifted history. Option B extras: drop trigger `garage_entries_canonical_vin` and its function.
+## 7. Historical paid holds: identifiable, recoverable, auditable
 
-## 7. Legacy unlock reconciliation (nothing is ever dropped)
+- **Identify:** `SELECT id, user_id, garage_entry_id, source, granted_at, vehicle_label, vin_at_snapshot, status FROM legacy_unlock_holds WHERE source = 'purchase' ORDER BY granted_at;` The VERIFY file counts them (expected 0 in production). A hold keeps the original source, grant time, vehicle and the VIN as it was at snapshot.
+- **Cannot be lost:** no foreign key to `garage_entries`; DELETE and TRUNCATE are refused (only deleting the whole account cascades); the original facts cannot be UPDATEd; a resolved hold cannot be reopened. Deleting the car, the VIN, or the garage row does not touch it (proven: old app deletes, new app deletes, 12 car/state combinations in `legacy-holds.test.mjs`).
+- **Recover:** Admin > Users > the user > Garage tab > "Legacy unlocks" > **Restore** (VIN optional if the hold stores one; reason). The customer path is completing the car's VIN: a gift tied to that car, or any hold whose stored VIN matches, restores automatically; a paid hold tied only to the car waits for an admin. Restoring creates the entitlement with the **original source (`purchase`) and original grant time**.
+- **Audit:** every restore/waive writes `admin_audit_log` (`legacy_hold.convert` / `legacy_hold.waive`, VIN last six only) and, for a restore, an append-only `vin_entitlement_events` row with the admin as actor and the reason. Waive requires a reason of 5+ characters. No row in `legacy_unlock_holds`, `vin_entitlement_events` or the audit log is ever deleted by these flows.
+- Historical purchase prices are not in the legacy table, so a restored paid unlock has no price/rung (`-`); it never counts toward the ladder.
 
-Rule: every historical purchase or gift ends as an active `vin_entitlements` row or a `legacy_unlock_holds` row. Holds are permanent records until resolved; deleting the car, the garage row or the VIN does not touch them; only deleting the whole account does.
+## 8. Customer / admin reconciliation (summary)
 
-- **Customer:** opens the car and completes its VIN (`POST /api/garage/[id]/vin`). A gift tied to that car, or any hold whose stored VIN equals the VIN entered, is restored automatically with its original source and grant time. A paid hold tied only to the car waits for an admin (the response says `needsReview`).
-- **Admin** (`unlocks.manage`): Admin > Users > the user > Garage tab > "Legacy unlocks" panel. **Restore** (VIN optional if the hold stores one; reason) or **Waive** (reason, 5+ chars; only for a deliberate decision such as a refunded purchase). Audited as `legacy_hold.convert` / `legacy_hold.waive`; a resolved hold cannot be reopened.
-- **Reporting:** `2026-10-12-legacy-unlock-holds-VERIFY.sql` lists pending, converted, waived, paid and "convertible" holds. Review pending paid holds first.
+Rule: every historical purchase or gift ends as an active `vin_entitlements` row or a `legacy_unlock_holds` row. Customers complete the VIN on the car; admins restore or waive from the user's Garage tab. Checkout (`GET /api/garage/[id]/keys/checkout`, read-only) refuses `already-unlocked` and `legacy-unlock-pending`; a captured payment for such a VIN returns `refund-required` from `settleCapturedPayment` and must be refunded by the future webhook. No real payments exist yet.
 
-## 8. Checkout eligibility (no real payments exist yet)
+## 9. Concurrent-session notes
 
-`GET /api/garage/[id]/keys/checkout` is read-only and returns `{eligible, priceCents, rung}` or `{eligible:false, reason}` with `not-in-garage | no-vin | invalid-vin | already-unlocked | legacy-unlock-pending`. Gifts are never converted into sales; an already-unlocked VIN (gift, earlier payment or legacy unlock) cannot be paid for. Requirement for the future payment webhook: call `settleCapturedPayment`; on `refund-required` it must refund and never grant.
-
-## 9. Concurrent-session hazards
-
-- The per-PR runbook `claude/crankcase-release-runbook-44-42-43-2026-10-11.md` is superseded (it releases #42/#43 separately and expects indexes the corrected #42 no longer creates).
-- Do not touch Vehicle Atlas / Admin Center work in this PR; it is a separate stream.
-- Scratch-environment notes: Playwright key helpers hard-code DB name `cc_test`; Turbopack rejects a symlinked `node_modules`.
+- #49 (preview DBs) is merged; its doc is `claude/crankcase-preview-db-separation-2026-10-11.md`. Future migrations must also be applied to the preview database by hand.
+- Do not touch Vehicle Atlas / Admin Center work in this stack.
+- Scratch-environment notes: Playwright key helpers hard-code DB name `cc_test`; Turbopack rejects a symlinked `node_modules`; without a local `DATABASE_URL` the BMW admin specs and keys tests skip, which the gate treats as a FAIL.
