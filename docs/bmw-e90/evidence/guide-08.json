@@ -604,7 +604,7 @@
     "Never open the expansion tank cap on a hot engine or while the electric pump is cycling (owner manual: wait until the engine cools; release pressure by turning the cap slightly first).",
     "Coolant is toxic; keep from pets and children, clean spills, dispose per local rules.",
     "Keep a stable battery supply connected during every 12 minute pump cycle; use the under-hood jump posts, not the trunk posts.",
-    "Support the vehicle on stands, ramps or a lift; never rely on a jack.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
     "Radiator drain plugs are plastic; hand-tighten only.",
     "The electric coolant pump must not run dry (BMW training document): fill the system before the venting routine and do not run it on an empty system.",
     "Do not publish a total capacity figure or a coolant specification code as verified: no BMW document was found for them.",
@@ -945,6 +945,7 @@
     "NOT RESOLVED: undertray/splash shield and radiator cover fastener count and head sizes (catalog lists types only; Pelican 13 mm 'could vary', E60/E92 posters differ); torque for plastic drain plugs and M10 vent screw (hand-tight only, none published); BMW coolant interval. The guide says to note positions and use the head the reader sees; no torque is invented.",
     "NOT RESOLVED: BMW TIS page for the N52 electric-pump bleed routine; the BMW training document (N54 text, circuit stated equal to N52) remains the primary and five non-BMW sources agree. Bleed routine remains: heater max, blower lowest, accelerator held fully down at least 10 s with engine NOT running, about 12 min, top up to MAX.",
     "APPLICABILITY: automatic transmission fluid is not part of a coolant flush; not applicable to this guide. Engine-block drain: none on the N52 (step 7 documents why).",
-    "ownerInputsNeeded emptied: all four former items are either answered remotely (transmission, engine via NHTSA 3.0 L decode and catalog N52N) or handled by branching text (one or two plugs, fastener heads). The publish decision is a certification step, not an evidence input: the guide is a usable UNCERTIFIED draft until a BMW TIS copy is obtained."
+    "ownerInputsNeeded emptied: all four former items are either answered remotely (transmission, engine via NHTSA 3.0 L decode and catalog N52N) or handled by branching text (one or two plugs, fastener heads). The publish decision is a certification step, not an evidence input: the guide is a usable UNCERTIFIED draft until a BMW TIS copy is obtained.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }

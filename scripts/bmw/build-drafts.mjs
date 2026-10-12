@@ -88,6 +88,9 @@ const DISPOSITION = [
   { g: 2, re: /^Engine-bay fuses/i, kind: "BLOCKED", reason: "Where the engine-bay fuse boxes are and how they open is not established by any BMW document (web sources disagree).", instead: "Do not open or probe them. Use the glove-box fuse box only; if an engine-electronics fault remains after that, have the car diagnosed." },
   { g: 2, re: /^Xenon low-beam/i, kind: "BLOCKED", reason: "BMW states xenon lamp work, including bulb replacement, is for a BMW center or qualified workshop only (high voltage).", instead: "Do not replace a xenon bulb yourself. Have a BMW center or qualified workshop do it." },
   { g: 6, re: /^Replace the idler pulley/i, kind: "BLOCKED", reason: "The idler pulley bolt torque is unresolved: sources disagree by a factor of two, and BMW's own printed value was later corrected without the new number being readable. No figure is shown here on purpose.", instead: "Skip this step. Leave the idler pulley in place and re-inspect it at step 5; if it is worn or noisy, have it replaced with BMW repair data." },
+  { g: 5, re: /^Release the caliper/i, kind: "BLOCKED", reason: "Rear caliper hardware is unresolved: sources disagree on the guide-screw head type, tool size and torque, and the parts catalog and how-to guides describe the carrier fastener differently. No size or torque is shown here on purpose.", instead: "Stop the job here: the pads cannot be changed without this step. Refit the wheel and have a BMW-qualified shop do the rear pads, or use BMW repair data with the verified sizes and torques." },
+  { g: 5, re: /^Refit the caliper and torque/i, kind: "BLOCKED", reason: "The caliper fasteners and their torque are not established from a BMW document, so no size or figure is shown.", instead: "If a caliper is already off, do not refit it by feel and do not drive the car: have it taken to a BMW-qualified shop." },
+  { g: 11, re: /^Remove the breather hose only if replacing it/i, kind: "BLOCKED", reason: "The breather hose is brittle plastic and its connection at the back of the valve cover can break during removal (a broken connection means a new valve cover). Sources also disagree on its routing and on whether it carries a heater plug, and no BMW removal procedure was found.", instead: "Do not disturb the hose. If it looks cracked, oily or loose, stop here and have a BMW-qualified shop replace it." },
   { g: 15, re: /^xDrive only/i, kind: "INAPPLICABLE", reason: "Transfer case and front differential exist only on xDrive. The VIN decode and the parts catalog show a rear-wheel-drive 328i." },
   { g: 2, re: /^Parking \/ halo/i, kind: "ACCEPTED", reason: "Bulb type disputed; the step tells the reader to match the old bulb's marking. Not a safety-critical fastener or procedure." },
   { g: 6, re: /^Clear access to the belt/i, kind: "ACCEPTED", reason: "Two sourced access methods are given; the conflict is about which fasteners, and the step says to use what is on the car." },
@@ -470,9 +473,6 @@ const SCRUB_REWRITE = [
   [/^Build date: the VIN decode gives start of production 2009-09-07[^.]*\./, "Build date: wiper sets split at 09/2009 (BMW parts catalog, Turner, Bimmerworld and Oximo agree on the 09/2009 split), so a car built before 09/2009 needs the older set 61610427668."],
   [/; not coded on this car per the decode\./, "."],
   // --- battery option codes
-  [/For a probable 80 Ah \(B080\) car,/, "For an 80 Ah car,"],
-  [/^The VIN option list ends in B080, the BMW coding code for an 80 Ah battery, so an 80 Ah flooded battery is the probable original \(not proven\); an 80 Ah-class/, "An 80 Ah-class"],
-  [/^The 80 Ah conclusion rests on one decoder's truncated trailing code; the label/, "The label"],
   [/VO code B080 \(80 Ah\) \/ A080 \(80 Ah AGM\) naming is from coding forums/, "VO code naming (B080 for 80 Ah, A080 for 80 Ah AGM) is from coding forums"],
   [/are not shown by the decode; they do not change the battery location/, "do not change the battery location"],
   [/\s*\(not decoded\)/, ""],
@@ -498,7 +498,6 @@ const SCRUB_REWRITE = [
   [/RESOLVED to 'open, probable'/, "probably open"],
   [/^Label unresolved as a name, not a procedure variable\./, "The engine label is not settled, but it does not change this procedure."],
   [/the owner should compare with the oil-cap label or manual/, "compare with the oil-cap label or your manual"],
-  [/^Owner must confirm head type\./, "Confirm the head type."],
   // --- wording
   [/tell the user to compare/, "tell you to compare"],
   [/so the user must follow the chart/, "so you must follow the chart"],
@@ -506,7 +505,7 @@ const SCRUB_REWRITE = [
 ];
 const SCRUB_DROP = [
   /DECODED CONFIG/, /\bdecod(e|ed|er|ers|es|ing)\b/i,
-  /^B080 = BATTERIE_80AH/, /^This car is a sedan per NHTSA/, /^Keep the pan a plain generic mass/, /^Treat as probable/,
+  /^This car is a sedan per NHTSA/, /^Keep the pan a plain generic mass/, /^Treat as probable/,
 ];
 const SCRUB_USED = new Map();
 const DENY_HITS = [];

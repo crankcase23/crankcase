@@ -431,12 +431,12 @@
     {
       "n": 11,
       "title": "Post-cat sensors (from below)",
-      "instruction": "Raise and support the car, remove the transmission splash shield, find the post-cat connectors on a bracket at the bottom of the transmission bell housing, label and disconnect them and release the harness from its clips. The engine cover does not need to come off for the post-cat sensors (one bimmerpost poster). The sensors carry an insulating foil shield that must be compressed slightly so the socket fits over the hex. Remove, install with anti-seize and tighten to 50 Nm as in steps 7-10.",
+      "instruction": "Raise and support the car (see the jack-stand rule in the safety notes), remove the transmission splash shield, find the post-cat connectors on a bracket at the bottom of the transmission bell housing, label and disconnect them and release the harness from its clips. The engine cover does not need to come off for the post-cat sensors (one bimmerpost poster). The sensors carry an insulating foil shield that must be compressed slightly so the socket fits over the hex. Remove, install with anti-seize and tighten to 50 Nm as in steps 7-10.",
       "status": "SINGLE_SOURCE",
       "warnings": [
         "One source (Pelican) gives the connector bracket position; a z4-forum thread on the E85 N52 only speculates (some connectors clipped under the engine cover, others on an underside bracket or near the bell housing), so treat the position as unconfirmed. If the connectors are not where described, follow each sensor lead from the sensor to its plug rather than guessing.",
         "The no-engine-cover statement is one bimmerpost poster.",
-        "Support the car on stands or a lift, never on a jack alone. Jacking points and splash shield screw type were not found."
+        "Support the car as the jack-stand rule in the safety notes describes (stands, ramps or a lift), never on a jack alone. The splash shield screw type was not found."
       ],
       "sources": [
         "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/ENGINE-Oxygen_Sensor_Replacement/ENGINE-Oxygen_Sensor_Replacement.htm",
@@ -467,7 +467,7 @@
     "Keep anti-seize off the sensor tip and its reference holes.",
     "Torque (50 Nm / 37 ft-lb) is VERIFIED_SECONDARY only; no BMW document was found. Do not publish it as a BMW specification.",
     "Do not swap bank 1 and bank 2 sensors; lead lengths differ.",
-    "Support the car on stands or a lift when working underneath; never rely on a jack.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
     "Keep connector sockets clean; a contaminated or oxidised plug can cause faults (BMW training)."
   ],
   "missingEvidence": [
@@ -933,6 +933,7 @@
     "Added tie-rod removal claim (Bentley quote by a poster) as an unconfirmed warning in step 5.",
     "Added readiness-monitor note to step 12 from BMW training ST055; drive cycle not found.",
     "ownerInputsNeeded reduced to the torque publication decision; no vehicle-inspection requests.",
-    "Not resolved: BMW torque, E8/strut brace torques and sizes, splash shield screw type, jacking points, N51 numbers."
+    "Not resolved: BMW torque, E8/strut brace torques and sizes, splash shield screw type, jacking points, N51 numbers.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }

@@ -12,13 +12,13 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 | 2 | Fuse & Bulb Replacement | safety-critical | yes | NEEDS_EVIDENCE | 24 | 0 | 6 | 4 | 2 | 2 |
 | 3 | Key Fob Battery | standard | yes | READY_FOR_QA | 10 | 1 | 6 | 0 | 0 | 0 |
 | 4 | Oxygen Sensor | safety-critical | yes | NEEDS_EVIDENCE | 15 | 7 | 10 | 0 | 4 | 3 |
-| 5 | Rear Brake Pads | safety-critical | yes | NEEDS_EVIDENCE | 28 | 11 | 9 | 2 | 1 | 2 |
+| 5 | Rear Brake Pads | safety-critical | yes | NEEDS_EVIDENCE | 26 | 11 | 4 | 7 | 2 | 2 |
 | 6 | Serpentine Belt | safety-critical | yes | NEEDS_EVIDENCE | 6 | 8 | 9 | 3 | 3 | 2 |
-| 7 | Battery Replacement | safety-critical | yes | NEEDS_EVIDENCE | 14 | 5 | 13 | 1 | 5 | 2 |
+| 7 | Battery Replacement | safety-critical | yes | NEEDS_EVIDENCE | 13 | 6 | 10 | 1 | 5 | 2 |
 | 8 | Coolant Flush & Fill | safety-critical | yes | NEEDS_EVIDENCE | 24 | 10 | 7 | 1 | 3 | 2 |
 | 9 | Fluid Checks & Top-Offs | safety-critical | yes | NEEDS_EVIDENCE | 10 | 5 | 6 | 2 | 2 | 2 |
 | 10 | Cabin Air Filter | standard | yes | NEEDS_EVIDENCE | 7 | 5 | 4 | 1 | 1 | 2 |
-| 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | safety-critical | yes | READY_FOR_QA | 10 | 2 | 0 | 0 | 0 | 1 |
+| 11 | PCV / Crankcase Ventilation — Inspection & Diagnosis | safety-critical | yes | READY_FOR_QA | 8 | 2 | 1 | 0 | 0 | 1 |
 | 12 | Engine Air Filter | standard | yes | READY_FOR_QA | 10 | 4 | 9 | 0 | 1 | 2 |
 | 13 | Tire Rotation | safety-critical | no | NEEDS_EVIDENCE | 6 | 7 | 8 | 0 | 2 | 3 |
 | 14 | Wiper Blades | standard | yes | NEEDS_EVIDENCE | 12 | 2 | 3 | 1 | 2 | 1 |
@@ -105,9 +105,9 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 
 ## 5. Rear Brake Pads — BUILDABLE_PARTIAL (NEEDS_EVIDENCE)
 
-**Blockers:** 2 conflicting item(s)
+**Blockers:** 7 conflicting item(s)
 
-**Caveats:** 3 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
+**Caveats:** 4 torque value(s) withheld (house VERIFY warning shows); configuration items need owner confirmation
 
 **BMW-document scope:** PRIMARY found for: (a) OE parts catalog (RealOEM, type code PH73 USA, selection 09/2009, E90N 328i): rear pad kit 34216790761 (from 09/2009), rear sensor 34356789445 (up to 03/2010) with cable clip 34356767984, 300x20 rear rotor 34216855007 (09/2009 to 02/2011), carrier 'collar screw, micro-encapsulated' 34203414763 M10x26.5, guiding bolt 34111157041, retaining spring (clip) 34211157046, anti-squeal paste, and the catalog statements that pads, sensor and paste are mandatory and the retaining spring is to be replaced on cars over 48 months old; parking-brake shoe parts for the drum-in-hat brake; (b) BMW owner's manual text for a 2011 E90 328i (third-party text mirror; the 2010 manual only came back as an unreadable binary): brakes need an initial break-in of approx. 300 miles/500 km, jacking points are 'at the positions shown in the illustration', the parking brake is a hand lever that brakes the rear wheels, and the service display tracks front and rear brake pads and brake fluid. NO BMW primary found for any torque, the rotor discard thickness, the wheel-bolt torque, the guide-screw head type or tool size, or the parking-brake shoe adjustment procedure.
 
@@ -121,6 +121,8 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 - Positions of the four side jacking pads are described only by forum posts; the BMW manual text refers to an illustration that could not be read. A rear center lift point is disputed by forums and left out.
 - Factory torque for the wear-sensor wheel-arch cover fasteners (not specified anywhere found).
 - Rear parking-brake shoe repair kit number: RealOEM 34416761291 vs Turner 34416761292 (not part of the pad job).
+- D1 hunt 2026-10-12: no BMW document for rear guide-screw head/size/torque or carrier fastener. Best secondary evidence: carrier 65 Nm/16 mm (5 sources); guide screws 7 mm hex and 30 Nm (forum data table) versus 13 mm/15 mm back-up/35 Nm (Autodoc only). Not adopted.
+- Parking-brake shoe adjustment: a copy of BMW TIS 34 10 014 (applicability names E90) gives a special locking tool (32 1 030), adjuster screw to lock then back off 8 notches, and readjust when lever travel exceeds 10 teeth. The copy is forum-hosted and was read through a summarizer, so the notch count is NOT published in the guide.
 
 **Needs owner input**
 - none recorded
@@ -160,6 +162,7 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 - Whether the IBS adapter 12517615476 ('Supp. 2010') applies to this 09/2009 build.
 - A BMW-issued repair instruction (ISTA RA 61 21 xxx) for battery replacement; ISTA not reachable.
 - Whether a cover over the positive terminal exists on the E90 sedan (only an E82 post; ETK lists an unlabeled 'Cover' 61126938508 x2 and 'Rollover protection' 61217549425).
+- D1 hunt 2026-10-12: no BMW document for this car's factory battery capacity/type or for the coded Ah value. Owner/forum reports range 70-90 Ah; a 90 Ah flooded label was read by one E90 owner. An ISTA/FA readout or the label on the car is needed.
 
 **Needs owner input**
 - none recorded
@@ -236,6 +239,7 @@ Readiness describes the guide TEXT only. `READY_FOR_QA` = no conflicts and no mi
 - Whether the SIB's spring-and-diaphragm description applies to this engine's integrated valve (sources conflict on a diaphragm; z4-forum says vortex type).
 - BMW SIB B 11 03 08 was read as hosted on a third-party forum attachment, not on a BMW site.
 - Any official BMW DIY inspection method for the integrated crankcase vent (none exists in the documents read).
+- D1 hunt 2026-10-12: no BMW SIB or repair instruction found for the N52 valve cover or CCV hose (the only N52 NHTSA item found is recall 22V-119 / SIB B11 01 22 on the PCV blow-by heater). Valve cover bolt torque still unresolved (reported values from about 4 to 10 Nm).
 
 **Needs owner input**
 - Observed symptoms (oil use, smoke, rough idle, oil in intake) to tailor the diagnostic section.

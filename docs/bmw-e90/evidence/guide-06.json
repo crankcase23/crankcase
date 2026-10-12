@@ -504,7 +504,7 @@
     "Aluminium tensioner bolt is single-use; replace every time it is removed.",
     "Do not publish or rely on the idler pulley torque until conflict resolved.",
     "Torque + angle figures come from secondary sources only; verify with BMW repair data when possible.",
-    "Support the car properly if you raise the front."
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift."
   ],
   "missingEvidence": [
     "BMW-issued repair instruction (ISTA/TIS) with torque for tensioner bolt, idler pulley bolt and alternator pulley; not reachable remotely (workshop-manuals.com/Bentley content is behind a login).",
@@ -967,6 +967,7 @@
     "NEW: replacement interval has a fourth aftermarket figure (Autodoc schedule 30,000 km); still CONFLICT, no hard interval to be published.",
     "ownerInputsNeeded emptied: belt number/A-C resolved from ETK, transmission is owner-stated automatic, pulley condition is an inspection in step 5, belt-path photo is now a mandatory procedure step 3. The only genuinely unresolved items (idler torque, lock pin, routing, BMW torque document) cannot be settled by the owner either and are in missingEvidence.",
     "Verdict: usable as an uncertified draft with idler torque withheld and a mandatory belt-path photo; safety-critical tier means it should not be certified until a BMW torque source is read.",
-    "CHECKED 2026-10-11 (NOT RESOLVED): a research-report claim that the 40 Nm and 80 Nm figures belong to different components (alternator pulley vs idler) was tested against the primary pages. FCP Euro's N52 article names 40 Nm as the IDLER pulley bolt (the pulley that bolts to the alternator) and gives 25 Nm + 90 degrees for the tensioner bolt; it lists no separate alternator-pulley torque. Pelican's article body has no torque; a commenter says 'the pulley bolt is 40 Nm' (pulley unspecified) and a Pelican staff reply says 80 Nm to a comment about an idler between the alternator and power steering pump (attribution inferred, staff did not name the fastener). So the pages do NOT support the split. The idler stays CONFLICT and its step stays BLOCKED. The Bentley erratum 121-20 still says a corrected value exists."
+    "CHECKED 2026-10-11 (NOT RESOLVED): a research-report claim that the 40 Nm and 80 Nm figures belong to different components (alternator pulley vs idler) was tested against the primary pages. FCP Euro's N52 article names 40 Nm as the IDLER pulley bolt (the pulley that bolts to the alternator) and gives 25 Nm + 90 degrees for the tensioner bolt; it lists no separate alternator-pulley torque. Pelican's article body has no torque; a commenter says 'the pulley bolt is 40 Nm' (pulley unspecified) and a Pelican staff reply says 80 Nm to a comment about an idler between the alternator and power steering pump (attribution inferred, staff did not name the fastener). So the pages do NOT support the split. The idler stays CONFLICT and its step stays BLOCKED. The Bentley erratum 121-20 still says a corrected value exists.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }
