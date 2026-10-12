@@ -124,31 +124,28 @@ engine: engine || undefined,
   const [model, setModel] = useState("");
   const [trim, setTrim] = useState("");
   const [engine, setEngine] = useState("");
-  const [models, setModels] = useState<string[]>([]);
-  const [loadingModels, setLoadingModels] = useState(false);
+  // Models for the current year+make. Kept as a keyed result and derived (rather than
+  // reset with setState inside the effect) so a stale list never shows for a new pick.
+  const [fetchedModels, setFetchedModels] = useState<{ key: string; list: string[] } | null>(null);
   
   const years = useMemo(() => listModelYears(), []);
   const selectedMake = useMemo(() => findMakeByName(make), [make]);
 
+  const modelsKey = year && selectedMake ? `${selectedMake.id}|${year}` : "";
+  const modelsReady = fetchedModels !== null && fetchedModels.key === modelsKey;
+  const models = modelsReady ? fetchedModels.list : [];
+  const loadingModels = modelsKey !== "" && !modelsReady;
+
   useEffect(() => {
-    if (!year || !selectedMake) {
-      setModels([]);
-      return;
-    }
+    if (!modelsKey || !selectedMake) return;
     let cancelled = false;
-    setLoadingModels(true);
-    setModels([]);
-    getVehicleModels(selectedMake.id, year)
-      .then((list) => {
-        if (!cancelled) setModels(list);
-      })
-      .finally(() => {
-        if (!cancelled) setLoadingModels(false);
-      });
+    getVehicleModels(selectedMake.id, year).then((list) => {
+      if (!cancelled) setFetchedModels({ key: modelsKey, list });
+    });
     return () => {
       cancelled = true;
     };
-  }, [year, selectedMake]);
+  }, [modelsKey, selectedMake, year]);
 
   // The trim and engine choices we can offer with confidence come from our own
   // curated catalog, not from vPIC.
