@@ -133,9 +133,13 @@ test("the photo path never uploads or stores anything", () => {
 // ------------------------------------------------------------------------------------------ server enforcement (static)
 test("server: every add validates the VIN first, no other code inserts a garage row, and service/odometer never provision one", () => {
   const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
-  assert.equal((route.match(/validateVin\(/g) ?? []).length, 2, "catalog and custom adds both validate");
+  assert.equal((route.match(/validateVin\(/g) ?? []).length, 3, "catalog, custom and the NHTSA-outage fallback adds all validate");
   assert.ok(route.indexOf("validateVin(body.vin)") < route.indexOf("addCatalogEntry(userId"));
   assert.ok(route.indexOf("validateVin(c.vin)") < route.indexOf("addCustomEntry(userId"));
+  assert.ok(route.lastIndexOf("validateVin(c.vin)") < route.indexOf("addViaFallback(userId"), "the fallback validates the VIN before anything else");
+  // The fallback never inserts a garage row itself: the only insert stays inside addCustomEntry (same VIN rules).
+  const fb = fs.readFileSync(path.join(ROOT, "src/lib/vinFallbackServer.ts"), "utf8");
+  assert.ok(!/insert\(garageEntries\)/.test(fb), "the fallback adds through addCustomEntry, not its own insert");
   const ge = fs.readFileSync(path.join(ROOT, "src/lib/garageEntries.ts"), "utf8");
   assert.equal((ge.match(/insert\(garageEntries\)/g) ?? []).length, 2, "only addCatalogEntry and addCustomEntry insert");
   assert.ok(!/create:\s*true/.test(ge));
@@ -155,7 +159,10 @@ test("probe protection: every VIN lookup is guarded first, collisions are counte
   const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
   assert.ok(route.indexOf("guardVinAttempt(request") < route.indexOf("addCatalogEntry(userId"), "catalog add is guarded before the lookup");
   assert.ok(route.indexOf("guardVinAttempt(request", route.indexOf("addCatalogEntry(userId")) < route.indexOf("addCustomEntry(userId"), "custom add is guarded before the lookup");
-  assert.equal((route.match(/noteVinCollision\(/g) ?? []).length, 2);
+  assert.equal((route.match(/noteVinCollision\(/g) ?? []).length, 3, "catalog, custom and fallback adds all count collisions");
+  assert.ok(route.lastIndexOf("guardVinAttempt(request") < route.indexOf("addViaFallback(userId"), "the fallback add is guarded before the lookup");
+  const verify = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/verify/route.ts"), "utf8");
+  assert.ok(verify.indexOf("guardVinAttempt(request") < verify.indexOf("verifyOwnEntry(userId"), "re-check is guarded before it asks NHTSA");
   const comp = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/vin/route.ts"), "utf8");
   assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId") && /noteVinCollision\(/.test(comp), "completion is guarded too");
   const g = fs.readFileSync(path.join(ROOT, "src/lib/vinGuard.ts"), "utf8");
