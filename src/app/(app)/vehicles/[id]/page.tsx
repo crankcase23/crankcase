@@ -26,6 +26,8 @@ import { getViewerVehicle } from "@/lib/viewerConfig";
 import { specRowsForConfig, fluidsForConfig, summaryLine } from "@/lib/vehicleConfig";
 import { resolveGuideForConfig } from "@/lib/guideConfig";
 import VehicleConfigPanel from "@/components/config/VehicleConfigPanel";
+import VinCompletion from "@/components/vin/VinCompletion";
+import { isValidVin } from "@/lib/vin";
 
 export function generateStaticParams() {
   return listVehicles().map((v) => ({ id: v.id }));
@@ -134,6 +136,7 @@ export default async function VehiclePage(props: PageProps<"/vehicles/[id]">) {
             {[vehicle.engine, ...summaryLine(vehicle, config)].join(" · ")}
           </p>
           {inGarage && <VehicleConfigPanel vehicleId={id} make={vehicle.make} vehicle={vehicle} initial={config} />}
+          {inGarage && <VinCompletion vehicleId={id} serverHasVin={isValidVin(vin)} />}
           <div className="mt-2">
             <OdometerLine vehicleId={id} href="#odo" />
           </div>

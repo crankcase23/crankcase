@@ -9,7 +9,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!userId) return NextResponse.json({ error: "Not signed in." }, { status: 401 });
 
   const { id } = await params;
-  const garageEntryId = await resolveGarageEntryId(userId, id, { create: false });
+  const garageEntryId = await resolveGarageEntryId(userId, id);
   if (!garageEntryId) return NextResponse.json({ entries: [] });
 
   const entries = await listServiceEntries(garageEntryId);
@@ -32,13 +32,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "date, mileage, and title are required." }, { status: 400 });
   }
 
-  const garageEntryId = await resolveGarageEntryId(userId, id, { create: true });
-  const entry = await addServiceEntry(userId, garageEntryId!, { date, mileage, title, guideId, notes });
+  const garageEntryId = await resolveGarageEntryId(userId, id);
+  if (!garageEntryId) return NextResponse.json({ error: "Add this vehicle to your garage first. A VIN is required to add a vehicle." , code: "NOT_IN_GARAGE" }, { status: 404 });
+  const entry = await addServiceEntry(userId, garageEntryId, { date, mileage, title, guideId, notes });
   await recordEvent({
     type: EVENT_TYPES.SERVICE_LOGGED,
     userId,
     objectType: "garage_entry",
-    objectId: garageEntryId!,
+    objectId: garageEntryId,
     metadata: { title, mileage, guideId },
   });
   return NextResponse.json({ entry });

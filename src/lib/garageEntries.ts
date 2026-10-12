@@ -1,9 +1,10 @@
-import { and, asc, eq, isNull, or } from "drizzle-orm";
+import { and, asc, eq, isNull, ne, or, sql } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
 import { garageEntries } from "@/db/schema";
 import { GarageEntry } from "@/types/garage";
 import { catalogIdOf, composeGarageId, rowIdOf } from "@/lib/garageId";
+import { isValidVin } from "@/lib/vin";
 import { normalizeConfig, type AxisChoice, type TransmissionChoice, type DrivetrainChoice } from "@/lib/vehicleConfig";
 
 // Server-side data access for garage entries -- the DB-backed replacement for
@@ -89,7 +90,39 @@ function fillBlankAxes(row: GarageEntryRow, config: ConfigInput) {
   return { set, differs };
 }
 
+/**
+ * Why an add or a VIN completion did NOT happen, without saying anything about anyone else:
+ *  - "vin-claim-required": this VIN is not available to attach to this account yet. It is deliberately the same answer
+ *    whatever the reason (another account, now or in the past), so it reveals nothing about another customer or vehicle.
+ *    It is a "pending claim" answer, not a ruling that the VIN can never be added: the controlled ownership-claim /
+ *    transfer workflow (future work) is what resolves it. Nothing is created, shared or granted meanwhile.
+ *  - "vin-already-set": the entry already has a valid VIN; a VIN names the vehicle and is never swapped by an edit.
+ */
+export type BlockedReason = "vin-claim-required" | "vin-already-set";
+export interface Blocked {
+  blocked: BlockedReason;
+}
+export const isBlocked = (r: object): r is Blocked => "blocked" in r;
+
 const UNIQUE_VIOLATION = "23505";
+
+// Canonical VIN identity is the upper-cased VIN (src/lib/vin.ts canonicalVin). Older rows may hold it as typed, so
+// comparisons are case-insensitive. Account-to-vehicle relationships are the rows; the VIN is what names the vehicle.
+const sameVin = (vin: string) => sql`upper(${garageEntries.vin}) = ${vin}`;
+
+/** True when ANOTHER account has a garage row for this VIN. The caller must never reveal more than this boolean. */
+export async function vinHeldByAnotherAccount(userId: string, vin: string): Promise<boolean> {
+  const rows = await db
+    .select({ id: garageEntries.id })
+    .from(garageEntries)
+    .where(and(ne(garageEntries.userId, userId), sameVin(vin)))
+    .limit(1);
+  return rows.length > 0;
+}
+
+async function ownRowForVin(userId: string, vin: string): Promise<GarageEntryRow | undefined> {
+  return (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), sameVin(vin))).limit(1))[0];
+}
 const isUniqueViolation = (e: unknown) => {
   const err = e as { code?: string; cause?: { code?: string } };
   return err?.code === UNIQUE_VIOLATION || err?.cause?.code === UNIQUE_VIOLATION;
@@ -156,9 +189,9 @@ export async function findOwnRow(userId: string, id: string): Promise<GarageEntr
 export async function addCatalogEntry(
   userId: string,
   vehicleId: string,
-  vin: string | undefined,
+  vin: string,
   config: ConfigInput,
-  ): Promise<AddResult> {
+): Promise<AddResult | Blocked> {
   try {
     return await addCatalogOnce(userId, vehicleId, vin, config);
   } catch (e) {
@@ -171,54 +204,50 @@ export async function addCatalogEntry(
 async function addCatalogOnce(
   userId: string,
   vehicleId: string,
-  vin: string | undefined,
+  vin: string,
   config: ConfigInput,
-  ): Promise<AddResult> {
+): Promise<AddResult | Blocked> {
+  // `vin` is already validated and normalized by the route (src/lib/vin.ts). A permanent add always has one.
   const rowsOfModel = () =>
     db
-    .select()
-    .from(garageEntries)
-    .where(and(eq(garageEntries.userId, userId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, vehicleId)))
-    .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id));
-  const rowForVin = async (v: string) =>
-    (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), eq(garageEntries.vin, v))).limit(1))[0];
+      .select()
+      .from(garageEntries)
+      .where(and(eq(garageEntries.userId, userId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, vehicleId)))
+      .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id));
 
-  // Customers may own any number of cars, including several of the same year/make/model. The VIN is what tells two
-  // cars apart:
-  //  - this VIN is already in the garage: it is the same car, return it (nothing duplicated);
-  //  - a new VIN and an older record of this model that has no VIN yet: the VIN completes that record (its history and
-  //    unlock identity stay with it);
-  //  - otherwise a new VIN is a new car, with its own Service History.
-  // An add with no VIN (older flow) stays idempotent per model.
-  if (vin) {
-    const same = await rowForVin(vin);
-    if (same) return updateExisting(same, undefined, config);
-    const blank = (await rowsOfModel()).find((r) => !r.vin);
-    if (blank) return updateExisting(blank, vin, config);
-  } else {
-    const first = (await rowsOfModel())[0];
-    if (first) return updateExisting(first, undefined, config);
-  }
+  // Customers may own any number of cars, including several of the same year/make/model; the VIN is what tells them
+  // apart (each car is its own row, with its own Service History and unlock identity):
+  //  - this VIN is already in THIS garage: the same car, no second row, whatever it was added as;
+  //  - this VIN belongs to another account: a generic claim-required answer, nothing created, shared or granted;
+  //  - an older record of this model that has no VIN yet: the VIN completes it (its history stays with it);
+  //  - otherwise it is a new car.
+  const mine = await ownRowForVin(userId, vin);
+  if (mine) return updateExisting(mine, undefined, config);
+
+  if (await vinHeldByAnotherAccount(userId, vin)) return { blocked: "vin-claim-required" };
+
+  const blank = (await rowsOfModel()).find((r) => !r.vin);
+  if (blank) return updateExisting(blank, vin, config);
 
   try {
     const [created] = await db
-    .insert(garageEntries)
-    .values({
-      id: randomUUID(),
-      userId,
-      kind: "catalog",
-      vehicleId,
-      vin,
-      transmission: config.transmission,
-      drivetrain: config.drivetrain,
-      configConfirmedAt: new Date(),
-    })
-    .returning();
+      .insert(garageEntries)
+      .values({
+        id: randomUUID(),
+        userId,
+        kind: "catalog",
+        vehicleId,
+        vin,
+        transmission: config.transmission,
+        drivetrain: config.drivetrain,
+        configConfirmedAt: new Date(),
+      })
+      .returning();
     return { entry: await entryFor(created), created: true, configKept: false };
   } catch (e) {
     // Two requests raced on the same VIN; the unique index let one win. Return the winner rather than failing the customer.
     if (!isUniqueViolation(e)) throw e;
-    const winner = vin ? await rowForVin(vin) : (await rowsOfModel())[0];
+    const winner = await ownRowForVin(userId, vin);
     if (!winner) throw e;
     return updateExisting(winner, undefined, config);
   }
@@ -226,10 +255,8 @@ async function addCatalogOnce(
 
 async function updateExisting(existing: GarageEntryRow, vin: string | undefined, config: ConfigInput): Promise<AddResult> {
   const { set, differs } = fillBlankAxes(existing, config);
-  if (vin && !existing.vin) {
-    const taken = (await db.select({ id: garageEntries.id }).from(garageEntries).where(and(eq(garageEntries.userId, existing.userId), eq(garageEntries.vin, vin))).limit(1))[0];
-    if (!taken) set.vin = vin;
-  }
+  // A row that had no VIN (an older record) gets this one; a row that already has one keeps it.
+  if (vin && !existing.vin) set.vin = vin;
   if (Object.keys(set).length === 0) return { entry: await entryFor(existing), created: false, configKept: differs };
   // A VIN is only ever written onto a row that still has none: if a concurrent request completed this record first,
   // we must not overwrite its VIN (the VIN is the car's identity). The caller re-evaluates from the fresh state.
@@ -246,38 +273,63 @@ class VinRace extends Error {}
 
 export async function addCustomEntry(
   userId: string,
-  custom: { vin?: string; year?: string; make?: string; model?: string; trim?: string; engine?: string },
+  custom: { vin: string; year?: string; make?: string; model?: string; trim?: string; engine?: string },
   config: ConfigInput,
-  ): Promise<AddResult> {
-  // The same VIN twice is the same vehicle: return the one already in the garage.
-  if (custom.vin) {
-    const dup = (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), eq(garageEntries.vin, custom.vin))).limit(1))[0];
-    if (dup) return updateExisting(dup, undefined, config);
-  }
+): Promise<AddResult | Blocked> {
+  const mine = await ownRowForVin(userId, custom.vin);
+  if (mine) return updateExisting(mine, undefined, config);
+  if (await vinHeldByAnotherAccount(userId, custom.vin)) return { blocked: "vin-claim-required" };
   try {
     const [created] = await db
-    .insert(garageEntries)
-    .values({
-      id: randomUUID(),
-      userId,
-      kind: "custom",
-      vin: custom.vin,
-      year: custom.year,
-      make: custom.make,
-      model: custom.model,
-      trim: custom.trim,
-      engine: custom.engine,
-      transmission: config.transmission,
-      drivetrain: config.drivetrain,
-      configConfirmedAt: new Date(),
-    })
-    .returning();
+      .insert(garageEntries)
+      .values({
+        id: randomUUID(),
+        userId,
+        kind: "custom",
+        vin: custom.vin,
+        year: custom.year,
+        make: custom.make,
+        model: custom.model,
+        trim: custom.trim,
+        engine: custom.engine,
+        transmission: config.transmission,
+        drivetrain: config.drivetrain,
+        configConfirmedAt: new Date(),
+      })
+      .returning();
     return { entry: mapRow(created), created: true, configKept: false };
   } catch (e) {
-    if (!isUniqueViolation(e) || !custom.vin) throw e;
-    const dup = (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), eq(garageEntries.vin, custom.vin))).limit(1))[0];
+    if (!isUniqueViolation(e)) throw e;
+    const dup = await ownRowForVin(userId, custom.vin);
     if (!dup) throw e;
     return updateExisting(dup, undefined, config);
+  }
+}
+
+/**
+ * VIN completion for an older record that has no (valid) VIN. Attaches the VIN to the customer's OWN row only. It never
+ * replaces a valid VIN, never touches another account's rows, and answers a collision with the generic claim-required
+ * outcome. `id` is the client-facing id (see garageId.ts).
+ */
+export async function completeGarageVin(
+  userId: string,
+  id: string,
+  vin: string,
+): Promise<{ entry: GarageEntry } | Blocked | null> {
+  const row = await findOwnRow(userId, id);
+  if (!row) return null;
+  if (row.vin && isValidVin(row.vin)) {
+    return row.vin.toUpperCase() === vin ? { entry: await entryFor(row) } : { blocked: "vin-already-set" };
+  }
+  const mine = await ownRowForVin(userId, vin);
+  if (mine && mine.id !== row.id) return { blocked: "vin-claim-required" }; // already on another of this customer's rows: not a second vehicle
+  if (await vinHeldByAnotherAccount(userId, vin)) return { blocked: "vin-claim-required" };
+  try {
+    const [updated] = await db.update(garageEntries).set({ vin }).where(eq(garageEntries.id, row.id)).returning();
+    return { entry: await entryFor(updated) };
+  } catch (e) {
+    if (isUniqueViolation(e)) return { blocked: "vin-claim-required" };
+    throw e;
   }
 }
 
@@ -314,21 +366,13 @@ export async function removeGarageEntry(userId: string, id: string): Promise<voi
 // Service history and odometer are keyed by the same "vehicleId" concept the
 // old localStorage hooks used -- a catalog vehicleId or a custom entry's id.
 // Both need an actual garage_entries.id to hang their foreign key off of.
-// `create: true` auto-provisions a catalog row on first touch, preserving
-// the old behavior where you could log service history for a catalog
-// vehicle you'd never explicitly "added" (it was just a localStorage key).
+// Returns null when the vehicle is not in THIS customer's garage; nothing here ever creates a row.
 export async function resolveGarageEntryId(
   userId: string,
   vehicleId: string,
-  opts: { create: boolean },
   ): Promise<string | null> {
+  // A garage row is only ever created by the VIN-gated add (addCatalogEntry / addCustomEntry). Logging service or an
+  // odometer reading used to auto-create a bare catalog row; that was a way around the VIN requirement, so it is gone.
   const own = await findOwnRow(userId, vehicleId);
-  if (own) return own.id;
-  if (!opts.create || rowIdOf(vehicleId)) return null;
-
-const [created] = await db
-  .insert(garageEntries)
-  .values({ id: randomUUID(), userId, kind: "catalog", vehicleId })
-  .returning({ id: garageEntries.id });
-  return created.id;
+  return own ? own.id : null;
 }

@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/ocr/copy-assets.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/ocr/copy-assets.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -16,6 +18,7 @@
     "bmw:validate": "node scripts/bmw/validate-evidence.mjs",
     "bmw:qa": "node scripts/bmw/hermes-qa.mjs",
     "bmw:video": "node scripts/bmw/video-evidence.mjs",
+    "vin:test": "node --test scripts/vin/tests/*.test.mjs",
     "bmw:test": "node --test scripts/bmw/tests/*.test.mjs",
     "bmw:preview": "node scripts/bmw/preview/run.mjs",
     "db:test": "node --test scripts/db/tests/*.test.mjs",
@@ -23,6 +26,7 @@
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs"
   },
   "dependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
     "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.2",
@@ -31,7 +35,8 @@
     "pg": "^8.23.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "swr": "^2.5.1"
+    "swr": "^2.5.1",
+    "tesseract.js": "^5.1.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

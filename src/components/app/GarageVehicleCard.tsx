@@ -1,5 +1,6 @@
 "use client";
 
+import { isValidVin } from "@/lib/vin";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Vehicle } from "@/types/vehicle";
@@ -27,8 +28,8 @@ import { configState, summaryLine, summaryParts, type VehicleConfig } from "@/li
 // really has (#info, #guides, #history, #maintenance), catalog vehicles only.
 
 type Props =
-  | { id: string; kind: "catalog"; vehicle: Vehicle; config: VehicleConfig; onRemove: () => void }
-  | { id: string; kind: "custom"; custom: CustomVehicleInfo; config: VehicleConfig; onRemove: () => void };
+  | { id: string; kind: "catalog"; vehicle: Vehicle; config: VehicleConfig; vin?: string; onRemove: () => void }
+  | { id: string; kind: "custom"; custom: CustomVehicleInfo; config: VehicleConfig; vin?: string; onRemove: () => void };
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -93,6 +94,7 @@ export default function GarageVehicleCard(props: Props) {
   const specParts = vehicle ? [trim, engine, ...summaryLine(vehicle, props.config)] : [trim, engine, ...summaryParts(props.config, make)];
   const specLine = specParts.filter(Boolean).join(" · ");
   const needsConfig = configState(props.config) !== "confirmed";
+  const needsVin = !isValidVin(props.vin);
 
   const supported = Boolean(vehicle) && guideCount > 0;
   const statusTitle = supported ? "Guides available" : vehicle ? "Specs available" : "Added to your garage";
@@ -148,6 +150,11 @@ export default function GarageVehicleCard(props: Props) {
         {needsConfig && (
           <Link href={`${href}#vehicle-config`} className={`mt-1.5 inline-block text-xs font-semibold text-amber-300 hover:text-amber-200 ${FOCUS}`}>
             Confirm transmission &amp; drivetrain
+          </Link>
+        )}
+        {needsVin && (
+          <Link href={`${href}#vin-completion`} data-testid="card-vin-needed" className={`mt-1.5 block text-xs font-semibold text-amber-300 hover:text-amber-200 ${FOCUS}`}>
+            Add your VIN
           </Link>
         )}
 

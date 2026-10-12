@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Third-party OCR engine copied from node_modules by scripts/ocr/copy-assets.mjs (git-ignored, not our code).
+    "public/ocr/**",
     // Guide Factory recovery: quarantined reconstruction + byte-frozen recovered
     // copies (scripts/visuals/factory-reconstructed/RECOVERY.md). Kept verbatim so
     // its hashes stay checkable; not linted to our app rules.

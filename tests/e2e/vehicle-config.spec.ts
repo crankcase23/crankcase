@@ -3,7 +3,7 @@ import { test, expect, Page, BrowserContext } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { signUpNewUser } from "./helpers";
+import { signUpNewUser, validVin } from "./helpers";
 
 // Vehicle Configuration V1, exercised in a real browser against a production build and a THROWAWAY Postgres:
 //   VIN Lookup -> Confirm Your Ride -> Add to Garage, persistence across logins/devices, Edit Configuration, guide applicability,
@@ -21,8 +21,7 @@ const BMW = "2010-bmw-328i-3.0l";
 const JEEP = "2014-jeep-grand-cherokee-3.6l";
 const OIL = `/vehicles/${BMW}/repairs/bmw-2010-328i-oil-change`;
 const PASSWORD = "testpassword123";
-let vinSeq = 0;
-const vin = (prefix = "WBATEST") => `${prefix}${String(Date.now()).slice(-6)}${String(++vinSeq).padStart(4, "0")}`.slice(0, 17).padEnd(17, "0");
+const vin = (prefix = "WBA") => validVin(prefix);
 const OUT_OF_BUILD = /x-?drive|\bawd\b|all[- ]wheel|transfer[- ]case|front (?:differential|axle)|manual[- ](?:trans\w*|gearbox|pan|holder)|\(manual\)|\bclutch\b/i;
 
 async function mockVpic(page: Page, row: Record<string, string>) {
@@ -95,7 +94,7 @@ test.describe("1-3. VIN Lookup -> Confirm Your Ride -> Add to Garage", () => {
     await shot(page, "03-confirm-your-ride-automatic-rwd");
     await page.getByRole("button", { name: "Confirm Automatic · Standard RWD and add to garage" }).click();
     await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}$`));
-    expect(rows(email)).toMatch(new RegExp(`^${BMW}\\|WBATEST\\d+\\|automatic\\|rwd\\|t$`));
+    expect(rows(email)).toMatch(new RegExp(`^${BMW}\\|[A-Z0-9]{17}\\|automatic\\|rwd\\|t$`));
   });
 
   test("the saved configuration shows on the vehicle page, the garage card and the guide, with no xDrive or manual wording anywhere", async ({ page }) => {
@@ -225,7 +224,7 @@ test.describe("7/8. Existing garage preserved; persistence across logins and dev
   test("a vehicle that predates the feature (no configuration saved) is kept, asks to be confirmed, and gets its configuration without delete and re-add", async ({ page }) => {
     const email = await signUpNewUser(page);
     const uid = userIdFor(email);
-    const legacyVin = vin("WBALEGACY");
+    const legacyVin = vin("WBA");
     // rows exactly as they existed before the migration: no configuration columns set
     sql(`insert into garage_entries(id,user_id,kind,vehicle_id,vin) values ('legacy-bmw-${uid}','${uid}','catalog','${BMW}','${legacyVin}'),('legacy-jeep-${uid}','${uid}','catalog','${JEEP}',null)`);
     sql(`insert into service_entries(id,garage_entry_id,date,mileage,title) values ('svc-${uid}','legacy-bmw-${uid}','2025-11-02',58000,'Engine Oil & Filter Change')`);
@@ -287,18 +286,19 @@ test.describe("9/14. A later lookup never overwrites a confirmed choice, and nev
 
   test("the same catalog vehicle or the same VIN added twice over the API is one row", async ({ page }) => {
     const email = await signUpNewUser(page);
-    const body = { kind: "catalog", vehicleId: "2018-honda-civic-1.5t", config: { transmission: "cvt", drivetrain: "fwd" } };
+    const body = { kind: "catalog", vin: vin("1HG"), vehicleId: "2018-honda-civic-1.5t", config: { transmission: "cvt", drivetrain: "fwd" } };
     const a = await (await page.request.post("/api/garage", { data: body })).json();
     const b = await (await page.request.post("/api/garage", { data: { ...body, config: { transmission: "manual", drivetrain: "awd" } } })).json();
     expect(a.created).toBe(true); expect(b.created).toBe(false); expect(b.configKept).toBe(true);
-    const custom = { kind: "custom", custom: { vin: vin("CUSTOM"), year: "2013", make: "Nissan", model: "Pathfinder" }, config: { transmission: "automatic", drivetrain: "4wd" } };
+    const custom = { kind: "custom", custom: { vin: vin("1N6"), year: "2013", make: "Nissan", model: "Pathfinder" }, config: { transmission: "automatic", drivetrain: "4wd" } };
     const c = await (await page.request.post("/api/garage", { data: custom })).json();
     const d = await (await page.request.post("/api/garage", { data: custom })).json();
     expect(c.created).toBe(true); expect(d.created).toBe(false);
     expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}'`)).toBe("2");
     expect(rows(email)).toMatch(/2018-honda-civic-1\.5t\|.*\|cvt\|fwd\|t/);
     // concurrent double submit
-    const par = await Promise.all([1, 2, 3].map(() => page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: "2021-toyota-camry-2.5l", config: { transmission: "automatic", drivetrain: "fwd" } } })));
+    const camryVin = vin("4T1");
+    const par = await Promise.all([1, 2, 3].map(() => page.request.post("/api/garage", { data: { kind: "catalog", vin: camryVin, vehicleId: "2021-toyota-camry-2.5l", config: { transmission: "automatic", drivetrain: "fwd" } } })));
     expect(par.every((r) => r.ok())).toBeTruthy();
     expect(sql(`select count(*) from garage_entries where user_id='${userIdFor(email)}' and vehicle_id='2021-toyota-camry-2.5l'`)).toBe("1");
   });
@@ -392,18 +392,19 @@ test.describe("17/18. Security and refusals", () => {
   test("the server refuses an add without both axes, and impossible BMW combinations", async ({ page }) => {
     await signUpNewUser(page);
     const post = (data: unknown) => page.request.post("/api/garage", { data });
+    const V = vin("WBA");
     for (const d of [
-      { kind: "catalog", vehicleId: BMW },
-      { kind: "catalog", vehicleId: BMW, config: { transmission: "automatic" } },
-      { kind: "catalog", vehicleId: BMW, config: { transmission: "automatic", drivetrain: "4wd" } },
-      { kind: "catalog", vehicleId: BMW, config: { transmission: "cvt", drivetrain: "rwd" } },
-      { kind: "custom", custom: { make: "Nissan" } },
-      { kind: "catalog", vehicleId: "no-such-vehicle", config: { transmission: "automatic", drivetrain: "rwd" } },
+      { kind: "catalog", vin: V, vehicleId: BMW },
+      { kind: "catalog", vin: V, vehicleId: BMW, config: { transmission: "automatic" } },
+      { kind: "catalog", vin: V, vehicleId: BMW, config: { transmission: "automatic", drivetrain: "4wd" } },
+      { kind: "catalog", vin: V, vehicleId: BMW, config: { transmission: "cvt", drivetrain: "rwd" } },
+      { kind: "custom", custom: { vin: V, make: "Nissan" } },
+      { kind: "catalog", vin: V, vehicleId: "no-such-vehicle", config: { transmission: "automatic", drivetrain: "rwd" } },
     ]) {
       const r = await post(d);
       expect(r.status(), JSON.stringify(d)).toBe(400);
     }
-    expect(JSON.stringify(await (await post({ kind: "catalog", vehicleId: BMW })).json())).toMatch(/Confirm your/);
+    expect(JSON.stringify(await (await post({ kind: "catalog", vin: V, vehicleId: BMW })).json())).toMatch(/Confirm your/);
   });
 
   test("a vehicle-specific guide with no evidence for the confirmed build gives no steps, parts or torque, and cannot start Wrench Mode", async ({ page }) => {
@@ -489,8 +490,8 @@ test.describe("16. Two cars of the same year/make/model coexist", () => {
 
   test("an older record without a VIN is completed by the first VIN; the next different VIN is a new car; another customer's id never resolves", async ({ page, browser }) => {
     const email = await signUpNewUser(page);
-    const legacy = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, config: cfg } })).json();
-    expect(legacy.entry.id).toBe(CIVIC);
+    // an older record that predates the VIN rule (seeded directly: the API no longer creates VIN-less rows)
+    sql(`insert into garage_entries (id,user_id,kind,vehicle_id,transmission,drivetrain,config_confirmed_at) values (gen_random_uuid()::text,'${userIdFor(email)}','catalog','${CIVIC}','cvt','fwd',now())`);
     await page.request.post(`/api/garage/${CIVIC}/service`, { data: { date: "2026-02-01", mileage: 500, title: "Legacy history" } });
     const first = await (await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CIVIC, vin: vin("CIVICC"), config: cfg } })).json();
     expect(first.created).toBe(false);          // completed the existing record, did not create a second one

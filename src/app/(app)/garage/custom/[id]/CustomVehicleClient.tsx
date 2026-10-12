@@ -16,6 +16,7 @@ import { HubSidePanels, HubTiles, OdometerLine, type HubTile } from "@/component
 import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
 import { IconChevronLeft } from "@/components/app/AppIcons";
 import VehicleConfigPanel from "@/components/config/VehicleConfigPanel";
+import VinCompletion from "@/components/vin/VinCompletion";
 import { summaryParts } from "@/lib/vehicleConfig";
 
 // Auto-populate: as soon as this page mounts, ask the server whether we
@@ -137,6 +138,7 @@ export default function CustomVehiclePage() {
             </p>
           )}
           <VehicleConfigPanel vehicleId={entry.id} make={custom.make} initial={entry.config} />
+          <VinCompletion vehicleId={entry.id} serverHasVin={false} />
           <div className="mt-2">
             <OdometerLine vehicleId={entry.id} href="#odo" />
           </div>

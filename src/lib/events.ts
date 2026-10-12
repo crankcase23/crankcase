@@ -30,6 +30,9 @@ export const EVENT_TYPES = {
   GUIDE_VIEWED: "guide.viewed",
   VEHICLE_VIEWED: "vehicle.viewed",
   VIN_DECODED: "vin.decoded",
+  // Abuse-protection bookkeeping for adding / completing a VIN (src/lib/vinGuard.ts). Never carries the VIN itself.
+  VIN_ATTEMPT: "vin.attempt",
+  VIN_COLLISION: "vin.collision",
   GUIDE_PURCHASED: "guide.purchased",
   SUBSCRIPTION_CREATED: "subscription.created",
   SUBSCRIPTION_CANCELLED: "subscription.cancelled",
@@ -54,6 +57,8 @@ export const EVENT_LABELS: Record<string, string> = {
   "guide.viewed": "Guide viewed",
   "vehicle.viewed": "Vehicle viewed",
   "vin.decoded": "VIN decoded",
+  "vin.attempt": "VIN add attempt",
+  "vin.collision": "VIN claim required",
   "guide.purchased": "Guide purchased",
   "subscription.created": "Subscription created",
   "subscription.cancelled": "Subscription cancelled",

@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { requireUserId } from "@/lib/apiAuth";
-import { listGarageEntries, addCatalogEntry, addCustomEntry } from "@/lib/garageEntries";
+import { listGarageEntries, addCatalogEntry, addCustomEntry, isBlocked } from "@/lib/garageEntries";
+import { validateVin } from "@/lib/vin";
+import { blockedResponse, vinProblem } from "@/lib/garageResponses";
+import { guardVinAttempt, noteVinCollision } from "@/lib/vinGuard";
 import { recordEvent, EVENT_TYPES } from "@/lib/events";
 import { findVehicle } from "@/lib/data";
 import { parseFullConfig } from "@/lib/vehicleConfig";
@@ -25,9 +28,20 @@ const body = await request.json().catch(() => null);
 if (body?.kind === "catalog" && typeof body.vehicleId === "string" && body.vehicleId) {
   const vehicle = findVehicle(body.vehicleId);
   if (!vehicle) return NextResponse.json({ error: "Unknown vehicle." }, { status: 400 });
+  // A VIN is required to put a vehicle in a garage, and it must be one that passes the VIN rules. Enforced here so the
+  // API cannot be used to skip what the screen asks for.
+  const vinCheck = validateVin(body.vin);
+  if (!vinCheck.ok) return vinProblem(vinCheck);
   const cfg = parseFullConfig(body.config, vehicle);
   if (!cfg.ok) return NextResponse.json({ error: cfg.error, code: "CONFIG_REQUIRED" }, { status: 400 });
-  const { entry, created, configKept } = await addCatalogEntry(userId, body.vehicleId, str(body.vin), cfg.value);
+  const limited = await guardVinAttempt(request, userId);
+  if (limited) return limited;
+  const outcome = await addCatalogEntry(userId, body.vehicleId, vinCheck.vin, cfg.value);
+  if (isBlocked(outcome)) {
+    if (outcome.blocked === "vin-claim-required") await noteVinCollision(userId);
+    return blockedResponse(outcome);
+  }
+  const { entry, created, configKept } = outcome;
   if (created) {
     await recordEvent({
       type: EVENT_TYPES.VEHICLE_ADDED,
@@ -42,16 +56,25 @@ if (body?.kind === "catalog" && typeof body.vehicleId === "string" && body.vehic
 
 if (body?.kind === "custom" && body.custom && typeof body.custom === "object") {
   const c = body.custom as Record<string, unknown>;
+  const vinCheck = validateVin(c.vin);
+  if (!vinCheck.ok) return vinProblem(vinCheck);
   const cfg = parseFullConfig(body.config);
   if (!cfg.ok) return NextResponse.json({ error: cfg.error, code: "CONFIG_REQUIRED" }, { status: 400 });
-  const { entry, created, configKept } = await addCustomEntry(userId, {
-    vin: str(c.vin),
+  const limited = await guardVinAttempt(request, userId);
+  if (limited) return limited;
+  const outcome = await addCustomEntry(userId, {
+    vin: vinCheck.vin,
     year: str(c.year),
     make: str(c.make),
     model: str(c.model),
     trim: str(c.trim),
     engine: str(c.engine),
   }, cfg.value);
+  if (isBlocked(outcome)) {
+    if (outcome.blocked === "vin-claim-required") await noteVinCollision(userId);
+    return blockedResponse(outcome);
+  }
+  const { entry, created, configKept } = outcome;
   if (created) {
     await recordEvent({
       type: EVENT_TYPES.VEHICLE_ADDED,

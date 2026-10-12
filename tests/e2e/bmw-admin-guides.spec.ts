@@ -1,3 +1,4 @@
+import { randomIp, validVin } from "./helpers";
 import { test, expect, type Page } from "@playwright/test";
 import { Pool } from "pg";
 import { bmwDraftGuides } from "../../src/data/admin-test-guides/bmw-2010-328i-drafts";
@@ -24,6 +25,7 @@ test.afterAll(async () => { await pool.end(); });
 
 /** Sign up through the normal form (retrying through the normal login form if the dev server was still compiling). */
 async function signUpNew(page: Page) {
+  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": randomIp() }); // own address per context, like real customers
   const email = `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
   const password = "testpassword123";
   await page.goto("/signup");
@@ -207,7 +209,7 @@ for (const vp of [
         test.setTimeout(150_000);
         await signUpNew(page);
         // The owner's build: with Automatic + RWD confirmed, every step of every guide applies (nothing is hidden or restricted).
-        const added = await page.request.post("/api/garage", { data: { kind: "catalog", vehicleId: CAR, config: { transmission: "automatic", drivetrain: "rwd" } } });
+        const added = await page.request.post("/api/garage", { data: { kind: "catalog", vin: validVin(), vehicleId: CAR, config: { transmission: "automatic", drivetrain: "rwd" } } });
         expect(added.ok()).toBeTruthy();
         const errors: string[] = [];
         page.on("pageerror", (e) => errors.push(e.message));
