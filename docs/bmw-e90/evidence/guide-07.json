@@ -6,11 +6,11 @@
   "recommendedStatus": "BUILDABLE_PARTIAL",
   "summary": "Second pass closed most of the structural and registration gaps with primary BMW material: the BMW ST502 E90 training document (battery in the right side of the luggage compartment, rear power distribution box on top of the battery, IBS on the negative terminal, safety battery terminal, jump-start terminal in the engine bay), the BMW TIS battery disconnect page (ignition off, negative first, do not disturb IBS pole shoes/screw) and the BMW ETK catalog for this VIN's model (RealOEM decode: E90 LCI 328i sedan, N52N, built 09/2009, US; battery diagrams carry a BMW notice on ISTA registration and AGM coding). Battery registration is VERIFIED (ETK notice plus 6 independent secondary sources); the AGM/capacity coding requirement is VERIFIED_SECONDARY-to-VERIFIED. ETK also proves a battery vent hose, elbow and grommet exist on this model. Still unresolved: tightening torques (none found anywhere), BCI group size (H7/94R and H8/49 are both used on E9x cars, sources conflict), the capacity actually fitted to this VIN (ETK offers 70/80/90 Ah flooded and 70/80/92 Ah AGM), and vent hose routing. Publish as a procedure with a strict match-the-old-battery rule and no torque numbers. Third pass (2026-10-10): the VIN option list's last code B080 (previously 'meaning unknown') is the BMW coding code for an 80 Ah battery (BATTERIE_80AH on a 5series.net NCS list; an E90Post thread moves a car from -B080 to -A080 when changing to AGM), so the factory battery is probably an 80 Ah flooded unit (not proven; the decoder is one host and the trailing code was truncated). BCI size is capacity-dependent rather than a pure conflict: 80 Ah class cars use 94R/H7 (FCP/Bosch 80 Ah AGM listing, a 315x175x190 mm 80 Ah Exide listing, tpautorepair's 2009 328i example) while 92 Ah AGM is 49/H8. ETK 61_1987 shows the vent hose and elbow with no option condition but the 10.5 mm grommet only with S146A (additional energy supply, not decoded on this car). A single BMW-data table (2006 325i) lists 5 Nm for battery/IBS screw connections; it is not independently confirmed, so every torque stays MISSING.",
   "variantDependencies": [
-    "DECODED CONFIG: S570 'stronger electricity supply' is coded, which points to a larger battery and alternator than base; AGM is not indicated and battery size/type is NOT decoded. Read the battery label before buying. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable and verify at the car.] UPDATE: the same option list ends with VO code B080 (trailing, truncated on the decoder page; see VIN-DECODE.md). B080 = BATTERIE_80AH in BMW coding lists (5series.net NCS list, E90Post -B080 to -A080 thread), so an 80 Ah flooded factory battery is the probable configuration; ETK offers matching 80 Ah numbers (Exide 61217586961, Douglas 61218381749).",
+    "DECODED CONFIG: S570 'stronger electricity supply' is coded, which points to a larger battery and alternator than base; AGM is not indicated and battery size/type is NOT decoded. Read the battery label before buying. [Decoded from the owner's VIN by one free decoder (bimmer.work option list) on 2026-10-10; an absence of an option code is an inference. Treat as probable and verify at the car.]",
     "Engine: RealOEM VIN-tail decode of WBAPH7C58AA175760 gives E90 LCI 328i sedan, type code PH73, engine N52N, production 09/2009, US market, so N52B30 family is now supported by an OE-catalog decode (N51 is not indicated). Battery guidance does not differ by engine anyway.",
     "Transmission and option codes (S-codes) are not shown by the decode; they do not change the battery location.",
     "Battery capacity/type: BMW ETK lists 70, 80 and 90 Ah flooded and 70, 80 and 92 Ah AGM options for 2009 E90 LCI 328i; which one this car left the factory with depends on its option codes (not decoded). Changing type (flooded vs AGM) or capacity requires coding in addition to registration (1addicts, E90Post, 5series.net, BMW statement quoted by AllEuro, ETK notice).",
-    "BCI group size depends on capacity: Bosch 80 Ah AGM is 94R/H7 and Bosch 92 Ah AGM is 49/H8 on FCP's BMW listing; an 80 Ah Exide is 315x175x190 mm; tpautorepair's 2009 328i example is 94R/H7 and an E90Post replier calls H8/49 proper (consistent with a 90-92 Ah car). For a probable 80 Ah (B080) car, 94R/H7 is the expected size, but compare the old battery's footprint and vent-port side before buying.",
+    "Battery group size: sources conflict (94R/H7 versus 49/H8) and it varies with capacity and year. Do not choose by size name alone: compare the old battery's footprint, terminal layout and vent-port side before buying.",
     "Registration tool: ISTA/Rheingold, INPA/Tool32, NCS Expert (coding) or an aftermarket app/scanner; capability depends on the tool and on the DME file (MSV80 vs MSD80 naming varies).",
     "Safety battery terminal (SBK/BST) is part of the E90 positive cable assembly per ST502, ETK (61129217031 'SBK', from 03/2006) and a parts listing.",
     "Rear power distribution box, vent hose and grommet: ETK 61_1987 lists the hose (by the metre, 61211377745) and elbow (61211377835) with no option condition, the 10.5 mm grommet 61218050550 and a distribution piece 61661378617 only for S146A additional energy supply (not decoded on this car), so the grommet is probably not on this car. Rollover protection cover 61217549425 (one) is listed without a condition.",
@@ -87,43 +87,15 @@
   ],
   "parts": [
     {
-      "item": "Original BMW AGM battery 92 Ah (ETK 'Original BMW AGM-battery')",
-      "status": "VERIFIED",
+      "item": "Replacement battery: match the label on the old battery (capacity in Ah, CCA, flooded or AGM, group size, vent port side). Do not choose by year or size name alone",
+      "status": "VERIFIED_SECONDARY",
       "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1999",
-        "https://www.ebay.de/p/7035635384"
-      ],
-      "partNumber": "61216806755",
-      "primary": true,
-      "note": "ETK diagram 61_1999; eBay listing page references the same 92 Ah AGM number. Fitment to THIS VIN by option code not established."
-    },
-    {
-      "item": "EP battery options listed in ETK diagram 61_5704: 50/61/70/80/90 Ah flooded (61212353803/04/06/08/10), 80 Ah AGM 61212353813, 70 Ah AGM 61215A40E19, 92 Ah AGM 61215A40E29",
-      "status": "SINGLE_SOURCE",
-      "sources": [
+        "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
         "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_5704"
       ],
       "partNumber": null,
-      "primary": true,
-      "note": "Single OE catalog source; use only as a lookup list, applicability by option code unknown."
-    },
-    {
-      "item": "Warranty-only Exide/Douglas 70/80/90 Ah numbers (61217586960/61/62, 61218381738/49/62) and East Penn AGM 70 Ah 61217553951",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1999"
-      ],
-      "partNumber": null,
-      "primary": true
-    },
-    {
-      "item": "Original 90 Ah / 720 CCA flooded battery number cited by an E90 owner (61216946334, superseded chain 61217586962 / 61212353810)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=15198299"
-      ],
-      "partNumber": "61216946334",
-      "note": "Forum quote of dealer lookups on a 2007 328xi; ETK 61_1999/61_5704 agree 90 Ah numbers 61217586962 and 61212353810 exist."
+      "primary": false,
+      "note": "D3 (owner, 2026-10-12): no battery part number is published. 61216806755 ('Original BMW AGM-battery 92 Ah', ETK 61_1999) removed as the first listed part: a retailer lists it 'No Longer Available' with fitment that does not show the 328i, and ETK does not tie it to this car's option codes. BMW's catalog (61_5704) offers 50/61/70/80/90 Ah flooded (61212353803/04/06/08/10), 80 Ah AGM 61212353813, 70 Ah AGM 61215A40E19 and 92 Ah AGM 61215A40E29 for this model line; applicability by option code unknown. Warranty-only Exide/Douglas 70/80/90 Ah numbers (61217586960/61/62, 61218381738/49/62) and East Penn AGM 70 Ah 61217553951 and an owner-cited 90 Ah / 720 CCA flooded 61216946334 (superseded chain 61217586962 / 61212353810) are single-source and kept here only."
     },
     {
       "item": "Battery hold-down (ETK current)",
@@ -414,12 +386,12 @@
     {
       "n": 2,
       "title": "Choose the replacement battery",
-      "instruction": "Read the label of the battery in the car (Ah, CCA, flooded or AGM, group size, vent port position) while it is still in the trunk, and buy one of the same capacity and type with the same footprint. The VIN option list ends in B080, the BMW coding code for an 80 Ah battery, so an 80 Ah flooded battery is the probable original (not proven); an 80 Ah-class battery is normally 94R/H7, while 90-92 Ah is 49/H8. If you change type or capacity it must also be coded. BMW's catalog offers 70/80/90 Ah flooded and 70/80/92 Ah AGM options for this model, and says an AGM of the same specification may replace a standard battery.",
+      "instruction": "Read the label of the battery in the car (Ah, CCA, flooded or AGM, group size, vent port position) while it is still in the trunk, and buy one of the same capacity and type with the same footprint. Do not choose by year or by a size name: factory capacity differs between builds (70, 80 and 90 Ah are all reported) and group-size sources conflict. If you change type or capacity it must also be coded. BMW's catalog offers 70/80/90 Ah flooded and 70/80/92 Ah AGM options for this model, and says an AGM of the same specification may replace a standard battery.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Group size sources conflict (H7/94R vs H8/49); do not choose by size name alone.",
         "Vent port position can differ between brands.",
-        "The 80 Ah conclusion rests on one decoder's truncated trailing code; the label on the old battery is the final authority."
+        "The label on the old battery is the final authority; no source here proves this car's factory capacity or type."
       ],
       "sources": [
         "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1999",
@@ -569,10 +541,11 @@
     {
       "n": 12,
       "title": "Register the new battery",
-      "instruction": "With a BMW-capable tool, register the battery replacement (ISTA: Service functions > Body > Power supply > Register battery replacement; INPA/Tool32 jobs also used). Engine off, ignition on is suggested if the tool errors.",
+      "instruction": "With a BMW-capable tool, register the battery replacement (ISTA: Service functions > Body > Power supply > Register battery replacement; INPA/Tool32 jobs also used). Engine off, ignition on is suggested if the tool errors. A BMW service bulletin (copy hosted on a forum site) says to register a new battery on E90-series cars, otherwise erroneous check-control messages may appear. Some owners report no visible problems without it, so treat registration as needed, not optional. Owners report the car running normally without it for months.",
       "status": "VERIFIED",
       "warnings": [
-        "Do not skip. Menu names vary by tool and software version."
+        "Do not skip. Menu names vary by tool and software version.",
+        "Skipping registration can leave the charging system working to the old battery's profile and shorten the new battery's life (secondary sources)."
       ],
       "sources": [
         "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=61_1987",
@@ -580,7 +553,8 @@
         "https://www.1addicts.com/forums/showthread.php?p=21052692",
         "https://g42.bimmerpost.com/forums/showthread.php?p=26251323",
         "https://www.youcanic.com/bmw-3-series-e90-e91-e92-e93-battery-change/",
-        "https://ricksfreeautorepairadvice.com/why-you-have-to-register-a-battery-in-your-bmw/"
+        "https://ricksfreeautorepairadvice.com/why-you-have-to-register-a-battery-in-your-bmw/",
+        "https://xoutpost.com/attachments/x5-e70-forum/32240d1240449986-battery-gripes-bmw-dead_battery-1-.pdf"
       ],
       "primary": true
     },
@@ -637,7 +611,8 @@
     "Do not open, cut or modify the safety battery terminal or the rear power distribution box on top of the battery.",
     "Keep the vent hose connected so gas vents outside; never replace with a hose of unknown spec.",
     "Register the battery; code the car if type/capacity changes.",
-    "Never apply a jump source to the positive jump point if the positive cable has been disconnected and is touching chassis (E90Post)."
+    "Never apply a jump source to the positive jump point if the positive cable has been disconnected and is touching chassis (E90Post).",
+    "Match the label of the old battery; do not choose a battery by year or size name alone."
   ],
   "missingEvidence": [
     "Tightening torque for battery terminal clamp nuts, hold-down screw and trunk bracket nuts (not in BMW TIS battery page, ST502, ETK or any how-to). A single 5 Nm figure from a 2006 325i data table was seen and not adopted.",
@@ -646,7 +621,8 @@
     "Vent hose routing and clip locations on the E90 sedan (ETK diagram image not readable as text; only part numbers obtained).",
     "Whether the IBS adapter 12517615476 ('Supp. 2010') applies to this 09/2009 build.",
     "A BMW-issued repair instruction (ISTA RA 61 21 xxx) for battery replacement; ISTA not reachable.",
-    "Whether a cover over the positive terminal exists on the E90 sedan (only an E82 post; ETK lists an unlabeled 'Cover' 61126938508 x2 and 'Rollover protection' 61217549425)."
+    "Whether a cover over the positive terminal exists on the E90 sedan (only an E82 post; ETK lists an unlabeled 'Cover' 61126938508 x2 and 'Rollover protection' 61217549425).",
+    "D1 hunt 2026-10-12: no BMW document for this car's factory battery capacity/type or for the coded Ah value. Owner/forum reports range 70-90 Ah; a 90 Ah flooded label was read by one E90 owner. An ISTA/FA readout or the label on the car is needed."
   ],
   "ownerInputsNeeded": [],
   "visuals": [
@@ -1004,6 +980,7 @@
     "NOT RESOLVED: positive-terminal cover on the E90 sedan (E82 post only); vent hose routing and clip positions; whether IBS adapter 12517615476 ('Supp. 2010') applies to a 09/2009 build; ISTA RA 61 20 text; T40 trim screw and 13 mm socket stay SINGLE_SOURCE / CONFLICT.",
     "RESOLVED: memory saver is not needed by the procedure; the tool row stays MISSING (no BMW-approved device) with that explanation.",
     "ownerInputsNeeded emptied: the only owner-side facts (battery label, registration tool or shop, coding ability) are handled by branching text in steps 2, 12 and 13 and by the strict match-the-old-battery rule; no remote source can read the label, so the guide makes the user read it at the moment of replacement rather than before.",
-    "recommendedStatus stays BUILDABLE_PARTIAL: usable as an uncertified draft with match-the-old-battery, registration and no torque numbers; open facts are listed in missingEvidence."
+    "recommendedStatus stays BUILDABLE_PARTIAL: usable as an uncertified draft with match-the-old-battery, registration and no torque numbers; open facts are listed in missingEvidence.",
+    "2026-10-12 owner decision D3: customer guide no longer lists a battery part number or an 80 Ah 'probable original'; buy by the old battery's label. Registration worded as needed (BMW service bulletin copy), not mandatory-to-start."
   ]
 }

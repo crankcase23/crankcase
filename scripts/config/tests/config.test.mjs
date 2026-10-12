@@ -234,7 +234,7 @@ test("genuinely unresolved specifications stay flagged: torque without a verifie
 test("blocked steps never disappear and never gain a procedure, in any configuration", () => {
   const blocked = (gs) => gs.flatMap((r) => r.steps.filter((s) => s.title.startsWith("⛔ BLOCKED")).map((s) => `${r.jobType}:${s.title}`));
   const base = blocked(bmwGuides.map((x) => resolve(x, AUTO_RWD))).sort();
-  assert.equal(base.length, 3);
+  assert.equal(base.length, 6); // 3 original + D2 (rear caliper release, refit) + D4 (PCV hose removal), 2026-10-12
   for (const c of [UNSURE, null]) assert.deepEqual(blocked(bmwGuides.map((x) => resolve(x, c))).sort(), base, "restricting must not remove a blocked step");
 });
 
