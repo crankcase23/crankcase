@@ -60,7 +60,12 @@ export default function VinField({
       setScanned({ vin: result.vin, confidences: result.confidences, alternatives: result.alternatives });
       setValue(result.vin);
       setShowErrors(true);
-      setScanMessage({ kind: "info", text: "Here is what we read. Check every character against your vehicle before you continue." });
+      setScanMessage({
+        kind: "info",
+        text: result.checkDigitOk
+          ? "Here is what we read. Check every character against your vehicle before you continue."
+          : "Here is the closest VIN we could read, but it does not pass the VIN check, so at least one character is probably wrong. Compare it to the VIN on your vehicle and fix any highlighted character yourself.",
+      });
     } finally {
       setScanning(false);
     }

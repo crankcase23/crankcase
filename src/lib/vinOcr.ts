@@ -6,7 +6,7 @@
 // What this returns is what the camera READ, character for character. It does not "fix" anything: I/O/Q and low-confidence
 // characters come back flagged so the screen can highlight them and the customer must confirm the VIN themselves.
 
-import { extractVinCandidates, normalizeVin, validateVin, VIN_LENGTH } from "@/lib/vin";
+import { isPlausibleVinRead, looksLikeLabelText, normalizeVin, rankedVinCandidates, scoreVinRead, validateVin, VIN_LENGTH } from "@/lib/vin";
 
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 export const MAX_PHOTO_PIXELS = 50_000_000;
@@ -14,7 +14,7 @@ const LONG_SIDE = 2000;
 
 export type ScanFailure = "type" | "size" | "dimensions" | "decode" | "unreadable" | "engine";
 export type ScanResult =
-  | { ok: true; vin: string; confidences: (number | undefined)[]; alternatives: string[] }
+  | { ok: true; vin: string; confidences: (number | undefined)[]; alternatives: string[]; checkDigitOk: boolean }
   | { ok: false; reason: ScanFailure; message: string };
 
 export const SCAN_MESSAGES: Record<ScanFailure, string> = {
@@ -56,21 +56,65 @@ type Sym = { text: string; confidence: number };
 type OcrLine = { words?: { symbols?: Sym[] }[] };
 type OcrPage = { text?: string; blocks?: { paragraphs?: { lines?: OcrLine[] }[] }[] };
 
+export type VinRead = { vin: string; confidences: (number | undefined)[]; afterVinLabel: boolean };
+
 /** Pairs each candidate with the per-character confidences of the line it was read from. Exported for tests. */
-export function candidatesFromPage(page: OcrPage): { vin: string; confidences: (number | undefined)[] }[] {
-  const out = new Map<string, (number | undefined)[]>();
+export function candidatesFromPage(page: OcrPage): VinRead[] {
+  const out = new Map<string, VinRead>();
   const lines: OcrLine[] = (page.blocks ?? []).flatMap((b) => (b.paragraphs ?? []).flatMap((p) => p.lines ?? []));
   for (const line of lines) {
     const syms = (line.words ?? []).flatMap((w) => w.symbols ?? []).filter((s) => /^[A-Za-z0-9]$/.test(s.text));
     const text = syms.map((s) => s.text.toUpperCase()).join("");
-    for (const vin of extractVinCandidates(text)) {
-      const at = text.indexOf(vin);
-      if (at >= 0 && !out.has(vin)) out.set(vin, syms.slice(at, at + VIN_LENGTH).map((s) => s.confidence));
+    const spaced = (line.words ?? []).map((w) => (w.symbols ?? []).map((s) => s.text).join("")).join(" ");
+    // Candidates come from the word-separated line only: the unspaced text hides where one label word ends and the next begins.
+    for (const c of rankedVinCandidates(spaced)) {
+      const at = text.indexOf(c.vin);
+      const prev = out.get(c.vin);
+      if (prev) { prev.afterVinLabel ||= c.afterVinLabel; continue; }
+      out.set(c.vin, { vin: c.vin, afterVinLabel: c.afterVinLabel, confidences: at >= 0 ? syms.slice(at, at + VIN_LENGTH).map((s) => s.confidence) : Array(VIN_LENGTH).fill(undefined) });
     }
   }
-  for (const vin of extractVinCandidates(page.text ?? "")) if (!out.has(vin)) out.set(vin, Array(VIN_LENGTH).fill(undefined));
-  const order = extractVinCandidates([...out.keys()].join("\n"));
-  return order.filter((v) => out.has(v)).map((v) => ({ vin: v, confidences: out.get(v)! }));
+  for (const c of rankedVinCandidates(page.text ?? "")) {
+    const prev = out.get(c.vin);
+    if (prev) prev.afterVinLabel ||= c.afterVinLabel;
+    else out.set(c.vin, { vin: c.vin, afterVinLabel: c.afterVinLabel, confidences: Array(VIN_LENGTH).fill(undefined) });
+  }
+  return [...out.values()];
+}
+
+export type RankedVin = { vin: string; confidences: (number | undefined)[]; alternatives: string[]; checkDigitOk: boolean };
+
+/**
+ * Chooses what to show the customer from every read of one photo. Only reads that look like a VIN are considered (so label
+ * text such as "...STANDARDS IN EFFECT ON THE DATE OF MANUFACTURE" can never be offered), and they are ranked by evidence:
+ * passes the check digit, printed right after the word "VIN", digits and position-9 rule, camera confidence. How many times
+ * a read repeated is only a tie-breaker. The winner is returned exactly as read (never corrected); the customer confirms it.
+ * Returns null when nothing in the photo looks like a VIN.
+ */
+export function rankVinReads(pages: OcrPage[]): RankedVin | null {
+  const seen = new Map<string, { confidences: (number | undefined)[]; count: number; afterVinLabel: boolean }>();
+  for (const page of pages) {
+    for (const c of candidatesFromPage(page)) {
+      const cur = seen.get(c.vin);
+      if (cur) {
+        cur.count++;
+        cur.afterVinLabel ||= c.afterVinLabel;
+        if (c.confidences.some((x) => x !== undefined) && !cur.confidences.some((x) => x !== undefined)) cur.confidences = c.confidences;
+      } else seen.set(c.vin, { confidences: c.confidences, count: 1, afterVinLabel: c.afterVinLabel });
+    }
+  }
+  const ranked = [...seen.entries()]
+    .filter(([vin, ev]) => isPlausibleVinRead(vin) && (ev.afterVinLabel || !looksLikeLabelText(vin)))
+    .map(([vin, ev]) => ({ vin, ev, score: scoreVinRead(vin, ev) }))
+    .sort((a, b) => b.score - a.score);
+  if (!ranked.length) return null;
+  const best = ranked[0];
+  return {
+    vin: normalizeVin(best.vin),
+    confidences: best.ev.confidences,
+    alternatives: ranked.slice(1, 4).map((r) => r.vin),
+    checkDigitOk: validateVin(best.vin).ok,
+  };
 }
 
 /** Greyscale + contrast stretch of a decoded photo, on a canvas of its own. Etched/embossed plates read far better with it. */
@@ -176,27 +220,20 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
     // Letters and digits only. I, O and Q stay allowed on purpose: when the camera reads one, the customer is shown it.
     await worker.setParameters({ tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" });
     // Several looks at the same photo. Each is read as-is; none edits a character. A read that passes the VIN check digit
-    // ends the search; otherwise the most repeated read is offered, flagged, for the customer to check.
-    const seen = new Map<string, { confidences: (number | undefined)[]; count: number }>();
+    // ends the search; otherwise every read is ranked by evidence (see rankVinReads) and the best is offered, flagged, for
+    // the customer to check. Text that does not look like a VIN is never offered.
+    const pages: OcrPage[] = [];
     for (const pass of passes) {
       await worker.setParameters({ tessedit_pageseg_mode: pass.psm });
       const { data } = await worker.recognize(pass.img, {}, { blocks: true, text: true });
       passDone++;
-      for (const c of candidatesFromPage(data as unknown as OcrPage)) {
-        const cur = seen.get(c.vin);
-        if (cur) cur.count++;
-        else seen.set(c.vin, { confidences: c.confidences, count: 1 });
-      }
-      const valid = [...seen.keys()].find((v) => validateVin(v).ok);
-      if (valid) {
-        const alt = [...seen.keys()].filter((v) => v !== valid).slice(0, 3);
-        return { ok: true, vin: valid, confidences: seen.get(valid)!.confidences, alternatives: alt };
-      }
+      pages.push(data as unknown as OcrPage);
+      const so_far = rankVinReads(pages);
+      if (so_far?.checkDigitOk) return { ok: true, ...so_far };
     }
-    if (!seen.size) return fail("unreadable");
-    const ranked = [...seen.entries()].sort((a, b) => b[1].count - a[1].count);
-    const [bestVin, best] = ranked[0];
-    return { ok: true, vin: normalizeVin(bestVin), confidences: best.confidences, alternatives: ranked.slice(1, 4).map(([v]) => v) };
+    const result = rankVinReads(pages);
+    if (!result) return fail("unreadable");
+    return { ok: true, ...result };
   } catch {
     return fail("engine");
   } finally {
