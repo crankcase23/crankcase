@@ -1,0 +1,888 @@
+{
+  "guide": 3,
+  "name": "Coolant Drain & Fill",
+  "vehicle": "2015-ford-f150-5.0l",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "primaryScope": "Ford documents actually READ (all free): (a) five Ford TSBs hosted by NHTSA (18-2244, 18-2250, 19-2019, 19-2122, 20-2034) that explicitly cover 2015-2018/2019 F-150 with the 5.0L (with and without block heater): they confirm a 'radiator drain valve', a 'degas bottle' with a cap to open carefully ('Water could be hot'), a block-heater plug that drains the block, WSM Section 303-03 as the governing fill procedure (not read), and that Ford's own repair refills these trucks with Motorcraft Yellow VC-13-G with a 'Use Only Motorcraft Yellow' label; (b) Ford SSM 47740 (2019 F-150 build date, Yellow): 'Do not mix different colors or types of coolant'; (c) Motorcraft brochure 'Antifreeze/Coolant Usage - Ford Vehicles' MA-19624 (rev 8/18/2015) on parts.ford.com: part numbers, spec codes, 'use only distilled or deionized water', Orange 'for most 2012 and forward applications'; (d) the Motorcraft product pages for Orange prediluted VC-3DIL-B (WSS-M97B44-D2) and Yellow prediluted VC-13DL-G (WSS-M97B57-A2) with 'Do not mix different colors or types'; (e) a Ford 'Backward Compatibility / Use of Motorcraft Yellow ... in place of Motorcraft Orange' document (Aug 2020, no bulletin number, not F-150-specific) read only as a forum attachment mirror; (f) Ford's online Owner's Manual pages (fordservicecontent.com, copyright 2026) for 'Engine Coolant Check' and 'Capacities and Specifications - 5.0L' - these pages do NOT name a model or model year, and the 'Engine Coolant Check' page lists 2.3L EcoBoost/3.5L Duratec/3.5L EcoBoost engines that the 2015 F-150 did not offer, so they are treated as UNIDENTIFIED-VEHICLE Ford text, not as the 2015 F-150 manual. NOT READ: the actual 2015 F-150 Owner's Manual (the Ford PDF URL is readable only through about page 58 of ~400; Engine Coolant Check p.304, Capacities p.378 and Changing a Road Wheel p.352 are beyond what the fetch returned) and the Ford Workshop Manual 303-03 (not freely hosted). So NO Ford document was read that states the 2015 F-150 5.0L coolant capacity, the factory-fill color, the radiator drain valve location, the fill/bleed routine for this truck, or any torque.",
+  "summary": "Pilot ledger for 2015 F-150 XLT SuperCrew 4x4, 5.0L Coyote Gen 2, 6R80 ONLY. Tier: safety-critical (hot pressurized coolant scald, a spinning fan, toxic sweet-tasting coolant that attracts pets and children, and possible under-vehicle work). Ford primary documents WERE reachable for part of the job: five Ford TSBs that cover 2015+ F-150 5.0L confirm the radiator drain valve, degas bottle, block-heater drain plug and that Ford refills these trucks with Motorcraft YELLOW VC-13-G; the Motorcraft brochure and product pages confirm part numbers, spec codes and the do-not-mix warning. The catalog's curated coolant note TESTED: (1) 'Orange VC-3 / VC-3DIL-B, Gold is VC-7 / WSS-M97B51-A1' CONFIRMED by the Motorcraft brochure; (2) spec 'WSS-M97B44-D' for the 50/50 premix is PARTLY WRONG: Ford lists -D for concentrate VC-3 and -D2 for prediluted VC-3DIL-B; (3) 'Yellow WSS-M97B57-A1/-A2 is the service replacement for Orange-filled vehicles' CONFIRMED (Ford Aug 2020 backward-compatibility document read via a forum mirror; Ford TSBs refill 2015+ F-150 5.0L with Yellow); the motorcraft.com Yellow page lists only -A2; (4) 'Yellow must not be used on vehicles factory-filled with any other Motorcraft coolant' CONFIRMED in the same Ford document, but that document never names Gold, so 'Gold included' is implied, not stated; (5) 'factory fill is Orange' for THIS truck CANNOT BE CONFIRMED from any Ford document read (one forum poster quotes his owner's manual listing VC-3DIL-B; Ford's own TSBs convert these trucks to Yellow); (6) 'Ford is phasing Orange out of the catalog' NOT CONFIRMED; (7) '~16.6 qt (15.7 L)' capacity NOT CONFIRMED and CONTRADICTED by lower secondary figures (15.9 qt/15.0 L for 2015-2017 5.0L from fordmasterx and one BITOG poster; a Ford-hosted online-manual page gives 13.9 qt for an unnamed '5.0L'), so capacity is a CONFLICT and must not be shown as a verified number. Procedure evidence: drain-valve existence and degas cap caution are Ford-documented; valve location, wrench size, torque, and the fill/bleed routine for THIS truck are not. Ford's own routine as quoted from the WSM by a forum member (Raptor thread, different truck) says to turn the climate control OFF, while an O'Reilly 2012 5.0L F-150 write-up says run it with the heater on: that is recorded as a CONFLICT, not resolved. Do not treat anything here as certified or as read from Ford service data: the Workshop Manual 303-03 was not read.",
+  "variantDependencies": [
+    "UNKNOWN: factory-fill coolant color/spec of THIS truck (Orange WSS-M97B44-D/-D2 vs Yellow WSS-M97B57-A1/-A2 vs earlier Gold). Ford TSBs say 2015+ F-150 5.0L trucks get Yellow in service and the Ford Aug 2020 document allows Yellow over Orange, but no Ford document read states what a 2015 5.0L left the factory with, and a previous owner or shop may have added anything. The owner must identify what is in the truck (service records, reservoir label/Authorized Modification label, owner manual) before buying; if it cannot be determined, do not mix: full drain and flush plan is outside this ledger.",
+    "UNKNOWN: total cooling system capacity for this exact 4x4 SuperCrew 5.0L. Candidates: curated catalog 16.6 qt (no source), 15.9 qt (fordmasterx 2015-2017 table, BITOG 2017 5.0L poster), 13.9 qt (Ford online manual page titled 5.0L, no model year). Ford's page may refer to a different generation. Treat capacity as a question; a drain via the radiator valve removes only part of it (BITOG poster: about 1.5 gal).",
+    "UNKNOWN: Heavy-duty/trailer-tow cooling package (HD radiator, engine oil/transmission coolers, larger fan) and whether it changes capacity or access. No source for this config.",
+    "UNKNOWN: block heater (engine-block heater) fitted or not. Ford TSBs exist for both 'with block heater' and 'without block heater' trucks and both mention a block-heater plug that drains the block; a block drain/plug position and torque were NOT found, so the guide does not instruct block draining.",
+    "UNKNOWN: radiator drain valve exact position (corner, facing) and how it is reached on a 4x4 (skid plates or air dam on an FX4/off-road package, 4x4 front axle and crossmember). Ford TSBs prove a 'radiator drain valve' exists but give no location; O'Reilly names a petcock on a 2012 5.0L F-150 XLT without a position; the only position found (passenger-side bottom corner, 19 mm wrench) is from f150hub for 1997-2003 4.6L/5.4L trucks and must not be applied here.",
+    "UNKNOWN: fill/bleed routine for THIS truck. Ford's TSBs defer to WSM 303-03 (not read). The only Ford-WSM-derived routine found is a forum quote for a 2018 Raptor (degas bottle to MAX FILL, climate OFF, 3,500 rpm for 30 s, shut off 1 min, recheck, idle to full-open thermostat, repeat), for a different engine. Whether the 5.0L uses the same steps, whether a vacuum filler is recommended, and heater setting are open (CONFLICT with O'Reilly 'heater on').",
+    "UNKNOWN: Gen 2 Coyote 5.0L heater-hose routing and any known air-trap points; Ford TSB 15-0073 (2015 F-150/Mustang 5.0L heater outlet hose can disconnect and leak coolant; truedelta listing only, TSB text not read) means the heater hose connections are worth inspecting during the job.",
+    "NOT APPLICABLE (not assumed): 2WD trucks, other model years, other engines (3.5L EcoBoost, 2.7L, 3.7L, 6.2L) and other cab/bed/trim. Ford's TSBs and brochure cover several engines; only statements that name the 5.0L and 2015 are used here as config evidence, and wider fitment is left to Vehicle Atlas."
+  ],
+  "tools": [
+    {
+      "item": "Drain pan(s) with combined capacity of at least 5 gallons (sizing derived from the conflicting capacity figures, 13.9 to 16.6 qt; one poster says only about 1.5 gal drains from the radiator valve)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://fordmasterx.com/ford-f150-coolant-capacity-chart/",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363",
+        "https://2carpros.com/questions/coolant-system-18554144--1699065"
+      ],
+      "note": "Derived sizing, not a sourced number. fordmasterx (2015-2017 5.0L 15.9 qt), BITOG (2017 5.0L, 15.9 qt) and 2carpros (2011 3.5L EcoBoost 16.5 qt) all put the system above 4 gallons. Ford's own capacity for this truck was not read."
+    },
+    {
+      "item": "Wrench or socket for the radiator drain valve (size and drive NOT established)",
+      "status": "MISSING",
+      "sources": [
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150",
+        "https://www.f150hub.com/maintenance/cooling-system-service.html"
+      ],
+      "note": "O'Reilly names a petcock on a 2012 5.0L XLT without a size. f150hub gives 19 mm for 1997-2003 trucks (different generation; not applied). Many petcocks are turned by hand or with pliers; no source for this truck."
+    },
+    {
+      "item": "Spring-clamp pliers (only if disconnecting the lower radiator hose)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150"
+      ],
+      "note": "O'Reilly: 'release the spring clamp on the coolant inlet and disconnect the lower radiator hose' on a 2012 5.0L F-150 XLT. Clamp type on a 2015 not verified."
+    },
+    {
+      "item": "Refractometer to check coolant concentration (Ford: hydrometers and test strips are not recommended)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web"
+      ],
+      "note": "Ford online Owner's Manual page (model/year not named). Optional for a premix refill."
+    },
+    {
+      "item": "Clean funnel or spill-free funnel for the degas bottle",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363"
+      ],
+      "note": "A BITOG poster recommends a Lisle spill-free funnel. Optional."
+    },
+    {
+      "item": "Safety goggles, gloves, thick shop cloth for the cap",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.carcarekiosk.com/video/2016_Ford_F-150_XLT_5.0L_V8_FlexFuel_Crew_Cab_Pickup/coolant_antifreeze/add_coolant"
+      ],
+      "note": "Ford online manual page: use a thick cloth if you must open the cap; carcarekiosk: wear safety goggles. Neither page names this truck."
+    },
+    {
+      "item": "Cat litter or absorbent for spills",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant"
+      ],
+      "note": "carcarekiosk (2014 F-150 6.2L page): soak spills with cat litter and discard."
+    },
+    {
+      "item": "Floor jack, rated jack stands, ramps or lift (ONLY if you decide the drain valve cannot be reached from the ground)",
+      "status": "MISSING",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Owners-Manual-version-4_om_EN-US_08_2015.pdf"
+      ],
+      "note": "No source read says whether the radiator drain valve on a 4x4 SuperCrew needs the truck raised. The 2015 manual lists 'Changing a Road Wheel' on p.352 but that page was not readable. No stand position is given or implied."
+    }
+  ],
+  "parts": [
+    {
+      "item": "Motorcraft Orange prediluted antifreeze/coolant, 1 US gal (50/50)",
+      "partNumber": "VC-3DIL-B",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf",
+        "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000"
+      ],
+      "note": "Ford brochure MA-19624 lists prediluted gallon VC-3DIL-B with spec WSS-M97B44-D2 ('For most 2012 and forward applications'); the Motorcraft page says 'Approved to Ford Specification WSS-M97B44-D2' and 'Use only when specified'. Whether THIS truck specifies Orange is not established (see variantDependencies). Curated catalog text says WSS-M97B44-D for the premix: Ford lists -D for the concentrate."
+    },
+    {
+      "item": "Motorcraft Orange concentrate antifreeze/coolant, 1 US gal",
+      "partNumber": "VC-3-B",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf"
+      ],
+      "note": "Brochure: Concentrated Gallon VC-3-B, spec WSS-M97B44-D. Must be diluted 50/50 with distilled or deionized water (Ford Engineering note in the same brochure)."
+    },
+    {
+      "item": "Motorcraft Yellow prediluted antifreeze/coolant, 1 US gal (50/50)",
+      "partNumber": "VC-13DL-G",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000",
+        "https://www.ranger5g.com/forum/attachments/antifreeze-color-change-pdf.242371/"
+      ],
+      "note": "Motorcraft page: 'Approved to Ford Specification WSS-M97B57-A2'; lists only -A2 (not -A1). Ford Aug 2020 document: Yellow may be used to top off or fully replace coolant in vehicles factory-filled with Orange or dark Green. Unusable on any vehicle factory-filled with any other Motorcraft coolant."
+    },
+    {
+      "item": "Motorcraft Yellow concentrate antifreeze/coolant, 1 US gal",
+      "partNumber": "VC-13-G",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144911-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144916-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10153925-9999.pdf"
+      ],
+      "note": "Named in the parts list and fill step of Ford TSBs 18-2244, 18-2250, 19-2019, 19-2122 and 20-2034 for 2015-2018/2019 F-150 5.0L (with and without block heater) and in SSM 47740 as the service coolant (CVC-13-G in Canada). The TSBs fill with the concentration set by climate per WSM 303-03 (not read)."
+    },
+    {
+      "item": "Distilled or deionized water (only if using concentrate)",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web"
+      ],
+      "note": "Ford Engineering (brochure): 'Use only distilled or deionized water to dilute concentrated Antifreeze/Coolant.' Ford online manual page: dilute approved concentrate 50/50 with deionized water if prediluted is unavailable."
+    },
+    {
+      "item": "Motorcraft Gold (VC-7, WSS-M97B51-A1) - DO NOT BUY for this truck unless Ford documentation for this exact truck says so",
+      "partNumber": "VC-7-B / VC-7DIL-B",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf"
+      ],
+      "note": "Brochure: Gold is WSS-M97B51-A1, 'For most 2002-2010 MY applications'. IMPORTANT: Ford's brochure describes the color of VC-7 Gold as 'yellow' and VC-3 Orange as 'orange'; Motorcraft Yellow VC-13 is a third product. Never choose coolant by the color words 'gold/yellow' alone; read the spec code on the jug."
+    },
+    {
+      "item": "Motorcraft Premium Cooling System Flush (only for a full flush; Ford TSBs add one bottle then fill with water)",
+      "partNumber": "VC-1",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf"
+      ],
+      "note": "Used in Ford's heater-performance repair procedure, which is a larger job than a drain and fill (scan-tool fan commands, thermostat removal). Optional for this guide."
+    },
+    {
+      "item": "Radiator drain valve, degas bottle, degas cap, Authorized-Modification coolant label (Ford part numbers)",
+      "status": "MISSING",
+      "sources": [],
+      "note": "No Ford or catalog part number for these was found for this config; no parts-catalog page was read."
+    },
+    {
+      "item": "Quantity of coolant to buy",
+      "status": "MISSING",
+      "sources": [
+        "https://fordmasterx.com/ford-f150-coolant-capacity-chart/",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=4640&languageCode=en&countryCode=USA&moidRef=G1635371&Uid=G1909834&ProcUid=G1909837&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web"
+      ],
+      "note": "Cannot be stated: capacity is a CONFLICT (13.9 / 15.9 / 16.6 qt). Buy for the largest figure (16.6 qt, about 4.2 gal), and expect a drain-valve-only service to need roughly the volume that drains (BITOG: about 1.5 gal) plus top-offs. Not a sourced figure."
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Engine coolant specification for a 2015 F-150 5.0L",
+      "status": "CONFLICT",
+      "primary": true,
+      "sources": [
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf",
+        "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000",
+        "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000",
+        "https://www.ranger5g.com/forum/attachments/antifreeze-color-change-pdf.242371/",
+        "https://www.f150forum.com/f118/change-motorcraft-coolant-2015-5-0l-485768/",
+        "https://fordmasterx.com/ford-f150-coolant-capacity-chart/",
+        "https://bobistheoilguy.com/forums/threads/lets-talk-ford-yellow-coolant.385616/",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144911-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144916-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf"
+      ],
+      "spec": "Candidates: Motorcraft Orange VC-3DIL-B (WSS-M97B44-D2) or Motorcraft Yellow VC-13DL-G (WSS-M97B57-A2; -A1 also referenced). No Ford document read states which one THIS truck left the factory with.",
+      "capacity": "see capacity row",
+      "conflicts": "f150forum poster says his owner's manual lists VC-3DIL-B (Orange) and his dealer says the current part is VC-13DL-G (Yellow); Ford TSBs refill 2015+ 5.0L with Yellow VC-13-G; fordmasterx infers Orange for 2015 with no source. Ford documents agree Yellow is acceptable over Orange-filled vehicles but forbid mixing with other Motorcraft coolants (Gold)."
+    },
+    {
+      "item": "Orange-to-Yellow compatibility (curated claim: Yellow is the service replacement for Orange-filled vehicles)",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://www.ranger5g.com/forum/attachments/antifreeze-color-change-pdf.242371/",
+        "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000",
+        "https://bobistheoilguy.com/forums/threads/lets-talk-ford-yellow-coolant.385616/",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144911-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144916-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf"
+      ],
+      "spec": "Ford document 'Backward Compatibility/Use of Motorcraft Yellow Antifreeze/Coolant with/in place of Motorcraft Orange ...' (Aug 2020): Yellow may top off or fully replace Orange in vehicles factory-filled with Orange; flushing not required before full replacement if not contaminated. F-150-specific confirmation: Ford TSBs fill 2015+ 5.0L F-150s with Yellow.",
+      "capacity": "n/a",
+      "note": "The compatibility document was read only as a forum attachment (ranger5g.com), is not F-150-specific (example vehicle: 2019 Escape) and has no bulletin number. A BITOG poster posts a Ford chart saying a combination of Yellow and Orange is acceptable (secondary). Curated phrase 'Ford is phasing Orange out' is NOT confirmed by anything read."
+    },
+    {
+      "item": "Mixing warning (curated claim: Yellow must not be used on vehicles factory-filled with any other Motorcraft coolant, Gold included)",
+      "status": "VERIFIED",
+      "primary": true,
+      "sources": [
+        "https://www.ranger5g.com/forum/attachments/antifreeze-color-change-pdf.242371/",
+        "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000",
+        "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10153925-9999.pdf",
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web"
+      ],
+      "spec": "Ford: 'Motorcraft Yellow Antifreeze/Coolant is not compatible and therefore is not approved for use' on vehicles factory-filled with any other Motorcraft coolant (Aug 2020 document); Motorcraft pages: 'Do not mix different colors or types of antifreeze/coolant in your vehicle'; SSM 47740: 'Do not mix different colors or types of coolant'; Ford manual page: 'Don't mix colors or types of coolant'.",
+      "capacity": "n/a",
+      "note": "The Aug 2020 document does not name Gold; 'Gold included' is a reasonable reading of 'any other Motorcraft coolant' but is not stated. Ford's brochure says the Orange-to-Yellow exception exists only in the Ford documents above."
+    },
+    {
+      "item": "Coolant concentration and mix",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3259&languageCode=en&countryCode=USA&Uid=G1634794&ProcUid=G1749488&userMarket=USA&div=f&vFilteringEnabled=False",
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf",
+        "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000",
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933"
+      ],
+      "spec": "Ford online manual pages (model not named): maintain 48% to 50%; use prediluted coolant meeting the specification, or dilute approved concentrate with deionized water; severe climates up to about 60% or down to about 40%. Prediluted Motorcraft products are 50/50 (Motorcraft pages).",
+      "capacity": "n/a",
+      "note": "Two Ford manual variants agree (same Ford origin) plus Raptor thread (48/52 to 50/50, quoting WSM, different truck). Ford docs are not truck-identified, so marked VERIFIED_SECONDARY, not VERIFIED."
+    },
+    {
+      "item": "Total cooling system capacity (curated catalog: ~16.6 qt / 15.7 L)",
+      "status": "CONFLICT",
+      "primary": false,
+      "sources": [
+        "https://fordmasterx.com/ford-f150-coolant-capacity-chart/",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=4640&languageCode=en&countryCode=USA&moidRef=G1635371&Uid=G1909834&ProcUid=G1909837&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://2carpros.com/questions/coolant-system-18554144--1699065"
+      ],
+      "spec": "n/a",
+      "capacity": "UNRESOLVED: 13.9 qt (13.2 L) / 15.9 qt (15.0 L) / 16.6 qt (15.7 L)",
+      "conflicts": "fordmasterx (2015-2017 5.0L Coyote, no source cited): 15.9 qt / 15.0 L. BITOG poster (2017 5.0L): 'the system holds 15.9 quarts' (may be quoting the same table, origin unproven). Ford online Owner's Manual page 'Capacities and Specifications - 5.0L' (copyright 2026, no model year): 13.9 qt (13.2 L); its coolant spec row was cut off. 2carpros: 16.5 qt for a 2011 3.5L EcoBoost (different engine, shown only as context). The catalog's 16.6 qt (15.7 L) was supported by NO source read. Not a verified number."
+    },
+    {
+      "item": "Drain-and-refill yield",
+      "status": "SINGLE_SOURCE",
+      "primary": false,
+      "sources": [
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363"
+      ],
+      "spec": "n/a",
+      "capacity": "BITOG poster, 2017 F-150 5.0L: radiator drain gets only about 1.5 gallons of the 15.9 qt system; another poster: after running briefly 'a lot more than half' drains via the lower hose. Anecdotal."
+    },
+    {
+      "item": "Coolant level target",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3259&languageCode=en&countryCode=USA&Uid=G1634794&ProcUid=G1749488&userMarket=USA&div=f&vFilteringEnabled=False",
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933",
+        "https://www.carcarekiosk.com/video/2016_Ford_F-150_XLT_5.0L_V8_FlexFuel_Crew_Cab_Pickup/coolant_antifreeze/add_coolant"
+      ],
+      "spec": "Check cold; keep the level between MIN and MAX marks (Ford manual page); do not add above MAX; fill degas bottle to the MAX FILL line (Raptor thread quoting WSM).",
+      "capacity": "n/a"
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Radiator drain valve (petcock)",
+      "value": "MISSING; close it by hand snugly, do not use a wrench beyond snug until Ford data is read",
+      "status": "MISSING",
+      "sources": [
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf"
+      ],
+      "conflicts": null,
+      "primary": false,
+      "note": "Ford TSBs say 'Close the radiator drain valve' with no torque; O'Reilly names a petcock with no torque. Hand-snug is an editorial caution, not a sourced value."
+    },
+    {
+      "fastener": "Degas bottle / coolant reservoir cap",
+      "value": "Not a torque value: turn until it stops (single source for this wording).",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933"
+      ],
+      "conflicts": null,
+      "primary": false,
+      "note": "Raptor thread quoting WSM: 'install its cap until it stops' (2018 Raptor). Ford's online manual page says only to open it slowly when cool. No torque applies."
+    },
+    {
+      "fastener": "Block-heater plug / engine block drain plug",
+      "value": "MISSING (not used in this guide)",
+      "status": "MISSING",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144911-9999.pdf"
+      ],
+      "conflicts": null,
+      "primary": false,
+      "note": "Ford TSBs remove the block-heater (or block-heater plug) 'and allow the block to drain', then reinstall; no torque, location or size is given. A 6.4L Super Duty TSB gives 177 lb-in for block drain plugs but that is another engine and is NOT applied."
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Prepare on a cold engine and level ground",
+      "instruction": "Park on level ground with the engine off and completely cold (overnight). The cooling system is pressurized and hot coolant can scald; Ford says not to open the reservoir cap while the engine is on or the system is hot. Gather drain pans, the correct coolant, distilled water if using concentrate, and rags. Keep pets and children away from the work area.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.carcarekiosk.com/video/2016_Ford_F-150_XLT_5.0L_V8_FlexFuel_Crew_Cab_Pickup/coolant_antifreeze/add_coolant"
+      ],
+      "primary": true,
+      "warnings": [
+        "Never open the degas bottle (coolant reservoir) cap on a hot or running engine.",
+        "Coolant is toxic and its sweet taste attracts animals; wipe up every drip and put absorbent on spills."
+      ],
+      "note": "Ford TSBs 20-2034/19-2122 (cover 2015+ F-150 5.0L): 'Water could be hot' when opening the degas bottle cap. Ford manual page (model not named): do not remove the cap when on or hot; wait and use a thick cloth if you must open it."
+    },
+    {
+      "n": 2,
+      "title": "Decide whether the truck must be raised (only if the drain valve cannot be reached from the ground)",
+      "instruction": "No source read states how the radiator drain valve is reached on a 4x4 SuperCrew 5.0L, or whether skid plates must be removed. If you need to go under the truck, follow the jack-stand policy in the safety list: use the jacking points shown in your owner's manual, support the truck on rated stands, or use a lift or ramps. If you cannot identify a safe stand position from your manual, stop and use a shop lift.",
+      "status": "MISSING",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Owners-Manual-version-4_om_EN-US_08_2015.pdf"
+      ],
+      "primary": false,
+      "warnings": [
+        "No stand position is given in this guide. Never get under a truck held only by a jack."
+      ],
+      "note": "2015 manual table of contents lists 'Changing a Road Wheel' p.352 (readable TOC only). The page itself was not readable. No second source for jack or stand points of this truck."
+    },
+    {
+      "n": 3,
+      "title": "Release pressure and open the degas bottle cap",
+      "instruction": "On a cold engine, cover the cap with a thick cloth and turn it slowly to release any pressure before removing it. Opening the cap lets the system drain freely.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.carcarekiosk.com/video/2016_Ford_F-150_XLT_5.0L_V8_FlexFuel_Crew_Cab_Pickup/coolant_antifreeze/add_coolant"
+      ],
+      "primary": true,
+      "warnings": [
+        "If the engine has been run in the last few hours, wait. Stand clear of the engine fan."
+      ],
+      "note": "Position of the degas bottle in the engine bay of this truck was not established from a Ford document."
+    },
+    {
+      "n": 4,
+      "title": "Drain through the radiator drain valve",
+      "instruction": "Place a drain pan under the radiator drain valve, open it, and let the coolant drain. Ford's own repair procedures for 2015+ F-150 5.0L refer to a 'radiator drain valve', and an O'Reilly write-up on a 2012 5.0L F-150 XLT calls it a petcock at the radiator. Its exact position and any skid plate removal on your 4x4 are not established; locate it by eye before you open it.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144916-9999.pdf",
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150"
+      ],
+      "primary": true,
+      "warnings": [
+        "Do not guess the drain valve position from older trucks: the passenger-side-corner, 19 mm description found online is for 1997-2003 trucks.",
+        "Capture and dispose of coolant correctly; do not pour it on the ground."
+      ],
+      "note": "Existence VERIFIED by Ford TSBs (primary); position, size and torque are MISSING."
+    },
+    {
+      "n": 5,
+      "title": "Optional: drain more via the lower radiator hose",
+      "instruction": "Only if you must remove more coolant: with the system cold and the drain pan in place, release the lower radiator hose clamp and drain what remains. The clamp type on a 2015 5.0L is not verified; do not force it.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363",
+        "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant"
+      ],
+      "primary": false,
+      "warnings": [
+        "A radiator-valve drain removes only part of the system (a poster reports about 1.5 gallons); expect to refill with a mixture of old and new coolant."
+      ],
+      "note": "O'Reilly (2012 5.0L XLT thermostat job) and BITOG posters (2017 5.0L F-150) both describe disconnecting the lower hose. Block drain via the block-heater plug appears in Ford TSBs but is not used here (no position or torque)."
+    },
+    {
+      "n": 6,
+      "title": "Close the drain valve",
+      "instruction": "Close the radiator drain valve fully and snugly by hand. Do not over-tighten; no torque value was found.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150"
+      ],
+      "primary": true,
+      "warnings": [
+        "Check the valve for a drip after the first fill."
+      ],
+      "note": "Ford TSBs: 'Close the radiator drain valve.' No torque value in any source."
+    },
+    {
+      "n": 7,
+      "title": "Optional: flush with distilled water",
+      "instruction": "If the old coolant is contaminated, fill the system with distilled water, run the engine briefly with the cap secure, let it cool, and drain again. Ford's own heater-performance repair adds Motorcraft Premium Cooling System Flush (VC-1) and repeats the flush; that repair also uses scan-tool fan commands and is more than this guide covers.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363"
+      ],
+      "primary": true,
+      "warnings": [
+        "Never run the engine with the system empty."
+      ],
+      "note": "Ford TSBs are repair procedures for a different complaint; use as evidence that flushing with water and VC-1 is an accepted Ford practice, not as a drain-and-fill routine."
+    },
+    {
+      "n": 8,
+      "title": "Identify the correct coolant and mix",
+      "instruction": "Find what your truck currently holds (service records, reservoir or Authorized Modification label, owner's manual) before buying. Orange VC-3DIL-B (WSS-M97B44-D2 prediluted) and Yellow VC-13DL-G (WSS-M97B57-A2 prediluted) are Ford-approved for Orange-filled trucks; Ford documents say Yellow may replace or top off Orange, but Yellow is not approved for vehicles factory-filled with any other Motorcraft coolant, and Motorcraft says do not mix different colors or types. Ford's own TSBs refill 2015+ F-150 5.0L trucks with Yellow VC-13-G. Use prediluted 50/50, or concentrate diluted 50/50 with distilled or deionized water (about 48% to 50% concentration).",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.ranger5g.com/forum/attachments/antifreeze-color-change-pdf.242371/",
+        "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000",
+        "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000",
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10153925-9999.pdf",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144911-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144916-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf"
+      ],
+      "primary": true,
+      "warnings": [
+        "Do not mix coolant types. Do not choose by color word alone: Ford's own brochure describes Gold (VC-7) as yellow-colored.",
+        "If you cannot tell what is in the truck, stop and have it checked rather than guessing."
+      ],
+      "note": "Factory fill of THIS truck is not established (variantDependency). Do not use stop-leak or unspecified additives (Ford manual page)."
+    },
+    {
+      "n": 9,
+      "title": "Fill the degas bottle",
+      "instruction": "Pour the chosen coolant slowly into the degas bottle up to the MAX FILL line. Do not add above MAX. Ford's recommended fill routine for this truck is in Workshop Manual 303-03, which was not read.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3259&languageCode=en&countryCode=USA&Uid=G1634794&ProcUid=G1749488&userMarket=USA&div=f&vFilteringEnabled=False",
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933",
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363"
+      ],
+      "primary": false,
+      "warnings": [
+        "Use a clean funnel and wipe spills. Never add coolant to a hot engine."
+      ],
+      "note": "Ford manual pages (model not named): do not add above MAX. The 'fill to MAX FILL' wording comes from a forum post quoting the WSM for a 2018 Raptor."
+    },
+    {
+      "n": 10,
+      "title": "Run the engine and bleed air",
+      "instruction": "Start the engine and watch the degas bottle level; coolant will drop as air escapes. Warm the engine to operating temperature and top off as needed. Sources DISAGREE on the cabin heater setting during this routine (see conflicts); follow the Ford WSM 303-03 steps if you can obtain them. If the level in the bottle falls, shut off, let it cool completely, and add to MAX.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933",
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363",
+        "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf"
+      ],
+      "primary": false,
+      "warnings": [
+        "Stay clear of the fan and belts with the engine running.",
+        "Do not open the degas cap while the engine is warm.",
+        "Watch the temperature gauge; shut down if it climbs toward the red."
+      ],
+      "note": "Ford TSB 20-2034 step: cooling fans are commanded to high speed for five minutes by scan tool after running, not a DIY step.",
+      "conflicts": "FordTechOne, quoting Ford's WSM in a 2018 Raptor thread: turn the climate control system OFF, start, 3,500 rpm for 30 s, shut off 1 min, recheck, idle until the fan cycles, repeat, top off to MAX FILL, install cap until it stops. O'Reilly (2012 5.0L F-150 XLT thermostat job): warm up with the heater ON. BITOG poster: heater setting does not matter on a 2017 because coolant flows to the heater core constantly; another poster sets the heater to HIGH on an older truck. The 3,500 rpm routine is for a different truck and is NOT given as an instruction for this one."
+    },
+    {
+      "n": 11,
+      "title": "Overheat check and leak check",
+      "instruction": "With the engine at operating temperature, confirm the radiator fan cycles, the gauge sits normal, and there are no drips at the drain valve, hoses or degas bottle. Ford's manual describes a fail-safe cooling mode on over-temperature (alternating cylinder operation, power limited, A/C off) and says to pull over safely and check the coolant. Check heater hose connections too: Ford TSB 15-0073 (2015 F-150 5.0L; listing only) covers a heater outlet hose that can disconnect and leak.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3259&languageCode=en&countryCode=USA&Uid=G1634794&ProcUid=G1749488&userMarket=USA&div=f&vFilteringEnabled=False",
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://www.truedelta.com/Ford-F-150-tsbs-87,2015",
+        "https://www.carcarekiosk.com/video/2016_Ford_F-150_XLT_5.0L_V8_FlexFuel_Crew_Cab_Pickup/coolant_antifreeze/add_coolant"
+      ],
+      "primary": false,
+      "warnings": [
+        "If the temperature gauge rises, pull over, shut the engine off and do not open the cap.",
+        "If there is an oily film in the coolant, have the truck inspected for head gasket leakage (carcarekiosk)."
+      ],
+      "note": "TSB 15-0073 text itself was not read (listed on truedelta only); do not rely on it for the procedure."
+    },
+    {
+      "n": 12,
+      "title": "Cool down, recheck the level, install the cap",
+      "instruction": "Let the engine cool completely. Check the level in the degas bottle; add coolant up to the MAX line (never above) and install the cap until it stops. Recheck the level cold the next day and over the following few drives. If you must add more than about 1 liter (1.1 qt) per month, have the cooling system checked (Ford manual page).",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3259&languageCode=en&countryCode=USA&Uid=G1634794&ProcUid=G1749488&userMarket=USA&div=f&vFilteringEnabled=False",
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933",
+        "https://bobistheoilguy.com/forums/threads/what-would-be-the-best-way-to-do-this-coolant-flush.373893/post-6632363"
+      ],
+      "primary": false,
+      "warnings": [
+        "Coolant expands when hot; a level slightly above MAX while hot is normal (Ford manual page), above MAX when cold means overfilled."
+      ]
+    },
+    {
+      "n": 13,
+      "title": "Verify cabin heat",
+      "instruction": "After the bleed, run the truck at operating temperature with the heater set to hot and confirm warm air from the vents. A cold-blowing heater with a warm engine suggests trapped air or a low level: shut off, cool, recheck and top off. Ford has TSBs for lack of heat in cold weather on 2015+ F-150 5.0L trucks that is a separate fault.",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150"
+      ],
+      "primary": false,
+      "warnings": [
+        "Do not open the cap hot to check the level."
+      ],
+      "note": "O'Reilly (2012 5.0L XLT thermostat page): 'If the heater is blowing warm air, turn the truck off and check the coolant level.' Ford TSBs 18-2244/19-2019 concern a separate cold-weather lack-of-heat complaint, not bleeding."
+    },
+    {
+      "n": 14,
+      "title": "Dispose of used coolant",
+      "instruction": "Store used coolant in a sealed, labeled container out of reach of pets and children and take it to a recycler or hazardous-waste drop-off that accepts antifreeze. Do not pour it on the ground or down a drain. Ford says dispose of used coolant per local regulations and does not recommend recycled coolant.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+        "https://www.carcarekiosk.com/video/2016_Ford_F-150_XLT_5.0L_V8_FlexFuel_Crew_Cab_Pickup/coolant_antifreeze/add_coolant",
+        "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant"
+      ],
+      "primary": false,
+      "warnings": [
+        "Coolant is toxic and attractive to animals; clean up spills immediately."
+      ],
+      "note": "Ford manual page: dispose per local regulations. 'Do not pour on the ground' is general guidance consistent with those pages, not a quoted Ford sentence."
+    },
+    {
+      "n": 15,
+      "title": "Record what you put in",
+      "instruction": "Write the coolant type and date where you can find it (service log, or a note on the reservoir area). Ford's own TSB repairs that refill these trucks with Yellow require an Authorized Modification label reading 'Use Only Motorcraft Yellow Antifreeze/Coolant' and ask that the owner be told a different coolant is in use; a DIY owner should keep the same record so no one mixes types later.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10160864-0001.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144916-9999.pdf",
+        "https://static.nhtsa.gov/odi/tsbs/2018/MC-10144911-9999.pdf"
+      ],
+      "primary": true,
+      "warnings": [
+        "Never top off with a different coolant type than the one recorded."
+      ],
+      "note": "The label is a dealer requirement in a repair TSB, applied here as a recommendation."
+    }
+  ],
+  "safety": [
+    "Never open the degas bottle (coolant reservoir) cap on a hot or running engine; the system is pressurized and hot coolant can scald. Ford TSBs for this truck warn the water 'could be hot' when opening the cap; Ford's manual page says to wait and use a thick cloth.",
+    "Keep hands, tools and clothing away from the engine fan and belts when the engine is running during the bleed and overheat check.",
+    "Coolant is toxic and has a sweet taste that attracts pets and children. Wipe up all spills, absorb spills with cat litter, store used coolant in a sealed, labeled container out of reach, and dispose of it at a recycler or hazardous-waste drop-off. Do not pour it on the ground or down a drain.",
+    "Do not mix coolant types. Motorcraft says 'Do not mix different colors or types of antifreeze/coolant in your vehicle'; Ford says Yellow is not approved for vehicles factory-filled with any other Motorcraft coolant. Do not choose by color word alone: Ford's brochure calls Gold VC-7 yellow-colored. Read the spec code on the jug.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual (the 2015 F-150 manual's table of contents lists 'Changing a Road Wheel' on page 352). If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Do not use the engine with the system empty or low; if the temperature gauge climbs, pull over, shut off and let the engine cool before checking.",
+    "Do not publish a coolant capacity or a factory-fill color for this truck as verified: capacity is a CONFLICT (13.9 / 15.9 / 16.6 qt) and no Ford document read states the factory fill.",
+    "Do not apply the Ford Raptor (3,500 rpm) bleed routine, the 1997-2003 passenger-corner/19 mm drain description, or the Super Duty 177 lb-in block plug torque to this truck."
+  ],
+  "missingEvidence": [
+    "The actual 2015 F-150 Owner's Manual text for Engine Coolant Check (p.304), Capacities and Specifications - 5.0L (p.378, capacity and coolant spec row) and Changing a Road Wheel (p.352): Ford PDF reachable but only through about page 58.",
+    "Ford Workshop Manual 303-03 for the 2015 F-150 5.0L: draining, vacuum fill, bleeding, capacity, drain valve location and torque (not freely hosted; Ford TSBs only cite it).",
+    "Total cooling system capacity for this exact config (4x4 SuperCrew 5.0L) from any Ford document.",
+    "Factory-fill coolant color/spec for this truck from any Ford document (and the Ford SSM 48778 text that a forum poster quotes; not read).",
+    "Radiator drain valve position and access on a 4x4 (skid plates), tool size, torque.",
+    "Block-heater plug / block drain location, size, torque on the 5.0L.",
+    "Ford-sourced bleed routine for the 5.0L F-150 (heater setting, rpm, vacuum fill).",
+    "Jack and stand points for the 2015 F-150 from the owner's manual page.",
+    "The text of Ford TSB 15-0073 (2015 F-150 5.0L heater outlet hose) and SSM 46150 (restricted heater cores): seen only as listings on truedelta.",
+    "Whether Ford is phasing Orange out of the Motorcraft catalog (curated catalog claim).",
+    "Whether the Ford manual lists a specific coolant color name for this truck."
+  ],
+  "ownerInputsNeeded": [
+    "Which coolant is in the truck now (look at the reservoir label, service records, or ask the dealer)?",
+    "Is the engine block heater fitted?",
+    "Does the truck have front skid plates or an FX4/off-road package (affects drain valve access)?",
+    "Is the heavy-duty/trailer-tow cooling package fitted (door sticker/option codes)?",
+    "Can the owner supply a photo of the radiator drain valve and the degas bottle cap on this truck?",
+    "Can the owner supply the owner's manual capacities page (page 378) or the printed manual for this exact truck?"
+  ],
+  "visuals": [
+    {
+      "id": "f150-degas-bottle-cap-and-level-marks",
+      "title": "Coolant degas bottle: cap and MIN/MAX level marks",
+      "imageType": "IDENTIFY",
+      "evidenceSteps": [
+        3,
+        9,
+        10,
+        12
+      ],
+      "viewpoint": "engine-bay-top",
+      "elements": [
+        {
+          "id": "degas-bottle",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The translucent plastic coolant degas bottle (reservoir) with a screw-on pressure cap and level marks."
+        },
+        {
+          "id": "degas-cap",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The pressure cap on the bottle; opened slowly on a cold engine with a thick cloth, installed until it stops."
+        },
+        {
+          "id": "level-marks",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "MIN and MAX marks on the bottle; fill to MAX (MAX FILL line), never above."
+        }
+      ],
+      "facts": [
+        {
+          "element": "degas-bottle",
+          "attribute": "existence",
+          "urls": [
+            "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+            "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web"
+          ],
+          "note": "Ford TSB 20-2034 and the Ford manual page refer to a degas bottle / reservoir with a cap."
+        },
+        {
+          "element": "degas-cap",
+          "attribute": "action",
+          "urls": [
+            "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+            "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web"
+          ],
+          "note": "Open carefully; do not remove when hot or running."
+        },
+        {
+          "element": "level-marks",
+          "attribute": "existence",
+          "urls": [
+            "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web",
+            "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933"
+          ],
+          "note": "MIN and MAX marks (manual page); MAX FILL line (Raptor thread quoting WSM)."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "degas-bottle",
+          "reason": "Location in the engine bay of this truck is not established from any source; draw it isolated."
+        },
+        {
+          "element": "degas-cap",
+          "reason": "Cap shape, color and markings for this truck are not established."
+        },
+        {
+          "element": "level-marks",
+          "reason": "The marks' exact styling on this truck is not established; no number scale."
+        }
+      ],
+      "sources": {
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf": {
+          "kind": "oem-text",
+          "establishes": "Ford TSB 20-2034 (2015-2019 F-150 incl. 5.0L): 'radiator drain valve', degas bottle cap opened carefully ('Water could be hot'), block-heater plug drains block, fill with Motorcraft Yellow."
+        },
+        "https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?variantid=3618&languageCode=en&countryCode=USA&Uid=G1724441&ProcUid=G1612346&userMarket=usa&div=f&vFilteringEnabled=False&buildtype=web": {
+          "kind": "oem-text",
+          "establishes": "Ford online Owner's Manual 'Engine Coolant Check' (copyright 2026; model not named): reservoir cap, MIN/MAX level marks, do not open hot, add prediluted, do not mix, dispose per local regulations."
+        },
+        "https://fordraptorforum.com/threads/proper-way-to-flush-and-fill-cooling-system.84933": {
+          "kind": "third-party-guide",
+          "establishes": "Forum thread quoting Ford WSM fill routine for a 2018 F-150 Raptor: degas bottle to MAX FILL, cap until it stops."
+        }
+      },
+      "gapFillNotes": [
+        "No photo or Ford figure of the 2015 F-150 5.0L degas bottle was read; request a user-supplied photo if a LOCATE image is wanted."
+      ]
+    },
+    {
+      "id": "f150-radiator-drain-valve",
+      "title": "Radiator drain valve (petcock)",
+      "imageType": "LOCATE",
+      "evidenceSteps": [
+        4,
+        6
+      ],
+      "viewpoint": "underside-front-low",
+      "elements": [
+        {
+          "id": "radiator-drain-valve",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The small valve at the bottom of the radiator that is opened to drain coolant and closed afterward."
+        },
+        {
+          "id": "drain-pan",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "A drain pan placed below the valve."
+        }
+      ],
+      "facts": [
+        {
+          "element": "radiator-drain-valve",
+          "attribute": "existence",
+          "urls": [
+            "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf",
+            "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+            "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150"
+          ],
+          "note": "Ford TSBs: 'radiator drain valve'; O'Reilly (2012 5.0L XLT): petcock at the radiator."
+        },
+        {
+          "element": "radiator-drain-valve",
+          "attribute": "action",
+          "urls": [
+            "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf",
+            "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150"
+          ],
+          "note": "Open to drain; close afterward."
+        },
+        {
+          "element": "drain-pan",
+          "attribute": "existence",
+          "urls": [
+            "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150",
+            "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant"
+          ],
+          "note": "Drain pan under the petcock."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "radiator-drain-valve",
+          "reason": "Position (corner, facing), valve shape and any skid plate for this 4x4 are not established; the passenger-corner description found online is for 1997-2003 trucks."
+        }
+      ],
+      "sources": {
+        "https://static.nhtsa.gov/odi/tsbs/2020/MC-10171861-0001.pdf": {
+          "kind": "oem-text",
+          "establishes": "Ford TSB 20-2034 (2015-2019 F-150 incl. 5.0L): 'radiator drain valve', degas bottle cap opened carefully ('Water could be hot'), block-heater plug drains block, fill with Motorcraft Yellow."
+        },
+        "https://static.nhtsa.gov/odi/tsbs/2019/MC-10156862-9999.pdf": {
+          "kind": "oem-text",
+          "establishes": "Ford TSB 19-2019 (2015-2018 F-150 incl. 5.0L, with block heater): 'Close the radiator drain valve', Yellow refill, label."
+        },
+        "https://oreillyauto.com/how-to-hub/how-to-replace-the-thermostat-2009-2017-ford-f150": {
+          "kind": "third-party-guide",
+          "establishes": "O'Reilly 2012 5.0L F-150 XLT thermostat page: petcock at the radiator, run with heater on, check level."
+        },
+        "https://www.carcarekiosk.com/video/2014_Ford_F-150_Platinum_6.2L_V8/coolant_antifreeze/flush_coolant": {
+          "kind": "third-party-guide",
+          "establishes": "carcarekiosk 2014 F-150 flush page: petcock or lower hose, flush with distilled water, burp the system."
+        }
+      },
+      "gapFillNotes": [
+        "No source gives the valve position for this config; a user-supplied photo is required for a LOCATE image."
+      ]
+    },
+    {
+      "id": "f150-coolant-jug-identification",
+      "title": "Motorcraft coolant jugs: Orange vs Yellow vs Gold (read the spec code)",
+      "imageType": "IDENTIFY",
+      "evidenceSteps": [
+        8,
+        15
+      ],
+      "viewpoint": "product-flat-lay",
+      "elements": [
+        {
+          "id": "coolant-jug-label",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The label panel of a Motorcraft prediluted coolant jug showing the product code (VC-3DIL-B or VC-13DL-G) and the Ford specification line."
+        },
+        {
+          "id": "spec-code-line",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The 'Approved to Ford Specification WSS-M97B44-D2 / WSS-M97B57-A2' line that decides the choice, not the color word."
+        }
+      ],
+      "facts": [
+        {
+          "element": "coolant-jug-label",
+          "attribute": "existence",
+          "urls": [
+            "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000",
+            "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000"
+          ],
+          "note": "Product pages list the VC-3DIL-B and VC-13DL-G jugs with their approval statements."
+        },
+        {
+          "element": "spec-code-line",
+          "attribute": "text",
+          "urls": [
+            "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000",
+            "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000",
+            "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf"
+          ],
+          "note": "Spec codes -D2 (Orange prediluted) and -A2 (Yellow prediluted); brochure lists Gold VC-7 as WSS-M97B51-A1 and describes its color as yellow."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "coolant-jug-label",
+          "reason": "Exact label artwork, layout and brand logos are not available from any source read; draw a generic jug and do not reproduce Motorcraft trade dress."
+        }
+      ],
+      "sources": {
+        "https://www.motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/orange-prediluted-antifreeze-coolants.html/1000": {
+          "kind": "oem-text",
+          "establishes": "Motorcraft Orange prediluted VC-3DIL-B product page: WSS-M97B44-D2, do not mix colors/types."
+        },
+        "https://motorcraft.com/us/en_us/home/our-products/chemicals-and-lubricants/ac-and-engine-cooling-products/engine-cooling-system-products/yellow-prediluted-antifreeze-coolants.html/1000": {
+          "kind": "oem-text",
+          "establishes": "Motorcraft Yellow prediluted VC-13DL-G product page: WSS-M97B57-A2, do not mix colors/types unless directed."
+        },
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/Coolants_Brochure.pdf": {
+          "kind": "oem-text",
+          "establishes": "Motorcraft brochure MA-19624 (rev 8/18/2015): coolant part numbers, spec codes and application years; use only distilled water."
+        }
+      },
+      "gapFillNotes": [
+        "No product photos were fetched; this is a schematic of what to read, not a depiction of the real jug."
+      ]
+    }
+  ],
+  "resolutionNotes": [
+    "TESTED CURATED CLAIM: 'Orange VC-3 / VC-3DIL-B; Gold VC-7 / WSS-M97B51-A1' -> CONFIRMED by Motorcraft brochure MA-19624.",
+    "TESTED CURATED CLAIM: 'WSS-M97B44-D, 50/50 premix' -> PARTLY CONTRADICTED: Ford lists -D for concentrate VC-3 and -D2 for prediluted VC-3DIL-B.",
+    "TESTED CURATED CLAIM: 'Yellow WSS-M97B57-A1/-A2 service replacement for Orange-filled vehicles' -> CONFIRMED (Ford Aug 2020 document via forum mirror; Ford TSBs for 2015+ F-150 5.0L refill with Yellow). The Motorcraft prediluted page lists only -A2; -A1 appears in a forum quote of SSM 48778 and a Ford chart posted on BITOG.",
+    "TESTED CURATED CLAIM: 'Yellow is NOT a universal substitute and must not be used on vehicles factory-filled with any other Motorcraft coolant, Gold included' -> CONFIRMED in substance; Gold is not named in the document read.",
+    "TESTED CURATED CLAIM: 'The factory fill here is Orange' -> CANNOT BE CONFIRMED from any Ford document read.",
+    "TESTED CURATED CLAIM: 'Ford is phasing Orange out of the catalog' -> NOT CONFIRMED.",
+    "TESTED CURATED CLAIM: '~16.6 qt (15.7 L)' -> NOT CONFIRMED; secondary sources say 15.9 qt (15.0 L); Ford-hosted online manual page for an unnamed 5.0L says 13.9 qt (13.2 L). CONFLICT.",
+    "NEW FINDING: sources conflict on cabin-heater setting during bleeding (Ford WSM quote for a Raptor says climate OFF; O'Reilly says heater ON).",
+    "NEW FINDING: Ford's brochure calls Gold (VC-7) 'yellow' colored, so color words are unsafe for identifying coolant.",
+    "Jack-stand wording: D5 policy wording used exactly except the sentence about the plastic pad (BMW-specific) was replaced by the F-150 owner's-manual reference (page 352 per the 2015 table of contents). No stand position is given.",
+    "Origin groups: the five NHTSA-hosted TSBs, SSM 47740, the Motorcraft brochure/product pages, the Ford online manual pages and the Aug 2020 document mirror are all Ford documents (one corporate origin, but different documents). fordmasterx and BITOG's 15.9 qt may share one origin (unproven). O'Reilly, carcarekiosk, BITOG, f150forum, fordraptorforum, 2carpros, f150hub, truedelta are independent third parties."
+  ]
+}

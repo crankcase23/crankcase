@@ -1,0 +1,848 @@
+{
+  "guide": 2,
+  "name": "Battery Replacement",
+  "vehicle": "2015-ford-f150-5.0l",
+  "evidenceTier": "standard",
+  "primarySourceFound": true,
+  "primaryScope": "Motorcraft battery spec pages on ford.com (BXT65650, BXT94RH7730) and a Motorcraft PDF on parts.ford.com: part numbers and ratings only. No Ford replacement procedure, battery location, fitment list for this truck, or torque was readable.",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Config: 2015 Ford F-150 XLT SuperCrew 4x4, 5.0L Coyote Gen 2, 6R80 (13th generation, P552). No Ford service procedure for this truck was readable. Ford documents that WERE read: (1) the 2015 F-150 owner's manual PDF from fordservicecontent.com, but the fetch tool's text extraction stops after roughly page 60, before 'Jump Starting the Vehicle' (printed p.279 in the Aug-2015 4th printing; p.282 in the manualslib index) and 'Changing the 12V Battery' (p.309), so only the table of contents, the symbols glossary (Battery, Battery acid, Explosive gas, no smoking/flames/sparks) and the California Proposition 65 lead warning were read; (2) two Motorcraft spec pages on ford.com and a Motorcraft PDF on parts.ford.com, which confirm Motorcraft battery part numbers and ratings (BXT65650 = Group 65, 650 CCA; BXT94RH7730 = Group 94, 730 CCA) but whose 'Fits These Vehicles' lists were not captured. primarySourceFound is therefore false: no Ford document covering the replacement procedure, battery location or this truck's fitment was readable. The procedure below is built from generic and prior-generation third-party how-tos and is marked VERIFIED_SECONDARY only where 2+ independent origins agree, with config-dependent items left open. CURATED CATALOG CLAIM TESTED: src/data/vehicles.ts says 'Battery: Group size 65, ~750 CCA' for this id. It is NOT supported and is contradicted by every independent 2015 F-150 fitment list read: the Ford-catalog-derived listing on fordpartsdeal.com (one origin, also seen on Tasca and others) lists only BXT-48H6-610, BAGM-48H6-760 (Group 48/H6) and BXT-94RH7-730, BAGM-94RH7-800 (Group 94R/H7) for 2015-17, plus two battery covers keyed to the '48 series' and '94 series'; Advance Auto Parts and Batteries Plus list only Group 48/H6 and 94R/H7 for the 2015 F-150; Autopadre and TruckPowered give H7 (2015) and H6 (2016-20) and place Group 65 on the 2009-2014 trucks; the O'Reilly and ford-trucks.com Group 65 statements are for 2004-2008 trucks. Only a low-quality aggregator (fourwheelask) says 'some early 13th-gen trucks shipped with Group 65', uncorroborated. A Motorcraft Group 65 line (BXT65650, BXT65750, BXT 65-850) exists, so the 65/750 figure may be a carry-over from the previous generation (inference, not proven). Which of Group 48 or 94R, and which CCA/chemistry, the 5.0L XLT 4x4 uses was NOT settled by any source for this exact config: it stays UNKNOWN and the guide must tell the owner to read the old battery's label. Torque values: none found for terminal nuts or hold-down; all MISSING. BMS/battery-sensor reset: sources conflict and none is for this exact config. Evidence tier standard: no safety-critical element beyond ordinary battery hazards (acid, hydrogen, sparks, lifting), and the procedure carries no torque-critical or airbag/high-voltage element.",
+  "variantDependencies": [
+    "UNKNOWN: battery group size for THIS truck (5.0L XLT SuperCrew 4x4). Ford-catalog-derived data for 2015-17 F-150 lists both Group 48/H6 (BXT-48H6-610 standard; BAGM-48H6-760 AGM) and Group 94R/H7 (BXT-94RH7-730; BAGM-94RH7-800 AGM) plus covers per series (KL3Z-10A687-B for 48 series, -A for 94 series). Which one applies to the 5.0L is not stated by any source read; Tasca's listing ties BXT-48H6-610 to 2.7L/3.0L only. Catalog entry 'Group 65' is unsupported.",
+    "UNKNOWN: factory CCA and chemistry for this config (flooded vs EFB vs AGM; 610/730/760/800 are the Ford catalog ratings listed for the model line). A 2016 3.5L Lariat owner reports 730 CCA original and calls 610 'the standard' on the forum; nothing for the 5.0L.",
+    "UNKNOWN: heavy-duty / Max Trailer Tow battery package. One low-quality article says 94R goes with the max tow package, start-stop or 3.5L; unverified. Check the old battery label and the window sticker/VIN build data.",
+    "UNKNOWN: start-stop. Tasca/AutoNation note a 730 CCA battery 'without auto stop-go' for 2017-20 trucks; no source says whether any 2015 5.0L truck has start-stop. Do not claim either way for this config.",
+    "UNKNOWN: dual-battery variant. A ford-trucks.com thread titled 'Dual Battery Locations in 2015 F150' exists but its page could not be fetched, so nothing is known about whether any factory dual-battery variant exists for this truck.",
+    "UNKNOWN: battery position (which side of the engine bay), tray, hold-down bracket shape and fastener size. Sources only say the battery is in the engine compartment (GembaAutomotive: 'near the front of the engine compartment, on either the driver's or passenger's side'; TruckPowered says passenger side; luffi says usually the right side). A Ford catalog listing gives a tray FL3Z-10732-A (same number listed for 2015-17 and 2018-20) but no geometry.",
+    "UNKNOWN: whether this truck has a battery monitoring system / battery sensor and whether any reset or registration is required after replacement. The Ford catalog listing for 2015-17 shows battery sensor parts (BT4Z-14B357-B inner, -C outer; notes mention 2.7L, 3.5L, 5.0L) and a 'Battery Management System' DS7Z-10C679-A (2.7L, outer), and aftermarket listings call DS7Z-10C679-A a battery current sensor for 2015-2019 F-150 (engine not given). Forum sources disagree on whether a reset is needed (see step 13).",
+    "UNKNOWN: radio code requirement. Carcarekiosk (2013 and 2015 pages) says only that some F-150s may need a radio security code. Whether this truck's audio unit does is not known.",
+    "Build-date dependence is visible only on cables: FL3Z-14300-C 'with 5.0L, to 10/12/2015', FL3Z-14300-DL '10/2015 to 09/2016, 3.5L and 5.0L Coyote options'. This guide does not replace cables; it matters only if cable replacement is added.",
+    "Cab and drive: no source distinguishes battery fitment by SuperCrew vs other cabs or by 4x4 vs 2WD. The ledger does NOT claim that findings apply to 2WD, other cabs, other model years, other engines or other trims. Vehicle Atlas decides any wider fitment.",
+    "Generation: the O'Reilly how-to (2004-2008) and the CarCareKiosk 2013 page describe previous-generation trucks; they are used only for generic steps (order of cable removal, protectant spray) and every step that rests on them says so."
+  ],
+  "tools": [
+    {
+      "item": "Eye protection and gloves",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ],
+      "note": "Generic battery PPE; GembaAutomotive page is titled for 2015-2020 F-150, O'Reilly is a 2004-2008 truck."
+    },
+    {
+      "item": "Socket/wrench for the terminal clamp nuts (size NOT established for this truck)",
+      "status": "MISSING",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ],
+      "note": "O'Reilly says 8 mm deep socket for a 2004-2008 truck; GembaAutomotive (2015-2020) gives no size; no source gives a size for the 13th generation. Do not state a socket size for this truck."
+    },
+    {
+      "item": "Ratchet and extension for the hold-down (size NOT established for this truck)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ],
+      "note": "O'Reilly (2004-2008 truck) lists an 8 mm socket with a 6-inch extension for the hold-down bolt. Prior generation only."
+    },
+    {
+      "item": "Battery terminal cleaner or wire brush",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ]
+    },
+    {
+      "item": "Anti-corrosion terminal protectant spray (optional)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ]
+    },
+    {
+      "item": "Memory saver (optional)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://tohline.education/SelfGravitatingFluids/index.php/Ford_F150:_Easy_Methods_To_Replace_A_Battery"
+      ],
+      "note": "Both call it optional and generic (not specific to the 13th generation). No Ford document read says whether a memory saver is advisable on this truck, so the guide must not require one or recommend a specific device."
+    },
+    {
+      "item": "Scan tool able to run a Ford battery-monitoring reset (FORScan with extended license, IDS/FDRS), only if a reset is wanted",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://towratings.net/blog/how-to-reset-the-ford-battery-management-system/"
+      ],
+      "note": "TowRatings says FORScan, IDS or FDRS can run a Battery Monitoring System Reset; it cites no Ford document and its claims are not for this exact config. Whether this truck needs it is a CONFLICT (see step 13)."
+    },
+    {
+      "item": "Battery charger (to fully charge the new battery before fitting)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.f150forum.com/f118/battery-replacement-538287/"
+      ],
+      "note": "One forum poster (2015 3.5 EcoBoost Lariat) says fully charge the new battery before installing it."
+    }
+  ],
+  "parts": [
+    {
+      "item": "Replacement battery: MUST be chosen by the label of the battery removed from this truck (group size, CCA, flooded/EFB/AGM, terminal layout)",
+      "status": "VERIFIED_SECONDARY",
+      "partNumber": null,
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://shop.advanceautoparts.com/find/2015-ford-f-150-batteries",
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015",
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+      ],
+      "note": "Four hosts agree the 2015 F-150 has more than one battery fit (Group 48/H6 and Group 94R/H7, flooded and AGM; Advance also EFB), that listings do not split by the 5.0L, and that terminal layout and footprint must match the original. fordpartsdeal is relaying Ford catalog data and Advance/Batteries Plus are separate retailers; KBB gives the generic 'match footprint and terminal layout' rule. No source for this exact config chooses between them. Keep no battery part number as the buy instruction."
+    },
+    {
+      "item": "Motorcraft BXT-48H6-610 (Group 48, 610 CCA, standard)",
+      "status": "SINGLE_SOURCE",
+      "partNumber": "BXT-48H6-610",
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://www.tascaparts.com/c/chargingstartingsystems/batteries"
+      ],
+      "note": "Two hosts, one origin (Ford parts-catalog data relayed by dealer-parts sites). Tasca text: '2015-17, 610 amp. Standard. 2.7, 3.0L'; so it is tied to the smaller engines there, NOT shown for the 5.0L. ford.com has a BXT48H6610 product page titled '610 CCA Group Size 48' (seen as a search-result title only; page not read)."
+    },
+    {
+      "item": "Motorcraft BXT-94RH7-730 (Group 94R/H7, 730 CCA)",
+      "status": "SINGLE_SOURCE",
+      "partNumber": "BXT-94RH7-730",
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://www.f150forum.com/f118/battery-replacement-538287/",
+        "https://www.ford.com/product/vehicle-battery-p4000013419"
+      ],
+      "note": "Ford catalog relay lists it for 2015-17 F-150; the ford.com page confirms Group 94 / 730 CCA for the part but its fitment list was not captured. A forum poster (2016 3.5 Lariat) cites it as original. AutoNation/Blue Springs dealer text says '2017-20 ... 2.7L, 3.0L, 3.7L, without auto stop-go' and that it is 'not for sale'. Not shown for the 5.0L. Treated as one catalog origin plus one forum post for another engine."
+    },
+    {
+      "item": "Motorcraft AGM options for 2015-17 F-150: BAGM-48H6-760 (Group 48) and BAGM-94RH7-800 (Group 94R)",
+      "status": "SINGLE_SOURCE",
+      "partNumber": "BAGM-48H6-760, BAGM-94RH7-800",
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries"
+      ],
+      "note": "Single catalog-relay listing; no source says which config originally carried AGM or whether AGM is required on any 2015 truck."
+    },
+    {
+      "item": "Motorcraft Group 65 family (BXT65650 = 650 CCA; BXT65750 = 750 CCA; BXT 65-850 heavy-duty) - fitment to THIS truck",
+      "status": "MISSING",
+      "partNumber": "BXT65650 (read), BXT65750 (title only), BXT 65-850 (read in Motorcraft PDF)",
+      "primary": true,
+      "sources": [
+        "https://www.ford.com/product/vehicle-battery-p4000118066",
+        "https://parts.ford.com/content/dam/ford-parts/resources/motorcraftpdf/TESTED_TOUGH_MAX_Batteries.pdf",
+        "https://www.ford-trucks.com/forums/907449-battery-replacement-bxt-65-650-a.html"
+      ],
+      "note": "Ford/Motorcraft pages confirm the Group 65 parts exist (BXT65650: 650 CCA, Group 65; PDF: BXT 65-850 for 'Heavy Duty Group 65 Applications'). Their fitment lists were not captured, and no source ties any Group 65 battery to a 2015 F-150. The only F-150 Group 65 evidence is for a 2005 truck (ford-trucks.com: original BXT-65-650) and 2004-2008 (O'Reilly). This is the likely origin of the catalog's Group 65 claim (inference)."
+    },
+    {
+      "item": "Battery tray",
+      "status": "SINGLE_SOURCE",
+      "partNumber": "FL3Z-10732-A",
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries"
+      ],
+      "note": "Listed for both 2015-17 and 2018-20. Replace only if damaged or corroded; no source gives dimensions."
+    },
+    {
+      "item": "Battery cover / heat shield by series: KL3Z-10A687-B (48 series), KL3Z-10A687-A (94 series)",
+      "status": "SINGLE_SOURCE",
+      "partNumber": "KL3Z-10A687-B / KL3Z-10A687-A",
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries"
+      ],
+      "note": "Shows a cover exists on this model line and that it comes in two series-specific versions, which supports 'match the existing cover to the battery size'. Whether this 5.0L truck has the cover or which version is not known."
+    },
+    {
+      "item": "Battery cable (positive+negative harness) 'with 5.0L, to 10/12/2015'; later 5.0L cable FL3Z-14300-DL (10/2015 to 09/2016)",
+      "status": "SINGLE_SOURCE",
+      "partNumber": "FL3Z-14300-C; FL3Z-14300-DL",
+      "primary": false,
+      "sources": [
+        "https://www.fordoempartsdirect.com/oem-parts/ford-battery-cable-harness-fl3z14300c",
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries"
+      ],
+      "note": "Two hosts, one catalog origin. Production-date dependent; FL3Z-14300-C marked discontinued. Not part of a battery swap; recorded only so a damaged-cable job is not mis-scoped."
+    },
+    {
+      "item": "Battery sensor parts in the catalog: BT4Z-14B357-B (inner) / -C (outer); DS7Z-10C679-A 'Battery Management System' (2.7L, outer)",
+      "status": "CONFLICT",
+      "partNumber": "BT4Z-14B357-B/-C; DS7Z-10C679-A (aftermarket cross-ref DS7T-10C652-AC)",
+      "primary": false,
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://brookealvinston.com/products/ds7z-10c679-a-battery-current-sensor-battery-current-sensor/212754891/"
+      ],
+      "conflicts": "The Ford catalog relay shows BT4Z-14B357 (notes mention 2.7L, 3.5L, 5.0L) and calls DS7Z-10C679-A a Battery Management System (2.7L); an aftermarket seller lists DS7Z-10C679-A as a battery current sensor fitting 2015-2019 F-150 with no engine. Neither says where the sensor is mounted on a 5.0L truck, what it does, or whether it must be disturbed during a battery swap. Do not tell the owner where it is or that it is on the negative cable."
+    }
+  ],
+  "fluids": [],
+  "torque": [
+    {
+      "fastener": "Battery terminal clamp nuts (positive and negative)",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/"
+      ],
+      "conflicts": null,
+      "note": "No value on any page read. O'Reilly (2004-2008 truck) says only to tighten 'securely' and lists a torque wrench without values; GembaAutomotive, KBB and CarCareKiosk give none. No Ford workshop manual page or owner's manual page for this truck was readable. A 2014 Mustang workshop-manual section 414-01 exists on a third-party mirror (reichwein.it) but it is a different vehicle and was not read or used.",
+      "primary": false
+    },
+    {
+      "fastener": "Battery hold-down bolt/bracket",
+      "value": "MISSING",
+      "status": "MISSING",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ],
+      "conflicts": null,
+      "note": "No value found. Fastener size for the 13th generation also not found (O'Reilly's 8 mm is for 2004-2008).",
+      "primary": false
+    }
+  ],
+  "specs": [
+    {
+      "item": "Catalog claim 'Group size 65, ~750 CCA' (src/data/vehicles.ts, id 2015-ford-f150-5.0l)",
+      "value": "NOT SUPPORTED. No independent 2015 F-150 fitment list read contains Group 65; the lists show Group 48/H6 and Group 94R/H7 only. ~750 CCA is not a Ford catalog rating for the model line (610, 730, 760 AGM, 800 AGM) though it is near 730-760.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://shop.advanceautoparts.com/find/2015-ford-f-150-batteries",
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015",
+        "https://www.autopadre.com/battery-size/ford-f-150",
+        "https://truckpowered.com/ford-f-150-battery-size-type-replacement-tips-by-model-year/",
+        "https://fourwheelask.com/?p=41370"
+      ],
+      "conflicts": "Only fourwheelask (low-quality aggregator whose own CCA figures contradict each other) says some early 13th-gen trucks shipped with Group 65. TruckPowered and Autopadre place Group 65 on 2009-2014. Absence from retailer lists is weaker than a statement, so the claim is 'unsupported and contradicted by lists', not 'proven false'."
+    },
+    {
+      "item": "Group sizes that appear for the 2015 F-150 in independent lists",
+      "value": "Group 48/H6 and Group 94R/H7 (Advance also lists T6/91 and Optima 34R). Which applies to the 5.0L XLT 4x4 is unknown.",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://shop.advanceautoparts.com/find/2015-ford-f-150-batteries",
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015"
+      ],
+      "primary": false
+    },
+    {
+      "item": "Factory CCA for the 5.0L",
+      "value": "MISSING. Ford-catalog ratings for the model line are 610, 730, 760 (AGM), 800 (AGM); none is tied to the 5.0L.",
+      "status": "MISSING",
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://www.tascaparts.com/c/chargingstartingsystems/batteries"
+      ]
+    },
+    {
+      "item": "Battery location",
+      "value": "Engine compartment (side for this truck not established; GembaAutomotive says driver's or passenger's side, TruckPowered says passenger side)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://truckpowered.com/ford-f-150-battery-size-type-replacement-tips-by-model-year/",
+        "https://luffi.net/where-is-ford-f-150-battery-pd1095/"
+      ],
+      "primary": false,
+      "note": "'In the engine compartment' is agreed by three origins; the side is not. The Ford owner's manual describes it but that page was not readable."
+    },
+    {
+      "item": "Owner's manual chapters covering the job",
+      "value": "'Jump Starting the Vehicle' (p.279 in the Aug-2015 4th printing PDF TOC; p.282 in the manualslib index) and 'Changing the 12V Battery' (p.309) exist. Body text NOT read (fetch tool extraction ends near p.60).",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Owners-Manual-version-4_om_EN-US_08_2015.pdf",
+        "https://www.manualslib.com/manual/832180/Ford-2015-F-150.html"
+      ],
+      "primary": true,
+      "note": "Verifies only that the chapters exist and their page numbers; page numbers differ between printings."
+    },
+    {
+      "item": "Owner's manual hazard content on batteries",
+      "value": "Symbols glossary lists Battery, Battery acid, Explosive gas, 'Avoid smoking, flames or sparks'. California Prop 65 notice: battery posts, terminals and related accessories contain lead and lead compounds; wash hands after handling.",
+      "status": "VERIFIED",
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Owners-Manual-version-4_om_EN-US_08_2015.pdf"
+      ],
+      "primary": true,
+      "note": "One Ford document (the owner's manual itself is the primary)."
+    },
+    {
+      "item": "Battery monitoring / reset need after replacement",
+      "value": "Disputed; see step 13. Reports: 2015 3.5L Lariat owner says follow a BMS reset procedure and leave the truck 8+ hours with the driver door locked via the switch; 2009-2014 thread quotes a 2014 manual as saying only an 8-hour key-off relearn; TowRatings says a reset is needed and describes FORScan and a brake-pedal method for 2010-2017 F-150.",
+      "status": "CONFLICT",
+      "sources": [
+        "https://www.f150forum.com/f118/battery-replacement-538287/",
+        "https://www.ford-trucks.com/forums/1624914-how-reset-battery-management-system.html",
+        "https://towratings.net/blog/how-to-reset-the-ford-battery-management-system/"
+      ],
+      "conflicts": "None is for a 5.0L 2015 truck; the ford-trucks thread is for 2009-2014; TowRatings cites no Ford document. The brake-pedal sequence is NOT adopted."
+    },
+    {
+      "item": "Core charge / recycling",
+      "value": "Lead-acid batteries must be recycled; stores refund a core deposit when the old battery is returned (examples: $22 at Batteries Plus on the 2015 F-150 listing).",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015"
+      ],
+      "primary": false
+    },
+    {
+      "item": "Relevant 2015 F-150 TSBs/recalls",
+      "value": "None found for battery replacement. The only battery-mentioning TSB title seen was TSB 44869 (07/01/15): intermittent blower motor problems may be caused by a faulty cell in the battery (aggregator summary only, text not read).",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.truedelta.com/Ford-F-150-tsbs-87,2015"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Confirm the battery is the problem",
+      "instruction": "Before buying a battery, check the symptoms (slow crank, clicking, dim lights, corrosion at the terminals) and test the battery with a meter or have it load-tested; a resting reading of about 12.6 V indicates a full charge, and the voltage should dip and recover during cranking. A failing alternator can drain or damage a new battery, so have charging checked after any replacement.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Generic checks, not specific to this truck. No Ford diagnostic procedure for this truck was read.",
+        "One aggregator lists a 2015 F-150 TSB 44869 saying a faulty battery cell can cause intermittent blower-motor symptoms (text not read)."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://tohline.education/SelfGravitatingFluids/index.php/Ford_F150:_Easy_Methods_To_Replace_A_Battery",
+        "https://www.truedelta.com/Ford-F-150-tsbs-87,2015"
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Read the old battery's label and choose the replacement",
+      "instruction": "While the old battery is still in the truck, read its label (group size, CCA, reserve capacity, flooded/EFB/AGM, date code, terminal layout). Buy a battery with the same group size, the same type and the same terminal layout and footprint; the 2015 F-150 model line is listed with both Group 48/H6 and Group 94R/H7 batteries, and with AGM versions, so size and chemistry cannot be inferred from the year or engine. If the original is an AGM, replace it with an AGM.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "The catalog entry that says Group 65 is not supported; do not buy by that number.",
+        "No source settles group size, CCA or chemistry for this exact 5.0L XLT SuperCrew 4x4; the label is the authority.",
+        "The 'replace AGM with AGM' rule is from one low-quality aggregator (fourwheelask) and one start-stop remark (TruckPowered); treat it as a precaution."
+      ],
+      "sources": [
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries",
+        "https://shop.advanceautoparts.com/find/2015-ford-f-150-batteries",
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015",
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/",
+        "https://fourwheelask.com/?p=41370"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Prepare the truck and yourself",
+      "instruction": "Park on level ground, set the parking brake, switch the engine off and take the key away. Put on eye protection and gloves. Keep the radio code, if your radio has one, and any settings you want to restore (presets, clock) noted before the battery is disconnected. Keep tools, rings and watches away from the battery posts.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Whether this truck's radio asks for a code is unknown; CarCareKiosk only says 'some F-150s'.",
+        "Do not let a metal tool touch a terminal and any metal part of the truck at the same time."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.carcarekiosk.com/video/2015_Ford_F-150_XLT_3.5L_V6_Turbo_Crew_Cab_Pickup/battery/replace_battery",
+        "https://tohline.education/SelfGravitatingFluids/index.php/Ford_F150:_Easy_Methods_To_Replace_A_Battery"
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Open the hood, find the battery and remove any cover",
+      "instruction": "Open and secure the hood. The battery is in the engine compartment. Which side it sits on for your truck is not established by a strong source (one article says passenger side, another says driver's or passenger's side), so identify it by sight. Remove any plastic battery cover or heat shield that is fitted; Ford's catalog lists a battery cover for this model line in two versions, one for 48-series and one for 94-series batteries.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Side of the engine bay, cover shape and whether a cover is fitted to this truck are not established. Do not describe them to the owner as fact.",
+        "Photograph the cable routing and cover before removing anything."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://truckpowered.com/ford-f-150-battery-size-type-replacement-tips-by-model-year/",
+        "https://luffi.net/where-is-ford-f-150-battery-pd1095/",
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Disconnect the negative (black) cable first",
+      "instruction": "Loosen the negative terminal clamp nut, lift the clamp off the post and move the cable well away so it cannot spring back onto the post. Do not use force on the clamp; if any sensor or module is attached to the negative cable on your truck, do not pry at it or loosen its fasteners.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Never disconnect either cable with the engine running.",
+        "The nut size for this truck is not established (O'Reilly's 8 mm is for 2004-2008).",
+        "Whether this truck has a battery sensor on the negative cable is UNKNOWN; the 'do not disturb' line is a precaution, not a sourced fact about this truck."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Disconnect the positive (red) cable",
+      "instruction": "Open or pop off any red terminal cover, loosen the positive clamp nut, lift the cable off the post and secure it away from metal. A tool resting across the positive post and any metal part of the truck causes a short, so work with one hand and keep the wrench clear.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Whether this truck has a red positive-terminal cover is only reported for a 2004-2008 truck (O'Reilly); treat as 'if fitted'.",
+        "Never let the cable ends touch each other or the body."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Release the hold-down and lift the battery out",
+      "instruction": "Remove the hold-down clamp or bracket; a ratchet with an extension may be needed to reach its bolt. Lift the old battery straight out and keep it upright, away from your face and clothing.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Batteries are heavy; lift with your legs and a firm grip, do not tip it.",
+        "The weight of this truck's battery and the hold-down bolt size are not established by any source read.",
+        "Hold-down shape, position and number of fasteners on a 13th-generation truck are not established."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+      ]
+    },
+    {
+      "n": 8,
+      "title": "Clean the tray and the cable ends",
+      "instruction": "Inspect the tray and hold-down for cracks or corrosion. Clean the terminal clamps and cable ends with a terminal cleaner or brush (or a baking-soda and water mixture), wipe the tray dry, and do not let debris fall into the tray.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Baking-soda residue and acid are corrosive; keep them off paint and wear eye protection.",
+        "Replace a cable that shows damaged strands or a cracked clamp instead of cleaning it."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Seat the new battery and secure the hold-down",
+      "instruction": "Set the new battery in the tray with the positive post on the same side as the positive cable (compare against your photo and the old battery), confirm the footprint and terminal layout match, and refit the hold-down so the battery cannot move. Tug the battery to confirm.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Do not force a battery that does not fit; terminal layout and footprint differ between Group 48 and Group 94R and between brands.",
+        "No torque value for the hold-down is available: tighten firmly, not to the point of cracking the case.",
+        "On the 2004-2008 truck the case lip sat under a ridge at the front of the tray (O'Reilly); that detail is not confirmed for this truck."
+      ],
+      "sources": [
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/",
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Reconnect positive first, then negative last",
+      "instruction": "Fit the positive clamp on the positive post and tighten, then fit the negative clamp and tighten it last. A small spark at the final connection is possible. Make sure both clamps are seated fully and cannot be twisted by hand.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Never reverse the order and never connect with reversed polarity.",
+        "No clamp-nut torque available: snug, not crushing; do not over-tighten the lead posts."
+      ],
+      "sources": [
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+      ]
+    },
+    {
+      "n": 11,
+      "title": "Refit the battery cover and optional protectant",
+      "instruction": "Refit any battery cover or heat shield removed in step 4. If you use terminal protectant, spray the posts, clamps and cable ends lightly from a distance and wipe overspray off the battery case and painted parts.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "The cover instruction rests on a 2004-2008 how-to (O'Reilly), a 2005-truck forum post (the Ford manual called for replacing the cover) and the Ford catalog's cover part listing; nothing confirms a cover on this exact truck."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+        "https://www.ford-trucks.com/forums/907449-battery-replacement-bxt-65-650-a.html"
+      ]
+    },
+    {
+      "n": 12,
+      "title": "Start the truck and expect settings to need restoring",
+      "instruction": "Start the engine and check that the battery warning light goes out and electrical features work. Expect to re-enter radio presets and the clock and to enter the radio code if your radio asks for one. The transmission may feel slightly different for a while as it adapts again. Have the charging system tested.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "These effects come from CarCareKiosk (2013 page and 2015 page, one origin) and O'Reilly (battery light and alternator check). No source read describes idle relearn, window express operation or any other reset for this truck, so none is claimed.",
+        "Whether this truck stores a battery-age value or needs a reset is step 13."
+      ],
+      "sources": [
+        "https://www.carcarekiosk.com/video/2015_Ford_F-150_XLT_3.5L_V6_Turbo_Crew_Cab_Pickup/battery/replace_battery",
+        "https://www.carcarekiosk.com/video/2013_Ford_F-150_XLT_3.7L_V6_FlexFuel_Standard_Cab_Pickup/battery/replace_battery",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+      ],
+      "sourcesNote": "Both CarCareKiosk pages are the same site and the same wording, so they count as one origin."
+    },
+    {
+      "n": 13,
+      "title": "Battery monitoring reset (only if the truck has the system)",
+      "instruction": "Sources disagree on whether a battery-monitoring reset is needed after replacement and none is for a 5.0L 2015 truck. One owner of a 2015 3.5L Lariat says to follow a reset procedure and then leave the truck locked with the driver door switch for at least 8 hours; a thread about 2009-2014 trucks quotes a 2014 manual as asking only for an 8-hour key-off relearn; one site says a FORScan/IDS/FDRS reset is needed. Check the owner's manual section 'Changing the 12V Battery' (p.309 in the Aug-2015 printing) for this truck before deciding.",
+      "status": "CONFLICT",
+      "warnings": [
+        "Do not tell the owner a reset is required or optional for this truck. The brake-pedal key-cycle method from TowRatings is not adopted (no Ford source).",
+        "Do not tell the owner this truck has or lacks a battery sensor."
+      ],
+      "sources": [
+        "https://www.f150forum.com/f118/battery-replacement-538287/",
+        "https://www.ford-trucks.com/forums/1624914-how-reset-battery-management-system.html",
+        "https://towratings.net/blog/how-to-reset-the-ford-battery-management-system/"
+      ]
+    },
+    {
+      "n": 14,
+      "title": "Recycle the old battery",
+      "instruction": "Do not put the old battery in the trash. Return it to the store that sold the new one or to a recycler; a refundable core deposit usually applies. Carry it upright and keep sparks and flame away from it.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Owner's manual notes battery posts and terminals contain lead: wash hands after handling (Ford owner's manual Proposition 65 notice)."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015",
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Owners-Manual-version-4_om_EN-US_08_2015.pdf"
+      ]
+    },
+    {
+      "n": 15,
+      "title": "Tightening torques",
+      "instruction": "No torque value for the terminal clamp nuts or the hold-down was found in any source read for this truck, and no Ford workshop manual or owner's manual page for these fasteners was readable. Tighten the clamps and hold-down firmly so nothing moves, without crushing the lead posts or cracking the case.",
+      "status": "MISSING",
+      "warnings": [
+        "Do not publish a number."
+      ],
+      "sources": []
+    }
+  ],
+  "safety": [
+    "Eye protection and gloves; battery acid and explosive hydrogen gas. The Ford owner's manual symbols glossary lists Battery, Battery acid, Explosive gas and 'Avoid smoking, flames or sparks'.",
+    "Engine off and key removed. Disconnect the negative cable first and reconnect it last; never let a tool or a loose cable bridge the terminals or touch the body while on the positive terminal.",
+    "Keep sparks, flames and smoking away from the battery: batteries release hydrogen gas (luffi, owner's manual symbol).",
+    "Never short the terminals; rings, watches and loose tools stay off the posts.",
+    "Batteries are heavy: lift with your legs and a firm grip, keep the battery upright. No source read gives the weight of this truck's battery.",
+    "Ford's owner's manual notes battery posts, terminals and related accessories contain lead and lead compounds; wash your hands after handling (Proposition 65 notice).",
+    "Memory and settings: the sources read say radio presets and the clock may clear, some F-150s may ask for a radio security code, and the transmission may feel different while it adapts. Nothing read supports claims about window express, idle relearn or other resets for this truck, so none is made. Whether a battery-monitoring reset is needed is disputed (step 13).",
+    "Jump-starting: follow the 'Jump Starting the Vehicle' section of the F-150 owner's manual (p.279 in the Aug-2015 printing; body text not read for this ledger). General practice, not from a Ford document in this ledger: never use jumper cables while a battery cable is disconnected or the battery is out of the truck, never mix up polarity, and do not jump a battery that is cracked, leaking or frozen.",
+    "Take the old battery to a recycler or a store core return; never throw it out.",
+    "Match the old battery's label; do not buy by year, by engine or by the Group 65 figure in the catalog."
+  ],
+  "missingEvidence": [
+    "Any Ford document body text for this truck on battery location, 'Changing the 12V Battery' (p.309) and 'Jump Starting the Vehicle' (p.279/282). The fordservicecontent.com owner's manual PDF is reachable but the fetch tool's extraction ends near p.60; direct downloads from fordservicecontent.com and www.ford.com were denied by the egress proxy.",
+    "Group size (Group 48/H6 vs Group 94R/H7), CCA and chemistry for the 5.0L XLT SuperCrew 4x4; fitment tab contents of the Motorcraft pages on ford.com were not captured.",
+    "Whether a Group 65 battery fits or ever shipped on any 2015 F-150 (only a low-quality aggregator says some early 13th-gen trucks did).",
+    "Heavy-duty/Max Trailer Tow battery package, start-stop and dual-battery variants for this config.",
+    "Battery position (side of engine bay), tray geometry, hold-down fastener type/size and number, terminal nut sizes for the 13th generation.",
+    "Torque values for terminal nuts and hold-down (Ford workshop manual 414-01 for this truck was not found).",
+    "Whether the truck has a battery sensor/monitoring system, where it mounts, whether it must be disturbed on replacement, and whether a reset is needed (the 8-hour relearn is only quoted for 2009-2014; BMS_Reset_Procedure_English.pdf attached to the F150Forum post was not readable).",
+    "Radio code requirement and any other settings that reset after power loss (window express, idle relearn) for this truck.",
+    "Weight of the factory battery, red positive cover existence, and battery cover shape for this truck.",
+    "Content of the ford-trucks.com thread 'Dual Battery Locations in 2015 F150' (fetch failed)."
+  ],
+  "ownerInputsNeeded": [
+    "Photo of the old battery's label (group size, CCA, flooded/EFB/AGM, terminal layout) and of the battery bay before anything is removed.",
+    "Build data from the window sticker or VIN decode: heavy-duty battery, Max Trailer Tow, or any dual-battery option.",
+    "Whether the radio asks for a code after power loss (owner's manual or dealer).",
+    "Decision on whether to publish step 13 (battery monitoring) once the owner's manual 'Changing the 12V Battery' page is read by a human or by a tool that can read past page 60."
+  ],
+  "visuals": [
+    {
+      "id": "f150-battery-bay-locate",
+      "title": "Engine-bay battery area: terminals, hold-down and cover",
+      "evidenceSteps": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "viewpoint": "engine-bay-top",
+      "imageType": "LOCATE",
+      "elements": [
+        {
+          "id": "battery",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "A single 12 V lead-acid battery in the engine compartment of the 2015 F-150 5.0L."
+        },
+        {
+          "id": "negative-terminal-clamp",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The negative post and its clamp; the first connection to loosen."
+        },
+        {
+          "id": "positive-terminal-clamp",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The positive post and its clamp, possibly under a red cover (only reported on a 2004-2008 truck)."
+        },
+        {
+          "id": "hold-down-bracket",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "A hold-down clamp or bracket that retains the battery; geometry for this truck not established."
+        },
+        {
+          "id": "battery-cover",
+          "role": "context",
+          "criticality": "identification",
+          "describe": "A plastic cover or heat shield over the battery, in a 48-series or 94-series version per the Ford catalog; shape not established."
+        }
+      ],
+      "facts": [
+        {
+          "element": "battery",
+          "attribute": "location",
+          "urls": [
+            "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+            "https://truckpowered.com/ford-f-150-battery-size-type-replacement-tips-by-model-year/",
+            "https://luffi.net/where-is-ford-f-150-battery-pd1095/"
+          ],
+          "note": "In the engine compartment; side not agreed (Gemba: driver's or passenger's; TruckPowered: passenger)."
+        },
+        {
+          "element": "negative-terminal-clamp",
+          "attribute": "existence",
+          "urls": [
+            "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+          ],
+          "note": "Negative cable removed first."
+        },
+        {
+          "element": "positive-terminal-clamp",
+          "attribute": "existence",
+          "urls": [
+            "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+          ],
+          "note": "Positive cable removed second."
+        },
+        {
+          "element": "hold-down-bracket",
+          "attribute": "existence",
+          "urls": [
+            "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150"
+          ],
+          "note": "Generic: a hold-down clamp or bracket is removed before lifting the battery out."
+        },
+        {
+          "element": "battery-cover",
+          "attribute": "existence",
+          "urls": [
+            "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries"
+          ],
+          "note": "Ford catalog relay lists KL3Z-10A687-B (48 series) and -A (94 series) covers for the model line; whether this truck has one is not confirmed."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "battery",
+          "reason": "Which side of the engine bay and the precise position/tray shape are not established, and Group 48 vs 94R size (so footprint) is unknown."
+        },
+        {
+          "element": "hold-down-bracket",
+          "reason": "Shape, location and fastener count/size are not established for the 13th generation."
+        },
+        {
+          "element": "positive-terminal-clamp",
+          "reason": "A red terminal cover is only reported on a 2004-2008 truck; do not depict a cover or its colour."
+        },
+        {
+          "element": "battery-cover",
+          "reason": "Cover shape and fit for the two series are not established; depict only as an unspecific plastic cover or omit."
+        }
+      ],
+      "sources": {
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/": {
+          "kind": "third-party-guide",
+          "establishes": "2015-2020 F-150 how-to: battery near the front of the engine compartment on the driver's or passenger's side; negative cable first, hold-down removed, positive first on reconnect."
+        },
+        "https://truckpowered.com/ford-f-150-battery-size-type-replacement-tips-by-model-year/": {
+          "kind": "third-party-guide",
+          "establishes": "Article says to find the battery on the passenger side for 2009-2025 models; low-quality source."
+        },
+        "https://luffi.net/where-is-ford-f-150-battery-pd1095/": {
+          "kind": "third-party-guide",
+          "establishes": "Generic F-150 article: battery usually under the hood, usually on the right side of the engine; not 2015-specific."
+        },
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150": {
+          "kind": "third-party-guide",
+          "establishes": "2004-2008 F-150 how-to: negative first, red positive cover, hold-down bolt, plastic battery cover. Previous generation."
+        },
+        "https://fordpartsdeal.com/parts-select/2015-ford-f-150-car-batteries": {
+          "kind": "parts-catalog",
+          "establishes": "Ford catalog data relay for the 2015-17 F-150: batteries BXT-48H6-610, BAGM-48H6-760, BAGM-94RH7-800, BXT-94RH7-730; tray FL3Z-10732-A; covers KL3Z-10A687-B/-A; battery sensor parts."
+        }
+      }
+    },
+    {
+      "id": "f150-battery-label-identify",
+      "title": "Read the old battery's label before buying",
+      "evidenceSteps": [
+        2,
+        9
+      ],
+      "viewpoint": "close-up-battery-top",
+      "imageType": "IDENTIFY",
+      "elements": [
+        {
+          "id": "battery-label",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The label on the old battery showing group size, CCA, reserve capacity and type; the item the replacement must match."
+        },
+        {
+          "id": "terminal-layout",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "Which end/side carries the positive post, to compare against the new battery."
+        }
+      ],
+      "facts": [
+        {
+          "element": "battery-label",
+          "attribute": "purpose",
+          "urls": [
+            "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/",
+            "https://shop.advanceautoparts.com/find/2015-ford-f-150-batteries"
+          ],
+          "note": "KBB: match the original's footprint and terminal layout; Advance: confirm fitment on the individual product page or in the owner's manual, listing H6 and H7."
+        },
+        {
+          "element": "terminal-layout",
+          "attribute": "purpose",
+          "urls": [
+            "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/",
+            "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015"
+          ],
+          "note": "Batteries Plus lists Group 48 and 94R options for the same truck; layout must match."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "battery-label",
+          "reason": "Do not invent a specific group size, CCA or brand on the label; leave the fields generic."
+        }
+      ],
+      "sources": {
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/": {
+          "kind": "third-party-guide",
+          "establishes": "Generic: check the owner's manual for size/location; replacement must match footprint and terminal layout; reconnect positive before negative."
+        },
+        "https://shop.advanceautoparts.com/find/2015-ford-f-150-batteries": {
+          "kind": "parts-catalog",
+          "establishes": "Retailer list for 2015 F-150: H6 and H7 and other sizes, no engine split, no Group 65."
+        },
+        "https://www.batteriesplus.com/battery/car-and-truck/ford/f=150/2015": {
+          "kind": "parts-catalog",
+          "establishes": "Retailer list for 2015 F-150: Group 48 and 94R options in flooded and AGM; no engine split; $22 core deposit."
+        }
+      }
+    },
+    {
+      "id": "f150-battery-cable-order-do",
+      "title": "Cable order: negative off first, negative on last",
+      "evidenceSteps": [
+        5,
+        6,
+        10
+      ],
+      "viewpoint": "engine-bay-top",
+      "imageType": "DO",
+      "elements": [
+        {
+          "id": "negative-cable-clamp",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The negative cable clamp being loosened first and moved clear of the post."
+        },
+        {
+          "id": "positive-cable-clamp",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "The positive cable clamp, disconnected second and reconnected first."
+        }
+      ],
+      "facts": [
+        {
+          "element": "negative-cable-clamp",
+          "attribute": "sequence",
+          "urls": [
+            "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+            "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+          ],
+          "note": "Remove first, reconnect last."
+        },
+        {
+          "element": "positive-cable-clamp",
+          "attribute": "sequence",
+          "urls": [
+            "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/",
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150",
+            "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/"
+          ],
+          "note": "Remove second, reconnect first."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "negative-cable-clamp",
+          "reason": "Nut size, sensor presence on the cable, and cover/routing for this truck are not established; show a generic clamp with no sensor."
+        }
+      ],
+      "sources": {
+        "https://www.gembaautomotive.com/blog/how-change-battery-on-a-ford-f-150-2015-2020/": {
+          "kind": "third-party-guide",
+          "establishes": "2015-2020 F-150: negative removed first, positive second; reconnect positive then negative."
+        },
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-battery-04-08-ford-f150": {
+          "kind": "third-party-guide",
+          "establishes": "2004-2008 F-150: negative first; reconnect positive first then negative; keep disconnected negative away from the post."
+        },
+        "https://www.kbb.com/ford/f150-supercrew-cab/2015/battery-replacement/": {
+          "kind": "third-party-guide",
+          "establishes": "Generic: negative first, positive second; on reconnect positive then negative."
+        }
+      }
+    }
+  ],
+  "resolutionNotes": [
+    "CATALOG CLAIM TESTED: 'Group size 65, ~750 CCA' (src/data/vehicles.ts) is unsupported and contradicted by independent 2015 F-150 fitment lists (Ford-catalog relay, Advance, Batteries Plus: Group 48/H6 and 94R/H7 only). Likely a previous-generation carry-over (Group 65 is confirmed for 2004-2008 and 2005 trucks), but that is inference.",
+    "Group 48 vs 94R, CCA, chemistry, start-stop, heavy-duty and dual-battery for this exact 5.0L XLT SuperCrew 4x4 remain UNKNOWN; the guide is built around 'match the old battery's label'.",
+    "primarySourceFound=false: Ford documents read were the owner's manual front matter/TOC/Prop 65/symbols, two ford.com Motorcraft spec pages and a Motorcraft PDF; none covers the replacement procedure, battery location or fitment for this truck.",
+    "Origin groups: the Ford-catalog relay sites (fordpartsdeal, Tasca, fordoempartsdirect, AutoNation, Blue Springs) are ONE origin; the two CarCareKiosk pages are ONE origin; brookealvinston and moveonup are the same listing copy.",
+    "All torques MISSING. No torque, no socket size and no hold-down fastener size is stated for this truck.",
+    "BMS/battery-sensor reset is a CONFLICT and is not resolved; no brake-pedal key-cycle method is adopted.",
+    "Wrong-generation sources are marked in step text: O'Reilly (2004-2008), CarCareKiosk 2013, ford-trucks 907449 (2005), ford-trucks 1624914 (2009-2014), f150gen14.com BMS thread (2021+, excluded)."
+  ]
+}
