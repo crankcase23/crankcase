@@ -1,10 +1,10 @@
-import { and, asc, eq, isNull, or, sql } from "drizzle-orm";
+import { and, asc, eq, isNull } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
 import { garageEntries } from "@/db/schema";
 import { GarageEntry } from "@/types/garage";
-import { catalogIdOf, composeGarageId, rowIdOf } from "@/lib/garageId";
-import { isValidVin } from "@/lib/vin";
+import { AmbiguousGarageId, catalogIdOf, composeGarageId, rowIdOf } from "@/lib/garageId";
+import { canonicalVin, isValidVin } from "@/lib/vin";
 import { normalizeConfig, type AxisChoice, type TransmissionChoice, type DrivetrainChoice } from "@/lib/vehicleConfig";
 
 // Server-side data access for garage entries -- the DB-backed replacement for
@@ -33,8 +33,8 @@ function configOf(row: GarageEntryRow) {
   });
 }
 
-/** `isOldest`: this is the customer's oldest row for its catalog vehicle, so it keeps the plain legacy id (see garageId.ts). */
-function mapRow(row: GarageEntryRow, isOldest = true): GarageEntry {
+/** The client-facing id is permanent: "<catalogId>~<rowId>" for a catalog car, the row id for a custom one (see garageId.ts). */
+function mapRow(row: GarageEntryRow): GarageEntry {
   if (row.kind === "custom") {
     return {
       id: row.id,
@@ -53,7 +53,7 @@ function mapRow(row: GarageEntryRow, isOldest = true): GarageEntry {
     };
   }
   return {
-    id: row.vehicleId ? (isOldest ? row.vehicleId : composeGarageId(row.vehicleId, row.id)) : row.id,
+    id: row.vehicleId ? composeGarageId(row.vehicleId, row.id) : row.id,
     kind: "catalog",
     addedAt: row.createdAt.toISOString(),
     vin: row.vin ?? undefined,
@@ -97,6 +97,8 @@ function fillBlankAxes(row: GarageEntryRow, config: ConfigInput) {
  *    account holds it once). It says nothing about any other account: the answer to "add this VIN" never depends on
  *    whether anyone else has it. Two accounts can each hold the same VIN with fully separate Service History.
  *  - "vin-already-set": the entry already has a valid VIN; a VIN names the vehicle and is never swapped by an edit.
+ * Another account holding the same VIN is NOT a reason: a VIN is a vehicle identity, not ownership, so any number of
+ * accounts may keep a private record for it. Paid access and private history never cross accounts (rows are per account).
  */
 export type BlockedReason = "vin-in-garage" | "vin-already-set";
 export interface Blocked {
@@ -106,9 +108,10 @@ export const isBlocked = (r: object): r is Blocked => "blocked" in r;
 
 const UNIQUE_VIOLATION = "23505";
 
-// Canonical VIN identity is the upper-cased VIN (src/lib/vin.ts canonicalVin). Older rows may hold it as typed, so
-// comparisons are case-insensitive. Account-to-vehicle relationships are the rows; the VIN is what names the vehicle.
-const sameVin = (vin: string) => sql`upper(${garageEntries.vin}) = ${vin}`;
+// Canonical VIN identity is the upper-cased VIN (src/lib/vin.ts canonicalVin). Every write path stores it canonical
+// (the routes hand over validateVin's normalized VIN) and migrations/2026-10-11-vin-canonical.sql makes the database
+// enforce it, so lookups are plain equality that the (user_id, vin) unique index can serve -- no upper() on the column.
+const sameVin = (vin: string) => eq(garageEntries.vin, canonicalVin(vin));
 
 export async function ownRowForVin(userId: string, vin: string): Promise<GarageEntryRow | undefined> {
   return (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), sameVin(vin))).limit(1))[0];
@@ -120,37 +123,25 @@ const isUniqueViolation = (e: unknown) => {
 
 export async function listGarageEntries(userId: string): Promise<GarageEntry[]> {
   const rows = await db
-  .select()
-  .from(garageEntries)
-  .where(eq(garageEntries.userId, userId))
-  .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id));
-  const seen = new Set<string>();
-  return rows.map((row) => {
-    if (row.kind !== "catalog" || !row.vehicleId) return mapRow(row);
-    const first = !seen.has(row.vehicleId);
-    seen.add(row.vehicleId);
-    return mapRow(row, first);
-  });
+    .select()
+    .from(garageEntries)
+    .where(eq(garageEntries.userId, userId))
+    .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id));
+  return rows.map(mapRow);
 }
 
-/** Map one row to its client entry, working out whether it is the customer's oldest car of that model. */
+/** Map one row to its client entry. The client id is permanent (see garageId.ts), so no per-model ordering is needed. */
 export async function entryFor(row: GarageEntryRow): Promise<GarageEntry> {
-  if (row.kind !== "catalog" || !row.vehicleId) return mapRow(row);
-  const oldest = (
-    await db
-      .select({ id: garageEntries.id })
-      .from(garageEntries)
-      .where(and(eq(garageEntries.userId, row.userId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, row.vehicleId)))
-      .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id))
-      .limit(1)
-  )[0];
-  return mapRow(row, !oldest || oldest.id === row.id);
+  return mapRow(row);
 }
 
 /**
- * The customer's own row for a client-facing garage id, or null. A plain id means "the oldest row with this catalog
- * vehicleId, or the row with this id" (every id that existed before same-model cars); "<catalogId>~<rowId>" names one
- * specific additional car. Always scoped to the customer: another customer's row is never returned.
+ * The customer's own row for a client-facing garage id, or null. Always scoped to the customer: another customer's row is
+ * never returned.
+ *   - "<catalogId>~<rowId>" names exactly that car.
+ *   - a bare id that is a row id (a custom entry, or any row) names exactly that row.
+ *   - a bare catalog id is a LEGACY ALIAS: it names the customer's car of that model only if they own exactly one. With
+ *     two or more it throws AmbiguousGarageId, so a stale link or old client can never read or change the wrong car.
  */
 export async function findOwnRow(userId: string, id: string): Promise<GarageEntryRow | null> {
   const rowId = rowIdOf(id);
@@ -162,13 +153,16 @@ export async function findOwnRow(userId: string, id: string): Promise<GarageEntr
       .limit(1);
     return hit[0] ?? null;
   }
-  const hit = await db
+  const byRowId = await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), eq(garageEntries.id, id))).limit(1);
+  if (byRowId[0]) return byRowId[0];
+  const ofModel = await db
     .select()
     .from(garageEntries)
-    .where(and(eq(garageEntries.userId, userId), or(eq(garageEntries.id, id), eq(garageEntries.vehicleId, id))))
+    .where(and(eq(garageEntries.userId, userId), eq(garageEntries.kind, "catalog"), eq(garageEntries.vehicleId, id)))
     .orderBy(asc(garageEntries.createdAt), asc(garageEntries.id))
-    .limit(1);
-  return hit[0] ?? null;
+    .limit(2);
+  if (ofModel.length > 1) throw new AmbiguousGarageId(id);
+  return ofModel[0] ?? null;
 }
 
 // Idempotent -- matches the old client-side "already in garage? skip" check, but enforced server-side too (and by a
@@ -208,7 +202,7 @@ async function addCatalogOnce(
   // Customers may own any number of cars, including several of the same year/make/model; the VIN is what tells them
   // apart (each car is its own row, with its own Service History and unlock identity):
   //  - this VIN is already in THIS garage: the same car, no second row, whatever it was added as;
-  //  - another account holding the same VIN changes nothing: accounts are fully separate, each with its own row and history;
+  //  - another account holding the same VIN is irrelevant: accounts are isolated, so this account simply gets its own row;
   //  - an older record of this model that has no VIN yet: the VIN completes it (its history stays with it);
   //  - otherwise it is a new car.
   const mine = await ownRowForVin(userId, vin);
@@ -326,7 +320,7 @@ export async function completeGarageVin(
 /**
  * The explicit Edit Configuration path: the ONLY code that changes a saved choice. Updates only the axes given, leaves
  * everything else on the row (VIN, vehicle, history) alone, and returns the updated entry, or null when the entry is not
- * this customer's. `id` is the client-facing id (catalog vehicleId or custom row id), like removeGarageEntry.
+ * this customer's. `id` is the client-facing garage id (see garageId.ts); a bare catalog id that is ambiguous throws AmbiguousGarageId.
  */
 export async function updateGarageConfig(
   userId: string,
@@ -347,7 +341,7 @@ export async function updateGarageConfig(
 // `id` here is the client-facing id -- either a catalog vehicleId or a
 // custom entry's row id (see the note above) -- so match on either column.
 export async function removeGarageEntry(userId: string, id: string): Promise<void> {
-  // Exactly one car: a plain id removes the oldest row of that model, a composite id removes that specific row.
+  // Exactly one car: a composite id removes that specific row; a bare catalog id only if it is the customer's single car of that model.
   const own = await findOwnRow(userId, id);
   if (!own) return;
   await db.delete(garageEntries).where(and(eq(garageEntries.id, own.id), eq(garageEntries.userId, userId)));

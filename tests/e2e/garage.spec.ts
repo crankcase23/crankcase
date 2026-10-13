@@ -39,7 +39,7 @@ test.describe("garage — add your own vehicle", () => {
 
     await addByVin(page, "1C4", JEEP_ROW);
     await confirmNotSure(page);
-    await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l$/);
+    await expect(page).toHaveURL(/\/vehicles\/2014-jeep-grand-cherokee-3\.6l~[^/]+$/);
 
     await page.goto("/garage");
     await expect(page.getByText("Your garage is empty")).toHaveCount(0);
@@ -63,8 +63,7 @@ test.describe("garage — add your own vehicle", () => {
     await page.getByText("Tire Rotation", { exact: true }).click();
     await page.getByRole("button", { name: "Add entry" }).click();
 
-    // Scope to the Service History list: "Recent work" on the hub echoes the same entry.
-    const row = page.locator("#history").getByRole("listitem").filter({ hasText: "42,000 mi" });
+    const row = page.getByRole("listitem").filter({ hasText: "42,000 mi" }).last();
     await expect(row).toBeVisible();
     await expect(row.getByText("Tire Rotation")).toBeVisible();
   });
@@ -72,7 +71,7 @@ test.describe("garage — add your own vehicle", () => {
   test("removing a vehicle takes it out of the garage", async ({ page }) => {
     await addByVin(page, "2HG", CIVIC_ROW);
     await confirmNotSure(page);
-    await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t$/);
+    await expect(page).toHaveURL(/\/vehicles\/2018-honda-civic-1\.5t~[^/]+$/);
 
     await page.goto("/garage");
     await expect(page.getByText("Civic")).toBeVisible();

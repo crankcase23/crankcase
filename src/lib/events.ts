@@ -32,7 +32,6 @@ export const EVENT_TYPES = {
   VIN_DECODED: "vin.decoded",
   // Abuse-protection bookkeeping for adding / completing a VIN (src/lib/vinGuard.ts). Never carries the VIN itself.
   VIN_ATTEMPT: "vin.attempt",
-  VIN_COLLISION: "vin.collision",
   // A vehicle added through the NHTSA-outage fallback (src/lib/vinFallbackServer.ts). Counted for the daily cap, so it
   // survives the vehicle being removed. Never carries the VIN.
   VIN_FALLBACK_ADD: "vin.fallback_add",

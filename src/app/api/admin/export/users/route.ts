@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { desc } from "drizzle-orm";
 import { requireAdminUserId } from "@/lib/adminAuth";
 import { db } from "@/db";
-import { users, garageEntries, vehicleUnlocks } from "@/db/schema";
+import { isNull } from "drizzle-orm";
+import { users, garageEntries, vinEntitlements } from "@/db/schema";
 
 // CSV export of every account for the admin Overview page -- opens
 // directly in Excel/Sheets without adding a real .xlsx-writing dependency.
@@ -22,7 +23,7 @@ export async function GET() {
 const [allUsers, allEntries, allUnlocks] = await Promise.all([
   db.select().from(users).orderBy(desc(users.createdAt)),
   db.select({ id: garageEntries.id, userId: garageEntries.userId }).from(garageEntries),
-  db.select({ userId: vehicleUnlocks.userId }).from(vehicleUnlocks),
+  db.select({ userId: vinEntitlements.userId }).from(vinEntitlements).where(isNull(vinEntitlements.revokedAt)),
   ]);
 
 const vehicleCountByUser: Record<string, number> = {};

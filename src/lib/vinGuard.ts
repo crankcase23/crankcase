@@ -6,37 +6,27 @@ import { appEvents } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
 
 // ---------------------------------------------------------------------------
-// Protection against VIN enumeration and ownership probing. Free, no new service, no new table.
+// Abuse throttle for VIN submissions. Free, no new service, no new table.
 //
 // Since 2026-10-12 an add never depends on whether another account holds the VIN, so there is no ownership oracle to
 // probe any more (the "collision" counters below are legacy and nothing records collisions now). What remains worth
 // limiting is VIN-guessing and hammering of the NHTSA decoder through the add and fallback paths, so:
 //   - every VIN that passes the format rules and reaches the lookup is counted per account and per network address;
-//   - collisions (the 409 answer) are counted separately and tolerated only a few times;
-//   - past the limits the answer is a plain 429 that says nothing about the VIN, with a Retry-After.
-// Counts live in the existing app_events table (type "vin.attempt" / "vin.collision"). The VIN itself is never stored;
-// the network address is stored only as a salted hash.
+//   - past the limits the answer is a 429 that says nothing about the VIN, with a Retry-After.
+// Counts live in the existing app_events table (type "vin.attempt"). The VIN itself is never stored; the network
+// address is stored only as a salted hash.
 //
 // Limits (rolling windows):
-//   collisions   5 per hour, 10 per day, per account
 //   attempts    20 per hour, per account
 //   attempts   150 per hour, per network address (hashed). Deliberately loose: carrier and office networks put many
-//              real customers behind one address; this only stops one machine from walking VINs through many accounts.
-// A real customer adds a handful of cars; a typo or two does not come near these. They are blunt on purpose.
-//
-// Honest limits of this: an attacker with many accounts AND many addresses can still probe slowly (account creation is
-// not rate limited here); the address comes from x-forwarded-for, which Vercel sets itself and does not take from the
-// client, so on any other host it is only as trustworthy as that host's proxy; a parallel burst can slip a few extra attempts through before the counters catch up (no
-// transaction/lock); the platform-level answer to both is the verified-claim workflow and a CAPTCHA/edge limit, which
-// are separate work. This closes the cheap, scripted case.
+//              real customers behind one address.
+// The address comes from x-forwarded-for, which Vercel sets itself; on any other host it is only as trustworthy as that
+// host's proxy. A parallel burst can slip a few extra attempts through before the counters catch up (no lock).
 // ---------------------------------------------------------------------------
 
 const HOUR = 60 * 60 * 1000;
-const DAY = 24 * HOUR;
 
 export const VIN_LIMITS = {
-  collisionsPerHour: 5,
-  collisionsPerDay: 10,
   attemptsPerHour: 20,
   attemptsPerHourPerIp: 150,
 } as const;
@@ -83,8 +73,6 @@ export async function guardVinAttempt(request: Request, userId: string): Promise
 
   const mine = (type: string, windowMs: number) => and(eq(appEvents.type, type), eq(appEvents.userId, userId), since(windowMs));
   const checks: Array<{ where: ReturnType<typeof and>; limit: number; windowMs: number; over: (n: number) => boolean }> = [
-    { where: mine(EVENT_TYPES.VIN_COLLISION, HOUR), limit: VIN_LIMITS.collisionsPerHour, windowMs: HOUR, over: (n) => n >= VIN_LIMITS.collisionsPerHour },
-    { where: mine(EVENT_TYPES.VIN_COLLISION, DAY), limit: VIN_LIMITS.collisionsPerDay, windowMs: DAY, over: (n) => n >= VIN_LIMITS.collisionsPerDay },
     { where: mine(EVENT_TYPES.VIN_ATTEMPT, HOUR), limit: VIN_LIMITS.attemptsPerHour, windowMs: HOUR, over: (n) => n > VIN_LIMITS.attemptsPerHour },
   ];
   if (ipHash) {
@@ -104,9 +92,4 @@ export async function guardVinAttempt(request: Request, userId: string): Promise
     { code: "VIN_RATE_LIMITED", error: "Too many VIN attempts. Wait a bit and try again. Nothing was added." },
     { status: 429, headers: { "Retry-After": String(wait) } },
   );
-}
-
-/** Call when a lookup ended in the generic claim-required answer, so repeated probing runs out of budget. */
-export async function noteVinCollision(userId: string): Promise<void> {
-  await db.insert(appEvents).values({ id: randomUUID(), type: EVENT_TYPES.VIN_COLLISION, userId, metadata: null });
 }

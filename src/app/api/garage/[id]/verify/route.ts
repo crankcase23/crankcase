@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { withGarageId } from "@/lib/garageRoute";
 import { requireUserId } from "@/lib/apiAuth";
 import { guardVinAttempt } from "@/lib/vinGuard";
 import { fallbackEnabled } from "@/lib/vinFallback";
@@ -6,7 +7,7 @@ import { verifyOwnEntry } from "@/lib/vinFallbackServer";
 
 // Re-check one of THIS customer's UNVERIFIED vehicles against NHTSA. The server asks NHTSA itself; nothing the browser
 // says about the decode is used. A match marks the vehicle verified with NHTSA's values; anything else changes nothing.
-export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export const POST = withGarageId(async (request: Request, { params }: { params: Promise<{ id: string }> }) => {
   const userId = await requireUserId();
   if (!userId) return NextResponse.json({ error: "Not signed in." }, { status: 401 });
   if (!fallbackEnabled()) return NextResponse.json({ code: "FALLBACK_DISABLED", error: "Not available." }, { status: 404 });
@@ -33,4 +34,4 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     default:
       return NextResponse.json({ code: "NOT_UNVERIFIED", error: "This vehicle doesn't need checking." }, { status: 409 });
   }
-}
+});

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { catalogIdOf } from "@/lib/garageId";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import ChooseYourCar from "@/components/app/ChooseYourCar";
 import type { Metadata } from "next";
 import { findVehicle, findRepair, allRepairs } from "@/lib/data";
 import { DifficultyBadge, TierBadge } from "@/components/tables";
@@ -42,7 +43,12 @@ export default async function RepairGuidePage(
 
   // The guide this customer is shown: the authored guide resolved against THEIR saved transmission/drivetrain.
   // A guide that does not depend on the build comes back with its content unchanged.
-  const { config, inGarage } = await getViewerVehicle(id);
+  const viewer = await getViewerVehicle(id);
+  if (viewer.redirectTo) redirect(`/vehicles/${viewer.redirectTo}/repairs/${repairId}`);
+  if (viewer.choose) {
+    return <ChooseYourCar vehicleLabel={`${vehicle.year} ${vehicle.make} ${vehicle.model}`} cars={viewer.choose} hrefFor={(g) => `/vehicles/${g}/repairs/${repairId}`} />;
+  }
+  const { config, inGarage } = viewer;
   const guide = resolveGuideForConfig(authored, config, vehicle.make);
   const configNotice = (
     <GuideConfigNotice resolution={guide.configResolution} config={config} make={vehicle.make} vehicleId={id} inGarage={inGarage} />

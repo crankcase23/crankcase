@@ -1,6 +1,6 @@
 import { sql, eq, and, or, ilike, count, desc, asc } from "drizzle-orm";
 import { db } from "@/db";
-import { garageEntries, users, serviceEntries, vehicleUnlocks, odometerReadings, appEvents } from "@/db/schema";
+import { garageEntries, users, serviceEntries, odometerReadings, appEvents } from "@/db/schema";
 import { findVehicle } from "@/lib/data";
 
 // ---------------------------------------------------------------------------
@@ -37,7 +37,8 @@ export interface VehicleRow {
 }
 
 const serviceCountSql = sql<number>`(select count(*)::int from ${serviceEntries} where ${serviceEntries.garageEntryId} = ${garageEntries.id})`;
-const unlockedSql = sql<boolean>`exists (select 1 from ${vehicleUnlocks} where ${vehicleUnlocks.garageEntryId} = ${garageEntries.id})`;
+// Unlocked = THIS owner holds an active entitlement for this vehicle's VIN (never another account's, never the VIN alone).
+const unlockedSql = sql<boolean>`exists (select 1 from vin_entitlements e where e.user_id = "garage_entries"."user_id" and e.vin = "garage_entries"."vin" and e.revoked_at is null)`;
 const odometerSql = sql<
   number | null
 >`(select ${odometerReadings.miles} from ${odometerReadings} where ${odometerReadings.garageEntryId} = ${garageEntries.id} limit 1)`;

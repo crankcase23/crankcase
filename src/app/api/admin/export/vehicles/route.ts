@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireAdminUserId } from "@/lib/adminAuth";
 import { db } from "@/db";
-import { users, garageEntries, vehicleUnlocks } from "@/db/schema";
+import { isNull } from "drizzle-orm";
+import { users, garageEntries, vinEntitlements } from "@/db/schema";
 import { getVehicleById } from "@/data/vehicles";
 
 // CSV export of every vehicle across every garage, for the admin Overview
@@ -22,13 +23,13 @@ export async function GET() {
 const [allUsersRows, allEntries, allUnlocks] = await Promise.all([
   db.select({ id: users.id, email: users.email }).from(users),
   db.select().from(garageEntries),
-  db.select().from(vehicleUnlocks),
+  db.select({ userId: vinEntitlements.userId, vin: vinEntitlements.vin }).from(vinEntitlements).where(isNull(vinEntitlements.revokedAt)),
   ]);
 
 const emailByUser: Record<string, string> = {};
   for (const u of allUsersRows) emailByUser[u.id] = u.email;
 
-const unlockedSet = new Set(allUnlocks.map((u) => u.userId + ":" + u.garageEntryId));
+const unlockedSet = new Set(allUnlocks.map((u) => u.userId + ":" + u.vin));
 
 let csv = csvRow(["Owner email", "Kind", "Year", "Make", "Model", "Trim", "Engine", "VIN", "Unlocked", "Added"]);
   for (const entry of allEntries) {
@@ -56,7 +57,7 @@ let csv = csvRow(["Owner email", "Kind", "Year", "Make", "Model", "Trim", "Engin
       trim,
       engine,
       entry.vin ?? "",
-      unlockedSet.has(entry.userId + ":" + entry.id) ? "yes" : "no",
+      (entry.vin ? unlockedSet.has(entry.userId + ":" + entry.vin.toUpperCase()) : false) ? "yes" : "no",
       entry.createdAt.toISOString().slice(0, 10),
       ]);
   }

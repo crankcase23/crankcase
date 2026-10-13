@@ -24,6 +24,8 @@ export type AuditAction =
   | "user.delete"
   | "unlock.grant"
   | "unlock.revoke"
+  | "legacy_hold.convert"
+  | "legacy_hold.waive"
   | "content.create"
   | "content.update"
   | "content.publish"
@@ -45,6 +47,8 @@ export const AUDIT_ACTION_LABELS: Record<string, string> = {
   "user.delete": "Account deleted",
   "unlock.grant": "Unlock granted",
   "unlock.revoke": "Unlock revoked",
+  "legacy_hold.convert": "Legacy unlock restored",
+  "legacy_hold.waive": "Legacy unlock waived",
   "content.create": "Content created",
   "content.update": "Content updated",
   "content.publish": "Content published",

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { Blocked } from "@/lib/garageEntries";
 import type { validateVin } from "@/lib/vin";
 
-/** The one answer for "not added": says what the customer can do, nothing about anyone else. */
+/** Why an add did not happen. Both answers concern only the customer's own garage; nothing about any other account. */
 export function blockedResponse(b: Blocked) {
   switch (b.blocked) {
     case "vin-in-garage":

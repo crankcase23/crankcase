@@ -16,6 +16,8 @@ import {
       primaryKey,
       jsonb,
       uniqueIndex,
+      index,
+      check,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
@@ -89,6 +91,9 @@ export const garageEntries = pgTable("garage_entries", {
       vinOncePerUser: uniqueIndex("garage_entries_user_vin_uq")
         .on(table.userId, table.vin)
         .where(sql`${table.vin} is not null`),
+      // A stored VIN is always the canonical (upper-case) spelling, so lookups are plain equality served by the index above
+      // (migrations/2026-10-11-vin-canonical.sql). The same VIN may appear under many accounts; it is unique only per account.
+      vinCanonical: check("garage_entries_vin_canonical_chk", sql`${table.vin} is null or ${table.vin} = upper(${table.vin})`),
 }));
 
 // garageEntryId here plays the same role the old localStorage keys did
@@ -342,6 +347,99 @@ export const purchases = pgTable("purchases", {
       providerRef: text("provider_ref"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// Permanent, VIN-linked Get the Keys entitlements (PR-A). One row per (account, canonical VIN).
+//
+// Deliberately NOT keyed to garage_entries and with NO foreign key to it: removing a vehicle from a garage (or re-adding
+// it later) never creates, changes or deletes an entitlement, so a paid unlock survives delete / re-add of the same VIN.
+// It belongs to the ACCOUNT + VIN, so another account holding the same VIN gets nothing from it, and a transfer never
+// copies it (a recipient pays their own rung; a returning former owner finds theirs still here).
+// Rows go away only with the account itself (privacy deletion) or an explicit revoke (revoked_at), never as a side effect.
+export const vinEntitlements = pgTable(
+      "vin_entitlements",
+      {
+            id: text("id").primaryKey(),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            vin: text("vin").notNull(), // canonical (upper-case) VIN, see canonicalVin() in src/lib/vin.ts
+            source: text("source").notNull(), // "purchase" | "gift"
+            rung: integer("rung"), // which Garage Rewards rung this purchase was priced at (1-based); null for gifts
+            priceCents: integer("price_cents"), // what the server priced it at when granted; null for gifts
+            purchaseId: text("purchase_id").references(() => purchases.id, { onDelete: "set null" }),
+            grantedAt: timestamp("granted_at").notNull().defaultNow(),
+            revokedAt: timestamp("revoked_at"), // refund / admin revoke; row kept for the audit trail
+      },
+      (table) => ({
+            onePerAccountVin: uniqueIndex("vin_entitlements_user_vin_uq").on(table.userId, table.vin),
+            sourceKnown: check("vin_entitlements_source_chk", sql`${table.source} in ('purchase','gift')`),
+      }),
+      );
+
+
+// Append-only history of every change to a vin_entitlements row: purchases, gifts, revocations, refunds and
+// reacquisitions. vin_entitlements says what an account holds NOW; this says how it got there. Rows are only ever inserted:
+// a database trigger (migrations/2026-10-11-vin-entitlement-events.sql) rejects UPDATE and direct DELETE, so reinstating a
+// VIN can never erase what happened before. Rows go away only with the account itself (ON DELETE CASCADE, privacy deletion).
+export const vinEntitlementEvents = pgTable(
+      "vin_entitlement_events",
+      {
+            id: text("id").primaryKey(),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            vin: text("vin").notNull(), // canonical VIN, never a garage row id: the history outlives vehicles
+            eventType: text("event_type").notNull(), // "purchased" | "gifted" | "revoked" | "refunded" | "reacquired"
+            source: text("source").notNull(), // the entitlement's source after this event: "purchase" | "gift"
+            rung: integer("rung"),
+            priceCents: integer("price_cents"),
+            purchaseId: text("purchase_id").references(() => purchases.id, { onDelete: "set null" }),
+            actorType: text("actor_type").notNull(), // "system" (payment webhook, backfill) | "admin" | "customer"
+            actorId: text("actor_id"), // the admin's user id when actorType = "admin"
+            reason: text("reason"),
+            detail: jsonb("detail"), // what this event replaced (e.g. the revoked grant a reacquisition supersedes)
+            createdAt: timestamp("created_at").notNull().defaultNow(),
+      },
+      (table) => ({
+            byAccountVin: index("vin_entitlement_events_user_vin_idx").on(table.userId, table.vin, table.createdAt),
+            typeKnown: check("vin_entitlement_events_type_chk", sql`${table.eventType} in ('purchased','gifted','revoked','refunded','reacquired')`),
+            sourceKnown: check("vin_entitlement_events_source_chk", sql`${table.source} in ('purchase','gift')`),
+            actorKnown: check("vin_entitlement_events_actor_chk", sql`${table.actorType} in ('system','admin','customer')`),
+      }),
+      );
+
+// A legacy admin unlock (the old vehicle_unlocks table, keyed to a garage row and deleted with it) that cannot be a VIN entitlement
+// yet because its car has no canonical, valid VIN, or whose car was deleted before it could be copied. Preserved here so that no
+// historical purchase or gift is silently dropped. Deliberately NO foreign key to garage_entries, so deleting the car cannot delete
+// it. Created by migrations/2026-10-12-legacy-unlock-holds.sql (which also installs the triggers that make rows undeletable and
+// their original facts immutable); resolved only through resolveLegacyHold() in src/lib/keysEntitlements.ts.
+export const legacyUnlockHolds = pgTable(
+      "legacy_unlock_holds",
+      {
+            id: text("id").primaryKey(),
+            userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+            garageEntryId: text("garage_entry_id").notNull(),
+            source: text("source").notNull(), // "purchase" | "gift"
+            grantedAt: timestamp("granted_at").notNull(),
+            vehicleId: text("vehicle_id"),
+            vehicleLabel: text("vehicle_label"),
+            vinAtSnapshot: text("vin_at_snapshot"),
+            status: text("status").notNull().default("pending_vin"), // "pending_vin" | "converted" | "waived"
+            resolvedVin: text("resolved_vin"),
+            resolvedAt: timestamp("resolved_at"),
+            resolvedBy: text("resolved_by"),
+            resolutionNote: text("resolution_note"),
+            createdAt: timestamp("created_at").notNull().defaultNow(),
+      },
+      (table) => ({
+            onePerCar: uniqueIndex("legacy_unlock_holds_user_garage_uq").on(table.userId, table.garageEntryId),
+            sourceKnown: check("legacy_unlock_holds_source_chk", sql`${table.source} in ('purchase','gift')`),
+            statusKnown: check("legacy_unlock_holds_status_chk", sql`${table.status} in ('pending_vin','converted','waived')`),
+            pending: index("legacy_unlock_holds_pending_idx").on(table.userId).where(sql`${table.status} = 'pending_vin'`),
+      }),
+      );
 
 // A recurring plan. Nothing sells subscriptions today; MRR/churn in
 // /admin/revenue are computed from this table and read zero until it fills.

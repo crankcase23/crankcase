@@ -60,11 +60,13 @@ for (const vp of [
       await noOverflow("confirm your ride");
       await shot("04-confirm-your-ride");
       await page.getByRole("button", { name: "Confirm Automatic · Standard RWD and add to garage" }).click();
-      await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}$`));
+      // Every garage car has a permanent id (<model>~<row>); the customer lands on it, not on the bare model id.
+      await expect(page).toHaveURL(new RegExp(`/vehicles/${BMW}~[^/]+$`));
+      const carPath = new URL(page.url()).pathname;
 
       // Vehicle page: configuration shown, all 16 guides listed and available (none restricted or unavailable)
       await expect(page.getByTestId("config-line")).toHaveText(/Automatic.*Standard RWD/);
-      const guideLinks = page.locator(`a[href^="/vehicles/${BMW}/repairs/"]`);
+      const guideLinks = page.locator(`a[href^="${carPath}/repairs/"]`);
       await expect(guideLinks).toHaveCount(16);
       await expect(page.getByTestId("config-needs-confirmation")).toHaveCount(0);
       await noOverflow("vehicle page");

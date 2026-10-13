@@ -27,6 +27,7 @@ import {
   MicroLabel,
   AdminButton,
 } from "@/components/admin/ui";
+import { listLegacyHolds } from "@/lib/keysEntitlements";
 
 export const metadata = { title: "User detail" };
 
@@ -60,6 +61,7 @@ export default async function AdminUserDetailPage({
 
   const { user, roles, vehicles, services, logins, purchases, subscriptions } = detail;
   const activity = tab === "activity" ? await getUserActivity(id) : [];
+  const legacyHolds = tab === "garage" ? await listLegacyHolds(id) : [];
 
   const canEdit = ctx.permissions.has("users.edit");
   const canDisable = ctx.permissions.has("users.disable");
@@ -319,6 +321,7 @@ export default async function AdminUserDetailPage({
 
       {/* ------------------------------------------------------------- garage */}
       {tab === "garage" && (
+        <>
         <Panel
           title="Garage"
           eyebrow={`${vehicles.length} vehicle${vehicles.length === 1 ? "" : "s"}`}
@@ -352,7 +355,10 @@ export default async function AdminUserDetailPage({
                       </div>
                     </div>
 
-                    {canManageUnlocks && (
+                    {canManageUnlocks && !v.vin && (
+                      <span className="shrink-0 text-xs text-slate-500">No VIN, so it can&apos;t be unlocked yet</span>
+                    )}
+                    {canManageUnlocks && v.vin && (
                       <form action="/api/admin/unlocks" method="post" className="shrink-0">
                         <input type="hidden" name="userId" value={user.id} />
                         <input type="hidden" name="garageEntryId" value={v.id} />
@@ -368,6 +374,47 @@ export default async function AdminUserDetailPage({
             </ul>
           )}
         </Panel>
+        {legacyHolds.length > 0 && (
+          <Panel title="Legacy unlocks" eyebrow={`${legacyHolds.filter((h) => h.status === "pending_vin").length} waiting for a VIN`} padded={false}>
+            <ul data-testid="legacy-holds" className="divide-y divide-slate-800/70">
+              {legacyHolds.map((h) => (
+                <li key={h.id} className="px-4 py-3" data-testid="legacy-hold">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm text-slate-100">{h.vehicleLabel ?? h.vehicleId ?? "Deleted vehicle"}</span>
+                    <Badge tone={h.source === "purchase" ? "accent" : "muted"}>{h.source}</Badge>
+                    <Badge tone={h.status === "pending_vin" ? "accent" : "positive"}>{h.status === "pending_vin" ? "waiting for VIN" : h.status}</Badge>
+                  </div>
+                  <div className="mt-1 flex flex-wrap gap-x-4 font-mono text-[10px] text-slate-500">
+                    <span>granted {formatDate(h.grantedAt)}</span>
+                    <span>stored VIN: {h.vinAtSnapshot ? h.vinAtSnapshot : "none"}</span>
+                    {h.resolvedVin && <span>restored to VIN {h.resolvedVin}</span>}
+                    {h.resolutionNote && <span>{h.resolutionNote}</span>}
+                  </div>
+                  {canManageUnlocks && h.status === "pending_vin" && (
+                    <div className="mt-2 flex flex-wrap items-end gap-3">
+                      <form action="/api/admin/legacy-holds" method="post" className="flex flex-wrap items-end gap-2">
+                        <input type="hidden" name="userId" value={user.id} />
+                        <input type="hidden" name="holdId" value={h.id} />
+                        <input type="hidden" name="action" value="convert" />
+                        <input name="vin" placeholder="VIN (blank = stored VIN)" aria-label="VIN to restore this unlock to" className="w-56 rounded border border-slate-700 bg-slate-900 px-2 py-1 text-xs text-slate-100" />
+                        <input name="reason" placeholder="Reason (optional)" aria-label="Reason" className="w-48 rounded border border-slate-700 bg-slate-900 px-2 py-1 text-xs text-slate-100" />
+                        <AdminButton variant="primary">Restore unlock</AdminButton>
+                      </form>
+                      <form action="/api/admin/legacy-holds" method="post" className="flex flex-wrap items-end gap-2">
+                        <input type="hidden" name="userId" value={user.id} />
+                        <input type="hidden" name="holdId" value={h.id} />
+                        <input type="hidden" name="action" value="waive" />
+                        <input name="reason" required minLength={5} placeholder="Reason (required)" aria-label="Reason to waive" className="w-48 rounded border border-slate-700 bg-slate-900 px-2 py-1 text-xs text-slate-100" />
+                        <AdminButton variant="secondary">Waive</AdminButton>
+                      </form>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        )}
+        </>
       )}
 
       {/* ------------------------------------------------------ service history */}
