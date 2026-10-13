@@ -436,6 +436,11 @@ test.describe("Photo VIN scan on a phone-sized screen", () => {
     await feed(FIX("vin-unreadable.png"));
     await expect(status).toContainText(/couldn't find a 17-character VIN/i, { timeout: 90_000 });
     await expect(page.getByTestId("vin-input")).toHaveValue("");
+    const tips = page.getByTestId("vin-retake-tips");
+    await expect(tips).toBeVisible();
+    await expect(tips).toContainText(/closer/i);
+    await expect(tips).toContainText(/flash off/i);
+    await expect(tips).toContainText(/straight-on/i);
     await shot(page, "26-scan-unreadable");
 
     await feed(FIX("no-vin.png"));

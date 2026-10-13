@@ -78,11 +78,11 @@ export const isValidVin = (input: unknown): boolean => validateVin(input).ok;
 
 // Characters a camera or a tired eye mixes up. Used to HIGHLIGHT doubt and to OFFER a correction; never to apply one.
 const CONFUSABLE: Record<string, string[]> = {
-  "0": ["D"], "1": ["L"], "2": ["Z"], "5": ["S"], "6": ["G"], "8": ["B"],
-  D: ["0"], L: ["1"], Z: ["2"], S: ["5"], G: ["6"], B: ["8"],
+  "0": ["D"], "1": ["L", "7"], "2": ["Z"], "5": ["S"], "6": ["G"], "7": ["1", "T", "A"], "8": ["B"],
+  A: ["7"], D: ["0"], L: ["1"], Z: ["2", "7"], S: ["5"], G: ["6"], B: ["8"], T: ["7"],
   U: ["V"], V: ["U"], M: ["N"], N: ["M"], E: ["F"], F: ["E"], H: ["N"], K: ["X"], X: ["K"], P: ["R"], R: ["P"],
   // I, O and Q are not legal VIN characters; they are what the camera reads where a 1, 0 or 0 should be.
-  I: ["1"], O: ["0"], Q: ["0"],
+  I: ["1", "7"], O: ["0"], Q: ["0"], // a slashed 7 is read as I, Z or T on some labels (found on a real BMW door-jamb photo)
 };
 
 export const isConfusable = (ch: string) => ch in CONFUSABLE;
@@ -104,14 +104,86 @@ export function suggestCorrections(input: unknown): { vin: string; position: num
   return out;
 }
 
+// ------------------------------------------------------------------------------------------------ reading a VIN out of OCR text
+// A door-jamb label is mostly legal text and weights. The reader must pick the VIN out of it, so a candidate has to LOOK like a
+// VIN before it is considered at all, and the survivors are ranked by evidence (check digit, the word "VIN" right before it,
+// the position-9 rule, how many digits it has, how sure the camera was), never by how often a piece of text was read.
+
+export const MAX_ILLEGAL_CHARS = 2; // I/O/Q: a camera reads 1 or 0 as one of these, so a couple are tolerated (and shown), a lot is not a VIN
+export const MIN_DIGITS = 4; // every real VIN carries many digits (serial, year, check digit); sentences and warnings carry none
+
+const DIGIT_LOOKALIKE = new Set(Object.entries({ B: "8", D: "0", G: "6", I: "1", L: "1", O: "0", Q: "0", S: "5", Z: "2" }).map(([k]) => k));
+
 /**
- * Pulls VIN-shaped candidates out of OCR text. A candidate is any run of 17 letters/digits (spaces and dashes inside a run
- * are ignored). The characters are returned exactly as read, I/O/Q included, so the customer sees what the camera saw.
+ * Could this 17-character read be a VIN the camera got partly wrong? Pure shape test, no check digit:
+ * A-Z/0-9 only, at most MAX_ILLEGAL_CHARS letters from I/O/Q, at least MIN_DIGITS digits, at least 3 digits among the last 4
+ * characters, and position 9 (the check digit) is a digit or X, or a letter a camera mixes up with a digit. Plain words and warning text fail this on the digits alone.
  */
-export function extractVinCandidates(text: string): string[] {
-  const found = new Set<string>();
+export function isPlausibleVinRead(read: string): boolean {
+  if (typeof read !== "string" || read.length !== VIN_LENGTH || !/^[A-Z0-9]+$/.test(read)) return false;
+  let illegal = 0, digits = 0;
+  for (const c of read) {
+    if (c === "I" || c === "O" || c === "Q") illegal++;
+    if (c >= "0" && c <= "9") digits++;
+  }
+  if (illegal > MAX_ILLEGAL_CHARS || digits < MIN_DIGITS) return false;
+  // The serial number at the end of a US-market VIN is numeric (49 CFR 565.15). Tolerate one misread, but a run of letters at the
+  // end ("...1940KGGAWR", the weights line) is label text, even when its check digit happens to pass (about 1 junk read in 11 does).
+  let tail = 0;
+  for (const c of read.slice(-4)) if (c >= "0" && c <= "9") tail++;
+  if (tail < 3) return false;
+  const check = read[8];
+  return (check >= "0" && check <= "9") || check === "X" || DIGIT_LOOKALIKE.has(check);
+}
+
+// Words that fill a vehicle certification / tire / weight label. A VIN-shaped run built out of them is label text, whatever its
+// check digit says (a weights line such as "GAWR FRT 2183 LBS 990" can have the shape of a VIN). Whole-word match for any
+// piece; words of 4+ letters are also refused as a substring of a run (a run printed right after the word VIN is exempt). Extend this list when a label shows a new one.
+const LABEL_WORDS = new Set([
+  "GVWR", "GAWR", "FRT", "RR", "LBS", "KG", "KPA", "PSI", "MFD", "DATE", "TYPE", "TIRE", "SIZE", "FRONT", "REAR", "COLD", "CAR", "TRUCK", "MPV", "RIM", "LOAD", "SEE", "GROSS", "AXLE", "WEIGHT", "RATING",
+  "PRESSURE", "PASSENGER", "VEHICLE", "STANDARD", "STANDARDS", "EFFECT", "MANUFACTURE", "FEDERAL", "MOTOR", "SAFETY", "BUMPER", "THEFT", "PREVENTION", "CONFORMS", "APPLICABLE", "CANADIAN", "SHOWN", "ABOVE",
+  "INFLATION", "OWNERS", "MANUAL", "INFORMATION", "COMBINED", "CERTIFICATION", "MULTIPURPOSE", "CONFORM", "MANUFACTURED",
+]);
+const SUBSTRING_LABEL_WORDS = [...LABEL_WORDS].filter((w) => w.length >= 4);
+
+/** True when a candidate (and the OCR words it was joined from, if any) is made of label vocabulary rather than a VIN. */
+export function looksLikeLabelText(read: string, pieces: string[] = []): boolean {
+  if (pieces.some((p) => LABEL_WORDS.has(p))) return true;
+  return SUBSTRING_LABEL_WORDS.some((w) => read.includes(w));
+}
+
+export type VinReadEvidence = { afterVinLabel?: boolean; confidences?: (number | undefined)[]; count?: number };
+
+/** Higher is more likely to be THE VIN. Meant for ranking plausible reads only; it never edits a character. */
+export function scoreVinRead(read: string, ev: VinReadEvidence = {}): number {
+  let score = 0;
+  const valid = validateVin(read).ok;
+  if (valid) score += 1000;
+  // No bonus for 'one lookalike swap away from valid': with this many confusable characters almost any read is, so it proves nothing.
+  if (ev.afterVinLabel) score += 300; // the label prints "VIN" right before the number
+  let illegal = 0, digits = 0;
+  for (const c of read) {
+    if (c === "I" || c === "O" || c === "Q") illegal++;
+    if (c >= "0" && c <= "9") digits++;
+  }
+  score -= illegal * 150;
+  score += digits * 10;
+  const check = read[8];
+  score += (check >= "0" && check <= "9") || check === "X" ? 100 : -100;
+  const known = (ev.confidences ?? []).filter((c): c is number => typeof c === "number");
+  if (known.length) score += (known.reduce((a, b) => a + b, 0) / known.length) / 2;
+  score += Math.min(ev.count ?? 1, 10) * 5; // repetition is only a tie-breaker, never the deciding factor
+  return score;
+}
+
+/** Candidates in the order they should be offered, each with the evidence that ranked it. Exported for the scanner. */
+export function rankedVinCandidates(text: string): { vin: string; afterVinLabel: boolean }[] {
+  const found = new Map<string, boolean>(); // vin -> printed right after the word VIN
+  const push = (s: string, afterVin = false, pieces: string[] = []) => {
+    if (!isPlausibleVinRead(s) || (!afterVin && looksLikeLabelText(s, pieces))) return;
+    found.set(s, (found.get(s) ?? false) || afterVin);
+  };
   const lines = String(text ?? "").toUpperCase().split(/\r?\n/);
-  const push = (s: string) => { if (s.length === VIN_LENGTH) found.add(s); };
   for (const line of lines) {
     const tokens = line.split(/[^A-Z0-9]+/).filter(Boolean);
     // a VIN, or a VIN the reader broke into a few pieces ("1HGCM 82633 A004352")
@@ -119,18 +191,40 @@ export function extractVinCandidates(text: string): string[] {
       let joined = "";
       for (let j = i; j < Math.min(tokens.length, i + 5); j++) {
         joined += tokens[j];
-        if (joined.length === VIN_LENGTH) push(joined);
+        if (joined.length === VIN_LENGTH) push(joined, i > 0 && tokens[i - 1] === "VIN", tokens.slice(i, j + 1));
         if (joined.length >= VIN_LENGTH) break;
       }
     }
+    const compact = line.replace(/[^A-Z0-9]/g, "");
     // a short line that is just a VIN with a stray character or two on either side. Longer lines are ordinary printed
     // text (labels, ratings), and sliding a 17-character window over them only invents VIN-shaped junk.
-    const compact = line.replace(/[^A-Z0-9]/g, "");
-    if (compact.length > VIN_LENGTH && compact.length <= VIN_LENGTH + 3) for (let i = 0; i + VIN_LENGTH <= compact.length; i++) push(compact.slice(i, i + VIN_LENGTH));
+    if (compact.length > VIN_LENGTH && compact.length <= VIN_LENGTH + 3) {
+      // a line that starts with the label ("VIN" + number) has exactly one sensible alignment: the number after the label.
+      // Shifted windows over the same text ("VINWBAPH7C58AA175", "NWBAPH7C58AA17576") are the same VIN misaligned, not new VINs.
+      if (compact.startsWith("VIN")) push(compact.slice(3, 3 + VIN_LENGTH), true);
+      else if (!looksLikeLabelText("", tokens)) {
+        // a window that overlaps a label word, even partly ("AWRFRT2183LBS990K" sliced out of "GAWRFRT2183LBS990KG"), is label text
+        const spans = SUBSTRING_LABEL_WORDS.flatMap((w) => { const at = compact.indexOf(w); return at >= 0 ? [[at, at + w.length] as const] : []; });
+        for (let i = 0; i + VIN_LENGTH <= compact.length; i++) if (!spans.some(([a, b]) => i < b && i + VIN_LENGTH > a)) push(compact.slice(i, i + VIN_LENGTH));
+      }
+    }
+    // the reader ran "VIN" and the number together, possibly with more text after it ("VINWBAPH7C58AA175760TYPE...")
+    const at = compact.indexOf("VIN");
+    if (at >= 0 && compact.length >= at + 3 + VIN_LENGTH) push(compact.slice(at + 3, at + 3 + VIN_LENGTH), true);
   }
-  // Valid ones first, then ones with the fewest illegal characters.
-  const score = (v: string) => (validateVin(v).ok ? 0 : 1) * 100 + [...v].filter((c) => !VIN_ALPHABET.includes(c)).length;
-  return [...found].sort((a, b) => score(a) - score(b));
+  return [...found.entries()]
+    .map(([vin, afterVinLabel]) => ({ vin, afterVinLabel, score: scoreVinRead(vin, { afterVinLabel }) }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ vin, afterVinLabel }) => ({ vin, afterVinLabel }));
+}
+
+/**
+ * Pulls VIN candidates out of OCR text, best first. A candidate is a 17-character run of letters/digits (spaces and dashes
+ * inside a run are ignored) that LOOKS like a VIN (see isPlausibleVinRead): text with no digits, such as a legal warning, is
+ * never a candidate. Characters are returned exactly as read, I/O/Q included, so the customer sees what the camera saw.
+ */
+export function extractVinCandidates(text: string): string[] {
+  return rankedVinCandidates(text).map((c) => c.vin);
 }
 
 /**
