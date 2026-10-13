@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import { normalizeVin, suggestCorrections, uncertainPositions, validateVin, VIN_LENGTH } from "@/lib/vin";
-import { RETAKE_TIPS, scanVinFromImage } from "@/lib/vinOcr";
+import { RETAKE_TIPS, scanVinFromImage, type ScanStage } from "@/lib/vinOcr";
 
 /**
  * The VIN input shared by every lookup: type it, or Take Photo / Upload Photo and let the browser read it.
@@ -29,6 +29,7 @@ export default function VinField({
   const uid = useId();
   const [value, setValue] = useState("");
   const [scanning, setScanning] = useState(false);
+  const [progress, setProgress] = useState<{ fraction: number; stage: ScanStage }>({ fraction: 0, stage: "Preparing the photo" });
   const [scanMessage, setScanMessage] = useState<{ kind: "info" | "error"; text: string } | null>(null);
   const [scanned, setScanned] = useState<{ vin: string; confidences: (number | undefined)[]; alternatives: string[] } | null>(null);
   const [confirmed, setConfirmed] = useState(false);
@@ -49,11 +50,12 @@ export default function VinField({
     if (input) input.value = ""; // drop the browser's reference to the photo straight away
     if (!file) return;
     setScanMessage({ kind: "info", text: "Reading the photo…" });
+    setProgress({ fraction: 0.02, stage: "Preparing the photo" }); // something is on screen the instant the photo is picked
     setScanning(true);
     setConfirmed(false);
     setNeedsRetake(false);
     try {
-      const result = await scanVinFromImage(file);
+      const result = await scanVinFromImage(file, (fraction, stage) => setProgress((cur) => ({ fraction: Math.max(cur.fraction, fraction), stage: stage ?? cur.stage })));
       if (!result.ok) {
         setScanned(null);
         setNeedsRetake(result.reason === "unreadable");
@@ -142,8 +144,29 @@ export default function VinField({
       </div>
 
       <div role="status" aria-live="polite" data-testid="vin-scan-status" className={`mt-2 text-sm ${scanMessage?.kind === "error" ? "text-rose-300" : "text-slate-400"}`}>
-        {scanMessage?.text}
+        {scanning ? (
+          <>
+            Reading the photo…{" "}
+            <span aria-hidden="true" data-testid="vin-scan-percent">{Math.round(progress.fraction * 100)}%</span>
+            <span className="ml-2 text-slate-500" data-testid="vin-scan-stage">{progress.stage}</span>
+          </>
+        ) : (
+          scanMessage?.text
+        )}
       </div>
+      {scanning ? (
+        <div
+          role="progressbar"
+          aria-label="Reading the photo"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress.fraction * 100)}
+          data-testid="vin-scan-progress"
+          className="mt-1 h-1.5 w-full overflow-hidden rounded bg-slate-800"
+        >
+          <div className="h-full rounded bg-orange-500 transition-[width] duration-300" style={{ width: `${Math.round(progress.fraction * 100)}%` }} />
+        </div>
+      ) : null}
 
       {needsRetake ? (
         <div className="mt-2 rounded-lg border border-slate-700 p-3 text-sm text-slate-300" data-testid="vin-retake-tips">

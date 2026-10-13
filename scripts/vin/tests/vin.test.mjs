@@ -123,10 +123,12 @@ test("OCR page results become candidates with per-character confidence; a hesita
 });
 
 test("the photo path never uploads or stores anything", () => {
-  const src = fs.readFileSync(path.join(ROOT, "src/lib/vinOcr.ts"), "utf8") + fs.readFileSync(path.join(ROOT, "src/components/vin/VinField.tsx"), "utf8");
+  const pool = fs.readFileSync(path.join(ROOT, "src/lib/ocrPool.ts"), "utf8");
+  const src = fs.readFileSync(path.join(ROOT, "src/lib/vinOcr.ts"), "utf8") + fs.readFileSync(path.join(ROOT, "src/components/vin/VinField.tsx"), "utf8") + pool + fs.readFileSync(path.join(ROOT, "src/lib/vinGlyphs.ts"), "utf8");
   assert.ok(!/fetch\(|XMLHttpRequest|sendBeacon|FormData|localStorage|sessionStorage|indexedDB|FileReader\.readAsDataURL|toDataURL|toBlob/.test(src), "no network or storage call in the scan path");
   assert.ok(/input\.value = ""/.test(src), "the file reference is dropped right after pick");
-  assert.ok(/terminate\(\)/.test(src) && /c\.width = c\.height = 0/.test(src));
+  // Every engine worker is shut down when the scan ends (the pool does it for all of them) and the canvases are emptied.
+  assert.ok(/await pool\.terminateAll\(\)/.test(src) && /worker\.terminate\(\)/.test(pool) && /c\.width = c\.height = 0/.test(src));
   assert.ok(/capture="environment"/.test(src) && /accept="image\/jpeg,image\/png,image\/webp"/.test(src));
 });
 

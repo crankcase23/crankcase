@@ -48,6 +48,58 @@ test.describe("The ORIGINAL customer photo (dusty BMW door jamb, 1440x1920) that
   });
 });
 
+test.describe("Scan speed and responsiveness on the ORIGINAL customer photo", () => {
+  // Measured on the same 2-core container: 23.9 s before the speed work, about 5 s after. The budget leaves several times the
+  // headroom for a loaded machine yet still fails if the scan slides back to the old multi-pass-first behaviour.
+  const BUDGET_MS = 18_000;
+  test("progress is on screen at once and never goes backwards; the page stays responsive; the exact VIN arrives inside the budget", async ({ page }) => {
+    test.setTimeout(120_000);
+    await signUpNewUser(page);
+    await page.goto("/decode");
+    await page.evaluate(() => {
+      const w = window as unknown as { __lag: number };
+      w.__lag = 0;
+      let last = performance.now();
+      setInterval(() => { const n = performance.now(); w.__lag = Math.max(w.__lag, n - last - 50); last = n; }, 50);
+    });
+    const chooser = page.waitForEvent("filechooser");
+    await page.getByTestId("vin-upload-photo").click();
+    const t0 = Date.now();
+    await (await chooser).setFiles(FIX("customer-bmw-label.jpg"));
+    const bar = page.getByTestId("vin-scan-progress");
+    await expect(bar).toBeVisible({ timeout: 2_000 }); // immediate feedback: the customer is never staring at nothing
+    await expect(page.getByTestId("vin-scan-stage")).not.toHaveText("");
+    const seen: number[] = [];
+    const stages = new Set<string>();
+    const status = page.getByTestId("vin-scan-status");
+    while (Date.now() - t0 < 60_000) {
+      if (!(await bar.isVisible())) break;
+      const v = Number(await bar.getAttribute("aria-valuenow").catch(() => null));
+      if (Number.isFinite(v)) seen.push(v);
+      const st = await page.getByTestId("vin-scan-stage").textContent({ timeout: 500 }).catch(() => null);
+      if (st) stages.add(st.trim());
+      await page.waitForTimeout(150);
+    }
+    const took = Date.now() - t0;
+    await expect(status).not.toHaveText(/Reading the photo/);
+    await expect(page.getByTestId("vin-input")).toHaveValue(BMW_VIN);
+    for (let i = 1; i < seen.length; i++) expect(seen[i], `progress went backwards at sample ${i}: ${seen.join(",")}`).toBeGreaterThanOrEqual(seen[i - 1]);
+    expect(new Set(seen).size, `progress moved while scanning: ${seen.join(",")}`).toBeGreaterThan(3);
+    expect(seen.every((v) => v >= 0 && v <= 100)).toBe(true);
+    expect(stages.size, `stages shown: ${[...stages].join(" | ")}`).toBeGreaterThanOrEqual(2);
+    const lag = await page.evaluate(() => (window as unknown as { __lag: number }).__lag);
+    test.info().annotations.push({ type: "scan-ms", description: String(took) }, { type: "longest-freeze-ms", description: String(Math.round(lag)) });
+    console.log(`ORIGINAL PHOTO scan: ${took} ms, longest page freeze ${Math.round(lag)} ms, progress samples ${seen.length}, stages: ${[...stages].join(" > ")}`);
+    expect(took, `scan took ${took} ms`).toBeLessThan(BUDGET_MS);
+    expect(lag, `longest freeze of the page during the scan: ${lag} ms`).toBeLessThan(600);
+    // The safety rules are unchanged by the speed work.
+    await expect(status).toContainText(/Check every character/);
+    await expect(page.getByTestId("vin-suggestion")).toHaveCount(0);
+    await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
+    await expect(page.getByTestId("vin-lookup")).toBeDisabled();
+  });
+});
+
 test.describe("BMW door-jamb label photo scan", () => {
   for (const { file, exact } of LABELS) {
     test(`${file}: never label text; ${exact ? "the exact VIN is prefilled" : "any read is VIN-shaped and unaltered"}; confirmation is required`, async ({ page }) => {

@@ -6,7 +6,8 @@
 // What this returns is what the camera READ, character for character. It does not "fix" anything: I/O/Q and low-confidence
 // characters come back flagged so the screen can highlight them and the customer must confirm the VIN themselves.
 
-import { findGlyphRuns, readGlyphRun, runScore, type Grey, type GlyphRun, type Recognise } from "@/lib/vinGlyphs";
+import { OcrPool, PoolCancelled, poolSizeFor, type PoolWorker } from "@/lib/ocrPool";
+import { encodeGrayBmp, findGlyphRuns, findGlyphRunsAsync, readGlyphRun, runScore, type Grey, type GlyphRun, type Recognise } from "@/lib/vinGlyphs";
 import { isPlausibleVinRead, looksLikeLabelText, normalizeVin, rankedVinCandidates, scoreVinRead, validateVin, VIN_LENGTH } from "@/lib/vin";
 
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
@@ -119,7 +120,8 @@ export function rankVinReads(pages: OcrPage[], extra: VinRead[] = []): RankedVin
   return {
     vin: normalizeVin(best.vin),
     confidences: best.ev.confidences,
-    alternatives: ranked.slice(1, 4).map((r) => r.vin),
+    // Other readings of the photo, for tests and diagnostics. A reading with I, O or Q in it is not a VIN and is never listed.
+    alternatives: ranked.slice(1).filter((r) => !/[IOQ]/.test(r.vin)).slice(0, 3).map((r) => r.vin),
     checkDigitOk: validateVin(best.vin).ok,
   };
 }
@@ -237,33 +239,57 @@ function variant(src: HTMLCanvasElement, binarize: boolean): HTMLCanvasElement {
   return out;
 }
 
+/** Detection settings in the order they are tried: polarity (+1 dark strokes on light, -1 the reverse) and background radius. */
+const GLYPH_SETTINGS: [1 | -1, number][] = [[1, 10], [-1, 10], [1, 6], [-1, 6], [1, 18], [-1, 18], [1, 30], [-1, 30]];
+/** A run of exactly VIN length with glyph heights within about 12% of each other (runScore 20 or more) is the printed VIN line; the search stops there. */
+const STRONG_RUN = 20;
+/** Engine calls in one glyph run: 12 settings for each of 17 characters. Used only to scale the progress bar. */
+const GLYPH_STEPS = 204;
+
+export type GlyphOptions = {
+  /** Hands the thread back to the page between slices of the shape search, so the screen never freezes. */
+  tick?: () => Promise<void>;
+  /** Called with the reads so far after the first run; returning true skips the second run (the scan already has a valid VIN). */
+  isDone?: (reads: VinRead[]) => boolean;
+  /** Called once detection settles on the first run: whether any VIN-length candidate was found, and how many of the settings it took. */
+  onDetected?: (found: boolean, settingsTried: number) => void;
+};
+
 /**
  * The glyph reader (see vinGlyphs.ts): finds printed character strings as runs of individual shapes, reads each shape on its own
- * under many enhancement settings, and tallies the votes. Reads the two best runs only. Each result is what the shapes looked
- * like, character for character; nothing is fitted to the check digit, and the ranking afterwards treats it like any other read.
- * Exported for tests.
+ * under many enhancement settings, and tallies the votes. The search stops at the first strong run (a full-length line of evenly
+ * sized characters), reads it, and reads a second distinct run only when the first did not already give a valid VIN. Each result is
+ * what the shapes looked like, character for character; nothing is fitted to the check digit, and the ranking afterwards treats it
+ * like any other read. Exported for tests.
  */
-export async function glyphVinReads(grey: Grey, recognise: Recognise, onStep?: () => void): Promise<VinRead[]> {
+export async function glyphVinReads(grey: Grey, recognise: Recognise, onStep?: () => void, opts: GlyphOptions = {}): Promise<VinRead[]> {
   const found: { run: GlyphRun; sig: Float32Array; score: number }[] = [];
-  for (const polarity of [1, -1] as const) {
-    for (const radius of [6, 10, 18, 30]) {
-      const { runs, sig } = findGlyphRuns(grey, polarity, radius);
+  let next = 0;
+  const detectUntil = async (stopAtStrong: boolean) => {
+    for (; next < GLYPH_SETTINGS.length;) {
+      const [polarity, radius] = GLYPH_SETTINGS[next++];
+      const { runs, sig } = opts.tick ? await findGlyphRunsAsync(grey, polarity, radius, opts.tick) : findGlyphRuns(grey, polarity, radius);
       for (const run of runs) found.push({ run, sig, score: runScore(run) });
+      if (stopAtStrong && found.some((f) => f.score >= STRONG_RUN)) return;
     }
-  }
-  found.sort((a, b) => b.score - a.score);
-  const chosen: typeof found = [];
+  };
   const overlaps = (a: GlyphRun, b: GlyphRun) => {
     const ax0 = a.boxes[0].x0, ax1 = a.boxes[a.boxes.length - 1].x1, bx0 = b.boxes[0].x0, bx1 = b.boxes[b.boxes.length - 1].x1;
     const ay = a.boxes.reduce((s, x) => s + (x.y0 + x.y1) / 2, 0) / a.boxes.length, by = b.boxes.reduce((s, x) => s + (x.y0 + x.y1) / 2, 0) / b.boxes.length;
     return Math.min(ax1, bx1) > Math.max(ax0, bx0) && Math.abs(ay - by) < Math.max(a.height, b.height);
   };
-  for (const f of found) {
-    if (chosen.length >= 2) break;
-    if (!chosen.some((c) => overlaps(c.run, f.run))) chosen.push(f);
-  }
+  const chosen: typeof found = [];
   const out: VinRead[] = [];
-  for (const f of chosen) {
+  for (let round = 0; round < 2; round++) {
+    if (round === 0) await detectUntil(true);
+    else {
+      if (opts.isDone?.(out)) break;
+      await detectUntil(false);
+    }
+    if (round === 0) opts.onDetected?.(found.length > 0, next);
+    const f = [...found].sort((a, b) => b.score - a.score).find((c) => !chosen.some((x) => overlaps(x.run, c.run)));
+    if (!f) continue;
+    chosen.push(f);
     const read = await readGlyphRun(f.sig, grey.width, grey.height, f.run, recognise, undefined, onStep);
     for (const c of rankedVinCandidates(read.text)) {
       const at = read.text.indexOf(c.vin);
@@ -283,8 +309,40 @@ function greyOf(canvas: HTMLCanvasElement): Grey | null {
   return { data: g, width: canvas.width, height: canvas.height };
 }
 
-/** Reads one photo. Nothing is uploaded or kept; the engine worker is terminated before this returns. */
-export async function scanVinFromImage(file: File, onProgress?: (fraction: number) => void): Promise<ScanResult> {
+/** Gives the page a turn (input, painting) between slices of heavy work. A message channel is not slowed down in a background tab the way a timer is. */
+export function yieldToPage(): Promise<void> {
+  if (typeof MessageChannel !== "undefined") {
+    return new Promise((resolve) => {
+      const ch = new MessageChannel();
+      ch.port1.onmessage = () => { ch.port1.close(); resolve(); };
+      ch.port2.postMessage(0);
+    });
+  }
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+export type ScanStage = "Preparing the photo" | "Starting the reader" | "Reading the label" | "Reading each character" | "Checking the label area";
+
+const ENGINE_PATHS = { workerPath: "/ocr/worker.min.js", corePath: "/ocr/core", langPath: "/ocr/lang" } as const;
+// Letters and digits only. I, O and Q stay allowed on purpose: when the camera reads one, the customer is shown it.
+const WHITELIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+/**
+ * Reads one photo. Nothing is uploaded or kept; the engine workers are terminated before this returns.
+ * `onProgress(fraction, stage)` is called right away and then as work completes; the fraction never goes backwards.
+ * `trace(stage)` is for timing tools only.
+ */
+export async function scanVinFromImage(file: File, onProgress?: (fraction: number, stage?: ScanStage) => void, trace?: (stage: string) => void): Promise<ScanResult> {
+  const mark = (stage: string) => { try { trace?.(stage); } catch { /* tracing never affects a scan */ } };
+  mark("start");
+  let shown = 0;
+  let stage: ScanStage = "Preparing the photo";
+  const report = (fraction: number, next?: ScanStage) => {
+    if (next) stage = next;
+    shown = Math.max(shown, Math.min(0.99, fraction));
+    try { onProgress?.(shown, stage); } catch { /* a progress display never affects a scan */ }
+  };
+  report(0.02, "Preparing the photo");
   if (file.size > MAX_PHOTO_BYTES) return fail("size");
   let head: Uint8Array;
   try {
@@ -300,96 +358,135 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
   let canvas: HTMLCanvasElement;
   try {
     canvas = await toCanvas(file);
+    mark("decoded");
   } catch {
     return fail("decode");
   }
+  report(0.07, "Starting the reader");
 
-  let worker: import("tesseract.js").Worker | undefined;
+  const pool = new OcrPool();
   const made: HTMLCanvasElement[] = [canvas];
   try {
     const { createWorker, PSM } = await import("tesseract.js");
-    let passDone = 0;
-    let passTotal = 6;
-    const PSMS = [PSM.SINGLE_BLOCK, PSM.SPARSE_TEXT, PSM.AUTO];
-    const bin = variant(canvas, true), grey = variant(canvas, false);
-    made.push(bin, grey);
-    const pad = Math.round(Math.max(canvas.width, canvas.height) * 0.04); // the margin variant() adds around the photo
-    worker = await createWorker("eng", 1, {
-      workerPath: "/ocr/worker.min.js",
-      corePath: "/ocr/core",
-      langPath: "/ocr/lang",
-      workerBlobURL: false,
-      logger: (m: { status?: string; progress?: number }) => {
-        if (m.status === "recognizing text" && typeof m.progress === "number") onProgress?.(Math.min(1, (passDone + m.progress) / passTotal));
-      },
-    });
-    // Letters and digits only. I, O and Q stay allowed on purpose: when the camera reads one, the customer is shown it.
-    await worker.setParameters({ tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" });
-    // Several looks at the same photo. Each is read as-is; none edits a character. A read that passes the VIN check digit
-    // ends the search; otherwise every read is ranked by evidence (see rankVinReads) and the best is offered, flagged, for
-    // the customer to check. Text that does not look like a VIN is never offered.
-    const pages: OcrPage[] = [];
-    const glyphReads: VinRead[] = [];
-    const run = async (img: HTMLCanvasElement, psm: (typeof PSMS)[number]) => {
-      await worker!.setParameters({ tessedit_pageseg_mode: psm });
-      const { data } = await worker!.recognize(img, {}, { blocks: true, text: true });
-      passDone++;
-      pages.push(data as unknown as OcrPage);
-      return rankVinReads(pages, glyphReads);
+    const makeWorker = async (): Promise<PoolWorker> => {
+      const w = await createWorker("eng", 1, { ...ENGINE_PATHS, workerBlobURL: false });
+      await w.setParameters({ tessedit_char_whitelist: WHITELIST });
+      return w as unknown as PoolWorker;
     };
-    // Stage 1: the whole photo.
-    for (const img of [bin, grey]) for (const psm of PSMS) {
-      const so_far = await run(img, psm);
-      if (so_far?.checkDigitOk) return { ok: true, ...so_far };
-    }
-    // Stage 1b: the glyph reader, for etched or hairline characters the page reader cannot see. About 3 seconds.
-    {
-      const grey = greyOf(canvas);
-      const tile = document.createElement("canvas");
-      made.push(tile);
-      const tctx = tile.getContext("2d", { willReadFrequently: true });
-      if (grey && tctx) {
-        passTotal += 2;
-        let steps = 0;
-        await worker.setParameters({ tessedit_pageseg_mode: PSM.SINGLE_CHAR });
-        const recognise: Recognise = async (t) => {
-          tile.width = t.width;
-          tile.height = t.height;
-          const img = tctx.createImageData(t.width, t.height);
-          for (let i = 0; i < t.data.length; i++) { img.data[i * 4] = img.data[i * 4 + 1] = img.data[i * 4 + 2] = t.data[i]; img.data[i * 4 + 3] = 255; }
-          tctx.putImageData(img, 0, 0);
-          const { data } = await worker!.recognize(tile);
-          return { ch: (data.text.trim()[0] ?? null)?.toUpperCase() ?? null, conf: data.confidence / 100 };
-        };
-        try {
-          glyphReads.push(...(await glyphVinReads(grey, recognise, () => { if (++steps % 12 === 0) onProgress?.(Math.min(1, (passDone + 2 * Math.min(1, steps / 204)) / passTotal)); })));
-        } catch { /* the glyph reader is an extra; the page reader's reads still stand */ }
-        passDone += 2;
-        const so_far = rankVinReads(pages, glyphReads);
-        if (so_far?.checkDigitOk) return { ok: true, ...so_far };
+    // The first worker boots on its own thread while this one keeps preparing the photo and searching for character shapes.
+    const firstWorker = makeWorker();
+    firstWorker.catch(() => undefined);
+    const wanted = poolSizeFor(typeof navigator !== "undefined" ? navigator.hardwareConcurrency : undefined);
+    let extraStarted = false;
+    const addExtraWorkers = () => {
+      if (extraStarted) return;
+      extraStarted = true;
+      for (let i = 1; i < wanted; i++) makeWorker().then((w) => pool.add(w)).catch(() => undefined); // extra workers are a speed-up only
+    };
+
+    const pages: (OcrPage | undefined)[] = [];
+    const glyphReads: VinRead[] = [];
+    let engineError = false;
+    let resolveEarly: (r: ScanResult) => void = () => undefined;
+    const early = new Promise<ScanResult>((res) => { resolveEarly = res; });
+    // Any read that passes the VIN check ends the search, whichever reader found it. What is returned is exactly what was read.
+    let finished = false;
+    const check = () => {
+      const ranked = rankVinReads(pages.filter((p): p is OcrPage => !!p), glyphReads);
+      if (ranked?.checkDigitOk) { finished = true; resolveEarly({ ok: true, ...ranked }); }
+    };
+
+    // Progress is counted in work units: a page pass is 1, the glyph reader about 4 (spread over its steps), the label-area passes 1 each.
+    let passesFinished = 0;
+    let steps = 0;
+    let unitsTotal = 10;
+    const unitsDone = () => passesFinished + Math.min(4, (steps / GLYPH_STEPS) * 4);
+    const emit = (next?: ScanStage) => report(0.08 + 0.9 * (unitsDone() / unitsTotal), next);
+    const passDone = () => { passesFinished += 1; emit(); };
+
+    const PSMS = { sparse: PSM.SPARSE_TEXT, auto: PSM.AUTO, block: PSM.SINGLE_BLOCK } as const;
+    const pagePass = (slot: number, img: HTMLCanvasElement, psm: (typeof PSMS)[keyof typeof PSMS], priority: number) =>
+      pool
+        .submit(priority, psm, async (w) => (await w.recognize(img, {}, { blocks: true, text: true })).data)
+        .then((data) => {
+          pages[slot] = data as unknown as OcrPage;
+          mark(`pass${slot + 1}`);
+          passDone();
+          check();
+          // A clean label is settled by the first quick pass, so extra workers (memory, CPU to start) are only worth starting once it has not been.
+          if (slot === 0 && !finished) addExtraWorkers();
+        })
+        .catch((e) => { if (!(e instanceof PoolCancelled)) engineError = true; });
+
+    // The glyph reader, for etched or hairline characters the page reader cannot see. Its shape search runs here while the workers are busy.
+    const grey = greyOf(canvas);
+    const recognise: Recognise = (t) =>
+      pool.submit(2, PSM.SINGLE_CHAR, async (w) => {
+        const { data } = await w.recognize(encodeGrayBmp(t), {}, { text: true });
+        return { ch: (data.text.trim()[0] ?? null)?.toUpperCase() ?? null, conf: data.confidence / 100 };
+      });
+    const glyphLane = (async () => {
+      if (!grey) { unitsTotal -= 4; return; }
+      mark("glyph-start");
+      try {
+        const reads = await glyphVinReads(grey, recognise, () => {
+          steps++;
+          if (steps % 6 === 0) emit("Reading each character");
+        }, {
+          tick: yieldToPage,
+          isDone: (r) => !!rankVinReads(pages.filter((p): p is OcrPage => !!p), [...glyphReads, ...r])?.checkDigitOk,
+          onDetected: (any) => { mark("glyph-detected"); if (!any) unitsTotal -= 4; },
+        });
+        glyphReads.push(...reads);
+      } catch (e) {
+        if (!(e instanceof PoolCancelled)) mark("glyph-failed"); // the glyph reader is an extra; the page reader's reads still stand
       }
-    }
+      mark("glyph-done");
+      check();
+    })();
+    glyphLane.catch(() => undefined);
+
+    pool.add(await firstWorker);
+    mark("worker-ready");
+    report(0.1, "Reading the label");
+    // Stage 1: the whole photo, cheap passes first. The two quick passes settle a clean label; the slow single-block passes go last.
+    const bin = variant(canvas, true);
+    made.push(bin);
+    const stage1: Promise<unknown>[] = [pagePass(0, bin, PSMS.sparse, 1), pagePass(1, bin, PSMS.auto, 1)];
+    const greyV = variant(canvas, false);
+    made.push(greyV);
+    stage1.push(pagePass(2, greyV, PSMS.sparse, 3), pagePass(3, greyV, PSMS.auto, 3), pagePass(4, bin, PSMS.block, 3), pagePass(5, greyV, PSMS.block, 3));
+    const pad = Math.round(Math.max(canvas.width, canvas.height) * 0.04); // the margin variant() adds around the photo
+    const settled = Promise.all([...stage1, glyphLane]).then(() => null);
+
+    let winner = await Promise.race([early, settled]);
+    if (winner) return winner;
+
     // Stage 2: read the label region on its own, with its own contrast, where the engine saw label text.
-    const hull = labelHull(pages, pad);
+    const pagesDone = pages.filter((p): p is OcrPage => !!p);
+    const hull = labelHull(pagesDone, pad);
     const box = hull && plateCropBox(hull, canvas.width, canvas.height);
     const crop = box && cropStretched(canvas, box);
     if (crop) {
       made.push(crop);
       const cropBin = variant(crop, true), cropGrey = variant(crop, false);
       made.push(cropBin, cropGrey);
-      passTotal += 6;
-      for (const img of [cropGrey, cropBin]) for (const psm of PSMS) {
-        const so_far = await run(img, psm);
-        if (so_far?.checkDigitOk) return { ok: true, ...so_far };
-      }
+      unitsTotal += 6;
+      addExtraWorkers();
+      report(shown, "Checking the label area");
+      const stage2: Promise<unknown>[] = [];
+      let slot = 6;
+      for (const img of [cropGrey, cropBin]) for (const psm of [PSMS.sparse, PSMS.auto, PSMS.block]) stage2.push(pagePass(slot++, img, psm, 1));
+      winner = await Promise.race([early, Promise.all(stage2).then(() => null)]);
+      if (winner) return winner;
     }
-    const result = rankVinReads(pages, glyphReads);
-    if (!result) return fail("unreadable");
+    const result = rankVinReads(pages.filter((p): p is OcrPage => !!p), glyphReads);
+    if (!result) return engineError ? fail("engine") : fail("unreadable");
     return { ok: true, ...result };
   } catch {
     return fail("engine");
   } finally {
     for (const c of made) c.width = c.height = 0;
-    try { await worker?.terminate(); } catch { /* the worker is gone either way */ }
+    try { await pool.terminateAll(); } catch { /* the workers are gone either way */ }
   }
 }
