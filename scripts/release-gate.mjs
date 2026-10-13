@@ -1,7 +1,8 @@
 // MANDATORY release gate. It FAILS unless every check below ran and passed. A skipped, filtered-out, missing or unrunnable
 // check is a FAIL, never a pass. Run against a built app on :3100 and a migrated scratch DB named cc_test (docs/release/README.md):
 //   run `npm run release:gate` with DATABASE_URL pointing at a local scratch database (127.0.0.1)
-//   ... -- --full-report path/to/playwright-full-run.json     (also validate a full `--reporter=json` run: 0 failed, no unexpected skips)
+//   ... -- --full-report path/to/playwright-full-run.json [--fallback-report path/to/fallback-leg.json]
+//       (also validate a full `--reporter=json` run: 0 failed, no unexpected skips; the flag-gated vin-fallback.spec skips need the fallback-leg report proving they passed)
 //
 //   1. DATABASE_URL must be set and LOCAL. Without it the database-backed suites skip themselves silently.
 //   2. keys unit suite (incl. legacy-holds, checkout eligibility, payment settlement): 0 fail, 0 skipped, >= MIN tests.
@@ -9,8 +10,9 @@
 //   4. optional: a full Playwright JSON report: 0 failed, and every skipped test is on the known-unrelated allowlist.
 import { spawnSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
+import { unexpectedSkips } from "./release/gate-skips.mjs";
 
-const MIN_KEYS_TESTS = 33;       // keys:test as of the Option B contract-rollback fix (30 + 3 contract tests); raise when tests are added, never lower
+const MIN_KEYS_TESTS = 35;       // keys:test as of the Option B contract-rollback fix (30 + 3 contract tests); raise when tests are added, never lower
 const MIN_LEGACY_HOLDS_TESTS = 12;
 const ALLOWED_SKIPS = [/^ops snapshot bridge/i]; // needs tokens that are not set in the rehearsal environment
 const REQUIRED = [
@@ -77,7 +79,12 @@ if (i > -1) {
   if (full) {
     const rows = flat(full);
     const failed = rows.filter((x) => x.status === "unexpected" || x.status === "flaky");
-    const skippedBad = rows.filter((x) => x.status === "skipped" && !ALLOWED_SKIPS.some((re) => re.test(x.title) || re.test(x.title.split(" › ")[0] ?? "")) && !/ops-snapshot/.test(x.file));
+    // The NHTSA-fallback spec only runs against a flag-ON server (scripts/vin/run-fallback-e2e.sh), so it skips in the main run.
+    // Its skips are accepted only with --fallback-report <json> from that leg showing every one of those tests passed.
+    const j = process.argv.indexOf("--fallback-report");
+    let legRows = null;
+    if (j > -1) { try { legRows = flat(JSON.parse(readFileSync(process.argv[j + 1], "utf8"))); } catch { fail(`cannot read fallback report ${process.argv[j + 1]}`); } }
+    const skippedBad = unexpectedSkips(rows, { allowedTitles: ALLOWED_SKIPS, fallbackLegRows: legRows });
     (failed.length === 0 ? pass : fail)(`full run: ${rows.length} tests, ${failed.length} failed/flaky`);
     (skippedBad.length === 0 ? pass : fail)(`full run: ${skippedBad.length} unexpected skips${skippedBad.length ? " e.g. " + skippedBad[0].file : ""} (BMW admin guide specs skip when DATABASE_URL was not local)`);
   }
