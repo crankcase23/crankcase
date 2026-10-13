@@ -20,43 +20,31 @@ const LABELS: { file: string; exact: boolean }[] = [
 ];
 
 test.describe("The ORIGINAL customer photo (dusty BMW door jamb, 1440x1920) that exposed the bug", () => {
-  test("never label text; the engine's near-miss is shown exactly as read and flagged; the customer fixes it; confirmation is still required", async ({ page }) => {
-    test.setTimeout(180_000);
+  // PRIMARY ACCEPTANCE TEST. The real photograph, through the real browser pipeline. The exact VIN must come out of the
+  // photo by itself: no typing, no suggestion button, no manual correction. Safety rules still hold.
+  test("the exact VIN is extracted from the photo itself; never label text; passes the check digit; the customer must still confirm", async ({ page }) => {
+    test.setTimeout(240_000);
     await signUpNewUser(page);
     await page.goto("/decode");
     const chooser = page.waitForEvent("filechooser");
     await page.getByTestId("vin-upload-photo").click();
     await (await chooser).setFiles(FIX("customer-bmw-label.jpg"));
     const status = page.getByTestId("vin-scan-status");
-    await expect(status).not.toHaveText(/Reading the photo/, { timeout: 150_000 });
-    const read = (await page.getByTestId("vin-input").inputValue()).trim();
-    // This engine cannot read the label's slashed 7 (it returns A, Z or I) and sometimes the last 0 (U); the rest is right.
-    // So the strict goal "exact VIN extracted" is NOT met on this photo; what is guaranteed, and pinned here, is:
-    const hamming = [...read].filter((c, i) => c !== BMW_VIN[i]).length;
-    expect(read, "label text must never reach the VIN box").toHaveLength(17);
-    expect(hamming, `the read ${read} is close to the real VIN`).toBeLessThanOrEqual(3);
-    let scannedPath = true; // false once the customer types the VIN themselves (a typed VIN is the customer's own entry)
-    if (read === BMW_VIN) {
-      await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
-    } else {
-      await expect(status).toContainText(/does not pass the VIN check/); // flagged, not presented as verified
-      await expect(page.getByTestId("vin-retake-tips")).toContainText(/move closer/i);
-      await expect(page.getByTestId("vin-lookup")).toBeDisabled(); // nothing can be looked up from a failed read
-      const fixes = page.getByTestId("vin-suggestion");
-      if ((await fixes.count()) === 1) { // a single-character change passes the check digit: it must be the true VIN, applied only by the customer
-        await fixes.click();
-        await expect(page.getByTestId("vin-input")).toHaveValue(BMW_VIN);
-      } else {
-        await page.getByTestId("vin-input").fill(BMW_VIN); // the customer types what is on the vehicle
-        scannedPath = false;
-      }
-    }
-    if (scannedPath) {
-      await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
-      await expect(page.getByTestId("vin-lookup")).toBeDisabled(); // a scanned VIN still needs the customer's own confirmation
-      await page.getByTestId("vin-confirm-scan").check();
-    }
+    await expect(status).not.toHaveText(/Reading the photo/, { timeout: 200_000 });
+    await expect(page.getByTestId("vin-input")).toHaveValue(BMW_VIN);
+    await expect(status).toContainText(/Check every character/); // the read passes the VIN check digit
+    await expect(status).not.toContainText(/does not pass the VIN check/);
+    await expect(page.getByTestId("vin-suggestion")).toHaveCount(0); // nothing was guessed or offered to fix it
+    await expect(page.getByTestId("vin-retake-tips")).toHaveCount(0);
+    // A scan never goes straight to lookup: the customer ticks the confirmation first.
+    await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
+    await expect(page.getByTestId("vin-lookup")).toBeDisabled();
+    await page.getByTestId("vin-confirm-scan").check();
     await expect(page.getByTestId("vin-lookup")).toBeEnabled();
+    // Editing a single character after the scan drops the scan status: the edited VIN is the customer's own entry and is re-validated.
+    await page.getByTestId("vin-input").fill(BMW_VIN.slice(0, 16) + "1");
+    await page.getByTestId("vin-lookup").click();
+    await expect(page.getByTestId("vin-error")).toContainText(/check-digit/i);
   });
 });
 

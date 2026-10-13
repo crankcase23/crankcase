@@ -6,6 +6,7 @@
 // What this returns is what the camera READ, character for character. It does not "fix" anything: I/O/Q and low-confidence
 // characters come back flagged so the screen can highlight them and the customer must confirm the VIN themselves.
 
+import { findGlyphRuns, readGlyphRun, runScore, type Grey, type GlyphRun, type Recognise } from "@/lib/vinGlyphs";
 import { isPlausibleVinRead, looksLikeLabelText, normalizeVin, rankedVinCandidates, scoreVinRead, validateVin, VIN_LENGTH } from "@/lib/vin";
 
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
@@ -97,19 +98,17 @@ export type RankedVin = { vin: string; confidences: (number | undefined)[]; alte
  * text such as "...STANDARDS IN EFFECT ON THE DATE OF MANUFACTURE" can never be offered), and they are ranked by evidence:
  * passes the check digit, printed right after the word "VIN", digits and position-9 rule, camera confidence. How many times
  * a read repeated is only a tie-breaker. The winner is returned exactly as read (never corrected); the customer confirms it.
- * Returns null when nothing in the photo looks like a VIN.
+ * `extra` carries reads from other readers (the glyph reader). Returns null when nothing in the photo looks like a VIN.
  */
-export function rankVinReads(pages: OcrPage[]): RankedVin | null {
+export function rankVinReads(pages: OcrPage[], extra: VinRead[] = []): RankedVin | null {
   const seen = new Map<string, { confidences: (number | undefined)[]; count: number; afterVinLabel: boolean }>();
-  for (const page of pages) {
-    for (const c of candidatesFromPage(page)) {
-      const cur = seen.get(c.vin);
-      if (cur) {
-        cur.count++;
-        cur.afterVinLabel ||= c.afterVinLabel;
-        if (c.confidences.some((x) => x !== undefined) && !cur.confidences.some((x) => x !== undefined)) cur.confidences = c.confidences;
-      } else seen.set(c.vin, { confidences: c.confidences, count: 1, afterVinLabel: c.afterVinLabel });
-    }
+  for (const c of [...pages.flatMap((page) => candidatesFromPage(page)), ...extra]) {
+    const cur = seen.get(c.vin);
+    if (cur) {
+      cur.count++;
+      cur.afterVinLabel ||= c.afterVinLabel;
+      if (c.confidences.some((x) => x !== undefined) && !cur.confidences.some((x) => x !== undefined)) cur.confidences = c.confidences;
+    } else seen.set(c.vin, { confidences: c.confidences, count: 1, afterVinLabel: c.afterVinLabel });
   }
   const ranked = [...seen.entries()]
     .filter(([vin, ev]) => isPlausibleVinRead(vin) && (ev.afterVinLabel || !looksLikeLabelText(vin)))
@@ -238,6 +237,52 @@ function variant(src: HTMLCanvasElement, binarize: boolean): HTMLCanvasElement {
   return out;
 }
 
+/**
+ * The glyph reader (see vinGlyphs.ts): finds printed character strings as runs of individual shapes, reads each shape on its own
+ * under many enhancement settings, and tallies the votes. Reads the two best runs only. Each result is what the shapes looked
+ * like, character for character; nothing is fitted to the check digit, and the ranking afterwards treats it like any other read.
+ * Exported for tests.
+ */
+export async function glyphVinReads(grey: Grey, recognise: Recognise, onStep?: () => void): Promise<VinRead[]> {
+  const found: { run: GlyphRun; sig: Float32Array; score: number }[] = [];
+  for (const polarity of [1, -1] as const) {
+    for (const radius of [6, 10, 18, 30]) {
+      const { runs, sig } = findGlyphRuns(grey, polarity, radius);
+      for (const run of runs) found.push({ run, sig, score: runScore(run) });
+    }
+  }
+  found.sort((a, b) => b.score - a.score);
+  const chosen: typeof found = [];
+  const overlaps = (a: GlyphRun, b: GlyphRun) => {
+    const ax0 = a.boxes[0].x0, ax1 = a.boxes[a.boxes.length - 1].x1, bx0 = b.boxes[0].x0, bx1 = b.boxes[b.boxes.length - 1].x1;
+    const ay = a.boxes.reduce((s, x) => s + (x.y0 + x.y1) / 2, 0) / a.boxes.length, by = b.boxes.reduce((s, x) => s + (x.y0 + x.y1) / 2, 0) / b.boxes.length;
+    return Math.min(ax1, bx1) > Math.max(ax0, bx0) && Math.abs(ay - by) < Math.max(a.height, b.height);
+  };
+  for (const f of found) {
+    if (chosen.length >= 2) break;
+    if (!chosen.some((c) => overlaps(c.run, f.run))) chosen.push(f);
+  }
+  const out: VinRead[] = [];
+  for (const f of chosen) {
+    const read = await readGlyphRun(f.sig, grey.width, grey.height, f.run, recognise, undefined, onStep);
+    for (const c of rankedVinCandidates(read.text)) {
+      const at = read.text.indexOf(c.vin);
+      out.push({ vin: c.vin, afterVinLabel: c.afterVinLabel, confidences: read.positions.slice(at, at + VIN_LENGTH).map((p) => Math.round(p.share * 100)) });
+    }
+  }
+  return out;
+}
+
+/** The R channel of a greyscale canvas as a plain grey image. */
+function greyOf(canvas: HTMLCanvasElement): Grey | null {
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const g = new Uint8ClampedArray(canvas.width * canvas.height);
+  for (let i = 0; i < g.length; i++) g[i] = d[i * 4];
+  return { data: g, width: canvas.width, height: canvas.height };
+}
+
 /** Reads one photo. Nothing is uploaded or kept; the engine worker is terminated before this returns. */
 export async function scanVinFromImage(file: File, onProgress?: (fraction: number) => void): Promise<ScanResult> {
   if (file.size > MAX_PHOTO_BYTES) return fail("size");
@@ -284,17 +329,45 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
     // ends the search; otherwise every read is ranked by evidence (see rankVinReads) and the best is offered, flagged, for
     // the customer to check. Text that does not look like a VIN is never offered.
     const pages: OcrPage[] = [];
+    const glyphReads: VinRead[] = [];
     const run = async (img: HTMLCanvasElement, psm: (typeof PSMS)[number]) => {
       await worker!.setParameters({ tessedit_pageseg_mode: psm });
       const { data } = await worker!.recognize(img, {}, { blocks: true, text: true });
       passDone++;
       pages.push(data as unknown as OcrPage);
-      return rankVinReads(pages);
+      return rankVinReads(pages, glyphReads);
     };
     // Stage 1: the whole photo.
     for (const img of [bin, grey]) for (const psm of PSMS) {
       const so_far = await run(img, psm);
       if (so_far?.checkDigitOk) return { ok: true, ...so_far };
+    }
+    // Stage 1b: the glyph reader, for etched or hairline characters the page reader cannot see. About 3 seconds.
+    {
+      const grey = greyOf(canvas);
+      const tile = document.createElement("canvas");
+      made.push(tile);
+      const tctx = tile.getContext("2d", { willReadFrequently: true });
+      if (grey && tctx) {
+        passTotal += 2;
+        let steps = 0;
+        await worker.setParameters({ tessedit_pageseg_mode: PSM.SINGLE_CHAR });
+        const recognise: Recognise = async (t) => {
+          tile.width = t.width;
+          tile.height = t.height;
+          const img = tctx.createImageData(t.width, t.height);
+          for (let i = 0; i < t.data.length; i++) { img.data[i * 4] = img.data[i * 4 + 1] = img.data[i * 4 + 2] = t.data[i]; img.data[i * 4 + 3] = 255; }
+          tctx.putImageData(img, 0, 0);
+          const { data } = await worker!.recognize(tile);
+          return { ch: (data.text.trim()[0] ?? null)?.toUpperCase() ?? null, conf: data.confidence / 100 };
+        };
+        try {
+          glyphReads.push(...(await glyphVinReads(grey, recognise, () => { if (++steps % 12 === 0) onProgress?.(Math.min(1, (passDone + 2 * Math.min(1, steps / 204)) / passTotal)); })));
+        } catch { /* the glyph reader is an extra; the page reader's reads still stand */ }
+        passDone += 2;
+        const so_far = rankVinReads(pages, glyphReads);
+        if (so_far?.checkDigitOk) return { ok: true, ...so_far };
+      }
     }
     // Stage 2: read the label region on its own, with its own contrast, where the engine saw label text.
     const hull = labelHull(pages, pad);
@@ -310,7 +383,7 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
         if (so_far?.checkDigitOk) return { ok: true, ...so_far };
       }
     }
-    const result = rankVinReads(pages);
+    const result = rankVinReads(pages, glyphReads);
     if (!result) return fail("unreadable");
     return { ok: true, ...result };
   } catch {
