@@ -9,6 +9,7 @@ import GuideBody from "@/components/GuideBody";
 import GuideWithServiceSave from "@/components/GuideWithServiceSave";
 import { isPreview, isSellable } from "@/lib/guideAccess";
 import DataDisclaimer from "@/components/DataDisclaimer";
+import { usesEvidenceNotices } from "@/lib/guideNotices";
 import ViewTracker from "@/components/ViewTracker";
 import FeedbackWidget from "@/components/FeedbackWidget";
 import { getViewerVehicle } from "@/lib/viewerConfig";
@@ -53,7 +54,9 @@ export default async function RepairGuidePage(
     <GuideConfigNotice resolution={guide.configResolution} config={config} make={vehicle.make} vehicleId={id} inGarage={inGarage} />
   );
 
-  const previewBanner = isPreview(guide) && (
+  // Evidence-built preview guides show their one consolidated notice inside GuideBody instead of the banner + disclaimer here.
+  const consolidated = usesEvidenceNotices(guide);
+  const previewBanner = isPreview(guide) && !consolidated && (
     <div
       role="note"
       className="mt-6 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"
@@ -72,9 +75,11 @@ export default async function RepairGuidePage(
         {/* Records the view for admin analytics. Renders nothing. */}
         <ViewTracker type="guide.viewed" objectId={guide.id} objectType="guide" />
         {previewBanner}
-        <div className="mt-4">
-          <DataDisclaimer />
-        </div>
+        {!consolidated && (
+          <div className="mt-4">
+            <DataDisclaimer />
+          </div>
+        )}
         {configNotice}
         <GuideWithServiceSave
           guide={guide}
@@ -124,9 +129,11 @@ export default async function RepairGuidePage(
         </div>
       )}
 
-      <div className="mt-6">
-        <DataDisclaimer />
-      </div>
+      {!consolidated && (
+        <div className="mt-6">
+          <DataDisclaimer />
+        </div>
+      )}
       {configNotice}
 
       <GuideBody guide={guide} />
