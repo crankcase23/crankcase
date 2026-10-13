@@ -36,16 +36,6 @@
       "note": "Single source. ETK and BimmerWorld call the part a 'Torx screw' M11x65 without saying internal or external Torx, so E14 external is neither confirmed nor contradicted; test-fit and do not force."
     },
     {
-      "item": "16 mm deep socket (idler/deflection pulley bolt, under the alternator)",
-      "status": "VERIFIED_SECONDARY",
-      "sources": [
-        "https://www.fcpeuro.com/blog/how-to-replace-the-serpentine-belt-tensioner-idler-pulley-on-a-bmw-n52-engine",
-        "https://www.1addicts.com/forums/showthread.php?p=22769621"
-      ],
-      "primary": false,
-      "note": "1addicts post is an E82 N52."
-    },
-    {
       "item": "T25 socket (fan shroud, transmission oil cooler fastener), 10 mm socket (airbox bolts)",
       "status": "SINGLE_SOURCE",
       "sources": [
@@ -148,28 +138,6 @@
       "note": "ETK: 'Attention: aluminium screws may only be used once'."
     },
     {
-      "item": "Deflection (idler) pulley",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740",
-        "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
-        "https://bimmerworld.com/Engine/Pulleys/Drive-Belt-Kit-OEM-E82-E9X-E60-E83-E70-E85-E89-N52-11288624196.html",
-        "https://bavmods.com/products/bmw-n52-engine-serpentine-belt-tensioner-pulley-kit-e81-e82-e87-e88-e90-e91-e92-e93-e60-x1-x3-x5"
-      ],
-      "partNumber": "11287535860",
-      "primary": true
-    },
-    {
-      "item": "Pulley protection caps",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=11_3740"
-      ],
-      "partNumber": "11287535867 and 11281435114",
-      "primary": true,
-      "note": "FCP says the idler pulley caps are pried off with a flat screwdriver and reinstalled."
-    },
-    {
       "item": "Alternator pulley (in BimmerWorld kit)",
       "status": "SINGLE_SOURCE",
       "sources": [
@@ -178,7 +146,7 @@
       "partNumber": "12317560483"
     },
     {
-      "item": "Complete kits: Turner/Continental ADK0022P (belt+tensioner+idler), Continental 11287628650KT, BimmerWorld INA kit 11288624196",
+      "item": "Complete kits: Turner/Continental ADK0022P (belt+tensioner+idler), Continental 11287628650KT, BimmerWorld INA kit 11288624196 (the kits include an idler pulley, but replacing the idler is blocked in this guide: have a BMW-qualified shop do it)",
       "status": "SINGLE_SOURCE",
       "sources": [
         "https://www.turnermotorsport.com/p-182558-accessory-belts-and-tensioners-kit-e82-e90-e92-e60-e83-e85-n52-engine/",
@@ -429,7 +397,7 @@
     {
       "n": 5,
       "title": "Inspect",
-      "instruction": "Fold the belt to check rib cracks, glazing and chunks; spin the idler and tensioner pulleys for play, rough rotation or noise; replace worn parts. Replace tensioner and idler together with the belt when they are worn (kit recommended).",
+      "instruction": "Fold the belt to check rib cracks, glazing and chunks; spin the idler and tensioner pulleys for play, rough rotation or noise; replace worn parts. Replace the tensioner together with the belt when it is worn. If the idler pulley is worn or noisy, do not replace it from this guide (the idler step is blocked): have a BMW-qualified shop do it.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "The idler pulley commonly fails (Pelican)."
@@ -462,7 +430,7 @@
       "instruction": "Remove the single E14 mounting bolt and the tensioner. Fit the new tensioner with a NEW single-use aluminium M11x65 bolt: thread by hand, torque 25 Nm then a further 90 degrees. Remove any retaining disc on the back of the new pulley if the kit instructs (E82 post).",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "Aluminium bolt may only be used once (BMW ETK).",
+        "Aluminium bolt may only be used once (ETK).",
         "Never reuse the bolt; torque + angle figure is from secondary sources, not a BMW document."
       ],
       "sources": [
@@ -536,7 +504,7 @@
     "Aluminium tensioner bolt is single-use; replace every time it is removed.",
     "Do not publish or rely on the idler pulley torque until conflict resolved.",
     "Torque + angle figures come from secondary sources only; verify with BMW repair data when possible.",
-    "Support the car properly if you raise the front."
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift."
   ],
   "missingEvidence": [
     "BMW-issued repair instruction (ISTA/TIS) with torque for tensioner bolt, idler pulley bolt and alternator pulley; not reachable remotely (workshop-manuals.com/Bentley content is behind a login).",
@@ -999,6 +967,7 @@
     "NEW: replacement interval has a fourth aftermarket figure (Autodoc schedule 30,000 km); still CONFLICT, no hard interval to be published.",
     "ownerInputsNeeded emptied: belt number/A-C resolved from ETK, transmission is owner-stated automatic, pulley condition is an inspection in step 5, belt-path photo is now a mandatory procedure step 3. The only genuinely unresolved items (idler torque, lock pin, routing, BMW torque document) cannot be settled by the owner either and are in missingEvidence.",
     "Verdict: usable as an uncertified draft with idler torque withheld and a mandatory belt-path photo; safety-critical tier means it should not be certified until a BMW torque source is read.",
-    "CHECKED 2026-10-11 (NOT RESOLVED): a research-report claim that the 40 Nm and 80 Nm figures belong to different components (alternator pulley vs idler) was tested against the primary pages. FCP Euro's N52 article names 40 Nm as the IDLER pulley bolt (the pulley that bolts to the alternator) and gives 25 Nm + 90 degrees for the tensioner bolt; it lists no separate alternator-pulley torque. Pelican's article body has no torque; a commenter says 'the pulley bolt is 40 Nm' (pulley unspecified) and a Pelican staff reply says 80 Nm to a comment about an idler between the alternator and power steering pump (attribution inferred, staff did not name the fastener). So the pages do NOT support the split. The idler stays CONFLICT and its step stays BLOCKED. The Bentley erratum 121-20 still says a corrected value exists."
+    "CHECKED 2026-10-11 (NOT RESOLVED): a research-report claim that the 40 Nm and 80 Nm figures belong to different components (alternator pulley vs idler) was tested against the primary pages. FCP Euro's N52 article names 40 Nm as the IDLER pulley bolt (the pulley that bolts to the alternator) and gives 25 Nm + 90 degrees for the tensioner bolt; it lists no separate alternator-pulley torque. Pelican's article body has no torque; a commenter says 'the pulley bolt is 40 Nm' (pulley unspecified) and a Pelican staff reply says 80 Nm to a comment about an idler between the alternator and power steering pump (attribution inferred, staff did not name the fastener). So the pages do NOT support the split. The idler stays CONFLICT and its step stays BLOCKED. The Bentley erratum 121-20 still says a corrected value exists.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }

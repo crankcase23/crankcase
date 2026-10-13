@@ -10,8 +10,8 @@
     "VIN WBAPH7C58AA175760 decodes at NHTSA vPIC to BMW 328i, 2010, Sedan, 3.0 L, 230 hp, Munich, TPMS Direct (check digit valid). [https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBAPH7C58AA175760?format=json&modelyear=2010]",
     "Drive and build date (VIN-DECODE.md, bimmer.work and RealOEM; probable, not proven): rear-wheel drive (PH73 type code), start of production 09/2009. Consequences used here: rear pad kit 34216790761 (from 09/2009), sensor 34356789445 (valid to 03/2010) and rotor 34216855007 (09/2009 to 02/2011); xDrive rotor 34216764653 does not apply.",
     "Brake package: RealOEM's rear brake diagrams for this car are for cars without Performance Parts; the Jurid listing warns multiple brake package options exist. The VIN decode shows no sport/M brake option. Identify it yourself: the rear rotor is 300x20 with MIN TH stamped on it, and the old pads must match the new kit; if not, stop and get the correct kit by VIN.",
-    "Rear caliper guide hardware: Autodoc rear guide uses hexagon-head screws (13 mm socket, 15 mm back-up wrench, 35 Nm). A BMW-data table also lists a socket-head variant (30 Nm). RealOEM lists one guiding-bolt number (34111157041) for this car, used front and rear. Look at the head type and use the matching row (guide branches in steps 6 and 12).",
-    "Rear carrier fastener: RealOEM lists an M10x26.5 micro-encapsulated collar screw (34203414763); how-to sources use a 16 mm socket and the BMW-data table gives 65 Nm.",
+    "Rear caliper guide hardware: the screw head type, tool size and torque are not established for this car (sources disagree, and the parts catalog lists one guiding-bolt number for both axles). This guide blocks the caliper release and refit steps (steps 6 and 12) until BMW repair data settles them.",
+    "Rear carrier fastener: how-to guides and the parts catalog describe it differently, and no BMW torque document was found. This guide does not show a size or torque for it; the caliper release and refit steps are blocked.",
     "Engine and transmission: no source shows any effect on this job."
   ],
   "tools": [
@@ -36,25 +36,17 @@
       ]
     },
     {
-      "item": "16 mm (5/8 in) deep socket for the two CARRIER bolts (only if the carrier comes off, as the bmwtuning/DriveDIY method does)",
-      "conflicts": "Earlier ledger recorded Team-BHP '17 mm hex' as a guide-bolt size; no other site agrees. The 16 mm / 5/8 in tool is consistently attached to the carrier ('caliper') bolts. RealOEM lists the rear carrier fastener as a micro-encapsulated collar screw M10x26.5 (34203414763, 4 per car).",
-      "status": "VERIFIED",
+      "item": "Tools for the caliper release and refit (sizes not established; those steps are blocked in this guide)",
+      "status": "MISSING",
       "sources": [
         "https://drivediy.dozuki.com/Guide/BMW+3+Series+E90+-+E93+Brake+Pad+Replacement/59",
         "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
         "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/rear-brake-discs/pdf/SE-byta-bromsskivor-bak-pa-bmw-e90-utbytesguide.pdf",
         "https://bmwtuning.co/e90-brake-pads-replacement/",
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=34_1476"
-      ]
-    },
-    {
-      "item": "13 mm socket plus 15 mm open-end back-up wrench for the rear guide screws (Autodoc rear guide); hex head type must be confirmed on the car",
-      "conflicts": "Only Autodoc lists 13/15 mm; Bolidenforum BMW-data lists both hexagon and socket-head guide-screw variants without sizes. RealOEM lists one guiding-bolt number (34111157041) for this car, the same number as the front guide bolts that FCP and Autodoc give as 7 mm socket-head, so the rear head may be socket-head rather than hexagon; not proven.",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=34_1476"
-      ]
+        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=34_1476",
+        "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141"
+      ],
+      "conflicts": "D2 (owner, 2026-10-12): rear pad replacement stays restricted. Removed from the customer tool list: 16 mm socket for the carrier bolts (4 sources, how-to practice; catalog lists an M10x26.5 collar screw) and 13 mm socket plus 15 mm back-up wrench for the guide screws (Autodoc only; two other sources say a 7 mm hex)."
     },
     {
       "item": "Piston reset: spreader, C-clamp or wind-back tool (plain push-back; no rotate tool required per the sources found)",
@@ -334,37 +326,37 @@
       "primary": false
     },
     {
-      "fastener": "Rear caliper carrier bolts (16 mm socket), only if carrier removed",
+      "fastener": "Rear caliper carrier bolts, only if carrier removed",
       "value": "65 Nm (48 lb-ft)",
-      "status": "VERIFIED_SECONDARY",
+      "status": "CONFLICT",
       "sources": [
         "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/rear-brake-discs/pdf/SE-byta-bromsskivor-bak-pa-bmw-e90-utbytesguide.pdf",
         "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
         "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=34_1476"
       ],
-      "conflicts": "Bolidenforum BMW-data row 'Brake caliper to wheel carrier' 65 Nm; an E36 site gives 50 lb-ft (about 68 Nm, different chassis, not counted). A BMW-data row for the 5-series rear carrier says 110 Nm (different car). RealOEM lists this car's rear carrier fastener as an M10x26.5 collar screw (34203414763).",
+      "conflicts": "Bolidenforum BMW-data row 'Brake caliper to wheel carrier' 65 Nm; an E36 site gives 50 lb-ft (about 68 Nm, different chassis, not counted). A BMW-data row for the 5-series rear carrier says 110 Nm (different car). RealOEM lists this car's rear carrier fastener as an M10x26.5 collar screw (34203414763). D2 (owner, 2026-10-12): rear caliper fastener sizes and torques are withheld from the guide until a BMW document is attached. Evidence kept here: carrier 65 Nm / 16 mm (5 how-to or data sources agree); guide screws 35 Nm with 13 mm hex plus 15 mm back-up (Autodoc only) versus 7 mm hex and 30 Nm (forum data table); the parts catalog lists an M10x26.5 micro-encapsulated collar screw for the carrier.",
       "primary": false
     },
     {
-      "fastener": "Rear caliper guide screws, hexagon head (13 mm)",
+      "fastener": "Rear caliper guide screws, hexagon head",
       "value": "35 Nm (26 lb-ft)",
-      "status": "SINGLE_SOURCE",
+      "status": "CONFLICT",
       "sources": [
         "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
         "https://club.autodoc.se/pdf-manuals/club/e-90/saloon/rear-brake-discs/pdf/SE-byta-bromsskivor-bak-pa-bmw-e90-utbytesguide.pdf"
       ],
-      "conflicts": "Both Autodoc guides (same publisher, not independent) say 35 Nm. Bolidenforum shows 'Guide screw (hexagon screw' 3 Nm for rear, almost certainly a truncated or typo value; do not use it. Owner must confirm head type. RealOEM lists a single guiding-bolt number (34111157041) for both axles on this car, the number FCP/Autodoc give as 7 mm socket-head at 30 Nm on the front, so the rear head on this car may be socket-head; the 35 Nm hexagon value is not corroborated.",
+      "conflicts": "Both Autodoc guides (same publisher, not independent) say 35 Nm. Bolidenforum shows 'Guide screw (hexagon screw' 3 Nm for rear, almost certainly a truncated or typo value; do not use it. Owner must confirm head type. RealOEM lists a single guiding-bolt number (34111157041) for both axles on this car, the number FCP/Autodoc give as 7 mm socket-head at 30 Nm on the front, so the rear head on this car may be socket-head; the 35 Nm hexagon value is not corroborated. D2 (owner, 2026-10-12): rear caliper fastener sizes and torques are withheld from the guide until a BMW document is attached. Evidence kept here: carrier 65 Nm / 16 mm (5 how-to or data sources agree); guide screws 35 Nm with 13 mm hex plus 15 mm back-up (Autodoc only) versus 7 mm hex and 30 Nm (forum data table); the parts catalog lists an M10x26.5 micro-encapsulated collar screw for the carrier.",
       "primary": false
     },
     {
       "fastener": "Rear caliper guide screws, socket-head variant",
       "value": "30 Nm (22 lb-ft)",
-      "status": "SINGLE_SOURCE",
+      "status": "CONFLICT",
       "sources": [
         "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-328xi-2d-coupe-n52-standard/?vd_lang=en",
         "https://www.bolidenforum.de/portal/fahrzeugdaten/bmw-2011-323i-standard/?vd_lang=en"
       ],
-      "conflicts": "Only the Bolidenforum BMW-data table (two pages of the same dataset) lists it; use only if the car has socket-head guide screws.",
+      "conflicts": "Only the Bolidenforum BMW-data table (two pages of the same dataset) lists it; use only if the car has socket-head guide screws. D2 (owner, 2026-10-12): rear caliper fastener sizes and torques are withheld from the guide until a BMW document is attached. Evidence kept here: carrier 65 Nm / 16 mm (5 how-to or data sources agree); guide screws 35 Nm with 13 mm hex plus 15 mm back-up (Autodoc only) versus 7 mm hex and 30 Nm (forum data table); the parts catalog lists an M10x26.5 micro-encapsulated collar screw for the carrier.",
       "primary": false
     },
     {
@@ -403,7 +395,7 @@
     {
       "n": 1,
       "title": "Confirm parts, prepare and chock",
-      "instruction": "Before starting, match the parts to this car (VIN decode, probable not proven: 2010 328i sedan, rear-wheel drive, built 09/2009, standard brakes, 300x20 rear rotor): rear pad kit 34216790761, passenger-rear sensor 34356789445 with clip 34356767984, retaining springs 34211157046 and anti-squeal paste 83192158851 per BMW's catalog, which calls sensor and paste mandatory with every pad change. Compare the old pads and sensor with the new ones; a parts counter can confirm by VIN. Chock the front wheels, open the hood and unscrew the brake-fluid reservoir cap (optional; keeps the level from overfilling). Leave the parking brake released for the whole job. Do not press the pedal while the caliper is off.",
+      "instruction": "Before starting, match the parts to this car (VIN decode, probable not proven: 2010 328i sedan, rear-wheel drive, built 09/2009, standard brakes, 300x20 rear rotor): rear pad kit 34216790761, passenger-rear sensor 34356789445 with clip 34356767984, retaining springs 34211157046 and anti-squeal paste 83192158851 per BMW's catalog, which calls sensor and paste mandatory with every pad change. Compare the old pads and sensor with the new ones; a parts counter can confirm by VIN. Chock the front wheels, open the hood and unscrew the brake-fluid reservoir cap (optional; keeps the level from overfilling). Leave the parking brake released for the whole job and leave the automatic in P (Park) with the front wheels chocked. Do not press the pedal while the caliper is off.",
       "status": "VERIFIED",
       "warnings": [
         "Release the parking brake before removing a rotor; the youcanic guide says leaving it applied can damage the shoes, and Pelican staff also advise leaving it off.",
@@ -420,13 +412,13 @@
     },
     {
       "n": 2,
-      "title": "Loosen wheel bolts, lift at the side jacking points and support the rear",
-      "instruction": "Break the 17 mm wheel bolts loose on the ground. Use the four side jacking points: small rectangular plastic pads at the sills, one just behind each front wheel and one ahead of each rear wheel (the BMW owner's manual shows their positions only in an illustration). Raise the rear at the pad ahead of the wheel you are working on, place a rated jack stand under the same pad, chock the front wheels (and the wheel opposite the one being lifted), and check the car is level and stable before removing the wheel. A wood block or hockey puck between jack and pad protects the pad. Center lifting is not used in this procedure: sources disagree about a rear center point (crossmember vs not allowed), so it is left out. Never lift on the aluminium/cast differential housing or cover.",
+      "title": "Loosen wheel bolts, lift the rear and support it on stands (or a lift)",
+      "instruction": "Break the 17 mm wheel bolts loose on the ground. Lift the rear using the jacking points shown in the jacking illustration in your owner's manual (small rectangular plastic pads at the sills), with a pad or adapter, or a wood block or hockey puck, between the jack and the plastic pad. Support the car on rated jack stands on hard, level ground; if you cannot identify a safe place for the stand from your manual, stop and use a shop lift. Chock the front wheels (and the wheel opposite the one being lifted), and check the car is level and stable before removing the wheel. Center lifting is not used in this procedure: sources disagree about a rear center point (crossmember vs not allowed), so it is left out. Never lift on the aluminium/cast differential housing or cover.",
       "status": "VERIFIED_SECONDARY",
       "warnings": [
         "Never work under a car on a jack alone.",
         "Do not rely on the parking brake to hold a car on stands.",
-        "Position of the four side pads is secondary-sourced; the BMW manual text only says 'positions shown in the illustration'."
+        "Jacking point positions come from your owner's manual illustration; no source we read gives the stand position."
       ],
       "sources": [
         "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/?srch=jack",
@@ -487,12 +479,11 @@
     {
       "n": 6,
       "title": "Release the caliper (choose method)",
-      "instruction": "Preferred method for this guide: B, because its torque (carrier bolts, 65 Nm) has two independent sources while guide-screw torque has only one. Method B (carrier bolts, used in the bmwtuning/DriveDIY guides): remove the two 16 mm (5/8 in) bolts from behind and lift the caliper and carrier off together. Method A (guide screws): clean the screws with a wire brush and look at the head first. Hexagon head (Autodoc): hold the pin flat with a 15 mm wrench and loosen the two screws with a 13 mm socket. Socket (Allen) head: use the matching hex bit (size not found for the rear; the front guide pins are 7 mm). Remove both and lift the caliper off the carrier. Support the caliper without loading the hose.",
-      "status": "SINGLE_SOURCE",
+      "instruction": "RESTRICTED (owner decision D2). Rear caliper release: remove the two guide screws (head type and size not established) or the two carrier bolts (size not established), and lift the caliper off without loading the brake hose. Research summary and both methods are kept in the evidence notes; no method is preferred.",
+      "status": "CONFLICT",
       "warnings": [
-        "Identify the screw head type first; tool sizes for Method A are single-sourced (Autodoc).",
         "Never hang the caliper by the hose.",
-        "Carrier bolt re-torque 65 Nm if Method B."
+        "Rear caliper hardware sizes and torques are unresolved; this step is blocked in the guide."
       ],
       "sources": [
         "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
@@ -583,11 +574,10 @@
     {
       "n": 12,
       "title": "Refit the caliper and torque",
-      "instruction": "Method A: refit and torque the two guide screws (35 Nm for hexagon-head per Autodoc; 30 Nm for a socket-head per BMW-data table; both single-sourced). Method B: carrier bolts to 65 Nm, caliper then refitted as above. Refit the clip, dust caps and sensor plug and cover.",
-      "status": "SINGLE_SOURCE",
+      "instruction": "RESTRICTED (owner decision D2). Refit the caliper with the correct fasteners at BMW's torque (not established here). Refit the clip, dust caps and sensor plug and cover.",
+      "status": "CONFLICT",
       "warnings": [
-        "Guide-screw torque is single-sourced; carrier torque is secondary (Autodoc plus BMW-data).",
-        "Do not use the 35 Nm hexagon value on a socket-head screw or vice versa; identify the head first."
+        "Do not drive on a caliper that is not secured with correctly torqued fasteners."
       ],
       "sources": [
         "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
@@ -628,16 +618,19 @@
     {
       "n": 15,
       "title": "Test the parking brake and bed in",
-      "instruction": "With the car chocked, check the handbrake holds. Road-test at low speed in an empty area. BMW's owner's manual says the brakes need an initial break-in period of approx. 300 miles / 500 km to reach optimized contact and wear patterns, so avoid hard stops and heavy braking over that distance (Autodoc's shorter 150 to 200 km figure is superseded by BMW's). If the pad maker supplies its own bedding procedure, follow it.",
-      "status": "VERIFIED",
+      "instruction": "Before you drive, check that the parking brake still holds. The rear parking brake is a separate set of shoes inside each rotor. After any rear rotor or pad work, with your foot on the brake pedal in an empty level area, apply the lever firmly and ease off the pedal: if the lever pulls noticeably farther than before, or the car creeps, do not drive it and do not rely on the handbrake. Adjusting the shoes needs BMW's special locking tool and procedure, so have a BMW-qualified shop do it. Then road-test at low speed in an empty area. BMW's owner's manual says the brakes need an initial break-in period of approx. 300 miles / 500 km to reach optimized contact and wear patterns, so avoid hard stops and heavy braking over that distance (Autodoc's shorter 150 to 200 km figure is superseded by BMW's). If the pad maker supplies its own bedding procedure, follow it.",
+      "status": "VERIFIED_SECONDARY",
       "warnings": [
-        "If the lever travel is long after a rotor swap, adjust the shoes (see Pelican's parking brake article; its procedure was not retrieved)."
+        "If the lever travel is long or the car is not held after a rotor swap, do not adjust the shoes yourself from this guide: BMW's procedure uses a special locking tool (BMW repair instruction copy hosted on a forum site, plus an older BMW page).",
+        "The lever test is common workshop practice, not a BMW-document step."
       ],
       "sources": [
         "https://club.autodoc.co.uk/manuals/how-to-change-rear-brake-pads-on-bmw-e90-replacement-guide-13141",
         "https://www.pelicanparts.com/BMW/techarticles/BMW-3-Series-E90/BRAKES-Brake_Rotor_Replacement/BRAKES-Brake_Rotor_Replacement.htm",
         "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/?srch=brake+pads",
-        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/?srch=parking+brake"
+        "https://www.carmanualsonline.info/bmw-328i-2011-e90-owner-s-manual/?srch=parking+brake",
+        "https://5series.net/forums/attachments/diy-do-yourself-14/92222d1255547938-e60-handbrake-lever-adjust-e_brake_adj.pdf",
+        "https://www.princeton.edu/~sdepasqu/bmw/Gas.Tank/RA.Adjusting.parking.brake.pdf"
       ]
     },
     {
@@ -658,13 +651,15 @@
     }
   ],
   "safety": [
-    "Rated jack stands at the side jacking points only; do not jack on the differential cover or housing.",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Do not jack on the differential cover or housing.",
     "Parking brake is a mechanical drum-in-hat lever on the rear wheels; do not rely on it as the only restraint and release it before pulling a rotor.",
     "Chock front wheels; do not let the caliper hang from the hose.",
     "Keep grease off friction surfaces and rotor.",
-    "Torque values here are secondary-sourced; guide-screw torque is single-sourced. Identify the screw head before applying a torque.",
+    "RESTRICTED: the caliper release and refit steps are blocked because rear caliper fastener sizes and torques are not established from a BMW document. Do not guess them.",
     "Replace the wear sensor and retaining spring and use brake pad paste with every pad change (BMW catalog).",
-    "Pump the pedal to firm before moving the car, test at low speed, and treat the first 500 km (300 miles) as break-in (BMW owner's manual)."
+    "Pump the pedal to firm before moving the car, test at low speed, and treat the first 500 km (300 miles) as break-in (BMW owner's manual).",
+    "After rear rotor or pad work, check the parking brake holds before driving; shoe adjustment needs BMW's special tool, so use a shop."
   ],
   "missingEvidence": [
     "No BMW torque document (TIS, Bentley) was reachable: all torques are secondary. The BMW owner's manual text read states no torque (wheel-bolt torque not in the retrievable text).",
@@ -675,7 +670,9 @@
     "Whether xDrive changes any rear hardware beyond rotor/pad part numbers (not relevant to this RWD car).",
     "Positions of the four side jacking pads are described only by forum posts; the BMW manual text refers to an illustration that could not be read. A rear center lift point is disputed by forums and left out.",
     "Factory torque for the wear-sensor wheel-arch cover fasteners (not specified anywhere found).",
-    "Rear parking-brake shoe repair kit number: RealOEM 34416761291 vs Turner 34416761292 (not part of the pad job)."
+    "Rear parking-brake shoe repair kit number: RealOEM 34416761291 vs Turner 34416761292 (not part of the pad job).",
+    "D1 hunt 2026-10-12: no BMW document for rear guide-screw head/size/torque or carrier fastener. Best secondary evidence: carrier 65 Nm/16 mm (5 sources); guide screws 7 mm hex and 30 Nm (forum data table) versus 13 mm/15 mm back-up/35 Nm (Autodoc only). Not adopted.",
+    "Parking-brake shoe adjustment: a copy of BMW TIS 34 10 014 (applicability names E90) gives a special locking tool (32 1 030), adjuster screw to lock then back off 8 notches, and readjust when lever travel exceeds 10 teeth. The copy is forum-hosted and was read through a summarizer, so the notch count is NOT published in the guide."
   ],
   "ownerInputsNeeded": [],
   "visuals": [
@@ -973,6 +970,8 @@
     "NEW CONFLICT: parking-brake shoe kit number (RealOEM 34416761291 vs Turner 34416761292); guide-screw head/torque now flagged as possibly socket-head 30 Nm because the catalog lists one guiding-bolt number for both axles (not proven).",
     "NOT RESOLVED: second source for rear guide-screw torque (searched m3post, bimmersport, Bimmerpost: only M3/318i/unspecified cars, not counted); parking-brake shoe adjustment procedure; all torques remain secondary; workshop-manuals.com TIS, archive.org training index and e90post TIS attachments were unreachable.",
     "Step 6 now prefers Method B (two-source torque); status set to SINGLE_SOURCE because Method A tool sizes are single-sourced. recommendedStatus BUILDABLE_WITH_OWNER_CHECKS -> BUILDABLE_PARTIAL. ownerInputsNeeded emptied; head-type choices are handled by branching text in steps 6 and 12.",
-    "Visual gap: rear carrier fastener naming added as gapFillNotes; visual elements and facts not changed."
+    "Visual gap: rear carrier fastener naming added as gapFillNotes; visual elements and facts not changed.",
+    "2026-10-12 owner decision D2: rear pad replacement RESTRICTED. 13 mm / 15 mm back-up / 35 Nm and the 'preferred Method B' line removed from the customer guide; steps 6 and 12 BLOCKED; parking-brake hold test and shop referral added; automatic left in Park. Nothing here is mechanically certified.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published. Step 2 no longer places a stand under a named pad."
   ]
 }

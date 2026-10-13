@@ -165,7 +165,7 @@ export const LEAD_OVERRIDES = {
   },
   5: {
     must: /Rear caliper guide hardware/,
-    text: "The rear rotor is 300x20 with MIN TH stamped on it, and the old pads must match the new kit; if not, stop and get the correct kit by VIN. Look at the rear caliper guide screw head and use the matching row in the torque table: sources describe a hexagon head (13 mm socket, 15 mm back-up wrench) and a socket-head variant. The carrier fasteners take a 16 mm socket.",
+    text: "The rear rotor is 300x20 with MIN TH stamped on it, and the old pads must match the new kit; if not, stop and get the correct kit by VIN. The caliper release and refit steps are blocked in this guide because rear caliper fastener sizes and torques are not established from a BMW document; do not guess them.",
   },
   6: {
     must: /Access path differs by source/,
@@ -173,7 +173,7 @@ export const LEAD_OVERRIDES = {
   },
   7: {
     must: /Battery capacity\/type/,
-    text: "Read the battery label before buying. The parts catalog lists 70, 80 and 90 Ah flooded and 70, 80 and 92 Ah AGM options for this model, and which one your car left the factory with depends on its option codes. For an 80 Ah car, 94R/H7 is the expected size; compare the old battery's footprint and vent-port side before buying. Changing battery type (flooded vs AGM) or capacity requires coding in addition to registration. Registering the new battery needs a capable tool (ISTA/Rheingold, INPA/Tool32, NCS Expert or an aftermarket app or scanner).",
+    text: "Read the battery label before buying. The parts catalog lists 70, 80 and 90 Ah flooded and 70, 80 and 92 Ah AGM options for this model, and which one your car left the factory with depends on its option codes. Group size depends on capacity and year and sources conflict (94R/H7 versus 49/H8), so do not choose by size name: compare the old battery's footprint and vent-port side before buying. Changing battery type (flooded vs AGM) or capacity requires coding in addition to registration. Registering the new battery needs a capable tool (ISTA/Rheingold, INPA/Tool32, NCS Expert or an aftermarket app or scanner).",
   },
   8: {
     must: /Radiator drain plug count/,

@@ -60,33 +60,12 @@
       "primary": true
     },
     {
-      "item": "Torx T15 or T20 (headlight bulb holder/angel-eye holder screws; poster unsure which)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=11758649"
-      ]
-    },
-    {
       "item": "8 mm socket (fender/wheel liner screws for fog lamp access)",
       "status": "SINGLE_SOURCE",
       "sources": [
         "https://g42.bimmerpost.com/forums/showthread.php?p=11847764"
       ],
       "note": "E90Post fog-light thread (AndyR83: 8 mm socket on the liner screws). LUX guide also lists 8 mm and 10 mm sockets for liner removal. Only needed for the fog bulb route; the BMW halogen headlamp route needs no liner removal."
-    },
-    {
-      "item": "8 mm and 10 mm sockets, ratchet, T20 and T30 Torx (xenon bulb job via fender liner, per bavmods)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
-      ]
-    },
-    {
-      "item": "T15 Torx plus 17 mm socket, 8/10 mm sockets, jack (LUX LED install guide describes the same fender-liner access)",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://cdn.shopify.com/s/files/1/0704/5005/files/LUX_E90_Install_Guide_049d657e-b444-40cd-bc4d-f280bdae43f6.pdf"
-      ]
     },
     {
       "item": "Floor jack, jack stands, wheel wrench (when removing the wheel for liner access)",
@@ -108,13 +87,6 @@
       ],
       "note": "BMW manual p.230-231: never touch new bulb glass with bare fingers; 'Always wear gloves and eye protection; the atmosphere within the H7 bulb is pressurized.'",
       "primary": true
-    },
-    {
-      "item": "Pliers/flat screwdriver to twist off cap tabs",
-      "status": "SINGLE_SOURCE",
-      "sources": [
-        "https://g42.bimmerpost.com/forums/showthread.php?p=11758649"
-      ]
     }
   ],
   "parts": [
@@ -145,18 +117,6 @@
       "note": "Turner lists same number as amber turn bulb for E90. BMW manual p.232: front turn signal PY24W 24 W via the wheel-well flap."
     },
     {
-      "item": "Xenon low-beam bulb D1S (ETK: 'D1 12V 35W with ignition element'), qty 2",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
-        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=11473721",
-        "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide"
-      ],
-      "partNumber": "63217217509",
-      "primary": true
-    },
-    {
       "item": "Fog bulb H8 12V 35W (qty 2) on 2009+ cars without M aero package",
       "status": "VERIFIED",
       "sources": [
@@ -175,18 +135,6 @@
       ],
       "partNumber": "63217160784",
       "note": "Not for this 2009+ build per ETK."
-    },
-    {
-      "item": "Angel-eye/halo bulb H8 35W (xenon/adaptive lamps)",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
-        "https://www.turnermotorsport.com/BMW-E90-Parts/c-57-bmw-bulbs-for-headlights-turn-signals-and-tail-lights/m-66-osram-sylvania?Nrpp=50",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=26172610"
-      ],
-      "partNumber": "07119906503",
-      "primary": true
     },
     {
       "item": "Halo / parking / daytime-running bulb on halogen LCI lamps (type disputed)",
@@ -226,17 +174,6 @@
       "partNumber": null,
       "primary": true,
       "note": "Manual p.232: remove the high-beam headlamp cover, pull out the bulb socket, replace the bulb, insert socket, refit cover. The text read does not say which lamp variant uses W5W vs H8."
-    },
-    {
-      "item": "Cornering light bulb H3 12V 55W (adaptive headlight cars only)",
-      "status": "VERIFIED",
-      "sources": [
-        "https://www.realoem.com/bmw/enUS/showparts?id=PH73-USA-09-2009-E90N-BMW-328i&diagId=63_1070",
-        "https://g42.bimmerpost.com/forums/showthread.php?p=16590642"
-      ],
-      "partNumber": "63217160779",
-      "primary": true,
-      "note": "ETK for adaptive (S524A); E90Post says H3 cornering bulb sits behind the top cover."
     },
     {
       "item": "Halogen headlamp covers (ETK): high-beam covering cap L/R ZKW 63127238826 / 63127238827, VALEO 63127246481 / 63127246482; low-beam lamp cover (VALEO) 63117159564; headlight cover 63127681410 (qty 2). Lamp maker ZKW vs VALEO decides which applies",
@@ -688,7 +625,7 @@
     {
       "n": 7,
       "title": "Halogen H7 low/high-beam bulb",
-      "instruction": "Switch the lamps off, take the remote out of the ignition lock and let the bulb cool; wear gloves and eye protection (the H7 is pressurized). High beam: from the engine compartment, fold the wire bracket of the high-beam cover to the side, flip the cover out of its guide. Low beam: turn the front wheel inward, open the flap in the wheel well by turning its fastener counterclockwise with a coin, remove the low-beam cover the same way (fold the wire bracket aside, flip the cover out of its guide). Disconnect the plug, push the wire bracket sideways out of its mounting and fold it down, remove the H7 12V 55W bulb, fit the new one as shown in the manual's illustration, fold the bracket up and engage it, connect the plug, refit the cover carefully (leaks can damage the lamp), then test. The same flap gives access to the front turn-signal bulb (step 10 note).",
+      "instruction": "Halogen headlights only: if your car has xenon or adaptive headlights, stop (see the blocked xenon step) and have a BMW center do this. Switch the lamps off, take the remote out of the ignition lock and let the bulb cool; wear gloves and eye protection (the H7 is pressurized). High beam: from the engine compartment, fold the wire bracket of the high-beam cover to the side, flip the cover out of its guide. Low beam: turn the front wheel inward, open the flap in the wheel well by turning its fastener counterclockwise with a coin, remove the low-beam cover the same way (fold the wire bracket aside, flip the cover out of its guide). Disconnect the plug, push the wire bracket sideways out of its mounting and fold it down, remove the H7 12V 55W bulb, fit the new one as shown in the manual's illustration, fold the bracket up and engage it, connect the plug, refit the cover carefully (leaks can damage the lamp), then test. The same flap gives access to the front turn-signal bulb (step 10 note).",
       "status": "VERIFIED",
       "warnings": [
         "Do not touch glass; replace in pairs for matching light.",
@@ -714,7 +651,7 @@
       "status": "SINGLE_SOURCE",
       "warnings": [
         "High voltage; BMW says BMW center only. If you do disconnect the battery, expect the power-failure items in the owner's manual p.236 (clock, radio, memory seats, compass, glass roof initialization at a BMW center).",
-        "Support the car on stands; do not touch bulb glass."
+        "If a wheel is removed, follow the jack-stand rule in the safety notes; do not touch bulb glass."
       ],
       "sources": [
         "https://bavmods.com/pages/how-to-replace-bmw-low-beam-headlight-bulbs-e90-e92-e93-e82-e88-e60-e61-easy-e-chassis-diy-guide",
@@ -730,7 +667,7 @@
     {
       "n": 9,
       "title": "Parking / halo (angel-eye) bulb",
-      "instruction": "Bulb type on this halogen LCI lamp is disputed, so match the old bulb. BMW owner's manual p.230 (H8 35 W, parking / roadside parking / daytime running lamps): switch off, remove the remote from the ignition lock, turn the cover left and remove it, turn the bulb about 90 degrees and pull it out, unplug the connector, fit the new bulb, plug in, turn until it stops, refit the cover. BMW also lists a separate W5W 5 W parking bulb: remove the high-beam cover, pull out the bulb socket, swap the bulb, refit. Owner posts on xenon/adaptive cars reach the H8 from under the hood by unclipping the plastic panel on top of the headlight or twisting off a finned cap, and say to remove extra rubber washers from the new bulb.",
+      "instruction": "Halogen headlights only: if your car has xenon or adaptive headlights, stop here and have a BMW center do this. Bulb type on this halogen LCI lamp is disputed, so match the old bulb. BMW owner's manual p.230 (H8 35 W, parking / roadside parking / daytime running lamps): switch off, remove the remote from the ignition lock, turn the cover left and remove it, turn the bulb about 90 degrees and pull it out, unplug the connector, fit the new bulb, plug in, turn until it stops, refit the cover. BMW also lists a separate W5W 5 W parking bulb: remove the high-beam cover, pull out the bulb socket, swap the bulb, refit.",
       "status": "CONFLICT",
       "warnings": [
         "H8 (BMW manual, two posters) vs H10W (one vendor guide) vs W5W (BMW manual, separate parking bulb): read the marking on the removed bulb before buying.",
@@ -757,7 +694,7 @@
       "instruction": "Not described in the BMW owner's manual (which says to contact a BMW center for bulbs it does not describe). Owner-post route: turn the front wheels toward the side being worked on, remove the wheel-liner screws (8 mm per one poster; two bottom screws at the front of the liner per another), peel the liner back, twist out the H8 35 W bulb, replace, refit the liner.",
       "status": "SINGLE_SOURCE",
       "warnings": [
-        "Posters disagree whether a jack helps; use stands if lifting.",
+        "Posters disagree whether a jack helps; if you lift the car, follow the jack-stand rule in the safety notes.",
         "BMW manual: front turn-signal bulb (PY24W 24 W) uses the same wheel-well flap as the low beam; rotate the socket left and remove it, press gently and turn the bulb left, refit the socket, close the flap."
       ],
       "sources": [
@@ -808,7 +745,7 @@
     "H7 halogen bulbs are pressurized: wear gloves and eye protection, change only when cool, never touch new glass with bare fingers.",
     "Refit headlamp covers carefully (leaks damage the lamp) and have headlamp aim checked only through a BMW center.",
     "Wiper arms must be against the windshield before the hood is opened (BMW manual p.229).",
-    "Use jack stands, never just a jack, if a wheel is removed (xenon or fog routes).",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
     "If the battery is disconnected: time/date, radio, memory seats and compass reset and the glass roof may only open partly until a BMW center initializes it (manual p.236).",
     "After replacing adaptive-headlight components the lamps need coding and aim check."
   ],
@@ -1169,6 +1106,7 @@
     "CORRECTION: E90Post p=26172610 does not say what an earlier pass attributed to it (liner screws, 8 mm socket, gloves, cover in front of the wheel). Those claims were re-pointed to p=11847764 (fog bulb: 8 mm screws, peel the liner back, jack optional) or the BMW manual, and the visual wheel-arch-liner-access facts/sources were updated accordingly. The fog bulb procedure stays SINGLE_SOURCE (one thread, one host).",
     "ownerInputsNeeded emptied (it asked the owner to photograph/inspect the car); variant identification is now inside steps 6, 9 and 11 as how-to-identify branches.",
     "COULD NOT RESOLVE: engine-bay E-box location/access (BMW manual silent; BMWGuide, RPM Motorsport and Car-Box disagree; status CONFLICT, step 5 is now 'not an owner step'); a BMW-document fuse chart; high-beam printed step list; fog bulb from a BMW document; which tail-lamp sockets map to which function beyond the manual; whether the 09/2009 build has LED or all-bulb tail lamps; halo bulb type; lamp maker ZKW vs VALEO. Withdrawn visual headlight-halo-cap-engine-bay left withdrawn (decode inference; ETK shows light-ring units, so it may be reinstated if halo rings are confirmed).",
-    "Source caveat: the owner's manual was read through a third-party text mirror (carmanualsonline.info) via its search pages, not the BMW PDF; ETK data from RealOEM for type PH73 USA 09/2009."
+    "Source caveat: the owner's manual was read through a third-party text mirror (carmanualsonline.info) via its search pages, not the BMW PDF; ETK data from RealOEM for type PH73 USA 09/2009.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }

@@ -236,11 +236,12 @@
     {
       "n": 6,
       "title": "Support the car on stands, or use a shop lift",
-      "instruction": "Never work with the car held by the jack alone. Place rated jack stands before removing a wheel. The correct stand position for the E90 sedan is not given in any source read (one forum thread asks where to put stands when lifting at the rocker points and is not answered). If you cannot identify a solid, safe stand point, stop and have a shop rotate the wheels on a lift.",
+      "instruction": "Never work with the car held by the jack alone. Support it on rated jack stands on hard, level ground. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and have a shop rotate the wheels on a lift.",
       "status": "MISSING",
       "warnings": [
         "Stands, not the jack, hold the car.",
-        "Do not guess stand placement; do not use the aluminium differential cover."
+        "Do not guess stand placement; do not use the aluminium differential cover.",
+        "Jacking point positions come from your owner's manual illustration; no source we read gives the stand position."
       ],
       "sources": [
         "https://g42.bimmerpost.com/forums/showthread.php?p=15703160",
@@ -331,7 +332,8 @@
     }
   ],
   "safety": [
-    "Use rated jack stands on level ground; do not rely on the jack or on the aluminium differential cover, and do not use the rear or front centre jack points (sources conflict).",
+    "Never work under, or take a wheel off, a car held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the plastic pad. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Do not lift or support the car on the aluminium differential cover, and do not use the rear or front centre jack points (sources conflict).",
     "No source gives the correct E90 jack-stand position: if unsure, use a shop lift.",
     "Do not rotate staggered tires front to rear; do not rotate directional tires across sides without remounting.",
     "Torque wheel bolts to 120 Nm in a crisscross order and re-check after a short drive; the value is secondary-sourced (no BMW document read).",
@@ -716,6 +718,7 @@
     "Wheel bolt torque left VERIFIED_SECONDARY (120 Nm); BMW TIS page via workshop-manuals.com is blocked (egress 403) and no owner's manual body text was reachable, so it cannot be VERIFIED. Added E90Post 90 ft-lb note.",
     "Visual evidenceSteps renumbered to the new step numbers (jack pads 5-6, bolts and valve stem 7, 8, 10, TPMS reset 10); visual facts and sources unchanged.",
     "Removed ownerInputsNeeded requests; unresolved facts are in missingEvidence and the guide branches on user-readable sidewall info.",
-    "Could not resolve: BMW rotation interval/pattern, jack-stand position, rear/front centre jack points, directional status of stock tire, TPMS auto-relearn, BMW-sourced torque."
+    "Could not resolve: BMW rotation interval/pattern, jack-stand position, rear/front centre jack points, directional status of stock tire, TPMS auto-relearn, BMW-sourced torque.",
+    "D5 (owner, 2026-10-12): one jack-stand policy across the lifting guides; no stand location is published."
   ]
 }

@@ -63,9 +63,10 @@ test("nothing is loosened: every public procedure step, torque row and blocked s
   }
 });
 
-test("restrictions survive publication: the three blocked steps are blocked, and no blocked step carries a procedure", () => {
+test("restrictions survive publication: the six blocked steps are blocked, and no blocked step carries a procedure", () => {
   const blocked = mine.flatMap((g) => g.steps.filter((s) => s.title.startsWith(BLOCK)).map((s) => `${g.jobType}:${s.title.replace(BLOCK, "")}`));
-  assert.deepEqual(blocked.sort(), ["fuse-bulb:Engine-bay fuses", "fuse-bulb:Xenon low-beam bulb", "serpentine-belt:Replace the idler pulley"].sort());
+  // owner decisions D2 (rear caliper release and refit) and D4 (PCV hose removal) added three shop-only stops on 2026-10-12
+  assert.deepEqual(blocked.sort(), ["fuse-bulb:Engine-bay fuses", "fuse-bulb:Xenon low-beam bulb", "serpentine-belt:Replace the idler pulley", "brake-pads-rear:Release the caliper", "brake-pads-rear:Refit the caliper and torque", "pcv-valve:Remove the breather hose only if replacing it"].sort());
   for (const g of mine) for (const s of g.steps.filter((x) => x.title.startsWith(BLOCK))) assert.match(s.instructions, /This step is blocked/);
   assert.ok(!mine.find((g) => g.jobType === "serpentine-belt").torqueSpecs.some((t) => /idler/i.test(t.fastener) && /\d+\s*Nm/.test(t.value)), "no idler torque may be published (40 vs 80 Nm unresolved)");
 });

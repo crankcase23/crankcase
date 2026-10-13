@@ -75,6 +75,11 @@ export const garageEntries = pgTable("garage_entries", {
       transmission: text("transmission"),
       drivetrain: text("drivetrain"),
       configConfirmedAt: timestamp("config_confirmed_at"),
+      // Whether the vehicle details were checked against NHTSA by the SERVER (migrations/2026-10-12-vin-status.sql).
+      // "unverified" = typed by the customer while the decoder was down; "verified" = the server decoded the VIN and the
+      // identity matched. NULL = a row that predates this column (left alone; shown exactly as before).
+      vinStatus: text("vin_status"),
+      vinStatusAt: timestamp("vin_status_at"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (table) => ({
       // One row per VIN per customer, and one VIN-less catalog row per model per customer (a legacy / unconfirmed record).

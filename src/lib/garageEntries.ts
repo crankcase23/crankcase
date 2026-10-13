@@ -23,7 +23,7 @@ import { normalizeConfig, type AxisChoice, type TransmissionChoice, type Drivetr
 // src/db/schema.ts. A custom GarageEntry's client-facing `id` IS the DB
 // row's generated id, since there's no other natural key for it.
 
-type GarageEntryRow = typeof garageEntries.$inferSelect;
+export type GarageEntryRow = typeof garageEntries.$inferSelect;
 
 function configOf(row: GarageEntryRow) {
   return normalizeConfig({
@@ -41,6 +41,7 @@ function mapRow(row: GarageEntryRow): GarageEntry {
       kind: "custom",
       addedAt: row.createdAt.toISOString(),
       config: configOf(row),
+      vinStatus: row.vinStatus === "verified" || row.vinStatus === "unverified" ? row.vinStatus : null,
       custom: {
         vin: row.vin ?? undefined,
         year: row.year ?? undefined,
@@ -91,14 +92,15 @@ function fillBlankAxes(row: GarageEntryRow, config: ConfigInput) {
 }
 
 /**
- * Why an add or a VIN completion did NOT happen. Both reasons concern only the customer's OWN garage; nothing here can
- * depend on, or reveal, any other account:
- *  - "vin-already-in-garage": this VIN is already on a different row of THIS customer's garage (so it is not a second car).
+ * Why an add or a VIN completion did NOT happen:
+ *  - "vin-in-garage": this VIN is already on another vehicle in THIS customer's own garage (a VIN names one vehicle, and an
+ *    account holds it once). It says nothing about any other account: the answer to "add this VIN" never depends on
+ *    whether anyone else has it. Two accounts can each hold the same VIN with fully separate Service History.
  *  - "vin-already-set": the entry already has a valid VIN; a VIN names the vehicle and is never swapped by an edit.
  * Another account holding the same VIN is NOT a reason: a VIN is a vehicle identity, not ownership, so any number of
  * accounts may keep a private record for it. Paid access and private history never cross accounts (rows are per account).
  */
-export type BlockedReason = "vin-already-in-garage" | "vin-already-set";
+export type BlockedReason = "vin-in-garage" | "vin-already-set";
 export interface Blocked {
   blocked: BlockedReason;
 }
@@ -111,7 +113,7 @@ const UNIQUE_VIOLATION = "23505";
 // enforce it, so lookups are plain equality that the (user_id, vin) unique index can serve -- no upper() on the column.
 const sameVin = (vin: string) => eq(garageEntries.vin, canonicalVin(vin));
 
-async function ownRowForVin(userId: string, vin: string): Promise<GarageEntryRow | undefined> {
+export async function ownRowForVin(userId: string, vin: string): Promise<GarageEntryRow | undefined> {
   return (await db.select().from(garageEntries).where(and(eq(garageEntries.userId, userId), sameVin(vin))).limit(1))[0];
 }
 const isUniqueViolation = (e: unknown) => {
@@ -128,7 +130,10 @@ export async function listGarageEntries(userId: string): Promise<GarageEntry[]> 
   return rows.map(mapRow);
 }
 
-const entryFor = async (row: GarageEntryRow): Promise<GarageEntry> => mapRow(row);
+/** Map one row to its client entry. The client id is permanent (see garageId.ts), so no per-model ordering is needed. */
+export async function entryFor(row: GarageEntryRow): Promise<GarageEntry> {
+  return mapRow(row);
+}
 
 /**
  * The customer's own row for a client-facing garage id, or null. Always scoped to the customer: another customer's row is
@@ -252,6 +257,9 @@ export async function addCustomEntry(
   userId: string,
   custom: { vin: string; year?: string; make?: string; model?: string; trim?: string; engine?: string },
   config: ConfigInput,
+  // Set only by the NHTSA-outage fallback (src/lib/vinFallbackServer.ts). Written on INSERT only: an add that finds the
+  // customer's own row for this VIN leaves its status alone. Every other caller omits it and the column stays NULL.
+  opts?: { vinStatus?: "verified" | "unverified" },
 ): Promise<AddResult | Blocked> {
   const mine = await ownRowForVin(userId, custom.vin);
   if (mine) return updateExisting(mine, undefined, config);
@@ -271,6 +279,7 @@ export async function addCustomEntry(
         transmission: config.transmission,
         drivetrain: config.drivetrain,
         configConfirmedAt: new Date(),
+        ...(opts?.vinStatus ? { vinStatus: opts.vinStatus, vinStatusAt: new Date() } : {}),
       })
       .returning();
     return { entry: mapRow(created), created: true, configKept: false };
@@ -284,7 +293,8 @@ export async function addCustomEntry(
 
 /**
  * VIN completion for an older record that has no (valid) VIN. Attaches the VIN to the customer's OWN row only. It never
- * replaces a valid VIN, never touches another account's rows, and does not care whether other accounts hold the same VIN. `id` is the client-facing id (see garageId.ts).
+ * replaces a valid VIN, never touches another account's rows, and answers "already on another of your vehicles"
+ * with the vin-in-garage outcome. Another account holding the VIN is irrelevant. `id` is the client-facing id (see garageId.ts).
  */
 export async function completeGarageVin(
   userId: string,
@@ -297,12 +307,12 @@ export async function completeGarageVin(
     return row.vin.toUpperCase() === vin ? { entry: await entryFor(row) } : { blocked: "vin-already-set" };
   }
   const mine = await ownRowForVin(userId, vin);
-  if (mine && mine.id !== row.id) return { blocked: "vin-already-in-garage" }; // already on another of this customer's rows: not a second vehicle
+  if (mine && mine.id !== row.id) return { blocked: "vin-in-garage" }; // already on another of this customer's rows: not a second vehicle
   try {
     const [updated] = await db.update(garageEntries).set({ vin }).where(eq(garageEntries.id, row.id)).returning();
     return { entry: await entryFor(updated) };
   } catch (e) {
-    if (isUniqueViolation(e)) return { blocked: "vin-already-in-garage" };
+    if (isUniqueViolation(e)) return { blocked: "vin-in-garage" };
     throw e;
   }
 }

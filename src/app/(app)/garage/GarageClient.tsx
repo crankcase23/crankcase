@@ -133,7 +133,7 @@ export default function GarageClient() {
                 if (!vehicle) return null;
                 return <GarageVehicleCard key={e.id} id={e.id} kind="catalog" vehicle={vehicle} config={e.config} vin={e.vin} onRemove={() => removeEntry(e.id)} />;
               }
-              return <GarageVehicleCard key={e.id} id={e.id} kind="custom" custom={e.custom} config={e.config} vin={e.custom.vin} onRemove={() => removeEntry(e.id)} />;
+              return <GarageVehicleCard key={e.id} id={e.id} kind="custom" custom={e.custom} config={e.config} vin={e.custom.vin} vinStatus={e.vinStatus} onRemove={() => removeEntry(e.id)} />;
             })}
 
             <Link

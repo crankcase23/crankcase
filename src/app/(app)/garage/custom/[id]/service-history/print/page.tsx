@@ -33,7 +33,7 @@ export default function CustomServiceHistoryPrintPage() {
     <PrintServiceHistory
       vehicleId={entry.id}
       vehicleLabel={label}
-      vehicleSubline={custom.engine}
+      vehicleSubline={[custom.engine, entry.vinStatus === "unverified" ? "UNVERIFIED: details typed by the owner, not checked with NHTSA" : null].filter(Boolean).join(" · ") || undefined}
       backHref={`/garage/custom/${entry.id}`}
     />
   );

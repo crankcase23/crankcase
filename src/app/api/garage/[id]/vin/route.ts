@@ -9,7 +9,7 @@ import { reconcileHoldsForVehicle } from "@/lib/keysEntitlements";
 
 // VIN completion for an older garage record that has no (valid) VIN. It only ever attaches a VIN to THIS customer's own
 // row. A VIN typed or scanned here is a private record for this account, never proof of ownership and never visible to
-// any other account; whether other accounts hold the same VIN has no effect on the answer.
+// any other account. Whether another account holds the same VIN is irrelevant to the answer (one VIN per account).
 export const POST = withGarageId(async (request: Request, { params }: { params: Promise<{ id: string }> }) => {
   const userId = await requireUserId();
   if (!userId) return NextResponse.json({ error: "Not signed in." }, { status: 401 });

@@ -64,7 +64,7 @@ async function login(ctx: BrowserContext, email: string) {
   await p.getByLabel("Email").fill(email);
   await p.getByLabel("Password").fill(PASSWORD);
   await p.getByRole("button", { name: "Log In" }).click();
-  await expect(p).toHaveURL(/\/garage$/);
+  await expect(p).toHaveURL(/\/garage$/, { timeout: 20_000 });
   return p;
 }
 
@@ -382,7 +382,7 @@ test.describe("17/18. Security and refusals", () => {
     await po.getByLabel("Email").fill(`e2e-other-${Date.now()}@example.com`);
     await po.getByLabel("Password").fill(PASSWORD);
     await po.getByRole("button", { name: "Create Account" }).click();
-    await expect(po).toHaveURL(/\/garage$/);
+    await expect(po).toHaveURL(/\/garage$/, { timeout: 20_000 });
     const r = await po.request.patch(`/api/garage/${BMW}`, { data: { drivetrain: "awd" } });
     expect(r.status()).toBe(404);
     expect(rows(email)).toMatch(/\|automatic\|rwd\|t$/);

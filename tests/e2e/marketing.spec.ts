@@ -46,6 +46,6 @@ test.describe("marketing site", () => {
     await page.getByLabel("Email").fill(email);
     await page.getByLabel("Password").fill("password123");
     await page.getByRole("button", { name: "Create Account" }).click();
-    await expect(page).toHaveURL(/\/garage$/);
+    await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
   });
 });

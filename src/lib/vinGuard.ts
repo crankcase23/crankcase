@@ -8,9 +8,9 @@ import { EVENT_TYPES } from "@/lib/events";
 // ---------------------------------------------------------------------------
 // Abuse throttle for VIN submissions. Free, no new service, no new table.
 //
-// Adding a VIN answers the same way whether or not any other account holds it (a VIN is a vehicle identity, not
-// ownership; accounts are isolated), so there is no per-VIN signal to enumerate. This is a plain volume cap on a
-// write-heavy endpoint that also feeds the OCR flow's retries:
+// Since 2026-10-12 an add never depends on whether another account holds the VIN, so there is no ownership oracle to
+// probe any more (the "collision" counters below are legacy and nothing records collisions now). What remains worth
+// limiting is VIN-guessing and hammering of the NHTSA decoder through the add and fallback paths, so:
 //   - every VIN that passes the format rules and reaches the lookup is counted per account and per network address;
 //   - past the limits the answer is a 429 that says nothing about the VIN, with a Retry-After.
 // Counts live in the existing app_events table (type "vin.attempt"). The VIN itself is never stored; the network

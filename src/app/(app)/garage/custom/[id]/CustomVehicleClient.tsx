@@ -17,6 +17,8 @@ import { FreeChip, KeysPanel } from "@/components/app/KeysUi";
 import { IconChevronLeft } from "@/components/app/AppIcons";
 import VehicleConfigPanel from "@/components/config/VehicleConfigPanel";
 import VinCompletion from "@/components/vin/VinCompletion";
+import UnverifiedPanel from "@/components/vin/UnverifiedPanel";
+import UnverifiedBadge from "@/components/vin/UnverifiedBadge";
 import { summaryParts } from "@/lib/vehicleConfig";
 
 // Auto-populate: as soon as this page mounts, ask the server whether we
@@ -39,10 +41,12 @@ export default function CustomVehiclePage() {
     const { findCustom, removeEntry, isLoading } = useGarage();
     const entry = findCustom(params.id);
     const custom = entry?.kind === "custom" ? entry.custom : undefined;
+    // Typed by the customer while NHTSA was down: Service History and reminders only. No lookup, no catalog link, no fluids, no Keys.
+    const unverified = entry?.kind === "custom" && entry.vinStatus === "unverified";
     const [lookup, setLookup] = useState<LookupState>({ status: "loading" });
 
   useEffect(() => {
-        if (!custom || (!custom.make && !custom.model)) return;
+        if (!custom || (!custom.make && !custom.model) || unverified) return;
         let cancelled = false;
         // No setLookup({status:"loading"}) here on purpose. The initial state
         // is already "loading", so this was redundant on mount -- and calling
@@ -70,7 +74,7 @@ export default function CustomVehiclePage() {
                 cancelled = true;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [custom?.make, custom?.model, custom?.year, custom?.engine]);
+  }, [custom?.make, custom?.model, custom?.year, custom?.engine, unverified]);
 
   if (isLoading) return null;
 
@@ -105,7 +109,7 @@ export default function CustomVehiclePage() {
     { key: "maintain", title: "Maintain it", body: "Reminders based on what you've logged.", href: "#maintenance", gate: "keys" },
     { key: "history", title: "Service history", body: "Your log of jobs, mileage and notes. User-recorded Crankcase Service History.", href: "#history", gate: "keys" },
     { key: "info", title: "Vehicle info", body: "What we know about this vehicle so far.", href: "#info", gate: "free" },
-  ];
+  ].filter((t) => !(unverified && t.key === "info")) as HubTile[];
 
   return (
     <>
@@ -132,6 +136,7 @@ export default function CustomVehiclePage() {
             {custom.model ?? "Unnamed vehicle"}
             {custom.trim ? <span className="text-slate-400"> {custom.trim}</span> : null}
           </h1>
+          {unverified && <div className="mt-2"><UnverifiedBadge /></div>}
           {(custom.engine || custom.vin) && (
             <p className="mt-3 text-slate-300 [overflow-wrap:anywhere]">
               {[custom.engine, ...summaryParts(entry.config, custom.make), custom.vin && `VIN ${custom.vin}`].filter(Boolean).join(" · ")}
@@ -164,13 +169,16 @@ export default function CustomVehiclePage() {
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <HubSidePanels vehicleId={entry.id} maintainHref="#maintenance" historyHref="#history" />
         </div>
-        <div className="lg:col-start-1 lg:row-start-2">
-          <KeysPanel vehicleName={custom.model ?? "vehicle"} />
-        </div>
+        {!unverified && (
+          <div className="lg:col-start-1 lg:row-start-2">
+            <KeysPanel vehicleName={custom.model ?? "vehicle"} />
+          </div>
+        )}
       </div>
 
       <div id="info" className="mt-12 scroll-mt-24">
-        {lookup.status === "catalog" && (
+        {unverified && <UnverifiedPanel id={entry.id} custom={custom} />}
+        {!unverified && lookup.status === "catalog" && (
           <div className="cg-well rounded-xl border-l-2 border-l-emerald-500/70 px-4 py-3 text-sm text-emerald-300">
             <span className="font-semibold">Good news — we have full curated data for this exact vehicle.</span>{" "}
             <Link href={`/vehicles/${lookup.vehicleId}`} className="font-medium underline hover:text-emerald-200">
@@ -180,7 +188,7 @@ export default function CustomVehiclePage() {
           </div>
         )}
 
-        {lookup.status === "ok" && (
+        {!unverified && lookup.status === "ok" && (
           <div className="space-y-4">
             <DataDisclaimer compact />
             <div>
@@ -197,13 +205,13 @@ export default function CustomVehiclePage() {
           </div>
         )}
 
-        {lookup.status === "loading" && (
+        {!unverified && lookup.status === "loading" && (
           <div className="cg-well rounded-xl px-4 py-3 text-sm text-slate-400" aria-busy="true">
             Checking what we have on this vehicle&hellip;
           </div>
         )}
 
-        {(lookup.status === "pending" ||
+        {!unverified && (lookup.status === "pending" ||
           lookup.status === "not_found" ||
           lookup.status === "unavailable" ||
           lookup.status === "error") && (

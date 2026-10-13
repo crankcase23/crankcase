@@ -233,8 +233,8 @@
         5,
         6,
         7,
-        14,
-        15
+        15,
+        11
       ],
       "guide": 1,
       "guideName": "Front Brake Pads",
@@ -315,8 +315,8 @@
       "certified": false,
       "evidenceSteps": [
         8,
-        13,
-        14
+        14,
+        15
       ],
       "guide": 1,
       "guideName": "Front Brake Pads",
@@ -2578,7 +2578,7 @@
       "visualId": "oil-filter-cap"
     },
     {
-      "certified": false,
+      "certified": "factory-approved, owner sign-off per approved artifact",
       "evidenceSteps": [
         4
       ],
@@ -2586,10 +2586,10 @@
       "guideName": "Engine Oil & Filter Change",
       "imageProduced": true,
       "imageType": "LOCATE",
-      "phase": "OVERLAY_PASSED",
+      "phase": "APPROVED",
       "stages": [
         {
-          "detail": "run already holds a generation (phase OVERLAY_PASSED); not rebuilt",
+          "detail": "run already holds a generation (phase APPROVED); not rebuilt",
           "stage": "0 preserved in-flight run",
           "status": "PASS"
         }

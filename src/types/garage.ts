@@ -27,4 +27,6 @@ export type GarageEntry =
 // config is the customer's confirmed transmission and drivetrain (see src/lib/vehicleConfig.ts). Always present:
 // an entry that predates the feature, or one never confirmed, simply has null axes ("never asked").
 | { id: string; kind: "catalog"; addedAt: string; vin?: string; config: VehicleConfig }
-| { id: string; kind: "custom"; addedAt: string; custom: CustomVehicleInfo; config: VehicleConfig };
+// vinStatus (migrations/2026-10-12-vin-status.sql): "unverified" = typed by the customer while NHTSA was down, not yet checked;
+// "verified" = the server checked the VIN at NHTSA and the identity matched; absent/null = a record from before this existed.
+| { id: string; kind: "custom"; addedAt: string; custom: CustomVehicleInfo; config: VehicleConfig; vinStatus?: "verified" | "unverified" | null };

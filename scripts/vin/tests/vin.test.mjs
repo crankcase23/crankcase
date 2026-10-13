@@ -133,9 +133,13 @@ test("the photo path never uploads or stores anything", () => {
 // ------------------------------------------------------------------------------------------ server enforcement (static)
 test("server: every add validates the VIN first, no other code inserts a garage row, and service/odometer never provision one", () => {
   const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
-  assert.equal((route.match(/validateVin\(/g) ?? []).length, 2, "catalog and custom adds both validate");
+  assert.equal((route.match(/validateVin\(/g) ?? []).length, 3, "catalog, custom and the NHTSA-outage fallback adds all validate");
   assert.ok(route.indexOf("validateVin(body.vin)") < route.indexOf("addCatalogEntry(userId"));
   assert.ok(route.indexOf("validateVin(c.vin)") < route.indexOf("addCustomEntry(userId"));
+  assert.ok(route.lastIndexOf("validateVin(c.vin)") < route.indexOf("addViaFallback(userId"), "the fallback validates the VIN before anything else");
+  // The fallback never inserts a garage row itself: the only insert stays inside addCustomEntry (same VIN rules).
+  const fb = fs.readFileSync(path.join(ROOT, "src/lib/vinFallbackServer.ts"), "utf8");
+  assert.ok(!/insert\(garageEntries\)/.test(fb), "the fallback adds through addCustomEntry, not its own insert");
   const ge = fs.readFileSync(path.join(ROOT, "src/lib/garageEntries.ts"), "utf8");
   assert.equal((ge.match(/insert\(garageEntries\)/g) ?? []).length, 2, "only addCatalogEntry and addCustomEntry insert");
   assert.ok(!/create:\s*true/.test(ge));
@@ -147,20 +151,30 @@ test("server: every add validates the VIN first, no other code inserts a garage 
   assert.ok(!/VIN_CLAIM_REQUIRED|vin-claim-required/.test(resp + ge), "no cross-account claim-required answer exists");
   assert.ok(!/vinHeldByAnotherAccount|ne\(garageEntries\.userId/.test(ge), "no query looks at other accounts' rows by VIN");
   assert.ok(!/upper\(\$\{garageEntries\.vin\}\)/.test(ge), "VIN lookups are plain equality on the canonical column (index friendly)");
-  assert.ok(!/userId|email|another (customer|user|owner|account)/i.test(resp), "blocked answers name no one");
+  assert.ok(/VIN_IN_GARAGE/.test(resp) && !/VIN_CLAIM_REQUIRED/.test(resp) && !/userId|email|another (customer|user|owner|account)/i.test(resp), "the blocked response names no one");
+  // No VIN squatting: nothing may look at OTHER accounts' rows by VIN. The only VIN lookups are scoped to the caller.
+  for (const f of ["src/lib/garageEntries.ts", "src/lib/vinFallbackServer.ts", "src/app/api/garage/route.ts", "src/app/api/garage/[id]/vin/route.ts"]) {
+    const src = fs.readFileSync(path.join(ROOT, f), "utf8");
+    assert.ok(!/vinHeldByAnotherAccount|vin-claim-required|VIN_CLAIM_REQUIRED/.test(src), `${f}: no cross-account VIN check`);
+    assert.ok(!/ne\(garageEntries\.userId/.test(src), `${f}: no query over other accounts' rows`);
+  }
+  assert.ok(/eq\(garageEntries\.userId, userId\), sameVin\(vin\)/.test(ge), "the one VIN lookup is scoped to the caller");
 });
 
 test("only text is a VIN: numbers, arrays and objects that stringify to 17 characters are refused", () => {
   for (const v of [12345678901234567, [GOOD], { toString: () => GOOD }, null, undefined, true]) assert.equal(vin.validateVin(v).ok, false);
 });
 
-test("abuse throttle: every VIN lookup is guarded first, there is no collision counter, and the VIN itself is never stored", () => {
+test("probe protection: every VIN lookup is guarded first, and the VIN itself is never stored", () => {
   const route = fs.readFileSync(path.join(ROOT, "src/app/api/garage/route.ts"), "utf8");
   assert.ok(route.indexOf("guardVinAttempt(request") < route.indexOf("addCatalogEntry(userId"), "catalog add is guarded before the lookup");
   assert.ok(route.indexOf("guardVinAttempt(request", route.indexOf("addCatalogEntry(userId")) < route.indexOf("addCustomEntry(userId"), "custom add is guarded before the lookup");
-  assert.ok(!/noteVinCollision|VIN_COLLISION/.test(route), "no collision bookkeeping");
+  assert.equal((route.match(/noteVinCollision\(/g) ?? []).length, 0, "there are no cross-account collisions to count any more");
+  assert.ok(route.lastIndexOf("guardVinAttempt(request") < route.indexOf("addViaFallback(userId"), "the fallback add is guarded before the lookup");
+  const verify = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/verify/route.ts"), "utf8");
+  assert.ok(verify.indexOf("guardVinAttempt(request") < verify.indexOf("verifyOwnEntry(userId"), "re-check is guarded before it asks NHTSA");
   const comp = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]/vin/route.ts"), "utf8");
-  assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId") && !/noteVinCollision/.test(comp), "completion is guarded too");
+  assert.ok(comp.indexOf("guardVinAttempt(request") < comp.indexOf("completeGarageVin(userId"), "completion is guarded too");
   const g = fs.readFileSync(path.join(ROOT, "src/lib/vinGuard.ts"), "utf8");
   assert.ok(/VIN_RATE_LIMITED/.test(g) && /Retry-After/.test(g));
   assert.ok(!/metadata:\s*\{[^}]*vin\b/i.test(g), "no VIN in stored metadata");
@@ -204,7 +218,7 @@ test("same-model identity: ids are permanent, bare ids never guess, and the wren
   assert.ok(!/isOldest|oldest\.id/.test(ge), "no 'oldest row keeps the plain id' scheme");
   assert.ok(/composeGarageId\(row\.vehicleId, row\.id\)/.test(ge), "every catalog car gets <model>~<rowId>");
   assert.ok(/throw new AmbiguousGarageId/.test(ge), "a bare id with several cars throws");
-  for (const f of ["route.ts", "odometer/route.ts", "service/route.ts", "service/[entryId]/route.ts", "vin/route.ts"]) {
+  for (const f of ["route.ts", "odometer/route.ts", "service/route.ts", "service/[entryId]/route.ts", "vin/route.ts", "verify/route.ts", "details/route.ts"]) {
     const r = fs.readFileSync(path.join(ROOT, "src/app/api/garage/[id]", f), "utf8");
     assert.ok(!/export async function/.test(r) && /withGarageId\(/.test(r), `${f}: every handler is wrapped so an ambiguous id becomes a 409`);
   }
@@ -212,4 +226,15 @@ test("same-model identity: ids are permanent, bare ids never guess, and the wren
   assert.ok(/garageId=\{garageId\}/.test(save), "GuideWithServiceSave hands the car's id to Wrench Mode");
   const wm = fs.readFileSync(path.join(ROOT, "src/components/GuideWithWrenchMode.tsx"), "utf8");
   assert.ok(/useVehicleConfig\(garageId \?\? vehicle\.id\)/.test(wm), "live config is read for THIS car, not the shared catalog id");
+});
+
+test("fallback cap is reserve-then-count: the allowance is claimed before the lookup and released on every non-adding path", () => {
+  const fb = fs.readFileSync(path.join(ROOT, "src/lib/vinFallbackServer.ts"), "utf8");
+  const reserve = fb.indexOf("insert(appEvents)");
+  const count = fb.indexOf("fallbackAddsInLastDay(userId)) >");
+  const probe = fb.indexOf("await probe(vin)");
+  const add = fb.indexOf("await addCustomEntry(\n        userId");
+  assert.ok(reserve > 0 && reserve < count && count < probe && probe < add, "reserve, then count (including the reservation), then probe, then add");
+  assert.ok(/> FALLBACK_DAILY_CAP/.test(fb) && !/>= FALLBACK_DAILY_CAP/.test(fb), "the count includes this request's own reservation");
+  assert.ok((fb.match(/await release\(\)/g) ?? []).length >= 5, "cap, not-decodable, mismatch, blocked/existing and error paths all release");
 });
