@@ -23,6 +23,7 @@ async function bundle(entry) {
 }
 const vin = await bundle("lib/vin.ts");
 const ocr = await bundle("lib/vinOcr.ts");
+const glyphs = await bundle("lib/vinGlyphs.ts");
 const sharp = require("sharp");
 const { createWorker, PSM } = require("tesseract.js");
 const worker = await createWorker("eng", 1, { workerPath: path.join(ROOT, "node_modules/tesseract.js/src/worker-script/node/index.js"), corePath: path.join(ROOT, "public/ocr/core"), langPath: path.join(ROOT, "public/ocr/lang"), gzip: true });
@@ -39,12 +40,12 @@ async function greyOf(buf) {
   for (const v of data) { if (v < lo) lo = v; if (v > hi) hi = v; }
   return { data: Uint8ClampedArray.from(data, (v) => ((v - lo) * 255) / Math.max(1, hi - lo)), width: info.width, height: info.height };
 }
+// The production recognition path: the tile goes to the engine as raw BMP bytes and only the text is asked for (no PNG round trip, no hOCR/TSV).
 async function recognise(tile) {
-  const png = await sharp(Buffer.from(tile.data), { raw: { width: tile.width, height: tile.height, channels: 1 } }).png().toBuffer();
-  const r = await worker.recognize(png);
-  return { ch: r.data.text.trim()[0] ?? null, conf: r.data.confidence / 100 };
+  const r = await worker.recognize(Buffer.from(glyphs.encodeGrayBmp(tile)), {}, { text: true });
+  return { ch: r.data.text.trim()[0]?.toUpperCase() ?? null, conf: r.data.confidence / 100 };
 }
-const read = async (buf) => ocr.glyphVinReads(await greyOf(buf), recognise);
+const read = async (buf) => ocr.glyphVinReads(await greyOf(buf), recognise, undefined, { tick: async () => {} });
 const orig = () => sharp(ORIGINAL);
 
 test("GLYPH-ORIG the original photograph: the exact VIN is extracted and passes the check digit", async () => {
