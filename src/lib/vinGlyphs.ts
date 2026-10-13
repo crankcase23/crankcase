@@ -202,13 +202,16 @@ export function cornerCompatible(ch: string, state: "bare" | "inked" | "unclear"
  * glyph-sized shapes with consistent height along a straight baseline qualifies; what the string says is decided later.
  * `radius` is the background window for local contrast (about a third of a character height).
  */
-export function findGlyphRuns(grey: Grey, polarity: 1 | -1, radius: number): { runs: GlyphRun[]; sig: Float32Array } {
+function* glyphRunSteps(grey: Grey, polarity: 1 | -1, radius: number): Generator<void, { runs: GlyphRun[]; sig: Float32Array }, void> {
   const { width: w, height: h } = grey;
   const sig = localContrast(grey, polarity, radius);
+  yield;
   const t = Math.max(otsuThreshold(sig, w) * 0.8, MIN_STROKE_CONTRAST);
   const bin = new Uint8Array(w * h);
   for (let i = 0; i < bin.length; i++) bin[i] = sig[i] > t ? 1 : 0;
+  yield;
   const { comps } = connectedComponents(bin, w, h);
+  yield;
   const minH = Math.max(12, radius * 0.8);
   const cand = comps.filter((c) => {
     const cw = c.x1 - c.x0 + 1, ch = c.y1 - c.y0 + 1;
@@ -227,7 +230,8 @@ export function findGlyphRuns(grey: Grey, polarity: 1 | -1, radius: number): { r
     for (let guard = 0; guard < 12 && pts.length >= 10; guard++) {
       // Hough over small tilts: the slope whose offsets (cy - slope * cx) pile up in one narrow band is the baseline.
       let best: { slope: number; lo: number; n: number } | null = null;
-      for (let s = -0.25; s <= 0.2501; s += 0.005) {
+      for (let s = -0.25, step = 0; s <= 0.2501; s += 0.005) {
+        if (++step % 8 === 0) yield;
         const offs = pts.map((p) => p.cy - s * p.cx).sort((a, b) => a - b);
         let lo = 0;
         for (let hi = 0; hi < offs.length; hi++) {
@@ -258,6 +262,24 @@ export function findGlyphRuns(grey: Grey, polarity: 1 | -1, radius: number): { r
   return { runs, sig };
 }
 
+export function findGlyphRuns(grey: Grey, polarity: 1 | -1, radius: number): { runs: GlyphRun[]; sig: Float32Array } {
+  const steps = glyphRunSteps(grey, polarity, radius);
+  for (;;) {
+    const n = steps.next();
+    if (n.done) return n.value;
+  }
+}
+
+/** The same search, handing the thread back to the page (`tick`) between small slices, so a scan never freezes the screen. */
+export async function findGlyphRunsAsync(grey: Grey, polarity: 1 | -1, radius: number, tick: () => Promise<void>): Promise<{ runs: GlyphRun[]; sig: Float32Array }> {
+  const steps = glyphRunSteps(grey, polarity, radius);
+  for (;;) {
+    const n = steps.next();
+    if (n.done) return n.value;
+    await tick();
+  }
+}
+
 /** Prefers a run of exactly VIN length with uniform glyph height. */
 export function runScore(run: GlyphRun): number {
   const n = run.boxes.length;
@@ -266,6 +288,9 @@ export function runScore(run: GlyphRun): number {
   const cv = Math.sqrt(hs.reduce((a, b) => a + (b - mean) ** 2, 0) / n) / mean;
   return Math.min(n, VIN_LENGTH) + (n === VIN_LENGTH ? 4 : 0) - Math.abs(n - VIN_LENGTH) * 0.25 - cv * 8;
 }
+
+/** Letters that cannot appear in a VIN (ISO 3779). */
+const NOT_IN_VIN = new Set(["I", "O", "Q"]);
 
 export type GlyphConfig = { mult: number; grow: number };
 /** Enhancement settings: how low the stroke threshold sits (relative to Otsu) and how much the strokes are thickened. */
@@ -317,17 +342,22 @@ export async function readGlyphRun(sig: Float32Array, w: number, h: number, run:
   const votes = run.boxes.map(() => new Map<string, number>());
   const holeVotes = run.boxes.map(() => new Map<number, number>());
   const cornerInk = run.boxes.map(() => [] as number[]);
+  // Every glyph under every setting is handed to the recogniser at once (a pool of engine workers works through them in
+  // parallel); the answers are then tallied in the fixed setting-by-setting order, so the result never depends on timing.
+  const jobs: { k: number; hc: number; ink: number; res: Promise<{ ch: string | null; conf: number }> }[] = [];
   for (const cfg of configs) {
     for (let k = 0; k < run.boxes.length; k++) {
       const m = glyphMask(sig, w, h, run.boxes[k], base * cfg.mult, cfg.grow, scale);
-      const hc = holeCount(m.mask, m.w, m.h);
-      holeVotes[k].set(hc, (holeVotes[k].get(hc) ?? 0) + 1);
-      cornerInk[k].push(lowerRightInk(m.mask, m.w, m.h));
-      const r = await recognise(renderTile(m.mask, m.w, m.h));
-      if (r.ch) votes[k].set(r.ch, (votes[k].get(r.ch) ?? 0) + Math.max(0.01, r.conf));
-      onStep?.();
+      jobs.push({ k, hc: holeCount(m.mask, m.w, m.h), ink: lowerRightInk(m.mask, m.w, m.h), res: recognise(renderTile(m.mask, m.w, m.h)) });
     }
   }
+  const answers = await Promise.all(jobs.map(async (j) => { const r = await j.res; onStep?.(); return r; }));
+  jobs.forEach((j, i) => {
+    holeVotes[j.k].set(j.hc, (holeVotes[j.k].get(j.hc) ?? 0) + 1);
+    cornerInk[j.k].push(j.ink);
+    const r = answers[i];
+    if (r.ch) votes[j.k].set(r.ch, (votes[j.k].get(r.ch) ?? 0) + Math.max(0.01, r.conf));
+  });
   const positions: GlyphPosition[] = run.boxes.map((_, k) => {
     const holes = [...holeVotes[k].entries()].sort((a, b) => b[1] - a[1])[0][0];
     const all = [...votes[k].entries()].sort((a, b) => b[1] - a[1]);
@@ -339,10 +369,37 @@ export async function readGlyphRun(sig: Float32Array, w: number, h: number, run:
     return {
       ch: top ? top[0] : null,
       share: top && total ? top[1] / total : 0,
-      alternatives: kept.slice(1, 3).map(([ch, score]) => ({ ch, score })),
+      // I, O and Q never appear in a VIN, so they are never listed as an alternative reading either.
+      alternatives: kept.slice(1).filter(([ch]) => !NOT_IN_VIN.has(ch)).slice(0, 2).map(([ch, score]) => ({ ch, score })),
       holes,
       corner,
     };
   });
   return { text: positions.map((p) => p.ch ?? "?").join(""), positions, configs: configs.length };
+}
+
+
+/**
+ * A tile as an uncompressed 8-bit greyscale BMP. The OCR engine reads these bytes directly, which is much cheaper than
+ * painting a canvas and letting the engine re-encode it as a PNG for every one of the glyph tiles.
+ */
+export function encodeGrayBmp(tile: Tile): Uint8Array {
+  const { width, height, data } = tile;
+  const rowBytes = (width + 3) & ~3;
+  const pixelsAt = 14 + 40 + 1024;
+  const out = new Uint8Array(pixelsAt + rowBytes * height);
+  const dv = new DataView(out.buffer);
+  out[0] = 0x42; out[1] = 0x4d; // "BM"
+  dv.setUint32(2, out.length, true);
+  dv.setUint32(10, pixelsAt, true);
+  dv.setUint32(14, 40, true);
+  dv.setInt32(18, width, true);
+  dv.setInt32(22, height, true); // positive: rows are stored bottom-up
+  dv.setUint16(26, 1, true);
+  dv.setUint16(28, 8, true);
+  dv.setUint32(34, rowBytes * height, true);
+  dv.setUint32(46, 256, true);
+  for (let i = 0; i < 256; i++) { const o = 54 + i * 4; out[o] = out[o + 1] = out[o + 2] = i; }
+  for (let y = 0; y < height; y++) out.set(data.subarray((height - 1 - y) * width, (height - y) * width), pixelsAt + y * rowBytes);
+  return out;
 }
