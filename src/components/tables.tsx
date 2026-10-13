@@ -1,6 +1,7 @@
 import { FluidCapacity, SpecItem, TorqueSpec, Tool } from "@/types/vehicle";
 import { PANEL } from "@/components/app/Chapter";
 import { IconLock } from "@/components/app/AppIcons";
+import { isUnverifiedTorque } from "@/lib/guideNotices";
 
 export function SpecTable({ specs }: { specs: SpecItem[] }) {
   return (
@@ -42,7 +43,17 @@ export function FluidTable({ fluids }: { fluids: FluidCapacity[] }) {
   );
 }
 
-export function TorqueTable({ specs }: { specs: TorqueSpec[] }) {
+/** The amber VERIFY tag shown beside any torque or spec figure that is not confirmed. */
+export function VerifyBadge({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center rounded border border-amber-400/70 bg-amber-400/15 px-1.5 py-0.5 font-sans text-[0.7rem] font-extrabold uppercase tracking-wider text-amber-300 ${className}`}>
+      Verify
+    </span>
+  );
+}
+
+/** `consolidated`: unconfirmed figures get a VERIFY badge and the long source note folds under "Source note" (kept in full). */
+export function TorqueTable({ specs, consolidated = false }: { specs: TorqueSpec[]; consolidated?: boolean }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-slate-800">
       <table className="w-full table-fixed divide-y divide-slate-800 text-sm">
@@ -61,8 +72,17 @@ export function TorqueTable({ specs }: { specs: TorqueSpec[] }) {
             <tr key={t.fastener}>
               <td className="px-4 py-3 font-medium text-slate-100 break-words">{t.fastener}</td>
               <td className="px-4 py-3 text-slate-200 break-words">
+                {consolidated && isUnverifiedTorque(t) && <VerifyBadge className="mr-2" />}
                 <span className="font-mono">{t.value}</span>
-                {t.notes && <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>}
+                {t.notes &&
+                  (consolidated ? (
+                    <details className="mt-1 font-sans text-xs text-slate-400">
+                      <summary className="cursor-pointer text-slate-400 hover:text-slate-200">Source note</summary>
+                      <p className="mt-1 text-slate-400">{t.notes}</p>
+                    </details>
+                  ) : (
+                    <div className="mt-1 text-xs text-slate-500 font-sans">{t.notes}</div>
+                  ))}
               </td>
             </tr>
           ))}

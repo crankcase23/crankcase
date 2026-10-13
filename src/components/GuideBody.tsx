@@ -3,6 +3,9 @@
 import { useMemo, useState } from "react";
 import { ToolList, BulletList, TorqueTable } from "@/components/tables";
 import StepList from "@/components/StepList";
+import GuideNotice from "@/components/GuideNotice";
+import GuideEvidence from "@/components/GuideEvidence";
+import { buildGuideNotices, usesEvidenceNotices } from "@/lib/guideNotices";
 import type { ResolvedGuide } from "@/types/vehicle";
 
 /**
@@ -78,8 +81,14 @@ export default function GuideBody({ guide }: { guide: ResolvedGuide }) {
 
   const steps = guide.steps.filter((s) => show(s.onlyFor));
 
+  // Uncertified evidence-built guides (the BMW set) get ONE guide notice, the real safety notes, VERIFY badges, and a collapsed
+  // Evidence & Sources section. Every other guide renders exactly as before.
+  const consolidated = useMemo(() => usesEvidenceNotices(guide), [guide]);
+  const safety = useMemo(() => (consolidated ? buildGuideNotices(guide).safety : guide.safety), [consolidated, guide]);
+
   return (
     <>
+      {consolidated && <GuideNotice guide={guide} />}
       {groups.length > 0 && (
         <section className="mt-8">
           <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -146,19 +155,21 @@ export default function GuideBody({ guide }: { guide: ResolvedGuide }) {
       <section className="mt-8">
         <h2 className="mb-3 text-lg font-semibold text-slate-100">Safety Notes</h2>
         <div className="rounded-xl border border-rose-500/30 bg-rose-500/5 p-4">
-          <BulletList items={guide.safety} />
+          <BulletList items={safety} />
         </div>
       </section>
 
       <section className="mt-8">
         <h2 className="mb-3 text-lg font-semibold text-slate-100">Torque Specs</h2>
-        <TorqueTable specs={torqueSpecs} />
+        <TorqueTable specs={torqueSpecs} consolidated={consolidated} />
       </section>
 
       <section className="mt-10">
         <h2 className="mb-4 text-lg font-semibold text-slate-100">Step-by-Step</h2>
-        <StepList steps={steps} hasRotorOption={guide.hasRotorOption} />
+        <StepList steps={steps} hasRotorOption={guide.hasRotorOption} consolidated={consolidated} />
       </section>
+
+      {consolidated && <GuideEvidence guide={guide} />}
     </>
   );
 }

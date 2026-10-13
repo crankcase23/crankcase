@@ -10,6 +10,8 @@ import type { WrenchCompletionConfig } from "@/lib/wrenchSteps";
 import { deriveOverview, vehicleTitle } from "@/lib/guideOverview";
 import WrenchCompletionSheet from "@/components/WrenchCompletionSheet";
 import BrandLogo from "@/components/BrandLogo";
+import { VerifyBadge } from "@/components/tables";
+import { classifyStepWarning, isUnverifiedTorque, usesEvidenceNotices } from "@/lib/guideNotices";
 import { ChevronDownIcon, ChevronRightIcon, WrenchIcon } from "@/components/GuideIcons";
 
 /**
@@ -88,6 +90,9 @@ export default function WrenchMode({
   );
   const [completing, setCompleting] = useState(false);
   const current = plan.steps[Math.min(index, Math.max(total - 1, 0))];
+  // Evidence-built (BMW preview) guides: real warnings stay prominent, source-limit sentences fold into one "Evidence" control.
+  const consolidated = useMemo(() => usesEvidenceNotices(guide), [guide]);
+  const notice = consolidated && current ? classifyStepWarning(current.step.warning) : null;
   // Which phase is expanded in the side list. Follows the current step unless
   // the reader toggled one; a manual choice lapses as soon as the step changes.
   const [override, setOverride] = useState<{ phase: number | null; at: number } | null>(null);
@@ -490,11 +495,22 @@ export default function WrenchMode({
                                   {r}
                                 </span>
                               ))}
-                              {t.notes && (
-                                <span className="mt-1 block text-base text-slate-300">
-                                  {t.notes}
+                              {consolidated && isUnverifiedTorque(t) && (
+                                <span className="mt-1 block">
+                                  <VerifyBadge className="text-xs" />
                                 </span>
                               )}
+                              {t.notes &&
+                                (consolidated ? (
+                                  <details className="mt-1 text-base text-slate-300">
+                                    <summary className="cursor-pointer text-slate-400">Source note</summary>
+                                    <span className="mt-1 block">{t.notes}</span>
+                                  </details>
+                                ) : (
+                                  <span className="mt-1 block text-base text-slate-300">
+                                    {t.notes}
+                                  </span>
+                                ))}
                             </li>
                           );
                         })}
@@ -502,7 +518,7 @@ export default function WrenchMode({
                     </section>
                   )}
 
-                  {current.step.warning && (
+                  {(notice ? notice.kind === "blocked" || notice.kind === "caution" : current.step.warning) && (
                     <section
                       aria-label="Warning for this step"
                       className="overflow-hidden rounded-2xl border-2 border-rose-500/70 bg-[#1c1f23]"
@@ -517,9 +533,33 @@ export default function WrenchMode({
                         ⚠ Warning
                       </h3>
                       <p className="px-4 py-3 text-xl font-semibold leading-snug text-[#f5f3ee] sm:text-2xl">
-                        {current.step.warning}
+                        {notice ? notice.text : current.step.warning}
                       </p>
                     </section>
+                  )}
+
+                  {notice?.kind === "note" && (
+                    <section aria-label="Note for this step" className="rounded-2xl border border-white/15 bg-[#1c1f23] px-4 py-3">
+                      <p className="text-lg leading-snug text-slate-200 sm:text-xl">
+                        <span className="font-bold uppercase tracking-wider text-slate-400">Note · </span>
+                        {notice.text}
+                      </p>
+                    </section>
+                  )}
+
+                  {notice && notice.flags.length > 0 && (
+                    <details aria-label="Evidence for this step" className="rounded-2xl border border-white/10 bg-[#1c1f23] px-4 py-3">
+                      <summary className="cursor-pointer text-base font-semibold text-amber-300">
+                        Evidence for this step
+                      </summary>
+                      <ul className="mt-2 space-y-1">
+                        {notice.flags.map((f) => (
+                          <li key={f} className="text-base leading-snug text-slate-300">
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
                   )}
 
                   {current.verifyNotes.length > 0 && (
@@ -530,7 +570,7 @@ export default function WrenchMode({
                       <h3
                         className={`${DISPLAY} border-b border-dashed border-amber-400/40 px-4 py-2 text-lg font-extrabold uppercase tracking-[0.18em] text-amber-300`}
                       >
-                        ? Unverified
+                        VERIFY · Unverified
                       </h3>
                       <div className="px-4 py-3">
                         <p className="text-base font-bold uppercase tracking-wider text-amber-200">
