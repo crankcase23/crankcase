@@ -6,7 +6,7 @@
 // What this returns is what the camera READ, character for character. It does not "fix" anything: I/O/Q and low-confidence
 // characters come back flagged so the screen can highlight them and the customer must confirm the VIN themselves.
 
-import { extractVinCandidates, normalizeVin, validateVin, VIN_LENGTH } from "@/lib/vin";
+import { isPlausibleVinRead, looksLikeLabelText, normalizeVin, rankedVinCandidates, scoreVinRead, validateVin, VIN_LENGTH } from "@/lib/vin";
 
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 export const MAX_PHOTO_PIXELS = 50_000_000;
@@ -14,15 +14,22 @@ const LONG_SIDE = 2000;
 
 export type ScanFailure = "type" | "size" | "dimensions" | "decode" | "unreadable" | "engine";
 export type ScanResult =
-  | { ok: true; vin: string; confidences: (number | undefined)[]; alternatives: string[] }
+  | { ok: true; vin: string; confidences: (number | undefined)[]; alternatives: string[]; checkDigitOk: boolean }
   | { ok: false; reason: ScanFailure; message: string };
+
+/** Shown whenever a photo could not be read cleanly (nothing found, or a read that fails the VIN check). Pinned by tests. */
+export const RETAKE_TIPS: readonly string[] = [
+  "Move closer so the VIN fills most of the frame.",
+  "Turn your flash off. It washes out the label.",
+  "Photograph the label straight-on, not at an angle.",
+];
 
 export const SCAN_MESSAGES: Record<ScanFailure, string> = {
   type: "That file isn't a JPEG, PNG or WebP photo. Take a new photo, or type the VIN.",
   size: "That photo is too large (15 MB limit). Take a new photo, or type the VIN.",
   dimensions: "That image is too large to read safely. Take a new photo, or type the VIN.",
   decode: "We couldn't open that image. Take a new photo, or type the VIN.",
-  unreadable: "We couldn't find a 17-character VIN in that photo. Move closer, avoid glare, keep the VIN flat and in focus, or type it in.",
+  unreadable: "We couldn't find a 17-character VIN in that photo. Retake the photo (see the tips below) or type the VIN in.",
   engine: "The photo reader couldn't start on this device. Type the VIN instead.",
 };
 const fail = (reason: ScanFailure): ScanResult => ({ ok: false, reason, message: SCAN_MESSAGES[reason] });
@@ -53,24 +60,121 @@ export function declaredPixels(bytes: Uint8Array, kind: "jpeg" | "png" | "webp")
 }
 
 type Sym = { text: string; confidence: number };
-type OcrLine = { words?: { symbols?: Sym[] }[] };
+type Box = { x0: number; y0: number; x1: number; y1: number };
+type OcrLine = { bbox?: Box; words?: { symbols?: Sym[] }[] };
 type OcrPage = { text?: string; blocks?: { paragraphs?: { lines?: OcrLine[] }[] }[] };
 
+export type VinRead = { vin: string; confidences: (number | undefined)[]; afterVinLabel: boolean };
+
 /** Pairs each candidate with the per-character confidences of the line it was read from. Exported for tests. */
-export function candidatesFromPage(page: OcrPage): { vin: string; confidences: (number | undefined)[] }[] {
-  const out = new Map<string, (number | undefined)[]>();
+export function candidatesFromPage(page: OcrPage): VinRead[] {
+  const out = new Map<string, VinRead>();
   const lines: OcrLine[] = (page.blocks ?? []).flatMap((b) => (b.paragraphs ?? []).flatMap((p) => p.lines ?? []));
   for (const line of lines) {
     const syms = (line.words ?? []).flatMap((w) => w.symbols ?? []).filter((s) => /^[A-Za-z0-9]$/.test(s.text));
     const text = syms.map((s) => s.text.toUpperCase()).join("");
-    for (const vin of extractVinCandidates(text)) {
-      const at = text.indexOf(vin);
-      if (at >= 0 && !out.has(vin)) out.set(vin, syms.slice(at, at + VIN_LENGTH).map((s) => s.confidence));
+    const spaced = (line.words ?? []).map((w) => (w.symbols ?? []).map((s) => s.text).join("")).join(" ");
+    // Candidates come from the word-separated line only: the unspaced text hides where one label word ends and the next begins.
+    for (const c of rankedVinCandidates(spaced)) {
+      const at = text.indexOf(c.vin);
+      const prev = out.get(c.vin);
+      if (prev) { prev.afterVinLabel ||= c.afterVinLabel; continue; }
+      out.set(c.vin, { vin: c.vin, afterVinLabel: c.afterVinLabel, confidences: at >= 0 ? syms.slice(at, at + VIN_LENGTH).map((s) => s.confidence) : Array(VIN_LENGTH).fill(undefined) });
     }
   }
-  for (const vin of extractVinCandidates(page.text ?? "")) if (!out.has(vin)) out.set(vin, Array(VIN_LENGTH).fill(undefined));
-  const order = extractVinCandidates([...out.keys()].join("\n"));
-  return order.filter((v) => out.has(v)).map((v) => ({ vin: v, confidences: out.get(v)! }));
+  for (const c of rankedVinCandidates(page.text ?? "")) {
+    const prev = out.get(c.vin);
+    if (prev) prev.afterVinLabel ||= c.afterVinLabel;
+    else out.set(c.vin, { vin: c.vin, afterVinLabel: c.afterVinLabel, confidences: Array(VIN_LENGTH).fill(undefined) });
+  }
+  return [...out.values()];
+}
+
+export type RankedVin = { vin: string; confidences: (number | undefined)[]; alternatives: string[]; checkDigitOk: boolean };
+
+/**
+ * Chooses what to show the customer from every read of one photo. Only reads that look like a VIN are considered (so label
+ * text such as "...STANDARDS IN EFFECT ON THE DATE OF MANUFACTURE" can never be offered), and they are ranked by evidence:
+ * passes the check digit, printed right after the word "VIN", digits and position-9 rule, camera confidence. How many times
+ * a read repeated is only a tie-breaker. The winner is returned exactly as read (never corrected); the customer confirms it.
+ * Returns null when nothing in the photo looks like a VIN.
+ */
+export function rankVinReads(pages: OcrPage[]): RankedVin | null {
+  const seen = new Map<string, { confidences: (number | undefined)[]; count: number; afterVinLabel: boolean }>();
+  for (const page of pages) {
+    for (const c of candidatesFromPage(page)) {
+      const cur = seen.get(c.vin);
+      if (cur) {
+        cur.count++;
+        cur.afterVinLabel ||= c.afterVinLabel;
+        if (c.confidences.some((x) => x !== undefined) && !cur.confidences.some((x) => x !== undefined)) cur.confidences = c.confidences;
+      } else seen.set(c.vin, { confidences: c.confidences, count: 1, afterVinLabel: c.afterVinLabel });
+    }
+  }
+  const ranked = [...seen.entries()]
+    .filter(([vin, ev]) => isPlausibleVinRead(vin) && (ev.afterVinLabel || !looksLikeLabelText(vin)))
+    .map(([vin, ev]) => ({ vin, ev, score: scoreVinRead(vin, ev) }))
+    .sort((a, b) => b.score - a.score);
+  if (!ranked.length) return null;
+  const best = ranked[0];
+  return {
+    vin: normalizeVin(best.vin),
+    confidences: best.ev.confidences,
+    alternatives: ranked.slice(1, 4).map((r) => r.vin),
+    checkDigitOk: validateVin(best.vin).ok,
+  };
+}
+
+/**
+ * Where the printed label is, as the OCR engine itself saw it: the box around every line made of label words (GVWR, STANDARDS,
+ * EFFECT, MANUFACTURE ...), in the coordinates of the photo (`pad` is the margin the engine was given). A dusty door jamb or a
+ * dark photo makes one threshold over the whole picture wipe out the text; reading the label region on its own, with its own
+ * contrast, is what recovers the VIN. Returns null when no label text was recognised. Exported for tests.
+ */
+export function labelHull(pages: OcrPage[], pad = 0): Box | null {
+  let hull: Box | null = null;
+  for (const page of pages) {
+    for (const line of (page.blocks ?? []).flatMap((b) => (b.paragraphs ?? []).flatMap((p) => p.lines ?? []))) {
+      if (!line.bbox) continue;
+      const text = (line.words ?? []).map((w) => (w.symbols ?? []).map((s) => s.text).join("")).join("").toUpperCase();
+      if (text.length < 4 || !looksLikeLabelText(text)) continue;
+      const b = line.bbox;
+      hull = hull ? { x0: Math.min(hull.x0, b.x0), y0: Math.min(hull.y0, b.y0), x1: Math.max(hull.x1, b.x1), y1: Math.max(hull.y1, b.y1) } : { ...b };
+    }
+  }
+  return hull && { x0: hull.x0 - pad, y0: hull.y0 - pad, x1: hull.x1 - pad, y1: hull.y1 - pad };
+}
+
+/** The region to re-read: the label-text hull grown on every side (the VIN is printed just outside the legal text), kept inside the photo. */
+export function plateCropBox(hull: Box, width: number, height: number): Box {
+  const w = hull.x1 - hull.x0, h = hull.y1 - hull.y0;
+  const mx = Math.max(40, Math.round(w * 0.18)), my = Math.max(40, Math.round(h * 0.45));
+  return { x0: Math.max(0, Math.round(hull.x0 - mx)), y0: Math.max(0, Math.round(hull.y0 - my)), x1: Math.min(width, Math.round(hull.x1 + mx)), y1: Math.min(height, Math.round(hull.y1 + my)) };
+}
+
+/** A copy of the region `box` of a greyscale canvas, stretched on its own 1st-99.5th percentile range (dust and glare outside the label cannot flatten it). */
+function cropStretched(src: HTMLCanvasElement, box: Box): HTMLCanvasElement | null {
+  const w = box.x1 - box.x0, h = box.y1 - box.y0;
+  if (w < 50 || h < 30) return null;
+  const out = document.createElement("canvas");
+  out.width = w;
+  out.height = h;
+  const ctx = out.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.drawImage(src, box.x0, box.y0, w, h, 0, 0, w, h);
+  const img = ctx.getImageData(0, 0, w, h);
+  const d = img.data;
+  const hist = new Array<number>(256).fill(0);
+  for (let i = 0; i < d.length; i += 4) hist[d[i] | 0]++;
+  const total = d.length / 4;
+  let acc = 0, lo = 0, hi = 255;
+  for (let t = 0; t < 256; t++) { acc += hist[t]; if (acc >= total * 0.01) { lo = t; break; } }
+  acc = 0;
+  for (let t = 0; t < 256; t++) { acc += hist[t]; if (acc >= total * 0.995) { hi = t; break; } }
+  const span = Math.max(1, hi - lo);
+  for (let i = 0; i < d.length; i += 4) { const v = Math.max(0, Math.min(255, ((d[i] - lo) * 255) / span)); d[i] = d[i + 1] = d[i + 2] = v; }
+  ctx.putImageData(img, 0, 0);
+  return out;
 }
 
 /** Greyscale + contrast stretch of a decoded photo, on a canvas of its own. Etched/embossed plates read far better with it. */
@@ -160,43 +264,55 @@ export async function scanVinFromImage(file: File, onProgress?: (fraction: numbe
   try {
     const { createWorker, PSM } = await import("tesseract.js");
     let passDone = 0;
-    const passes: { img: HTMLCanvasElement; psm: (typeof PSM)[keyof typeof PSM] }[] = [];
+    let passTotal = 6;
+    const PSMS = [PSM.SINGLE_BLOCK, PSM.SPARSE_TEXT, PSM.AUTO];
     const bin = variant(canvas, true), grey = variant(canvas, false);
     made.push(bin, grey);
-    for (const img of [bin, grey]) for (const psm of [PSM.SINGLE_BLOCK, PSM.SPARSE_TEXT, PSM.AUTO]) passes.push({ img, psm });
+    const pad = Math.round(Math.max(canvas.width, canvas.height) * 0.04); // the margin variant() adds around the photo
     worker = await createWorker("eng", 1, {
       workerPath: "/ocr/worker.min.js",
       corePath: "/ocr/core",
       langPath: "/ocr/lang",
       workerBlobURL: false,
       logger: (m: { status?: string; progress?: number }) => {
-        if (m.status === "recognizing text" && typeof m.progress === "number") onProgress?.((passDone + m.progress) / passes.length);
+        if (m.status === "recognizing text" && typeof m.progress === "number") onProgress?.(Math.min(1, (passDone + m.progress) / passTotal));
       },
     });
     // Letters and digits only. I, O and Q stay allowed on purpose: when the camera reads one, the customer is shown it.
     await worker.setParameters({ tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" });
     // Several looks at the same photo. Each is read as-is; none edits a character. A read that passes the VIN check digit
-    // ends the search; otherwise the most repeated read is offered, flagged, for the customer to check.
-    const seen = new Map<string, { confidences: (number | undefined)[]; count: number }>();
-    for (const pass of passes) {
-      await worker.setParameters({ tessedit_pageseg_mode: pass.psm });
-      const { data } = await worker.recognize(pass.img, {}, { blocks: true, text: true });
+    // ends the search; otherwise every read is ranked by evidence (see rankVinReads) and the best is offered, flagged, for
+    // the customer to check. Text that does not look like a VIN is never offered.
+    const pages: OcrPage[] = [];
+    const run = async (img: HTMLCanvasElement, psm: (typeof PSMS)[number]) => {
+      await worker!.setParameters({ tessedit_pageseg_mode: psm });
+      const { data } = await worker!.recognize(img, {}, { blocks: true, text: true });
       passDone++;
-      for (const c of candidatesFromPage(data as unknown as OcrPage)) {
-        const cur = seen.get(c.vin);
-        if (cur) cur.count++;
-        else seen.set(c.vin, { confidences: c.confidences, count: 1 });
-      }
-      const valid = [...seen.keys()].find((v) => validateVin(v).ok);
-      if (valid) {
-        const alt = [...seen.keys()].filter((v) => v !== valid).slice(0, 3);
-        return { ok: true, vin: valid, confidences: seen.get(valid)!.confidences, alternatives: alt };
+      pages.push(data as unknown as OcrPage);
+      return rankVinReads(pages);
+    };
+    // Stage 1: the whole photo.
+    for (const img of [bin, grey]) for (const psm of PSMS) {
+      const so_far = await run(img, psm);
+      if (so_far?.checkDigitOk) return { ok: true, ...so_far };
+    }
+    // Stage 2: read the label region on its own, with its own contrast, where the engine saw label text.
+    const hull = labelHull(pages, pad);
+    const box = hull && plateCropBox(hull, canvas.width, canvas.height);
+    const crop = box && cropStretched(canvas, box);
+    if (crop) {
+      made.push(crop);
+      const cropBin = variant(crop, true), cropGrey = variant(crop, false);
+      made.push(cropBin, cropGrey);
+      passTotal += 6;
+      for (const img of [cropGrey, cropBin]) for (const psm of PSMS) {
+        const so_far = await run(img, psm);
+        if (so_far?.checkDigitOk) return { ok: true, ...so_far };
       }
     }
-    if (!seen.size) return fail("unreadable");
-    const ranked = [...seen.entries()].sort((a, b) => b[1].count - a[1].count);
-    const [bestVin, best] = ranked[0];
-    return { ok: true, vin: normalizeVin(bestVin), confidences: best.confidences, alternatives: ranked.slice(1, 4).map(([v]) => v) };
+    const result = rankVinReads(pages);
+    if (!result) return fail("unreadable");
+    return { ok: true, ...result };
   } catch {
     return fail("engine");
   } finally {
