@@ -18,9 +18,12 @@ import RepairStepCard from "@/components/RepairStepCard";
 export default function StepList({
   steps,
   hasRotorOption,
+  consolidated = false,
 }: {
   steps: RepairStep[];
   hasRotorOption?: boolean;
+  /** Consolidated warning presentation (see lib/guideNotices). */
+  consolidated?: boolean;
 }) {
   const [includeRotors, setIncludeRotors] = useState(true);
 
@@ -82,7 +85,7 @@ export default function StepList({
 
       <div className="space-y-4">
         {visible.map((step) => (
-          <RepairStepCard key={step.number} step={step} />
+          <RepairStepCard key={step.number} step={step} consolidated={consolidated} />
         ))}
       </div>
     </div>

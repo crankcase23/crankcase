@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { RepairStep } from "@/types/vehicle";
+import { classifyStepWarning } from "@/lib/guideNotices";
 
-export default function RepairStepCard({ step }: { step: RepairStep }) {
+export default function RepairStepCard({ step, consolidated = false }: { step: RepairStep; consolidated?: boolean }) {
+  const notice = consolidated ? classifyStepWarning(step.warning) : null;
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
       <div className="flex flex-col sm:flex-row">
@@ -25,10 +27,36 @@ export default function RepairStepCard({ step }: { step: RepairStep }) {
           </div>
           <p className="mt-3 text-sm leading-relaxed text-slate-300">{step.instructions}</p>
 
-          {step.warning && (
-            <div className="mt-3 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs text-rose-300">
-              ⚠ {step.warning}
-            </div>
+          {notice ? (
+            <>
+              {notice.kind === "blocked" && (
+                <div role="alert" className="mt-3 rounded-lg border-2 border-rose-500/70 bg-rose-500/15 px-3 py-2 text-sm font-semibold text-rose-200">
+                  {notice.text}
+                </div>
+              )}
+              {notice.kind === "caution" && (
+                <div className="mt-3 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs text-rose-300">⚠ {notice.text}</div>
+              )}
+              {notice.kind === "note" && (
+                <p className="mt-3 border-l-2 border-slate-600 pl-3 text-xs text-slate-400">Note: {notice.text}</p>
+              )}
+              {notice.flags.length > 0 && (
+                <details className="mt-2 text-xs text-slate-400">
+                  <summary className="cursor-pointer text-amber-300/90">Source check</summary>
+                  <ul className="mt-1 space-y-1">
+                    {notice.flags.map((f) => (
+                      <li key={f}>{f}</li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </>
+          ) : (
+            step.warning && (
+              <div className="mt-3 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs text-rose-300">
+                ⚠ {step.warning}
+              </div>
+            )
           )}
 
           {step.torque && step.torque.length > 0 && (
