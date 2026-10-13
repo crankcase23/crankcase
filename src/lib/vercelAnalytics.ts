@@ -46,6 +46,14 @@ export interface WebAnalytics {
 export interface WebAnalyticsResult {
   data: WebAnalytics | null;
   error: AnalyticsError | null;
+  // The upstream HTTP status, when the failure was `http_error`. Null for
+  // every other outcome. Without this, "Vercel refused the call" is as far as
+  // anyone outside can get: a 401 (token rejected), a 403 (token lacks the
+  // scope or the plan doesn't include the query API) and a 400 (we're sending
+  // a parameter it doesn't accept) all look identical, and they need three
+  // completely different fixes. This is the status line only - never the
+  // token, never any part of its value, never the response body.
+  status: number | null;
 }
 
 async function aggregate(
@@ -54,7 +62,7 @@ async function aggregate(
   since: Date,
   until: Date,
   limit?: number,
-): Promise<{ rows: AnalyticsRow[] | null; error: AnalyticsError | null }> {
+): Promise<{ rows: AnalyticsRow[] | null; error: AnalyticsError | null; status: number | null }> {
   const url = new URL(AGGREGATE_URL);
   url.searchParams.set("projectId", PROJECT_ID);
   url.searchParams.set("slug", TEAM_SLUG);
@@ -73,22 +81,22 @@ async function aggregate(
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
   } catch {
-    return { rows: null, error: "network_error" };
+    return { rows: null, error: "network_error", status: null };
   }
 
-  if (!res.ok) return { rows: null, error: "http_error" };
+  if (!res.ok) return { rows: null, error: "http_error", status: res.status };
 
   let json: unknown;
   try {
     json = await res.json();
   } catch {
-    return { rows: null, error: "bad_payload" };
+    return { rows: null, error: "bad_payload", status: res.status };
   }
 
   const rows = (json as { data?: unknown } | null)?.data;
-  if (!Array.isArray(rows)) return { rows: null, error: "bad_payload" };
+  if (!Array.isArray(rows)) return { rows: null, error: "bad_payload", status: res.status };
 
-  return { rows: rows as AnalyticsRow[], error: null };
+  return { rows: rows as AnalyticsRow[], error: null, status: res.status };
 }
 
 /**
@@ -102,7 +110,7 @@ async function aggregate(
  */
 export async function getWebAnalytics(): Promise<WebAnalyticsResult> {
   const token = process.env.VERCEL_ANALYTICS_TOKEN;
-  if (!token) return { data: null, error: "not_configured" };
+  if (!token) return { data: null, error: "not_configured", status: null };
 
   const until = new Date();
   const since = new Date(until.getTime() - WINDOW_DAYS * 24 * 60 * 60 * 1000);
@@ -113,9 +121,12 @@ export async function getWebAnalytics(): Promise<WebAnalyticsResult> {
     aggregate(token, "referrerHostname", since, until, 5),
   ]);
 
-  const failure = day.error ?? route.error ?? referrer.error;
+  // Report the status belonging to the call that actually failed, not
+  // whichever one happens to be first.
+  const failed = [day, route, referrer].find((r) => r.error) ?? null;
+  const failure = failed?.error ?? null;
   if (failure || !day.rows || !route.rows || !referrer.rows) {
-    return { data: null, error: failure ?? "bad_payload" };
+    return { data: null, error: failure ?? "bad_payload", status: failed?.status ?? null };
   }
 
   return {
@@ -126,5 +137,6 @@ export async function getWebAnalytics(): Promise<WebAnalyticsResult> {
       byReferrer: referrer.rows,
     },
     error: null,
+    status: null,
   };
 }
