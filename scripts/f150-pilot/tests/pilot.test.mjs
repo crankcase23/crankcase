@@ -8,7 +8,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import { validatePilot, pilotExtraChecks, VEHICLE_ID } from "../validate.mjs";
+import { validatePilot, VEHICLE_ID } from "../validate.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const EVID = path.join(ROOT, "docs/f150-pilot/evidence");

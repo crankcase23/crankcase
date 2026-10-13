@@ -2,7 +2,6 @@
 // Pilot wrapper around the proven BMW evidence validator. The BMW validator is reused UNCHANGED; the only adaptation is that
 // it hardcodes "expected 16 guide files", so that one message is filtered out here. The filter is the measured reuse friction.
 //   node scripts/f150-pilot/validate.mjs [DIR]     exit 1 on any error; prints per-guide evidence-tag counts
-import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateEvidence, statusOf } from "../bmw/validate-evidence.mjs";
