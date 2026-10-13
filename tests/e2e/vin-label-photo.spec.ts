@@ -40,6 +40,7 @@ test.describe("The ORIGINAL customer photo (dusty BMW door jamb, 1440x1920) that
       await expect(page.getByTestId("vin-confirm-scan")).toBeVisible();
     } else {
       await expect(status).toContainText(/does not pass the VIN check/); // flagged, not presented as verified
+      await expect(page.getByTestId("vin-retake-tips")).toContainText(/move closer/i);
       await expect(page.getByTestId("vin-lookup")).toBeDisabled(); // nothing can be looked up from a failed read
       const fixes = page.getByTestId("vin-suggestion");
       if ((await fixes.count()) === 1) { // a single-character change passes the check digit: it must be the true VIN, applied only by the customer
@@ -80,8 +81,10 @@ test.describe("BMW door-jamb label photo scan", () => {
         expect(value).toHaveLength(17);
         expect(value.replace(/[^0-9]/g, "").length).toBeGreaterThanOrEqual(4);
         await expect(status).toContainText(/Check every character|does not pass the VIN check/);
+        if (/does not pass the VIN check/.test((await status.textContent()) ?? "")) await expect(page.getByTestId("vin-retake-tips")).toContainText(/flash off/i);
       } else {
         await expect(status).toContainText(/couldn't find a 17-character VIN/);
+        await expect(page.getByTestId("vin-retake-tips")).toContainText(/straight-on/i);
       }
     });
   }

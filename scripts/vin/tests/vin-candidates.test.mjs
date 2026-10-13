@@ -173,3 +173,14 @@ test("CAND-12 label region: the engine's own label-word lines locate the plate; 
   const edge = ocr.plateCropBox({ x0: 5, y0: 5, x1: 100, y1: 40 }, 120, 80);
   assert.deepEqual([edge.x0, edge.y0, edge.x1, edge.y1], [0, 0, 120, 80]);
 });
+
+// CAND-13: customer retake guidance (2026-10-12). A photo that cannot be read cleanly must tell the customer how to retake it.
+test("CAND-13 retake tips: move closer, flash off, straight-on; the unreadable message points at them", () => {
+  assert.equal(ocr.RETAKE_TIPS.length, 3);
+  const text = ocr.RETAKE_TIPS.join(" ").toLowerCase();
+  assert.match(text, /closer/);
+  assert.match(text, /flash off/);
+  assert.match(text, /straight-on/);
+  assert.match(ocr.SCAN_MESSAGES.unreadable, /retake/i);
+  assert.match(ocr.SCAN_MESSAGES.unreadable, /type the vin/i);
+});

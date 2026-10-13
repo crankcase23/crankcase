@@ -17,12 +17,19 @@ export type ScanResult =
   | { ok: true; vin: string; confidences: (number | undefined)[]; alternatives: string[]; checkDigitOk: boolean }
   | { ok: false; reason: ScanFailure; message: string };
 
+/** Shown whenever a photo could not be read cleanly (nothing found, or a read that fails the VIN check). Pinned by tests. */
+export const RETAKE_TIPS: readonly string[] = [
+  "Move closer so the VIN fills most of the frame.",
+  "Turn your flash off. It washes out the label.",
+  "Photograph the label straight-on, not at an angle.",
+];
+
 export const SCAN_MESSAGES: Record<ScanFailure, string> = {
   type: "That file isn't a JPEG, PNG or WebP photo. Take a new photo, or type the VIN.",
   size: "That photo is too large (15 MB limit). Take a new photo, or type the VIN.",
   dimensions: "That image is too large to read safely. Take a new photo, or type the VIN.",
   decode: "We couldn't open that image. Take a new photo, or type the VIN.",
-  unreadable: "We couldn't find a 17-character VIN in that photo. Move closer, avoid glare, keep the VIN flat and in focus, or type it in.",
+  unreadable: "We couldn't find a 17-character VIN in that photo. Retake the photo (see the tips below) or type the VIN in.",
   engine: "The photo reader couldn't start on this device. Type the VIN instead.",
 };
 const fail = (reason: ScanFailure): ScanResult => ({ ok: false, reason, message: SCAN_MESSAGES[reason] });

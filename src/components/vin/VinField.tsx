@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import { normalizeVin, suggestCorrections, uncertainPositions, validateVin, VIN_LENGTH } from "@/lib/vin";
-import { scanVinFromImage } from "@/lib/vinOcr";
+import { RETAKE_TIPS, scanVinFromImage } from "@/lib/vinOcr";
 
 /**
  * The VIN input shared by every lookup: type it, or Take Photo / Upload Photo and let the browser read it.
@@ -32,6 +32,7 @@ export default function VinField({
   const [scanMessage, setScanMessage] = useState<{ kind: "info" | "error"; text: string } | null>(null);
   const [scanned, setScanned] = useState<{ vin: string; confidences: (number | undefined)[]; alternatives: string[] } | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [needsRetake, setNeedsRetake] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const cameraRef = useRef<HTMLInputElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
@@ -50,16 +51,19 @@ export default function VinField({
     setScanMessage({ kind: "info", text: "Reading the photo…" });
     setScanning(true);
     setConfirmed(false);
+    setNeedsRetake(false);
     try {
       const result = await scanVinFromImage(file);
       if (!result.ok) {
         setScanned(null);
+        setNeedsRetake(result.reason === "unreadable");
         setScanMessage({ kind: "error", text: result.message });
         return;
       }
       setScanned({ vin: result.vin, confidences: result.confidences, alternatives: result.alternatives });
       setValue(result.vin);
       setShowErrors(true);
+      setNeedsRetake(!result.checkDigitOk);
       setScanMessage({
         kind: "info",
         text: result.checkDigitOk
@@ -140,6 +144,17 @@ export default function VinField({
       <div role="status" aria-live="polite" data-testid="vin-scan-status" className={`mt-2 text-sm ${scanMessage?.kind === "error" ? "text-rose-300" : "text-slate-400"}`}>
         {scanMessage?.text}
       </div>
+
+      {needsRetake ? (
+        <div className="mt-2 rounded-lg border border-slate-700 p-3 text-sm text-slate-300" data-testid="vin-retake-tips">
+          <p className="font-medium text-slate-200">For a better photo:</p>
+          <ul className="mt-1 list-disc pl-5">
+            {RETAKE_TIPS.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       {vin.length === VIN_LENGTH && (uncertain.length > 0 || fromScan) ? (
         <div className="mt-2" data-testid="vin-scan-chars" aria-label="Characters read">
