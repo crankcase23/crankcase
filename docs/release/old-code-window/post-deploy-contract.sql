@@ -5,6 +5,9 @@
 --   * The canonical CHECK is safe: the pre-deploy trigger has kept every VIN upper case.
 -- An index that ALREADY exists (production got both from the full vehicle-configuration migration) is left alone and NOT marked; an index this
 -- file creates is marked with a COMMENT so post-deploy-contract-ROLLBACK.sql removes only what this file added.
+-- Everything this file adds or removes is MARKED so post-deploy-contract-ROLLBACK.sql can undo exactly that and nothing else:
+-- the CHECK, if this file creates it, and each index it creates carry COMMENT 'created by post-deploy-contract.sql'; dropping the temporary
+-- trigger is recorded as a COMMENT on garage_entries. A CHECK that already exists (production: created by M2) is NOT marked and is never dropped.
 -- Idempotent. Locks garage_entries briefly while the indexes build. Ends by dropping the temporary trigger from pre-2 (see bottom).
 DO $$
 DECLARE
@@ -13,6 +16,7 @@ DECLARE
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'garage_entries_vin_canonical_chk') THEN
     ALTER TABLE garage_entries ADD CONSTRAINT garage_entries_vin_canonical_chk CHECK (vin IS NULL OR vin = upper(vin));
+    COMMENT ON CONSTRAINT garage_entries_vin_canonical_chk ON garage_entries IS 'created by post-deploy-contract.sql';
   END IF;
 
   SELECT count(*) INTO dup_novin FROM (
@@ -44,9 +48,16 @@ $$;
 -- It is dropped only if the CHECK exists, so there is never a moment with neither guard.
 DO $$
 BEGIN
-  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'garage_entries_vin_canonical_chk') THEN
-    DROP TRIGGER IF EXISTS garage_entries_canonical_vin ON garage_entries;
-    DROP FUNCTION IF EXISTS garage_entries_canonical_vin();
+  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'garage_entries_vin_canonical_chk')
+     AND EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'garage_entries_canonical_vin' AND tgrelid = 'garage_entries'::regclass AND NOT tgisinternal) THEN
+    IF obj_description('garage_entries'::regclass, 'pg_class') IS NOT NULL THEN
+      -- never overwrite someone else's table comment; leaving the harmless trigger in place is the safe choice
+      RAISE NOTICE 'SKIPPED dropping garage_entries_canonical_vin: garage_entries already has a table COMMENT, so the removal could not be recorded for the rollback. Nothing changed.';
+    ELSE
+      DROP TRIGGER garage_entries_canonical_vin ON garage_entries;
+      DROP FUNCTION IF EXISTS garage_entries_canonical_vin();
+      COMMENT ON TABLE garage_entries IS 'post-deploy-contract.sql dropped temporary trigger garage_entries_canonical_vin';
+    END IF;
   END IF;
 END
 $$;

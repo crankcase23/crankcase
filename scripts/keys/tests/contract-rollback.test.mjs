@@ -3,6 +3,11 @@
 // garage_entries_user_catalog_novin_uq unconditionally. Production already has both from the full vehicle-configuration migration (M1),
 // so a rollback after the contract step silently removed indexes that existed BEFORE the contract step. The contract now marks only the
 // indexes it creates (COMMENT) and the rollback drops only those.
+// CONFIRMED DEFECT #2 (2026-10-13, found reading the script, then reproduced here): post-deploy-contract-ROLLBACK.sql also dropped
+// garage_entries_vin_canonical_chk unconditionally and always re-installed the temporary trigger. Production's CHECK was created by M2
+// (vin-canonical.sql), not by the contract, and Production never had the temporary trigger, so a rollback would have removed an M2 protection
+// and added a trigger that was never there. The contract now marks what it created/removed (COMMENT on the CHECK and indexes it creates; a
+// table COMMENT when it drops the temporary trigger) and the rollback undoes only those. See the EXACT-STATE tests at the bottom.
 // Each test builds its own throwaway database (never the shared cc_test), applies the real scripts from docs/release/old-code-window.
 // Skips when DATABASE_URL is unset; refuses any non-local database.
 import { test, after } from "node:test";
@@ -106,5 +111,76 @@ test("contract does not drop or change rows, and skips (not fails) the unique in
     assert.equal(s.check, true);
     assert.ok(!s.idx.some((i) => i.indexname === "garage_entries_user_vin_uq"), "unique index skipped while duplicates exist");
     await pool.query(ROLLBACK());
+  } finally { await pool.end(); }
+});
+
+// ---- EXACT-STATE tests (defect #2): contract then rollback must restore byte-for-byte what existed before the contract. ----
+async function snapshot(pool) {
+  const q = async (s) => (await pool.query(s)).rows;
+  return {
+    checks: await q(`select conname, convalidated, pg_get_constraintdef(oid) def, obj_description(oid,'pg_constraint') comment from pg_constraint where conrelid='garage_entries'::regclass and contype='c' order by 1`),
+    idx: await q(`select indexname, indexdef, obj_description(indexname::regclass,'pg_class') comment from pg_indexes where tablename='garage_entries' order by 1`),
+    triggers: await q(`select tgname, pg_get_triggerdef(oid) def from pg_trigger where tgrelid='garage_entries'::regclass and not tgisinternal order by 1`),
+    fn: await q(`select proname from pg_proc where proname='garage_entries_canonical_vin'`),
+    tableComment: (await q(`select obj_description('garage_entries'::regclass,'pg_class') c`))[0].c,
+    rows: await q(`select * from garage_entries order by id`),
+  };
+}
+const M2_CHECK = `ALTER TABLE garage_entries ADD CONSTRAINT garage_entries_vin_canonical_chk CHECK (vin IS NULL OR vin = upper(vin));`;
+const TRIGGER = `CREATE OR REPLACE FUNCTION garage_entries_canonical_vin() RETURNS trigger AS $f$ BEGIN IF NEW.vin IS NOT NULL THEN NEW.vin := upper(NEW.vin); END IF; RETURN NEW; END $f$ LANGUAGE plpgsql;
+CREATE TRIGGER garage_entries_canonical_vin BEFORE INSERT OR UPDATE OF vin ON garage_entries FOR EACH ROW EXECUTE FUNCTION garage_entries_canonical_vin();`;
+const SEED = `INSERT INTO garage_entries(id,user_id,kind,vehicle_id,vin) VALUES ('a','u1','catalog','v1',NULL),('b','u1','custom',NULL,'1HGCM82633A004352'),('c','u2','custom',NULL,'1HGCM82633A004352')`;
+
+test("EXACT STATE, PRODUCTION SHAPE (M2 CHECK + M1 indexes, no temp trigger): contract is a no-op and rollback leaves the M2 CHECK and both indexes", { skip }, async () => {
+  const pool = await scratch();
+  try {
+    await pool.query(M2_CHECK); await pool.query(M1_INDEXES); await pool.query(SEED);
+    const before = await snapshot(pool);
+    assert.equal(before.checks.length, 1); assert.equal(before.triggers.length, 0);
+    await pool.query(CONTRACT());
+    assert.deepEqual(await snapshot(pool), before, "contract changes nothing in the Production shape");
+    await pool.query(ROLLBACK());
+    assert.deepEqual(await snapshot(pool), before, "rollback must NOT drop the M2 CHECK, drop M1's indexes, or add the temporary trigger");
+    await pool.query(ROLLBACK()); await pool.query(CONTRACT()); await pool.query(ROLLBACK());
+    assert.deepEqual(await snapshot(pool), before, "idempotent and repeatable");
+  } finally { await pool.end(); }
+});
+
+test("EXACT STATE, PRE-2 SHAPE (temp trigger only): contract then rollback restores trigger, no CHECK, no indexes, no leftover marker", { skip }, async () => {
+  const pool = await scratch();
+  try {
+    await pool.query(PRE2()); await pool.query(SEED);
+    const before = await snapshot(pool);
+    assert.equal(before.triggers.length, 1); assert.equal(before.checks.length, 0);
+    await pool.query(CONTRACT());
+    const mid = await snapshot(pool);
+    assert.equal(mid.checks.length, 1); assert.equal(mid.triggers.length, 0);
+    await pool.query(ROLLBACK());
+    assert.deepEqual(await snapshot(pool), before, "exact original state, including NULL table comment");
+    await pool.query(CONTRACT()); await pool.query(ROLLBACK());
+    assert.deepEqual(await snapshot(pool), before, "forward and back again");
+  } finally { await pool.end(); }
+});
+
+test("EXACT STATE, MIXED SHAPE (M2 CHECK already present AND temp trigger): rollback removes only what the contract did", { skip }, async () => {
+  const pool = await scratch();
+  try {
+    await pool.query(M2_CHECK); await pool.query(TRIGGER); await pool.query(SEED);
+    const before = await snapshot(pool);
+    await pool.query(CONTRACT());
+    const mid = await snapshot(pool);
+    assert.equal(mid.checks.length, 1); assert.equal(mid.triggers.length, 0); assert.equal(mid.idx.length, 3, "pkey + 2 contract indexes");
+    await pool.query(ROLLBACK());
+    assert.deepEqual(await snapshot(pool), before, "CHECK stays (it pre-existed), contract indexes go, trigger returns");
+  } finally { await pool.end(); }
+});
+
+test("a rollback run when the contract never ran changes nothing", { skip }, async () => {
+  const pool = await scratch();
+  try {
+    await pool.query(M2_CHECK); await pool.query(M1_INDEXES); await pool.query(SEED);
+    const before = await snapshot(pool);
+    await pool.query(ROLLBACK());
+    assert.deepEqual(await snapshot(pool), before);
   } finally { await pool.end(); }
 });
