@@ -1,8 +1,16 @@
 // Stripe event handling rules for Get the Keys. PURE LOGIC over injected dependencies: no Stripe SDK, no network, no direct DB access.
 // Nothing calls this yet (no webhook route exists; adding one needs owner approval). Production has no Stripe keys.
 //
-// Owner rules (2026-10-13):
-//   - Automatically refund CONFIRMED DUPLICATE charges only: the account already holds the VIN through a DIFFERENT paid purchase.
+// Owner rules (2026-10-13, refined 2026-10-13 evening):
+//   - Automatically refund only CONFIRMED NON-FULFILLABLE payments: money was captured but the purchase can buy nothing because the
+//     account ALREADY HAS (or has a restorable claim to) access to that exact VIN:
+//       * the account holds an active entitlement for the VIN (an earlier paid purchase, a gift, or a restored legacy unlock);
+//       * a pending legacy unlock hold will restore the VIN: its stored VIN is exactly this VIN, or it is a legacy GIFT tied to the car
+//         that carries this VIN (the same line reconcileHoldsForVehicle() uses to restore without a person deciding).
+//   - AMBIGUOUS cases are never auto-refunded and go to manual review: a PAID legacy hold tied only to the car (typing a VIN is not
+//     proof it is the VIN that was paid for), any case without enough information, a VIN mismatch, or a price that differs.
+//   - A refund never deletes or edits a customer record: the purchase row, the event row, the entitlement and its history, and any
+//     legacy hold all stay exactly as they were (the purchase is only marked refund_requested).
 //   - Disputes and partial refunds are NEVER automatic: they are recorded for manual review and change no access.
 //   - A confirmed FULL refund revokes the unlock that THAT purchase granted (soft revoke, history kept), and nothing else.
 //   - A grant whose captured price differs from the server quote is kept and flagged for review, never silently accepted.
@@ -33,8 +41,13 @@ export interface Deps {
   /** The id of the purchase whose payment created the account's current active entitlement for this VIN, or null. */
   grantingPurchaseId(userId: string, vin: string): Promise<string | null>;
   revokeRefunded(input: { userId: string; vin: string; reason: string }): Promise<{ revoked: boolean }>;
-  /** Full refund of the charge behind this payment intent. Must be idempotent on idempotencyKey. */
-  refund(input: { paymentIntent: string; idempotencyKey: string; reason: "duplicate" }): Promise<void>;
+  /** Pending legacy unlock holds that would restore this VIN for this account, and how each one matched it. */
+  legacyHoldsFor(userId: string, vin: string): Promise<{ id: string; source: "purchase" | "gift"; matchedBy: "snapshot-vin" | "garage-entry" }[]>;
+  /**
+   * Full refund of the charge behind this payment intent. Must be idempotent on idempotencyKey. `reason` is ours: the Stripe adapter
+   * maps "duplicate" to Stripe's duplicate reason and anything else to requested_by_customer, and puts `note` in the refund metadata.
+   */
+  refund(input: { paymentIntent: string; idempotencyKey: string; reason: "duplicate" | "already-entitled"; note: string }): Promise<void>;
 }
 
 export interface StripeEvent {
@@ -89,14 +102,34 @@ export async function processStripeEvent(ev: StripeEvent, deps: Deps): Promise<R
         await deps.updatePurchase(purchase.id, { status: "succeeded" });
         return finish("processed", "already-granted-by-this-purchase");
       }
-      const confirmedDuplicate = settled.reason === "already-unlocked" && held?.source === "purchase" && !!held.purchaseId && held.purchaseId !== purchase.id;
-      if (confirmedDuplicate) {
-        await deps.refund({ paymentIntent: pi, idempotencyKey: `duplicate:${purchase.id}`, reason: "duplicate" });
-        await deps.updatePurchase(purchase.id, { status: "refund_requested" });
-        return finish("processed", "duplicate-auto-refunded");
+      // Classify. Only a CONFIRMED non-fulfillable payment is refunded automatically; anything else a person decides.
+      let confirmed: { kind: "duplicate" | "held-entitlement" | "legacy-hold"; why: string } | null = null;
+      let ambiguous = "not enough information to confirm the payment cannot be fulfilled";
+      if (settled.reason === "already-unlocked") {
+        if (held) {
+          confirmed =
+            held.source === "purchase" && held.purchaseId
+              ? { kind: "duplicate", why: `the account already holds this VIN through an earlier paid purchase (${held.purchaseId})` }
+              : { kind: "held-entitlement", why: `the account already holds this VIN by ${held.source === "gift" ? "gift" : "an earlier recorded purchase"}` };
+        }
+      } else {
+        const holds = await deps.legacyHoldsFor(purchase.userId, purchase.vin);
+        const restoring = holds.find((h) => h.matchedBy === "snapshot-vin" || (h.matchedBy === "garage-entry" && h.source === "gift"));
+        if (restoring) confirmed = { kind: "legacy-hold", why: `a pending legacy ${restoring.source} unlock (${restoring.id}) will restore this VIN` };
+        else if (holds.length > 0) ambiguous = "a paid legacy unlock is tied only to the car, not to this exact VIN, so an admin must decide";
+      }
+      if (confirmed) {
+        await deps.refund({
+          paymentIntent: pi,
+          idempotencyKey: `${confirmed.kind}:${purchase.id}`,
+          reason: confirmed.kind === "duplicate" ? "duplicate" : "already-entitled",
+          note: confirmed.why,
+        });
+        await deps.updatePurchase(purchase.id, { status: "refund_requested" }); // the row stays: it is the customer's record
+        return finish("processed", `${confirmed.kind}-auto-refunded`, confirmed.why);
       }
       await deps.updatePurchase(purchase.id, { status: "needs_review" });
-      return finish("needs_review", "refund-required-manual", `captured payment but ${settled.reason === "legacy-unlock-pending" ? "a legacy unlock is pending for this VIN" : "the VIN is already held without a prior paid purchase (gift or admin)"}; not auto-refunded`);
+      return finish("needs_review", "refund-required-manual", `captured payment, ${ambiguous}; not auto-refunded`);
     }
 
     case "checkout.session.expired": {

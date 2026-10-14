@@ -101,6 +101,7 @@ function world(over = {}) {
     settle: async (i) => { w.calls.push(["settle", i]); return w.settle(i); },
     grantingPurchaseId: async (u, v) => w.granting.get(`${u}|${v}`) ?? null,
     revokeRefunded: async (i) => { w.calls.push(["revoke", i]); return { revoked: true }; },
+    legacyHoldsFor: async () => w.holds ?? [],
     refund: async (i) => { w.calls.push(["refund", i]); },
   };
   return w;
@@ -170,24 +171,101 @@ test("CONFIRMED DUPLICATE (VIN already held through a DIFFERENT paid purchase): 
   const w = world({ settle: async () => ({ outcome: "refund-required", reason: "already-unlocked", entitlement: { purchaseId: "p0", priceCents: 2000, source: "purchase" } }) });
   const r = await processStripeEvent(completed(), w.deps);
   assert.equal(r.action, "duplicate-auto-refunded");
-  assert.deepEqual(called(w, "refund"), [["refund", { paymentIntent: "pi_1", idempotencyKey: "duplicate:p1", reason: "duplicate" }]]);
+  const refunds = called(w, "refund");
+  assert.equal(refunds.length, 1);
+  assert.deepEqual({ ...refunds[0][1], note: undefined }, { paymentIntent: "pi_1", idempotencyKey: "duplicate:p1", reason: "duplicate", note: undefined });
+  assert.match(refunds[0][1].note, /p0/);
   await processStripeEvent(completed(), w.deps);
   assert.equal(called(w, "refund").length, 1, "replay does not refund twice");
 });
 
-test("NOT a confirmed duplicate => never auto-refunded: gift-held, legacy-pending, or a purchase row with no id", async () => {
-  const cases = [
-    { outcome: "refund-required", reason: "already-unlocked", entitlement: { purchaseId: null, priceCents: null, source: "gift" } },
-    { outcome: "refund-required", reason: "legacy-unlock-pending", entitlement: null },
-    { outcome: "refund-required", reason: "already-unlocked", entitlement: { purchaseId: null, priceCents: 2000, source: "purchase" } },
-  ];
-  for (const [i, c] of cases.entries()) {
-    const w = world({ settle: async () => c });
-    const r = await processStripeEvent(completed(`evt_n${i}`), w.deps);
-    assert.equal(called(w, "refund").length, 0, `case ${i}`);
-    assert.equal(w.events.get(`evt_n${i}`).status, "needs_review", `case ${i}`);
-    assert.equal(r.http, 200);
+// ---- non-fulfillable payments: gift-held and legacy-held VINs (owner rules 2026-10-13 evening) ----
+const refundRequired = (reason, entitlement) => ({ outcome: "refund-required", reason, entitlement });
+const GIFT = { purchaseId: null, priceCents: null, source: "gift" };
+const LEGACY_BOUGHT = { purchaseId: null, priceCents: 2000, source: "purchase" };
+
+test("GIFT-HELD VIN: the account already has permanent access, so the payment is CONFIRMED non-fulfillable and refunded automatically, once", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  const r = await processStripeEvent(completed(), w.deps);
+  assert.equal(r.action, "held-entitlement-auto-refunded");
+  assert.deepEqual(called(w, "refund").map((c) => [c[1].idempotencyKey, c[1].reason]), [["held-entitlement:p1", "already-entitled"]]);
+  assert.match(called(w, "refund")[0][1].note, /gift/);
+  await processStripeEvent(completed(), w.deps);
+  assert.equal(called(w, "refund").length, 1);
+  assert.equal(w.purchases.get("p1").status, "refund_requested", "the purchase row is kept, only marked");
+  assert.equal(w.events.get("evt_c1").status, "processed");
+});
+
+test("VIN held by an earlier RECORDED (legacy, purchase-id-less) paid unlock is also confirmed non-fulfillable", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", LEGACY_BOUGHT) });
+  assert.equal((await processStripeEvent(completed(), w.deps)).action, "held-entitlement-auto-refunded");
+  assert.equal(called(w, "refund").length, 1);
+});
+
+test("LEGACY HOLD whose stored VIN is exactly this VIN (paid OR gift): confirmed, refunded automatically", async () => {
+  for (const source of ["purchase", "gift"]) {
+    const w = world({ settle: async () => refundRequired("legacy-unlock-pending", null) });
+    w.holds = [{ id: "h1", source, matchedBy: "snapshot-vin" }];
+    const r = await processStripeEvent(completed(`evt_${source}`), w.deps);
+    assert.equal(r.action, "legacy-hold-auto-refunded", source);
+    assert.deepEqual(called(w, "refund").map((c) => c[1].idempotencyKey), ["legacy-hold:p1"], source);
+    assert.match(called(w, "refund")[0][1].note, /h1/);
   }
+});
+
+test("LEGACY GIFT tied to the car that carries this VIN: confirmed (same line the restore code uses), refunded automatically", async () => {
+  const w = world({ settle: async () => refundRequired("legacy-unlock-pending", null) });
+  w.holds = [{ id: "h2", source: "gift", matchedBy: "garage-entry" }];
+  assert.equal((await processStripeEvent(completed(), w.deps)).action, "legacy-hold-auto-refunded");
+});
+
+test("AMBIGUOUS: a PAID legacy hold tied only to the car (not this exact VIN) goes to MANUAL REVIEW: no refund, hold untouched", async () => {
+  const w = world({ settle: async () => refundRequired("legacy-unlock-pending", null) });
+  w.holds = [{ id: "h3", source: "purchase", matchedBy: "garage-entry" }];
+  const r = await processStripeEvent(completed(), w.deps);
+  assert.equal(r.action, "refund-required-manual");
+  assert.equal(called(w, "refund").length, 0);
+  assert.equal(w.events.get("evt_c1").status, "needs_review");
+  assert.equal(w.purchases.get("p1").status, "needs_review");
+  assert.match(w.events.get("evt_c1").message, /admin must decide/);
+});
+
+test("AMBIGUOUS: a snapshot-VIN hold alongside a car-tied paid hold is still confirmed (one restorable claim is enough)", async () => {
+  const w = world({ settle: async () => refundRequired("legacy-unlock-pending", null) });
+  w.holds = [{ id: "h4", source: "purchase", matchedBy: "garage-entry" }, { id: "h5", source: "purchase", matchedBy: "snapshot-vin" }];
+  assert.equal((await processStripeEvent(completed(), w.deps)).action, "legacy-hold-auto-refunded");
+});
+
+test("AMBIGUOUS: not enough information (held VIN with no entitlement detail, or a legacy block with no hold found) => manual review, never a refund", async () => {
+  for (const [i, s] of [refundRequired("already-unlocked", null), refundRequired("legacy-unlock-pending", null)].entries()) {
+    const w = world({ settle: async () => s });
+    w.holds = [];
+    const r = await processStripeEvent(completed(`evt_i${i}`), w.deps);
+    assert.equal(r.action, "refund-required-manual", `case ${i}`);
+    assert.equal(called(w, "refund").length, 0, `case ${i}`);
+    assert.equal(w.events.get(`evt_i${i}`).status, "needs_review");
+  }
+});
+
+test("a refund that FAILS (Stripe error) leaves the event unfinished so Stripe retries, and the retry refunds once under the same idempotency key", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  let boom = true;
+  const real = w.deps.refund;
+  w.deps.refund = async (i) => { if (boom) throw new Error("stripe 500"); return real(i); };
+  await assert.rejects(processStripeEvent(completed(), w.deps), /stripe 500/);
+  assert.equal(w.events.get("evt_c1").status, "processing", "not finished: the next delivery is processed");
+  boom = false;
+  assert.equal((await processStripeEvent(completed(), w.deps)).action, "held-entitlement-auto-refunded");
+  assert.deepEqual(called(w, "refund").map((c) => c[1].idempotencyKey), ["held-entitlement:p1"]);
+});
+
+test("the refund of a gift-held payment never revokes the gift: the charge.refunded that follows changes no access", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  await processStripeEvent(completed(), w.deps);
+  w.granting.set("u1|1HGCM82633A004352", null); // the gift has no purchase id
+  const r = await processStripeEvent(charge("evt_rg"), w.deps);
+  assert.equal(r.action, "refunded-purchase-did-not-grant");
+  assert.equal(called(w, "revoke").length, 0);
 });
 
 test("crash after the grant, before the status write: the retry sees this purchase's OWN entitlement and finishes cleanly, no refund", async () => {

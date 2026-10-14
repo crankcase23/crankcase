@@ -182,8 +182,33 @@ function realDeps(known, refunds) {
     settle: (i) => ent.settleCapturedPayment({ userId: i.userId, vin: i.vin, purchaseId: i.purchaseId }),
     grantingPurchaseId: async (u, v) => (await ent.getEntitlement(u, v))?.purchaseId ?? null,
     revokeRefunded: (i) => ent.revokeEntitlement({ userId: i.userId, vin: i.vin, kind: "refunded", actor: { type: "system" }, reason: i.reason }),
+    legacyHoldsFor: async (u, v) =>
+      (await pool.query(
+        `select h.id, h.source, case when h.vin_at_snapshot = $2 then 'snapshot-vin' else 'garage-entry' end as "matchedBy"
+           from legacy_unlock_holds h
+          where h.user_id = $1 and h.status = 'pending_vin'
+            and (h.vin_at_snapshot = $2 or h.garage_entry_id in (select id from garage_entries where user_id = $1 and vin = $2))`,
+        [u, v])).rows,
     refund: async (i) => { refunds.push(i); },
   };
+}
+// Everything the customer owns, as one comparable value: used to prove a refund deletes or edits none of it.
+async function records(userId) {
+  const q = async (sql) => (await pool.query(sql, [userId])).rows;
+  return JSON.stringify({
+    garage: await q(`select * from garage_entries where user_id=$1 order by id`),
+    service: await q(`select * from service_entries where user_id=$1 order by id`),
+    entitlements: await q(`select * from vin_entitlements where user_id=$1 order by id`),
+    entitlementEvents: await q(`select * from vin_entitlement_events where user_id=$1 order by id`),
+    holds: await q(`select * from legacy_unlock_holds where user_id=$1 order by id`),
+  });
+}
+async function legacyHold(userId, { garageEntryId, source, snapshotVin = null }) {
+  const id = `h-${randomUUID().slice(0, 8)}`;
+  await pool.query(
+    `insert into legacy_unlock_holds(id,user_id,garage_entry_id,source,granted_at,vehicle_label,vin_at_snapshot,status) values ($1,$2,$3,$4,now(),'test car',$5,'pending_vin')`,
+    [id, userId, garageEntryId, source, snapshotVin]);
+  return id;
 }
 const completed = (eid, p, pi, subtotal) => ({ id: eid, type: "checkout.session.completed", data: { object: { client_reference_id: p.id, payment_status: "paid", payment_intent: pi, amount_subtotal: subtotal, metadata: { vin: p.vin } } } });
 const refundedCharge = (eid, pi, full = true) => ({ id: eid, type: "charge.refunded", data: { object: { id: "ch_x", payment_intent: pi, amount: 2160, amount_refunded: full ? 2160 : 500, refunded: full } } });
@@ -251,17 +276,91 @@ test("END TO END: confirmed duplicate charge is auto-refunded once; refunding it
   assert.equal((await ent.listEntitlementEvents(u, v)).length, 1);
 });
 
-test("END TO END: VIN already GIFTED (or legacy-held) is NOT auto-refunded: manual review, no refund, gift untouched", { skip }, async () => {
+test("END TO END: VIN already GIFTED is non-fulfillable: auto-refunded once, and the gift, history and every customer record are untouched", { skip }, async () => {
   const u = await user(), v = vin(), refunds = [];
+  await carWithHistory(u, v);
   await ent.giftEntitlement({ userId: u, vin: v, actor: { type: "admin", id: "a1" }, reason: "test" });
   const p = await pending(u, v); const deps = realDeps(new Map([[p.id, p]]), refunds);
+  const before = await records(u);
+  const ev = completed("evt_" + randomUUID(), p, "pi_" + randomUUID().slice(0, 8), 2000);
+  const r = await proc.processStripeEvent(ev, deps);
+  assert.equal(r.action, "held-entitlement-auto-refunded");
+  await proc.processStripeEvent(ev, deps); await proc.processStripeEvent(ev, deps);
+  assert.deepEqual(refunds.map((x) => x.idempotencyKey), [`held-entitlement:${p.id}`], "one refund however many deliveries");
+  assert.equal(await records(u), before, "garage car, service history, gift entitlement, its audit trail and holds are byte-identical");
+  assert.equal((await ent.getEntitlement(u, v)).source, "gift");
+  const [row] = (await pool.query(`select status from purchases where id=$1`, [p.id])).rows;
+  assert.equal(row.status, "refund_requested", "the purchase row is kept as the record");
+  assert.equal((await eventRows(ev.id))[0].status, "processed", "the event row is kept");
+  // the refund coming back must not revoke the gift
+  const pi = (await pool.query(`select provider_ref from purchases where id=$1`, [p.id])).rows[0].provider_ref;
+  assert.equal((await proc.processStripeEvent(refundedCharge("evt_" + randomUUID(), pi), deps)).action, "refunded-purchase-did-not-grant");
+  assert.equal(await records(u), before);
+  assert.equal(await ent.hasEntitlement(u, v), true);
+});
+
+test("END TO END: LEGACY HOLD whose stored VIN is this VIN: auto-refunded, the hold stays PENDING and untouched for the restore to use", { skip }, async () => {
+  const u = await user(), v = vin(), refunds = [];
+  const gid = await carWithHistory(u, v);
+  const hid = await legacyHold(u, { garageEntryId: gid, source: "purchase", snapshotVin: v });
+  const p = await pending(u, v); const deps = realDeps(new Map([[p.id, p]]), refunds);
+  const before = await records(u);
+  const ev = completed("evt_" + randomUUID(), p, "pi_" + randomUUID().slice(0, 8), 2000);
+  assert.equal((await proc.processStripeEvent(ev, deps)).action, "legacy-hold-auto-refunded");
+  await proc.processStripeEvent(ev, deps);
+  assert.deepEqual(refunds.map((x) => x.idempotencyKey), [`legacy-hold:${p.id}`]);
+  assert.equal(await records(u), before);
+  assert.equal((await pool.query(`select status from legacy_unlock_holds where id=$1`, [hid])).rows[0].status, "pending_vin");
+  assert.equal(await ent.hasEntitlement(u, v), false, "the refund granted nothing; the legacy restore will");
+});
+
+test("END TO END: a PAID legacy hold tied only to the car (no VIN snapshot) is AMBIGUOUS: manual review, no refund, nothing changed", { skip }, async () => {
+  const u = await user(), v = vin(), refunds = [];
+  const gid = await carWithHistory(u, v); // the car now carries this VIN, but the paid hold never recorded one
+  await legacyHold(u, { garageEntryId: gid, source: "purchase", snapshotVin: null });
+  const p = await pending(u, v); const deps = realDeps(new Map([[p.id, p]]), refunds);
+  const before = await records(u);
   const ev = completed("evt_" + randomUUID(), p, "pi_" + randomUUID().slice(0, 8), 2000);
   const r = await proc.processStripeEvent(ev, deps);
   assert.equal(r.action, "refund-required-manual");
   assert.equal(refunds.length, 0);
   assert.equal((await eventRows(ev.id))[0].status, "needs_review");
-  assert.equal((await ent.getEntitlement(u, v)).source, "gift");
   assert.equal((await pool.query(`select status from purchases where id=$1`, [p.id])).rows[0].status, "needs_review");
+  assert.equal(await records(u), before);
+});
+
+test("END TO END: a legacy GIFT tied to the car that carries this VIN is confirmed non-fulfillable and auto-refunded", { skip }, async () => {
+  const u = await user(), v = vin(), refunds = [];
+  const gid = await carWithHistory(u, v);
+  await legacyHold(u, { garageEntryId: gid, source: "gift", snapshotVin: null });
+  const p = await pending(u, v); const deps = realDeps(new Map([[p.id, p]]), refunds);
+  const before = await records(u);
+  assert.equal((await proc.processStripeEvent(completed("evt_" + randomUUID(), p, "pi_" + randomUUID().slice(0, 8), 2000), deps)).action, "legacy-hold-auto-refunded");
+  assert.equal(refunds.length, 1);
+  assert.equal(await records(u), before);
+});
+
+test("END TO END: the classification matches the Keys restore code: what reconcileHoldsForVehicle restores on its own is exactly what the payment rule refunds", { skip }, async () => {
+  // Same two inputs through both paths. A car-tied PAID hold: restore leaves it for an admin, payment goes to review.
+  // A snapshot-VIN hold: restore converts it, payment is refunded.
+  const cases = [
+    { name: "car-tied paid", source: "purchase", snapshot: false, restores: false, action: "refund-required-manual" },
+    { name: "car-tied gift", source: "gift", snapshot: false, restores: true, action: "legacy-hold-auto-refunded" },
+    { name: "snapshot paid", source: "purchase", snapshot: true, restores: true, action: "legacy-hold-auto-refunded" },
+    { name: "snapshot gift", source: "gift", snapshot: true, restores: true, action: "legacy-hold-auto-refunded" },
+  ];
+  for (const c of cases) {
+    const v = vin();
+    const u1 = await user(); const g1 = await carWithHistory(u1, v);
+    await legacyHold(u1, { garageEntryId: g1, source: c.source, snapshotVin: c.snapshot ? v : null });
+    const restored = await ent.reconcileHoldsForVehicle(u1, g1, v);
+    assert.equal(restored.restored > 0, c.restores, `${c.name}: restore`);
+    const u2 = await user(); const g2 = await carWithHistory(u2, v);
+    await legacyHold(u2, { garageEntryId: g2, source: c.source, snapshotVin: c.snapshot ? v : null });
+    const p = await pending(u2, v); const refunds = [];
+    const r = await proc.processStripeEvent(completed("evt_" + randomUUID(), p, "pi_" + randomUUID().slice(0, 8), 2000), realDeps(new Map([[p.id, p]]), refunds));
+    assert.equal(r.action, c.action, `${c.name}: payment`);
+  }
 });
 
 test("END TO END: partial refund and dispute leave access exactly as it was and land in manual review", { skip }, async () => {
