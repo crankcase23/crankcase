@@ -1,0 +1,204 @@
+{
+ "note": "Triaged 2026-10-13. Legacy BMW findings under the strict claim rules in scripts/bmw/validate-evidence.mjs. The list may only shrink: a finding not listed here fails validation, and an entry that no longer matches fails validation. Risk is by customer-safety impact, not wording. No finding is HIGH. MEDIUM entries need a ledger fix before the guide is next re-certified; LOW entries are accepted as-is.",
+ "ceiling": 33,
+ "findings": [
+  {
+   "key": "3|TORQUE_NO_NUMBER|torque[0] None applicable",
+   "code": "TORQUE_NO_NUMBER",
+   "risk": "LOW",
+   "rationale": "Descriptive spec by design (N/A, or 'turn until it clicks' for a cap); a number would be invented."
+  },
+  {
+   "key": "4|SECONDARY_ONE_HOST|tools[4] Torque wrench able to read 50 Nm with the extensio",
+   "code": "SECONDARY_ONE_HOST",
+   "risk": "LOW",
+   "rationale": "Tool range only (torque wrench capacity); the torque values themselves are separately sourced."
+  },
+  {
+   "key": "8|TORQUE_NO_NUMBER|torque[2] Expansion tank cap",
+   "code": "TORQUE_NO_NUMBER",
+   "risk": "LOW",
+   "rationale": "Descriptive spec by design (N/A, or 'turn until it clicks' for a cap); a number would be invented."
+  },
+  {
+   "key": "9|TORQUE_NO_NUMBER|torque[0] Coolant expansion tank cap",
+   "code": "TORQUE_NO_NUMBER",
+   "risk": "LOW",
+   "rationale": "Descriptive spec by design (N/A, or 'turn until it clicks' for a cap); a number would be invented."
+  },
+  {
+   "key": "9|UNSOURCED_VERIFIED|steps[0] Prep",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 30, 60."
+  },
+  {
+   "key": "9|UNSOURCED_VERIFIED|steps[1] Engine oil level",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 6.2, 10, 125, 16."
+  },
+  {
+   "key": "9|UNSOURCED_VERIFIED|steps[2] Coolant",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "9|UNSOURCED_VERIFIED|steps[5] Power steering (inspection only)",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[0] Prepare",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[1] Locate the cover",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[2] Remove the 8 mm screws",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 90, 92."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[3] Lift out the cover or filter assembly",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[4] Release and remove the old filter",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 550, 90."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[5] Install the new filter",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[6] Reassemble",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "10|UNSOURCED_VERIFIED|steps[7] Reset the service reminder (optional)",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 90, 10."
+  },
+  {
+   "key": "13|VERIFIED_NO_PRIMARY|tools[0] 17 mm wheel-bolt socket (1/2 in drive) and breaker",
+   "code": "VERIFIED_NO_PRIMARY",
+   "risk": "LOW",
+   "rationale": "Backed by 2-4 independent hosts but tagged VERIFIED while no OEM document was read: tag inflation, content not shown wrong. Correct tag is VERIFIED_SECONDARY."
+  },
+  {
+   "key": "13|VERIFIED_NO_PRIMARY|tools[1] Torque wrench reaching 120 Nm (90 lb-ft)",
+   "code": "VERIFIED_NO_PRIMARY",
+   "risk": "LOW",
+   "rationale": "Backed by 2-4 independent hosts but tagged VERIFIED while no OEM document was read: tag inflation, content not shown wrong. Correct tag is VERIFIED_SECONDARY."
+  },
+  {
+   "key": "13|VERIFIED_NO_PRIMARY|tools[2] Floor jack, rated jack stands, wheel chocks; pad (",
+   "code": "VERIFIED_NO_PRIMARY",
+   "risk": "LOW",
+   "rationale": "Backed by 2-4 independent hosts but tagged VERIFIED while no OEM document was read: tag inflation, content not shown wrong. Correct tag is VERIFIED_SECONDARY."
+  },
+  {
+   "key": "13|VERIFIED_NO_PRIMARY|tools[4] Tire pressure gauge and inflator; correct pressure",
+   "code": "VERIFIED_NO_PRIMARY",
+   "risk": "LOW",
+   "rationale": "Backed by 2-4 independent hosts but tagged VERIFIED while no OEM document was read: tag inflation, content not shown wrong. Correct tag is VERIFIED_SECONDARY."
+  },
+  {
+   "key": "13|VERIFIED_NO_PRIMARY|parts[0] No parts required for a rotation",
+   "code": "VERIFIED_NO_PRIMARY",
+   "risk": "LOW",
+   "rationale": "Backed by 2-4 independent hosts but tagged VERIFIED while no OEM document was read: tag inflation, content not shown wrong. Correct tag is VERIFIED_SECONDARY."
+  },
+  {
+   "key": "13|VERIFIED_NO_PRIMARY|parts[1] Wheel bolts: M12x1.5 thread, 17 mm hex, 60-degree ",
+   "code": "VERIFIED_NO_PRIMARY",
+   "risk": "MEDIUM",
+   "rationale": "Backed by 2-4 independent hosts but tagged VERIFIED while no OEM document was read: tag inflation, content not shown wrong. Correct tag is VERIFIED_SECONDARY. Wheel-bolt thread/seat is a wheel-retention fit fact."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[0] Gather parts and warm the engine briefly",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[1] Lift and support the car",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Vehicle support step. Stand-position wording is governed by the approved D5 jack-stand policy, so this is a bookkeeping gap."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[3] Open the undertray access hatch",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 180, 60."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[5] Remove the old filter element and clean",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[6] Fit new O-rings and element",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[7] Install and torque the housing cap",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[8] Refit the drain plug with a new washer",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[9] Refill",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 6.9, 6.5."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[10] Start, check for leaks, verify the level electroni",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 6.2, 10, 125."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[11] Reset the oil service reminder",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "MEDIUM",
+   "rationale": "Step states figures with no sourced row behind them: 90."
+  },
+  {
+   "key": "16|UNSOURCED_VERIFIED|steps[12] Dispose of used oil and filter",
+   "code": "UNSOURCED_VERIFIED",
+   "risk": "LOW",
+   "rationale": "Step carries no figure that lacks a sourced row; wording/ordering only."
+  }
+ ]
+}

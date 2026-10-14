@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // Schema + consistency validation for docs/bmw-e90/evidence/guide-NN.json (second-pass schema).
 //   node scripts/bmw/validate-evidence.mjs [DIR]     exit 1 on any error; warnings are printed but do not fail
-// Exported: validateEvidence(dir) -> { errors, warnings, guides }
+// Exported: validateEvidence(dir, opts) -> { errors, warnings, guides, baselined }
+//   opts.expectedGuides  number of guide files required (default 16, the BMW set); null skips the count (other vehicles)
+//   STRICT-BASELINE.json in the evidence dir lists triaged legacy findings (see strictFindings). A baselined finding is reported as
+//   baselined, not as an error; any finding NOT in the baseline is an error, and a baseline entry that no longer matches is an error
+//   (the baseline may only shrink). A directory with no baseline file gets no exemptions.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,6 +17,10 @@ const ROLES = new Set(["hero", "target", "context"]);
 const CRIT = new Set(["identification", "procedure", "critical", "cosmetic"]);
 const KINDS = new Set(["oem-figure", "oem-text", "parts-catalog", "third-party-guide", "third-party-photo", "user-supplied-photo"]); // factory REFERENCE_KINDS
 const HARDWARE = /hardware|connector|clamp|release|fastener|bolt|screw|latch|tab/i; // factory rule: these may not be cosmetic
+// Added after the F-150 pilot probe: lug nuts, guide pins, studs, clips, springs, hoses, calipers, brackets, valves, caps and washers
+// slipped past the substring list above (an element named "guide-pins" could be cosmetic). Matched on whole id tokens so "spinner" is not "pin".
+const HARDWARE_TOKENS = /(^|[^a-z])(nuts?|pins?|studs?|clips?|springs?|hoses?|calipers?|brackets?|valves?|caps?|washers?|plugs?|lugs?)([^a-z]|$)/i;
+export const isHardwareId = (id) => HARDWARE.test(id) || HARDWARE_TOKENS.test(id);
 const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } };
 
 export function statusOf(s) {
@@ -20,7 +28,40 @@ export function statusOf(s) {
   return m ? m[1] : null;
 }
 
-export function validateEvidence(dir) {
+// Evidence-claim rules that must hold for EVERY ledger. A claim tagged VERIFIED or VERIFIED_SECONDARY is the thing a customer-facing number
+// is allowed to rest on, so the tag has to be backed by something the validator can see. Returns [{ guide, code, label, message }].
+//   UNSOURCED_VERIFIED       VERIFIED/VERIFIED_SECONDARY with no source URL at all
+//   SECONDARY_ONE_HOST       VERIFIED_SECONDARY resting on fewer than 2 independent hosts
+//   VERIFIED_NO_PRIMARY      VERIFIED while the ledger says no primary (OEM) document was read
+//   PRIMARY_FLAG_NO_PRIMARY  primary:true while the ledger says no primary document was read
+//   TORQUE_NO_NUMBER         a torque tagged VERIFIED/VERIFIED_SECONDARY whose value contains no digit
+//   HARDWARE_COSMETIC        a hardware element marked cosmetic in a visual
+export function strictFindings(g) {
+  const out = [];
+  const add = (code, label, message) => out.push({ guide: g.guide, code, label, message });
+  for (const kind of ["tools", "parts", "fluids", "torque", "steps"]) {
+    (g[kind] ?? []).forEach((x, i) => {
+      const st = statusOf(x.status);
+      const label = `${kind}[${i}] ${String(x.item ?? x.fastener ?? x.title ?? "").slice(0, 50)}`;
+      if (st === "VERIFIED" || st === "VERIFIED_SECONDARY") {
+        const hosts = new Set((x.sources ?? []).map(host).filter(Boolean));
+        if (hosts.size < 1) add("UNSOURCED_VERIFIED", label, `${label} is ${st} with no source`);
+        else if (st === "VERIFIED_SECONDARY" && hosts.size < 2) add("SECONDARY_ONE_HOST", label, `${label} is VERIFIED_SECONDARY with ${hosts.size} host(s); needs 2`);
+        if (kind === "torque" && !/\d/.test(String(x.value ?? ""))) add("TORQUE_NO_NUMBER", label, `${label} is ${st} but its value has no number`);
+      }
+      if (st === "VERIFIED" && g.primarySourceFound !== true) add("VERIFIED_NO_PRIMARY", label, `${label} is VERIFIED but primarySourceFound is false`);
+      if (x.primary === true && g.primarySourceFound !== true) add("PRIMARY_FLAG_NO_PRIMARY", label, `${label} has primary:true but primarySourceFound is false`);
+    });
+  }
+  for (const v of g.visuals ?? []) for (const el of v.elements ?? []) {
+    if (isHardwareId(el.id ?? "") && el.criticality === "cosmetic") add("HARDWARE_COSMETIC", `${v.id}/${el.id}`, `visual ${v.id}: hardware element ${el.id} may not be cosmetic`);
+  }
+  return out;
+}
+export const findingKey = (f) => `${f.guide}|${f.code}|${f.label}`;
+
+export function validateEvidence(dir, opts = {}) {
+  const expectedGuides = opts.expectedGuides === undefined ? 16 : opts.expectedGuides;
   const errors = [];
   const warnings = [];
   const err = (g, m) => errors.push(`guide ${g}: ${m}`);
@@ -28,7 +69,7 @@ export function validateEvidence(dir) {
   const files = fs.readdirSync(dir).filter((f) => /^guide-\d\d\.json$/.test(f)).sort();
   const guides = [];
   const visualIds = new Set();
-  if (files.length !== 16) errors.push(`expected 16 guide files, found ${files.length}`);
+  if (expectedGuides !== null && files.length !== expectedGuides) errors.push(`expected ${expectedGuides} guide files, found ${files.length}`);
   for (const f of files) {
     const no = Number(f.slice(6, 8));
     let g;
@@ -79,7 +120,7 @@ export function validateEvidence(dir) {
         if (!ROLES.has(e.role)) err(no, `${where}: element ${e.id} bad role ${e.role}`);
         if (!CRIT.has(e.criticality)) err(no, `${where}: element ${e.id} bad criticality ${e.criticality}`);
         if (!e.describe) err(no, `${where}: element ${e.id} has no describe`);
-        if (HARDWARE.test(e.id) && e.criticality === "cosmetic") err(no, `${where}: hardware-keyword element ${e.id} may not be cosmetic`);
+        // (hardware-as-cosmetic is enforced by strictFindings below, so the baseline mechanism can see it)
       }
       if (![...(v.elements ?? [])].some((e) => e.role === "hero")) err(no, `${where}: no hero element`);
       const src = v.sources ?? {};
@@ -97,14 +138,37 @@ export function validateEvidence(dir) {
     }
     if (!(g.visuals ?? []).length) warn(no, "no visuals proposed");
   }
-  return { errors, warnings, guides };
+  // strict claim rules, with the directory's triaged baseline (if any)
+  const baselineFile = path.join(dir, "STRICT-BASELINE.json");
+  const baseline = fs.existsSync(baselineFile) ? JSON.parse(fs.readFileSync(baselineFile, "utf8")).findings ?? [] : [];
+  // A baseline entry is an exception, so each one must justify itself, be unique, and the file may not grow past its recorded ceiling.
+  const baselineMeta = fs.existsSync(baselineFile) ? JSON.parse(fs.readFileSync(baselineFile, "utf8")) : {};
+  const seenKeys = new Set();
+  for (const b of baseline) {
+    if (!b.key || !["LOW", "MEDIUM"].includes(b.risk) || String(b.rationale ?? "").length < 20) errors.push(`STRICT-BASELINE entry needs key, risk LOW or MEDIUM (HIGH must be fixed, not excepted) and a rationale: ${b.key ?? "(no key)"}`);
+    if (seenKeys.has(b.key)) errors.push(`STRICT-BASELINE duplicate entry: ${b.key}`);
+    seenKeys.add(b.key);
+  }
+  if (baseline.length && !(Number.isInteger(baselineMeta.ceiling) && baseline.length <= baselineMeta.ceiling)) errors.push(`STRICT-BASELINE has ${baseline.length} entries but ceiling is ${baselineMeta.ceiling}; the baseline may not grow`);
+  const allowed = new Map(baseline.map((b) => [b.key, b]));
+  const seen = new Set();
+  const baselined = [];
+  for (const g of guides) {
+    for (const f of strictFindings(g)) {
+      const k = findingKey(f);
+      if (allowed.has(k)) { seen.add(k); baselined.push({ ...f, ...allowed.get(k) }); } else errors.push(`guide ${f.guide}: [${f.code}] ${f.message}`);
+    }
+  }
+  for (const b of baseline) if (!seen.has(b.key)) errors.push(`STRICT-BASELINE entry no longer matches a finding (remove it, the baseline may only shrink): ${b.key}`);
+  return { errors, warnings, guides, baselined };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const dir = path.resolve(process.argv[2] ?? path.join(ROOT, "docs/bmw-e90/evidence"));
-  const r = validateEvidence(dir);
+  const r = validateEvidence(dir, { expectedGuides: process.env.EXPECTED_GUIDES === undefined ? 16 : process.env.EXPECTED_GUIDES === "any" ? null : Number(process.env.EXPECTED_GUIDES) });
   for (const w of r.warnings) console.log("WARN  " + w);
   for (const e of r.errors) console.log("ERROR " + e);
-  console.log(`${r.guides.length} guides, ${r.errors.length} error(s), ${r.warnings.length} warning(s)`);
+  for (const b of r.baselined) console.log(`BASELINED [${b.risk}] guide ${b.guide} [${b.code}] ${b.message}`);
+  console.log(`${r.guides.length} guides, ${r.errors.length} error(s), ${r.warnings.length} warning(s), ${r.baselined.length} baselined`);
   process.exit(r.errors.length ? 1 : 0);
 }
