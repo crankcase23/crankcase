@@ -1,0 +1,54 @@
+{
+  "note": "Atlas-shaped record for the F-150 pilot. Atlas is still a design (no running database), so no Atlas ids are allocated: repo natural keys only. Vehicle Atlas stays authoritative for compatibility. Nothing here extends coverage beyond the one catalog configuration, and nothing here is certified.",
+  "asOf": "2026-10-12",
+  "vehicle_config": {
+    "repo_vehicle_id": "2015-ford-f150-5.0l",
+    "existence": "ACTUAL",
+    "label": "2015 Ford F-150 XLT SuperCrew (4x4), 5.0L Coyote V8 Gen 2, 6R80 6-speed automatic",
+    "keys": { "platform": "ford-p552", "engine": "ford-coyote-5.0-gen2", "driveline": "ford-p552-4wd" },
+    "fleet_observation": null,
+    "fleet_note": "UNKNOWN. No sourced registration count exists for this configuration. It is not claimed to be the most common F-150 configuration."
+  },
+  "claimed_applications": "ONLY this configuration, relation NATIVE (reference application of each master). No other configuration is claimed.",
+  "not_claimed_candidates_unknown": [
+    "2WD versus 4WD (brake hardware, skid plate access to the radiator drain)",
+    "brake package and rotor size",
+    "model years 2016 and 2017 (same Coyote Gen 2 key, comparison not done)",
+    "2018 and later 5.0L (as far as I know a different generation of the engine; not compared)",
+    "3.5L EcoBoost, 2.7L EcoBoost, 3.5L Duratec, 3.3L",
+    "battery group, CCA and chemistry for the 5.0L",
+    "factory coolant fill for this build date (Orange or Yellow)",
+    "cooling system capacity"
+  ],
+  "masters": [
+    { "job": "brake-pads-front", "state": "PROVISIONAL", "ledger": "docs/f150-pilot/evidence/guide-01.json" },
+    { "job": "battery", "state": "PROVISIONAL", "ledger": "docs/f150-pilot/evidence/guide-02.json" },
+    { "job": "coolant", "state": "PROVISIONAL", "ledger": "docs/f150-pilot/evidence/guide-03.json" }
+  ],
+  "applications": [
+    { "job": "brake-pads-front", "relation": "NATIVE", "assurance": "AUTHOR_ASSERTED", "publication": "UNPUBLISHED", "verification": "UNVERIFIED" },
+    { "job": "battery", "relation": "NATIVE", "assurance": "AUTHOR_ASSERTED", "publication": "UNPUBLISHED", "verification": "UNVERIFIED" },
+    { "job": "coolant", "relation": "NATIVE", "assurance": "AUTHOR_ASSERTED", "publication": "UNPUBLISHED", "verification": "UNVERIFIED" }
+  ],
+  "certification_cases_g1": {
+    "checks_passed_each": 0,
+    "note": "G1 needs 8/8: identity, verified reference, figures sourced, no blocking issues, procedure reviewed, text stands alone, independent PASS by a non-author, owner sign-off.",
+    "figures_sourced_check_3_preliminary": {
+      "brake-pads-front": "FAIL: rotor discard thickness MISSING, brake fluid spec unresolved, pad kit CONFLICT; the three torques are VERIFIED_SECONDARY only",
+      "battery": "FAIL: terminal and hold-down torques MISSING, battery group/CCA unresolved",
+      "coolant": "FAIL: system capacity CONFLICT, drain valve torque MISSING, factory fill unresolved"
+    },
+    "independent_review": "NOT DONE. Claude is never independent. Needs a Hermes-class reviewer and the owner.",
+    "owner_signoff": "NOT GIVEN"
+  },
+  "counts": {
+    "certified_masters": 0,
+    "verified_guide_configuration_combinations": 0,
+    "unverified_previews_in_app": 16,
+    "unverified_previews_in_app_note": "All 16 are the 2010 BMW 328i, flagged preview, never sellable.",
+    "published_uncertified_resolved_guides": 180,
+    "published_uncertified_note": "OBSERVED_IN_REPO legacy guides, including the 16 BMW previews. Never counted as coverage.",
+    "pilot_unpublished_drafts": 3,
+    "pilot_unpublished_drafts_note": "Not previews: not wired to any route, not visible to any customer or admin screen."
+  }
+}

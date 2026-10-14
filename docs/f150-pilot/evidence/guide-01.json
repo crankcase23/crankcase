@@ -1,0 +1,821 @@
+{
+  "guide": 1,
+  "name": "Front Brake Pads",
+  "vehicle": "2015-ford-f150-5.0l",
+  "evidenceTier": "safety-critical",
+  "primarySourceFound": true,
+  "primaryScope": "NO Ford document covering the brake-pad job, a torque, a fluid spec, a part-number fitment or a jacking position was readable. What WAS read from Ford: (a) the 2015 F-150 Quick Reference Guide (fordservicecontent.com, Version 3, 8/2015): 'Always use proper jacking points', 'Do not use any part of the power running boards to lift your vehicle when jacking', and 'On certain models, the electric parking brake replaces the conventional foot brake' (that is all it says that bears on this guide; it has no brake-fluid text and no lug-nut torque); (b) the 2015 F-150 Owner's Manual PDF (Version 4, 8/2015): the web-fetch text stops at about page 57 of a ~400-page book, so the Brakes (p.190-193), Maintenance/Brake Fluid Check (p.309), Wheels and Tires/Changing a Road Wheel (p.352) and Capacities (p.361+) chapters were NOT reached (only the table of contents listing them was seen); (c) Ford FCSD chemical product pages (brake fluids: DOT 3 WSS-M6C65-A1 PM-1-C; DOT 4 LV WSS-M6C65-A2 PM-20), which say to check the reservoir cap/owner's manual and name no vehicle; (d) NHTSA Part 573 report 16V-345 (brake master cylinder/booster, 2013-2014 F-150 3.5L only; does not cover a 2015 or a 5.0L). ford.com Motorcraft product pages were readable for SKU/reference numbers but their 'Fits These Vehicles' tables did not load, so no Ford fitment statement was obtained. No Ford workshop manual page (206-03 etc.) for a 2015 F-150 was reachable; the only Ford workshop-manual pages that surfaced were for other vehicles (Mustang 2014, Ranger 2019) and were not used as evidence.",
+  "recommendedStatus": "BUILDABLE_PARTIAL",
+  "summary": "Research-only pilot ledger for the 2015 F-150 XLT SuperCrew 4x4 5.0L (13th generation, P552), front brake pads. No Ford service data was read. The procedure is assembled from O'Reilly, Babcox (Tire Review / Brake & Front End), Blue Springs Ford Parts and go-parts, and the three fastener torques (caliper bracket 184 lb-ft, caliper pin bolts 27 lb-ft, wheel nuts 150 lb-ft) are VERIFIED_SECONDARY only: several hosts agree, but the most detailed how-tos are for the 2009-2014 (12th generation) truck, and only go-parts (2015-2020) and a Raptor forum post (2022) name later trucks, so every torque needs a Ford confirmation for this exact truck before it is trusted. Unresolved and deliberately not guessed: the Motorcraft pad part number and pad shape (at least BRF1956, BRF1899 and three aftermarket shape families are listed for a 2015 F-150 with no way to pick by brake package from readable sources), rotor size and discard thickness, brake-fluid spec for this truck (DOT 3 vs DOT 4 LV), jacking and stand positions (owner's-manual illustration not reachable), whether front work needs electric-parking-brake service mode on this truck (sources conflict by year), and whether any wear sensor exists. Do not claim this applies to 2WD, other model years, other engines or other trims.",
+  "variantDependencies": [
+    "UNKNOWN: 2WD vs 4WD. This config is 4x4. go-parts tells buyers to verify '2WD/4WD' before ordering a caliper; Porterfield lists 2WD and 4WD fitments separately (2018-2020 4WD with electric parking brake called out); Ford-OEM-parts-direct lists Motorcraft BRF1899 with separate '4wd without ssv' and '2wd' variants. No readable source says whether the 4x4 front pad, bracket or bolt torque differs from 2WD. [https://www.go-parts.com/garage/ps-2015-2020-ford-f-150-disc-brake-caliper] [https://porterfield-brakes.com/product/1770-22/] [https://www.fordoempartsdirect.com/brake-Pads?page=22]",
+    "UNKNOWN: front brake package / rotor size / pad shape. Pad shapes listed for 2015 F-150 include 1414 (Baer: 'standard brake systems', 2010-2019; Akebono ACT1414 2010-2020 via go-parts), 1770 (EBC UD1770 2015-2017; Porterfield 1770-22 2010-2020; BrakeBest C1770/SPC1770 on O'Reilly) and 2087 (Motorcraft BR2087A 2010-2020; Powerstop 17-2087 2010-2020). No readable source maps these to payload package, GVWR, wheel size or 5.0L. Compare the old pads to the new before installing. [https://www.cjponyparts.com/baer-brakes-front-brake-pad-sport-set-f-150-2010-2019-raptor-2010-2014-2017-2019/p/D1414/] [https://www.cjponyparts.com/ebc-brake-pad-f150/p/UD1770/] [https://www.oreillyauto.com/shop/b/brakes/brake-pads---shoes/brake-pads/a99314144bb6/v/a/129927/automotive-truck-2015-ford-f-150]",
+    "UNKNOWN: Motorcraft front pad kit number for this exact truck. Summit lists BRF1956 for '2015 F-150' only and BRF1899 for 2010-2020 F-150; go-parts' 2015-2025 article lists OEM numbers FL3Z-2001-C and JL3Z-2001-A without mapping them. Ford.com pages for BRF1581 (JU9Z2001A), BRF1905 (JL3Z2001B) and BRF1874 (KB3Z2001A) showed no readable fitment. Ford.com BRF1955 (FR3Z2001Q) is titled '5.0L' but the FR3Z prefix and the 'High Series Police Brakes / R Package' wording suggest a non-F-150 Ford (probably Mustang); not used. Vehicle Atlas / a parts counter by VIN must decide.",
+    "UNKNOWN: build-date splits. 2015 F-150 production began in late 2014 and the same model year includes mid-year running changes on other systems; no readable source gives a brake build-date split for pads, calipers or bolts. Do not assume one.",
+    "UNKNOWN: electric parking brake. Ford's own 2015 Quick Reference Guide says 'on certain models' an electric parking brake replaces the foot brake, and retailer listings show an 'electric parking brake' variant for 2015-2017 F-150 pad kits. go-parts (2015-2020) says brake service mode is required for REAR EPB caliper work and 'the front procedure doesn't mention it'; a 2022 Raptor forum post (FordTechOne reply) says service mode before ANY front or rear disassembly. Neither is a Ford document for this truck. Treated as a question for the owner (pedal parking brake or dash switch?).",
+    "UNKNOWN: front caliper piston count and slide-pin layout. One retailer (go-parts caliper page) calls the 2015-2020 front caliper dual-piston; no second source. No source gives which slide bolt is top or bottom or whether either side differs.",
+    "UNKNOWN: whether the 6R80 transmission or the 5.0L Coyote engine affects any brake step. No source shows it does; none was looked for beyond the searches listed in the stage log. Not claimed either way.",
+    "SCOPE WARNING: the most complete front-brake write-ups found (O'Reilly, Tire Review / Brake & Front End) are titled or scoped for the 2009-2014 F-150 (12th generation). O'Reilly states the demo truck is a 2012 and that the procedure is 'similar on most Ford F-150 models' through 2020. go-parts is the only how-to source that names 2015-2020 front axle specs, and it appears to rely on embedded videos. Treat every step as 'plausibly the same on the P552, not proven for this truck'.",
+    "Wheels: a 6-lug M14x1.5 pattern with 21 mm hex nuts is reported by a 14th-generation forum thread citing the 2022 manual; no 2015 source was read. Wheel/tire size is not coded for this config."
+  ],
+  "tools": [
+    {
+      "item": "Floor jack, rated jack stands (2 minimum), wheel chocks",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "item": "21 mm socket and breaker bar (lug nuts, and caliper bracket bolts if the bracket is removed)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set",
+        "https://www.f150gen14.com/forum/threads/lug-nut-torque.13636/latest"
+      ],
+      "note": "go-parts (2015-2020 front): 21 mm for the bracket bolts. O'Reilly (2009-2014 demo truck): 21 mm for lugs and bracket. The 21 mm lug-nut size comes from a 2021+ forum thread; no 2015 source was read."
+    },
+    {
+      "item": "13 mm socket for the two caliper slide/guide bolts",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+      ],
+      "note": "go-parts names 13 mm for the 2015-2020 front 'caliper slide bolts'; O'Reilly names 13 mm for the 'two caliper mounting bolts' on its 2009-2014 demo truck. Confirm the head size before turning."
+    },
+    {
+      "item": "Torque wrench(es) covering 27 lb-ft up to 184 lb-ft (about 37 to 250 Nm)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+      ],
+      "note": "Range is arithmetic from the torque rows below; no single wrench is named by a source. A 184 lb-ft figure needs a large (1/2 in or 3/4 in drive) wrench."
+    },
+    {
+      "item": "Piston compression tool or large C-clamp, plus an old pad as a spacer",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "item": "Caliper hanger (or bungee/wire) so the caliper does not hang by the brake hose",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ],
+      "note": "O'Reilly names a caliper hanger; Blue Springs says set the caliper aside without stressing the line. A hanger specifically is O'Reilly only."
+    },
+    {
+      "item": "Brake cleaner, silicone brake grease, shop towels",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ],
+      "note": "O'Reilly: 100% silicone grease on guide pins, bracket pad-contact points and hub face; brake cleaner strips paint. Blue Springs: brake grease on pad backing edges only."
+    },
+    {
+      "item": "Brake bleeder tool (only used by O'Reilly's compress-with-bleeder-open method)",
+      "status": "SINGLE_SOURCE",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150"
+      ],
+      "note": "Optional. Not in Blue Springs or the Babcox article. Do not open a bleeder unless you are prepared to bleed the circuit."
+    },
+    {
+      "item": "Micrometer or vernier caliper for rotor thickness",
+      "status": "MISSING",
+      "sources": [],
+      "note": "No F-150 source read mentions measuring rotor thickness; the discard figure is also MISSING (see torque/limits table)."
+    }
+  ],
+  "parts": [
+    {
+      "item": "Motorcraft front pad kit for this exact truck (2015 F-150 5.0L 4x4 SuperCrew)",
+      "partNumber": "UNRESOLVED (candidates: BRF1956, BRF1899)",
+      "status": "CONFLICT",
+      "primary": false,
+      "sources": [
+        "https://www.summitracing.com/search/brand/motorcraft/part-type/brake-pads/make/ford/model/f-150/brake-pad-position/front",
+        "https://www.fordoempartsdirect.com/brake-Pads?page=22",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+      ],
+      "conflicts": "Summit lists MOF-BRF1956 'KIT - BRAKE LINING' for '2015 F-150' only and MOF-BRF1899 for '2010-2020 F-150'; Ford-OEM-parts-direct lists BRF1899 for Expedition/Navigator/F150 with '4wd, without ssv' and '2wd' variants (no years). go-parts lists OEM numbers FL3Z-2001-C and JL3Z-2001-A with no mapping. Several candidates fit a 2015 F-150 on paper and no readable source ties one to a 5.0L, 4x4, XLT, brake package or wheel size. Do not publish a number; the parts counter or Vehicle Atlas decides by VIN."
+    },
+    {
+      "item": "Motorcraft BRF1956 'KIT - BRAKE LINING', listed by Summit for 2015 F-150",
+      "partNumber": "BRF1956",
+      "status": "SINGLE_SOURCE",
+      "primary": false,
+      "sources": [
+        "https://www.summitracing.com/search/brand/motorcraft/part-type/brake-pads/make/ford/model/f-150/brake-pad-position/front"
+      ],
+      "note": "Result came from a summarised fetch of a 'front' filtered list (11 items, all special order). Position (front) and package not stated in the row itself."
+    },
+    {
+      "item": "Motorcraft BRF1899 'KIT - BRAKE LINING' (includes clips), listed for F-150",
+      "partNumber": "BRF1899",
+      "status": "VERIFIED_SECONDARY",
+      "primary": false,
+      "sources": [
+        "https://www.summitracing.com/search/brand/motorcraft/part-type/brake-pads/make/ford/model/f-150/brake-pad-position/front",
+        "https://www.fordoempartsdirect.com/brake-Pads?page=22"
+      ],
+      "note": "Two hosts agree that BRF1899 is an F-150 kit and that it includes clips. Summit gives years 2010-2020 F-150 (also Expedition/Navigator 2010-2021); FOPD gives drive variants '4wd, without ssv' and '2wd' with no years. This confirms that the NUMBER exists for F-150s; it does NOT confirm it is the right kit for this truck (BRF1956 is also listed for 2015)."
+    },
+    {
+      "item": "OEM Ford pad numbers named in go-parts' 2015-2025 F-150 pad-set article (front/rear not mapped)",
+      "partNumber": "FL3Z-2001-C; JL3Z-2001-A (axle and config not mapped by the source)",
+      "status": "SINGLE_SOURCE",
+      "primary": false,
+      "sources": [
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+      ],
+      "note": "The article lists 'FL3Z-2001-C FL3Z-2200-C JL3Z-2001-A JL3Z-2200-A' without saying which is front, which year or which config. Not used for ordering."
+    },
+    {
+      "item": "Aftermarket pad shape families listed for a 2015 F-150 front axle (1414, 1770, 2087)",
+      "partNumber": "D1414 / ACT1414 / SC1414; D1770 / UD1770 / C1770 / SPC1770; D2087 / BR2087A / 17-2087",
+      "status": "CONFLICT",
+      "primary": false,
+      "sources": [
+        "https://www.cjponyparts.com/baer-brakes-front-brake-pad-sport-set-f-150-2010-2019-raptor-2010-2014-2017-2019/p/D1414/",
+        "https://www.cjponyparts.com/ebc-brake-pad-f150/p/UD1770/",
+        "https://porterfield-brakes.com/product/1770-22/",
+        "https://www.oreillyauto.com/shop/b/brakes/brake-pads---shoes/brake-pads/a99314144bb6/v/a/129927/automotive-truck-2015-ford-f-150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+      ],
+      "conflicts": "Each shape family is listed by at least one retailer for model year 2015 and no readable source says which applies by brake package. Baer says 1414 is 'designed for use with standard brake systems', which suggests a package split but does not define it. The owner must match the old pad's shape and, if unsure, have the parts counter match by VIN."
+    },
+    {
+      "item": "Pad wear sensor / indicator",
+      "partNumber": "none identified",
+      "status": "SINGLE_SOURCE",
+      "primary": false,
+      "sources": [
+        "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set"
+      ],
+      "note": "go-parts (2010-2014 article, not 2015) says the front pads use a passive metal wear-indicator tab that squeals and does not mention an electronic wear sensor. Nothing read speaks for the 2015 truck. No sensor is added to the shopping list; the owner should look at the old pads."
+    },
+    {
+      "item": "New pad clips / abutment hardware and noise-damping shims",
+      "partNumber": "supplied with the Motorcraft kit per Ford.com page text; no separate number found",
+      "status": "SINGLE_SOURCE",
+      "primary": false,
+      "sources": [
+        "https://www.ford.com/product/disc-brake-pad-set-p4000152411"
+      ],
+      "note": "Ford.com BRF1874 page text: 'Noise-damping insulators, shims and attaching hardware are included.' O'Reilly (2009-2014 demo) tells the reader to remove four pad clips and install new hardware but gives no number. The same wording appears on every Ford.com Motorcraft pad page read (BRF1581, BRF1905, BRF1955), which is marketing text rather than a per-vehicle fitment statement."
+    },
+    {
+      "item": "Brake fluid for top-off (see fluids)",
+      "partNumber": "not selected",
+      "status": "MISSING",
+      "primary": false,
+      "sources": [],
+      "note": "Spec for this truck was not found; see the fluids row."
+    }
+  ],
+  "fluids": [
+    {
+      "item": "Brake fluid, top-off only after the pads are changed (do not flush or bleed in this job)",
+      "spec": "MISSING for this truck. Ford FCSD pages show Ford sells Motorcraft High Performance DOT 3 (WSS-M6C65-A1, PM-1-C) and Motorcraft DOT 4 LV (WSS-M6C65-A2, PM-20), and both pages say only to check the brake fluid reservoir cap, master cylinder reservoir and the owner's or workshop manual. No readable source states which one a 2015 F-150 5.0L specifies. Use the fluid named on the reservoir cap; never mix types.",
+      "capacity": "Top-off only; no capacity needed.",
+      "status": "MISSING",
+      "primary": false,
+      "sources": [
+        "https://www.fcsdchemicalsandlubricants.com/products/brakes/productdetails?id=54",
+        "https://www.fcsdchemicalsandlubricants.com/products/brakes/productdetails?id=86"
+      ],
+      "note": "The FCSD pages are Ford documents but are not vehicle-specific, so primary stays false for this truck's spec. The 2015 owner's manual 'Brake Fluid Check' chapter (p.309) exists per its table of contents but its text was not reachable."
+    }
+  ],
+  "torque": [
+    {
+      "fastener": "Wheel (lug) nuts, 21 mm hex, star pattern",
+      "value": "150 lb-ft (about 203 Nm; one forum thread says 204 Nm)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set",
+        "https://kevinsautos.com/faq/what-is-the-torque-on-the-brake-caliper-bolts-on-a-2012-ford-f150.html",
+        "https://www.f150gen14.com/forum/threads/lug-nut-torque.13636/latest"
+      ],
+      "conflicts": "No dissent found, but no source read is a 2015 F-150 Ford document: O'Reilly, go-parts and kevinsautos cover the 2010-2014 truck (kevinsautos also mentions 2016), and the f150gen14 thread is a 2021+ forum where a user quotes the 2022 manual (screenshot unreadable). go-parts and kevinsautos may share a video origin. The 2015 owner's manual (Changing a Road Wheel, p.352) was not readable. Confirm against Ford before relying on it.",
+      "primary": false
+    },
+    {
+      "fastener": "Front caliper bracket (anchor plate) bolts, 21 mm, only if the bracket is removed",
+      "value": "184 lb-ft (about 250 Nm by arithmetic; no Ford Nm figure read)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set",
+        "https://www.tirereview.com/ford-f-150-brake-job/",
+        "https://fordraptorforum.com/threads/caliper-bolt-tq-specs.102449/post-2021772"
+      ],
+      "conflicts": "Origins: tirereview.com and brakeandfrontend.com are the same Babcox article (one origin, not counted twice); go-parts, kevinsautos and the go-parts caliper page appear to repeat the same embedded video. Independent origins that agree on 184: Babcox (2009-2014), O'Reilly (2012 demo truck, 'similar on 2015-2020'), go-parts video (explicitly 2015-2020 front), Raptor Forum (2022 Raptor Gen 3, FordTechOne reply, not a Ford document). Dissent: kevinsautos' top answer says 129 lb-ft (175 Nm) for a 2012 truck 'per the F150 service manual' with no link, contradicted by its own later 184 answers; an unsourced generic 80-100 lb-ft range also appears. No Ford document for a 2015 truck read.",
+      "primary": false
+    },
+    {
+      "fastener": "Front caliper slide/guide pin bolts, 13 mm",
+      "value": "27 lb-ft (about 37 Nm by arithmetic; no Ford Nm figure read)",
+      "status": "VERIFIED_SECONDARY",
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.tirereview.com/ford-f-150-brake-job/",
+        "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set",
+        "https://fordraptorforum.com/threads/caliper-bolt-tq-specs.102449/post-2021772"
+      ],
+      "conflicts": "Same origin caveats as the bracket row. go-parts' 2015-2025 article names the 13 mm slide-bolt size but its readable text gives no 27 figure for 2015-2020 (the 27 appears on its 2010-2014 article). Raptor forum: front pin bolts 27 lb-ft, rear 26 (2022 Raptor). kevinsautos repeats 27 for 2012, 2014 and 2016. No Ford document read.",
+      "primary": false
+    },
+    {
+      "fastener": "Front rotor discard (minimum) thickness (a limit, not a torque)",
+      "value": "MISSING (not found for this truck; do not guess)",
+      "status": "MISSING",
+      "sources": [],
+      "conflicts": "No rotor-maker or Ford page read gave a discard thickness for a 2015 F-150 front rotor, and rotor diameter by brake package is itself unknown. Ford rotor pages exist on ford.com but their specifications did not load.",
+      "primary": false
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "title": "Confirm the truck's brakes and the parts before starting",
+      "instruction": "Before buying or starting, confirm with a parts counter or Vehicle Atlas, by VIN, which front pad kit fits this exact truck (2015 F-150 XLT SuperCrew 4x4 5.0L): several Motorcraft kits and three aftermarket pad shapes are listed for 2015 F-150s and no readable source picks one by brake package. Compare the old pads to the new ones side by side (shape, ears, mounting holes) before any bolt is removed. Note whether the truck has a pedal parking brake or an electric parking-brake switch: Ford's 2015 quick reference guide says some models have an electric parking brake, and sources disagree on whether front work needs service mode, so if the truck has the switch, do not start until you know the owner's-manual answer.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Part number, pad shape and brake package are NOT settled by any readable source.",
+        "Electric-parking-brake service-mode requirement for front work is unresolved (go-parts: rear only; a 2022 Raptor forum post: front and rear)."
+      ],
+      "sources": [
+        "https://www.go-parts.com/garage/ps-2015-2020-ford-f-150-disc-brake-caliper",
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Version-3_QG_EN-US_8_2015.pdf",
+        "https://fordraptorforum.com/threads/caliper-bolt-tq-specs.102449/post-2021772"
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Park, chock and loosen the lug nuts on the ground",
+      "instruction": "Park on level, hard ground, chock the rear wheels, and with the truck still on the ground break each lug nut on the front wheel loose about one turn with a 21 mm socket and breaker bar. Remove hub caps first if fitted.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "If locking lug nuts are fitted, find the key first.",
+        "The 21 mm socket size is documented for the 2009-2014 truck (O'Reilly) and a 2021+ thread; confirm it fits before applying force."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads",
+        "https://www.f150gen14.com/forum/threads/lug-nut-torque.13636/latest"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Lift the front and support it on stands",
+      "instruction": "Lift the front only at the jacking points shown in the jacking illustration in your owner's manual. Never use any part of the power running boards to lift the truck. Support the truck on rated jack stands on hard, level ground, with the rear wheels chocked, and check it is stable before removing a wheel. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift. This guide does not name a stand position or a lift point.",
+      "status": "VERIFIED",
+      "warnings": [
+        "Never work under, or take a wheel off, a truck held only by a jack.",
+        "Do not use any part of the power running boards to lift the vehicle (Ford 2015 quick reference guide).",
+        "Jacking-point and stand positions are NOT published here: the owner's-manual illustration was not readable and no two independent sources agree on a position."
+      ],
+      "sources": [
+        "https://www.fordservicecontent.com/Ford_Content/Catalog/owner_information/2015-F-150-Version-3_QG_EN-US_8_2015.pdf",
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Remove the front wheel",
+      "instruction": "Remove the lug nuts while holding the wheel, lift it off, and turn the steering wheel if it gives better access to the caliper.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "The wheel is heavy; support it as it comes off."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Remove the caliper and support it off the hose",
+      "instruction": "Remove the two caliper slide (guide) bolts with a 13 mm socket, lift the caliper off the rotor, and hang it from a caliper hanger or tie it up so the weight is not on the flexible brake hose. Do not press the brake pedal while the caliper is off.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Never let the caliper hang by the brake hose; do not crimp or tear the line.",
+        "Never press the brake pedal with the caliper removed.",
+        "13 mm is documented by go-parts (2015-2020 front) and O'Reilly (2009-2014 demo truck); confirm the head size on the truck."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Remove the old pads and note which is inner and which is outer",
+      "instruction": "Take the old pads out of the bracket and note the pad clips. Before removing them from your hands, note which pad is the inner pad (backing plate with two small ears on top that line up with the caliper piston) and which is the outer (smooth, with a chamfer on the top edge), so the new pads go back the same way.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "The inner/outer ear and chamfer description comes from the 2009-2014 truck (Tire Review/Babcox, O'Reilly, go-parts 2010-2014); go-parts' 2015-2025 article says only that some sets must be installed correctly. Match the new pads to the old pads on this truck.",
+        "Mixed-up pads can let the caliper contact the wheel spokes (Babcox)."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.tirereview.com/ford-f-150-brake-job/",
+        "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Inspect the rotor and the caliper",
+      "instruction": "Check the rotor faces for cracks, deep scoring and a raised lip, and the caliper piston boot for cracks or fluid leaks (replace the caliper if the boot is cracked or fluid is leaking, per O'Reilly). Replace pads and rotors in pairs, left and right. A numeric discard thickness for this truck's rotor is NOT available in this ledger: read the minimum stamped on the rotor if one is stamped, and have the rotor judged by a shop if in doubt.",
+      "status": "MISSING",
+      "warnings": [
+        "No rotor discard thickness and no rotor diameter by brake package were found for this truck; the 'stamped minimum' statement itself is not supported by any F-150 source read.",
+        "A leaking caliper or cracked boot means the job is not just pads."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150"
+      ]
+    },
+    {
+      "n": 8,
+      "title": "Optional branch: remove the bracket for rotor replacement",
+      "instruction": "Only if the rotor is being replaced: remove the two caliper bracket bolts with a 21 mm socket and breaker bar, lift off the bracket, remove the rotor (a hammer tap on the rotor face can free a stuck rotor per O'Reilly), wire-brush rust off the hub face and wipe the new rotor's faces with brake cleaner. Refit the bracket and torque the two bracket bolts to 184 lb-ft. Skip this step for a pads-only job.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "184 lb-ft is secondary-sourced only (no Ford document read); confirm before trusting a number this high on a brake bracket.",
+        "Do not wire-brush the bracket pad-contact surfaces (O'Reilly); replace the bracket if there is rust where the pads ride.",
+        "Keep brake cleaner off paint."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set",
+        "https://www.tirereview.com/ford-f-150-brake-job/",
+        "https://fordraptorforum.com/threads/caliper-bolt-tq-specs.102449/post-2021772"
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Clean and lubricate",
+      "instruction": "Clean the bracket with brake cleaner (not a wire brush), pull and wipe the slide pins, put fresh silicone brake grease on them and refit them, fit the new pad hardware/clips, and put a thin film of silicone grease on the pad contact points and pad backing edges only. Replace slide pins that are rusted or pitted.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Keep grease off the pad friction material and the rotor faces.",
+        "Silicone grease is named by O'Reilly (100% silicone); Blue Springs says 'brake grease' on pad backing edges. Do not use a grease not rated for brakes."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Retract the caliper piston",
+      "instruction": "Push the piston straight back into the caliper with a piston tool or a C-clamp, using an old pad between the clamp and the piston so you do not push on the piston itself or pinch the boot, until the piston sits flush with the caliper housing. Watch the reservoir level so it does not overflow.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Do not pinch the piston boot.",
+        "O'Reilly also describes attaching a bleeder tool and cracking the bleeder open while compressing. That method is single-source here and opens the hydraulic circuit: do not do it unless you intend to bleed the system.",
+        "Open the reservoir cap carefully and wipe spills; brake fluid damages paint."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "n": 11,
+      "title": "Fit the new pads",
+      "instruction": "Seat the pad ears of the inner pad in the lands of the bracket and put the inner pad (ears, toward the piston) on the piston side and the smooth outer pad on the outside. Check the clips are seated and not bent.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Inner/outer orientation detail is documented for 2009-2014 trucks; match the new pads to the old.",
+        "Do not get grease on the friction surfaces."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.tirereview.com/ford-f-150-brake-job/",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+      ]
+    },
+    {
+      "n": 12,
+      "title": "Refit the caliper and torque the slide bolts",
+      "instruction": "Set the caliper over the pads and rotor, start both slide bolts by hand, and then torque them to 27 lb-ft. Confirm the pads sit against the rotor and the piston is flush before moving on.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "27 lb-ft is secondary-sourced only; no Ford document for this truck was read.",
+        "Replace slide pins that are rusted or pitted."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.tirereview.com/ford-f-150-brake-job/",
+        "https://fordraptorforum.com/threads/caliper-bolt-tq-specs.102449/post-2021772"
+      ]
+    },
+    {
+      "n": 13,
+      "title": "Refit the wheel, lower the truck and torque the lug nuts",
+      "instruction": "Mount the wheel, thread the lug nuts by hand until the wheel sits flush on the hub, lower the truck, and then torque the lug nuts to 150 lb-ft in a star pattern. Repeat the job on the other side.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "150 lb-ft is secondary-sourced; the 2015 owner's manual wheel chapter was not readable.",
+        "No re-check interval for lug nuts was found in any F-150 source read."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set",
+        "https://www.f150gen14.com/forum/threads/lug-nut-torque.13636/latest"
+      ]
+    },
+    {
+      "n": 14,
+      "title": "Pump the pedal and check the fluid",
+      "instruction": "Before moving the truck, pump the brake pedal until it feels firm and as it did before the job. Then check the master-cylinder reservoir and top off only if needed with the fluid named on the reservoir cap; never mix fluid types. If the pedal does not firm up, do not drive.",
+      "status": "VERIFIED_SECONDARY",
+      "warnings": [
+        "Do not drive until the pedal is firm.",
+        "The brake-fluid spec for this truck (DOT 3 vs DOT 4 LV) was not found: use the cap label."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads",
+        "https://www.fcsdchemicalsandlubricants.com/products/brakes/productdetails?id=54"
+      ]
+    },
+    {
+      "n": 15,
+      "title": "Bed in the pads",
+      "instruction": "Avoid aggressive stops during break-in. O'Reilly describes bedding in with 15 to 20 moderate slowdowns from 50 mph to 30 mph, letting the brakes cool between runs, and says a brake smell is normal but one that lasts past about 500 miles, or one wheel collecting excessive dust, points to a possibly stuck caliper. Follow the pad maker's bedding sheet if it provides one.",
+      "status": "SINGLE_SOURCE",
+      "warnings": [
+        "Single source (O'Reilly, 2009-2014 demo truck); Ford's 'Breaking-In' text in the owner's manual (p.272) was not reachable."
+      ],
+      "sources": [
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150"
+      ]
+    }
+  ],
+  "safety": [
+    "Never work under, or take a wheel off, a truck held only by a jack. Support it on rated jack stands on hard, level ground, or use a lift or drive-on ramps where the job allows. Use the jacking points shown in the jacking illustration in your owner's manual, with a pad or adapter between the jack and the lift point, and never use any part of the power running boards to lift the truck. If you cannot identify a safe place for the stand from your manual, stop and use a shop lift.",
+    "Never let the caliper hang by its brake hose, and never press the brake pedal with the caliper off.",
+    "Brake fluid: top off only, with the fluid named on the reservoir cap; never mix types; it damages paint, so wipe spills at once. Do not open a bleeder unless you intend to bleed the system. The spec for this truck was not found.",
+    "Brake cleaner strips paint (O'Reilly); use it away from painted surfaces. Brake dust and cleaner-wet dust: no F-150 source read addresses dust hazard, so this line is general practice, not sourced: wet-wipe, do not blow dust off with compressed air.",
+    "Do not put grease on pad friction material or rotor faces.",
+    "Torque the lug nuts to 150 lb-ft in a star pattern and check that every fastener on a brake component is torqued; all torque values in this guide are secondary-sourced (no Ford document read for this truck).",
+    "Pump the pedal until firm before driving; if it does not firm up, or the caliper boot is cracked or leaking, stop.",
+    "Electric parking brake: Ford's 2015 quick reference guide says some models have an electric parking brake. If this truck has the dash switch, find out from the owner's manual whether brake service mode is required before front work; sources disagree and none is a Ford document for this truck.",
+    "Replace pads and rotors in left-right pairs."
+  ],
+  "missingEvidence": [
+    "Ford 2015 F-150 owner's manual Brakes (p.190-193), Brake Fluid Check (p.309), Breaking-In (p.272), Changing a Road Wheel (p.352) and Capacities (p.361+) chapters: the fetched PDF text stops near page 57 and the HTML owner-manual pages found for F-150 were other vehicles. This is the primary reference for jacking positions, lug-nut torque, break-in and brake-fluid spec.",
+    "Ford workshop manual 206-03 front disc brake removal/installation for a 2015 F-150 (pad, caliper, anchor-plate procedure, torques in Nm, rotor discard thickness): not reachable on a free host.",
+    "Motorcraft pad kit number and pad shape for this truck (5.0L, 4x4, SuperCrew, XLT, brake package, wheel size): no readable catalog page with a vehicle-filtered fitment.",
+    "Front rotor diameter and discard thickness for this truck.",
+    "Brake-fluid spec for this truck (DOT 3 WSS-M6C65-A1 vs DOT 4 LV WSS-M6C65-A2): FCSD pages are not vehicle-specific.",
+    "Jacking-point positions and any stand position: owner's-manual illustration unread; no two independent sources agree.",
+    "Whether front pad work requires electric-parking-brake service mode on this truck (go-parts: rear only; 2022 Raptor forum: front and rear).",
+    "Whether the 2015 front pad has an electronic or passive wear sensor (go-parts 2010-2014 says passive tab only).",
+    "Whether 4x4 differs from 2WD in any front-brake part, torque or step.",
+    "Lug-nut re-torque interval and a Ford statement of the 150 lb-ft figure for 2015.",
+    "Which slide bolt is top or bottom and the exact shape of the pad clips; caliper piston count (go-parts only says dual-piston).",
+    "Whether the 184 lb-ft bracket and 27 lb-ft pin torques, the 13 mm and 21 mm sockets, and the inner-pad ear description are the same on the P552 as on the 2009-2014 truck for which most how-tos were written."
+  ],
+  "ownerInputsNeeded": [
+    "VIN, so the parts counter or Vehicle Atlas can resolve the pad kit and brake package.",
+    "Old pad shape/part marking and the rotor diameter and any MIN TH stamp (read from the truck).",
+    "Parking brake type: foot pedal or dash switch (electric).",
+    "Brake-fluid type printed on the reservoir cap.",
+    "Wheel size and any heavy-duty payload, tow or special-service package on the build sheet."
+  ],
+  "visuals": [
+    {
+      "id": "f150-front-caliper-bracket-fasteners",
+      "title": "Front caliper: slide bolts, bracket bolts and the hose",
+      "evidenceSteps": [
+        5,
+        8,
+        12
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "front-brake-caliper",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "A disc-brake caliper straddling the rotor, seen from the outboard side with the wheel removed."
+        },
+        {
+          "id": "caliper-slide-bolts",
+          "role": "target",
+          "criticality": "critical",
+          "describe": "Two 13 mm bolts that hold the caliper to the bracket; they come out to free the caliper."
+        },
+        {
+          "id": "caliper-bracket-bolts",
+          "role": "context",
+          "criticality": "critical",
+          "describe": "Two larger 21 mm bolts behind the caliper that hold the bracket to the steering knuckle; not touched on a pads-only job."
+        },
+        {
+          "id": "flexible-brake-hose",
+          "role": "context",
+          "criticality": "critical",
+          "describe": "The flexible rubber brake hose attached to the caliper, which must not carry the caliper's weight."
+        }
+      ],
+      "facts": [
+        {
+          "element": "front-brake-caliper",
+          "attribute": "existence",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads",
+            "https://www.go-parts.com/garage/ps-2015-2020-ford-f-150-disc-brake-caliper"
+          ],
+          "note": "3 sites."
+        },
+        {
+          "element": "caliper-slide-bolts",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+          ],
+          "note": "Two sites say 13 mm; count of two is stated by O'Reilly and Blue Springs ('two caliper bolts'). Head shape (hex) is implied by the socket size, not stated."
+        },
+        {
+          "element": "caliper-slide-bolts",
+          "attribute": "existence",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads",
+            "https://www.tirereview.com/ford-f-150-brake-job/"
+          ],
+          "note": "Two caliper bolts (O'Reilly, Blue Springs); Tire Review calls them guide bolts."
+        },
+        {
+          "element": "caliper-bracket-bolts",
+          "attribute": "fastener-head-type",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+          ],
+          "note": "Two sites say 21 mm; O'Reilly says two bracket bolts."
+        },
+        {
+          "element": "caliper-slide-bolts",
+          "attribute": "fastener-position",
+          "urls": [],
+          "note": "Gap: no source says which slide bolt is top or bottom."
+        },
+        {
+          "element": "flexible-brake-hose",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+          ],
+          "note": "Two sites: keep tension and crimping off the brake line when the caliper is off."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "caliper-slide-bolts",
+          "reason": "Top/bottom placement of the two slide bolts is not established for this truck."
+        },
+        {
+          "element": "front-brake-caliper",
+          "reason": "Piston count, colour, brand and size depend on brake package and are not established for this config (go-parts alone says dual-piston)."
+        },
+        {
+          "element": "caliper-bracket-bolts",
+          "reason": "Bolt count and positions come from the 2009-2014 truck's write-ups; draw as unspecific hex heads behind the caliper without a count if shown at all."
+        }
+      ],
+      "sources": {
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150": {
+          "kind": "third-party-guide",
+          "establishes": "Demo 2012 F-150 front: two 13 mm caliper bolts, two 21 mm bracket bolts, caliper hanger, 27 and 184 lb-ft, 'similar on 2010-2020'."
+        },
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set": {
+          "kind": "third-party-guide",
+          "establishes": "2015-2020 front: 13 mm slide bolts, 21 mm bracket bolts, 184 lb-ft bracket."
+        },
+        "https://www.go-parts.com/garage/ps-2015-2020-ford-f-150-disc-brake-caliper": {
+          "kind": "third-party-guide",
+          "establishes": "2015-2020 front caliper replacement: dual-piston design, 184 ft-lb bracket bolts, banjo bolt 26 ft-lb."
+        },
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads": {
+          "kind": "third-party-guide",
+          "establishes": "Two caliper bolts; set the caliper aside without stressing or crimping the brake line (no model year given)."
+        },
+        "https://www.tirereview.com/ford-f-150-brake-job/": {
+          "kind": "third-party-guide",
+          "establishes": "2009-2014 article: front caliper bracket 184 ft-lbs, front guide bolts 27 ft-lbs."
+        }
+      },
+      "gapFillNotes": [
+        "Slide-bolt top/bottom placement and caliper piston count are unresolved; the visual should show hardware without position claims.",
+        "All fastener descriptions are for 2009-2014 or '2015-2020' per retailer articles; no Ford illustration was read."
+      ],
+      "imageType": "IDENTIFY"
+    },
+    {
+      "id": "f150-inner-outer-pad-orientation",
+      "title": "Telling the inner and outer front pad apart",
+      "evidenceSteps": [
+        6,
+        11
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "inner-brake-pad",
+          "role": "hero",
+          "criticality": "identification",
+          "describe": "The pad on the piston side, whose backing plate has two small ears on top that line up with the caliper piston."
+        },
+        {
+          "id": "outer-brake-pad",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "The pad on the wheel side, smooth backing plate with a chamfer on the top edge."
+        },
+        {
+          "id": "pad-retaining-clips",
+          "role": "context",
+          "criticality": "procedure",
+          "describe": "The metal pad clips/hardware in the bracket on which the pads slide."
+        }
+      ],
+      "facts": [
+        {
+          "element": "inner-brake-pad",
+          "attribute": "orientation",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.tirereview.com/ford-f-150-brake-job/",
+            "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set"
+          ],
+          "note": "Three sites (2009-2014 truck): inner pad has two ears that line up with the piston; outer is smooth with a top chamfer (Tire Review/Babcox)."
+        },
+        {
+          "element": "outer-brake-pad",
+          "attribute": "orientation",
+          "urls": [
+            "https://www.tirereview.com/ford-f-150-brake-job/",
+            "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set"
+          ],
+          "note": "Outer: chamfer on top edge (Babcox only); smooth (go-parts 2010-2014)."
+        },
+        {
+          "element": "pad-retaining-clips",
+          "attribute": "existence",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150"
+          ],
+          "note": "O'Reilly (2012 demo): four pad clips in the bracket. Single source for the count."
+        },
+        {
+          "element": "inner-brake-pad",
+          "attribute": "existence",
+          "urls": [
+            "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set"
+          ],
+          "note": "go-parts 2015-2025: some sets have inner and outer pads that must be installed correctly. No ear detail for 2015."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "inner-brake-pad",
+          "reason": "Ear shape and count are documented for the 2009-2014 truck only; not established for the 2015 P552 front pad."
+        },
+        {
+          "element": "pad-retaining-clips",
+          "reason": "Clip count and routing come from one source on a 2012 truck."
+        }
+      ],
+      "sources": {
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150": {
+          "kind": "third-party-guide",
+          "establishes": "Eared pad goes on the inside toward the piston; four pad clips; 2012 demo truck."
+        },
+        "https://www.tirereview.com/ford-f-150-brake-job/": {
+          "kind": "third-party-guide",
+          "establishes": "2009-2014: inner pad ears line up with the pistons; outer pad chamfer; mixed pads let the caliper hit the wheel."
+        },
+        "https://www.go-parts.com/garage/ps-2010-2014-ford-f-150-disc-brake-pad-set": {
+          "kind": "third-party-guide",
+          "establishes": "2010-2014 front inboard pads have two small ears on the backing plate; outboard smooth."
+        },
+        "https://www.go-parts.com/garage/ps-2015-2025-ford-f-150-disc-brake-pad-set": {
+          "kind": "third-party-guide",
+          "establishes": "2015-2025: some pad sets have inner and outer pads that must be installed correctly."
+        }
+      },
+      "gapFillNotes": [
+        "Ear geometry on the 2015 pad is not confirmed; the visual must be generic or withheld until a 2015 pad photo or catalog image is obtained."
+      ],
+      "imageType": "IDENTIFY"
+    },
+    {
+      "id": "f150-caliper-hung-off-hose",
+      "title": "Supporting the removed caliper so the hose carries no weight",
+      "evidenceSteps": [
+        5
+      ],
+      "viewpoint": "wheel-well",
+      "elements": [
+        {
+          "id": "supported-brake-caliper",
+          "role": "hero",
+          "criticality": "critical",
+          "describe": "The caliper lifted off the rotor and supported from a hanger or tie so it hangs in the wheel well without pulling on its hose."
+        },
+        {
+          "id": "caliper-hanger",
+          "role": "target",
+          "criticality": "procedure",
+          "describe": "A caliper hanger or wire that carries the caliper's weight from a suspension component."
+        },
+        {
+          "id": "slack-brake-hose",
+          "role": "context",
+          "criticality": "critical",
+          "describe": "The brake hose left slack, not stretched, kinked or crimped."
+        }
+      ],
+      "facts": [
+        {
+          "element": "supported-brake-caliper",
+          "attribute": "action",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150",
+            "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads"
+          ],
+          "note": "Two sites: keep tension and crimping off the brake line."
+        },
+        {
+          "element": "caliper-hanger",
+          "attribute": "existence",
+          "urls": [
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150"
+          ],
+          "note": "O'Reilly names a caliper hanger; Blue Springs just says set it aside. Single source for the hanger."
+        },
+        {
+          "element": "slack-brake-hose",
+          "attribute": "relationship",
+          "urls": [
+            "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads",
+            "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150"
+          ],
+          "note": "Do not crimp or tear the line."
+        }
+      ],
+      "mustNotDepict": [
+        {
+          "element": "caliper-hanger",
+          "reason": "The attachment point on the 4x4 front suspension is not established by any source."
+        }
+      ],
+      "sources": {
+        "https://www.oreillyauto.com/how-to-hub/how-to-replace-brake-pads-rotors-ford-f150": {
+          "kind": "third-party-guide",
+          "establishes": "Hang the caliper on a caliper hanger keeping tension off the brake line."
+        },
+        "https://www.bluespringsfordparts.com/blog/ford-f-150-brake-pads": {
+          "kind": "third-party-guide",
+          "establishes": "Set the caliper aside without crimping or tearing the brake line."
+        }
+      },
+      "gapFillNotes": [
+        "Attachment point for the hanger on this truck is unsourced; the visual should not show where it hooks."
+      ],
+      "imageType": "DO"
+    }
+  ],
+  "resolutionNotes": [
+    "PRIMARY: primarySourceFound is false. Ford's 2015 F-150 quick reference guide was read (jacking-point caution, running-board caution, EPB on certain models); the 2015 owner's manual PDF text stops around page 57 so none of its brake, jacking, lug-torque or fluid pages were read; ford.com pad pages loaded without fitment. No Ford workshop-manual page for this truck was reachable.",
+    "RESOLVED (weakly): three fastener torques each have 4 independent-origin hosts agreeing (184 lb-ft bracket, 27 lb-ft pin bolts, 150 lb-ft lug nuts), recorded VERIFIED_SECONDARY, but the agreement spans the 2009-2014 truck, a 2015-2020 retailer video article and a 2022 Raptor forum post; no source read is a Ford document for the 2015 truck, which is why every torque warning in the steps says so.",
+    "NOT RESOLVED: Motorcraft part number / pad shape for this config (recorded as CONFLICT rows with candidates BRF1956, BRF1899 and shapes 1414/1770/2087), rotor size and discard thickness (MISSING), brake-fluid spec (MISSING), jacking and stand positions (policy wording used; none published), EPB service-mode requirement for front work (conflict by year), wear sensor existence, 2WD vs 4WD differences.",
+    "REJECTED as evidence: Ford.com BRF1955 / FR3Z2001Q ('Front 5.0L'): the FR3Z prefix is not an F-150 prefix and the page text mentions Police/High Series package wording, so it was treated as a probable non-F-150 number and not used. Ford workshop pages for Mustang 2014 and Ranger 2019 surfaced in search and were not used. Pages for the 1997-2003 F-150 (f150hub, steemit) and 2013-2014 3.5L master-cylinder recall 16V-345 were read and discarded as non-applicable. The kevinsautos Q&A page contradicts itself for 2012 (129 vs 184 lb-ft) and is counted only as supporting repetition.",
+    "JACK-STAND POLICY: the owner-approved D5 sentence is carried in step 3 and safety[0] with only the jacking-point reference adapted ('lift point' instead of 'plastic pad'; Ford's own running-board caution added).",
+    "SCOPE: no claim in this ledger is made for 2WD, other model years, other engines or other trims. The 13th generation (P552) began with model year 2015; the best-detailed how-tos found are for the preceding generation and are used only as candidates."
+  ]
+}
