@@ -48,6 +48,14 @@ export interface Deps {
    * maps "duplicate" to Stripe's duplicate reason and anything else to requested_by_customer, and puts `note` in the refund metadata.
    */
   refund(input: { paymentIntent: string; idempotencyKey: string; reason: "duplicate" | "already-entitled"; note: string }): Promise<void>;
+  /**
+   * Queues ONE customer refund notice (an outbox row; this function sends nothing). Must be idempotent on dedupeKey, which is
+   * `refund-notice:<purchaseId>`: the first call returns "queued", every later call for the same purchase returns "exists" and writes
+   * nothing. Whichever of the auto-refund or the full-refund event arrives first queues it; the other is a no-op, so a customer gets one
+   * notice per refunded purchase no matter how many times or in what order Stripe delivers events. The sender (not built) must claim the
+   * outbox row before sending and mark it sent, so a crashed or retried send never emails twice.
+   */
+  queueRefundNotice(input: { dedupeKey: string; purchaseId: string; userId: string; kind: "auto-refund" | "refund-completed"; amountCents: number | null; note: string }): Promise<"queued" | "exists">;
 }
 
 export interface StripeEvent {
@@ -126,6 +134,8 @@ export async function processStripeEvent(ev: StripeEvent, deps: Deps): Promise<R
           note: confirmed.why,
         });
         await deps.updatePurchase(purchase.id, { status: "refund_requested" }); // the row stays: it is the customer's record
+        // Only after Stripe accepted the refund: a failed refund call queues no notice (the retry does both, once each).
+        await deps.queueRefundNotice({ dedupeKey: `refund-notice:${purchase.id}`, purchaseId: purchase.id, userId: purchase.userId, kind: "auto-refund", amountCents: null, /* full charge incl. tax; the exact figure arrives with charge.refunded */ note: confirmed.why });
         return finish("processed", `${confirmed.kind}-auto-refunded`, confirmed.why);
       }
       await deps.updatePurchase(purchase.id, { status: "needs_review" });
@@ -154,6 +164,8 @@ export async function processStripeEvent(ev: StripeEvent, deps: Deps): Promise<R
         return finish("needs_review", "partial-refund-manual", `partial refund ${refunded} of ${amount}: access unchanged, manual review`);
       }
       await deps.updatePurchase(purchase.id, { status: "refunded", refundedCents: refunded });
+      // One notice per refunded purchase: a no-op if the auto-refund path already queued it.
+      await deps.queueRefundNotice({ dedupeKey: `refund-notice:${purchase.id}`, purchaseId: purchase.id, userId: purchase.userId, kind: "refund-completed", amountCents: refunded, note: `full refund of charge ${str(obj.id) ?? ""}`.trim() });
       // Revoke only if THIS purchase is what granted the current unlock. A refunded duplicate must never take away the original's access.
       const granting = await deps.grantingPurchaseId(purchase.userId, purchase.vin);
       if (granting !== purchase.id) return finish("processed", "refunded-purchase-did-not-grant", "full refund recorded; access untouched because this purchase did not grant it");

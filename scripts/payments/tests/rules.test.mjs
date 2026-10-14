@@ -88,7 +88,7 @@ test("checkout params refuse off-ladder prices and the general tangible tax code
 // ---------- event processing over fakes ----------
 function world(over = {}) {
   const w = {
-    events: new Map(), purchases: new Map(), calls: [], granting: new Map(),
+    events: new Map(), purchases: new Map(), calls: [], granting: new Map(), outbox: new Map(),
     settle: async () => ({ outcome: "granted", entitlement: { purchaseId: "p1", priceCents: 2000, source: "purchase" } }),
     ...over,
   };
@@ -103,6 +103,7 @@ function world(over = {}) {
     revokeRefunded: async (i) => { w.calls.push(["revoke", i]); return { revoked: true }; },
     legacyHoldsFor: async () => w.holds ?? [],
     refund: async (i) => { w.calls.push(["refund", i]); },
+    queueRefundNotice: async (i) => { w.calls.push(["notice", i]); if (w.outbox.has(i.dedupeKey)) return "exists"; w.outbox.set(i.dedupeKey, i); return "queued"; },
   };
   return w;
 }
@@ -345,4 +346,87 @@ test("charge.refunded with unusable amounts goes to review instead of revoking",
   const r = await processStripeEvent(charge("evt_b", { amount: 0 }), w.deps);
   assert.equal(r.action, "bad-charge-amounts");
   assert.equal(called(w, "revoke").length, 0);
+});
+
+// ---------- refund notices: one per refunded purchase, never duplicated ----------
+test("NOTICE: an auto-refund queues exactly one customer notice, keyed by purchase", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  await processStripeEvent(completed(), w.deps);
+  const n = called(w, "notice");
+  assert.equal(n.length, 1);
+  assert.equal(n[0][1].dedupeKey, "refund-notice:p1");
+  assert.equal(n[0][1].kind, "auto-refund");
+  assert.equal(n[0][1].amountCents, null, "the exact refunded amount (tax included) is not known until charge.refunded; never guess it");
+});
+
+test("NOTICE: the same Stripe event delivered ten times makes one refund and one notice", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  for (let i = 0; i < 10; i++) await processStripeEvent(completed(), w.deps);
+  assert.equal(called(w, "refund").length, 1);
+  assert.equal(called(w, "notice").length, 1);
+  assert.equal(w.outbox.size, 1);
+});
+
+test("NOTICE: a failed refund call queues no notice; the retry refunds once and queues once", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  let boom = true; const real = w.deps.refund;
+  w.deps.refund = async (i) => { if (boom) throw new Error("stripe 500"); return real(i); };
+  await assert.rejects(processStripeEvent(completed(), w.deps), /stripe 500/);
+  assert.equal(called(w, "notice").length, 0, "no email for a refund that did not happen");
+  boom = false;
+  await processStripeEvent(completed(), w.deps);
+  assert.equal(called(w, "refund").length, 1);
+  assert.equal(w.outbox.size, 1);
+});
+
+test("NOTICE: charge.refunded after an auto-refund does NOT queue a second notice (outbox says exists)", async () => {
+  const w = world({ settle: async () => refundRequired("already-unlocked", GIFT) });
+  await processStripeEvent(completed(), w.deps);
+  await processStripeEvent(charge("evt_rc"), w.deps);
+  await processStripeEvent(charge("evt_rc"), w.deps); // and the duplicate delivery
+  assert.equal(w.outbox.size, 1);
+  assert.equal(w.outbox.get("refund-notice:p1").kind, "auto-refund", "first writer wins");
+});
+
+test("NOTICE: a full refund done by the owner in the Dashboard queues one 'refund-completed' notice with the real amount; stale re-delivery adds none", async () => {
+  const w = world();
+  await processStripeEvent(completed(), w.deps);
+  w.granting.set("u1|1HGCM82633A004352", "p1");
+  await processStripeEvent(charge("evt_f1"), w.deps);
+  await processStripeEvent(charge("evt_f2"), w.deps); // a distinct event id for the same refund
+  assert.equal(w.outbox.size, 1);
+  assert.equal(w.outbox.get("refund-notice:p1").amountCents, 2160);
+  assert.equal(w.outbox.get("refund-notice:p1").kind, "refund-completed");
+});
+
+test("NOTICE: partial refunds, disputes and manual-review cases queue NO customer notice", async () => {
+  const w = world({ settle: async () => refundRequired("legacy-unlock-pending", null) });
+  w.holds = [{ id: "h1", source: "purchase", matchedBy: "garage-entry" }]; // paid hold tied only to the car: ambiguous
+  await processStripeEvent(completed(), w.deps);
+  await processStripeEvent(charge("evt_pp", { amount_refunded: 500, refunded: false }), w.deps);
+  await processStripeEvent({ id: "evt_d", type: "charge.dispute.created", data: { object: {} } }, w.deps);
+  assert.equal(called(w, "notice").length, 0);
+});
+
+// ---------- TEST-ONLY fixture gate ----------
+const FIX = { id: "test-fixture-guide-1", tier: "premium", testFixture: true };
+const PREVIEW = { VERCEL_ENV: "preview", KEYS_TEST_FIXTURE_ENABLED: "1", STRIPE_SECRET_KEY: "sk_test_abc123" };
+test("FIXTURE: sellable only on a Preview deployment with the fixture flag and a TEST key", () => {
+  assert.equal(flags.isSellableHere(FIX, PREVIEW), true);
+});
+test("FIXTURE: never sellable in Production, development, or with VERCEL_ENV unset, even with every other flag set", () => {
+  for (const e of ["production", "development", undefined, "", "Preview", "preview "]) assert.equal(flags.isSellableHere(FIX, { ...PREVIEW, VERCEL_ENV: e }), false, String(e));
+});
+test("FIXTURE: each missing condition refuses (flag, live key, no key, wrong id prefix, no testFixture marker)", () => {
+  for (const v of [undefined, "", "0", "true"]) assert.equal(flags.isSellableHere(FIX, { ...PREVIEW, KEYS_TEST_FIXTURE_ENABLED: v }), false);
+  for (const k of ["sk_live_abc123", "rk_live_abc", undefined, ""]) assert.equal(flags.isSellableHere(FIX, { ...PREVIEW, STRIPE_SECRET_KEY: k }), false);
+  assert.equal(flags.isSellableHere({ ...FIX, id: "2015-ford-f150-5.0l-oil" }, PREVIEW), false, "a real guide id cannot ride the fixture flag");
+  assert.equal(flags.isSellableHere({ ...FIX, id: undefined }, PREVIEW), false);
+  assert.equal(flags.isSellableHere({ ...FIX, testFixture: false }, PREVIEW), false);
+  assert.equal(flags.isSellableHere({ id: "test-fixture-x", tier: "premium" }, PREVIEW), false, "prefix alone is not enough");
+});
+test("FIXTURE: a real uncertified guide stays unsellable everywhere, including Preview with all flags on", () => {
+  for (const g of [{ id: "real-guide", tier: "premium" }, { id: "real-guide", tier: "premium", certified: false }, { id: "real-guide", tier: "premium", testFixture: true }])
+    assert.equal(flags.isSellableHere(g, PREVIEW), false);
+  assert.equal(flags.isSellableHere({ id: "real-guide", tier: "premium", certified: true }, {}), true, "only a certified guide takes the normal path");
 });

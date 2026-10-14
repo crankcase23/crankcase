@@ -157,6 +157,8 @@ async function pending(userId, v, quoted = 2000) {
   await pool.query("insert into purchases(id,user_id,amount_cents,status,provider,provider_ref) values ($1,$2,$3,'pending','stripe',$4)", [id, userId, quoted, `cs_${id}`]);
   return { id, userId, vin: v, quotedCents: quoted };
 }
+// The notice outbox table is designed but not built or migrated yet; an in-memory stand-in keyed like the real unique index.
+const outbox = new Map();
 function realDeps(known, refunds) {
   return {
     claimEvent: async (eid, type) => {
@@ -190,6 +192,7 @@ function realDeps(known, refunds) {
             and (h.vin_at_snapshot = $2 or h.garage_entry_id in (select id from garage_entries where user_id = $1 and vin = $2))`,
         [u, v])).rows,
     refund: async (i) => { refunds.push(i); },
+    queueRefundNotice: async (i) => { if (outbox.has(i.dedupeKey)) return "exists"; outbox.set(i.dedupeKey, i); return "queued"; },
   };
 }
 // Everything the customer owns, as one comparable value: used to prove a refund deletes or edits none of it.
