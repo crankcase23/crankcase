@@ -6,7 +6,7 @@
     "predev": "node scripts/ocr/copy-assets.mjs",
     "dev": "next dev",
     "prebuild": "node scripts/ocr/copy-assets.mjs",
-    "build": "next build",
+    "build": "node scripts/check-olp-scope.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "test:e2e": "playwright test",
@@ -25,7 +25,8 @@
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs",
     "config:test": "node --test scripts/config/tests/*.test.mjs",
     "keys:test": "node --test scripts/keys/tests/*.test.mjs",
-    "release:gate": "node scripts/release-gate.mjs"
+    "release:gate": "node scripts/release-gate.mjs",
+    "check:data": "node scripts/check-olp-scope.mjs"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",

@@ -90,7 +90,11 @@ export async function GET(request: Request) {
         // Belt and braces: getWebAnalytics() is written not to throw, but it
         // is the only call in here that leaves the building, and a rejected
         // promise in this Promise.all would 500 the whole queue.
-        getWebAnalytics().catch(() => ({ data: null, error: "network_error" as const })),
+        getWebAnalytics().catch(() => ({
+          data: null,
+          error: "network_error" as const,
+          status: null,
+        })),
       ]);
 
     // Traffic is a nice-to-have on a queue endpoint, so a failure to read it
@@ -99,7 +103,11 @@ export async function GET(request: Request) {
     if (analytics.error && analytics.error !== "not_configured") {
       await recordError({
         source: "api/admin/report",
-        error: new Error(`web analytics unavailable: ${analytics.error}`),
+        error: new Error(
+          analytics.status === null
+            ? `web analytics unavailable: ${analytics.error}`
+            : `web analytics unavailable: ${analytics.error} (upstream HTTP ${analytics.status})`,
+        ),
         level: "warning",
         path: "/api/admin/report",
       });
@@ -121,6 +129,21 @@ export async function GET(request: Request) {
         // null means "we couldn't ask" - not "nobody visited". See
         // src/lib/vercelAnalytics.ts; this is never zero-filled.
         analytics: analytics.data,
+        // Why `analytics` is null, when it is. Without this the two very
+        // different causes - the token isn't set, versus the token is set and
+        // the query is being rejected - are indistinguishable from outside,
+        // and the feed can sit silently broken for days looking identical to
+        // switched off. Null here means the read succeeded.
+        //
+        // This is the failure *category* only, never the token and never any
+        // part of its value. The categories are the ones declared by
+        // AnalyticsError in src/lib/vercelAnalytics.ts.
+        analyticsError: analytics.error,
+        // The upstream HTTP status when the category was `http_error`, so a
+        // rejected token (401), a token without the right scope or plan (403)
+        // and a parameter Vercel won't accept (400) can be told apart. Those
+        // need three different fixes, and only one of them is a code change.
+        analyticsErrorStatus: analytics.status,
       },
       { headers: NO_STORE },
     );
