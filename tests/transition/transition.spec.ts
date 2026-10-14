@@ -68,7 +68,7 @@ test.describe(`phase ${PHASE}`, () => {
     r.storedLowerVin = sql(`select vin from garage_entries where user_id='${id}' and upper(vin)='${v2}'`);
     out.customerWrites = r;
     const s = load(); s[`c1_${PHASE}`] = email; s[`c1_${PHASE}_vin`] = v1; save(s);
-    expect([r.valid, r.sameVinTwice, r.lowerCase, r.noVin, r.list]).toEqual([200, 200, 200, 200, 200]);
+    expect([r.valid, r.sameVinTwice, r.lowerCase, r.noVin, r.list]).toEqual([200, 200, 200, 400, 200]); // noVin 400: current main refuses a VIN-less add ("A VIN is required"); VIN-less rows now exist only as history, seeded by SQL below
     await ctx.close();
   });
 
@@ -78,8 +78,11 @@ test.describe(`phase ${PHASE}`, () => {
     const ch = await browser.newContext(); const cust = await ch.newPage(); const hEmail = await signUpNewUser(cust); const hid = uid(hEmail);
     const gVin = validVin("1FT"), g2Vin = validVin("1FT");
     for (const v of [gVin, g2Vin]) expect((await addCustom(cust, v)).status()).toBe(200);
-    expect((await cust.request.post("/api/garage", { data: { kind: "custom", custom: { year: "2012", make: "Ford", model: "Focus" } } })).status()).toBe(200);
-    expect((await cust.request.post("/api/garage", { data: { kind: "custom", custom: { vin: "NOT-A-REAL-VIN", year: "2011", make: "Ford", model: "Fiesta" } } })).status()).toBe(200);
+    // Current main refuses VIN-less and invalid-VIN adds over HTTP (400), so the historical rows the old window could contain are seeded directly, as they exist in Production history.
+    expect((await cust.request.post("/api/garage", { data: { kind: "custom", custom: { year: "2012", make: "Ford", model: "Focus" } } })).status()).toBe(400);
+    expect((await cust.request.post("/api/garage", { data: { kind: "custom", custom: { vin: "NOT-A-REAL-VIN", year: "2011", make: "Ford", model: "Fiesta" } } })).status()).toBe(400);
+    sql(`insert into garage_entries(id,user_id,kind,year,make,model) values ('hist-focus-${hid}','${hid}','custom','2012','Ford','Focus'),('hist-fiesta-${hid}','${hid}','custom','2011','Ford','Fiesta')`);
+    sql(`update garage_entries set vin='NOT-A-REAL-VIN' where id='hist-fiesta-${hid}'`);
     const G = rowFor(hid, gVin), G2 = rowFor(hid, g2Vin), P = rowFor(hid, null), J = rowFor(hid, "NOT-A-REAL-VIN");
     // G and G2: gifted by the OLD admin screen (writes vehicle_unlocks); P (VIN-less) was bought; J has a junk VIN and was gifted.
     expect((await adminGift(adminPage, hid, G)).status()).toBe(303);
