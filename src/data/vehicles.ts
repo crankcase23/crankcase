@@ -159,9 +159,9 @@ provenance: { source: "curated" },
 },
 {
 name: "Engine Coolant",
-capacity: "~16.6 qt (15.7 L) system capacity",
-spec: "Motorcraft Orange, Ford spec WSS-M97B44-D, 50/50 premix (VC-3, VC-3DIL-B)",
-notes: "CORRECTED 2026-09-19. This previously read 'Motorcraft Orange (Gold)', which conflates two different products -- Gold is VC-7 / WSS-M97B51-A1, a separate specification, and treating them as interchangeable is exactly how a cooling system gets cross-contaminated. The factory fill here is Orange. Ford has since approved Motorcraft YELLOW (WSS-M97B57-A1/-A2) as the service replacement for any vehicle factory-filled with Orange, and is phasing Orange out of the catalog -- so Yellow is a correct modern refill for this truck. Ford's own bulletin warns Yellow is NOT a universal substitute and must not be used on vehicles factory-filled with any other Motorcraft coolant, Gold included.",
+capacity: "15.9 qt (15 L) system capacity",
+spec: "Motorcraft Orange Prediluted Antifreeze/Coolant VC-3DIL-B, Ford spec WSS-M97B44-D2",
+notes: "CAPACITY AND SPEC CORRECTED 2026-10-13 from the Ford 2015 F-150 Owner's Manual (Capacities and Specifications, 5.0L; the 5.0L page, not the 3.5L/2.7L/6.2L pages). The previous ~16.6 qt had no source. CORRECTED 2026-09-19. This previously read 'Motorcraft Orange (Gold)', which conflates two different products -- Gold is VC-7 / WSS-M97B51-A1, a separate specification, and treating them as interchangeable is exactly how a cooling system gets cross-contaminated. The factory fill here is Orange. Ford has since approved Motorcraft YELLOW (WSS-M97B57-A1/-A2) as the service replacement for any vehicle factory-filled with Orange, and is phasing Orange out of the catalog -- so Yellow is a correct modern refill for this truck. Ford's own bulletin warns Yellow is NOT a universal substitute and must not be used on vehicles factory-filled with any other Motorcraft coolant, Gold included.",
 },
 {
 name: "Automatic Transmission Fluid (6R80)",
@@ -187,7 +187,8 @@ spec: "Motorcraft MERCON LV",
 {
 name: "Brake Fluid",
 capacity: "Fill to MAX line in reservoir",
-spec: "DOT 3",
+spec: "DOT 4 LV (Motorcraft PM-20, Ford WSS-M6C65-A2)",
+notes: "CORRECTED 2026-10-13. This previously read DOT 3, which contradicts the Ford 2015 F-150 Owner's Manual (Capacities and Specifications, 5.0L): DOT 4 low-viscosity (LV) only. Do not top off with ordinary DOT 3 or DOT 4.",
 },
 {
 name: "Windshield Washer Fluid",
