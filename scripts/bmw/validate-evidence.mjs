@@ -141,6 +141,15 @@ export function validateEvidence(dir, opts = {}) {
   // strict claim rules, with the directory's triaged baseline (if any)
   const baselineFile = path.join(dir, "STRICT-BASELINE.json");
   const baseline = fs.existsSync(baselineFile) ? JSON.parse(fs.readFileSync(baselineFile, "utf8")).findings ?? [] : [];
+  // A baseline entry is an exception, so each one must justify itself, be unique, and the file may not grow past its recorded ceiling.
+  const baselineMeta = fs.existsSync(baselineFile) ? JSON.parse(fs.readFileSync(baselineFile, "utf8")) : {};
+  const seenKeys = new Set();
+  for (const b of baseline) {
+    if (!b.key || !["LOW", "MEDIUM"].includes(b.risk) || String(b.rationale ?? "").length < 20) errors.push(`STRICT-BASELINE entry needs key, risk LOW or MEDIUM (HIGH must be fixed, not excepted) and a rationale: ${b.key ?? "(no key)"}`);
+    if (seenKeys.has(b.key)) errors.push(`STRICT-BASELINE duplicate entry: ${b.key}`);
+    seenKeys.add(b.key);
+  }
+  if (baseline.length && !(Number.isInteger(baselineMeta.ceiling) && baseline.length <= baselineMeta.ceiling)) errors.push(`STRICT-BASELINE has ${baseline.length} entries but ceiling is ${baselineMeta.ceiling}; the baseline may not grow`);
   const allowed = new Map(baseline.map((b) => [b.key, b]));
   const seen = new Set();
   const baselined = [];
@@ -159,6 +168,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const r = validateEvidence(dir, { expectedGuides: process.env.EXPECTED_GUIDES === undefined ? 16 : process.env.EXPECTED_GUIDES === "any" ? null : Number(process.env.EXPECTED_GUIDES) });
   for (const w of r.warnings) console.log("WARN  " + w);
   for (const e of r.errors) console.log("ERROR " + e);
+  for (const b of r.baselined) console.log(`BASELINED [${b.risk}] guide ${b.guide} [${b.code}] ${b.message}`);
   console.log(`${r.guides.length} guides, ${r.errors.length} error(s), ${r.warnings.length} warning(s), ${r.baselined.length} baselined`);
   process.exit(r.errors.length ? 1 : 0);
 }

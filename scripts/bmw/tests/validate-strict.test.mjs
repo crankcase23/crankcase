@@ -9,6 +9,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import crypto from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { validateEvidence, strictFindings, findingKey, isHardwareId } from "../validate-evidence.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -20,7 +22,7 @@ function scratch(mutate, baseline) {
   const g = clean();
   mutate?.(g);
   fs.writeFileSync(path.join(dir, "guide-01.json"), JSON.stringify(g));
-  if (baseline) fs.writeFileSync(path.join(dir, "STRICT-BASELINE.json"), JSON.stringify({ findings: baseline }));
+  if (baseline) fs.writeFileSync(path.join(dir, "STRICT-BASELINE.json"), JSON.stringify({ ceiling: baseline.length, findings: baseline }));
   return dir;
 }
 const run = (mutate, baseline) => validateEvidence(scratch(mutate, baseline), { expectedGuides: null });
@@ -73,13 +75,13 @@ test("baseline: a listed finding is reported as baselined, not as an error", () 
   const mutate = (g) => { g.parts[0].status = "VERIFIED"; g.parts[0].sources = []; g.primarySourceFound = true; };
   const f = strictFindings((() => { const g = clean(); mutate(g); return g; })());
   assert.equal(f.length, 1);
-  const r = run(mutate, [{ key: findingKey(f[0]), risk: "LOW", rationale: "probe" }]);
+  const r = run(mutate, [{ key: findingKey(f[0]), risk: "LOW", rationale: "probe entry long enough to count" }]);
   assert.deepEqual(r.errors, []);
   assert.equal(r.baselined.length, 1);
 });
 
 test("baseline may only shrink: a stale entry fails", () => {
-  const r = run(undefined, [{ key: "1|UNSOURCED_VERIFIED|parts[0] gone", risk: "LOW", rationale: "stale" }]);
+  const r = run(undefined, [{ key: "1|UNSOURCED_VERIFIED|parts[0] gone", risk: "LOW", rationale: "stale entry long enough to count" }]);
   assert.ok(r.errors.some((e) => /no longer matches/.test(e)), r.errors.join("\n"));
 });
 
@@ -97,4 +99,36 @@ test("BMW set: passes only through the triaged baseline; every entry has a risk 
     assert.ok(["LOW", "MEDIUM", "HIGH"].includes(e.risk) && e.rationale?.length > 20, e.key);
     assert.notEqual(e.risk, "HIGH", `${e.key}: a HIGH finding must be fixed, not baselined`);
   }
+});
+
+// ---- the BMW exceptions are frozen: visible, counted, and impossible to extend quietly ----
+test("FROZEN: the BMW baseline is exactly these 33 triaged findings; adding an exception means editing this test in review", () => {
+  const raw = JSON.parse(fs.readFileSync(path.join(BMW_DIR, "STRICT-BASELINE.json"), "utf8"));
+  const keys = raw.findings.map((f) => f.key).sort();
+  assert.equal(keys.length, 33);
+  assert.equal(raw.ceiling, 33);
+  assert.equal(crypto.createHash("sha256").update(keys.join("\n")).digest("hex"), "b476a12e727c8197b8cc6046520a4edefc55f4fc876048caa418b208dcb2eab0",
+    "baseline key set changed: shrinking is allowed (update this hash and count in the same commit); growing is not");
+});
+
+test("baseline cannot grow: more entries than the ceiling, a duplicate, a HIGH entry, or a missing rationale each fail", () => {
+  const mutate = (g) => { g.parts[0].status = "VERIFIED"; g.parts[0].sources = []; g.primarySourceFound = true; };
+  const key = findingKey(strictFindings((() => { const g = clean(); mutate(g); return g; })())[0]);
+  const withMeta = (findings, ceiling) => {
+    const dir = scratch(mutate);
+    fs.writeFileSync(path.join(dir, "STRICT-BASELINE.json"), JSON.stringify({ ceiling, findings }));
+    return validateEvidence(dir, { expectedGuides: null }).errors.join("\n");
+  };
+  const ok = { key, risk: "LOW", rationale: "probe entry long enough to count" };
+  assert.equal(withMeta([ok], 1), "");
+  assert.match(withMeta([ok], 0), /may not grow/);
+  assert.match(withMeta([ok, ok], 2), /duplicate/);
+  assert.match(withMeta([{ ...ok, risk: "HIGH" }], 1), /HIGH must be fixed/);
+  assert.match(withMeta([{ ...ok, rationale: "" }], 1), /needs key, risk/);
+});
+
+test("the CLI prints every baselined BMW finding so the exceptions stay visible", () => {
+  const out = spawnSync(process.execPath, [path.join(ROOT, "scripts/bmw/validate-evidence.mjs")], { encoding: "utf8" }).stdout;
+  assert.equal(out.split("\n").filter((l) => l.startsWith("BASELINED [")).length, 33);
+  assert.match(out, /33 baselined/);
 });

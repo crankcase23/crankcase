@@ -1,5 +1,6 @@
 {
  "note": "Triaged 2026-10-13. Legacy BMW findings under the strict claim rules in scripts/bmw/validate-evidence.mjs. The list may only shrink: a finding not listed here fails validation, and an entry that no longer matches fails validation. Risk is by customer-safety impact, not wording. No finding is HIGH. MEDIUM entries need a ledger fix before the guide is next re-certified; LOW entries are accepted as-is.",
+ "ceiling": 33,
  "findings": [
   {
    "key": "3|TORQUE_NO_NUMBER|torque[0] None applicable",
