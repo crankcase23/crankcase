@@ -4,6 +4,7 @@ import { requireUserId } from "@/lib/apiAuth";
 import { resolveGarageEntryId } from "@/lib/garageEntries";
 import { listServiceEntries, addServiceEntry } from "@/lib/serviceEntriesDb";
 import { recordEvent, EVENT_TYPES } from "@/lib/events";
+import { validateServiceEntry } from "@/lib/serviceValidation";
 
 export const GET = withGarageId(async (_request: Request, { params }: { params: Promise<{ id: string }> }) => {
   const userId = await requireUserId();
@@ -23,15 +24,10 @@ export const POST = withGarageId(async (request: Request, { params }: { params: 
 
   const { id } = await params;
   const body = await request.json().catch(() => null);
-  const date = typeof body?.date === "string" ? body.date : "";
-  const mileage = Number(body?.mileage);
-  const title = typeof body?.title === "string" ? body.title.trim() : "";
-  const guideId = typeof body?.guideId === "string" ? body.guideId : undefined;
-  const notes = typeof body?.notes === "string" && body.notes.trim() ? body.notes.trim() : undefined;
-
-  if (!date || !title || !Number.isFinite(mileage)) {
-    return NextResponse.json({ error: "date, mileage, and title are required." }, { status: 400 });
-  }
+  // One shared validator (also run in the form). Bad input is a controlled 400 with a message, never a database error.
+  const parsed = validateServiceEntry(body);
+  if (!parsed.ok) return NextResponse.json({ error: parsed.error, field: parsed.field }, { status: 400 });
+  const { date, mileage, title, guideId, notes } = parsed.value;
 
   const garageEntryId = await resolveGarageEntryId(userId, id);
   if (!garageEntryId) return NextResponse.json({ error: "Add this vehicle to your garage first. A VIN is required to add a vehicle." , code: "NOT_IN_GARAGE" }, { status: 404 });

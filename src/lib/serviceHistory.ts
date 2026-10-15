@@ -22,6 +22,18 @@ async function fetcher(url: string): Promise<ServiceEntry[]> {
   return data.entries as ServiceEntry[];
 }
 
+/** The server's own message when it sent one (a 400 says exactly what is wrong), else a plain fallback. */
+async function messageFrom(res: Response, fallback: string): Promise<string> {
+  if (res.status === 401) return "You were signed out. Sign in again, then try again.";
+  try {
+    const j = await res.json();
+    if (res.status < 500 && typeof j?.error === "string" && j.error) return j.error;
+  } catch {
+    /* not JSON: use the fallback */
+  }
+  return fallback;
+}
+
 export function useServiceHistory(vehicleId: string) {
   const key = keyFor(vehicleId);
   const { data, error, isLoading } = useSWR<ServiceEntry[]>(key, fetcher);
@@ -29,12 +41,18 @@ export function useServiceHistory(vehicleId: string) {
 
   const addEntry = useCallback(
     async (entry: Omit<ServiceEntry, "id" | "loggedAt">) => {
-      const res = await fetch(key, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(entry),
-      });
-      if (!res.ok) throw new Error("Could not save that service entry.");
+      // A network failure (fetch itself rejecting) and a non-2xx are both "not saved": the caller keeps the form as it was.
+      let res: Response;
+      try {
+        res = await fetch(key, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(entry),
+        });
+      } catch {
+        throw new Error("Couldn't reach the server, so nothing was saved. Check your connection and try again.");
+      }
+      if (!res.ok) throw new Error(await messageFrom(res, "Couldn't save that entry. Nothing was lost; try again."));
       const { entry: created } = await res.json();
       await globalMutate(
         key,
@@ -48,13 +66,20 @@ export function useServiceHistory(vehicleId: string) {
 
   const deleteEntry = useCallback(
     async (id: string) => {
+      // Server first, screen second. The row leaves the list only once the server has confirmed the delete, so a failed
+      // delete can never look like it worked (the old optimistic remove did, until the next reload brought the row back).
+      let res: Response;
+      try {
+        res = await fetch(`/api/garage/${encodeURIComponent(vehicleId)}/service/${encodeURIComponent(id)}`, {
+          method: "DELETE",
+        });
+      } catch {
+        throw new Error("Couldn't reach the server, so nothing was deleted. Check your connection and try again.");
+      }
+      if (!res.ok) throw new Error(await messageFrom(res, "Couldn't delete that entry. It is still in your history; try again."));
       await globalMutate(key, (current: ServiceEntry[] = []) => current.filter((e) => e.id !== id), {
         revalidate: false,
       });
-      const res = await fetch(`/api/garage/${encodeURIComponent(vehicleId)}/service/${encodeURIComponent(id)}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Could not delete that service entry.");
     },
     [key, vehicleId],
   );
