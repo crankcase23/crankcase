@@ -141,7 +141,8 @@ for (const vp of [
         await page.getByRole("button", { name: /exit wrench mode/i }).click();
         await page.getByRole("alertdialog").getByRole("button", { name: "Exit Wrench Mode" }).click();
         await expect(page.getByRole("button", { name: /start wrench mode/i })).toBeVisible();
-        // reload mid-session: the session lives in memory by design, so a reload must come back clean, not crash
+        // reload mid-session on the ADMIN preview host: it has no garage vehicle id, so it deliberately stays in memory (the
+        // customer routes persist progress: see wrench-resume.spec.ts). A reload must come back clean here, not crash.
         await page.getByRole("button", { name: /start wrench mode/i }).click();
         await page.reload();
         await expect(page.getByRole("button", { name: /start wrench mode/i })).toBeVisible();

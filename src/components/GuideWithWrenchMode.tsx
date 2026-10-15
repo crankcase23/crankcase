@@ -9,6 +9,9 @@ import ExitWrenchDialog from "@/components/ExitWrenchDialog";
 import WrenchMode from "@/components/WrenchMode";
 import { GRAPHITE_VARS } from "@/components/guideTheme";
 import { buildWrenchPlan } from "@/lib/wrenchSteps";
+import { clearProgress, loadProgress, persistableGarageId, safeStorage, saveProgress } from "@/lib/wrenchProgress";
+import type { StorageLike } from "@/lib/wrenchProgress";
+import { useWrenchBackGuard } from "@/lib/useWrenchBackGuard";
 import { useVehicleConfig } from "@/lib/garage";
 import { configKey } from "@/lib/vehicleConfig";
 import type { ConfigResolvedGuide } from "@/lib/guideConfig";
@@ -26,12 +29,23 @@ import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
  * if the saved configuration changes while a session exists (Edit Configuration here or in another tab or device), the
  * session is ended and the page refreshes, so nobody carries on with steps written for the old build.
  *
- * SESSION LIFECYCLE (client-side, in memory only: a reload clears it).
+ * SESSION LIFECYCLE.
  *   no session      -> "START WRENCH MODE" (begins at step 1)
  *   session exists  -> "RESUME WRENCH MODE" + "Step X of Y", plus a secondary
  *                      "Exit Wrench Mode" that asks for confirmation
  *   "← Overall Guide" inside Wrench Mode -> hides the overlay, KEEPS session
+ *   browser Back while the overlay is open -> same as "← Overall Guide" (see useWrenchBackGuard)
  *   confirmed exit / saved / finished without saving -> clears the session
+ *
+ * PERSISTENCE (approved behaviour change: this used to be in memory only, so a reload cleared it). When the host has a real
+ * garage vehicle (a composite garage id), the session is saved to this device's localStorage on every step and restored after
+ * a refresh, a browser restart or in-app navigation, scoped to garage vehicle + guide + configuration, and keyed to the
+ * identity of each step so progress for changed content is rejected rather than resumed on the wrong step. It is cleared only
+ * by a confirmed exit, a finished job, or a configuration change, never by ordinary navigation. Hosts without a garage id (the
+ * admin preview) and browsers without storage stay in memory. A restored session opens on the Overall Guide, one tap from
+ * "Resume Wrench Mode"; it never opens the overlay by itself. See wrenchProgress.ts for what is saved and rejected.
+ *
+ * While the overlay is open the screen is kept awake (useScreenWakeLock inside WrenchMode).
  *
  * The Full Guide stays mounted (inert) behind the overlay so returning to it
  * keeps its scroll position and any answered variant questions.
@@ -77,6 +91,26 @@ export default function GuideWithWrenchMode({
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const plan = useMemo(() => buildWrenchPlan(guide), [guide]);
+
+  // Device-local persistence. Only for a real garage vehicle (composite id); everything else stays in memory.
+  const persistId = persistableGarageId(garageId);
+  const progressKeyForConfig = guideKey ?? "none";
+  const storageRef = useRef<StorageLike | null>(null);
+  // Restore after mount, never during render: the server and the first client render both show "Start", so hydration matches.
+  // Functional update: a session that is already live is never overwritten by a restore.
+  useEffect(() => {
+    if (!persistId) return;
+    storageRef.current = safeStorage();
+    const r = loadProgress(storageRef.current, { garageId: persistId, guideId: guide.id, configKey: progressKeyForConfig, plan });
+    if (r.status === "resume") setSession((s) => s ?? { index: r.index, key: guideKey });
+  }, [persistId, guide.id, guideKey, progressKeyForConfig, plan]);
+  // Save every step; a session invalidated by a configuration change is removed from storage too.
+  useEffect(() => {
+    if (!persistId || !rawSession) return;
+    if (sessionValid) saveProgress(storageRef.current, { garageId: persistId, guideId: guide.id, configKey: progressKeyForConfig, plan }, rawSession.index);
+    else clearProgress(storageRef.current, persistId, guide.id);
+  }, [persistId, guide.id, progressKeyForConfig, plan, rawSession, sessionValid]);
+
   const here = session ? plan.steps[Math.min(session.index, plan.steps.length - 1)] : undefined;
 
   const focusPrimary = useCallback(
@@ -105,14 +139,18 @@ export default function GuideWithWrenchMode({
     focusPrimary();
   }, [focusPrimary]);
 
+  // Browser Back while the overlay is open does the same thing instead of leaving the page. Closed: ordinary navigation.
+  useWrenchBackGuard(open, toOverallGuide);
+
   // Intentional end of the session (confirmed exit, saved, or finished
   // without saving). Back to the initial state.
   const endSession = useCallback(() => {
+    if (persistId) clearProgress(storageRef.current, persistId, guide.id);
     setOpen(false);
     setSession(null);
     setConfirmExit(false);
     focusPrimary();
-  }, [focusPrimary]);
+  }, [focusPrimary, persistId, guide.id]);
 
   const keepWrenching = useCallback(() => {
     setConfirmExit(false);
