@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOutAndClear } from "@/lib/signOutAndClear";
 import CrankcaseBadge from "@/components/CrankcaseBadge";
 import CommandBar from "./CommandBar";
 import { Icon, type IconName } from "./icons";
@@ -190,7 +190,7 @@ export default function AdminShell({
               </div>
               <button
                 type="button"
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => signOutAndClear({ callbackUrl: "/" })}
                 aria-label="Log out"
                 title="Log out"
                 className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-800 hover:text-white"
@@ -262,7 +262,7 @@ export default function AdminShell({
                 </div>
                 <button
                   type="button"
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={() => signOutAndClear({ callbackUrl: "/" })}
                   className="mt-2 text-xs text-slate-500 hover:text-white"
                 >
                   Log out

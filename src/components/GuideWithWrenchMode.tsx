@@ -9,7 +9,7 @@ import ExitWrenchDialog from "@/components/ExitWrenchDialog";
 import WrenchMode from "@/components/WrenchMode";
 import { GRAPHITE_VARS } from "@/components/guideTheme";
 import { buildWrenchPlan } from "@/lib/wrenchSteps";
-import { clearProgress, loadProgress, persistableGarageId, safeStorage, saveProgress } from "@/lib/wrenchProgress";
+import { clearProgress, loadProgress, persistTarget, safeStorage, saveProgress } from "@/lib/wrenchProgress";
 import type { StorageLike } from "@/lib/wrenchProgress";
 import { useWrenchBackGuard } from "@/lib/useWrenchBackGuard";
 import { useVehicleConfig } from "@/lib/garage";
@@ -38,11 +38,12 @@ import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
  *   confirmed exit / saved / finished without saving -> clears the session
  *
  * PERSISTENCE (approved behaviour change: this used to be in memory only, so a reload cleared it). When the host has a real
- * garage vehicle (a composite garage id), the session is saved to this device's localStorage on every step and restored after
- * a refresh, a browser restart or in-app navigation, scoped to garage vehicle + guide + configuration, and keyed to the
+ * garage vehicle (a composite garage id) that the signed-in viewer OWNS (the server supplies `progressScope` only then), the session is saved to this device's localStorage on every step and restored after
+ * a refresh, a browser restart or in-app navigation, scoped to account + garage vehicle + guide + configuration, and keyed to the
  * identity of each step so progress for changed content is rejected rather than resumed on the wrong step. It is cleared only
- * by a confirmed exit, a finished job, or a configuration change, never by ordinary navigation. Hosts without a garage id (the
- * admin preview) and browsers without storage stay in memory. A restored session opens on the Overall Guide, one tap from
+ * by a confirmed exit, a finished job, or a configuration change, never by ordinary navigation, and on every sign-out path (see
+ * signOutAndClear and WrenchProgressGuard). Hosts without a garage id or account scope (the
+ * admin preview, a car the viewer does not own) and browsers without storage stay in memory. A restored session opens on the Overall Guide, one tap from
  * "Resume Wrench Mode"; it never opens the overlay by itself. See wrenchProgress.ts for what is saved and rejected.
  *
  * While the overlay is open the screen is kept awake (useScreenWakeLock inside WrenchMode).
@@ -60,6 +61,7 @@ export default function GuideWithWrenchMode({
   breadcrumb,
   completion,
   garageId,
+  progressScope,
 }: {
   guide: ResolvedGuide;
   vehicle: Vehicle;
@@ -67,6 +69,8 @@ export default function GuideWithWrenchMode({
   completion?: WrenchCompletionConfig;
   /** The customer's permanent garage id for THIS car. Live configuration is read from it, never from the shared catalog id. */
   garageId?: string;
+  /** Account token from the server, present only when the viewer OWNS `garageId`. Without it nothing is persisted. */
+  progressScope?: string;
 }) {
   const router = useRouter();
   // The configuration this guide was resolved under, and what the customer's garage says now (revalidated on focus).
@@ -93,23 +97,25 @@ export default function GuideWithWrenchMode({
   const plan = useMemo(() => buildWrenchPlan(guide), [guide]);
 
   // Device-local persistence. Only for a real garage vehicle (composite id); everything else stays in memory.
-  const persistId = persistableGarageId(garageId);
+  const target = persistTarget(progressScope, garageId);
+  const persistScope = target?.scope ?? null;
+  const persistId = target?.garageId ?? null;
   const progressKeyForConfig = guideKey ?? "none";
   const storageRef = useRef<StorageLike | null>(null);
   // Restore after mount, never during render: the server and the first client render both show "Start", so hydration matches.
   // Functional update: a session that is already live is never overwritten by a restore.
   useEffect(() => {
-    if (!persistId) return;
+    if (!persistId || !persistScope) return;
     storageRef.current = safeStorage();
-    const r = loadProgress(storageRef.current, { garageId: persistId, guideId: guide.id, configKey: progressKeyForConfig, plan });
+    const r = loadProgress(storageRef.current, { scope: persistScope, garageId: persistId, guideId: guide.id, configKey: progressKeyForConfig, plan });
     if (r.status === "resume") setSession((s) => s ?? { index: r.index, key: guideKey });
-  }, [persistId, guide.id, guideKey, progressKeyForConfig, plan]);
+  }, [persistId, persistScope, guide.id, guideKey, progressKeyForConfig, plan]);
   // Save every step; a session invalidated by a configuration change is removed from storage too.
   useEffect(() => {
-    if (!persistId || !rawSession) return;
-    if (sessionValid) saveProgress(storageRef.current, { garageId: persistId, guideId: guide.id, configKey: progressKeyForConfig, plan }, rawSession.index);
-    else clearProgress(storageRef.current, persistId, guide.id);
-  }, [persistId, guide.id, progressKeyForConfig, plan, rawSession, sessionValid]);
+    if (!persistId || !persistScope || !rawSession) return;
+    if (sessionValid) saveProgress(storageRef.current, { scope: persistScope, garageId: persistId, guideId: guide.id, configKey: progressKeyForConfig, plan }, rawSession.index);
+    else clearProgress(storageRef.current, persistScope, persistId, guide.id);
+  }, [persistId, persistScope, guide.id, progressKeyForConfig, plan, rawSession, sessionValid]);
 
   const here = session ? plan.steps[Math.min(session.index, plan.steps.length - 1)] : undefined;
 
@@ -145,12 +151,12 @@ export default function GuideWithWrenchMode({
   // Intentional end of the session (confirmed exit, saved, or finished
   // without saving). Back to the initial state.
   const endSession = useCallback(() => {
-    if (persistId) clearProgress(storageRef.current, persistId, guide.id);
+    if (persistId && persistScope) clearProgress(storageRef.current, persistScope, persistId, guide.id);
     setOpen(false);
     setSession(null);
     setConfirmExit(false);
     focusPrimary();
-  }, [focusPrimary, persistId, guide.id]);
+  }, [focusPrimary, persistId, persistScope, guide.id]);
 
   const keepWrenching = useCallback(() => {
     setConfirmExit(false);

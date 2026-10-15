@@ -15,12 +15,15 @@ export default function GuideWithServiceSave({
   guide,
   vehicle,
   garageId,
+  progressScope,
   breadcrumb,
 }: {
   guide: ResolvedGuide;
   vehicle: Vehicle;
   /** The customer's permanent garage id for this car (differs from vehicle.id; two cars of one model have two ids). */
   garageId: string;
+  /** Account token for device-local Wrench progress; present only when the viewer owns `garageId` (see getViewerVehicle). */
+  progressScope?: string;
   breadcrumb?: BreadcrumbItem[];
 }) {
   const completion: WrenchCompletionConfig = {
@@ -34,5 +37,5 @@ export default function GuideWithServiceSave({
       if (!res.ok) throw new Error(`save failed (${res.status})`);
     },
   };
-  return <GuideWithWrenchMode guide={guide} vehicle={vehicle} breadcrumb={breadcrumb} completion={completion} garageId={garageId} />;
+  return <GuideWithWrenchMode guide={guide} vehicle={vehicle} breadcrumb={breadcrumb} completion={completion} garageId={garageId} progressScope={progressScope} />;
 }

@@ -4,6 +4,8 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import WrenchProgressGuard from "@/components/WrenchProgressGuard";
+import { wrenchProgressScope } from "@/lib/wrenchScope";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -19,6 +21,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <>
+      <WrenchProgressGuard scope={session.user.id ? wrenchProgressScope(session.user.id) : null} />
       <SiteHeader isAuthed isAdmin={isAdmin} />
       <main className="flex-1">{children}</main>
       <footer className="border-t border-slate-800 py-6">

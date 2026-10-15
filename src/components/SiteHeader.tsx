@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOutAndClear } from "@/lib/signOutAndClear";
 import CrankcaseBadge from "@/components/CrankcaseBadge";
 import { useCartCount } from "@/lib/cart";
 
@@ -118,7 +118,7 @@ export default function SiteHeader({
           {isAuthed ? (
             <button
               type="button"
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => signOutAndClear({ callbackUrl: "/" })}
               className="text-slate-500 hover:text-white"
             >
               Log out
@@ -186,7 +186,7 @@ export default function SiteHeader({
                 type="button"
                 onClick={() => {
                   setOpen(false);
-                  signOut({ callbackUrl: "/" });
+                  signOutAndClear({ callbackUrl: "/" });
                 }}
                 className="text-left text-slate-500 hover:text-white"
               >

@@ -48,7 +48,14 @@ const spa = async (page: Page, url: string) => { await page.evaluate((u) => (win
 const guideUrl = (hub: string, slug = SLUG) => `${hub}/repairs/${slug}`;
 const garageIdOf = (hub: string) => decodeURIComponent(hub.split("/vehicles/")[1]);
 const storedKeys = (page: Page) => page.evaluate((p) => Object.keys(localStorage).filter((k) => k.startsWith(p)), PREFIX);
-const keyFor = (hub: string, slug = SLUG) => `${PREFIX}v1:${garageIdOf(hub)}:${slug}`;
+// Keys are scoped to the signed-in account (an opaque 22-char token the test cannot compute), so assert their shape and look the real one up.
+const keyShape = (hub: string, slug = SLUG) => new RegExp(`^${PREFIX}v1:[A-Za-z0-9_-]{22}:${garageIdOf(hub).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:${slug}$`);
+const expectOneKeyFor = async (page: Page, hub: string, message?: string) => {
+  const ks = await storedKeys(page);
+  expect(ks, message).toHaveLength(1);
+  expect(ks[0], message).toMatch(keyShape(hub));
+};
+const keyFor = async (page: Page, hub: string) => { await expectOneKeyFor(page, hub); return (await storedKeys(page))[0]; };
 
 /** Sign up, add a BMW, land on its guide via in-app navigation (so Back has somewhere to go), open Wrench Mode, advance to step n. */
 async function startAtStep(page: Page, n = 3) {
@@ -244,7 +251,7 @@ for (const vp of [
         await expect(page.getByText(/Step 3 of \d+/).first()).toBeVisible();
         await resumeBtn(page).click();
         expect((await stepOf(page))?.n).toBe(3);
-        expect(await storedKeys(page)).toEqual([keyFor(hub)]);
+        await expectOneKeyFor(page, hub);
       });
 
       test("PR-2: progress is saved on every step, so the LATEST step is what comes back", async ({ page }) => {
@@ -281,7 +288,7 @@ for (const vp of [
         await toOverallGuide(page);
         await spa(page, hub);
         await expect(page).toHaveURL(new RegExp(`${hub.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`));
-        expect(await storedKeys(page), "ordinary navigation must not clear progress").toEqual([keyFor(hub)]);
+        await expectOneKeyFor(page, hub, "ordinary navigation must not clear progress");
         await spa(page, guideUrl(hub));
         await expect(resumeBtn(page)).toBeVisible({ timeout: 30_000 });
         await expect(page.getByText(/Step 3 of \d+/).first()).toBeVisible();
@@ -314,7 +321,7 @@ for (const vp of [
         await page.goto(guideUrl(hubA));
         await expect(resumeBtn(page)).toBeVisible({ timeout: 30_000 });
         await expect(page.getByText(/Step 3 of \d+/).first()).toBeVisible();
-        expect(await storedKeys(page)).toEqual([keyFor(hubA)]);
+        await expectOneKeyFor(page, hubA);
       });
 
       test("PR-6: a real configuration change rejects and removes saved progress", async ({ page }) => {
@@ -329,7 +336,7 @@ for (const vp of [
 
       test("PR-7: progress recorded under another configuration, another guide version or another step is rejected and removed", async ({ page }) => {
         const hub = await startAtStep(page, 3);
-        const key = keyFor(hub);
+        const key = await keyFor(page, hub);
         const cases: Array<[string, Record<string, unknown>]> = [
           ["configuration identity differs", { configKey: "manual|awd" }],
           ["guide content changed (plan signature differs)", { planSignature: "stale-signature" }],
@@ -337,6 +344,7 @@ for (const vp of [
           ["step count differs", { total: 999 }],
           ["index outside the guide", { index: 500 }],
           ["recorded for another vehicle", { garageId: "2010-bmw-328i-3.0l~someone-else" }],
+          ["recorded for another account", { scope: "someoneElse0000000000000" }],
         ];
         const original = await page.evaluate((k) => localStorage.getItem(k), key);
         expect(original).toBeTruthy();
@@ -345,7 +353,8 @@ for (const vp of [
           await page.reload();
           await expect(startBtn(page), name).toBeVisible({ timeout: 20_000 });
           await expect(resumeBtn(page), name).toHaveCount(0);
-          expect(await storedKeys(page), `${name}: rejected record removed`).toEqual([]);
+          // "Start" is in the server HTML, so it is visible before hydration has run the effect that rejects and deletes the record.
+          await expect.poll(() => storedKeys(page), { message: `${name}: rejected record removed` }).toEqual([]);
         }
       });
 
@@ -353,7 +362,7 @@ for (const vp of [
         const errors: string[] = [];
         page.on("pageerror", (e) => errors.push(e.message));
         const hub = await startAtStep(page, 3);
-        const key = keyFor(hub);
+        const key = await keyFor(page, hub);
         const original = (await page.evaluate((k) => localStorage.getItem(k), key))!;
         const variants: Array<[string, string]> = [
           ["corrupt JSON", "{{{not json"],
@@ -364,7 +373,7 @@ for (const vp of [
           await page.evaluate(([k, v]) => localStorage.setItem(k, v), [key, value]);
           await page.reload();
           await expect(startBtn(page), name).toBeVisible({ timeout: 20_000 });
-          expect(await storedKeys(page), name).toEqual([]);
+          await expect.poll(() => storedKeys(page), { message: name }).toEqual([]);
         }
         expect(errors).toEqual([]);
       });
@@ -374,7 +383,7 @@ for (const vp of [
         await toOverallGuide(page);
         await page.getByRole("button", { name: /exit wrench mode/i }).click();
         await page.getByRole("button", { name: "Keep Wrenching" }).click();
-        expect(await storedKeys(page), "Keep Wrenching changes nothing").toEqual([keyFor(hub)]);
+        await expectOneKeyFor(page, hub, "Keep Wrenching changes nothing");
         await page.reload();
         await expect(page.getByText(/Step 3 of \d+/).first()).toBeVisible({ timeout: 20_000 });
 
@@ -412,7 +421,7 @@ for (const vp of [
         await sheet.getByLabel("Current mileage").fill("54321");
         await sheet.getByRole("button", { name: /save to service history/i }).click();
         await expect(sheet).toContainText(/could not save/i);
-        expect(await storedKeys(page)).toEqual([keyFor(hub)]);
+        await expectOneKeyFor(page, hub);
       });
 
       test("PR-12: the legacy bare catalog URL and the car's own URL share one progress record (the page resolves the alias)", async ({ page }) => {
@@ -423,7 +432,7 @@ for (const vp of [
         await next(page).click();
         await next(page).click();
         expect((await stepOf(page))?.n).toBe(3);
-        expect(await storedKeys(page), "saved under the car's permanent id, never under the shared alias").toEqual([keyFor(hub)]);
+        await expectOneKeyFor(page, hub, "saved under the car's permanent id, never under the shared alias");
         await toOverallGuide(page);
         await page.goto(guideUrl(hub));
         await expect(resumeBtn(page)).toBeVisible({ timeout: 30_000 });
