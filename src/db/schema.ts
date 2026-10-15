@@ -346,7 +346,14 @@ export const purchases = pgTable("purchases", {
       provider: text("provider"), // "stripe" | ...
       providerRef: text("provider_ref"),
       createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+},
+(table) => ({
+      // migrations/2026-10-13-stripe-idempotency.sql (NOT applied to Production yet). Declared here so a scratch `drizzle-kit push`
+      // database matches what Production will have: one row per provider reference, and one pending purchase per account.
+      providerRefOnce: uniqueIndex("purchases_provider_ref_uq").on(table.provider, table.providerRef).where(sql`${table.provider} is not null and ${table.providerRef} is not null`),
+      onePendingPerUser: uniqueIndex("purchases_one_pending_per_user_uq").on(table.userId).where(sql`${table.status} = 'pending'`),
+}),
+);
 
 // Permanent, VIN-linked Get the Keys entitlements (PR-A). One row per (account, canonical VIN).
 //
@@ -478,7 +485,12 @@ export const paymentEvents = pgTable("payment_events", {
       providerRef: text("provider_ref"),
       resolvedAt: timestamp("resolved_at"), // set when an admin clears a failed payment
       createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+},
+(table) => ({
+      // One row per provider event id (the webhook dedupe). See migrations/2026-10-13-stripe-idempotency.sql.
+      providerEventOnce: uniqueIndex("payment_events_provider_ref_uq").on(table.provider, table.providerRef).where(sql`${table.provider} is not null and ${table.providerRef} is not null`),
+}),
+);
 
 // Lightweight CMS: articles, FAQs, announcements and homepage/featured
 // slots all share one table because they share one editorial workflow
