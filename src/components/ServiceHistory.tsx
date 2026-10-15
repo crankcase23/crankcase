@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useServiceHistory } from "@/lib/serviceHistory";
+import { validateServiceEntry } from "@/lib/serviceValidation";
 import { TierBadge } from "@/components/tables";
 import Section from "@/components/app/Section";
 import { PANEL } from "@/components/app/Chapter";
@@ -45,6 +46,14 @@ export default function ServiceHistory({
   const [notes, setNotes] = useState("");
   // Phones: the form stays tucked behind one obvious button. md+ shows it open.
   const [formOpen, setFormOpen] = useState(false);
+  // Save and delete are both "server first": nothing on screen changes until the server says yes, and any failure is shown
+  // where the customer is looking, with what they typed still in place.
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false); // blocks a second submit in the same tick, before React re-renders the disabled button
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   function toggleJob(option: string) {
     setSelectedJobs((prev) =>
@@ -52,19 +61,32 @@ export default function ServiceHistory({
     );
   }
 
-  function handleAdd(e: React.FormEvent) {
+  async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
+    if (savingRef.current) return;
     const orderedJobs = jobOptions.filter((opt) => selectedJobs.includes(opt));
     const custom = customChecked ? customTitle.trim() : "";
     const services = custom ? [...orderedJobs, custom] : orderedJobs;
-    const title = services.join(", ");
-    if (!date || !mileage || !title) return;
-    addEntry({
-      date,
-      mileage: Number(mileage),
-      title,
-      notes: notes.trim() || undefined,
-    });
+    // The same rules the server enforces, so the customer hears about a problem before anything is sent.
+    const checked = validateServiceEntry({ date, mileage: mileage.trim(), title: services.join(", "), notes });
+    if (!checked.ok) {
+      setSaveError(checked.error);
+      return;
+    }
+    savingRef.current = true;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      await addEntry({ date: checked.value.date, mileage: checked.value.mileage, title: checked.value.title, notes: checked.value.notes });
+    } catch (err) {
+      // Not saved. Leave every field exactly as the customer typed it, keep the form open, and say what happened.
+      setSaveError(err instanceof Error ? err.message : "Couldn't save that entry. Nothing was lost; try again.");
+      return;
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
+    }
+    // Confirmed saved: only now does the form clear and close.
     setDate("");
     setMileage("");
     setSelectedJobs([]);
@@ -74,8 +96,18 @@ export default function ServiceHistory({
     setFormOpen(false);
   }
 
-  function handleDelete(id: string) {
-    deleteEntry(id);
+  async function handleDelete(id: string) {
+    setDeleteError(null);
+    setDeletingId(id);
+    try {
+      await deleteEntry(id);
+    } catch (err) {
+      // Not deleted: the row stays on screen (the list only drops it after the server confirms).
+      setDeleteError(err instanceof Error ? err.message : "Couldn't delete that entry. It is still in your history; try again.");
+    } finally {
+      setDeletingId(null);
+      setConfirmingId(null);
+    }
   }
 
   const guideOpts = guideTitles;
@@ -95,6 +127,11 @@ export default function ServiceHistory({
         Log what you&apos;ve done, in your own words and miles. It saves to your account and follows you across devices.
         Keys checkout isn&apos;t open yet, so nothing here is locked.
       </p>
+      {deleteError ? (
+        <p role="alert" data-testid="sh-error" className="mb-3 rounded-lg border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+          {deleteError}
+        </p>
+      ) : null}
       {entries.length === 0 ? (
         <p className={`${PANEL} mb-6 px-5 py-6 text-sm text-slate-400`}>
           No service logged yet — add the first entry below.
@@ -111,13 +148,41 @@ export default function ServiceHistory({
                 </p>
                 {e.notes ? <p className="mt-1.5 break-words text-sm text-slate-400">{e.notes}</p> : null}
               </div>
-              <button
-                onClick={() => handleDelete(e.id)}
-                aria-label={`Delete ${e.title} entry`}
-                className="-mr-2 -mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:text-rose-400"
-              >
-                ✕
-              </button>
+              {confirmingId === e.id ? (
+                <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-center">
+                  <span className="text-sm text-slate-300">Delete this entry?</span>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setConfirmingId(null)}
+                      disabled={deletingId === e.id}
+                      className="min-h-11 rounded-lg border border-white/15 px-4 text-sm text-slate-200 hover:border-white/30 disabled:opacity-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(e.id)}
+                      disabled={deletingId === e.id}
+                      className="min-h-11 rounded-lg bg-rose-500 px-4 text-sm font-semibold text-white hover:bg-rose-400 disabled:opacity-60"
+                    >
+                      {deletingId === e.id ? "Deleting…" : "Delete"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeleteError(null);
+                    setConfirmingId(e.id);
+                  }}
+                  aria-label={`Delete ${e.title} entry`}
+                  className="-mr-2 -mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:text-rose-400"
+                >
+                  ✕
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -135,6 +200,7 @@ export default function ServiceHistory({
       <form
         id="sh-form"
         onSubmit={handleAdd}
+        noValidate
         className={`${PANEL} mt-4 gap-5 p-5 sm:grid-cols-2 sm:p-6 md:mt-0 ${formOpen ? "grid" : "hidden md:grid"}`}
       >
         <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-400 sm:col-span-2">
@@ -236,6 +302,11 @@ export default function ServiceHistory({
             className="h-12 w-full rounded-lg border border-white/10 bg-black/40 px-4 text-base text-slate-100 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
           />
         </div>
+        {saveError ? (
+          <p role="alert" data-testid="sh-error" className="rounded-lg border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200 sm:col-span-2">
+            {saveError}
+          </p>
+        ) : null}
         <div className="flex flex-col-reverse items-stretch gap-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href={printHref ?? `/vehicles/${vehicleId}/service-history/print`}
@@ -247,9 +318,10 @@ export default function ServiceHistory({
           </Link>
           <button
             type="submit"
-            className="h-12 rounded-lg bg-orange-500 px-8 text-base font-semibold text-slate-950 hover:bg-orange-400"
+            disabled={saving}
+            className="h-12 rounded-lg bg-orange-500 px-8 text-base font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-60"
           >
-            Add entry
+            {saving ? "Saving…" : "Add entry"}
           </button>
         </div>
       </form>
