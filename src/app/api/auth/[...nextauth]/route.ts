@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handlers } from "@/auth";
 import { recordError } from "@/lib/errors";
+import { LimiterStoreError } from "@/lib/limiterDb";
 import { clientIp, loginRules, normaliseEmail, reserve, release, logLimiterFailure, type Reservation } from "@/lib/authGuard";
 
 export const { GET } = handlers;
@@ -24,10 +25,54 @@ export const { GET } = handlers;
 // (contention, full waiting room) it is BUSY: denied with a 429, never opened. The failure is logged ("[auth-limiter]
 // FAIL-OPEN") and recorded.
 //
+// The network address is only ever one a trusted proxy contract supplies (authGuard.clientIp). With none, the three limits still
+// apply, keyed on one shared "untrusted" address, and the event is logged.
+//
 // The 429 body is JSON {url}, because next-auth/react's signIn() reads data.url: it surfaces error=RateLimited and
 // code=<seconds to wait> to the login form.
 
 const MAX_BODY_BYTES = 16 * 1024;
+
+/**
+ * Read the body in pieces and stop at the limit. `await req.text()` reads to the end first, so a client that never finishes a
+ * chunked body (no content-length to refuse) held the request and its memory for as long as it liked (review, 104-A).
+ */
+async function readCapped(req: Request): Promise<{ text: string } | { reason: "size" | "unreadable" }> {
+  if (!req.body) return { text: "" };
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > MAX_BODY_BYTES) {
+        await reader.cancel().catch(() => undefined); // stop the sender being read at all
+        return { reason: "size" };
+      }
+      chunks.push(value);
+    }
+  } catch {
+    return { reason: "unreadable" };
+  }
+  const all = new Uint8Array(total);
+  let at = 0;
+  for (const c of chunks) { all.set(c, at); at += c.byteLength; }
+  return { text: new TextDecoder().decode(all) };
+}
+
+/**
+ * Is this the credentials callback, however the path is spelled? Auth.js tolerates a trailing slash, other case, doubled slashes
+ * and percent-encoding, so an exact `endsWith("/callback/credentials")` let those spellings skip the limiter (review, 104-A).
+ * Anything that decodes to a /callback path is guarded; a path that cannot be decoded is guarded too.
+ */
+function isCallbackPath(pathname: string): boolean {
+  let p = pathname;
+  try { p = decodeURIComponent(pathname); } catch { return true; }
+  p = p.toLowerCase().replace(/\/{2,}/g, "/");
+  return /\/callback(\/|$)/.test(p);
+}
 
 type Parsed = { ok: true; fields: Record<string, string>; email: string } | { ok: false; reason: string };
 
@@ -37,12 +82,9 @@ async function parseLoginBody(req: Request): Promise<Parsed> {
   if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) return { ok: false, reason: "size" }; // do not even read it
   const mediaType = (req.headers.get("content-type") ?? "").split(";")[0].trim().toLowerCase();
   if (mediaType !== "application/x-www-form-urlencoded" && mediaType !== "application/json") return { ok: false, reason: "content-type" };
-  let text: string;
-  try {
-    text = await req.text();
-  } catch {
-    return { ok: false, reason: "unreadable" };
-  }
+  const read = await readCapped(req);
+  if ("reason" in read) return { ok: false, reason: read.reason };
+  const text = read.text;
   if (text.length === 0 || text.length > MAX_BODY_BYTES) return { ok: false, reason: "size" };
 
   const fields: Record<string, string> = {};
@@ -75,9 +117,10 @@ const rateLimited = (origin: string, retryAfter: number) =>
 
 export async function POST(req: NextRequest) {
   const url = new URL(req.url);
-  if (!url.pathname.endsWith("/callback/credentials")) return handlers.POST(req);
+  if (!isCallbackPath(url.pathname)) return handlers.POST(req);
 
   const ip = clientIp(req);
+  if (!ip) console.error("[auth-limiter] NO-TRUSTED-IP flow=login (limits apply to the shared untrusted address)");
   const parsed = await parseLoginBody(req);
 
   if (!parsed.ok) {
@@ -98,7 +141,9 @@ export async function POST(req: NextRequest) {
     reservation = slot.reservation;
   } catch (err) {
     logLimiterFailure("login", "FAIL-OPEN", err);
-    void recordError({ source: "auth-limiter", error: err, level: "warning", path: url.pathname, metadata: { mode: "fail-open", flow: "login" } });
+    // A store failure is the same database recordError would write to: with it hung, that write parks a shared-pool connection
+    // for good (the shared pool has no timeouts). The console line above is the record; only unexpected errors go to the table.
+    if (!(err instanceof LimiterStoreError)) void recordError({ source: "auth-limiter", error: err, level: "warning", path: url.pathname, metadata: { mode: "fail-open", flow: "login" } });
   }
 
   // Auth.js gets a request rebuilt from the validated fields, with the canonical email: it authenticates exactly what was counted.

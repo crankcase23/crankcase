@@ -26,8 +26,14 @@ export async function POST(request: Request) {
     );
   }
 
+  // No trustworthy address (see authGuard.clientIp) means the per-address limit cannot be applied: refuse rather than run unthrottled.
+  const ip = clientIp(request);
+  if (!ip) {
+    logLimiterFailure("signup", "FAIL-CLOSED", new Error("no trustworthy client address"));
+    return temporarilyUnavailable("Sign-up is temporarily unavailable. Try again in a minute.");
+  }
   try {
-    const slot = await reserve(signupRules(email, clientIp(request)));
+    const slot = await reserve(signupRules(email, ip));
     if (!slot.ok) return tooManyRequests(slot.retryAfter, "Too many sign-up attempts. Wait a bit and try again.");
   } catch (err) {
     logLimiterFailure("signup", "FAIL-CLOSED", err);

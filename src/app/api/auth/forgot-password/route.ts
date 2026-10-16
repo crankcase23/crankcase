@@ -20,8 +20,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email is required." }, { status: 400 });
   }
 
+  // No trustworthy address: the per-address mail limit cannot be applied, so refuse (generic 503, no mail).
+  const ip = clientIp(req);
+  if (!ip) {
+    logLimiterFailure("forgot-password", "FAIL-CLOSED", new Error("no trustworthy client address"));
+    return temporarilyUnavailable();
+  }
   try {
-    const slot = await reserve(forgotRules(email, clientIp(req)));
+    const slot = await reserve(forgotRules(email, ip));
     if (!slot.ok) {
       // busy (could not decide in bounded time) is keyed on what was typed, never on whether the account exists: say so plainly.
       if (slot.busy || slot.denied.some((d) => d.scope === "forgot.ip")) return tooManyRequests(slot.retryAfter);

@@ -1,9 +1,10 @@
 import { createHash, randomUUID } from "node:crypto";
+import { isIPv6 } from "node:net";
 import { NextResponse } from "next/server";
 import { and, eq, inArray, sql } from "drizzle-orm";
-import { db } from "@/db";
 import { appEvents } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
+import { withLimiterClient } from "@/lib/limiterDb";
 
 // ---------------------------------------------------------------------------
 // Abuse throttle for the four credential flows: login, signup, forgot-password, reset-password. Free, no new service,
@@ -24,15 +25,17 @@ import { EVENT_TYPES } from "@/lib/events";
 //   A flow that wants its slot back (a successful login) calls release().
 //
 // WHAT IS STORED: a salted SHA-256 of the normalised email and of the network address, per scope, in object_id. No raw
-// email, no raw address. If there is no network address (no x-forwarded-for / x-real-ip) the address keys are skipped:
-// there is no shared "unknown" bucket that one client could fill to lock everyone out.
+// email, no raw address. The address is canonical (see clientIp): every spelling of one IPv4 address is one key, and an
+// IPv6 client is keyed by its /64. When NO trustworthy address can be established, login still applies all three of its
+// rules, with the address replaced by one shared "untrusted" pseudo-address (a flood from unidentifiable sources trips the
+// per-address limit for everyone in that state, which is the safe direction); the other three flows refuse (see routes).
 //
-// FAILURE: reserve() THROWS when the store is unreachable. The caller decides (login fails open for throttling only,
-// the other three fail closed). See each route.
+// FAILURE: reserve() THROWS (LimiterStoreError) when the store is unreachable or does not answer in time. The caller decides
+// (login fails open for throttling only, the other three fail closed). Contention (a lock or statement timeout the database
+// itself reported) is not a failure: it is BUSY and DENIES. See src/lib/limiterDb.ts for the dedicated pool and the deadlines.
 //
 // LIMITS (rolling windows, see LIMITS below and docs/auth/ABUSE-CONTROLS.md).
-// The address is read from x-forwarded-for, which Vercel sets itself; on any other host it is only as trustworthy as that
-// host's proxy. Address limits are deliberately loose: carrier and office networks put many real customers behind one.
+// Address limits are deliberately loose: carrier and office networks put many real customers behind one.
 // ---------------------------------------------------------------------------
 
 const MINUTE = 60 * 1000;
@@ -82,21 +85,98 @@ const digest = (scope: string, value: string): string =>
 
 export const normaliseEmail = (email: string): string => email.trim().toLowerCase();
 
-export function clientIp(request: Request): string | null {
-  const fwd = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const ip = fwd || request.headers.get("x-real-ip")?.trim();
-  return ip || null;
+// ----- the client address ---------------------------------------------------------------------------------------------------
+// Review finding (104-A): the address was entry 0 of x-forwarded-for, taken raw. A client can send that header itself, so it
+// chose its own key (a rotating value is a fresh bucket per request) and `,` produced no key at all (every address limit
+// skipped). Now only a header the PLATFORM sets is read, as exactly one canonical address; anything else is "untrusted".
+//   * Vercel (VERCEL is set): x-vercel-forwarded-for and x-real-ip. Vercel documents that it overwrites x-forwarded-for with the
+//     connecting address and does not forward external values; x-vercel-forwarded-for carries the same value and is not
+//     overwritten by an upstream proxy. If both are present they must agree. A client-sent x-forwarded-for is never read.
+//   * AUTH_TRUSTED_IP_HEADER=<name> (self-hosted behind a proxy YOU control that sets that header and strips it from clients):
+//     only that header.
+//   * NODE_ENV other than production (next dev, tests): x-forwarded-for / x-real-ip, so local runs and the suites can pick
+//     their own address.
+//   * Production anywhere else: nothing is trusted, the address is unknown.
+const TRUSTED_HEADER_NAME = /^[a-z0-9-]{1,64}$/i;
+const IPV4 = /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
+
+function expandIPv6(addr: string): number[] | null {
+  if (!isIPv6(addr)) return null;
+  let a = addr.toLowerCase();
+  const tail = /(\d+\.\d+\.\d+\.\d+)$/.exec(a); // embedded IPv4 in the last 32 bits
+  if (tail) {
+    const m = IPV4.exec(tail[1]);
+    if (!m) return null;
+    a = a.slice(0, -tail[1].length) + (((+m[1] << 8) | +m[2]).toString(16)) + ":" + (((+m[3] << 8) | +m[4]).toString(16));
+  }
+  const halves = a.split("::");
+  if (halves.length > 2) return null;
+  const head = halves[0] ? halves[0].split(":") : [];
+  const rest = halves.length === 2 && halves[1] ? halves[1].split(":") : [];
+  const fill = halves.length === 2 ? 8 - head.length - rest.length : 0;
+  if (fill < 0 || (halves.length === 1 && head.length !== 8)) return null;
+  const groups = [...head, ...Array(fill).fill("0"), ...rest].map((g) => parseInt(g, 16));
+  return groups.length === 8 && groups.every((g) => Number.isInteger(g) && g >= 0 && g <= 0xffff) ? groups : null;
 }
+
+/** One address in, one canonical key out (null: not a single, well-formed address). IPv4-mapped IPv6 is the IPv4 address; IPv6 is its /64. */
+export function canonicalIp(raw: string): string | null {
+  let v = raw.trim();
+  if (!v || v.length > 64 || /[\s,;%/]/.test(v)) return null;
+  const bracketed = /^\[([^\]]+)\](?::(\d{1,5}))?$/.exec(v);
+  if (bracketed) {
+    if (bracketed[2] !== undefined && Number(bracketed[2]) > 65535) return null;
+    v = bracketed[1];
+    if (!v.includes(":")) return null; // [1.2.3.4] is not a valid form
+  } else if (/^[0-9.]+:\d+$/.test(v)) {
+    const [host, port] = v.split(":");
+    if (Number(port) < 1 || Number(port) > 65535) return null;
+    v = host;
+  }
+  if (IPV4.test(v)) return v;
+  const g = expandIPv6(v);
+  if (!g) return null;
+  if (g.slice(0, 5).every((x) => x === 0) && g[5] === 0xffff) return `${g[6] >> 8}.${g[6] & 255}.${g[7] >> 8}.${g[7] & 255}`;
+  return `${g.slice(0, 4).map((x) => x.toString(16)).join(":")}::/64`;
+}
+
+/** Read ONE header as ONE canonical address. undefined: header absent. null: present but unusable or a list. */
+function oneAddress(request: Request, name: string): string | null | undefined {
+  const raw = request.headers.get(name);
+  return raw === null ? undefined : canonicalIp(raw);
+}
+
+/** The trustworthy client address, canonical, or null when none can be established (see the block comment above). */
+export function clientIp(request: Request): string | null {
+  const named = process.env.AUTH_TRUSTED_IP_HEADER?.trim();
+  if (named) return TRUSTED_HEADER_NAME.test(named) ? (oneAddress(request, named) ?? null) : null;
+  if (process.env.VERCEL) {
+    const a = oneAddress(request, "x-vercel-forwarded-for");
+    const b = oneAddress(request, "x-real-ip");
+    if (a === null || b === null) return null; // present but unusable
+    if (a !== undefined && b !== undefined && a !== b) return null; // two platform headers that disagree: ambiguous
+    return a ?? b ?? null;
+  }
+  if (process.env.NODE_ENV !== "production") {
+    const a = oneAddress(request, "x-forwarded-for");
+    if (a !== undefined) return a;
+    return oneAddress(request, "x-real-ip") ?? null;
+  }
+  return null;
+}
+
+/** The address login keys use when none is trustworthy: one shared bucket, so unidentifiable traffic is still limited per account AND in total. */
+export const UNTRUSTED_ADDRESS = "untrusted";
 
 export function loginRules(email: string, ip: string | null): Rule[] {
   const e = normaliseEmail(email);
   const rules: Rule[] = [];
   // An empty email (malformed request) gets no account keys: they would all share one bucket and lock out nobody useful.
+  // (It still gets the address rule, so a malformed flood is charged to its address.)
+  const addr = ip ?? UNTRUSTED_ADDRESS; // never skip the address rules: a missing address must not switch them off
   if (e) rules.push({ scope: "login.account", key: digest("login.account", e), ...LIMITS.login.account });
-  if (ip) {
-    if (e) rules.push({ scope: "login.account_ip", key: digest("login.account_ip", `${e}|${ip}`), ...LIMITS.login.accountIp });
-    rules.push({ scope: "login.ip", key: digest("login.ip", ip), ...LIMITS.login.ip });
-  }
+  if (e) rules.push({ scope: "login.account_ip", key: digest("login.account_ip", `${e}|${addr}`), ...LIMITS.login.accountIp });
+  rules.push({ scope: "login.ip", key: digest("login.ip", addr), ...LIMITS.login.ip });
   return rules;
 }
 export function signupRules(email: string, ip: string | null): Rule[] {
@@ -145,9 +225,9 @@ export const BOUNDS = {
 } as const;
 const BUSY_RETRY_AFTER = 2;
 
-const stats = { maxConcurrentTx: 0, busyDenials: 0 };
-export const limiterStats = () => ({ ...stats });
-export const resetLimiterStats = () => { stats.maxConcurrentTx = 0; stats.busyDenials = 0; };
+const stats = { maxConcurrentTx: 0, busyDenials: 0, peakKeyDepth: 0, peakQueue: 0, storeFailures: 0 };
+export const limiterStats = () => ({ ...stats, activeTx });
+export const resetLimiterStats = () => { stats.maxConcurrentTx = 0; stats.busyDenials = 0; stats.peakKeyDepth = 0; stats.peakQueue = 0; stats.storeFailures = 0; };
 
 const tails = new Map<string, Promise<void>>();
 const depth = new Map<string, number>();
@@ -157,6 +237,7 @@ function lockKey(key: string, deadlineAt: number): Promise<(() => void) | null> 
   const d = depth.get(key) ?? 0;
   if (d >= BOUNDS.maxWaitersPerKey) return Promise.resolve(null);
   depth.set(key, d + 1);
+  if (d + 1 > stats.peakKeyDepth) stats.peakKeyDepth = d + 1;
   const prev = tails.get(key) ?? Promise.resolve();
   let baton!: () => void;
   const mine = new Promise<void>((r) => (baton = r));
@@ -198,6 +279,7 @@ function acquireTx(deadlineAt: number): Promise<(() => void) | null> {
       resolve(null);
     }, Math.max(0, deadlineAt - Date.now()));
     txQueue.push(entry);
+    if (txQueue.length > stats.peakQueue) stats.peakQueue = txQueue.length;
   });
 }
 
@@ -234,7 +316,7 @@ export async function reserve(rules: Rule[]): Promise<ReserveResult> {
 
   let result: ReserveResult;
   try {
-    result = await db.transaction(async (tx): Promise<ReserveResult> => {
+    result = await withLimiterClient(async (tx): Promise<ReserveResult> => {
       await tx.execute(sql`select set_config('lock_timeout', ${String(BOUNDS.lockTimeoutMs)}, true), set_config('statement_timeout', ${String(BOUNDS.statementTimeoutMs)}, true)`);
       for (const r of sorted) await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${r.key}, 0))`);
       const denied: { scope: string; retryAfter: number }[] = [];
@@ -255,23 +337,26 @@ export async function reserve(rules: Rule[]): Promise<ReserveResult> {
       const ids = sorted.map(() => randomUUID());
       await tx.insert(appEvents).values(sorted.map((r, i) => ({ id: ids[i], type: EVENT_TYPES.AUTH_THROTTLE, objectType: r.scope, objectId: r.key })));
       return { ok: true, reservation: { ids } };
-    });
+    }, { transaction: true });
   } catch (err) {
     if (isContentionTimeout(err)) return busy();
-    throw err;
+    stats.storeFailures++;
+    throw err; // LimiterStoreError (no answer in time, cannot connect, connection reset, ...): the caller applies its policy
   } finally {
     slot();
     releaseAll();
   }
-  if (result.ok && Math.random() < PRUNE_ODDS) await pruneThrottleRows().catch(() => undefined);
+  // Housekeeping never competes with attempts: only when there is spare transaction capacity, never awaited, never throws.
+  if (result.ok && Math.random() < PRUNE_ODDS && activeTx < BOUNDS.maxConcurrentTx - 1) void pruneThrottleRows().catch(() => undefined);
   return result;
 }
 
+const RELEASE_DEADLINE_MS = 2500;
 /** Give the slots back (a successful login). Best effort: a failure here only leaves a slot to age out. */
 export async function release(reservation: Reservation | null | undefined): Promise<void> {
   if (!reservation || reservation.ids.length === 0) return;
   try {
-    await db.delete(appEvents).where(inArray(appEvents.id, reservation.ids));
+    await withLimiterClient((d) => d.delete(appEvents).where(inArray(appEvents.id, reservation.ids)), { deadlineMs: RELEASE_DEADLINE_MS });
   } catch (err) {
     console.error("[auth-limiter] release failed; the slots will age out", err);
   }
@@ -282,12 +367,14 @@ const PRUNE_ODDS = 0.01;
 export const PRUNE_AFTER_MS = 3 * HOUR; // longer than the longest window (1 h)
 export const PRUNE_BATCH = 5000; // one sweep deletes at most this many rows, so a sweep over a big table stays short
 export async function pruneThrottleRows(): Promise<void> {
-  await db.execute(sql`
-    delete from app_events where id in (
-      select id from app_events
-      where type = ${EVENT_TYPES.AUTH_THROTTLE} and created_at < now() - make_interval(secs => ${PRUNE_AFTER_MS / 1000})
-      limit ${PRUNE_BATCH}
-    )`);
+  await withLimiterClient(async (d) => {
+    await d.execute(sql`
+      delete from app_events where id in (
+        select id from app_events
+        where type = ${EVENT_TYPES.AUTH_THROTTLE} and created_at < now() - make_interval(secs => ${PRUNE_AFTER_MS / 1000})
+        limit ${PRUNE_BATCH}
+      )`);
+  }, { deadlineMs: 5000 });
 }
 
 // ----- responses ------------------------------------------------------------

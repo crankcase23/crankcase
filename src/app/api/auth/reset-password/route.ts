@@ -21,8 +21,13 @@ if (!token) {
 const parsed = parseResetToken(token);
 // Step 1, BEFORE any verdict: the per-address budget. A flood of garbage or forged tokens is throttled by address, and every
 // verdict below costs a slot. Nothing here is keyed on anything the caller could simply claim.
+const ip = clientIp(req);
+if (!ip) {
+  logLimiterFailure("reset-password", "FAIL-CLOSED", new Error("no trustworthy client address")); // no trustworthy address: the per-address budget cannot apply
+  return temporarilyUnavailable();
+}
 try {
-  const slot = await reserve(resetRules(null, clientIp(req)));
+  const slot = await reserve(resetRules(null, ip));
   if (!slot.ok) return tooManyRequests(slot.retryAfter);
 } catch (err) {
   logLimiterFailure("reset-password", "FAIL-CLOSED", err);
