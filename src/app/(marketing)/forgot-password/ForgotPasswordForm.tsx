@@ -7,16 +7,26 @@ export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
 async function handleSubmit(e: React.FormEvent) {
   e.preventDefault();
   setSubmitting(true);
-  await fetch("/api/auth/forgot-password", {
+  setError(null);
+  const res = await fetch("/api/auth/forgot-password", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
-  });
+  }).catch(() => null);
   setSubmitting(false);
+  if (res && res.status === 429) {
+    setError("Too many requests from this network. Wait a while and try again.");
+    return;
+  }
+  if (!res || res.status === 503 || res.status >= 500) {
+    setError("This is temporarily unavailable. Try again in a minute.");
+    return;
+  }
   setSubmitted(true);
 }
 
@@ -33,6 +43,11 @@ return (
     </div>
     ) : (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+    {error ? (
+      <div role="alert" className="rounded-lg border border-red-800 bg-red-950/50 px-3 py-2 text-sm text-red-300">
+        {error}
+      </div>
+    ) : null}
     <div>
     <label htmlFor="email" className="mb-1 block text-xs text-slate-400">
     Email

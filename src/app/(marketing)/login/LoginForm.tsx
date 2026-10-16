@@ -24,6 +24,11 @@ async function handleSubmit(e: React.FormEvent) {
   });
   setSubmitting(false);
   if (result?.error) {
+    if (result.status === 429 || result.error === "RateLimited") {
+      const minutes = Math.max(1, Math.ceil(Number(result.code) / 60) || 1);
+      setError(`Too many attempts. Try again in about ${minutes} minute${minutes === 1 ? "" : "s"}.`);
+      return;
+    }
     setError("Wrong email or password.");
     return;
   }

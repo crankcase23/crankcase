@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { createUser } from "@/lib/users";
 import { recordEvent, EVENT_TYPES } from "@/lib/events";
+import { clientIp, signupRules, reserve, tooManyRequests, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
+
+// Abuse controls (docs/auth/ABUSE-CONTROLS.md): per network address 10/h, per email 3/h, checked BEFORE the expensive
+// password hash. If the limiter store is down this FAILS CLOSED (503, nothing created): an open signup endpoint with no
+// throttle is exactly the abuse being prevented.
+//
+// KNOWN RESIDUAL RISK (accepted for this scope): this endpoint still answers "already exists" for a registered email, so it
+// can be used to check whether an address has an account. The limits above cap how fast that can be done per address and per
+// email; closing it fully needs an email-verification step (send a link instead of answering), which is not built.
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -15,6 +24,14 @@ export async function POST(request: Request) {
       { error: "Password must be at least 8 characters." },
       { status: 400 },
     );
+  }
+
+  try {
+    const slot = await reserve(signupRules(email, clientIp(request)));
+    if (!slot.ok) return tooManyRequests(slot.retryAfter, "Too many sign-up attempts. Wait a bit and try again.");
+  } catch (err) {
+    logLimiterFailure("signup", "FAIL-CLOSED", err);
+    return temporarilyUnavailable("Sign-up is temporarily unavailable. Try again in a minute.");
   }
 
   try {
