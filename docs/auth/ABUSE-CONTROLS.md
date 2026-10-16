@@ -90,6 +90,7 @@ The limiter now owns a **dedicated pool, at most 5 connections per instance** (o
   backend, a hung client or a failed `BEGIN` therefore costs one connection that is replaced on the next call, not capacity. Recovery needs no restart (unit R21, R22; live runs below).
 - Store failures are logged (`[auth-limiter] FAIL-OPEN|FAIL-CLOSED`). They are **not** written to the error table: that table is in the same database, and with the database hung each such write parks a connection of the shared pool for good.
 - The login body is read under a 5 s deadline as well as the 16 KB cap, so a slow-drip sender is cut off like an endless one (unit R25b).
+  Observed on `next dev`: a body that never completes does not reach the route at all (the request is held earlier, by the framework / `src/proxy.ts` layer), so this deadline and the cap only act once the body is delivered; whether Vercel's edge cuts such requests off is UNKNOWN from here.
 - Housekeeping (`prune`) and `release` use the same pool with short deadlines; prune is never awaited and only runs when a transaction slot is spare.
 - **The shared pool (`src/db/index.ts`) needed the same protection, and got the minimum (a separate, droppable part of this change).** Measured against a real server with the database hung: after 14 hung logins every
   connection of the shared pool was parked for good, and login, signup and reset-password all stayed dead after the database came back, until a restart (the limiter itself had recovered). Now: connect / wait-for-a-connection gives up after 10 s,

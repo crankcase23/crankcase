@@ -53,7 +53,7 @@ async function readCapped(req: Request): Promise<{ text: string } | { reason: "s
       if (done) break;
       total += value.byteLength;
       if (total > MAX_BODY_BYTES) {
-        await reader.cancel().catch(() => undefined); // stop the sender being read at all
+        void reader.cancel().catch(() => undefined); // stop the sender being read at all (not awaited: a cancel that never settles must not hold the request)
         return { reason: "size" };
       }
       chunks.push(value);
