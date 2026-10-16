@@ -27,6 +27,7 @@
     "keys:test": "node --test scripts/keys/tests/*.test.mjs",
     "service:test": "node --test scripts/service/tests/*.test.mjs",
     "wrench:test": "node --test scripts/wrench/tests/*.test.mjs",
+    "auth:test": "node --test scripts/auth/tests/*.test.mjs",
     "release:gate": "node scripts/release-gate.mjs"
   },
   "dependencies": {

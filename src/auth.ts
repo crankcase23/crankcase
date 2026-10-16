@@ -5,12 +5,14 @@ import { verifyPassword } from "@/lib/users";
 import { db } from "@/db";
 import { users, loginEvents } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import type { Session } from "next-auth";
+import { createSessionCallbacks, passwordVersion } from "@/lib/sessionGuard";
 
 // Credentials-only, JWT sessions -- deliberately no database adapter (that's
 // really only needed for OAuth account-linking). We check the password
 // ourselves against our own `users` table (src/db/schema.ts) and mint a JWT;
 // no separate accounts/sessions tables to maintain.
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const nextAuth = NextAuth({
   providers: [
     Credentials({
       credentials: {
@@ -25,22 +27,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         const user = await verifyPassword(email, password);
         if (!user) return null;
-        return { id: user.id, email: user.email };
+        // `pwv` is the password-version stamp (src/lib/sessionGuard.ts): it ties this session to the current password.
+        return { id: user.id, email: user.email, pwv: passwordVersion(user.passwordHash) };
       },
     }),
     ],
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.userId = user.id;
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) session.user.id = token.userId as string;
-      return session;
-    },
-  },
+  // Re-checks the account on every session decode (disabled, deleted, password changed, no stamp). See sessionGuard.ts.
+  callbacks: createSessionCallbacks() as never,
   events: {
     // Fires after a successful sign-in (credentials only here). Powers the
   // admin "login history" view (src/app/admin) -- lastLoginAt for the
@@ -54,3 +49,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   },
 });
+
+export const { handlers, signIn, signOut } = nextAuth;
+
+/**
+ * The signed-in session, or null. Wraps Auth.js's auth() so that a session with no user (what the session callback returns
+ * while the account cannot be verified, see sessionGuard.ts) is null for EVERY caller, including the ones that only test
+ * truthiness. Every caller in this codebase uses the no-argument form.
+ */
+export async function auth(): Promise<Session | null> {
+  const session = await nextAuth.auth();
+  return session?.user?.id ? session : null;
+}
