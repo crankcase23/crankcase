@@ -5,6 +5,8 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import CrankcaseBadge from "@/components/CrankcaseBadge";
 import SiteHeader from "@/components/SiteHeader";
+import WrenchProgressGuard from "@/components/WrenchProgressGuard";
+import { wrenchProgressScope } from "@/lib/wrenchScope";
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -19,6 +21,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
 
   return (
     <>
+      <WrenchProgressGuard scope={session?.user?.id ? wrenchProgressScope(session.user.id) : null} />
       <SiteHeader isAuthed={!!session} isAdmin={isAdmin} />
 
       <main className="flex-1">{children}</main>

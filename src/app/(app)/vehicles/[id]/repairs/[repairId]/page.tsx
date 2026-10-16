@@ -85,6 +85,7 @@ export default async function RepairGuidePage(
           guide={guide}
           vehicle={vehicle}
           garageId={id}
+          progressScope={viewer.progressScope}
           breadcrumb={[
             { label: `${vehicle.year} ${vehicle.make} ${vehicle.model}`, href: `/vehicles/${id}` },
           ]}

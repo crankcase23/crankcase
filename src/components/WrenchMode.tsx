@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { ResolvedGuide, Vehicle } from "@/types/vehicle";
 import { buildWrenchPlan, splitInstruction } from "@/lib/wrenchSteps";
+import { useScreenWakeLock } from "@/lib/useScreenWakeLock";
 import { resolveStepVisuals } from "@/lib/guideVisuals";
 import GuideStepVisuals from "@/components/GuideStepVisuals";
 import type { WrenchCompletionConfig } from "@/lib/wrenchSteps";
@@ -89,6 +90,8 @@ export default function WrenchMode({
     Math.min(Math.max(initialIndex, 0), Math.max(total - 1, 0))
   );
   const [completing, setCompleting] = useState(false);
+  // Screen stays on while Wrench Mode is open (released the moment it closes). Silent where unsupported or refused.
+  const wakeLock = useScreenWakeLock();
   const current = plan.steps[Math.min(index, Math.max(total - 1, 0))];
   // Evidence-built (BMW preview) guides: real warnings stay prominent, source-limit sentences fold into one "Evidence" control.
   const consolidated = useMemo(() => usesEvidenceNotices(guide), [guide]);
@@ -230,6 +233,7 @@ export default function WrenchMode({
       role="dialog"
       aria-modal="true"
       aria-label="Wrench Mode"
+      data-wake-lock={wakeLock}
       tabIndex={-1}
       className="fixed inset-0 z-[100] bg-[#0e1012] text-[#f5f3ee] outline-none"
     >
