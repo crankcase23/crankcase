@@ -82,11 +82,14 @@ The limiter now owns a **dedicated pool, at most 5 connections per instance** (o
 | `lock_timeout` / `statement_timeout`, server side | 1.5 s / 4 s | the database answered: BUSY (denial) |
 | one unit of work end to end | 6 s | store failure; the connection is destroyed |
 
-- **Contention vs failure.** A lock or statement timeout reported by the database is BUSY and always denies. No answer in time, cannot connect, reset connection, terminated backend or pool error is a STORE FAILURE: login fails open for throttling only
+- **Contention vs failure.** A lock or statement timeout reported by the database is BUSY and always denies (it also proves the store is alive).
+  While the store is demonstrably failing (a real store failure within the last 15 s and nothing answered since), a request that finds no free slot within the queue deadline is shed as a STORE FAILURE instead of BUSY, because the slots are
+  held by hung work; otherwise a hung store would answer most requests with 429 instead of each flow's approved failure mode (review 104-A: 7,970 of 8,000 reserves; unit R21b). Pure load never arms this. No answer in time, cannot connect, reset connection, terminated backend or pool error is a STORE FAILURE: login fails open for throttling only
   (the password is still fully verified); signup, forgot-password and reset-password fail closed (503). Throttling is never weakened by contention.
 - **No leak.** Every unit of work ends within its deadline and its connection is either returned healthy (the server answered and the transaction rolled back cleanly) or destroyed; the in-process slot is freed in a `finally`. A killed
   backend, a hung client or a failed `BEGIN` therefore costs one connection that is replaced on the next call, not capacity. Recovery needs no restart (unit R21, R22; live runs below).
 - Store failures are logged (`[auth-limiter] FAIL-OPEN|FAIL-CLOSED`). They are **not** written to the error table: that table is in the same database, and with the database hung each such write parks a connection of the shared pool for good.
+- The login body is read under a 5 s deadline as well as the 16 KB cap, so a slow-drip sender is cut off like an endless one (unit R25b).
 - Housekeeping (`prune`) and `release` use the same pool with short deadlines; prune is never awaited and only runs when a transaction slot is spare.
 - **The shared pool (`src/db/index.ts`) needed the same protection, and got the minimum (a separate, droppable part of this change).** Measured against a real server with the database hung: after 14 hung logins every
   connection of the shared pool was parked for good, and login, signup and reset-password all stayed dead after the database came back, until a restart (the limiter itself had recovered). Now: connect / wait-for-a-connection gives up after 10 s,
@@ -126,6 +129,10 @@ The per-address budget (10 / h) is spent before the token is looked at. The per-
 
 ## Known limits of this design
 - The address comes from the platform headers described under "Client address"; an IPv6 /64 is one client. Address limits are loose on purpose (carrier and office networks share addresses).
+- After every idle limiter connection is killed at once (a database restart), the first few requests can see a store failure (login fails open, the other flows 503) before fresh connections replace the dead ones; measured 3 of 8. Not retried: a retry would hide a real outage from the log.
+- IPv6 clients are keyed by their /64, so a holder of a /48 or larger has many address buckets; the per-account, per-email and per-user limits still hold. `::`, `::1` and IPv4-compatible `::a.b.c.d` share one key (not reachable from Vercel).
+- With no trustworthy address (for example a customer-controlled proxy in front of Vercel, whose address the platform headers then carry), unidentifiable traffic shares one login bucket: 40 requests / 15 min can lock login for everyone in that state. Documented direction: safe, not free.
+- The release-on-success check looks for `authjs.session-token=`; a session cookie split into chunks (a JWT over ~4 KB) would not match and its slots would age out instead of being returned.
 - Failing open for login on a store failure is deliberate and bounded: the request is slowed by at most the 6 s deadline, then goes on to a full password check. During a sustained outage that means no throttling, not no authentication.
 - (OPEN POLICY DECISION H3, not changed here) An attacker who knows a victim's email can spend the victim's per-(account, address) budget only from the attacker's own address; the victim on another address is
   not blocked (tested), but the per-account 30 / h limit is shared across addresses, so a distributed attacker can lock one account's logins for up to an hour.
@@ -185,11 +192,14 @@ Red = reproduced on the reviewed head `5d24669` (new tests, old code: 14 of 45 f
 
 Mutation checks (each turns the suite red): all 12 of the second reviewer's mutations (duplicate-key refusal, busy as pass-through, no transaction cap, no lock / statement timeout, no queue deadline, case-sensitive email key, release on failure, reset budget before
 verification, no account limit, no forgot per-email limit, signup fail-open, no per-key waiter cap) plus: failed clients handed back to the pool, no hard deadline, no error listener, error recording on a store failure, trusting `x-forwarded-for` on Vercel, reading the whole body, exact path match.
-Counts: unit 48 / 48 (3 consecutive runs, process exits by itself), e2e `auth-abuse` 12 / 12, PR #80 and #81 merged: unit 48 + 13, e2e 17 / 17.
+Counts: unit 50 / 50 (3 consecutive runs, process exits by itself), e2e `auth-abuse` 12 / 12, PR #80 and #81 merged: unit 50 + 13, e2e 17 / 17.
+Independent review of this head: no way found to leak limiter or shared-pool capacity, crash the process, bypass the address policy or the approved fail modes; its two findings (hung store reported as busy, no body read deadline) are fixed above (R21b, R25b);
+the third (every count is an unindexed scan of `app_events`: ~200 ms per count at 3 M rows, 80% of 40 concurrent logins denied as busy) is the index merge gate below.
 
 ## Release gates still open (owner)
 1. Neon: pooled (`-pooler`) or direct host in Production and Preview, compute size / `max_connections`, peak connections (see "Connection capacity"). UNKNOWN from here.
-2. `app_events` indexes in Production (`type, created_at`), or the partial index above. UNKNOWN.
+2. `app_events` indexes in Production: **required before merge**, not optional. Without an index each limiter count is a sequential scan (~200 ms at 3 M rows; 10 concurrent reservations p50 3.7 s; 40 concurrent: 32 denied as busy).
+   Apply the partial index below (a migration, owner-run) or confirm `(type, created_at)` exists. UNKNOWN in Production.
 3. Preview, with the final code and the real proxy chain: a forged `x-forwarded-for` echo test, then multi-instance concurrency (the advisory lock is exercised across instances only locally), then an outage injection.
 4. `SITE_PASSWORD` gate state in Production (UNKNOWN).
 5. Owner decisions: H3 (account lockout), M1 (forgot-password suppression), the shared-pool timeouts (10 s / 60 s), and `db.transaction()` on a silent connection.

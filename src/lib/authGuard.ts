@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { appEvents } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
-import { withLimiterClient } from "@/lib/limiterDb";
+import { LimiterStoreError, withLimiterClient } from "@/lib/limiterDb";
 
 // ---------------------------------------------------------------------------
 // Abuse throttle for the four credential flows: login, signup, forgot-password, reset-password. Free, no new service,
@@ -289,6 +289,25 @@ const isContentionTimeout = (err: unknown): boolean => {
   const code = e?.code ?? e?.cause?.code;
   return code === "55P03" || code === "57014";
 };
+// Contention or failure? A request that finds no free slot within the queue deadline is BUSY (a denial) when the store is merely loaded.
+// But when the store is demonstrably failing (a store failure on record, and no successful or server-answered unit of work since, within
+// STORE_DOWN_MEMORY_MS), the slots are held by hung work, and calling that "busy" would turn an infrastructure failure into denials
+// (review 104-A: 7,970 of 8,000 reserves against a hung store came back BUSY). Then the request is shed as a STORE FAILURE, so each flow
+// applies its approved policy: login fails open for throttling only (password still verified), the other three fail closed (503).
+// Only a real store failure arms this (no answer in time, cannot connect, reset connection); a lock or statement timeout reported BY the
+// server means the store is alive and never does.
+const STORE_DOWN_MEMORY_MS = 15_000;
+let tick = 0;
+let lastFailure = { tick: 0, at: 0 };
+let lastAlive = { tick: 0 };
+const noteStoreFailure = () => { lastFailure = { tick: ++tick, at: Date.now() }; stats.storeFailures++; };
+const noteStoreAlive = () => { lastAlive = { tick: ++tick }; };
+const storeLooksDown = () => lastFailure.tick > lastAlive.tick && Date.now() - lastFailure.at < STORE_DOWN_MEMORY_MS;
+/** No slot in bounded time: BUSY (deny) normally, a store failure while the store is failing. Call after giving the keys back. */
+const noSlot = (): ReserveResult => {
+  if (storeLooksDown()) throw new LimiterStoreError("limiter store is failing and no slot is free: request shed", "deadline");
+  return busy();
+};
 const busy = (): ReserveResult => {
   stats.busyDenials++;
   return { ok: false, busy: true, denied: [{ scope: "busy", retryAfter: BUSY_RETRY_AFTER }], retryAfter: BUSY_RETRY_AFTER };
@@ -308,11 +327,11 @@ export async function reserve(rules: Rule[]): Promise<ReserveResult> {
   const releaseAll = () => { for (const r of releases.reverse()) r(); releases.length = 0; };
   for (const r of sorted) { // sorted: two requests can never wait on each other's keys
     const rel = await lockKey(r.key, deadlineAt);
-    if (!rel) { releaseAll(); return busy(); }
+    if (!rel) { releaseAll(); return noSlot(); }
     releases.push(rel);
   }
   const slot = await acquireTx(deadlineAt);
-  if (!slot) { releaseAll(); return busy(); }
+  if (!slot) { releaseAll(); return noSlot(); }
 
   let result: ReserveResult;
   try {
@@ -338,9 +357,10 @@ export async function reserve(rules: Rule[]): Promise<ReserveResult> {
       await tx.insert(appEvents).values(sorted.map((r, i) => ({ id: ids[i], type: EVENT_TYPES.AUTH_THROTTLE, objectType: r.scope, objectId: r.key })));
       return { ok: true, reservation: { ids } };
     }, { transaction: true });
+    noteStoreAlive();
   } catch (err) {
-    if (isContentionTimeout(err)) return busy();
-    stats.storeFailures++;
+    if (isContentionTimeout(err)) { noteStoreAlive(); return busy(); } // the server answered: loaded, not failing
+    noteStoreFailure();
     throw err; // LimiterStoreError (no answer in time, cannot connect, connection reset, ...): the caller applies its policy
   } finally {
     slot();

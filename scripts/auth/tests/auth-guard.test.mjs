@@ -834,6 +834,42 @@ test("R21 a HUNG database: every flow answers inside a bound with its approved f
   assert.equal(P.guard.limiterStats().activeTx ?? 0, 0, "no transaction slot is stuck");
 });
 
+test("R21b while the store is demonstrably failing, requests that cannot get a slot are store failures (fail open / closed), not 'busy' denials", async () => {
+  reset_();
+  proxy.thaw();
+  await limiterWorks(P, 1, "warm-up");
+  const cap = captureErrors();
+  try {
+    proxy.freeze();
+    // 5 requests take the 5 transaction slots and hang until the 6 s deadline; the rest cannot get a slot within the 3 s queue deadline.
+    const t0 = Date.now();
+    const logins = await Promise.all(Array.from({ length: 24 }, (_, i) => answered(doLogin(P, emailOf(), "wrong" + i, ipOf()), 12000, `login ${i}`)));
+    assert.ok(Date.now() - t0 < 9500, `answered in time (${Date.now() - t0} ms)`);
+    // The first wave (the 5 that held slots) is only known to be failing after ~4.5 s, so requests shed at 3 s are still BUSY; run a second wave now that the failures are on record.
+    const t1 = Date.now();
+    const second = await Promise.all(Array.from({ length: 24 }, (_, i) => answered(doLogin(P, emailOf(), "again" + i, ipOf()), 12000, `second-wave login ${i}`)));
+    const signups = await Promise.all(Array.from({ length: 12 }, (_, i) => answered(doSignup(P, emailOf(), ipOf()), 12000, `signup ${i}`)));
+    assert.ok(Date.now() - t1 < 12000);
+    assert.ok(logins.every((r) => r.status === 200 || r.status === 429), "first wave: answered");
+    assert.equal(count(second.map((r) => r.status), 200), 24, "login: with the store failing, every request fails open for throttling (password checked), none is told 429 'busy'");
+    assert.equal(count(signups.map((r) => r.status), 503), 12, "signup: every request fails closed with 503, none is told 429 'busy'");
+    assert.deepEqual(g.__created, []);
+  } finally { cap.restore(); proxy.thaw(); }
+  await limiterWorks(P, 7, "after the failing period");
+  // and genuine contention is still BUSY (the store answered): covered by R20 / R23b, which run on a store that is alive.
+});
+
+test("R25b a stalled (slow-drip) login body is cut off by a read deadline, not held for as long as the client likes", async () => {
+  reset_();
+  const ip = ipOf();
+  const body = new ReadableStream({ start(ctl) { ctl.enqueue(new TextEncoder().encode("email=a%40x.com&")); }, pull() { return new Promise(() => undefined); } });
+  const t0 = Date.now();
+  const res = await answered(M.login.POST(new Request(LOGIN_URL, { method: "POST", headers: headers(ip, { "content-type": FORM }), body, duplex: "half" })), 9000, "stalled body");
+  assert.equal(res.status, 400);
+  assert.ok(Date.now() - t0 < 7000, `answered by the read deadline (${Date.now() - t0} ms)`);
+  assert.equal(g.__pwChecks, 0, "no password check");
+});
+
 test("R22 connections reset mid-transaction (a killed backend) never leak capacity: after a storm of them the limiter and an unrelated query still work", async () => {
   reset_();
   proxy.thaw();

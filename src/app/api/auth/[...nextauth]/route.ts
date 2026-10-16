@@ -32,19 +32,24 @@ export const { GET } = handlers;
 // code=<seconds to wait> to the login form.
 
 const MAX_BODY_BYTES = 16 * 1024;
+const BODY_READ_DEADLINE_MS = 5000; // a login form is a few hundred bytes: a client that cannot deliver it in 5 s is not a login
 
 /**
  * Read the body in pieces and stop at the limit. `await req.text()` reads to the end first, so a client that never finishes a
  * chunked body (no content-length to refuse) held the request and its memory for as long as it liked (review, 104-A).
  */
-async function readCapped(req: Request): Promise<{ text: string } | { reason: "size" | "unreadable" }> {
+async function readCapped(req: Request): Promise<{ text: string } | { reason: "size" | "unreadable" | "timeout" }> {
   if (!req.body) return { text: "" };
   const reader = req.body.getReader();
   const chunks: Uint8Array[] = [];
   let total = 0;
+  let timedOut = false;
+  // One deadline for the whole body (a slow-drip sender is cut off like an endless one). Cancelling resolves the pending read as done.
+  const timer = setTimeout(() => { timedOut = true; void reader.cancel().catch(() => undefined); }, BODY_READ_DEADLINE_MS);
   try {
     for (;;) {
       const { done, value } = await reader.read();
+      if (timedOut) return { reason: "timeout" };
       if (done) break;
       total += value.byteLength;
       if (total > MAX_BODY_BYTES) {
@@ -54,7 +59,9 @@ async function readCapped(req: Request): Promise<{ text: string } | { reason: "s
       chunks.push(value);
     }
   } catch {
-    return { reason: "unreadable" };
+    return { reason: timedOut ? "timeout" : "unreadable" };
+  } finally {
+    clearTimeout(timer);
   }
   const all = new Uint8Array(total);
   let at = 0;
