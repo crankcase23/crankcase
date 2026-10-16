@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
   try {
     const slot = await reserve(forgotRules(email, clientIp(req)));
     if (!slot.ok) {
-      if (slot.denied.some((d) => d.scope === "forgot.ip")) return tooManyRequests(slot.retryAfter);
+      // busy (could not decide in bounded time) is keyed on what was typed, never on whether the account exists: say so plainly.
+      if (slot.busy || slot.denied.some((d) => d.scope === "forgot.ip")) return tooManyRequests(slot.retryAfter);
       return NextResponse.json({ ok: true }); // per-email limit: indistinguishable from success, nothing is sent
     }
   } catch (err) {

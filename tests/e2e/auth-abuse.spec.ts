@@ -12,6 +12,9 @@ import { signUpNewUser, randomIp } from "./helpers";
 //   AB-5 forgot-password: same answer for a real and an unknown email; per-address 429
 //   AB-6 reset-password: guessing tokens from one address is cut off
 //   AB-7 the counter rows hold only hashes
+//   AB-8 (review H1) a JSON login body is throttled like a form body; AB-9 (review H2) a duplicate email field is refused;
+//   AB-10 malformed login bodies are refused generically and cannot be sprayed; AB-11 the owner can still sign in with JSON and form
+//   AB-12 (review M2) forged reset tokens naming a user do not spend that user's reset budget
 // Every context gets its own x-forwarded-for, so the suite never throttles itself.
 
 const PASSWORD = "testpassword123";
@@ -150,4 +153,96 @@ test("AB-7 the counter rows hold only hashes: no email, no address", async ({ br
     expect(r.metadata).toBeNull();
   }
   await ctx.close();
+});
+
+/** One credentials attempt with a hand-built body, so the encoding and repeated keys are exactly what the test says. */
+async function rawAttempt(ctx: BrowserContext, body: string, contentType: string) {
+  const csrf = (await (await ctx.request.get("/api/auth/csrf")).json()).csrfToken as string;
+  const fill = (b: string) => b.replace("CSRF", encodeURIComponent(csrf));
+  const res = await ctx.request.post("/api/auth/callback/credentials", {
+    headers: { "content-type": contentType },
+    data: contentType.includes("json") ? fill(body).replace(/%2B/g, "+") : fill(body),
+    maxRedirects: 0,
+  });
+  const session = (await (await ctx.request.get("/api/auth/session")).json()) as { user?: { id: string } } | null;
+  return { status: res.status(), signedIn: !!session?.user?.id, retryAfter: res.headers()["retry-after"] };
+}
+const form = (email: string, password: string) => `csrfToken=CSRF&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+const json = (email: string, password: string) => JSON.stringify({ csrfToken: "CSRF", email, password });
+
+test("AB-8 a JSON login body is throttled like a form body: the review's bypass is closed", async ({ browser }) => {
+  const { email } = await makeAccount(browser);
+  const attacker = await ctxAt(browser, randomIp());
+  const s: number[] = [];
+  for (let i = 0; i < 12; i++) s.push((await rawAttempt(attacker, json(email, "guess" + i), "application/json")).status);
+  expect(s.filter((x) => x === 429).length, `JSON guesses: ${s.join(",")}`).toBe(4);
+  // the same account through the form shares the budget, and the right password is refused from the throttled address
+  expect((await rawAttempt(attacker, form(email, PASSWORD), "application/x-www-form-urlencoded")).signedIn).toBe(false);
+  // distributed: many addresses, JSON, one account: capped at 30/h in total, never unlimited
+  const victim = (await makeAccount(browser)).email;
+  const codes: number[] = [];
+  for (let i = 0; i < 33; i++) {
+    const c = await ctxAt(browser, randomIp());
+    codes.push((await rawAttempt(c, json(victim, "g" + i), "application/json")).status);
+    await c.close();
+  }
+  expect(codes.filter((x) => x === 429).length, `distributed JSON: ${codes.join(",")}`).toBe(3);
+  await attacker.close();
+});
+
+test("AB-9 a duplicate email field is refused, never evaluated, and cannot reach the victim's account", async ({ browser }) => {
+  const { email } = await makeAccount(browser);
+  const ctx = await ctxAt(browser, randomIp());
+  const decoyFirst = `csrfToken=CSRF&email=decoy-${Date.now()}%40example.com&email=${encodeURIComponent(email)}&password=${PASSWORD}`;
+  const victimFirst = `csrfToken=CSRF&email=${encodeURIComponent(email)}&email=decoy2-${Date.now()}%40example.com&password=${PASSWORD}`;
+  for (const body of [decoyFirst, victimFirst]) {
+    const r = await rawAttempt(ctx, body, "application/x-www-form-urlencoded");
+    expect(r.status).toBe(400);
+    expect(r.signedIn, "even the CORRECT password is not evaluated on an ambiguous request").toBe(false);
+  }
+  await ctx.close();
+});
+
+test("AB-10 malformed login bodies get one generic 400 and are charged to the address", async ({ browser }) => {
+  const ctx = await ctxAt(browser, randomIp());
+  const bodies: [string, string][] = [
+    ['{"csrfToken":"CSRF","email":["a@x.com","b@x.com"],"password":"p"}', "application/json"],
+    ["{broken", "application/json"],
+    ["email=a%40x.com&password=p", "text/plain"],
+    ["csrfToken=CSRF&password=p", "application/x-www-form-urlencoded"],
+    ["csrfToken=CSRF&email=a%40x.com&password=p&password=q", "application/x-www-form-urlencoded"],
+  ];
+  for (const [b, ct] of bodies) expect((await rawAttempt(ctx, b, ct)).status, ct + " " + b).toBe(400);
+  const more: number[] = [];
+  for (let i = 0; i < 40; i++) more.push((await rawAttempt(ctx, "csrfToken=CSRF&password=p", "application/x-www-form-urlencoded")).status);
+  expect(more.filter((x) => x === 429).length, "sprayed malformed requests hit the per-address budget").toBeGreaterThan(0);
+  await ctx.close();
+});
+
+test("AB-11 the owner still signs in with a JSON body and with a form body, any spelling of the email", async ({ browser }) => {
+  const { email } = await makeAccount(browser);
+  for (const [body, ct] of [[json(email, PASSWORD), "application/json"], [form(email.toUpperCase(), PASSWORD), "application/x-www-form-urlencoded"], [form(` ${email} `, PASSWORD), "application/x-www-form-urlencoded"]] as [string, string][]) {
+    const ctx = await ctxAt(browser, randomIp());
+    expect((await rawAttempt(ctx, body, ct)).signedIn, ct).toBe(true);
+    await ctx.close();
+  }
+});
+
+test("AB-12 forged reset tokens that name a user do not spend that user's reset budget", async ({ browser }) => {
+  const { email } = await makeAccount(browser);
+  const [row] = await sql<{ id: string; password_hash: string }>("select id, password_hash from users where email = $1", [email]);
+  const { makeResetToken } = await import("../../src/lib/passwordResetToken");
+  const forgedFrom = async (n: number) => {
+    for (let i = 0; i < n; i++) {
+      const c = await ctxAt(browser, randomIp());
+      const r = await c.request.post("/api/auth/reset-password", { data: { token: makeResetToken(row.id, "forged-" + i), password: "Passw0rd-new1" } });
+      expect(r.status()).toBe(400);
+      await c.close();
+    }
+  };
+  await forgedFrom(12);
+  const c = await ctxAt(browser, randomIp());
+  const real = await c.request.post("/api/auth/reset-password", { data: { token: makeResetToken(row.id, row.password_hash), password: "Passw0rd-new1" } });
+  expect(real.status(), "the real owner's reset still works after 12 forged tokens naming them").toBe(200);
+  await c.close();
 });

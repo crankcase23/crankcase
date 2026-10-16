@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { and, eq, inArray, lt, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { appEvents } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
@@ -71,7 +71,9 @@ export interface Reservation {
 }
 export type ReserveResult =
   | { ok: true; reservation: Reservation }
-  | { ok: false; denied: { scope: string; retryAfter: number }[]; retryAfter: number };
+  // busy: the limiter could not get a decision in bounded time (contention on a key, or the waiting room is full). The caller
+  // DENIES, exactly like a limit hit: contention must never turn into a free pass. Nothing was written.
+  | { ok: false; busy?: true; denied: { scope: string; retryAfter: number }[]; retryAfter: number };
 
 // ----- keys -----------------------------------------------------------------
 
@@ -121,34 +123,146 @@ export function resetRules(userId: string | null, ip: string | null): Rule[] {
 const within = (windowMs: number) => sql`${appEvents.createdAt} > now() - make_interval(secs => ${windowMs / 1000})`;
 const forKey = (key: string) => and(eq(appEvents.type, EVENT_TYPES.AUTH_THROTTLE), eq(appEvents.objectId, key));
 
+// ----- bounded waiting ------------------------------------------------------------------------------------------------------
+// Review finding (M3): every reservation held a pooled connection while it waited on the advisory lock, so a flood on ONE key
+// could park the whole pool (default max 10) and slow every other query in the process (measured 17 ms -> ~900 ms for an
+// unrelated user). Three layers now bound that, with no infrastructure change:
+//   1. per-key FIFO queue IN MEMORY: requests for the same key wait their turn without holding a connection, so a hot key
+//      occupies at most one connection and unrelated keys never queue behind it. Admission stays exact (FIFO, one at a time
+//      per key per process; across processes the database lock does the same job).
+//   2. a global cap on database transactions in flight (maxConcurrentTx), below the default pool size, so the limiter can
+//      never take the whole pool.
+//   3. deadlines: a request that cannot start within queueDeadlineMs, or whose database lock wait exceeds lockTimeoutMs, is
+//      answered BUSY (denied, Retry-After) rather than waiting forever. statementTimeoutMs bounds a slow count the same way.
+// Busy is a denial, never a fail-open: otherwise flooding a key would unthrottle the attacker's own requests.
+export const BOUNDS = {
+  lockTimeoutMs: 1500,
+  statementTimeoutMs: 4000,
+  queueDeadlineMs: 3000,
+  maxWaitersPerKey: 200,
+  maxWaitersGlobal: 400,
+  maxConcurrentTx: 5,
+} as const;
+const BUSY_RETRY_AFTER = 2;
+
+const stats = { maxConcurrentTx: 0, busyDenials: 0 };
+export const limiterStats = () => ({ ...stats });
+export const resetLimiterStats = () => { stats.maxConcurrentTx = 0; stats.busyDenials = 0; };
+
+const tails = new Map<string, Promise<void>>();
+const depth = new Map<string, number>();
+
+/** Wait for this key's turn. Resolves to a release function, or null if the key's queue is full or the deadline passes first. */
+function lockKey(key: string, deadlineAt: number): Promise<(() => void) | null> {
+  const d = depth.get(key) ?? 0;
+  if (d >= BOUNDS.maxWaitersPerKey) return Promise.resolve(null);
+  depth.set(key, d + 1);
+  const prev = tails.get(key) ?? Promise.resolve();
+  let baton!: () => void;
+  const mine = new Promise<void>((r) => (baton = r));
+  const tail = prev.then(() => mine);
+  tails.set(key, tail);
+  const finish = () => {
+    const left = (depth.get(key) ?? 1) - 1;
+    if (left <= 0) depth.delete(key); else depth.set(key, left);
+    if (tails.get(key) === tail) tails.delete(key);
+    baton();
+  };
+  return new Promise((resolve) => {
+    let gaveUp = false;
+    const timer = setTimeout(() => { gaveUp = true; resolve(null); }, Math.max(0, deadlineAt - Date.now()));
+    prev.then(() => {
+      if (gaveUp) { finish(); return; } // we stopped waiting: pass the turn on without ever running
+      clearTimeout(timer);
+      resolve(finish);
+    });
+  });
+}
+
+let activeTx = 0;
+const txQueue: Array<() => void> = [];
+function acquireTx(deadlineAt: number): Promise<(() => void) | null> {
+  const release = () => {
+    activeTx--;
+    const next = txQueue.shift();
+    if (next) next();
+  };
+  const take = () => { activeTx++; if (activeTx > stats.maxConcurrentTx) stats.maxConcurrentTx = activeTx; return release; };
+  if (activeTx < BOUNDS.maxConcurrentTx) return Promise.resolve(take());
+  if (txQueue.length >= BOUNDS.maxWaitersGlobal) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    const entry = () => { clearTimeout(timer); resolve(take()); };
+    const timer = setTimeout(() => {
+      const i = txQueue.indexOf(entry);
+      if (i >= 0) txQueue.splice(i, 1);
+      resolve(null);
+    }, Math.max(0, deadlineAt - Date.now()));
+    txQueue.push(entry);
+  });
+}
+
+// 55P03 lock_not_available (lock_timeout), 57014 query_canceled (statement_timeout). drizzle wraps the driver error in .cause.
+const isContentionTimeout = (err: unknown): boolean => {
+  const e = err as { code?: string; cause?: { code?: string } } | null;
+  const code = e?.code ?? e?.cause?.code;
+  return code === "55P03" || code === "57014";
+};
+const busy = (): ReserveResult => {
+  stats.busyDenials++;
+  return { ok: false, busy: true, denied: [{ scope: "busy", retryAfter: BUSY_RETRY_AFTER }], retryAfter: BUSY_RETRY_AFTER };
+};
+
 /**
  * Reserve one attempt against every rule, atomically. Returns ok (rows written, hand the reservation to release() if the
- * attempt should not count) or not ok (nothing written, with how long to wait). THROWS if the store cannot be reached.
+ * attempt should not count), not ok with the limits that are full (nothing written, with how long to wait), or not ok and busy
+ * (could not decide in bounded time: deny). THROWS only if the store cannot be reached.
  */
 export async function reserve(rules: Rule[]): Promise<ReserveResult> {
   if (rules.length === 0) return { ok: true, reservation: { ids: [] } };
   const sorted = [...rules].sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
-  const result = await db.transaction(async (tx): Promise<ReserveResult> => {
-    for (const r of sorted) await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${r.key}, 0))`);
-    const denied: { scope: string; retryAfter: number }[] = [];
-    for (const r of sorted) {
-      const n = Number((await tx.select({ n: sql<number>`count(*)` }).from(appEvents).where(and(forKey(r.key), within(r.windowMs))))[0]?.n ?? 0);
-      if (n < r.limit) continue;
-      // When the limit-th newest row ages out of the window, one more attempt is allowed.
-      const rows = await tx
-        .select({ left: sql<number>`ceil(extract(epoch from (${appEvents.createdAt} + make_interval(secs => ${r.windowMs / 1000}) - now())))` })
-        .from(appEvents)
-        .where(and(forKey(r.key), within(r.windowMs)))
-        .orderBy(sql`${appEvents.createdAt} desc`)
-        .limit(r.limit);
-      const left = Number(rows[rows.length - 1]?.left);
-      denied.push({ scope: r.scope, retryAfter: Number.isFinite(left) ? Math.min(Math.ceil(r.windowMs / 1000), Math.max(1, left)) : 60 });
-    }
-    if (denied.length > 0) return { ok: false, denied, retryAfter: Math.max(...denied.map((d) => d.retryAfter)) };
-    const ids = sorted.map(() => randomUUID());
-    await tx.insert(appEvents).values(sorted.map((r, i) => ({ id: ids[i], type: EVENT_TYPES.AUTH_THROTTLE, objectType: r.scope, objectId: r.key })));
-    return { ok: true, reservation: { ids } };
-  });
+  const deadlineAt = Date.now() + BOUNDS.queueDeadlineMs;
+
+  const releases: Array<() => void> = [];
+  const releaseAll = () => { for (const r of releases.reverse()) r(); releases.length = 0; };
+  for (const r of sorted) { // sorted: two requests can never wait on each other's keys
+    const rel = await lockKey(r.key, deadlineAt);
+    if (!rel) { releaseAll(); return busy(); }
+    releases.push(rel);
+  }
+  const slot = await acquireTx(deadlineAt);
+  if (!slot) { releaseAll(); return busy(); }
+
+  let result: ReserveResult;
+  try {
+    result = await db.transaction(async (tx): Promise<ReserveResult> => {
+      await tx.execute(sql`select set_config('lock_timeout', ${String(BOUNDS.lockTimeoutMs)}, true), set_config('statement_timeout', ${String(BOUNDS.statementTimeoutMs)}, true)`);
+      for (const r of sorted) await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${r.key}, 0))`);
+      const denied: { scope: string; retryAfter: number }[] = [];
+      for (const r of sorted) {
+        const n = Number((await tx.select({ n: sql<number>`count(*)` }).from(appEvents).where(and(forKey(r.key), within(r.windowMs))))[0]?.n ?? 0);
+        if (n < r.limit) continue;
+        // When the limit-th newest row ages out of the window, one more attempt is allowed.
+        const rows = await tx
+          .select({ left: sql<number>`ceil(extract(epoch from (${appEvents.createdAt} + make_interval(secs => ${r.windowMs / 1000}) - now())))` })
+          .from(appEvents)
+          .where(and(forKey(r.key), within(r.windowMs)))
+          .orderBy(sql`${appEvents.createdAt} desc`)
+          .limit(r.limit);
+        const left = Number(rows[rows.length - 1]?.left);
+        denied.push({ scope: r.scope, retryAfter: Number.isFinite(left) ? Math.min(Math.ceil(r.windowMs / 1000), Math.max(1, left)) : 60 });
+      }
+      if (denied.length > 0) return { ok: false, denied, retryAfter: Math.max(...denied.map((d) => d.retryAfter)) };
+      const ids = sorted.map(() => randomUUID());
+      await tx.insert(appEvents).values(sorted.map((r, i) => ({ id: ids[i], type: EVENT_TYPES.AUTH_THROTTLE, objectType: r.scope, objectId: r.key })));
+      return { ok: true, reservation: { ids } };
+    });
+  } catch (err) {
+    if (isContentionTimeout(err)) return busy();
+    throw err;
+  } finally {
+    slot();
+    releaseAll();
+  }
   if (result.ok && Math.random() < PRUNE_ODDS) await pruneThrottleRows().catch(() => undefined);
   return result;
 }
@@ -164,12 +278,16 @@ export async function release(reservation: Reservation | null | undefined): Prom
 }
 
 // Housekeeping: nothing reads a counter row once its window has passed, so a small share of reservations sweeps the old ones.
-const PRUNE_ODDS = 0.02;
+const PRUNE_ODDS = 0.01;
 export const PRUNE_AFTER_MS = 3 * HOUR; // longer than the longest window (1 h)
+export const PRUNE_BATCH = 5000; // one sweep deletes at most this many rows, so a sweep over a big table stays short
 export async function pruneThrottleRows(): Promise<void> {
-  await db
-    .delete(appEvents)
-    .where(and(eq(appEvents.type, EVENT_TYPES.AUTH_THROTTLE), lt(appEvents.createdAt, sql`now() - make_interval(secs => ${PRUNE_AFTER_MS / 1000})`)));
+  await db.execute(sql`
+    delete from app_events where id in (
+      select id from app_events
+      where type = ${EVENT_TYPES.AUTH_THROTTLE} and created_at < now() - make_interval(secs => ${PRUNE_AFTER_MS / 1000})
+      limit ${PRUNE_BATCH}
+    )`);
 }
 
 // ----- responses ------------------------------------------------------------
