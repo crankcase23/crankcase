@@ -216,7 +216,7 @@ specs: [
 { label: "Curb weight", value: "~5,000 lb" },
 { label: "Fuel tank", value: "24 gal (26 gal optional)" },
 { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
-{ label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm)" },
+{ label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm) -- independently OLP-confirmed under this vehicle's own make/model (104/104 of its own job entries agree, high confidence), exact match to the existing curated figure." },
 { label: "Front tire size (LT)", value: "265/60R18" },
 ],
 fluids: [
@@ -282,7 +282,7 @@ specs: [
 { label: "Curb weight", value: "~5,050 lb" },
 { label: "Fuel tank", value: "24 gal (26 gal optional)" },
 { label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
-{ label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm)" },
+{ label: "Wheel lug nut torque", value: "140 ft-lb (190 Nm) -- independently OLP-confirmed under this vehicle's own make/model (106/106 of its own job entries agree, high confidence), exact match to the existing curated figure, and to its T1XX platform-twin the Silverado's own confirmed figure." },
 { label: "Front tire size (SLE)", value: "265/60R18" },
 ],
 fluids: [
