@@ -4066,7 +4066,60 @@ spec: "All-season washer fluid",
         notes: "Filler is on the passenger side near the strut tower. Single-source figure.",
       },
     ],
-  }
+  },
+{
+id: "2021-mazda3-2.5l",
+keys: { platform: "mazda3-bp", engine: "mazda-skyactiv-g-2.5-pe", driveline: "mazda3-fwd" },
+year: 2021,
+make: "Mazda",
+model: "Mazda3",
+trim: "Select Sedan (FWD)",
+engine: "2.5L SkyActiv-G I4 (PE-VPS)",
+drivetrain: "FWD",
+transmission: "6-speed automatic (SkyActiv-Drive)",
+specs: [
+{ label: "Engine", value: "2.5L SkyActiv-G I4, 186 hp / 186 lb-ft" },
+{ label: "Drivetrain", value: "FWD (i-ACTIV AWD optional on this generation)" },
+{ label: "Transmission", value: "6-speed automatic (SkyActiv-Drive)" },
+{ label: "Curb weight", value: "~3,050 lb" },
+{ label: "Fuel tank", value: "12.7 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane" },
+{ label: "Battery", value: "Group size 35, ~500 CCA" },
+{ label: "Wheel lug nut torque", value: "89 ft-lb (120 Nm) -- curated reference figure, not yet independently pulled from Open Labor Project under Mazda3's own make/model. This catalog's first Mazda entry, so there is no platform-mate here yet to cross-check against -- confirm against your owner's manual before torquing." },
+{ label: "Front tire size (Select, 18-in wheel package)", value: "215/45R18" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "4.4 qt (4.2 L) with filter change",
+spec: "0W-20 full synthetic, API SN or higher",
+notes: "Cartridge-style filter housing on top of the engine, not a spin-on canister -- not yet independently verified against a factory source for this specific engine/year, flagged like every other curated figure in this file. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+provenance: { source: "curated" },
+},
+{
+name: "Engine Coolant",
+capacity: "~6.3 qt (6.0 L) system capacity",
+spec: "Mazda Genuine Coolant (FL22), green, 50/50 premix",
+notes: "Reference figure only; not yet independently verified against a factory source for this specific vehicle.",
+},
+{
+name: "Automatic Transmission Fluid (SkyActiv-Drive 6-speed)",
+capacity: "~3.3 qt (3.1 L) for a pan drain-and-fill (service fill)",
+spec: "Mazda ATF FZ -- do not substitute a generic Dexron/Mercon fluid",
+notes: "Total dry-fill is higher; a fluid/filter service only replaces what drains from the pan. Reference figure only.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~3.2 qt (3.0 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
