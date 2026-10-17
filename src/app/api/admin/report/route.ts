@@ -121,6 +121,16 @@ export async function GET(request: Request) {
         // null means "we couldn't ask" - not "nobody visited". See
         // src/lib/vercelAnalytics.ts; this is never zero-filled.
         analytics: analytics.data,
+        // Why `analytics` is null, when it is. Without this the two very
+        // different causes - the token isn't set, versus the token is set and
+        // the query is being rejected - are indistinguishable from outside,
+        // and the feed can sit silently broken for days looking identical to
+        // switched off. Null here means the read succeeded.
+        //
+        // This is the failure *category* only, never the token and never any
+        // part of its value. The categories are the ones declared by
+        // AnalyticsError in src/lib/vercelAnalytics.ts.
+        analyticsError: analytics.error,
       },
       { headers: NO_STORE },
     );
