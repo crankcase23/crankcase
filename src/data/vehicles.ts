@@ -7,9 +7,17 @@ import { Vehicle } from "@/types/vehicle";
 // changes within a model year. Every page that shows these values repeats that
 // warning; treat this file as the place to swap in verified numbers over time.
 //
-// Engine Oil entries below are now sourced from the Open Labor Project API
-// (openlaborproject.com) as of 2026-09-16 — see provenance on each entry.
-// Everything else in this file is still hand-typed "curated" reference data.
+// Every fluid figure in this file is hand-typed "curated" reference data.
+// Nothing here is machine-sourced: there is not a single open-labor-project
+// provenance tag in this file, on Engine Oil or anything else. An earlier
+// version of this comment said Engine Oil had been sourced from the Open
+// Labor Project API on 2026-09-16; that never happened, and the tags say
+// "curated" throughout.
+//
+// Do NOT backfill fluid capacities from the Open Labor Project API. That
+// source is only trustworthy for lug nut and oil drain plug torque. Verified
+// numbers belong here, from the factory service manual or the owner's manual,
+// one vehicle at a time.
 
 export const vehicles: Vehicle[] = [
 {
