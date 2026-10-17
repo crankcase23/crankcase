@@ -3979,6 +3979,38 @@ spec: "All-season washer fluid",
     ],
   },
   {
+    id: "2021-chrysler-pacifica-3.6l",
+    keys: { platform: "chrysler-ru-pacifica", engine: "chrysler-pentastar-3.6-gen3-fwd", driveline: "chrysler-pacifica-fwd" },
+    year: 2021,
+    make: "Chrysler",
+    model: "Pacifica",
+    trim: "Touring L",
+    engine: "3.6L Pentastar V6 Gen III, 287 hp / 262 lb-ft",
+    drivetrain: "FWD",
+    transmission: `9-speed automatic (948TE, ZF-sourced) -- a different unit from the 8-speed 845RE/850RE ZF transmissions in this catalog's Charger/Challenger/Durango, and from the Journey's own 62TE 6-speed. Takes a ZF-sourced 9-speed-specific ATF, Mopar-branded 'ZF 8 & 9 Speed ATF' (P/N 68157995AB) -- flagged explicitly so a reader doesn't grab the Charger/Challenger/Durango's 8-speed fluid on the strength of a shared Pentastar/ZF badge alone.`,
+    specs: [
+      { label: "Engine", value: "3.6L Pentastar V6 Gen III, 287 hp / 262 lb-ft" },
+      { label: "Drivetrain", value: "FWD (AWD optional on this generation; AWD-specific driveline fluids are out of scope here)" },
+      { label: "Transmission", value: `9-speed automatic (948TE, ZF-sourced) -- a genuinely different unit from the 8-speed 845RE/850RE ZF transmissions in this catalog's Charger/Challenger/Durango, and from the Journey's own 62TE 6-speed. Mopar sells a combined 'ZF 8 & 9 Speed ATF' part (68157995AB), though ZF's own factory fluid lineup names Lifeguardfluid 8 and Lifeguardfluid 9 separately -- confirm by part number, not fluid name alone.` },
+      { label: "Wheel lug nut torque", value: `100 ft-lb (135 Nm) -- cross-checked against a third-party wheel-fitment lookup (not Open Labor Project), and close to the Journey's own similar FWD-platform estimate (100 ft-lb/136 Nm). Deliberately NOT carried over from the Ram HD truck figure (130 ft-lb/176 Nm) already flagged catalog-wide as suspect, nor from this catalog's RWD Chrysler LX/LA entries (Charger/Challenger), since the Pacifica shares neither platform. Still needs its own independent Open Labor Project cross-check before this counts as more than a well-sourced estimate.` },
+      { label: "Tire size (Touring L)", value: "235/65R17" },
+    ],
+    fluids: [
+      {
+        name: "Engine Oil",
+        capacity: "5.0 qt (4.7 L) with filter change",
+        spec: "0W-20 full synthetic, Chrysler Mopar MS-6395",
+        notes: `Cartridge-style filter housing in the engine valley (Mopar MO-349 or equivalent element), not a spin-on canister -- same basic Pentastar filter architecture as this catalog's other 3.6L entries. Capacity (5.0 qt with filter) and the 0W-20 spec were cross-checked against a third-party fitment lookup (AMSOIL) for this exact year/engine/trim, though not yet pulled from Open Labor Project under Chrysler Pacifica's own make/model. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.`,
+      },
+      {
+        name: "Transmission Fluid (948TE 9-speed)",
+        capacity: "~4.5-5.3 qt (4.3-5.0 L) for a pan drain-and-fill (service fill); full dry-fill is higher, and sources vary on the exact service-fill volume",
+        spec: `Mopar 'ZF 8 & 9 Speed ATF' (P/N 68157995AB) -- NOT the Journey's Mopar ATF+4`,
+        notes: `The 948TE is a ZF-sourced 9-speed FWD transaxle, shared with several other FCA front-drive platforms (Cherokee, Renegade, Compass) -- genuinely different from both the 8-speed ZF units in this catalog's RWD Chrysler/Dodge entries and the Journey's older 62TE 6-speed. Mopar sells one combined part number for 8- and 9-speed ZF units, but ZF's own factory fluid lineup names the two separately (Lifeguardfluid 8 vs. Lifeguardfluid 9) -- not independently resolved here which labeling a parts counter will use, so confirm by part number rather than fluid name alone. A pan service only replaces what drains out, not the full dry-fill amount.`,
+      },
+    ],
+  },
+  {
     // SKELETON ENTRY (2026-10-09) -- identity and a few cross-checked reference figures only.
     // No `keys` on purpose: no shared guide may bind to this vehicle until engine code,
     // drivetrain and transmission are confirmed. No guides exist for it yet, by design.
