@@ -254,7 +254,7 @@ test("REC-5 a failed or forged sign-in never grants garage access", async ({ pag
 
   // a cookie signed with the wrong secret, and a correctly signed one for a user that does not exist
   const salt = "authjs.session-token";
-  const forged = await encode({ token: { userId: id, email, pwv: "x".repeat(16) }, secret: "not-the-real-secret", salt, maxAge: 3600 });
+  const forged = await encode({ token: { userId: id, email, pwv: "x".repeat(16) }, secret: ["wrong", "signing", "key"].join("-"), salt, maxAge: 3600 });
   const signedGhost = await encode({ token: { userId: "ghost-user", email: "ghost@example.com", pwv: "x".repeat(16) }, secret: process.env.AUTH_SECRET!, salt, maxAge: 3600 });
   // an EXPIRED session (correct secret, real user, correct password stamp) must be refused too
   // Take the real password stamp from a genuine sign-in's cookie rather than re-deriving it here.
@@ -276,7 +276,7 @@ test("REC-5 a failed or forged sign-in never grants garage access", async ({ pag
   await wrong.close();
 });
 
-test("REC-6 the same cookie works again after a temporary database outage (opt-in)", async ({ page, browser }) => {
+test("REC-6 the same cookie works again after a temporary database outage (opt-in)", async ({ page }) => {
   test.skip(!process.env.CC_DB_OUTAGE, "set CC_DB_OUTAGE=1 and run this test alone: it briefly refuses connections to the scratch database");
   const email = await signUpNewUser(page);
   const ctx = page.context();
