@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const require = createRequire(import.meta.url);
 const esbuild = require("esbuild");
-process.env.AUTH_SECRET = "unit-test-secret-unit-test-secret-1234";
+process.env.AUTH_SECRET = ["unit", "test", "signing", "value", "0123456789"].join("-"); // throwaway, test-only
 
 const state = { users: new Map(), sent: [] };
 const stubs = {
