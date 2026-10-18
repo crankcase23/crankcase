@@ -11,5 +11,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     userId?: string;
+    /** Password-version stamp, see src/lib/sessionGuard.ts. */
+    pwv?: string;
   }
 }
