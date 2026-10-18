@@ -103,8 +103,11 @@ test("REC-1 documented recovery: disable, reset while disabled, re-enable; only 
   expect((await ctx1.request.get(servicePath(entryId))).status(), "service records refused after disable").toBe(401);
   await page.goto("/garage");
   await expect(page).toHaveURL(/\/login/);
+  const loginsBefore = Number((await sql<{ n: string }>("select count(*) n from login_events where user_id=$1", [id]))[0].n);
   const blocked = await freshContext(browser);
   expect(await login(blocked, email), "a fresh sign-in is refused while disabled").toBeNull();
+  expect((await blocked.cookies()).some((c) => /session-token/.test(c.name) && c.value), "a refused sign-in must not even mint a cookie").toBe(false);
+  expect(Number((await sql<{ n: string }>("select count(*) n from login_events where user_id=$1", [id]))[0].n), "a refused sign-in must not be recorded as a login").toBe(loginsBefore);
 
   // 4. forgot-password while disabled: generic answer, identical to an unknown address, and the mailed link works
   const unknown = await freshContext(browser);
@@ -254,7 +257,6 @@ test("REC-5 a failed or forged sign-in never grants garage access", async ({ pag
 
   // a cookie signed with the wrong secret, and a correctly signed one for a user that does not exist
   const salt = "authjs.session-token";
-  const forged = await encode({ token: { userId: id, email, pwv: "x".repeat(16) }, secret: ["wrong", "signing", "key"].join("-"), salt, maxAge: 3600 });
   const signedGhost = await encode({ token: { userId: "ghost-user", email: "ghost@example.com", pwv: "x".repeat(16) }, secret: process.env.AUTH_SECRET!, salt, maxAge: 3600 });
   // an EXPIRED session (correct secret, real user, correct password stamp) must be refused too
   // Take the real password stamp from a genuine sign-in's cookie rather than re-deriving it here.
@@ -267,6 +269,8 @@ test("REC-5 a failed or forged sign-in never grants garage access", async ({ pag
   await liveCtx.addCookies([{ name: salt, value: live, url: ORIGIN }]);
   expect(await garageStatus(liveCtx), "control: the same token, unexpired, is accepted (so the expiry assertion below is meaningful)").toBe(200);
   await liveCtx.close();
+  // real user, real stamp, WRONG signing key: only signature verification can refuse this one
+  const forged = await encode({ token: { userId: id, email, pwv }, secret: ["wrong", "signing", "key"].join("-"), salt, maxAge: 3600 });
   for (const [name, value] of [["expired", expired], ["wrong-secret", forged], ["ghost-user", signedGhost], ["garbage", "not.a.jwt"]] as const) {
     const c = await freshContext(browser);
     await c.addCookies([{ name: salt, value, url: ORIGIN }]);
@@ -278,9 +282,11 @@ test("REC-5 a failed or forged sign-in never grants garage access", async ({ pag
 
 test("REC-6 the same cookie works again after a temporary database outage (opt-in)", async ({ page }) => {
   test.skip(!process.env.CC_DB_OUTAGE, "set CC_DB_OUTAGE=1 and run this test alone: it briefly refuses connections to the scratch database");
-  const email = await signUpNewUser(page);
+  await signUpNewUser(page);
   const ctx = page.context();
+  const sessionCookie = async () => (await ctx.cookies()).find((x) => /session-token/.test(x.name))?.value ?? "";
   expect(await garageStatus(ctx)).toBe(200);
+  expect(await sessionCookie()).not.toBe("");
   const name = new URL(DB_URL).pathname.slice(1);
   const adminUrl = new URL(DB_URL); adminUrl.pathname = "/postgres";
   const c = new Client({ connectionString: adminUrl.toString() });
@@ -289,7 +295,11 @@ test("REC-6 the same cookie works again after a temporary database outage (opt-i
     await c.query(`alter database ${name} with allow_connections false`);
     await c.query("select pg_terminate_backend(pid) from pg_stat_activity where datname=$1 and pid<>pg_backend_pid()", [name]);
     expect(await garageStatus(ctx), "during the outage access is refused, never granted").toBe(401);
-    expect((await ctx.cookies()).some((x) => /session-token/.test(x.name) && x.value), "the cookie must survive the outage").toBe(true);
+    // A real page load is what makes the browser call /api/auth/session, the one response that can clear the cookie. It must not.
+    const sessionCall = page.waitForResponse((r) => r.url().includes("/api/auth/session"), { timeout: 30_000 });
+    await page.goto("/pricing");
+    await sessionCall;
+    expect(await sessionCookie(), "an outage must not log the customer out: the cookie must survive a page load").not.toBe("");
   } finally {
     await c.query(`alter database ${name} with allow_connections true`);
     await c.end();
@@ -297,5 +307,4 @@ test("REC-6 the same cookie works again after a temporary database outage (opt-i
   let ok = 0;
   for (let i = 0; i < 20 && ok !== 200; i++) { ok = await garageStatus(ctx); if (ok !== 200) await new Promise((r) => setTimeout(r, 1000)); }
   expect(ok, "the same cookie works again after the database returns, no re-login").toBe(200);
-  expect(email).toBeTruthy();
 });
