@@ -56,7 +56,7 @@ if (!token) {
       <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-16">
       <h1 className="text-2xl font-bold text-slate-50">Password updated</h1>
       <p className="mt-1 text-sm text-slate-400">
-      Your password has been reset. You can now log in with your new password.
+      Your password has been updated. Try logging in with your new password. If you still can&apos;t sign in, contact Crankcase Garage support.
       </p>
       <Link
         href="/login"
