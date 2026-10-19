@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { desc, eq, and, gte, sql } from "drizzle-orm";
 import { db } from "@/db";
+import { describeError, isSensitiveError } from "@/lib/dbErrorLog";
 import { adminAuditLog, users } from "@/db/schema";
 import type { AdminContext } from "./rbac";
 
@@ -100,7 +101,9 @@ export async function recordAudit(input: RecordAuditInput): Promise<void> {
   } catch (err) {
     // Never let an audit failure swallow the user-visible action, but do not
     // let it pass silently either.
-    console.error("[audit] failed to record admin action", input.action, err);
+    // The raw error is NOT logged: a database failure's message is the INSERT text plus its parameters (admin id, IP, user agent,
+    // metadata). Class + short code stay for diagnosis; developer-written errors keep their message.
+    console.error("[audit] failed to record admin action", input.action, isSensitiveError(err) ? describeError(err) : err instanceof Error ? err.message : describeError(err));
   }
 }
 
