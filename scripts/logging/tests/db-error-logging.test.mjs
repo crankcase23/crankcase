@@ -47,7 +47,7 @@ const HASH = "$2b$12$Zx3Q9mWqVbT1uYkE8a1d2eHcLx0pRfGq7sJvNn4oUwYhKiTtPzCyS";
 const ENTRY = "OILCHANGE-SENTINEL for the red civic";
 const FEEDBACK = "FEEDBACK-SENTINEL my number is 555-0100";
 const CONN = ["postgres", "://app:", "pw-sentinel", "@db.internal:5432/crankcase"].join(""); // built in pieces so credential scanners do not flag a literal
-const SENTINELS = [EMAIL, "victim.customer", USER_ID, HASH, "OILCHANGE-SENTINEL", "FEEDBACK-SENTINEL", "555-0100", "pw-sentinel", "db.internal"];
+const SENTINELS = ["OBJECT-104G-SENTINEL", "PATH-104G-SENTINEL", EMAIL, "victim.customer", USER_ID, HASH, "OILCHANGE-SENTINEL", "FEEDBACK-SENTINEL", "555-0100", "pw-sentinel", "db.internal"];
 const LEAK = /Failed query|insert into|select "|from "|params:|\$2[aby]\$|password_hash|postgres(ql)?:\/\//i;
 
 class DrizzleQueryError extends Error {
@@ -74,11 +74,11 @@ const clean = (t, what) => {
 test("events: a failed insert logs subsystem, event type, class and code only (no SQL, user id, entry text)", async () => {
   S.insertError = () => new DrizzleQueryError(
     'insert into "app_events" ("id", "type", "user_id", "object_type", "object_id", "path", "metadata") values ($1, $2, $3, $4, $5, $6, $7)',
-    ["evt-1", "service.logged", USER_ID, "vehicle", "veh-1", "/api/garage/veh-1/service", JSON.stringify({ title: ENTRY, mileage: 42000 })],
+    ["evt-1", "service.logged", USER_ID, "vehicle", "OBJECT-104G-SENTINEL", "/api/garage/PATH-104G-SENTINEL/service", JSON.stringify({ title: ENTRY, mileage: 42000 })],
     pgError("57P01"),
   );
   try {
-    await recordEvent({ type: "service.logged", userId: USER_ID, objectType: "vehicle", objectId: "veh-1", path: "/api/garage/veh-1/service", metadata: { title: ENTRY } });
+    await recordEvent({ type: "service.logged", userId: USER_ID, objectType: "vehicle", objectId: "OBJECT-104G-SENTINEL", path: "/api/garage/PATH-104G-SENTINEL/service", metadata: { title: ENTRY } });
     const t = text();
     assert.match(t, /\[events\]/, "the subsystem tag is kept");
     assert.match(t, /service\.logged/, "the event type is kept");
@@ -183,7 +183,7 @@ test("errors: if writing the error row fails, the log has source, class and code
   );
   try {
     // The ORIGINAL error carries customer text; whatever the recorder stores is then echoed back by the failed insert's own message.
-    await recordError({ source: "api/feedback", error: feedbackFailure(), path: "/api/feedback", userId: USER_ID });
+    await recordError({ source: "api/feedback", error: feedbackFailure(), path: "/api/feedback/PATH-104G-SENTINEL", userId: USER_ID });
     const t = text();
     assert.match(t, /\[errors\]/, "the subsystem tag is kept");
     assert.match(t, /api\/feedback/, "the source is kept");
@@ -198,5 +198,80 @@ test("errors: the recorder never throws, even for hostile input, and never logs 
     Object.setPrototypeOf(hostile, Error.prototype);
     for (const odd of [null, undefined, 0, hostile]) await assert.doesNotReject(recordError({ source: "x", error: odd }));
     clean(text(), "hostile input");
+  } finally { restore(); }
+});
+
+// ---- review follow-ups (independent review of 104-G) ------------------------------------------------------------------------------
+test("errors: customer text on its own lines that LOOKS like a stack frame must not survive into the stored stack", async () => {
+  try {
+    const spoof = new DrizzleQueryError('insert into "feedback" ("message") values ($1)', [`ok\n    at EMAILSENTINEL ${EMAIL}\n  at x`], pgError("23503"));
+    await recordError({ source: "api/feedback", error: spoof });
+    const stack = S.rows[0].stack ?? "";
+    assert.ok(!stack.includes("EMAILSENTINEL") && !stack.includes("victim.customer"), `parameter text survived the frame filter:\n${stack}`);
+    assert.match(stack, /\n\s+at /, "genuine frames are still kept");
+    const multi = Object.assign(new Error(`invalid input syntax for type uuid: "line1\n   at the shop 4pm secret\n  at x"`), { name: "error", code: "22P02", severity: "ERROR" });
+    await recordError({ source: "api/admin/users", error: multi });
+    assert.doesNotMatch(S.rows[1].stack ?? "", /shop 4pm|secret/, "same for a raw pg error whose message quotes multi-line text");
+    const reassigned = new DrizzleQueryError('select 1', [EMAIL], pgError("57P01"));
+    reassigned.stack = `Error: something else entirely\n    at SPOOF ${EMAIL}`;
+    await recordError({ source: "api/x", error: reassigned });
+    assert.ok(!(S.rows[2].stack ?? "").includes("victim.customer"), "a stack whose header does not match the message is not trusted: no frames are kept");
+  } finally { restore(); }
+});
+
+test("errors: each detection signal works ON ITS OWN (query only, params only, message prefix only, a plain-Error cause, a two-level cause)", async () => {
+  try {
+    const onlyQuery = Object.assign(new Error(`select ${EMAIL}`), { query: "select 1" });
+    const onlyParams = Object.assign(new Error(`values ${EMAIL}`), { params: [EMAIL] });
+    const onlyPrefix = new Error(`Failed query: select ${EMAIL}`);
+    const timeout = new DrizzleQueryError('select 1', [EMAIL], new Error("Connection terminated due to connection timeout"));
+    const deep = new Error(`outer ${EMAIL}`, { cause: new Error(`middle ${EMAIL}`, { cause: pgError("08006") }) });
+    for (const e of [onlyQuery, onlyParams, onlyPrefix, timeout, deep]) await recordError({ source: "api/x", error: e });
+    for (const row of S.rows) clean(row.message + "\n" + (row.stack ?? ""), "single-signal detection");
+    assert.match(S.rows[3].message, /class=\w+ code=none/, "a timeout has no SQLSTATE and is summarized as such");
+    assert.match(S.rows[4].message, /08006/, "the code two causes down is found");
+  } finally { restore(); }
+});
+
+test("errors: caps are pinned (ordinary message 1000, ordinary stack 8000, sensitive stack 8000) and ordinary fingerprints use the original grouping", async () => {
+  try {
+    await recordError({ source: "api/x", error: new Error("m".repeat(5000)) });
+    assert.equal(S.rows[0].message.length, 1000);
+    const big = new Error("x"); big.stack = "Error: x\n" + "    at f (file.js:1:1)\n".repeat(2000);
+    await recordError({ source: "api/x", error: big });
+    assert.equal(S.rows[1].stack.length, 8000);
+    const sens = new DrizzleQueryError("select 1", [1], pgError("57P01")); sens.stack = sens.stack + "\n" + "    at g (file.js:2:2)".repeat(1) ;
+    const frames = Array.from({ length: 2000 }, (_, i) => `    at fn${i} (file.js:${i}:1)`).join("\n");
+    sens.stack = `Error: ${sens.message}\n${frames}`;
+    await recordError({ source: "api/x", error: sens });
+    assert.ok(S.rows[2].stack.length <= 8000, "a sensitive stack is capped too");
+    const { createHash } = require("node:crypto");
+    const expected = createHash("sha1").update('api/x::' + "Customer 7 saw error code 42 for \"abc\"".replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, "<uuid>").replace(/\b\d+\b/g, "<n>").replace(/"[^"]*"/g, '"<v>"').slice(0, 300)).digest("hex").slice(0, 16);
+    await recordError({ source: "api/x", error: new Error('Customer 7 saw error code 42 for "abc"') });
+    assert.equal(S.rows[3].fingerprint, expected, "ordinary errors keep the original normaliser");
+  } finally { restore(); }
+});
+
+test("describeError cannot throw: an error with a throwing name/code getter does not break either recorder", async () => {
+  try {
+    const e = new DrizzleQueryError("select 1", [EMAIL], pgError("57P01"));
+    Object.defineProperty(e, "name", { get() { throw new Error(`boom ${EMAIL}`); } });
+    S.insertError = () => e;
+    await assert.doesNotReject(recordEvent({ type: "vehicle.viewed", userId: USER_ID }));
+    await assert.doesNotReject(recordError({ source: "api/x", error: e }));
+    clean(text(), "throwing getters");
+  } finally { restore(); }
+});
+
+test("a hostile class name cannot inject a log line or smuggle text through the label", async () => {
+  try {
+    const e = new DrizzleQueryError("select 1", [EMAIL], pgError("57P01"));
+    Object.defineProperty(e, "name", { value: `Error\n[auth][error] forged line ${EMAIL}` });
+    S.insertError = () => e;
+    await recordEvent({ type: "vehicle.viewed", userId: USER_ID });
+    const t = text();
+    assert.ok(!t.includes("forged line") && !t.includes("victim.customer"), `the class name reached the log:\n${t}`);
+    assert.match(t, /class=NonError code=57P01/);
+    assert.equal(t.trim().split("\n").length, 1, "exactly one log line");
   } finally { restore(); }
 });

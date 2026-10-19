@@ -20,9 +20,24 @@ export function errorLabel(err: unknown): string {
   return err instanceof Error && LABEL.test(err.name) ? err.name : "NonError";
 }
 
-/** "class=DrizzleQueryError code=57P01": safe to log. Never includes SQL, parameters, messages or stacks. */
+/** The short code on the error or on any of the first few errors down its `cause` chain (drizzle wraps pg; wrappers wrap drizzle). */
+function codeDeep(err: unknown): string | null {
+  let e: unknown = err;
+  for (let i = 0; i < 4 && e !== null && typeof e === "object"; i++) {
+    const c = errorCode(e);
+    if (c) return c;
+    e = (e as { cause?: unknown }).cause;
+  }
+  return null;
+}
+
+/** "class=DrizzleQueryError code=57P01": safe to log. Never includes SQL, parameters, messages or stacks. Never throws (it runs inside catch blocks). */
 export function describeError(err: unknown): string {
-  return `class=${errorLabel(err)} code=${errorCode(err) ?? "none"}`;
+  try {
+    return `class=${errorLabel(err)} code=${codeDeep(err) ?? "none"}`;
+  } catch {
+    return "class=NonError code=none";
+  }
 }
 
 const looksLikePg = (e: unknown): boolean => {
@@ -34,24 +49,44 @@ const looksLikeNetwork = (e: unknown): boolean => {
   return typeof o?.syscall === "string" || typeof o?.address === "string";
 };
 
-/** True for anything whose message may carry SQL, bound parameters, a quoted value or a connection address. */
+/** True for anything whose message may carry SQL, bound parameters, a quoted value or a connection address (also when it only wraps one). */
 export function isSensitiveError(err: unknown): boolean {
-  if (err === null || typeof err !== "object") return false;
-  const o = err as { query?: unknown; params?: unknown; cause?: unknown };
-  if (typeof o.query === "string" || Array.isArray(o.params)) return true;
-  if (looksLikePg(err) || looksLikeNetwork(err)) return true;
-  if (looksLikePg(o.cause) || looksLikeNetwork(o.cause)) return true;
-  return err instanceof Error && err.message.startsWith("Failed query:");
+  let e: unknown = err;
+  for (let i = 0; i < 4 && e !== null && typeof e === "object"; i++) {
+    const o = e as { query?: unknown; params?: unknown; cause?: unknown };
+    if (typeof o.query === "string" || Array.isArray(o.params)) return true;
+    if (looksLikePg(e) || looksLikeNetwork(e)) return true;
+    if (e instanceof Error && e.message.startsWith("Failed query:")) return true;
+    e = o.cause;
+  }
+  return false;
 }
 
 const FRAME = /^\s+at /;
+
+/**
+ * Stack frames only. A stack is "<name>: <message>\n    at frame..." and for a database error the message is the SQL plus the bound
+ * parameters, which can themselves contain lines that look like frames ("hello\n   at the shop 4pm"). So the header is cut out BY ITS
+ * CONTENT (the message, wherever the engine put it) before the frames are picked, and a stack that does not contain the message at all
+ * (reassigned, or built by something else) is not trusted: no frames are kept.
+ */
+function framesOf(err: unknown): string[] {
+  if (!(err instanceof Error) || typeof err.stack !== "string") return [];
+  const message = typeof err.message === "string" ? err.message : "";
+  let body = err.stack;
+  if (message !== "") {
+    const at = body.indexOf(message);
+    if (at < 0) return [];
+    body = body.slice(0, at) + body.slice(at + message.length);
+  }
+  return body.split("\n").filter((l) => FRAME.test(l));
+}
 
 /** What error_events stores. Ordinary errors: unchanged. Sensitive errors: class + code, and the stack frames without the header. */
 export function recordableError(err: unknown): { message: string; stack: string | null; sensitive: boolean } {
   if (isSensitiveError(err)) {
     const summary = describeError(err);
-    const frames = err instanceof Error ? (err.stack ?? "").split("\n").filter((l) => FRAME.test(l)) : [];
-    return { message: summary, stack: [summary, ...frames].join("\n").slice(0, 8000), sensitive: true };
+    return { message: summary, stack: [summary, ...framesOf(err)].join("\n").slice(0, 8000), sensitive: true };
   }
   return {
     message: err instanceof Error ? err.message : String(err),
