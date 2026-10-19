@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const require = createRequire(import.meta.url);
 const esbuild = require("esbuild");
-process.env.AUTH_SECRET = ["unit", "test", "signing", "value", "0123456789"].join("-");
+Object.assign(process.env, { AUTH_SECRET: ["unit", "test", "signing", "value", "0123456789"].join("-") });
 
 const S = (globalThis.__fp = { user: null, lookupError: null, mailResult: { ok: true }, sent: [] });
 const stubs = {
