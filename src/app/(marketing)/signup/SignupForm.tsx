@@ -27,6 +27,9 @@ export default function SignupPage() {
     // What is on screen is what is submitted, whether or not React saw the keystrokes (autofill and pre-hydration typing skip onChange).
     const email = emailInput.current?.value ?? "";
     const password = passwordInput.current?.value ?? "";
+    // Bring React's state in line with the screen, or the re-render below resets the fields to the stale (empty) state.
+    setEmail(email);
+    setPassword(password);
     setError(null);
     setSubmitting(true);
 
