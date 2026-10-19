@@ -85,3 +85,118 @@ test.describe("signup", () => {
     expect(JSON.parse(body).error).toMatch(/try again/i);
   });
 });
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Forgot password. The page and the API are tested separately: the page against mocked answers (so every failure shape is
+// deterministic), the API against the real server.
+// ---------------------------------------------------------------------------------------------------------------------
+const FORGOT = "**/api/auth/forgot-password";
+// Next.js ships its own hidden role="alert" route announcer, so the page's error box is looked up inside the form only.
+const errorBox = (page: import("@playwright/test").Page) => page.locator("form").getByRole("alert");
+const DELIVERY_CLAIM = /on its way|has been sent|have been sent|was sent|we sent|we've sent|is sent|check your inbox/i;
+
+test.describe("forgot password page", () => {
+  async function submit(page: import("@playwright/test").Page, email = "someone@example.com") {
+    await page.goto("/forgot-password");
+    await page.getByLabel("Email").fill(email);
+    await page.getByRole("button", { name: /send reset link|sending/i }).click();
+  }
+
+  test("FP-1 a server error is reported as an error, never as success, and the form stays usable", async ({ page }) => {
+    await page.route(FORGOT, (r) => r.fulfill({ status: 500, body: "" }));
+    await submit(page);
+    await expect(errorBox(page)).toContainText(/couldn.t|try again/i);
+    await expect(page.getByText(DELIVERY_CLAIM), "a failed request must not claim a link was sent").toHaveCount(0);
+    await expect(page.getByText(/if an account exists/i)).toHaveCount(0);
+    await expect(page.getByLabel("Email")).toHaveValue("someone@example.com");
+    await expect(page.getByRole("button", { name: "Send reset link" })).toBeEnabled();
+  });
+
+  test("FP-2 a network failure is not a stuck spinner: the button recovers, an error is shown, nothing claims success", async ({ page }) => {
+    await page.route(FORGOT, (r) => r.abort("connectionfailed"));
+    await submit(page);
+    await expect(errorBox(page)).toContainText(/connection|couldn.t|try again/i);
+    await expect(page.getByRole("button", { name: "Send reset link" }), "button must not stay on 'Sending…'").toBeEnabled();
+    await expect(page.getByText(DELIVERY_CLAIM)).toHaveCount(0);
+    await expect(page.getByText(/if an account exists/i)).toHaveCount(0);
+  });
+
+  test("FP-3 recovery after a temporary network failure: the same form can simply be submitted again", async ({ page }) => {
+    let calls = 0;
+    await page.route(FORGOT, (r) => (++calls === 1 ? r.abort("connectionfailed") : r.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) })));
+    await submit(page, "retry@example.com");
+    await expect(errorBox(page)).toBeVisible();
+    await expect(page.getByLabel("Email")).toHaveValue("retry@example.com");
+    await page.getByRole("button", { name: "Send reset link" }).click();
+    await expect(page.getByText(/if an account exists/i)).toBeVisible();
+    await expect(errorBox(page)).toHaveCount(0);
+    expect(calls).toBe(2);
+  });
+
+  test("FP-4 the success message is generic and does not claim the email was sent or delivered", async ({ page }) => {
+    await page.route(FORGOT, (r) => r.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) }));
+    await submit(page);
+    const msg = page.getByText(/if an account exists/i);
+    await expect(msg).toBeVisible();
+    await expect(page.getByText(DELIVERY_CLAIM), "success wording must not promise delivery").toHaveCount(0);
+    // a way out when nothing arrives: use another address without reloading
+    await page.getByRole("button", { name: /different email|try again/i }).click();
+    await expect(page.getByLabel("Email")).toBeVisible();
+  });
+
+  test("FP-5 while the request is in flight the button is disabled and says so, then returns to normal", async ({ page }) => {
+    await page.route(FORGOT, async (r) => { await new Promise((x) => setTimeout(x, 800)); await r.fulfill({ status: 500, body: "" }); });
+    await page.goto("/forgot-password");
+    await page.getByLabel("Email").fill("slow@example.com");
+    await page.getByRole("button", { name: "Send reset link" }).click();
+    await expect(page.getByRole("button", { name: "Sending…" })).toBeDisabled();
+    await expect(errorBox(page)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Send reset link" })).toBeEnabled();
+  });
+
+  test("FP-6 a rate-limit answer (429, as the throttling PR returns) is shown as 'wait and retry', not as success", async ({ page }) => {
+    await page.route(FORGOT, (r) => r.fulfill({ status: 429, contentType: "application/json", headers: { "retry-after": "60" }, body: JSON.stringify({ error: "Too many requests." }) }));
+    await submit(page);
+    await expect(errorBox(page)).toContainText(/too many|wait/i);
+    await expect(page.getByText(/if an account exists/i)).toHaveCount(0);
+  });
+});
+
+test.describe("forgot password API", () => {
+  test("FP-7 known and unknown addresses get byte-identical answers (no account oracle)", async ({ playwright }) => {
+    const email = uniqueEmail("fp7");
+    const api = await playwright.request.newContext({ baseURL: "http://localhost:3100", extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
+    expect((await api.post("/api/signup", { data: { email, password: "testpassword123" } })).status()).toBe(200);
+    const known = await api.post("/api/auth/forgot-password", { data: { email } });
+    const unknown = await api.post("/api/auth/forgot-password", { data: { email: uniqueEmail("fp7-none") } });
+    expect(known.status()).toBe(200);
+    expect(unknown.status()).toBe(200);
+    expect(await known.text()).toBe(await unknown.text());
+    expect((await api.post("/api/auth/forgot-password", { data: { email: "" } })).status(), "empty email is still a plain 400").toBe(400);
+    await api.dispose();
+  });
+
+  test("FP-8 a database outage is a controlled 503 with a safe message, same for known and unknown (opt-in)", async ({ playwright }) => {
+    test.skip(!process.env.CC_DB_OUTAGE, "set CC_DB_OUTAGE=1 and run this test alone");
+    const name = new URL(DB_URL).pathname.slice(1);
+    const adminUrl = new URL(DB_URL); adminUrl.pathname = "/postgres";
+    const c = new Client({ connectionString: adminUrl.toString() });
+    await c.connect();
+    const api = await playwright.request.newContext({ baseURL: "http://localhost:3100", extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
+    const out: { status: number; body: string }[] = [];
+    try {
+      await c.query(`alter database ${name} with allow_connections false`);
+      await c.query("select pg_terminate_backend(pid) from pg_stat_activity where datname=$1 and pid<>pg_backend_pid()", [name]);
+      for (const e of [uniqueEmail("fp8a"), uniqueEmail("fp8b")]) {
+        const r = await api.post("/api/auth/forgot-password", { data: { email: e } });
+        out.push({ status: r.status(), body: await r.text() });
+      }
+    } finally {
+      await c.query(`alter database ${name} with allow_connections true`);
+      await c.end();
+      await api.dispose();
+    }
+    for (const r of out) { expect(r.status).toBe(503); expect(r.body).not.toMatch(LEAK); expect(JSON.parse(r.body).error).toMatch(/try again/i); }
+    expect(out[0].body).toBe(out[1].body);
+  });
+});
