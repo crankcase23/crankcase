@@ -45,13 +45,18 @@ export default function SignupPage() {
       return;
     }
 
-    let signedIn = false;
-    try {
-      const result = await signIn("credentials", { email, password, redirect: false });
-      signedIn = !result?.error;
-    } catch {
-      signedIn = false;
-    }
+    // The account exists now. Auth.js can fail the FIRST sign-in call with a transient CSRF-cookie race (?error=MissingCSRF; seen on
+    // a cold server, on main and on the throttling branch alike), which used to drop the customer on /login unexplained. One retry
+    // runs with the cookie already in place; if that fails too, the existing fallback below applies.
+    const attemptSignIn = async (): Promise<boolean> => {
+      try {
+        const result = await signIn("credentials", { email, password, redirect: false });
+        return !result?.error;
+      } catch {
+        return false;
+      }
+    };
+    const signedIn = (await attemptSignIn()) || (await attemptSignIn());
     setSubmitting(false);
     if (!signedIn) {
       // Account was created but auto-login failed — send them to log in manually.
