@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { randomUUID } from "node:crypto";
 import { verifyPassword } from "@/lib/users";
+import { authLogger } from "@/lib/authLogger";
 import { db } from "@/db";
 import { users, loginEvents } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -30,6 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     ],
   session: { strategy: "jwt" },
+  logger: authLogger,
   pages: { signIn: "/login" },
   callbacks: {
     async jwt({ token, user }) {
