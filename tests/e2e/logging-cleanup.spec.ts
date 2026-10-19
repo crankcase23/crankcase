@@ -106,6 +106,42 @@ test.describe("signup page", () => {
   });
 });
 
+test.describe("signup auto sign-in", () => {
+  // Observed on the real server, cold, on main and on #81 (build 104-F): after a SUCCESSFUL signup the first Auth.js sign-in call
+  // sometimes answers `{"url":".../login?error=MissingCSRF"}` (a CSRF-cookie race), and the page dropped the customer on /login with
+  // no explanation. The answer below is exactly what the real server returns for a mismatched token.
+  const csrfFailure = (baseURL: string) => JSON.stringify({ url: `${baseURL}/login?error=MissingCSRF` });
+
+  test("SF-6 a transient auto sign-in failure after signup is retried once and the customer still lands in the garage", async ({ browser, baseURL }) => {
+    const { page, close } = await pageAt(browser, "/signup");
+    let calls = 0;
+    await page.route("**/api/auth/callback/credentials*", (r) => {
+      calls += 1;
+      return calls === 1 ? r.fulfill({ status: 200, contentType: "application/json", body: csrfFailure(baseURL!) }) : r.continue();
+    });
+    const email = uniqueEmail("sf6");
+    await fillSignup(page, email);
+    await signupButton(page).click();
+    await expect(page).toHaveURL(/\/garage$/, { timeout: 30_000 });
+    expect(calls, "exactly one retry").toBe(2);
+    expect((await sql("select 1 from users where email=$1", [email])).length).toBe(1);
+    await close();
+  });
+
+  test("SF-7 if sign-in keeps failing, the existing fallback is unchanged: the account exists and the customer is sent to /login (no loop, no second account)", async ({ browser, baseURL }) => {
+    const { page, close } = await pageAt(browser, "/signup");
+    let calls = 0;
+    await page.route("**/api/auth/callback/credentials*", (r) => { calls += 1; return r.fulfill({ status: 200, contentType: "application/json", body: csrfFailure(baseURL!) }); });
+    const email = uniqueEmail("sf7");
+    await fillSignup(page, email);
+    await signupButton(page).click();
+    await expect(page).toHaveURL(/\/login/, { timeout: 30_000 });
+    expect(calls, "one attempt and one retry, never a loop").toBe(2);
+    expect((await sql("select 1 from users where email=$1", [email])).length).toBe(1);
+    await close();
+  });
+});
+
 test.describe("reset-password page", () => {
   async function resetPage(browser: Browser, token: string) {
     return pageAt(browser, "/reset-password?token=" + encodeURIComponent(token));
