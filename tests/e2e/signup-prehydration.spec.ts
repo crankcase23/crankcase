@@ -16,6 +16,7 @@ import { test, expect, type Page } from "@playwright/test";
 //   SR-6  the corrected value is what server-side validation sees (a short password is refused by the SERVER, by its own message)
 //   SR-7  throttling still reaches the customer in the server's own words
 //   SR-8  autofill AFTER hydration (the value is set without firing React's onChange) is submitted as it appears on screen
+//   SR-10/11  clicking Create Account / pressing Enter BEFORE hydration: no native form submit (page reload), text kept, next attempt works
 //   SR-9  the same autofill, then a server refusal: the fields are not blanked by the submit re-render and the retry works
 
 const PASSWORD = "testpassword123";
@@ -164,6 +165,27 @@ test.describe("signup form: text typed before hydration is not lost", () => {
     await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
     expect(posted).toEqual([{ email, password: PASSWORD }, { email, password: PASSWORD }]);
   });
+
+  // Found by the integrated run (Build 104-H): wrench-privacy PV-2 signs up through the form and sometimes submits before React has attached.
+  // The browser then submits the form ITSELF (a GET to /signup?), which reloads the page, empties the fields and drops the attempt silently.
+  // The first attempt is dead either way; what must hold is that it does no damage (no navigation, nothing lost) and the next one works.
+  for (const [id, how] of [["SR-10", "clicks Create Account"], ["SR-11", "presses Enter in the password field"]] as const) {
+    test(`${id} a customer who ${how} before the page hydrates loses nothing: no page reload, text kept, and the next attempt creates the account`, async ({ page }) => {
+      const posted = await openSignup(page, { holdScriptsMs: 3000 });
+      const email = uniqueEmail(id.toLowerCase());
+      await page.getByLabel("Email").fill(email);
+      await page.getByLabel("Password").fill(PASSWORD);
+      if (how === "clicks Create Account") await page.evaluate(() => (document.querySelector("form button") as HTMLButtonElement).click());
+      else await page.getByLabel("Password").press("Enter");
+      await hydrated(page);
+      expect(page.url(), "the browser must not have submitted the form itself (that navigates to /signup?)").not.toContain("?");
+      await expect(page.getByLabel("Email"), "what was typed is still there").toHaveValue(email);
+      await expect(page.getByLabel("Password")).toHaveValue(PASSWORD);
+      await create(page).click();
+      await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
+      expect(posted).toEqual([{ email, password: PASSWORD }]);
+    });
+  }
 
   test("SR-7 throttling and duplicate answers still reach the customer in the server's own words", async ({ page }) => {
     const posted = await openSignup(page, { holdScriptsMs: 1500 });
