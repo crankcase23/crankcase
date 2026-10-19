@@ -96,7 +96,7 @@ const poolHandlerAtDb = () => {
   // built from parts: a throwaway test value, and not a credential-shaped literal in the source
   const u = new URL("postgres://placeholder@localhost:5432/crankcase");
   u.username = "app"; u.password = CREDS; u.hostname = HOST;
-  process.env.DATABASE_URL = u.toString();
+  Object.assign(process.env, { DATABASE_URL: u.toString() });
   return bundle(dbFile).then(() => POOLS.pools.slice(before));
 };
 
