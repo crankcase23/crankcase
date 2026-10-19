@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { Client } from "pg";
 import { randomIp } from "./helpers";
+import { makeResetToken } from "../../src/lib/passwordResetToken";
 
 // Customer authentication error handling (Build 104-E). Every case is a way a customer, or an attacker, used to be told
 // something false or something private:
@@ -198,5 +199,80 @@ test.describe("forgot password API", () => {
     }
     for (const r of out) { expect(r.status).toBe(503); expect(r.body).not.toMatch(LEAK); expect(JSON.parse(r.body).error).toMatch(/try again/i); }
     expect(out[0].body).toBe(out[1].body);
+  });
+});
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Disabled-account recovery messaging. A disabled customer can still complete a reset (the documented recovery procedure), but
+// the screen after it must not promise a login that will fail, and must be IDENTICAL for disabled and active accounts so it tells
+// an attacker holding a reset link nothing about the account's state. Reactivation stays an administrator action.
+// ---------------------------------------------------------------------------------------------------------------------
+const PASSWORD = "testpassword123";
+const NEW_PASSWORD = "NewPass-8472x";
+const PROMISE = /you can (now )?log in|you can (now )?sign in|log in with your new password|sign in with your new password|you're all set/i;
+const STATE_WORDS = /disabled|suspended|deactivated|blocked|locked|banned|inactive/i;
+
+async function accountWithResetLink(playwright: import("@playwright/test").PlaywrightWorkerArgs["playwright"], tag: string, disabled: boolean) {
+  const email = uniqueEmail(tag);
+  const api = await playwright.request.newContext({ baseURL: "http://localhost:3100", extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
+  expect((await api.post("/api/signup", { data: { email, password: PASSWORD } })).status()).toBe(200);
+  await api.dispose();
+  if (disabled) await sql("update users set status='disabled', disabled_at=now() where email=$1", [email]);
+  const [{ id, password_hash }] = await sql<{ id: string; password_hash: string }>("select id, password_hash from users where email=$1", [email]);
+  return { email, id, token: makeResetToken(id, password_hash) };
+}
+async function resetThroughThePage(page: import("@playwright/test").Page, token: string) {
+  await page.goto(`/reset-password?token=${encodeURIComponent(token)}`);
+  await page.getByLabel("New password", { exact: true }).fill(NEW_PASSWORD);
+  await page.getByLabel(/confirm/i).fill(NEW_PASSWORD);
+  await page.getByRole("button", { name: "Set new password" }).click();
+  await expect(page.getByRole("heading", { name: "Password updated" })).toBeVisible();
+  return (await page.locator("main, body").first().innerText()).replace(/\s+/g, " ").trim();
+}
+async function signInStatus(playwright: import("@playwright/test").PlaywrightWorkerArgs["playwright"], email: string, password: string) {
+  const ctx = await playwright.request.newContext({ baseURL: "http://localhost:3100", extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
+  const csrf = (await (await ctx.get("/api/auth/csrf")).json()).csrfToken as string;
+  await ctx.post("/api/auth/callback/credentials", { form: { csrfToken: csrf, email, password, json: "true" }, maxRedirects: 0 });
+  const id = ((await (await ctx.get("/api/auth/session")).json()) as { user?: { id: string } } | null)?.user?.id ?? null;
+  await ctx.dispose();
+  return id;
+}
+
+test.describe("disabled-account recovery messaging", () => {
+  test("DR-1 the screen after a reset does not promise a login and is identical for a disabled and an active account", async ({ browser, playwright }) => {
+    const active = await accountWithResetLink(playwright, "dr1a", false);
+    const disabled = await accountWithResetLink(playwright, "dr1d", true);
+    const pageA = await (await browser.newContext()).newPage();
+    const pageD = await (await browser.newContext()).newPage();
+    const textA = await resetThroughThePage(pageA, active.token);
+    const textD = await resetThroughThePage(pageD, disabled.token);
+    expect(textD, "a disabled account must see exactly what an active one sees (no account-state oracle)").toBe(textA);
+    expect(textD, "must not promise an immediate login").not.toMatch(PROMISE);
+    expect(textD, "must not reveal the account state").not.toMatch(STATE_WORDS);
+    expect(textD, "must tell a customer who still cannot sign in what to do next").toMatch(/can.t sign in|cannot sign in|still can.t|if you can.t/i);
+    await expect(pageD.getByRole("link", { name: /log in/i }).first()).toBeVisible();
+  });
+
+  test("DR-2 the reset answer is byte-identical for disabled and active accounts, and a reset never reactivates", async ({ playwright }) => {
+    const active = await accountWithResetLink(playwright, "dr2a", false);
+    const disabled = await accountWithResetLink(playwright, "dr2d", true);
+    const api = await playwright.request.newContext({ baseURL: "http://localhost:3100", extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
+    const ra = await api.post("/api/auth/reset-password", { data: { token: active.token, password: NEW_PASSWORD } });
+    const rd = await api.post("/api/auth/reset-password", { data: { token: disabled.token, password: NEW_PASSWORD } });
+    expect(rd.status()).toBe(ra.status());
+    expect(await rd.text()).toBe(await ra.text());
+    await api.dispose();
+    expect((await sql<{ status: string }>("select status from users where id=$1", [disabled.id]))[0].status, "reset must not reactivate").toBe("disabled");
+  });
+
+  test("DR-3 administrative reactivation is still required: refused while disabled, works with the new password once re-enabled", async ({ playwright }) => {
+    const d = await accountWithResetLink(playwright, "dr3", true);
+    const api = await playwright.request.newContext({ baseURL: "http://localhost:3100", extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
+    expect((await api.post("/api/auth/reset-password", { data: { token: d.token, password: NEW_PASSWORD } })).status()).toBe(200);
+    await api.dispose();
+    expect(await signInStatus(playwright, d.email, NEW_PASSWORD), "still refused while disabled").toBeNull();
+    await sql("update users set status='active', disabled_at=null where id=$1", [d.id]); // what the admin Re-enable button does
+    expect(await signInStatus(playwright, d.email, NEW_PASSWORD), "works after re-enable").toBe(d.id);
+    expect(await signInStatus(playwright, d.email, PASSWORD), "the old password stays dead").toBeNull();
   });
 });
