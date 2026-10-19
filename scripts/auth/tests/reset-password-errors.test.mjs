@@ -72,7 +72,7 @@ test("a database failure while saving the new password: 503, fixed message, no S
   const r = await post({ token: validToken(), password: NEW_PW });
   assert.equal(r.status, 503);
   assert.doesNotMatch(r.body, LEAK);
-  assert.match(JSON.parse(r.body).error, /try again/i);
+  assert.deepEqual(JSON.parse(r.body), { error: "We couldn't update your password right now. Please try again in a minute." });
 });
 
 test("a database failure during the account lookup: 503, fixed message, nothing internal", async () => {

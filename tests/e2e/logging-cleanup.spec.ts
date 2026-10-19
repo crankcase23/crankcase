@@ -132,11 +132,14 @@ test.describe("signup auto sign-in", () => {
     const { page, close } = await pageAt(browser, "/signup");
     let calls = 0;
     await page.route("**/api/auth/callback/credentials*", (r) => { calls += 1; return r.fulfill({ status: 200, contentType: "application/json", body: csrfFailure(baseURL!) }); });
+    const garageRequests: string[] = [];
+    page.on("request", (r) => { if (new URL(r.url()).pathname === "/garage") garageRequests.push(r.url()); }); // /garage would bounce to /login too, so the URL alone cannot tell the fallback from a false success
     const email = uniqueEmail("sf7");
     await fillSignup(page, email);
     await signupButton(page).click();
     await expect(page).toHaveURL(/\/login/, { timeout: 30_000 });
     expect(calls, "one attempt and one retry, never a loop").toBe(2);
+    expect(garageRequests, "a failed sign-in must not navigate to the garage").toEqual([]);
     expect((await sql("select 1 from users where email=$1", [email])).length).toBe(1);
     await close();
   });

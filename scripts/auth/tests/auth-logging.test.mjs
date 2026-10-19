@@ -119,3 +119,30 @@ test("an ordinary failed sign-in (wrong password) still produces one short, diag
     noCustomerData(text());
   } finally { restore(); }
 });
+
+// The logger itself, called directly: the paths the integration tests above cannot see (Auth.js's own messages are only "Read more at ...").
+const alOut = await esbuild.build({ entryPoints: [path.join(ROOT, "src/lib/authLogger.ts")], tsconfig: path.join(ROOT, "tsconfig.json"), bundle: true, format: "cjs", platform: "node", write: false, logLevel: "silent" });
+const alMod = { exports: {} };
+new Function("module", "exports", "require", alOut.outputFiles[0].text)(alMod, alMod.exports, require);
+const { authLogger } = alMod.exports;
+
+test("authLogger never prints an error's message, stack, String() form or cause details (sentinels)", () => {
+  try {
+    const inner = Object.assign(new Error("INNER-MESSAGE-SENTINEL victim.customer@example.com"), { name: "JWTExpired", code: "ERR_JWT_EXPIRED", payload: { email: "PAYLOAD-SENTINEL" } });
+    const err = Object.assign(new Error("OUTER-MESSAGE-SENTINEL"), { type: "JWTSessionError", cause: { err: inner, extra: "DETAILS-SENTINEL" } });
+    err.stack = "Error: STACK-SENTINEL\n    at /srv/app/node_modules/x.js:1:1";
+    authLogger.error(err);
+    const t = text();
+    assert.match(t, /JWTSessionError/);
+    assert.match(t, /ERR_JWT_EXPIRED/);
+    for (const s of ["INNER-MESSAGE-SENTINEL", "OUTER-MESSAGE-SENTINEL", "STACK-SENTINEL", "PAYLOAD-SENTINEL", "DETAILS-SENTINEL", "victim.customer", "node_modules"]) assert.ok(!t.includes(s), `${s} reached the log: ${t}`);
+  } finally { restore(); }
+});
+
+test("authLogger cannot throw on odd inputs (null, undefined, a string, a throwing getter)", () => {
+  try {
+    const hostile = { get type() { throw new Error("boom"); }, get name() { throw new Error("boom"); } };
+    for (const odd of [null, undefined, "just a string", 42, {}, hostile]) assert.doesNotThrow(() => authLogger.error(odd));
+    assert.match(text(), /\[auth\]\[error\]/);
+  } finally { restore(); }
+});

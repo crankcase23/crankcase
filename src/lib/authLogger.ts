@@ -13,9 +13,15 @@ const TOKEN = /^[A-Za-z0-9_]{1,40}$/;
 
 export const authLogger = {
   error(error: Error) {
-    const type = (error as { type?: unknown }).type;
-    const label = typeof type === "string" && TOKEN.test(type) ? type : TOKEN.test(error?.name ?? "") ? error.name : "Error";
-    const inner = (error?.cause as { err?: unknown } | undefined)?.err;
-    console.error("[auth][error]", label, inner === undefined ? "" : "cause: " + safeErrorSummary(inner));
+    // Logging must never be the thing that fails: a throw here would turn an Auth.js redirect into a 500.
+    try {
+      const type = (error as { type?: unknown } | null | undefined)?.type;
+      const name = (error as { name?: unknown } | null | undefined)?.name;
+      const label = typeof type === "string" && TOKEN.test(type) ? type : typeof name === "string" && TOKEN.test(name) ? name : "Error";
+      const inner = (error?.cause as { err?: unknown } | undefined)?.err;
+      console.error("[auth][error]", label, inner === undefined ? "" : "cause: " + safeErrorSummary(inner));
+    } catch {
+      console.error("[auth][error] (unprintable error)");
+    }
   },
 };
