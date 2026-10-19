@@ -19,7 +19,7 @@ Object.assign(process.env, { AUTH_SECRET: ["unit", "test", "signing", "value", "
 const S = (globalThis.__fp = { user: null, lookupError: null, mailResult: { ok: true }, sent: [] });
 const stubs = {
   "@/lib/users": `export async function findUserByEmail() { const S = globalThis.__fp; if (S.lookupError) throw S.lookupError; return S.user; }`,
-  "@/lib/email": `export async function sendEmail(to, subject, html) { const S = globalThis.__fp; S.sent.push({ to, subject }); return S.mailResult; }`,
+  "@/lib/email": `export async function sendEmail(to, subject, html) { const S = globalThis.__fp; S.sent.push({ to, subject }); if (S.mailResult instanceof Error) throw S.mailResult; return S.mailResult; }`,
 };
 const stubPlugin = {
   name: "stubs",
@@ -99,6 +99,18 @@ test("mail failure stays a generic 200 (no account oracle) and is logged for the
   assert.match(text, /\[forgot-password\]/, "an undelivered reset mail must be visible to the operator");
   assert.match(text, /resend_422/);
   assert.ok(!text.includes(EMAIL), "no customer email in the log line");
+});
+
+test("a mailer that THROWS is still a generic 200, logged by class and code only (no message, no address)", async () => {
+  S.user = { id: "u1", email: EMAIL, passwordHash: HASH, status: "active" };
+  S.mailResult = Object.assign(new Error("smtp said no to " + EMAIL + " token=abc123secret"), { name: "MailError", code: "E_MAIL" });
+  const r = await post();
+  assert.equal(r.status, 200);
+  assert.deepEqual(JSON.parse(r.body), { ok: true });
+  const text = logs.join("\n");
+  assert.match(text, /\[forgot-password\]/);
+  assert.match(text, /E_MAIL/);
+  assert.ok(!text.includes(EMAIL) && !text.includes("abc123secret"), "the thrown message must not reach the log");
 });
 
 test("empty email is still a plain 400 and sends nothing", async () => {
