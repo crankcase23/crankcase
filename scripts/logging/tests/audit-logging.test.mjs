@@ -44,7 +44,6 @@ const clean = (t) => {
   assert.doesNotMatch(t, /node_modules|\.next[\\/]/, `stack frames leaked:\n${t}`);
 };
 
-let failWith = null;
 const esbuild = require("esbuild");
 const stubPlugin = {
   name: "stubs",
