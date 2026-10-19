@@ -12,27 +12,48 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  // A failed request must end in a visible message and a usable form (build 104-F): a dropped connection or a non-JSON reply from a
+  // proxy used to leave "Creating account…" up forever with an unhandled rejection. Messages the server sends are shown as they are.
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
 
-    const res = await fetch("/api/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error ?? "Could not create your account.");
+    let res: Response;
+    try {
+      res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch {
+      setError("We couldn't reach Crankcase Garage. Check your connection and try again.");
       setSubmitting(false);
       return;
     }
 
-    const result = await signIn("credentials", { email, password, redirect: false });
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      setError(
+        typeof data?.error === "string" && data.error
+          ? data.error
+          : res.status === 429
+            ? "Too many sign-up attempts. Wait a bit and try again."
+            : "We couldn't create your account right now. Please try again in a minute.",
+      );
+      setSubmitting(false);
+      return;
+    }
+
+    let signedIn = false;
+    try {
+      const result = await signIn("credentials", { email, password, redirect: false });
+      signedIn = !result?.error;
+    } catch {
+      signedIn = false;
+    }
     setSubmitting(false);
-    if (result?.error) {
+    if (!signedIn) {
       // Account was created but auto-login failed — send them to log in manually.
       router.push("/login");
       return;
@@ -57,7 +78,7 @@ export default function SignupPage() {
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         {error ? (
-          <div className="rounded-lg border border-red-800 bg-red-950/50 px-3 py-2 text-sm text-red-300">
+          <div role="alert" className="rounded-lg border border-red-800 bg-red-950/50 px-3 py-2 text-sm text-red-300">
             {error}
           </div>
         ) : null}

@@ -94,6 +94,16 @@ test("server log keeps a diagnosable record without SQL, params, the new hash or
   assert.ok(!t.includes("user-1") && !t.includes("victim.customer") && !t.includes(NEW_PW), "no user id, address or password in logs");
 });
 
+test("server log on a failed LOOKUP also keeps class and code only (no SQL, params, user id or message text)", async () => {
+  S.selectError = new DrizzleQueryError('select "id", "email", "password_hash" from "users" where "users"."id" = $1 limit $2', ["user-1", 1], pgError("57P01", "terminating connection due to administrator command"));
+  await post({ token: validToken(), password: NEW_PW });
+  const t = logText();
+  assert.match(t, /\[reset-password\]/);
+  assert.match(t, /57P01/);
+  assert.doesNotMatch(t, /select "|password_hash|params:|Failed query|terminating connection/i);
+  assert.ok(!t.includes("user-1"), "no user id in logs");
+});
+
 test("a failed save does not change the password and the stored hash never leaves the process", async () => {
   S.updateError = new DrizzleQueryError("update", [], pgError("08006", "x"));
   const r = await post({ token: validToken(), password: NEW_PW });
