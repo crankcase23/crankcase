@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
 import { appEvents } from "@/db/schema";
+import { describeError } from "@/lib/dbErrorLog";
 
 // ---------------------------------------------------------------------------
 // First-party event capture.
@@ -93,8 +94,9 @@ export async function recordEvent(input: RecordEventInput): Promise<void> {
       metadata: input.metadata ?? null,
     });
   } catch (err) {
-    // Analytics is never load-bearing. Log and move on.
-    console.error("[events] failed to record", input.type, err);
+    // Analytics is never load-bearing. Log and move on. Class and code only: drizzle's message is the SQL plus the bound
+    // parameters (user id, path, the metadata JSON), none of which belongs in the server log (build 104-G).
+    console.error("[events] failed to record", input.type, describeError(err));
   }
 }
 

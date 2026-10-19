@@ -127,6 +127,33 @@ test("errors: the same database failure with different customers' parameters sti
   } finally { restore(); }
 });
 
+test("errors: different database failures keep DIFFERENT fingerprints (a foreign-key bug and a unique-violation bug are not one row)", async () => {
+  try {
+    const failure = (code) => new DrizzleQueryError('insert into "feedback" values ($1)', [USER_ID], pgError(code));
+    await recordError({ source: "api/feedback", error: failure("23503") });
+    await recordError({ source: "api/feedback", error: failure("23505") });
+    await recordError({ source: "api/other", error: failure("23503") });
+    const fp = S.rows.map((r) => r.fingerprint);
+    assert.equal(new Set(fp).size, 3, "code and source both separate groups");
+  } finally { restore(); }
+});
+
+test("errors: a network error is stored without the database host and port, and a wrapper whose CAUSE is a pg error is sanitized too", async () => {
+  try {
+    const net = Object.assign(new Error("connect ECONNREFUSED 10.1.2.3:5432"), { code: "ECONNREFUSED", syscall: "connect", address: "10.1.2.3", port: 5432 });
+    await recordError({ source: "api/garage", error: net });
+    const wrapper = new Error(`lookup failed for ${EMAIL}`, { cause: pgError("08006") });
+    await recordError({ source: "api/garage", error: wrapper });
+    for (const row of S.rows) {
+      const t = row.message + "\n" + (row.stack ?? "");
+      assert.ok(!t.includes("10.1.2.3") && !t.includes("5432"), `database address leaked:\n${t}`);
+      clean(t, "network / wrapper error");
+    }
+    assert.match(S.rows[0].message, /ECONNREFUSED/);
+    assert.match(S.rows[1].message, /08006/);
+  } finally { restore(); }
+});
+
 test("errors: a raw pg error (not drizzle-wrapped) is sanitized too, because its message can quote the offending value", async () => {
   try {
     await recordError({ source: "api/admin/users", error: pgError("22P02", `invalid input syntax for type uuid: "${EMAIL}"`) });
