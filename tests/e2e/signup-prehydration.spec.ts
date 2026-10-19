@@ -16,6 +16,7 @@ import { test, expect, type Page } from "@playwright/test";
 //   SR-6  the corrected value is what server-side validation sees (a short password is refused by the SERVER, by its own message)
 //   SR-7  throttling still reaches the customer in the server's own words
 //   SR-8  autofill AFTER hydration (the value is set without firing React's onChange) is submitted as it appears on screen
+//   SR-9  the same autofill, then a server refusal: the fields are not blanked by the submit re-render and the retry works
 
 const PASSWORD = "testpassword123";
 const rand = () => Math.random().toString(36).slice(2, 8);
@@ -138,6 +139,30 @@ test.describe("signup form: text typed before hydration is not lost", () => {
     await create(page).click();
     await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
     expect(posted).toEqual([{ email, password: PASSWORD }]);
+  });
+
+  test("SR-9 autofill after hydration, then the server refuses once: the fields keep what the browser filled in and the retry sends it", async ({ page }) => {
+    // Review finding (Build 104-H): the submit read the screen correctly, but the re-render for "Creating account…" reset the fields to
+    // the (still empty) React state, so after any server error the customer was looking at blank fields.
+    const posted = await openSignup(page);
+    let refused = false;
+    await page.route("**/api/signup", async (route) => {
+      if (!refused) { refused = true; return route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "This is temporarily unavailable. Try again in a minute." }) }); }
+      return route.continue();
+    });
+    await hydrated(page);
+    const email = uniqueEmail("sr9");
+    await page.evaluate(([e, p]) => {
+      (document.getElementById("email") as HTMLInputElement).value = e;
+      (document.getElementById("password") as HTMLInputElement).value = p;
+    }, [email, PASSWORD]);
+    await create(page).click();
+    await expect(page.getByText("This is temporarily unavailable. Try again in a minute.")).toBeVisible();
+    await expect(page.getByLabel("Email"), "the submit re-render must not blank an autofilled field").toHaveValue(email);
+    await expect(page.getByLabel("Password")).toHaveValue(PASSWORD);
+    await create(page).click();
+    await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
+    expect(posted).toEqual([{ email, password: PASSWORD }, { email, password: PASSWORD }]);
   });
 
   test("SR-7 throttling and duplicate answers still reach the customer in the server's own words", async ({ page }) => {
