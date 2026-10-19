@@ -11,6 +11,9 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // False in the server-rendered HTML, true once React has attached. Until then the submit button is disabled: a click or Enter before that
+  // would be submitted by the browser itself (a GET to /signup?), which reloads the page, empties the fields and drops the attempt silently.
+  const [ready, setReady] = useState(false);
   const emailInput = useRef<HTMLInputElement>(null);
   const passwordInput = useRef<HTMLInputElement>(null);
 
@@ -18,6 +21,7 @@ export default function SignupPage() {
   // empty while the field looks filled in. Adopt it once, at mount: otherwise the next re-render (an error message, say) would blank the
   // field, and a submit would post empty values (build 104-H, KD-1).
   useEffect(() => {
+    setReady(true);
     if (emailInput.current?.value) setEmail(emailInput.current.value);
     if (passwordInput.current?.value) setPassword(passwordInput.current.value);
   }, []);
@@ -110,7 +114,7 @@ export default function SignupPage() {
         </div>
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || !ready}
           className="w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-60"
         >
           {submitting ? "Creating account…" : "Create Account"}
