@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
@@ -11,9 +11,22 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const emailInput = useRef<HTMLInputElement>(null);
+  const passwordInput = useRef<HTMLInputElement>(null);
+
+  // Text typed (or autofilled) BEFORE this component hydrates is already in the DOM but never went through onChange, so state is still
+  // empty while the field looks filled in. Adopt it once, at mount: otherwise the next re-render (an error message, say) would blank the
+  // field, and a submit would post empty values (build 104-H, KD-1).
+  useEffect(() => {
+    if (emailInput.current?.value) setEmail(emailInput.current.value);
+    if (passwordInput.current?.value) setPassword(passwordInput.current.value);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // What is on screen is what is submitted, whether or not React saw the keystrokes (autofill and pre-hydration typing skip onChange).
+    const email = emailInput.current?.value ?? "";
+    const password = passwordInput.current?.value ?? "";
     setError(null);
     setSubmitting(true);
 
@@ -67,6 +80,7 @@ export default function SignupPage() {
           </label>
           <input
             id="email"
+            ref={emailInput}
             type="email"
             placeholder="you@example.com"
             required
@@ -81,6 +95,7 @@ export default function SignupPage() {
           </label>
           <input
             id="password"
+            ref={passwordInput}
             type="password"
             placeholder="At least 8 characters"
             required

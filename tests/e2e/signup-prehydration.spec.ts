@@ -15,6 +15,7 @@ import { test, expect, type Page } from "@playwright/test";
 //   SR-5  network failure then retry (needs #87's hang fix: CC_NEEDS_PR87=1)
 //   SR-6  the corrected value is what server-side validation sees (a short password is refused by the SERVER, by its own message)
 //   SR-7  throttling still reaches the customer in the server's own words
+//   SR-8  autofill AFTER hydration (the value is set without firing React's onChange) is submitted as it appears on screen
 
 const PASSWORD = "testpassword123";
 const rand = () => Math.random().toString(36).slice(2, 8);
@@ -123,6 +124,20 @@ test.describe("signup form: text typed before hydration is not lost", () => {
     await expect(page.getByText("Password must be at least 8 characters.")).toBeVisible();
     expect(posted).toEqual([{ email, password: "short77" }]);
     await expect(page).toHaveURL(/\/signup$/);
+  });
+
+  test("SR-8 a value the browser fills in without firing onChange (autofill) after hydration is submitted as it appears on screen", async ({ page }) => {
+    const posted = await openSignup(page);
+    await hydrated(page);
+    const email = uniqueEmail("sr8");
+    await page.evaluate(([e, p]) => {
+      // Setting .value directly is what a password manager / autofill does: no input event, so React state never hears about it.
+      (document.getElementById("email") as HTMLInputElement).value = e;
+      (document.getElementById("password") as HTMLInputElement).value = p;
+    }, [email, PASSWORD]);
+    await create(page).click();
+    await expect(page).toHaveURL(/\/garage$/, { timeout: 20_000 });
+    expect(posted).toEqual([{ email, password: PASSWORD }]);
   });
 
   test("SR-7 throttling and duplicate answers still reach the customer in the server's own words", async ({ page }) => {
