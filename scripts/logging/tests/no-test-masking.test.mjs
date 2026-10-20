@@ -5,43 +5,90 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// A failing browser test must stay a FAILING test (Build 104-H). Nothing in tests/e2e may turn a red into a green by annotation:
-//   * test.fail(...)  "expected to fail": passes while the defect exists, so the defect is invisible in the results
-//   * test.fixme(...) / describe.fixme   parked tests
-//   * .only(...)      silently drops every other test
-//   * an UNCONDITIONAL skip (test.skip() / test.skip(true ...)). A skip with a real condition (an environment variable, a configured
-//     token) is how the opt-in outage / fault-injection suites work and is allowed
-//   * retries above 0 in playwright.config.ts: a red that passes on a retry is reported as "flaky" instead of failed
+// A failing browser test must stay a FAILING test (Build 104-H). Nothing under tests/ may turn a red into a green by annotation:
+//   * test.fail(...) / testInfo.fail(...) / test.info().fail(...)   "expected to fail": passes while the defect exists
+//   * fixme(...)   parked tests            * .only(...)   silently drops every other test
+//   * an UNCONDITIONAL skip: no condition, a constant condition (true, !0, null, () => true) or the title-first form (which skips always).
+//     A skip with a real condition (an environment variable, a configured token) is how the opt-in outage / fault-injection suites work
+//   * retries above 0 (config, any project, describe.configure, --retries), and anything that removes tests from a run or stops it early
+//     (grepInvert, testIgnore, maxFailures, --grep, -x, --last-failed, --update-snapshots, "|| true" after a playwright command)
 // Known defects are kept as ordinary red tests (or as a written finding), never as annotated passes.
+//
+// The scanner tokenizes (strings, template literals, regex literals and comments are blanked first) so a glob like "**/api/x/*" can never be
+// mistaken for the start of a block comment and hide the rest of the file, and a word inside a string is never mistaken for code.
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
-const stripComments = (src) =>
-  src.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " ")).split("\n").map((l) => (/^\s*\/\//.test(l) ? "" : l)).join("\n");
+/** Blank comments, and (unless keepStrings) the CONTENT of string / template / regex literals. Newlines and offsets are preserved. */
+export function blank(src, { keepStrings = false } = {}) {
+  let out = "";
+  let i = 0;
+  let lastSig = ""; // last significant (non-space, non-comment) character, to tell a regex literal from a division
+  const n = src.length;
+  const space = (s) => s.replace(/[^\n]/g, " ");
+  while (i < n) {
+    const c = src[i], d = src[i + 1];
+    if (c === "/" && d === "/") { let j = i; while (j < n && src[j] !== "\n") j++; out += space(src.slice(i, j)); i = j; continue; }
+    if (c === "/" && d === "*") { const j = src.indexOf("*/", i + 2); const e = j < 0 ? n : j + 2; out += space(src.slice(i, e)); i = e; continue; }
+    if (c === '"' || c === "'" || c === "`") {
+      let j = i + 1;
+      while (j < n && src[j] !== c) { if (src[j] === "\\") j++; j++; }
+      const body = src.slice(i + 1, j);
+      out += keepStrings ? src.slice(i, j + 1) : c + space(body) + c;
+      i = j + 1; lastSig = c; continue;
+    }
+    if (c === "/" && /[(,=:[!&|?{};]|^$/.test(lastSig)) { // regex literal
+      let j = i + 1, inClass = false;
+      while (j < n && src[j] !== "\n") {
+        if (src[j] === "\\") { j += 2; continue; }
+        if (src[j] === "[") inClass = true; else if (src[j] === "]") inClass = false; else if (src[j] === "/" && !inClass) break;
+        j++;
+      }
+      if (j < n && src[j] === "/") { j++; while (j < n && /[a-z]/i.test(src[j])) j++; out += keepStrings ? src.slice(i, j) : "/" + space(src.slice(i + 1, j)); i = j; lastSig = "/"; continue; }
+    }
+    out += c;
+    if (!/\s/.test(c)) lastSig = c;
+    i++;
+  }
+  return out;
+}
 
-// Rules run over the WHOLE comment-stripped file (not line by line), so a call split across lines is still seen.
-const RULES = [
-  [/\btest\s*\.\s*fail\b/g, "test.fail marks a failure as expected"],
-  [/\.\s*fixme\b/g, "fixme parks a test"],
-  [/\.\s*only\b/g, ".only drops every other test"],
-  // skip with no condition, a literal condition, a title-first form (which skips unconditionally) or a function returning a constant
-  [/\.\s*skip\s*\(\s*(?:\)|true\b|false\b|\d|["'`]|\(\s*\)\s*=>)/g, "unconditional skip (a skip needs a real condition: an environment variable, a configured token)"],
-  // aliases and bracket access that would dodge the name checks above
-  [/=\s*test\s*[;,)]|\{[^}]*\b(?:fail|fixme|skip|only)\b[^}]*\}\s*=\s*test\b|\btest\s*\[\s*["'`]/g, "alias or bracket access to test"],
-  [/\bconfigure\s*\(\s*\{[^}]*\bretries\s*:\s*[1-9]/g, "retries above 0"],
-];
 const SPEC_FILE = /\.[cm]?[jt]sx?$/;
-
 const lineOf = (text, index) => text.slice(0, index).split("\n").length;
+const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** Names that refer to Playwright's `test` in this file: `test` itself, `import { test as x }`, `const x = test` / `test.extend(...)`. */
+function testNames(text) {
+  const names = new Set(["test", "testInfo"]);
+  for (const m of text.matchAll(/\btest\s+as\s+(\w+)/g)) names.add(m[1]);
+  for (const m of text.matchAll(/\b(?:const|let|var)\s+(\w+)\s*=\s*(?:await\s+)?test\b/g)) names.add(m[1]);
+  return [...names];
+}
+
+function rulesFor(names) {
+  const recv = `(?:${names.map(esc).join("|")})(?:\\s*\\.\\s*\\w+)*|\\binfo\\s*\\(\\s*\\)`; // test, test.describe.parallel, testInfo, test.info()
+  const R = `(?:${recv})`;
+  const CONSTANT = `(?:\\)|!*\\s*\\(*\\s*(?:true|false|null|undefined|\\d+)\\s*\\)*\\s*[,)]|[^,)]*\\|\\|\\s*true\\s*[,)]|(?:async\\s*)?(?:\\([^)]*\\)|\\w+)\\s*=>\\s*\\(*\\s*(?:true|false|null|undefined|\\d)\\b|["'\`]\\s*["'\`]\\s*,\\s*(?:async\\b|\\(|function\\b|\\w+\\s*=>))`;
+  return [
+    [new RegExp(`${R}\\s*\\.\\s*fail\\b`, "g"), "fail marks a failure as expected"],
+    [new RegExp(`${R}\\s*\\.\\s*fixme\\b`, "g"), "fixme parks a test"],
+    [new RegExp(`${R}\\s*\\.\\s*only\\b`, "g"), ".only drops every other test"],
+    [new RegExp(`${R}\\s*\\.\\s*skip\\s*\\(\\s*${CONSTANT}`, "g"), "unconditional skip (a skip needs a real condition: an environment variable, a configured token)"],
+    [new RegExp(`${R}\\s*\\.\\s*skip\\s*\\(\\s*(\\d+)\\s*===?\\s*\\1\\s*[,)]`, "g"), "unconditional skip (a literal compared with itself)"],
+    [/\{[^}]*\b(?:fail|fixme|skip|only)\b[^}]*\}\s*=\s*test\b|\btest\s*\[\s*["'`]/g, "destructured or bracket access to test"],
+    [/\bconfigure\s*\(\s*\{[^;]*?\bretries\s*:\s*(?!0\b)[^\s,}]/g, "retries above 0"],
+  ];
+}
 
 export function findMasking(dir) {
   const found = [];
   const walk = (d) => {
     for (const e of fs.readdirSync(d, { withFileTypes: true })) {
       const p = path.join(d, e.name);
-      if (e.isDirectory()) { if (e.name !== "node_modules") walk(p); continue; }
+      const isDir = e.isDirectory() || (e.isSymbolicLink() && fs.statSync(p).isDirectory());
+      if (isDir) { if (e.name !== "node_modules") walk(p); continue; }
       if (!SPEC_FILE.test(e.name)) continue;
-      const text = stripComments(fs.readFileSync(p, "utf8"));
-      for (const [re, why] of RULES) {
+      const text = blank(fs.readFileSync(p, "utf8"));
+      for (const [re, why] of rulesFor(testNames(text))) {
         for (const m of text.matchAll(re)) found.push(`${path.relative(dir, p)}:${lineOf(text, m.index)}: ${why}: ${m[0].replace(/\s+/g, " ").slice(0, 60)}`);
       }
     }
@@ -50,20 +97,38 @@ export function findMasking(dir) {
   return found;
 }
 
-/** Every `retries:` value in a config file (a project can set its own); each must be 0. */
+/** Every `retries:` value in a config file (a project can set its own, quoted keys too); each must be 0. */
 export function retriesIn(configSource) {
-  return [...stripComments(configSource).matchAll(/\bretries\s*:\s*([^,}\n]+)/g)].map((m) => m[1].trim());
+  return [...blank(configSource, { keepStrings: true }).matchAll(/["']?\bretries["']?\s*:\s*([^,}\n]+)/g)].map((m) => m[1].trim());
 }
 
-/** Config settings that remove tests from a run or stop it early. */
+/** Config settings that remove tests from a run, stop it early, or make a failing comparison pass. */
 export function hidingSettingsIn(configSource) {
-  return [...stripComments(configSource).matchAll(/\b(grepInvert|testIgnore|maxFailures)\s*:/g)].map((m) => m[1]);
+  const t = blank(configSource, { keepStrings: true });
+  const found = [...t.matchAll(/["']?\b(grepInvert|grep|testIgnore|maxFailures)["']?\s*:/g)].map((m) => m[1]);
+  if (/["']?\bupdateSnapshots["']?\s*:\s*["'](?:all|changed)["']/.test(t)) found.push("updateSnapshots");
+  if (/["']?\bignoreSnapshots["']?\s*:\s*true\b/.test(t)) found.push("ignoreSnapshots");
+  return found;
 }
 
-/** Playwright CLI flags that do the same from package.json scripts. */
+/** Playwright CLI flags / shell tricks in scripts that do the same. `--retries=0` is the safe setting and is allowed. */
 export function hidingFlagsIn(scripts) {
-  return Object.entries(scripts ?? {}).filter(([, v]) => /--(?:retries|grep-invert|max-failures)\b/.test(v)).map(([k]) => k);
+  const bad = /--retries(?:=|\s+)(?!0\b)|--grep-invert\b|--grep\b|\s-g\s|\s-x\b|--max-failures\b|--last-failed\b|--update-snapshots\b|\s-u\b|--pass-with-no-tests\b|--shard\b|\|\|\s*true\b|;\s*exit\s+0\b/;
+  return Object.entries(scripts ?? {}).filter(([, v]) => /playwright/.test(v) && bad.test(v)).map(([k]) => k);
 }
+
+const configsUnder = (dir) => {
+  const out = [];
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (e.name !== "node_modules" && e.name !== ".next" && e.name !== ".git") walk(p); continue; }
+      if (/^playwright.*\.config\.[cm]?[jt]s$/.test(e.name)) out.push(p);
+    }
+  };
+  walk(dir);
+  return out;
+};
 
 test("the scanner itself: every masking form is caught, every honest form is not", () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "mask-"));
@@ -77,7 +142,6 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "f.spec.ts": 'test.skip(true, "never");',
       "g.spec.ts": 'test.describe.only("suite", () => {});',
       "h.spec.ts": 'await go(); test.fail(true);',
-      // review findings (Build 104-H): each of these used to slip through
       "i.spec.ts": 'test.skip("parked test", async () => {});',
       "j.spec.ts": 'test.describe.skip("parked suite", () => {});',
       "k.spec.mts": 'test.fail(true);',
@@ -92,6 +156,21 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "t.spec.ts": 'test.describe.configure({\n  retries: 3,\n});',
       "u.spec.ts": 'test.describe.parallel.skip("suite", () => {});',
       "fixtures/v.spec.ts": 'test.fail(true);',
+      // second review (Build 104-H)
+      "w.spec.ts": 'await page.route("**/api/x/*", h);\ntest.fail(true);\nawait page.route("**/vpic/**", h);', // a glob must not open a "comment"
+      "x.spec.ts": 'test("a", async ({}, testInfo) => { testInfo.fail(true); });',
+      "y.spec.ts": 'test("a", async () => { test.info().fail(); });',
+      "z.spec.ts": 'import { test as base } from "@playwright/test";\nbase.fail(true);',
+      "aa.spec.ts": 'const t = test.extend({});\nt.fail(true);',
+      "ab.spec.ts": 'const t = test as any\nt.fixme(true);',
+      "ac.spec.ts": 'test.skip(!0, "x");',
+      "ad.spec.ts": 'test.skip(!!1, "x");',
+      "ae.spec.ts": 'test.skip(null);',
+      "af.spec.ts": 'test.skip((true), "x");',
+      "ag.spec.ts": 'test.skip(({ browserName }) => true);',
+      "ah.spec.ts": 'test.skip(async () => true, "x");',
+      "ai.spec.ts": 'test.describe.configure({ mode: "x", nested: f({ a: 1 }), retries: 2 });',
+      "aj.spec.ts": 'test.describe.configure({ retries: n });',
     };
     const good = {
       "ok1.spec.ts": 'test.skip(!process.env.CC_DB_FAULT, "opt-in");',
@@ -99,6 +178,12 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "ok3.spec.ts": '// test.fail( is only mentioned in a comment\n/* test.fixme( and test.only( in a block comment */\ntest("works", async () => {});',
       "ok4.spec.ts": 'test.skip(!OPS || !ADMIN, "needs the ops token");',
       "ok5.spec.ts": 'const failures = []; const onlyOnce = 1; test("a test about failing", async () => {});',
+      "ok6.spec.ts": 'list.skip(3); q.skip(0); opts.only = 1; const x = test;',
+      "ok7.spec.ts": 'test.skip("CI" in process.env, "r"); test.skip(2 > n.length, "r"); test.skip(browserName === "webkit", "r");',
+      "ok8.spec.ts": 'const msg = "Done. only for owners"; const re = /test\\.fail\\(/; x(); // test.fail(true) trailing comment\ntest("ok", async () => {});',
+      "ok9.spec.ts": 'await page.route("**/api/garage/*/service", h);\nawait page.route("**/b/**", h);\ntest("ok", async () => { await Promise.resolve(1 / 2); });',
+      "ok10.spec.ts": 'const base = test.extend({ a: 1 });\nbase("works", async () => {});\ntest.skip(({ browserName }) => browserName === "webkit", "r");',
+      "ok11.spec.ts": 'test.describe.configure({ mode: "serial", retries: 0 });',
     };
     fs.mkdirSync(path.join(dir, "fixtures"));
     for (const [n, c] of Object.entries({ ...bad, ...good })) fs.writeFileSync(path.join(dir, n), c);
@@ -107,24 +192,43 @@ test("the scanner itself: every masking form is caught, every honest form is not
     for (const n of Object.keys(good)) assert.ok(!flagged.has(n), `${n} should not have been flagged`);
     assert.deepEqual(retriesIn("export default defineConfig({ retries: 0, x: 1 })"), ["0"]);
     assert.deepEqual(retriesIn("export default defineConfig({ retries: 0, projects: [{ name: 'a', retries: 3 }] })"), ["0", "3"]);
+    assert.deepEqual(retriesIn('export default defineConfig({ "retries": 2 })'), ["2"]);
     assert.deepEqual(retriesIn("export default defineConfig({ retries: process.env.CI ? 2 : 0 })"), ["process.env.CI ? 2 : 0"]);
+    assert.deepEqual(retriesIn("export default defineConfig({ retries: 0 // none\n})"), ["0"]);
     assert.deepEqual(retriesIn("export default defineConfig({ x: 1 })"), []);
     assert.deepEqual(hidingSettingsIn("defineConfig({ grepInvert: /@slow/, testIgnore: 'a', maxFailures: 1, timeout: 5 })"), ["grepInvert", "testIgnore", "maxFailures"]);
-    assert.deepEqual(hidingSettingsIn("defineConfig({ timeout: 5 })"), []);
-    assert.deepEqual(hidingFlagsIn({ t: "playwright test --retries=2", u: "playwright test --grep-invert @x", v: "playwright test", w: "playwright test --max-failures 1" }), ["t", "u", "w"]);
+    assert.deepEqual(hidingSettingsIn('defineConfig({ "grepInvert": /@slow/, grep: /@x/, updateSnapshots: "all", ignoreSnapshots: true })'), ["grepInvert", "grep", "updateSnapshots", "ignoreSnapshots"]);
+    assert.deepEqual(hidingSettingsIn("defineConfig({ timeout: 5, updateSnapshots: 'missing' })"), []);
+    const flags = { t: "playwright test --retries=2", u: "playwright test --grep-invert @x", v: "playwright test", w: "playwright test --max-failures 1", x: "playwright test -x", y: "playwright test --grep @a", z: "playwright test -u", aa: "playwright test --last-failed", ab: "playwright test || true", ac: "playwright test; exit 0", ad: "playwright test --shard=1/2", ae: "playwright test --retries=0", af: "playwright test --workers=3 --reporter=list" };
+    assert.deepEqual(hidingFlagsIn(flags), ["t", "u", "w", "x", "y", "z", "aa", "ab", "ac", "ad"]);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
-test("tests/e2e contains no expected-fail, fixme, only, unconditional skip, alias or retry override (any test file extension)", () => {
-  const found = findMasking(path.join(ROOT, "tests", "e2e"));
+test("everything under tests/ (e2e and transition, any test file extension) contains no expected-fail, fixme, only, unconditional skip, alias or retry override", () => {
+  const found = findMasking(path.join(ROOT, "tests"));
   assert.deepEqual(found, [], `a failure is being hidden by annotation:\n${found.join("\n")}`);
 });
 
-test("Playwright config does not retry, filter tests out or stop early, in any project or package.json script", () => {
-  const cfg = fs.readFileSync(path.join(ROOT, "playwright.config.ts"), "utf8");
-  const r = retriesIn(cfg);
-  assert.ok(r.every((v) => v === "0"), `retries: ${JSON.stringify(r)} (a red that passes on retry is reported as flaky, not failed)`);
-  assert.deepEqual(hidingSettingsIn(cfg), [], "grepInvert / testIgnore / maxFailures remove tests from the run");
+test("every Playwright config does not retry, filter tests out or stop early, and no script passes flags that do", () => {
+  const configs = configsUnder(ROOT);
+  assert.ok(configs.length >= 2, `expected the root and tests/transition configs, found ${configs.length}`);
+  for (const f of configs) {
+    const cfg = fs.readFileSync(f, "utf8");
+    const r = retriesIn(cfg);
+    assert.ok(r.every((v) => v === "0"), `${path.relative(ROOT, f)} retries: ${JSON.stringify(r)} (a red that passes on retry is reported as flaky, not failed)`);
+    assert.deepEqual(hidingSettingsIn(cfg), [], `${path.relative(ROOT, f)}: a setting removes tests from the run or hides a failing comparison`);
+  }
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
-  assert.deepEqual(hidingFlagsIn(pkg.scripts), [], "a package.json script passes --retries / --grep-invert / --max-failures");
+  assert.deepEqual(hidingFlagsIn(pkg.scripts), [], "a package.json script passes flags that hide failures");
+  const shellish = {};
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      if (!/\.(sh|mjs|js)$/.test(e.name) || p.endsWith("no-test-masking.test.mjs")) continue;
+      for (const line of fs.readFileSync(p, "utf8").split("\n")) if (/playwright test/.test(line)) shellish[`${path.relative(ROOT, p)}: ${line.trim().slice(0, 60)}`] = line;
+    }
+  };
+  walk(path.join(ROOT, "scripts"));
+  assert.deepEqual(hidingFlagsIn(shellish), [], "a script under scripts/ runs playwright with flags that hide failures");
 });
