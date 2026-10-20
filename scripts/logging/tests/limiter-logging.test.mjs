@@ -2,6 +2,7 @@ import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import tls from "node:tls";
 import util from "node:util";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -38,6 +39,11 @@ const pgError = (code) => Object.assign(new Error("terminating connection due to
 const sqlFailure = (code = "57P01") =>
   new DrizzleQueryError('insert into "app_events" ("id","type","key") values ($1,$2,$3)', [USER_ID, "auth.throttle", `signup:${EMAIL}`, HASH], pgError(code));
 const netError = () => Object.assign(new Error(`connect ECONNREFUSED ${HOST}:5432 (user=app password=${CREDS})`), { code: "ECONNREFUSED", syscall: "connect", address: HOST, port: 5432 });
+
+// Build 104-J: a TLS verification failure is a real Node error whose message and `reason` name the database host; an AggregateError (a connect
+// that tried several addresses) has an empty message and inner errors that name every address. Neither has `syscall` / `address`.
+const tlsMismatch = () => tls.checkServerIdentity(HOST, { subject: { CN: "other.example" }, subjectaltname: "DNS:other.example" });
+const aggregate = () => new AggregateError([Object.assign(new Error(`connect ECONNREFUSED ${HOST}:5432`), { code: "ECONNREFUSED" })], "");
 
 let logs;
 const realError = console.error, realWarn = console.warn, realLog = console.log;
@@ -190,5 +196,76 @@ test("app pool: an idle-connection error logs class + code only (no host, port o
     assert.match(t, /\[db\] idle connection error \(connection discarded\)/, "the tag and wording are kept");
     assert.match(t, /ECONNREFUSED/);
     clean(t);
+  } finally { restore(); }
+});
+
+// ---- TLS / AggregateError (Build 104-J) -----------------------------------------------------------------------------------------------
+test("limiter: logLimiterFailure for a TLS hostname mismatch keeps the code and not the database host", { skip: skipFor(guardFile) }, () => {
+  try {
+    assert.ok(tlsMismatch().message.includes(HOST), "sanity: the real error carries the host");
+    guard.logLimiterFailure("login", "FAIL-OPEN", tlsMismatch());
+    const t = text();
+    assert.match(t, /\[auth-limiter\] FAIL-OPEN flow=login/);
+    assert.match(t, /ERR_TLS_CERT_ALTNAME_INVALID/);
+    assert.ok(!t.includes("other.example"), `the certificate's names leaked:\n${t}`);
+    clean(t);
+  } finally { restore(); }
+});
+
+test("limiter: a LimiterStoreError caused by a TLS failure does not carry the host in its message or its log", { skip: skipFor("src/lib/limiterDb.ts") }, async () => {
+  POOLS.connectImpl = async () => fakeClient();
+  POOLS.work = () => tlsMismatch();
+  try {
+    const err = await limiterMod.withLimiterClient((d) => d.execute("x"), { deadlineMs: 2000 }).then(() => null, (e) => e);
+    assert.ok(err instanceof limiterMod.LimiterStoreError);
+    assert.ok(!err.message.includes(HOST), `the wrapper's message carries the host: ${err.message}`);
+    guard.logLimiterFailure("signup", "FAIL-CLOSED", err);
+    const t = text();
+    assert.match(t, /\[auth-limiter\] FAIL-CLOSED flow=signup/);
+    clean(t);
+  } finally { restore(); }
+});
+
+test("limiter: a failed release after a TLS failure logs the tag and code only", { skip: skipFor("src/lib/limiterDb.ts") }, async () => {
+  POOLS.connectImpl = async () => fakeClient();
+  POOLS.work = () => tlsMismatch();
+  try {
+    await assert.doesNotReject(guard.release({ ids: [USER_ID] }));
+    const t = text();
+    assert.match(t, /\[auth-limiter\] release failed; the slots will age out/);
+    clean(t);
+  } finally { restore(); }
+});
+
+test("limiter pool: an idle-connection TLS error or AggregateError logs the code only (no host)", { skip: skipFor("src/lib/limiterDb.ts") }, async () => {
+  POOLS.connectImpl = async () => fakeClient();
+  POOLS.work = () => sqlFailure("57P01");
+  try {
+    await limiterMod.withLimiterClient((d) => d.execute("x"), { deadlineMs: 2000 }).catch(() => undefined);
+    // the app pool (db/index.ts) may have been created by an earlier test: pick the pool whose idle-error handler is the limiter's
+    const pool = POOLS.pools.find((p) => p.h.error?.some((h) => { logs.length = 0; h(netError()); return /\[auth-limiter\]/.test(text()); }));
+    assert.ok(pool, "the limiter's pool has an error listener");
+    for (const mk of [tlsMismatch, aggregate]) {
+      logs.length = 0;
+      for (const h of pool.h.error) h(mk());
+      const t = text();
+      assert.match(t, /\[auth-limiter\] idle connection error \(connection discarded\)/);
+      assert.match(t, /ERR_TLS_CERT_ALTNAME_INVALID|ECONNREFUSED/);
+      clean(t);
+    }
+  } finally { restore(); }
+});
+
+test("app pool: an idle-connection TLS error or AggregateError logs the code only (no host)", { skip: dbSkip }, async () => {
+  try {
+    const pool = (await poolHandlerAtDb()).at(-1);
+    for (const mk of [tlsMismatch, aggregate]) {
+      logs.length = 0;
+      for (const h of pool.h.error) h(mk());
+      const t = text();
+      assert.match(t, /\[db\] idle connection error \(connection discarded\)/);
+      assert.match(t, /ERR_TLS_CERT_ALTNAME_INVALID|ECONNREFUSED/, "the code is the diagnosis and is kept");
+      clean(t);
+    }
   } finally { restore(); }
 });
