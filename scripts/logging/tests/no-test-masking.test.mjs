@@ -18,8 +18,10 @@ import { fileURLToPath } from "node:url";
 // mistaken for the start of a block comment and hide the rest of the file, and a word inside a string is never mistaken for code.
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
-/** Blank comments, and (unless keepStrings) the CONTENT of string / template / regex literals. Newlines and offsets are preserved. */
-export function blank(src, { keepStrings = false } = {}) {
+/** Blank comments, and (unless keepStrings) the CONTENT of string / template / regex literals. Newlines and offsets are preserved.
+ *  keepWords keeps only single-word string bodies ("fail", 'type', `skip`): enough to read object keys and annotation types, while a longer
+ *  string that merely CONTAINS code-looking text is still blanked. */
+export function blank(src, { keepStrings = false, keepWords = false } = {}) {
   let out = "";
   let i = 0;
   let lastSig = ""; // last significant (non-space, non-comment) character, to tell a regex literal from a division
@@ -33,7 +35,7 @@ export function blank(src, { keepStrings = false } = {}) {
       let j = i + 1;
       while (j < n && src[j] !== c) { if (src[j] === "\\") j++; j++; }
       const body = src.slice(i + 1, j);
-      out += keepStrings ? src.slice(i, j + 1) : c + space(body) + c;
+      out += keepStrings || (keepWords && /^\w+$/.test(body)) ? src.slice(i, j + 1) : c + space(body) + c;
       i = j + 1; lastSig = c; continue;
     }
     if (c === "/" && /[(,=:[!&|?{};]|^$/.test(lastSig)) { // regex literal
@@ -79,6 +81,20 @@ function rulesFor(names) {
   ];
 }
 
+// Build 104-J: the details-object annotation form. Playwright 1.63 treats { annotation: { type: "fail" } } exactly like test.fail() (a throwing
+// test reports status "expected", ok:true) and type "skip" / "fixme" like test.skip() / test.fixme() -- with no `.fail(` / `.skip(` call for the
+// rules above to see. The type is flagged wherever it is written as a literal; an annotation whose value is not a literal (a variable, a shorthand
+// property) is flagged too because its type cannot be read. Anything this misses is caught by the results gate (scripts/logging/playwright-results-gate.mjs).
+const ANNOTATION_TYPE = /(?:["'`]type["'`]|\btype)\s*:\s*["'`](?:fail|skip|fixme)["'`]/g;
+const OPAQUE_ANNOTATION = /(?:["'`]annotation["'`]|\bannotation)\s*:\s*(?![\[{\s])|[{,]\s*annotation\s*[,}]|(?:["'`]annotation["'`]|\bannotation)\s*:\s*[\[{]?\s*\.\.\./g;
+export function annotationMasking(src) {
+  const t = blank(src, { keepWords: true });
+  const out = [];
+  for (const m of t.matchAll(ANNOTATION_TYPE)) out.push([m.index, "annotation type fail/skip/fixme masks a failure or skips the test", m[0]]);
+  for (const m of t.matchAll(OPAQUE_ANNOTATION)) out.push([m.index, "annotation whose type cannot be read (use a literal object)", m[0]]);
+  return out.map(([i, why, text]) => ({ line: lineOf(t, i), why, text }));
+}
+
 export function findMasking(dir) {
   const found = [];
   const walk = (d) => {
@@ -91,6 +107,7 @@ export function findMasking(dir) {
       for (const [re, why] of rulesFor(testNames(text))) {
         for (const m of text.matchAll(re)) found.push(`${path.relative(dir, p)}:${lineOf(text, m.index)}: ${why}: ${m[0].replace(/\s+/g, " ").slice(0, 60)}`);
       }
+      for (const a of annotationMasking(fs.readFileSync(p, "utf8"))) found.push(`${path.relative(dir, p)}:${a.line}: ${a.why}: ${a.text.replace(/\s+/g, " ").slice(0, 60)}`);
     }
   };
   walk(dir);
@@ -171,6 +188,21 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "ah.spec.ts": 'test.skip(async () => true, "x");',
       "ai.spec.ts": 'test.describe.configure({ mode: "x", nested: f({ a: 1 }), retries: 2 });',
       "aj.spec.ts": 'test.describe.configure({ retries: n });',
+      // Build 104-J: the details-object annotation form. Verified against Playwright 1.63: { annotation: { type: "fail" } } makes a throwing
+      // test report status "expected" / ok:true (same as test.fail), and type "skip" / "fixme" skips it. None of these call test.fail().
+      "ak.spec.ts": 'test("a", { annotation: { type: "fail", description: "known" } }, async () => {});',
+      "al.spec.ts": 'test("a", { annotation: { type: "skip" } }, async () => {});',
+      "am.spec.ts": 'test("a", { annotation: { type: "fixme", description: "later" } }, async () => {});',
+      "an.spec.ts": 'test("a", { annotation: [{ type: "issue", description: "x" }, { type: "fail" }] }, async () => {});',
+      "ao.spec.ts": 'test.describe("s", { annotation: { type: \'fixme\' } }, () => {});',
+      "ap.spec.ts": 'test("a", { "annotation": { "type": "fail" } }, async () => {});',
+      "aq.spec.ts": 'test("a", {\n  annotation: {\n    description: "known",\n    type: `skip`,\n  },\n}, async () => {});',
+      "ar.spec.ts": 'const a = { type: "fail", description: "x" };\ntest("a", { annotation: a }, async () => {});',
+      "at.spec.ts": 'test("a", { annotation: makeAnn() }, async () => {});',
+      "au.spec.ts": 'const annotation = load();\ntest("a", { annotation }, async () => {});',
+      "av.spec.ts": 'test("a", { tag: "@x", annotation: pick("k") }, async () => {});',
+      "aw.spec.ts": 'test("a", { annotation: [...shared] }, async () => {});',
+      "as.spec.ts": 'const ann = [{ type: "fixme" }];\ntest("a", { annotation: ann }, async () => {});',
     };
     const good = {
       "ok1.spec.ts": 'test.skip(!process.env.CC_DB_FAULT, "opt-in");',
@@ -184,6 +216,10 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "ok9.spec.ts": 'await page.route("**/api/garage/*/service", h);\nawait page.route("**/b/**", h);\ntest("ok", async () => { await Promise.resolve(1 / 2); });',
       "ok10.spec.ts": 'const base = test.extend({ a: 1 });\nbase("works", async () => {});\ntest.skip(({ browserName }) => browserName === "webkit", "r");',
       "ok11.spec.ts": 'test.describe.configure({ mode: "serial", retries: 0 });',
+      "ok12.spec.ts": 'test("a", { annotation: { type: "issue", description: "https://example.test/1" } }, async () => {});',
+      "ok13.spec.ts": 'test("a", { annotation: [{ type: "issue", description: "x" }, { type: "note", description: "fail soon" }] }, async () => {});',
+      "ok14.spec.ts": 'test("a", { tag: "@slow" }, async () => { test.info().annotations.push({ type: "issue", description: "x" }); });',
+      "ok15.spec.ts": '// { annotation: { type: "fail" } } in a comment\nconst s = "annotation: { type: \'skip\' }";\ntest("a", async () => {});',
     };
     fs.mkdirSync(path.join(dir, "fixtures"));
     for (const [n, c] of Object.entries({ ...bad, ...good })) fs.writeFileSync(path.join(dir, n), c);
