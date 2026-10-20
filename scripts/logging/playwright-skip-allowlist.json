@@ -1,7 +1,52 @@
 [
-  { "file": "tests/e2e/signup-prehydration.spec.ts", "title": "SR-5 network failure on the first attempt, then a retry (requires PR #87's hang fix)", "reason": "opt-in: runs only with CC_NEEDS_PR87=1 on a tree that carries PR #87; on main alone the form hangs on a dropped connection (that PR's defect)" },
-  { "file": "tests/e2e/vin-fallback.spec.ts", "title": "*", "reason": "runs only with VIN_FALLBACK_E2E=on against the vPIC stub (scripts/vin/run-fallback-e2e.sh)" },
-  { "file": "tests/e2e/vin-fallback-disabled.spec.ts", "title": "*", "reason": "skips only when VIN_FALLBACK_E2E=on, the one run where the flag is deliberately ON" },
-  { "file": "tests/e2e/ops-snapshot.spec.ts", "title": "*", "reason": "needs OPS_SNAPSHOT_TOKEN and ADMIN_REPORT_TOKEN, which are never set in the scratch matrix" },
-  { "file": "tests/e2e/bmw-admin-guides.spec.ts", "title": "*", "reason": "needs a throwaway LOCAL DATABASE_URL; refuses to touch any other database" }
+  {
+    "file": "tests/e2e/vin-fallback.spec.ts",
+    "title": "*",
+    "reason": "runs only with VIN_FALLBACK_E2E=on against the vPIC stub (scripts/vin/run-fallback-e2e.sh)"
+  },
+  {
+    "file": "tests/e2e/vin-fallback-disabled.spec.ts",
+    "title": "*",
+    "reason": "skips only when VIN_FALLBACK_E2E=on, the one run where the flag is deliberately ON"
+  },
+  {
+    "file": "tests/e2e/ops-snapshot.spec.ts",
+    "title": "*",
+    "reason": "needs OPS_SNAPSHOT_TOKEN and ADMIN_REPORT_TOKEN, which are never set in the scratch matrix"
+  },
+  {
+    "file": "tests/e2e/bmw-admin-guides.spec.ts",
+    "title": "*",
+    "reason": "needs a throwaway LOCAL DATABASE_URL; refuses to touch any other database"
+  },
+  {
+    "file": "tests/e2e/account-recovery.spec.ts",
+    "title": "REC-6 the same cookie works again after a temporary database outage (opt-in)",
+    "reason": "opt-in: CC_DB_OUTAGE=1, run alone (briefly refuses connections to the scratch database)"
+  },
+  {
+    "file": "tests/e2e/auth-error-handling.spec.ts",
+    "title": "signup > SU-3 a database outage is a controlled 503 with a customer-safe message (opt-in: briefly refuses scratch DB connections)",
+    "reason": "opt-in: CC_DB_OUTAGE=1, run alone"
+  },
+  {
+    "file": "tests/e2e/auth-error-handling.spec.ts",
+    "title": "forgot password API > FP-8 a database outage is a controlled 503 with a safe message, same for known and unknown (opt-in)",
+    "reason": "opt-in: CC_DB_OUTAGE=1, run alone"
+  },
+  {
+    "file": "tests/e2e/db-error-logging.spec.ts",
+    "title": "database error logging under real failures > DE-1..3 feedback, analytics and recorder failures: generic answers unchanged, nothing sensitive stored",
+    "reason": "opt-in: CC_DB_FAULT=1 (injects triggers into the scratch database, removed afterwards)"
+  },
+  {
+    "file": "tests/e2e/logging-cleanup.spec.ts",
+    "title": "reset-password API under a real database failure > RS-1 a failing save answers 503 with a fixed message: no SQL, no parameters, no hash; the password is unchanged",
+    "reason": "opt-in: CC_DB_FAULT=1 (injects a trigger into the scratch database, removed afterwards)"
+  },
+  {
+    "file": "tests/e2e/signup-prehydration.spec.ts",
+    "title": "signup form: text typed before hydration is not lost > SR-5 network failure on the first attempt, then a retry (requires PR #87's hang fix)",
+    "reason": "opt-in: CC_NEEDS_PR87=1 on a tree that carries PR #87; on main alone the form hangs on a dropped connection (that PR defect)"
+  }
 ]
