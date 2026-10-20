@@ -1,0 +1,7 @@
+[
+  { "file": "tests/e2e/signup-prehydration.spec.ts", "title": "SR-5 network failure on the first attempt, then a retry (requires PR #87's hang fix)", "reason": "opt-in: runs only with CC_NEEDS_PR87=1 on a tree that carries PR #87; on main alone the form hangs on a dropped connection (that PR's defect)" },
+  { "file": "tests/e2e/vin-fallback.spec.ts", "title": "*", "reason": "runs only with VIN_FALLBACK_E2E=on against the vPIC stub (scripts/vin/run-fallback-e2e.sh)" },
+  { "file": "tests/e2e/vin-fallback-disabled.spec.ts", "title": "*", "reason": "skips only when VIN_FALLBACK_E2E=on, the one run where the flag is deliberately ON" },
+  { "file": "tests/e2e/ops-snapshot.spec.ts", "title": "*", "reason": "needs OPS_SNAPSHOT_TOKEN and ADMIN_REPORT_TOKEN, which are never set in the scratch matrix" },
+  { "file": "tests/e2e/bmw-admin-guides.spec.ts", "title": "*", "reason": "needs a throwaway LOCAL DATABASE_URL; refuses to touch any other database" }
+]
