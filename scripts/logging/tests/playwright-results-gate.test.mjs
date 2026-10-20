@@ -26,15 +26,19 @@ const SAMPLES = {
   optIn: 'import { test } from "@playwright/test";\ntest("opt-in suite", async () => { test.skip(!process.env.OPT_IN_SUITE, "needs OPT_IN_SUITE"); });',
   flaky: 'import { test, expect } from "@playwright/test";\ntest("flaky", async ({}, info) => { expect(info.retry).toBeGreaterThan(0); });',
   describeSkip: 'import { test } from "@playwright/test";\ntest.describe("group", () => { test.skip(true, "later"); test("inner", async () => {}); });',
+  // Build 104-J independent review: forms Playwright reports as success that the first gate accepted
+  hangExpected: 'import { test } from "@playwright/test";\ntest("hangs", async () => { test.info().expectedStatus = "timedOut"; test.setTimeout(300); await new Promise(() => {}); });',
+  teardownThrows: 'import { test } from "@playwright/test";\ntest("fine", async () => {});',
   empty: 'import { test } from "@playwright/test";\nvoid test;',
 };
 
-function runSample(name, { retries = 0, env = {} } = {}) {
+function runSample(name, { retries = 0, env = {}, teardown = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gate-"));
   try {
     fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(dir, "node_modules"));
     fs.writeFileSync(path.join(dir, `${name}.spec.ts`), SAMPLES[name]);
-    fs.writeFileSync(path.join(dir, "playwright.config.mjs"), `export default { testDir: ".", testMatch: "*.spec.ts", reporter: "json", workers: 1, retries: ${retries} };`);
+    if (teardown) fs.writeFileSync(path.join(dir, "teardown.mjs"), "export default async function () { throw new Error('teardown failed'); }");
+    fs.writeFileSync(path.join(dir, "playwright.config.mjs"), `export default { testDir: ".", testMatch: "*.spec.ts", reporter: "json", workers: 1, retries: ${retries}${teardown ? ', globalTeardown: "./teardown.mjs"' : ""} };`);
     const r = spawnSync(PW, ["test", "--config", path.join(dir, "playwright.config.mjs")], { cwd: dir, encoding: "utf8", env: { ...process.env, ...env, CI: "" } });
     const report = JSON.parse(r.stdout);
     return { report, exit: r.status };
@@ -89,7 +93,8 @@ for (const name of ["testSkip", "annotationSkip", "annotationFixme", "fixme", "d
     assert.equal(exit, 0, "Playwright reports a skipped run as success");
     const r = gate(report, []);
     assert.equal(r.ok, false, `${name} should be rejected`);
-    assert.ok(reasons(r).includes("UNEXPECTED SKIP"), r.failures.join("\n"));
+    // a fixme is rejected as PARKED (never allowlistable); every other skip form as an UNEXPECTED SKIP
+    assert.ok(reasons(r).includes(["annotationFixme", "fixme"].includes(name) ? "PARKED" : "UNEXPECTED SKIP"), r.failures.join("\n"));
   });
 }
 
@@ -162,5 +167,69 @@ test("gate: the CLI exits 0 on a pass, 1 on a rejection, 2 on unreadable input",
     assert.match(rej.stderr, /EXPECTED-FAIL/);
     assert.equal(spawnSync("node", [cli, path.join(dir, "missing.json"), none]).status, 2);
     assert.equal(spawnSync("node", [cli]).status, 2);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+// ---- independent review of 104-J (each of these was a confirmed hole in the first gate) ---------------------------------------------------
+test("gate: expectedStatus 'timedOut' (a hanging test that Playwright reports as ok) is rejected", () => {
+  const { report, exit } = runSample("hangExpected");
+  assert.equal(exit, 0, "Playwright reports success for a test that was told to expect a timeout");
+  const t = collect(report)[0];
+  assert.equal(t.expectedStatus, "timedOut");
+  assert.equal(t.status, "expected");
+  const r = gate(report, []);
+  assert.equal(r.ok, false);
+  assert.ok(reasons(r).includes("EXPECTED-STATUS"), r.failures.join("\n"));
+});
+
+test("gate: a run-level error (a throwing globalTeardown) is rejected even though every test passed", () => {
+  const { report, exit } = runSample("teardownThrows", { teardown: true });
+  assert.notEqual(exit, 0);
+  assert.ok((report.errors ?? []).length > 0, "sanity: Playwright recorded a run-level error");
+  const r = gate(report, []);
+  assert.equal(r.ok, false);
+  assert.ok(reasons(r).includes("RUN ERROR"), r.failures.join("\n"));
+});
+
+test("gate: a test with no status, an unknown status, or an expectedStatus that is not 'passed' is rejected", () => {
+  const mk = (t) => ({ suites: [{ title: "a.spec.ts", file: "a.spec.ts", specs: [{ title: "x", file: "a.spec.ts", tests: [{ results: [], annotations: [], ...t }] }] }] });
+  assert.equal(gate(mk({ expectedStatus: "passed" }), []).ok, false, "no status");
+  assert.equal(gate(mk({ expectedStatus: "passed", status: "weird" }), []).ok, false, "unknown status");
+  assert.equal(gate(mk({ status: "expected" }), []).ok, false, "no expectedStatus");
+  assert.equal(gate(mk({ expectedStatus: "passed", status: "expected" }), []).ok, true, "control");
+});
+
+test("gate: the allowlist title must be the test's full title; a leaf title in another describe does not match", () => {
+  const mk = (title) => ({ suites: [{ title: "a.spec.ts", file: "a.spec.ts", suites: [{ title: "group B", suites: [{ title: "nested", specs: [{ title, file: "a.spec.ts", tests: [{ expectedStatus: "skipped", status: "skipped", annotations: [], results: [] }] }] }] }] }] });
+  const leaf = [{ file: "a.spec.ts", title: "works", reason: "r" }];
+  assert.equal(gate(mk("works"), leaf).ok, false, "a leaf title must not allow a skip nested in other describes");
+  assert.equal(gate(mk("works"), [{ file: "a.spec.ts", title: "group B > nested > works", reason: "r" }]).ok, true);
+});
+
+test("gate: an allowlisted skip is still rejected when it is a fixme or an expected-fail annotation", () => {
+  const { report } = runSample("annotationFixme");
+  assert.equal(gate(report, [{ file: "annotationFixme.spec.ts", title: "*", reason: "env-gated" }]).ok, false, "fixme is never an opt-in");
+  const { report: r2 } = runSample("fixme");
+  assert.equal(gate(r2, [{ file: "fixme.spec.ts", title: "*", reason: "env-gated" }]).ok, false);
+  const { report: r3 } = runSample("optIn");
+  assert.equal(gate(r3, [{ file: "optIn.spec.ts", title: "*", reason: "env-gated" }]).ok, true, "a conditional skip (no fixme annotation) is still allowed");
+});
+
+test("gate CLI: still gates when the script path contains a space or goes through a symlink", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gate cli "));
+  try {
+    const src = path.join(ROOT, "scripts", "logging", "playwright-results-gate.mjs");
+    const spaced = path.join(dir, "sp ace");
+    fs.mkdirSync(spaced);
+    fs.copyFileSync(src, path.join(spaced, "gate.mjs"));
+    const bad = path.join(dir, "bad.json"); fs.writeFileSync(bad, JSON.stringify(runSample("testFail").report));
+    const none = path.join(dir, "none.json"); fs.writeFileSync(none, "[]");
+    const viaSpace = spawnSync("node", [path.join(spaced, "gate.mjs"), bad, none], { encoding: "utf8" });
+    assert.equal(viaSpace.status, 1, `a path with a space must still run the gate (got ${viaSpace.status}: ${viaSpace.stdout}${viaSpace.stderr})`);
+    const link = path.join(dir, "lnk"); fs.symlinkSync(spaced, link);
+    const viaLink = spawnSync("node", [path.join(link, "gate.mjs"), bad, none], { encoding: "utf8" });
+    assert.equal(viaLink.status, 1, `a symlinked path must still run the gate (got ${viaLink.status})`);
+    const viaDot = spawnSync("node", ["./gate.mjs", bad, none], { cwd: spaced, encoding: "utf8" });
+    assert.equal(viaDot.status, 1, "a relative path must still run the gate");
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

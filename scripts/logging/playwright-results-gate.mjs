@@ -9,6 +9,8 @@
 //   * status "unexpected"       a plain failure
 //   * status "flaky" or any result with retry > 0   a red that passed on retry
 //   * an annotation of type fail / fixme / skip on a test that did run (skip is still subject to the allowlist)
+//   * any expectedStatus other than "passed" (also "timedOut" / "interrupted": a hanging test told to expect it is reported ok), an unknown or
+//     missing status, and a non-empty report.errors (a throwing globalTeardown / global error leaves every test green and exit code 1)
 //   * a report with no tests    nothing ran
 // The allowlist (playwright-skip-allowlist.json) names the legitimate opt-in skips (an environment-variable-gated suite): each entry needs a
 // file, a title and a written reason. A skip that is not listed fails; a listed test that did NOT skip is fine (it ran).
@@ -55,10 +57,12 @@ export function validateAllowlist(list) {
 }
 
 const normFile = (f) => String(f).replace(/\\/g, "/");
-// title "*" allows every test in that one file (a whole-file, environment-gated suite such as the VIN-stub or ops-token specs).
+// title "*" allows every test in that one file (a whole-file, environment-gated suite such as the VIN-stub or ops-token specs). Otherwise the
+// entry's title must equal the test's FULL title (describe blocks joined with " > "): a leaf title never matches a test in another describe.
 // Playwright reports spec.file relative to testDir ("signup-prehydration.spec.ts"); the allowlist may spell it from the repo root ("tests/e2e/...").
 const sameFile = (entry, reported) => { const a = normFile(entry), b = normFile(reported); return a === b || a.endsWith(`/${b}`) || b.endsWith(`/${a}`); };
-const allowed = (allow, t) => allow.some((e) => sameFile(e.file, t.file) && (e.title === "*" || t.title === e.title || t.title.endsWith(` > ${e.title}`)));
+const allowed = (allow, t) => allow.some((e) => sameFile(e.file, t.file) && (e.title === "*" || t.title === e.title));
+const PARKING = new Set(["fixme", "fail"]); // never an opt-in: a parked or expected-fail test is hiding something, whatever the allowlist says
 
 /** @returns {{ ok: boolean, failures: string[], tests: number, ran: number, allowedSkips: string[] }} */
 export function gate(report, allowlist = []) {
@@ -71,12 +75,16 @@ export function gate(report, allowlist = []) {
     const id = `${t.file} :: ${t.title}${t.project ? ` [${t.project}]` : ""}`;
     const skipped = t.status === "skipped" || t.expectedStatus === "skipped";
     if (skipped) {
-      if (allowed(allowlist, t)) allowedSkips.push(id);
-      else failures.push(`UNEXPECTED SKIP: ${id} (skip / fixme is only allowed for tests on the allowlist, with a reason)`);
+      const parked = t.annotations.find((a) => PARKING.has(String(a?.type)));
+      if (parked) failures.push(`PARKED: ${id} (${parked.type} annotation: not allowed even on the allowlist)`);
+      else if (allowed(allowlist, t)) allowedSkips.push(id);
+      else failures.push(`UNEXPECTED SKIP: ${id} (skip is only allowed for tests on the allowlist, with a reason)`);
       continue;
     }
     ran++;
     if (t.expectedStatus === "failed") failures.push(`EXPECTED-FAIL: ${id} (test.fail / annotation fail: a failure is being reported as a pass)`);
+    else if (t.expectedStatus !== "passed") failures.push(`EXPECTED-STATUS: ${id} (expectedStatus ${JSON.stringify(t.expectedStatus)}: only "passed" is allowed; a test told to expect a timeout or interruption is reported ok)`);
+    if (!["expected", "unexpected", "flaky"].includes(t.status)) failures.push(`UNKNOWN STATUS: ${id} (status ${JSON.stringify(t.status)})`);
     if (t.status === "unexpected") failures.push(`FAILED: ${id}`);
     if (t.status === "flaky") failures.push(`FLAKY: ${id} (failed, then passed on retry)`);
     if (t.results.some((r) => (r.retry ?? 0) > 0)) failures.push(`RETRIED: ${id} (a result with retry > 0)`);
@@ -84,12 +92,16 @@ export function gate(report, allowlist = []) {
       if (["fail", "fixme", "skip"].includes(String(a?.type))) failures.push(`ANNOTATION ${a.type}: ${id}`);
     }
   }
+  for (const e of Array.isArray(report?.errors) ? report.errors : []) failures.push(`RUN ERROR: ${String(e?.message ?? e).split("\n")[0].slice(0, 160)} (a run-level error: global setup/teardown or a load error)`);
   const s = report.stats;
   if (s && (s.unexpected > 0 || s.flaky > 0)) failures.push(`STATS: unexpected=${s.unexpected} flaky=${s.flaky}`);
   return { ok: failures.length === 0, failures: [...new Set(failures)], tests: tests.length, ran, allowedSkips };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Compare real paths: `file://${argv[1]}` is neither URL-encoded nor realpath'd, so a path with a space, a symlinked directory or a Windows drive
+// letter made this block silently not run and the process exit 0.
+const isMain = (() => { try { return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1] ?? "")); } catch { return false; } })();
+if (isMain) {
   const [resultsPath, allowPath = DEFAULT_ALLOWLIST] = process.argv.slice(2);
   if (!resultsPath) { console.error("usage: playwright-results-gate.mjs <results.json> [allowlist.json]"); process.exit(2); }
   let report, allowlist;
