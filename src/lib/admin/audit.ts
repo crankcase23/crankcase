@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { desc, eq, and, gte, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { describeError, isSensitiveError } from "@/lib/dbErrorLog";
+import { describeError, isSensitiveError } from "@/lib/dbErrorLogSafe";
 import { adminAuditLog, users } from "@/db/schema";
 import type { AdminContext } from "./rbac";
 

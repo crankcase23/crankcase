@@ -2,6 +2,7 @@ import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 import util from "node:util";
+import tls from "node:tls";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
@@ -85,6 +86,63 @@ test("audit: a network failure (connection refused) logs only its code, not the 
     assert.match(t, /ECONNREFUSED/);
     assert.ok(!t.includes("10.9.8.7"), `the database address leaked:\n${t}`);
     clean(t);
+  } finally { restore(); delete globalThis.__auditFail; }
+});
+
+// Build 104-J: a TLS verification failure is a REAL Node error (built here by tls.checkServerIdentity, not by hand). Its message and its
+// `reason` / `host` properties name the database host: "Host: db.internal.example. is not in the cert's altnames: DNS:other.example". It has
+// no `syscall`, no `address` and a non-SQLSTATE code, so the sensitivity check used to wave it through and log err.message verbatim.
+const DB_HOST = "db.internal.example";
+const tlsHostMismatch = () => tls.checkServerIdentity(DB_HOST, { subject: { CN: "other.example" }, subjectaltname: "DNS:other.example" });
+test("audit: a TLS hostname mismatch logs its code, not the database host named in the message", async () => {
+  const err = tlsHostMismatch();
+  assert.ok(err.message.includes(DB_HOST), "sanity: the real error does carry the host");
+  globalThis.__auditFail = () => err;
+  try {
+    await assert.doesNotReject(recordAudit(input()));
+    const t = text();
+    assert.match(t, /\[audit\] failed to record admin action/);
+    assert.match(t, /user\.disable/);
+    assert.match(t, /ERR_TLS_CERT_ALTNAME_INVALID/, "the code stays: it is the diagnosis");
+    assert.ok(!t.includes(DB_HOST), `the database host leaked:\n${t}`);
+    assert.ok(!t.includes("other.example"), `the certificate's names leaked:\n${t}`);
+    clean(t);
+  } finally { restore(); delete globalThis.__auditFail; }
+});
+
+test("audit: a TLS failure wrapped as the cause of another error is also kept out of the log", async () => {
+  const wrapped = new Error("audit insert failed", { cause: tlsHostMismatch() });
+  globalThis.__auditFail = () => wrapped;
+  try {
+    await assert.doesNotReject(recordAudit(input()));
+    const t = text();
+    assert.ok(!t.includes(DB_HOST), `the database host leaked through the cause:\n${t}`);
+    assert.match(t, /ERR_TLS_CERT_ALTNAME_INVALID/);
+  } finally { restore(); delete globalThis.__auditFail; }
+});
+
+test("audit: other certificate failures (self-signed, expired, unknown issuer) log their code only", async () => {
+  for (const code of ["DEPTH_ZERO_SELF_SIGNED_CERT", "CERT_HAS_EXPIRED", "UNABLE_TO_VERIFY_LEAF_SIGNATURE", "SELF_SIGNED_CERT_IN_CHAIN", "ERR_SSL_WRONG_VERSION_NUMBER"]) {
+    globalThis.__auditFail = () => Object.assign(new Error(`${code} while connecting to ${DB_HOST}:5432 as app`), { code });
+    try {
+      logs.length = 0;
+      await assert.doesNotReject(recordAudit(input()));
+      const t = text();
+      assert.ok(!t.includes(DB_HOST), `${code}: the database host leaked:\n${t}`);
+      assert.match(t, new RegExp(code), `${code}: the code is kept`);
+    } finally { delete globalThis.__auditFail; }
+  }
+  restore();
+});
+
+test("audit: an AggregateError (several connection attempts failed, empty message) logs the inner code, not the addresses", async () => {
+  const inner = [Object.assign(new Error(`connect ECONNREFUSED ${DB_HOST}:5432`), { code: "ECONNREFUSED" }), Object.assign(new Error("connect ECONNREFUSED 10.0.0.9:5432"), { code: "ECONNREFUSED" })];
+  globalThis.__auditFail = () => new AggregateError(inner, "");
+  try {
+    await assert.doesNotReject(recordAudit(input()));
+    const t = text();
+    assert.ok(!t.includes(DB_HOST) && !t.includes("10.0.0.9"), `an address leaked:\n${t}`);
+    assert.match(t, /ECONNREFUSED/, "the inner code is the diagnosis");
   } finally { restore(); delete globalThis.__auditFail; }
 });
 
