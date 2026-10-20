@@ -56,7 +56,9 @@ export function validateAllowlist(list) {
 
 const normFile = (f) => String(f).replace(/\\/g, "/");
 // title "*" allows every test in that one file (a whole-file, environment-gated suite such as the VIN-stub or ops-token specs).
-const allowed = (allow, t) => allow.some((e) => normFile(t.file).endsWith(normFile(e.file)) && (e.title === "*" || t.title === e.title || t.title.endsWith(` > ${e.title}`)));
+// Playwright reports spec.file relative to testDir ("signup-prehydration.spec.ts"); the allowlist may spell it from the repo root ("tests/e2e/...").
+const sameFile = (entry, reported) => { const a = normFile(entry), b = normFile(reported); return a === b || a.endsWith(`/${b}`) || b.endsWith(`/${a}`); };
+const allowed = (allow, t) => allow.some((e) => sameFile(e.file, t.file) && (e.title === "*" || t.title === e.title || t.title.endsWith(` > ${e.title}`)));
 
 /** @returns {{ ok: boolean, failures: string[], tests: number, ran: number, allowedSkips: string[] }} */
 export function gate(report, allowlist = []) {

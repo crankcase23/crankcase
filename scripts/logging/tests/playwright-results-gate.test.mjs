@@ -125,6 +125,13 @@ test('gate: title "*" allows every skipped test in that one file and nothing in 
   assert.equal(gate(report, [{ file: "other.spec.ts", title: "*", reason: "x" }]).ok, false);
 });
 
+test("gate: the allowlist may spell the file from the repo root while Playwright reports it relative to testDir", () => {
+  const { report } = runSample("optIn");
+  assert.equal(gate(report, [{ file: "tests/e2e/optIn.spec.ts", title: "opt-in suite", reason: "env-gated" }]).ok, true);
+  assert.equal(gate(report, [{ file: "tests/e2e/otherIn.spec.ts", title: "opt-in suite", reason: "env-gated" }]).ok, false);
+  assert.equal(gate(report, [{ file: "tests/e2e/xoptIn.spec.ts", title: "opt-in suite", reason: "env-gated" }]).ok, false, "a different file that merely ends the same way does not match");
+});
+
 test("gate: a flaky test (failed, passed on retry) is rejected even though Playwright exits 0", () => {
   const { report, exit } = runSample("flaky", { retries: 1 });
   assert.equal(exit, 0, "Playwright reports a flaky pass as success");
