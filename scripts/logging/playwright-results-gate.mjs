@@ -88,6 +88,13 @@ export function gate(report, allowlist = []) {
     if (t.status === "unexpected") failures.push(`FAILED: ${id}`);
     if (t.status === "flaky") failures.push(`FLAKY: ${id} (failed, then passed on retry)`);
     if (t.results.some((r) => (r.retry ?? 0) > 0)) failures.push(`RETRIED: ${id} (a result with retry > 0)`);
+    // an afterEach hook can rewrite testInfo.status / testInfo.errors after the body threw: the test is then reported "expected"/"passed" with
+    // empty errors, so only the per-result record (a ran test has exactly status "passed" and no errors) is still honest
+    if (t.results.length === 0) failures.push(`RESULT-STATUS: ${id} (no result recorded)`);
+    for (const r of t.results) {
+      if (r.status !== "passed") failures.push(`RESULT-STATUS: ${id} (result status ${JSON.stringify(r.status)}, only "passed" is allowed)`);
+      if ((Array.isArray(r.errors) ? r.errors.length : 0) > 0 || r.error) failures.push(`RESULT-ERRORS: ${id} (a result carries errors)`);
+    }
     for (const a of t.annotations) {
       if (["fail", "fixme", "skip"].includes(String(a?.type))) failures.push(`ANNOTATION ${a.type}: ${id}`);
     }

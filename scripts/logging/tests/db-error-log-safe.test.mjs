@@ -126,3 +126,30 @@ test("a sensitive error buried deeper than four causes is still found, and its c
   assert.equal(describeError(e), "class=Error code=ECONNREFUSED");
   assert.ok(!recordableError(e).message.includes(HOST));
 });
+
+// 104-J second independent review: the depth cap failed OPEN, the walk was exponential in the width, and the TLS code regex ran on unbounded input
+test("a wrapper chain deeper than the walk limit is sensitive (fail closed) and its host text never reaches the stored row", () => {
+  let e = new Error(`connect ECONNREFUSED ${HOST}:5432`);
+  for (let i = 0; i < 14; i++) e = new Error(e.message, { cause: e });
+  assert.equal(isSensitiveError(e), true);
+  const r = recordableError(e);
+  assert.equal(r.sensitive, true);
+  assert.ok(!r.message.includes(HOST) && !(r.stack ?? "").includes(HOST), r.message);
+});
+
+test("a wide, deep errors[] tree is walked in bounded time and is sensitive", () => {
+  const build = (d) => (d === 0 ? new Error("leaf") : new AggregateError(Array.from({ length: 8 }, () => build(d - 1)), ""));
+  const t = Date.now();
+  const e = build(5);
+  assert.equal(isSensitiveError(e), true);
+  recordableError(e);
+  assert.ok(Date.now() - t < 1500, `took ${Date.now() - t} ms`);
+});
+
+test("a huge hostile code string does not stall the TLS check and is not logged", () => {
+  const e = Object.assign(new Error(`bad ${HOST}`), { code: "CERT".repeat(25000) + "!" });
+  const t = Date.now();
+  const r = recordableError(e);
+  assert.ok(Date.now() - t < 300, `took ${Date.now() - t} ms`);
+  assert.ok(!r.message.includes(HOST));
+});

@@ -29,13 +29,25 @@ function templateEnd(src, i) {
   }
   return src.length;
 }
-function exprEnd(src, j) { // j is just after "${"; returns the index after the matching "}"
-  let depth = 1;
+function exprEnd(src, j) { // j is just after "${"; returns the index after the matching "}". Comments and regex literals are skipped like strings.
+  let depth = 1, lastSig = "(";
   while (j < src.length && depth > 0) {
-    const c = src[j];
-    if (c === '"' || c === "'") { j++; while (j < src.length && src[j] !== c) { if (src[j] === "\\") j++; j++; } j++; continue; }
-    if (c === "`") { j = templateEnd(src, j) + 1; continue; }
+    const c = src[j], d = src[j + 1];
+    if (c === "/" && d === "/") { while (j < src.length && src[j] !== "\n") j++; continue; }
+    if (c === "/" && d === "*") { const e = src.indexOf("*/", j + 2); j = e < 0 ? src.length : e + 2; continue; }
+    if (c === '"' || c === "'") { j++; while (j < src.length && src[j] !== c) { if (src[j] === "\\") j++; j++; } j++; lastSig = c; continue; }
+    if (c === "`") { j = templateEnd(src, j) + 1; lastSig = c; continue; }
+    if (c === "/" && /[(,=:[!&|?{};]/.test(lastSig)) { // regex literal: a brace or quote inside it is not code
+      let k = j + 1, inClass = false;
+      while (k < src.length && src[k] !== "\n") {
+        if (src[k] === "\\") { k += 2; continue; }
+        if (src[k] === "[") inClass = true; else if (src[k] === "]") inClass = false; else if (src[k] === "/" && !inClass) break;
+        k++;
+      }
+      if (k < src.length && src[k] === "/") { j = k + 1; while (j < src.length && /[a-z]/i.test(src[j])) j++; lastSig = "/"; continue; }
+    }
     if (c === "{") depth++; else if (c === "}") depth--;
+    if (!/\s/.test(c)) lastSig = c;
     j++;
   }
   return j;
@@ -111,8 +123,8 @@ function testNames(text) {
   for (const m of text.matchAll(/\btest\s+as\s+(\w+)/g)) names.add(m[1]);
   for (const m of text.matchAll(/\b(?:const|let|var)\s+(\w+)\s*=\s*(?:await\s+)?test\b/g)) names.add(m[1]);
   // the TestInfo parameter of a test / fixture callback, under any name: ({ page }, ti) => ...   and   ({ }, use, ti) => ...
-  for (const m of text.matchAll(/\(\s*\{[^()]*\}\s*,\s*([A-Za-z_$][\w$]*)\s*[,)]/g)) names.add(m[1]);
-  for (const m of text.matchAll(/\(\s*\{[^()]*\}\s*,\s*[A-Za-z_$][\w$]*\s*,\s*([A-Za-z_$][\w$]*)\s*[,)]/g)) names.add(m[1]);
+  for (const m of text.matchAll(/\(\s*\{[^()]*\}\s*,\s*([A-Za-z_$][\w$]*)\s*(?::\s*[\w$.]+(?:<[^>()]*>)?)?\s*[,)]/g)) names.add(m[1]);
+  for (const m of text.matchAll(/\(\s*\{[^()]*\}\s*,\s*[A-Za-z_$][\w$]*\s*(?::\s*[\w$.]+(?:<[^>()]*>)?)?\s*,\s*([A-Za-z_$][\w$]*)\s*(?::\s*[\w$.]+(?:<[^>()]*>)?)?\s*[,)]/g)) names.add(m[1]);
   return [...names];
 }
 
@@ -126,7 +138,7 @@ function rulesFor(names) {
     [new RegExp(`${R}\\s*\\.\\s*only\\b`, "g"), ".only drops every other test"],
     [new RegExp(`${R}\\s*\\.\\s*skip\\s*\\(\\s*${CONSTANT}`, "g"), "unconditional skip (a skip needs a real condition: an environment variable, a configured token)"],
     [new RegExp(`${R}\\s*\\.\\s*skip\\s*\\(\\s*(\\d+)\\s*===?\\s*\\1\\s*[,)]`, "g"), "unconditional skip (a literal compared with itself)"],
-    [/\{[^}]*\b(?:fail|fixme|skip|only)\b[^}]*\}\s*=\s*test\b|\btest\s*\[\s*["'`]/g, "destructured or bracket access to test"],
+    [/\{[^}]*\b(?:fail|fixme|skip|only)\b[^}]*\}\s*=\s*test\b|\btest\s*\[/g, "destructured or bracket access to test (a computed test[k] can be .only / .fail / .fixme)"],
     [/\bconfigure\s*\(\s*\{[^;]*?\bretries\s*:\s*(?!0\b)[^\s,}]/g, "retries above 0"],
   ];
 }
@@ -138,6 +150,9 @@ function rulesFor(names) {
 const ANNOTATION_TYPE = /(?:["'`]type["'`]|\btype)\s*:\s*["'`](?:fail|skip|fixme)["'`]/g;
 const OPAQUE_ANNOTATION = /(?:["'`]annotation["'`]|\bannotation)\s*:\s*(?![\[{\s])|[{,]\s*annotation\s*[,}]|(?:["'`]annotation["'`]|\bannotation)\s*:\s*[\[{]?\s*\.\.\./g;
 const EXPECTED_STATUS = /\bexpectedStatus\s*=(?!=)/g;
+// Build 104-J second review: an afterEach hook can rewrite testInfo.status and empty testInfo.errors AFTER the body threw; Playwright's JSON is then
+// indistinguishable from an honest pass (verified), so only the source can be stopped. Also the computed / reflective ways to write expectedStatus.
+const RESULT_MUTATION = /\.\s*status\s*=(?!=)|\[\s*["'`]status["'`]\s*\]\s*=(?!=)|\.\s*errors\s*(?:=(?!=)|\.\s*(?:splice|pop|shift|push|unshift|fill|sort|reverse|copyWithin)\b|\.\s*length\s*=(?!=))|\[\s*["'`]errors["'`]\s*\]\s*=(?!=)|\[\s*["'`]expectedStatus["'`]\s*\]\s*=(?!=)|\bObject\s*\.\s*(?:assign|defineProperty|defineProperties)\s*\(\s*(?:test\s*\.\s*info\s*\(|testInfo\b|ti\b|info\b)|\bReflect\s*\.\s*(?:set|defineProperty)\s*\(/g;
 
 /** The balanced {...} / [...] region that starts at t[i] (strings are already blanked), or null. */
 function balanced(t, i) {
@@ -169,6 +184,7 @@ export function annotationMasking(src) {
   const out = [];
   for (const m of t.matchAll(ANNOTATION_TYPE)) out.push([m.index, "annotation type fail/skip/fixme masks a failure or skips the test", m[0]]);
   for (const m of t.matchAll(OPAQUE_ANNOTATION)) out.push([m.index, "annotation whose type cannot be read (use a literal object)", m[0]]);
+  for (const m of t.matchAll(RESULT_MUTATION)) out.push([m.index, "rewriting a test's status / errors / expectedStatus (a thrown test is then reported as passing)", m[0]]);
   for (const m of t.matchAll(EXPECTED_STATUS)) out.push([m.index, "assigning expectedStatus (a failing or hanging test is then reported as passing)", m[0]]);
   for (const m of t.matchAll(/(?:["'`]annotation["'`]|\bannotation)\s*:\s*(?=[\[{])/g)) {
     const at = m.index + m[0].length, r = balanced(t, at);
@@ -310,6 +326,19 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "bo.spec.ts": 'const { type } = x;\ntest("a", { annotation: { type } }, async () => {});',
       "bp.spec.ts": 'test("a", { annotation: { description: "x", ...shared } }, async () => {});',
       "bq.spec.ts": 'test("a", { annotation: { [key]: "x" } }, async () => {});',
+      // 104-J second independent review: each was run through Playwright 1.63 and reported green (exit 0)
+      "br.spec.ts": 'const t = `a ${name.replace(/{/g, "")} b`;\ntest.fail(true);', // a brace inside a regex inside ${} desynced the template scan and hid the rest
+      "bs.spec.ts": 'const t = `a ${name.split(/\\{/).length} b`;\ntest.fail(true);',
+      "bt.spec.ts": 'const t = `a ${ // it\'s\n 1 } b`;\ntest.fail(true);',
+      "bu.spec.ts": 'test.afterEach(async ({}, testInfo) => { testInfo.status = testInfo.expectedStatus; });',
+      "bv.spec.ts": 'test.afterEach(async ({}, testInfo) => { testInfo.errors.splice(0); });',
+      "bw.spec.ts": 'const k = "only";\ntest[k]("a", async () => {});',
+      "bx.spec.ts": 'test("a", async ({}, ti: TestInfo) => { ti.fail(); throw new Error("x"); });',
+      "by.spec.ts": 'const i = test.info();\ni["expectedStatus"] = "failed";',
+      "bz.spec.ts": 'Object.assign(test.info(), { expectedStatus: "failed" });',
+      "ca.spec.ts": 'Reflect.set(test.info(), "expectedStatus", "failed");',
+      "cb.spec.ts": 'test.afterEach(async ({}, ti) => { ti["status"] = "passed"; });',
+      "cc.spec.ts": 'test.afterEach(async ({}, ti) => { ti.errors = []; });',
       "as.spec.ts": 'const ann = [{ type: "fixme" }];\ntest("a", { annotation: ann }, async () => {});',
     };
     const good = {
@@ -327,6 +356,7 @@ test("the scanner itself: every masking form is caught, every honest form is not
       "ok16.spec.ts": 'test("a", { annotation: { type: "issue", description: "https://example.test/1" } }, async () => { assert.fail("not test.fail"); });',
       "ok17.spec.ts": 'test("a", async ({ page }, testInfo) => { await testInfo.attach("x", { body: "y" }); expect(testInfo.retry).toBe(0); });',
       "ok18.spec.ts": 'test("a", async ({ page }) => { const type = "button"; await page.getByRole(type).click(); });\nconst fn = async () => {};\ntest("b", fn);',
+      "ok20.spec.ts": 'const r = await fetch(u); expect(r.status).toBe(200); if (r.status === 404) {}\nexpect(testInfo.errors).toHaveLength(0);\nconst s = `a ${name.replace(/}/g, "")} b ${x.split(/\\{/).length}`;\ntest("a", async ({ page }, ti: TestInfo) => { await ti.attach("x", { body: "y" }); });',
       "ok19.spec.ts": 'test("a", { tag: "@x" }, async () => {}); test.describe("g", { annotation: { type: "note", description: "fail soon" } }, () => {});',
       "ok20.spec.ts": 'const tpl = `ready ${count} items`; test(`title ${tpl}`, async ({}, info) => { info.annotations.push({ type: "issue", description: "x" }); });',
       "ok12.spec.ts": 'test("a", { annotation: { type: "issue", description: "https://example.test/1" } }, async () => {});',

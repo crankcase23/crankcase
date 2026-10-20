@@ -30,15 +30,19 @@ const SAMPLES = {
   hangExpected: 'import { test } from "@playwright/test";\ntest("hangs", async () => { test.info().expectedStatus = "timedOut"; test.setTimeout(300); await new Promise(() => {}); });',
   teardownThrows: 'import { test } from "@playwright/test";\ntest("fine", async () => {});',
   empty: 'import { test } from "@playwright/test";\nvoid test;',
+  // Build 104-J second review: a hook rewrites the RESULT after the test threw (status "expected" / "passed", errors emptied), and a computed .only
+  statusMask: 'import { test } from "@playwright/test";\ntest.afterEach(async ({}, testInfo) => { testInfo.status = testInfo.expectedStatus; testInfo.errors.splice(0); });\ntest("throws", async () => { throw new Error("boom"); });',
+  statusOnly: 'import { test } from "@playwright/test";\ntest.afterEach(async ({}, testInfo) => { testInfo.status = "passed"; });\ntest("throws", async () => { throw new Error("boom"); });',
+  onlyComputed: 'import { test } from "@playwright/test";\nconst k = "only";\n(test as any)[k]("kept", async () => {});\ntest("dropped", async () => { throw new Error("x"); });',
 };
 
-function runSample(name, { retries = 0, env = {}, teardown = false } = {}) {
+function runSample(name, { retries = 0, env = {}, teardown = false, forbidOnly = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gate-"));
   try {
     fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(dir, "node_modules"));
     fs.writeFileSync(path.join(dir, `${name}.spec.ts`), SAMPLES[name]);
     if (teardown) fs.writeFileSync(path.join(dir, "teardown.mjs"), "export default async function () { throw new Error('teardown failed'); }");
-    fs.writeFileSync(path.join(dir, "playwright.config.mjs"), `export default { testDir: ".", testMatch: "*.spec.ts", reporter: "json", workers: 1, retries: ${retries}${teardown ? ', globalTeardown: "./teardown.mjs"' : ""} };`);
+    fs.writeFileSync(path.join(dir, "playwright.config.mjs"), `export default { testDir: ".", testMatch: "*.spec.ts", reporter: "json", workers: 1, retries: ${retries}${forbidOnly ? ", forbidOnly: true" : ""}${teardown ? ', globalTeardown: "./teardown.mjs"' : ""} };`);
     const r = spawnSync(PW, ["test", "--config", path.join(dir, "playwright.config.mjs")], { cwd: dir, encoding: "utf8", env: { ...process.env, ...env, CI: "" } });
     const report = JSON.parse(r.stdout);
     return { report, exit: r.status };
@@ -192,7 +196,7 @@ test("gate: a run-level error (a throwing globalTeardown) is rejected even thoug
 });
 
 test("gate: a test with no status, an unknown status, or an expectedStatus that is not 'passed' is rejected", () => {
-  const mk = (t) => ({ suites: [{ title: "a.spec.ts", file: "a.spec.ts", specs: [{ title: "x", file: "a.spec.ts", tests: [{ results: [], annotations: [], ...t }] }] }] });
+  const mk = (t) => ({ suites: [{ title: "a.spec.ts", file: "a.spec.ts", specs: [{ title: "x", file: "a.spec.ts", tests: [{ results: [{ status: "passed", retry: 0, errors: [] }], annotations: [], ...t }] }] }] });
   assert.equal(gate(mk({ expectedStatus: "passed" }), []).ok, false, "no status");
   assert.equal(gate(mk({ expectedStatus: "passed", status: "weird" }), []).ok, false, "unknown status");
   assert.equal(gate(mk({ status: "expected" }), []).ok, false, "no expectedStatus");
@@ -232,4 +236,30 @@ test("gate CLI: still gates when the script path contains a space or goes throug
     const viaDot = spawnSync("node", ["./gate.mjs", bad, none], { cwd: spaced, encoding: "utf8" });
     assert.equal(viaDot.status, 1, "a relative path must still run the gate");
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test("gate: a hook that rewrites a thrown test's result to passed / emptied errors (Playwright exits 0) is rejected", () => {
+  const { report, exit } = runSample("statusOnly");
+  assert.equal(exit, 0, "statusOnly: this is the bypass: Playwright itself reports success");
+  const r = gate(report, []);
+  assert.equal(r.ok, false, "a result that still carries the thrown error must not pass");
+  assert.ok(reasons(r).includes("RESULT-ERRORS"), r.failures.join(" | "));
+});
+
+test("gate LIMIT (documented): statusMask also empties testInfo.errors, so Playwright's JSON is indistinguishable from an honest pass; only the source scanner can stop it", () => {
+  const { report, exit } = runSample("statusMask");
+  assert.equal(exit, 0);
+  assert.equal(gate(report, []).ok, true, "if this ever turns red the gate learned something: update the scanner/gate division of labour");
+});
+
+test("gate: a computed .only that silently drops tests is stopped by forbidOnly (Playwright exits non-zero) and the gate rejects the report", () => {
+  const bypass = runSample("onlyComputed");
+  assert.equal(bypass.exit, 0, "without forbidOnly Playwright runs one test and exits 0: tests were dropped");
+  const { report, exit } = runSample("onlyComputed", { forbidOnly: true });
+  assert.notEqual(exit, 0);
+  assert.equal(gate(report, []).ok, false);
+});
+
+test("e2e-gated.sh passes --forbid-only to Playwright", () => {
+  assert.match(fs.readFileSync(path.join(ROOT, "scripts", "logging", "e2e-gated.sh"), "utf8"), /playwright test .*--forbid-only/);
 });
