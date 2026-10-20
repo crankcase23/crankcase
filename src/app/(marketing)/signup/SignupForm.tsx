@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+
+// "Has this component hydrated?": false in the server HTML and during hydration, true afterwards (no state set inside an effect).
+const subscribeNever = () => () => {};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -13,7 +16,7 @@ export default function SignupPage() {
   const [submitting, setSubmitting] = useState(false);
   // False in the server-rendered HTML, true once React has attached. Until then the submit button is disabled: a click or Enter before that
   // would be submitted by the browser itself (a GET to /signup?), which reloads the page, empties the fields and drops the attempt silently.
-  const [ready, setReady] = useState(false);
+  const ready = useSyncExternalStore(subscribeNever, () => true, () => false);
   const emailInput = useRef<HTMLInputElement>(null);
   const passwordInput = useRef<HTMLInputElement>(null);
 
@@ -21,7 +24,6 @@ export default function SignupPage() {
   // empty while the field looks filled in. Adopt it once, at mount: otherwise the next re-render (an error message, say) would blank the
   // field, and a submit would post empty values (build 104-H, KD-1).
   useEffect(() => {
-    setReady(true);
     if (emailInput.current?.value) setEmail(emailInput.current.value);
     if (passwordInput.current?.value) setPassword(passwordInput.current.value);
   }, []);
