@@ -94,6 +94,12 @@ const dbFile = "src/db/index.ts";
 // main's db/index.ts has no pool error handler at all; #81 adds it. The test runs only where the handler exists.
 const dbHandlerPresent = has(dbFile) && /pool\.on\(\s*"error"/.test(fs.readFileSync(path.join(ROOT, dbFile), "utf8"));
 const dbSkip = dbHandlerPresent ? false : "src/db/index.ts has no pool error handler on this branch (it lands with PR #81); this regression runs on the integrated tree";
+// CC_REQUIRE_INTEGRATED=1 (set when verifying the integrated tree): a missing file or handler is a FAILURE, not a skip. Without it a renamed
+// authGuard.ts would turn every regression in this file into a silent skip that reports as a pass.
+if (process.env.CC_REQUIRE_INTEGRATED === "1") {
+  const missing = [skipFor(guardFile), skipFor("src/lib/limiterDb.ts"), dbSkip].filter(Boolean);
+  if (missing.length) throw new Error(`CC_REQUIRE_INTEGRATED=1 but this is not the integrated tree:\n  ${missing.join("\n  ")}`);
+}
 const guard = has(guardFile) ? await bundle(guardFile) : null;
 const limiterMod = has("src/lib/limiterDb.ts") ? await bundle("src/lib/limiterDb.ts") : null;
 

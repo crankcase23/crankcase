@@ -12,17 +12,19 @@ import { describeError as baseDescribe, errorLabel, isSensitiveError as baseSens
 //     often names the host, and their codes are longer than safeError.ts's 16-character cap, so describeError() printed "code=none".
 //   * AggregateError (a connect that tried several addresses): empty message, but the inner errors name every address.
 //
+// recordableError() never throws (it runs inside catch blocks): an object that throws when inspected is recorded as class=NonError code=none.
+//
 // WHAT IS KEPT: class + the short code, now up to 48 characters of [A-Za-z0-9_]: "class=Error code=ERR_TLS_CERT_ALTNAME_INVALID".
 // WHAT IS NEVER READ for a sensitive error: message, reason, host, cert, query, params, stack header.
 
 const CODE = /^[A-Za-z0-9_]{1,48}$/;
-const TLS_CODE = /^(?:ERR_(?:TLS|SSL|OSSL)_\w+|\w*(?:CERT|ISSUER|SELF_SIGNED|HOSTNAME_MISMATCH)\w*|UNABLE_TO_VERIFY_LEAF_SIGNATURE)$/;
+const TLS_CODE = /^(?:ERR_(?:TLS|SSL|OSSL)_\w+|\w*(?:CERT|ISSUER|SELF_SIGNED|HOSTNAME_MISMATCH)\w*|UNABLE_TO_VERIFY_LEAF_SIGNATURE)$/i;
 
 /** The error and everything reachable through `cause` and `errors[]` (AggregateError), breadth- and depth-limited. */
 function related(err: unknown): unknown[] {
   const seen: unknown[] = [];
   let level: unknown[] = [err];
-  for (let depth = 0; depth < 4 && level.length > 0; depth++) {
+  for (let depth = 0; depth < 8 && level.length > 0; depth++) {
     const next: unknown[] = [];
     for (const e of level) {
       if (e === null || typeof e !== "object" || seen.includes(e)) continue;
@@ -42,7 +44,9 @@ const codeOf = (e: unknown): string | null => {
 };
 
 const looksLikeTls = (e: unknown): boolean => {
-  const o = e as { code?: unknown; reason?: unknown; host?: unknown; cert?: unknown } | null | undefined;
+  const o = e as { code?: unknown; reason?: unknown; host?: unknown; hostname?: unknown; hostName?: unknown; servername?: unknown; cert?: unknown } | null | undefined;
+  // any error that carries the name of a host it was talking to quotes that host somewhere
+  if (typeof o?.host === "string" || typeof o?.hostname === "string" || typeof o?.hostName === "string" || typeof o?.servername === "string") return true;
   const c = typeof o?.code === "string" ? o.code : "";
   if (TLS_CODE.test(c)) return true;
   // a certificate-verification error carries its detail (the host) in `reason` / `host` / `cert`
@@ -72,12 +76,18 @@ export function describeError(err: unknown): string {
   }
 }
 
-/** What error_events stores: the base behaviour, and for the extra sensitive shapes class + code only (no message, no stack at all). */
+/** What error_events stores: the base behaviour, and for the extra sensitive shapes class + code only (no message, no stack at all). Never throws. */
 export function recordableError(err: unknown): { message: string; stack: string | null; sensitive: boolean } {
-  const base = baseRecordable(err);
-  if (base.sensitive || !isSensitiveError(err)) return base;
-  const summary = describeError(err);
-  return { message: summary, stack: summary, sensitive: true };
+  try {
+    const base = baseRecordable(err);
+    if (base.sensitive || !isSensitiveError(err)) return base;
+    const summary = describeError(err);
+    return { message: summary, stack: summary, sensitive: true };
+  } catch {
+    // an object that throws when inspected (a hostile getter or proxy): record nothing of its own
+    const summary = "class=NonError code=none";
+    return { message: summary, stack: summary, sensitive: true };
+  }
 }
 
 export { errorLabel };

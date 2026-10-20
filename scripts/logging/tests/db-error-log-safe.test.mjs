@@ -94,3 +94,35 @@ test("a circular cause chain and a hostile getter do not throw", () => {
   assert.equal(isSensitiveError(hostile), true, "fails closed");
   assert.equal(describeError(hostile), "class=NonError code=none");
 });
+
+// ---- independent review of 104-J ------------------------------------------------------------------------------------------------------
+test("recordableError never throws, whatever the error object does (throwing getters, proxies, null prototypes)", () => {
+  const getter = new Error("g"); Object.defineProperty(getter, "message", { get() { throw new Error("boom"); } });
+  const code = new Error("c"); Object.defineProperty(code, "code", { get() { throw new Error("boom"); } });
+  const proxy = new Proxy(new Error("p"), { get() { throw new Error("boom"); }, getPrototypeOf() { throw new Error("boom"); } });
+  const bare = Object.create(null);
+  for (const [name, e] of Object.entries({ getter, code, proxy, bare })) {
+    let r;
+    assert.doesNotThrow(() => { r = recordableError(e); }, name);
+    assert.equal(typeof r.message, "string", name);
+    assert.doesNotMatch(`${r.message} ${r.stack}`, /boom/, `${name}: a hostile object's own text must not be stored`);
+  }
+  assert.doesNotThrow(() => { isSensitiveError(proxy); describeError(proxy); });
+});
+
+test("a host, hostname, hostName or servername property marks an error sensitive, and a lowercase certificate code is still a certificate error", () => {
+  for (const props of [{ hostname: HOST }, { hostName: HOST }, { host: HOST }, { servername: HOST }, { code: "hostname_mismatch" }, { code: "cert_has_expired" }]) {
+    const e = Object.assign(new Error(`failure talking to ${HOST}`), props);
+    assert.equal(isSensitiveError(e), true, JSON.stringify(props));
+    assert.ok(!recordableError(e).message.includes(HOST), JSON.stringify(props));
+  }
+  assert.equal(isSensitiveError(Object.assign(new Error("plain"), { code: "E_APP_BAD_INPUT" })), false, "an application code is not hidden");
+});
+
+test("a sensitive error buried deeper than four causes is still found, and its code is still described", () => {
+  let e = Object.assign(new Error(`connect ECONNREFUSED ${HOST}:5432`), { code: "ECONNREFUSED", syscall: "connect", address: HOST });
+  for (let i = 0; i < 7; i++) e = new Error(`wrapper ${i}: ${e.message}`, { cause: e });
+  assert.equal(isSensitiveError(e), true, "a wrapper chain that copies the inner message must not hide a connection error");
+  assert.equal(describeError(e), "class=Error code=ECONNREFUSED");
+  assert.ok(!recordableError(e).message.includes(HOST));
+});

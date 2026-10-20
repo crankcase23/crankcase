@@ -15,8 +15,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", ".
 const has = (f) => fs.existsSync(path.join(ROOT, f));
 // errors.ts / events.ts exist on main but only use dbErrorLog.ts once PR #88 lands; before that they store and log raw messages (that is #88's
 // defect, covered by its own tests), so this suite runs only where they already import the sanitizer.
-const wired = (f) => has(f) && /from "@\/lib\/dbErrorLog(Safe)?"/.test(fs.readFileSync(path.join(ROOT, f), "utf8"));
+const wired = (f) => has(f) && /from\s+["'][^"']*dbErrorLog(Safe)?["']/.test(fs.readFileSync(path.join(ROOT, f), "utf8"));
 const skip = wired("src/lib/errors.ts") && wired("src/lib/events.ts") ? false : "src/lib/errors.ts / events.ts do not use dbErrorLog yet (that lands with PR #88); this regression runs on the integrated tree";
+// CC_REQUIRE_INTEGRATED=1 (set when verifying the integrated tree): not being wired is a FAILURE, not a silent skip.
+if (skip && process.env.CC_REQUIRE_INTEGRATED === "1") throw new Error(`CC_REQUIRE_INTEGRATED=1 but ${skip}`);
 const require = createRequire(import.meta.url);
 const HOST = "db.internal.example";
 const S = (globalThis.__etls = { insertError: null, rows: [] });
