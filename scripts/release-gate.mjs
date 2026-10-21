@@ -11,6 +11,7 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { unexpectedSkips } from "./release/gate-skips.mjs";
+import { flat, isolationVerdicts, fullRunProblems } from "./release/gate-report.mjs";
 
 const MIN_KEYS_TESTS = 35;       // keys:test as of the Option B contract-rollback fix (30 + 3 contract tests); raise when tests are added, never lower
 const MIN_LEGACY_HOLDS_TESTS = 12;
@@ -49,26 +50,18 @@ const holdsOk = holds.fail === 0 && holds.skipped === 0 && holds.pass >= MIN_LEG
 (holdsOk ? pass : fail)(`legacy-holds suite ("historical paid access cannot disappear"): ${holds.pass} passed, ${holds.skipped} skipped (need at least ${MIN_LEGACY_HOLDS_TESTS}, 0 skipped)`);
 
 // 3. admin cross-account isolation (Playwright)
-const flat = (report) => {
-  const rows = [];
-  const walk = (s) => { for (const sp of s.specs ?? []) for (const t of sp.tests ?? []) rows.push({ file: sp.file, title: sp.title, status: t.status });
-    for (const c of s.suites ?? []) walk(c); };
-  for (const s of report.suites ?? []) walk(s);
-  return rows;
-};
 const pw = spawnSync("npx", ["playwright", "test", "--reporter=json", "--workers=1", ...REQUIRED.map((q) => `tests/e2e/${q.file}`)],
   { encoding: "utf8", maxBuffer: 1 << 28, env: { ...process.env, PW_TEST_HTML_REPORT_OPEN: "never" } });
 let rep;
 try { rep = JSON.parse(pw.stdout); } catch { fail("no JSON report from Playwright (is the app up on :3100 against cc_test?)\n" + (pw.stderr || "").slice(-1500)); }
 if (rep) {
   const rows = flat(rep);
-  for (const q of REQUIRED) {
-    const hit = rows.filter((x) => x.file.endsWith(q.file) && x.title.startsWith(q.title));
-    const ok = hit.length >= 1 && hit.every((x) => x.status === "expected");
-    (ok ? pass : fail)(`isolation: ${q.file}: ${q.title}${hit.length ? "" : "  (NOT FOUND)"}`);
-  }
+  // a row counts only if it expected to pass AND passed: test.fail() / annotation fail / expect-timeout tests are status "expected" too
+  for (const v of isolationVerdicts(rep, REQUIRED)) (v.ok ? pass : fail)(v.msg);
   const skipped = rows.filter((x) => x.status === "skipped").length;
   if (skipped) fail(`${skipped} test(s) skipped in the isolation spec files`);
+  const iso = fullRunProblems(rep);
+  (iso.length === 0 ? pass : fail)(`isolation report integrity: ${iso.length} problem(s)${iso.length ? " e.g. " + iso[0] : ""}`);
 }
 
 // 4. optional full-run report
@@ -86,6 +79,9 @@ if (i > -1) {
     if (j > -1) { try { legRows = flat(JSON.parse(readFileSync(process.argv[j + 1], "utf8"))); } catch { fail(`cannot read fallback report ${process.argv[j + 1]}`); } }
     const skippedBad = unexpectedSkips(rows, { allowedTitles: ALLOWED_SKIPS, fallbackLegRows: legRows });
     (failed.length === 0 ? pass : fail)(`full run: ${rows.length} tests, ${failed.length} failed/flaky`);
+    const problems = fullRunProblems(full);
+    (problems.length === 0 ? pass : fail)(`full run integrity: ${problems.length} problem(s) (expected-fail / fixme / annotations / retried / run-level errors)${problems.length ? " e.g. " + problems[0] : ""}`);
+    if (legRows) { const lp = fullRunProblems(JSON.parse(readFileSync(process.argv[j + 1], "utf8"))); (lp.length === 0 ? pass : fail)(`fallback leg integrity: ${lp.length} problem(s)${lp.length ? " e.g. " + lp[0] : ""}`); }
     (skippedBad.length === 0 ? pass : fail)(`full run: ${skippedBad.length} unexpected skips${skippedBad.length ? " e.g. " + skippedBad[0].file : ""} (BMW admin guide specs skip when DATABASE_URL was not local)`);
   }
 }
