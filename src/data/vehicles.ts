@@ -4066,7 +4066,61 @@ spec: "All-season washer fluid",
         notes: "Filler is on the passenger side near the strut tower. Single-source figure.",
       },
     ],
-  }
+  },
+{
+id: "2021-mazda-cx9-2.5t",
+keys: { platform: "mazda-cx9-tc", engine: "mazda-skyactiv-g-2.5t-pyvpts", driveline: "mazda-cx9-awd" },
+year: 2021,
+make: "Mazda",
+model: "CX-9",
+trim: "Touring (AWD)",
+engine: "2.5L Turbo SkyActiv-G I4 (PY-VPTS)",
+drivetrain: "AWD",
+transmission: "6-speed automatic (SkyActiv-Drive)",
+specs: [
+{ label: "Engine", value: "2.5L Turbo SkyActiv-G I4, 227 hp / 310 lb-ft on 87 octane regular (250 hp / 320 lb-ft on 93 octane premium) -- this catalog's first turbocharged Mazda entry, a genuinely different engine from the Mazda3/CX-5's naturally-aspirated 2.5L in this file, not a tuned variant of it" },
+{ label: "Drivetrain", value: "AWD (i-ACTIV AWD) -- FWD is also available on this generation, but AWD is the more common configuration on the road and is what this entry covers" },
+{ label: "Transmission", value: "6-speed automatic (SkyActiv-Drive)" },
+{ label: "Curb weight", value: "~4,330 lb (Touring AWD)" },
+{ label: "Fuel tank", value: "19.5 gal" },
+{ label: "Recommended fuel", value: "Regular unleaded, 87 octane (93 octane premium recommended for the engine's higher output rating)" },
+{ label: "Battery", value: "Group size 35, ~500 CCA -- carried over from this catalog's CX-5 entry as a reasonable starting estimate, not independently confirmed for the CX-9's own electrical load" },
+{ label: "Wheel lug nut torque", value: "89 ft-lb (120 Nm) -- curated reference figure, carried over from this catalog's CX-5 entry on the strength of a shared SkyActiv-era Mazda wheel/hub spec, but NOT independently confirmed under the CX-9's own make/model yet. Confirm against your owner's manual before torquing." },
+{ label: "Tire size (Touring, 20-in wheel package)", value: "255/50R20" },
+],
+fluids: [
+{
+name: "Engine Oil",
+capacity: "~5.6 qt (5.3 L) with filter change",
+spec: "0W-20 full synthetic, API SN or higher",
+notes: "Cartridge-style filter housing, same general layout as this catalog's CX-5/Mazda3 entries -- but this is a genuinely different engine (turbocharged 2.5L SkyActiv-G Turbo vs. the naturally-aspirated 2.5L in those two entries), so it was given its own distinct keys.engine rather than assumed identical. Capacity is a general-knowledge estimate for the turbo engine's larger oil-cooler circuit, not yet cross-checked against a factory source. Reference figure only; confirm against your oil fill cap or owner's manual before buying oil.",
+provenance: { source: "curated" },
+},
+{
+name: "Engine Coolant",
+capacity: "~8.4 qt (7.9 L) system capacity",
+spec: "Mazda Genuine Coolant (FL22), green, 50/50 premix",
+notes: "Reference figure only; not yet independently verified against a factory source for this specific vehicle. Larger estimated capacity than the CX-5 reflects the turbo engine's intercooler/oil-cooler plumbing, not a confirmed figure.",
+},
+{
+name: "Automatic Transmission Fluid (SkyActiv-Drive 6-speed)",
+capacity: "~3.8 qt (3.6 L) for a pan drain-and-fill (service fill)",
+spec: "Mazda ATF FZ -- do not substitute a generic Dexron/Mercon fluid",
+notes: "Total dry-fill is higher; a fluid/filter service only replaces what drains from the pan. Reference figure only.",
+},
+{
+name: "Brake Fluid",
+capacity: "Fill to MAX line in reservoir",
+spec: "DOT 3",
+},
+{
+name: "Windshield Washer Fluid",
+capacity: "~4.9 qt (4.6 L) reservoir",
+spec: "All-season washer fluid",
+},
+],
+}
+
 ];
 
 export function getVehicleById(id: string): Vehicle | undefined {
