@@ -64,24 +64,17 @@ const sameFile = (entry, reported) => { const a = normFile(entry), b = normFile(
 const allowed = (allow, t) => allow.some((e) => sameFile(e.file, t.file) && (e.title === "*" || t.title === e.title));
 const PARKING = new Set(["fixme", "fail"]); // never an opt-in: a parked or expected-fail test is hiding something, whatever the allowlist says
 
-/** @returns {{ ok: boolean, failures: string[], tests: number, ran: number, allowedSkips: string[] }} */
-export function gate(report, allowlist = []) {
-  const failures = validateAllowlist(allowlist).map((p) => `ALLOWLIST: ${p}`);
-  const tests = collect(report);
-  const allowedSkips = [];
+const isSkipped = (t) => t.status === "skipped" || t.expectedStatus === "skipped";
+const idOf = (t) => `${t.file} :: ${t.title}${t.project ? ` [${t.project}]` : ""}`;
+
+/** Everything except skip handling: a test that RAN must have ended exactly as written. Also run-level errors, stats and an empty report.
+ *  Exported so scripts/release-gate.mjs can apply the same standard to the reports it accepts as release evidence. */
+export function integrityFailures(report, tests = collect(report)) {
+  const failures = [];
   if (tests.length === 0) failures.push("NO TESTS: the report contains no tests (nothing ran)");
-  let ran = 0;
   for (const t of tests) {
-    const id = `${t.file} :: ${t.title}${t.project ? ` [${t.project}]` : ""}`;
-    const skipped = t.status === "skipped" || t.expectedStatus === "skipped";
-    if (skipped) {
-      const parked = t.annotations.find((a) => PARKING.has(String(a?.type)));
-      if (parked) failures.push(`PARKED: ${id} (${parked.type} annotation: not allowed even on the allowlist)`);
-      else if (allowed(allowlist, t)) allowedSkips.push(id);
-      else failures.push(`UNEXPECTED SKIP: ${id} (skip is only allowed for tests on the allowlist, with a reason)`);
-      continue;
-    }
-    ran++;
+    if (isSkipped(t)) continue;
+    const id = idOf(t);
     if (t.expectedStatus === "failed") failures.push(`EXPECTED-FAIL: ${id} (test.fail / annotation fail: a failure is being reported as a pass)`);
     else if (t.expectedStatus !== "passed") failures.push(`EXPECTED-STATUS: ${id} (expectedStatus ${JSON.stringify(t.expectedStatus)}: only "passed" is allowed; a test told to expect a timeout or interruption is reported ok)`);
     if (!["expected", "unexpected", "flaky"].includes(t.status)) failures.push(`UNKNOWN STATUS: ${id} (status ${JSON.stringify(t.status)})`);
@@ -100,8 +93,25 @@ export function gate(report, allowlist = []) {
     }
   }
   for (const e of Array.isArray(report?.errors) ? report.errors : []) failures.push(`RUN ERROR: ${String(e?.message ?? e).split("\n")[0].slice(0, 160)} (a run-level error: global setup/teardown or a load error)`);
-  const s = report.stats;
+  const s = report?.stats;
   if (s && (s.unexpected > 0 || s.flaky > 0)) failures.push(`STATS: unexpected=${s.unexpected} flaky=${s.flaky}`);
+  return failures;
+}
+
+/** @returns {{ ok: boolean, failures: string[], tests: number, ran: number, allowedSkips: string[] }} */
+export function gate(report, allowlist = []) {
+  const tests = collect(report);
+  const failures = [...validateAllowlist(allowlist).map((p) => `ALLOWLIST: ${p}`), ...integrityFailures(report, tests)];
+  const allowedSkips = [];
+  let ran = 0;
+  for (const t of tests) {
+    const id = idOf(t);
+    if (!isSkipped(t)) { ran++; continue; }
+    const parked = t.annotations.find((a) => PARKING.has(String(a?.type)));
+    if (parked) failures.push(`PARKED: ${id} (${parked.type} annotation: not allowed even on the allowlist)`);
+    else if (allowed(allowlist, t)) allowedSkips.push(id);
+    else failures.push(`UNEXPECTED SKIP: ${id} (skip is only allowed for tests on the allowlist, with a reason)`);
+  }
   return { ok: failures.length === 0, failures: [...new Set(failures)], tests: tests.length, ran, allowedSkips };
 }
 
