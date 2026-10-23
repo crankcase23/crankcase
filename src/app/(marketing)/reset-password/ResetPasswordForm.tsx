@@ -22,11 +22,19 @@ async function handleSubmit(e: React.FormEvent) {
     return;
   }
   setSubmitting(true);
-  const res = await fetch("/api/auth/reset-password", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, password }),
-  });
+  let res: Response;
+  try {
+    res = await fetch("/api/auth/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, password }),
+    });
+  } catch {
+    // Build 104-F: a dropped connection used to leave "Saving…" up forever. The link is still valid; the customer can submit again.
+    setSubmitting(false);
+    setError("We couldn't reach Crankcase Garage. Check your connection and try again.");
+    return;
+  }
   setSubmitting(false);
   if (!res.ok) {
     const data = await res.json().catch(() => null);
