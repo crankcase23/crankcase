@@ -1,7 +1,7 @@
 import { randomUUID, createHash } from "node:crypto";
 import { db } from "@/db";
 import { errorEvents } from "@/db/schema";
-import { describeError, recordableError } from "@/lib/dbErrorLog";
+import { describeError, recordableError } from "@/lib/dbErrorLogSafe";
 
 // ---------------------------------------------------------------------------
 // First-party error capture -- the "glitches" view Andy originally asked for.

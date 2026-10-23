@@ -19,6 +19,7 @@ Object.assign(process.env, { AUTH_SECRET: ["unit", "test", "signing", "value", "
 
 const S = (globalThis.__rp = { row: null, selectError: null, updateError: null, updated: null });
 const stubs = {
+  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const resetRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
   "@/db": `
     const S = globalThis.__rp;
     export const db = {
@@ -29,7 +30,7 @@ const stubs = {
 const stubPlugin = {
   name: "stubs",
   setup(b) {
-    b.onResolve({ filter: /^@\/db$/ }, (a) => ({ path: a.path, namespace: "stub" }));
+    b.onResolve({ filter: /^@\/(db|lib\/authGuard)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
     b.onLoad({ filter: /.*/, namespace: "stub" }, (a) => ({ contents: stubs[a.path], loader: "js" }));
   },
 };

@@ -23,12 +23,13 @@ const stubs = {
       select() { return { from() { return { where() { return { limit: async () => { if (S.selectError) throw S.selectError; return S.existing; } }; } }; } }; },
       insert() { return { values() { return { returning: async () => { throw S.insertError; } }; } }; },
     };`,
+  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const signupRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
   "@/lib/events": `export const EVENT_TYPES = { USER_SIGNED_UP: "user.signed_up" }; export async function recordEvent() {}`,
 };
 const stubPlugin = {
   name: "stubs",
   setup(b) {
-    b.onResolve({ filter: /^@\/(db|lib\/events)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
+    b.onResolve({ filter: /^@\/(db|lib\/events|lib\/authGuard)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
     b.onLoad({ filter: /.*/, namespace: "stub" }, (a) => ({ contents: stubs[a.path], loader: "js" }));
   },
 };

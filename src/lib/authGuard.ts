@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { appEvents } from "@/db/schema";
 import { EVENT_TYPES } from "@/lib/events";
+import { describeError, isSensitiveError } from "@/lib/dbErrorLogSafe";
 import { LimiterStoreError, withLimiterClient } from "@/lib/limiterDb";
 
 // ---------------------------------------------------------------------------
@@ -378,7 +379,7 @@ export async function release(reservation: Reservation | null | undefined): Prom
   try {
     await withLimiterClient((d) => d.delete(appEvents).where(inArray(appEvents.id, reservation.ids)), { deadlineMs: RELEASE_DEADLINE_MS });
   } catch (err) {
-    console.error("[auth-limiter] release failed; the slots will age out", err);
+    console.error("[auth-limiter] release failed; the slots will age out", failureText(err));
   }
 }
 
@@ -411,5 +412,16 @@ export function temporarilyUnavailable(error = "This is temporarily unavailable.
 
 /** Console line every fail-open / fail-closed event writes, so an outage is greppable in the platform logs. */
 export function logLimiterFailure(flow: string, mode: "FAIL-OPEN" | "FAIL-CLOSED", err: unknown): void {
-  console.error(`[auth-limiter] ${mode} flow=${flow}`, err instanceof Error ? err.message : err);
+  console.error(`[auth-limiter] ${mode} flow=${flow}`, failureText(err));
+}
+
+/**
+ * What a limiter failure may put in a log. A database failure's message is the SQL plus its bound parameters (user id, email, hash) and a
+ * network failure's message names the database host and port, so those log class + short code only. A LimiterStoreError keeps its own
+ * message (written by us, fixed text) next to the code of what it wraps. Developer-written errors ("no trustworthy client address") log in full.
+ */
+function failureText(err: unknown): string {
+  if (!(err instanceof Error)) return describeError(err);
+  if (!isSensitiveError(err)) return err.message;
+  return err instanceof LimiterStoreError ? `${err.message} ${describeError(err)}` : describeError(err);
 }

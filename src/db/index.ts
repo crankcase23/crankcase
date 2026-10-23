@@ -2,6 +2,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "./schema";
 import { resolveDatabaseUrl } from "./resolveDatabaseUrl";
+import { describeError } from "@/lib/dbErrorLogSafe";
 
 // One pool per server process. Production and local use DATABASE_URL; Vercel Preview deployments use only
 // PREVIEW_DB_DATABASE_URL (never the production database, see resolveDatabaseUrl.ts). Locally it's the
@@ -27,7 +28,7 @@ const pool = new Pool({
   query_timeout: positive(process.env.DB_QUERY_TIMEOUT_MS, 60_000),
   keepAlive: true,
 });
-pool.on("error", (err) => console.error("[db] idle connection error (connection discarded)", err.message));
+pool.on("error", (err) => console.error("[db] idle connection error (connection discarded)", describeError(err)));
 // Same for checked-out clients: the listener exists from creation, so a backend terminated while connecting cannot be an uncaught exception.
 pool.on("connect", (client) => { client.on("error", () => undefined); });
 

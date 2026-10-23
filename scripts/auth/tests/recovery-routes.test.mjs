@@ -16,7 +16,10 @@ const esbuild = require("esbuild");
 Object.assign(process.env, { AUTH_SECRET: ["unit", "test", "signing", "value", "0123456789"].join("-") }); // throwaway, test-only
 
 const state = { users: new Map(), sent: [] };
+globalThis.__nextServer = require("next/server");
+const RUN = Math.random().toString(36).slice(2, 8); // unique addresses per run: the REAL limiter (per-email 3/h) keeps its rows for an hour
 const stubs = {
+  "next/server": `const m = globalThis.__nextServer; export const NextResponse = m.NextResponse; export const NextRequest = m.NextRequest; export const after = (fn) => { (globalThis.__afterQ ??= []).push(fn); };`,
   "@/lib/users": `export async function findUserByEmail(e){ return globalThis.__rec.users.get(String(e).toLowerCase().trim()) ?? null; }`,
   "@/lib/email": `export async function sendEmail(to, subject, html){ globalThis.__rec.sent.push({ to, subject, html }); return { ok: true }; }`,
 };
@@ -24,7 +27,7 @@ globalThis.__rec = state;
 const stubPlugin = {
   name: "stubs",
   setup(b) {
-    b.onResolve({ filter: /^@\/lib\/(users|email)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
+    b.onResolve({ filter: /^(@\/lib\/(users|email)|next\/server)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
     b.onLoad({ filter: /.*/, namespace: "stub" }, (a) => ({ contents: stubs[a.path], loader: "js" }));
   },
 };
@@ -38,26 +41,32 @@ const Forgot = await load("src/app/api/auth/forgot-password/route.ts");
 const Token = await load("src/lib/passwordResetToken.ts");
 
 const HASH = "$2a$12$unit-hash-one";
-const post = (email) => Forgot.POST(new Request("http://localhost/api/auth/forgot-password", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) }));
+const randomIp = () => `10.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${1 + Math.floor(Math.random() * 254)}`;
+// A trustworthy client address is required by the throttle (no address = fail closed, 503), and the mail goes out in after(): run it.
+const post = async (email) => {
+  const res = await Forgot.POST(new Request("http://localhost/api/auth/forgot-password", { method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": randomIp() }, body: JSON.stringify({ email }) }));
+  await Promise.all((globalThis.__afterQ ??= []).splice(0).map((f) => f()));
+  return res;
+};
 const linkToken = (html) => decodeURIComponent(/reset-password\?token=([^"]+)"/.exec(html)[1]);
 
 test("forgot-password: a DISABLED account still receives a reset link that works (recovery procedure depends on it)", async () => {
-  state.users.set("held@example.com", { id: "u-held", email: "held@example.com", passwordHash: HASH, status: "disabled" });
+  state.users.set(`held-${RUN}@example.com`, { id: "u-held", email: `held-${RUN}@example.com`, passwordHash: HASH, status: "disabled" });
   state.sent.length = 0;
-  const res = await post("Held@Example.com ");
+  const res = await post(`Held-${RUN}@Example.com `);
   assert.equal(res.status, 200);
   assert.equal(state.sent.length, 1, "exactly one mail for the disabled account");
-  assert.equal(state.sent[0].to, "held@example.com");
+  assert.equal(state.sent[0].to, `held-${RUN}@example.com`);
   assert.equal(Token.verifyResetToken(linkToken(state.sent[0].html), HASH), "u-held", "the mailed link verifies against the current hash");
 });
 
 test("forgot-password: unknown address sends nothing and answers exactly like a known one", async () => {
-  state.users.set("known@example.com", { id: "u-known", email: "known@example.com", passwordHash: HASH, status: "active" });
+  state.users.set(`known-${RUN}@example.com`, { id: "u-known", email: `known-${RUN}@example.com`, passwordHash: HASH, status: "active" });
   state.sent.length = 0;
-  const known = await post("known@example.com");
+  const known = await post(`known-${RUN}@example.com`);
   const knownBody = await known.text();
   const sentForKnown = state.sent.length;
-  const unknown = await post("nobody@example.com");
+  const unknown = await post(`nobody-${RUN}@example.com`);
   assert.equal(known.status, unknown.status);
   assert.equal(knownBody, await unknown.text());
   assert.equal(sentForKnown, 1);

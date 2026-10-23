@@ -16,15 +16,18 @@ const require = createRequire(import.meta.url);
 const esbuild = require("esbuild");
 Object.assign(process.env, { AUTH_SECRET: ["unit", "test", "signing", "value", "0123456789"].join("-") });
 
+globalThis.__nextServer = require("next/server");
 const S = (globalThis.__fp = { user: null, lookupError: null, mailResult: { ok: true }, sent: [] });
 const stubs = {
   "@/lib/users": `export async function findUserByEmail() { const S = globalThis.__fp; if (S.lookupError) throw S.lookupError; return S.user; }`,
+  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const forgotRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
+  "next/server": `const m = globalThis.__nextServer; export const NextResponse = m.NextResponse; export const NextRequest = m.NextRequest; export const after = (fn) => { (globalThis.__afterQ ??= []).push(fn); };`,
   "@/lib/email": `export async function sendEmail(to, subject, html) { const S = globalThis.__fp; S.sent.push({ to, subject }); if (S.mailResult instanceof Error) throw S.mailResult; return S.mailResult; }`,
 };
 const stubPlugin = {
   name: "stubs",
   setup(b) {
-    b.onResolve({ filter: /^@\/lib\/(users|email)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
+    b.onResolve({ filter: /^(@\/lib\/(users|email|authGuard)|next\/server)$/ }, (a) => ({ path: a.path, namespace: "stub" }));
     b.onLoad({ filter: /.*/, namespace: "stub" }, (a) => ({ contents: stubs[a.path], loader: "js" }));
   },
 };
@@ -51,7 +54,9 @@ beforeEach(() => {
 const post = async (email = EMAIL) => {
   try {
     const res = await POST(new Request("http://localhost/api/auth/forgot-password", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) }));
-    return { status: res.status, body: await res.text() };
+    const answer = { status: res.status, body: await res.text() };
+    await Promise.all((globalThis.__afterQ ?? []).splice(0).map((f) => f())); // work scheduled with after() runs once the answer is out
+    return answer;
   } finally { console.error = realError; console.warn = realWarn; console.log = realLog; }
 };
 
@@ -65,17 +70,12 @@ test("known and unknown addresses: identical status and body", async () => {
   assert.equal(known.body, unknown.body);
 });
 
-test("database failure on lookup: 503, fixed customer-safe message, nothing internal, identical for any address", async () => {
+test("database failure on lookup (after the answer): identical generic 200 for any address, no mail, nothing internal in the body", async () => {
   S.lookupError = new DrizzleQueryError('select "id", "email", "password_hash" from "users" where "users"."email" = $1 limit $2', [EMAIL, 1], pgError("57P01", "terminating connection due to administrator command"));
   const a = await post(EMAIL);
-  S.lookupError = new DrizzleQueryError('select "id" from "users" where "users"."email" = $1', ["other@example.com", 1], pgError("57P01", "terminating connection"));
   const b = await post("other@example.com");
-  for (const r of [a, b]) {
-    assert.equal(r.status, 503);
-    assert.doesNotMatch(r.body, LEAK);
-    assert.match(JSON.parse(r.body).error, /try again/i);
-  }
-  assert.equal(a.body, b.body, "the failure answer must not depend on the address");
+  for (const r of [a, b]) { assert.equal(r.status, 200); assert.doesNotMatch(r.body, LEAK); }
+  assert.equal(a.body, b.body);
   assert.equal(S.sent.length, 0, "no mail on a failed lookup");
 });
 

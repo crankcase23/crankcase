@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
 import { appEvents } from "@/db/schema";
-import { describeError } from "@/lib/dbErrorLog";
+import { describeError } from "@/lib/dbErrorLogSafe";
 
 // ---------------------------------------------------------------------------
 // First-party event capture.

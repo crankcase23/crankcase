@@ -57,7 +57,9 @@ test.describe("signup", () => {
     const ok = results.filter((r) => r.status === 200);
     const dup = results.filter((r) => r.status === 409);
     expect(ok.length, "exactly one request creates the account").toBe(1);
-    expect(dup.length, "every other request is a plain duplicate").toBe(N - 1);
+    const limited = results.filter((r) => r.status === 429); // #81: per-email limit 3/h
+    expect(dup.length + limited.length, "every other request is a plain duplicate or a throttle answer, nothing else").toBe(N - 1);
+    expect(dup.length, "the duplicates that got past the limiter are plain 409s").toBeGreaterThanOrEqual(1);
     for (const r of results) expect(r.body, `response body leaked internals: ${r.body.slice(0, 120)}`).not.toMatch(LEAK);
     for (const r of dup) expect(JSON.parse(r.body)).toEqual({ error: DUPLICATE_MESSAGE });
     expect((await sql<{ n: string }>("select count(*) n from users where email=$1", [email]))[0].n).toBe("1");

@@ -39,7 +39,8 @@ const stubs = [
   virtual(/^@\/lib\/users$/, `
     const g = globalThis;
     const wait = (ms) => ms ? new Promise((r) => setTimeout(r, ms)) : null;
-    export async function createUser(email) { (g.__created ??= []).push(email); if (g.__existing?.has(email.toLowerCase())) throw new Error("An account with that email already exists."); return { id: crypto.randomUUID(), email }; }
+    export class EmailTakenError extends Error { constructor() { super("An account with that email already exists."); this.name = "EmailTakenError"; } }
+    export async function createUser(email) { (g.__created ??= []).push(email); if (g.__existing?.has(email.toLowerCase())) throw new EmailTakenError(); return { id: crypto.randomUUID(), email }; }
     export async function findUserByEmail(e) { await wait(g.__lookupDelay); return g.__users?.[e.toLowerCase()] ?? null; }
     export async function findUserById(id) { return Object.values(g.__users ?? {}).find((u) => u.id === id) ?? null; }
     export async function updatePassword(id) { (g.__updated ??= []).push(id); }`),

@@ -3,6 +3,7 @@ import * as React from "react";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { users } from "@/db/schema";
+import { describeError } from "@/lib/dbErrorLogSafe";
 
 // SESSION SECURITY. Sessions are stateless JWTs (src/auth.ts), so on their own a token stays valid for its whole lifetime even
 // after the account is disabled or deleted, or its password is reset. This module re-checks the account on every auth() call
@@ -69,7 +70,8 @@ export async function verifySessionToken(
   try {
     row = await lookup(token.userId);
   } catch (err) {
-    log("[session-guard] account lookup failed; denying this request, session cookie left untouched", err);
+    // Class and code only: drizzle's message is the lookup SQL plus the user's id, and this line runs on every authenticated request while the database is down.
+    log("[session-guard] account lookup failed; denying this request, session cookie left untouched", describeError(err));
     return { kind: "unverified" };
   }
   return judgeSession(token, row);

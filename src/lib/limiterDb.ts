@@ -1,6 +1,7 @@
 import { Pool, type PoolClient } from "pg";
 import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { resolveDatabaseUrl } from "@/db/resolveDatabaseUrl";
+import { describeError, isSensitiveError } from "@/lib/dbErrorLogSafe";
 
 // DEDICATED DATABASE ACCESS FOR THE AUTH LIMITER (src/lib/authGuard.ts).
 //
@@ -54,7 +55,7 @@ function getPool(): Pool {
     application_name: "crankcase-limiter",
   });
   // An idle connection that the server drops raises 'error' on the pool. Without a listener that is an uncaught exception.
-  p.on("error", (err) => console.error("[auth-limiter] idle connection error (connection discarded)", err.message));
+  p.on("error", (err) => console.error("[auth-limiter] idle connection error (connection discarded)", describeError(err)));
   // Every client gets a permanent error listener THE MOMENT it is created ('connect' fires before the pool removes its own idle listener).
   // A backend terminated right as its connection became ready sends FATAL 57P01 in the same network chunk as ReadyForQuery; with no
   // listener in that window the 'error' is an uncaught exception no matter what the caller does afterwards (unit R22c). The error still
@@ -168,7 +169,8 @@ export async function withLimiterClient<T>(
     // Anything that is not a clean answer from the server (a client-side query timeout, a reset or terminated connection) is a STORE
     // FAILURE and is reported as one. A server-answered error (lock / statement timeout, a real SQL error) keeps its own shape.
     if (err instanceof LimiterStoreError || answeredByServer(err)) throw err;
-    throw new LimiterStoreError(err instanceof Error ? err.message : "limiter connection failed", "connection", { cause: err });
+    // The wrapper's message is what callers log: a database error's own message is SQL + parameters, so it is replaced by fixed text.
+    throw new LimiterStoreError(err instanceof Error && !isSensitiveError(err) ? err.message : "limiter connection failed", "connection", { cause: err });
   } finally {
     finished = true;
     if (timer) clearTimeout(timer);
