@@ -115,6 +115,35 @@ export function gate(report, allowlist = []) {
   return { ok: failures.length === 0, failures: [...new Set(failures)], tests: tests.length, ran, allowedSkips };
 }
 
+// ENVIRONMENT vs PRODUCT (Build 104-AO). A run whose disk or memory ran out reports a pile of unrelated failures (ENOSPC while a trace is written,
+// ERR_INSUFFICIENT_RESOURCES, "Target crashed"). Those are not evidence about the product either way, and reading them as product failures (or
+// waving them through as "just the sandbox") both mislead. This only LABELS: it never turns a failure into a pass, and the gate verdict is unchanged.
+// DEFINITE: the exact errno line Node prints when the disk is full ("ENOSPC: no space left on device, write"). Free text that merely mentions the word
+// (an assertion that received "ENOSPC while saving", a comment in the test) does not match. Only the error MESSAGE is searched, never the stack, whose
+// code frame quotes the test source.
+export const RESOURCE_DEFINITE = /\bENOSPC: no space left on device/i;
+// AMBIGUOUS: can be the machine running out of something, but also a product bug (a request storm gives ERR_INSUFFICIENT_RESOURCES, a runaway render
+// or a leak gives a crash, a descriptor or memory leak gives EMFILE / ENOMEM / heap out of memory). Labelled, never trusted on its own.
+export const RESOURCE_AMBIGUOUS = /ERR_INSUFFICIENT_RESOURCES|Target (?:page, context or browser has been )?crashed|Page crashed|\bENOSPC\b|no space left on device|\bEMFILE\b|\bENOMEM\b|JavaScript heap out of memory/i;
+export const RESOURCE_EXHAUSTION = new RegExp(`${RESOURCE_DEFINITE.source}|${RESOURCE_AMBIGUOUS.source}`, "i");
+const errorMessages = (r) => [...(Array.isArray(r?.errors) ? r.errors : []), ...(r?.error ? [r.error] : [])].map((e) => `${e?.message ?? ""}`);
+
+/**
+ * Tests that ran and did not end as written. `environment` is true only when EVERY error the test reported is a resource-exhaustion message (one real
+ * assertion error next to a teardown ENOSPC makes it a product failure). `definite` additionally needs at least one message that cannot be a product bug.
+ */
+export function failedTests(report, tests = collect(report)) {
+  return tests
+    .filter((t) => !isSkipped(t) && (t.status !== "expected" || t.results.some((r) => r.status !== "passed")))
+    .map((t) => {
+      const msgs = t.results.flatMap(errorMessages);
+      const environment = msgs.length > 0 && msgs.every((m) => RESOURCE_EXHAUSTION.test(m));
+      const definite = environment && msgs.some((m) => RESOURCE_DEFINITE.test(m));
+      const m = environment ? msgs.map((x) => RESOURCE_EXHAUSTION.exec(x)?.[0]).find(Boolean) : null;
+      return { id: idOf(t), environment, definite, match: m ?? null };
+    });
+}
+
 // Compare real paths: `file://${argv[1]}` is neither URL-encoded nor realpath'd, so a path with a space, a symlinked directory or a Windows drive
 // letter made this block silently not run and the process exit 0.
 const isMain = (() => { try { return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1] ?? "")); } catch { return false; } })();
@@ -128,6 +157,16 @@ if (isMain) {
   console.log(`playwright results gate: ${r.tests} tests, ${r.ran} ran, ${r.allowedSkips.length} allowlisted skips`);
   for (const s of r.allowedSkips) console.log(`  allowed skip: ${s}`);
   for (const f of r.failures) console.error(`  REJECT ${f}`);
+  const failed = failedTests(report);
+  const env = failed.filter((f) => f.environment);
+  for (const f of env) console.error(`  ENVIRONMENT-SUSPECT: ${f.id} (reported "${f.match}")`);
+  if (env.length > 0 && env.length < failed.length) console.error(`  NOTE: ${env.length} of ${failed.length} failing tests carry a resource-exhaustion error; the other ${failed.length - env.length} are not explained by it`);
+  // Exit 3 / the ENVIRONMENT FAILURE banner need ALL of: failures exist, every failing test is definitely a resource exhaustion, and the gate has no
+  // other reason to fail (a run-level error, an unexpected skip or a bad stat is a product or harness finding, never "the sandbox").
+  const onlyTestFailures = r.failures.every((x) => /^(FAILED|RESULT-STATUS|RESULT-ERRORS|STATS):/.test(x));
+  const allEnv = failed.length > 0 && failed.every((f) => f.definite) && onlyTestFailures;
+  if (allEnv) console.error("  ENVIRONMENT FAILURE: every failing test reported a resource-exhaustion error that cannot be a product bug (disk full, out of memory). This run is NOT product evidence either way: free the resource and rerun the full gate.");
+  else if (env.length > 0) console.error("  NOTE: environment-looking errors do not make this an environment failure here (a real failure, a run-level problem or an ambiguous crash is also present). Treat every failure above as real until proven otherwise.");
   console.log(r.ok ? "GATE PASS" : "GATE FAIL");
-  process.exit(r.ok ? 0 : 1);
+  process.exit(r.ok ? 0 : allEnv ? 3 : 1);
 }

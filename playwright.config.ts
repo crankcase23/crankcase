@@ -6,6 +6,8 @@ const PORT = 3100;
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  // Warms the routes the slow specs depend on before the first test (cold `next dev` compile, build 104-AO). CC_E2E_WARM=0 skips it.
+  globalSetup: "./tests/e2e/global-setup.ts",
   timeout: 60_000,
   fullyParallel: true,
   retries: 0,
