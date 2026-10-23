@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+
+// "Has this component hydrated?": false in the server HTML and during hydration, true afterwards (no state set inside an effect).
+const subscribeNever = () => () => {};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -11,11 +14,30 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // False in the server-rendered HTML, true once React has attached. Until then the submit button is disabled: a click or Enter before that
+  // would be submitted by the browser itself (a GET to /signup?), which reloads the page, empties the fields and drops the attempt silently.
+  const ready = useSyncExternalStore(subscribeNever, () => true, () => false);
+  const emailInput = useRef<HTMLInputElement>(null);
+  const passwordInput = useRef<HTMLInputElement>(null);
+
+  // Text typed (or autofilled) BEFORE this component hydrates is already in the DOM but never went through onChange, so state is still
+  // empty while the field looks filled in. Adopt it once, at mount: otherwise the next re-render (an error message, say) would blank the
+  // field, and a submit would post empty values (build 104-H, KD-1).
+  useEffect(() => {
+    if (emailInput.current?.value) setEmail(emailInput.current.value);
+    if (passwordInput.current?.value) setPassword(passwordInput.current.value);
+  }, []);
 
   // A failed request must end in a visible message and a usable form (build 104-F): a dropped connection or a non-JSON reply from a
   // proxy used to leave "Creating account…" up forever with an unhandled rejection. Messages the server sends are shown as they are.
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // What is on screen is what is submitted, whether or not React saw the keystrokes (autofill and pre-hydration typing skip onChange).
+    const email = emailInput.current?.value ?? "";
+    const password = passwordInput.current?.value ?? "";
+    // Bring React's state in line with the screen, or the re-render below resets the fields to the stale (empty) state.
+    setEmail(email);
+    setPassword(password);
     setError(null);
     setSubmitting(true);
 
@@ -93,6 +115,7 @@ export default function SignupPage() {
           </label>
           <input
             id="email"
+            ref={emailInput}
             type="email"
             placeholder="you@example.com"
             required
@@ -107,6 +130,7 @@ export default function SignupPage() {
           </label>
           <input
             id="password"
+            ref={passwordInput}
             type="password"
             placeholder="At least 8 characters"
             required
@@ -118,7 +142,7 @@ export default function SignupPage() {
         </div>
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || !ready}
           className="w-full rounded-lg bg-orange-500 px-4 py-2.5 font-semibold text-slate-950 hover:bg-orange-400 disabled:opacity-60"
         >
           {submitting ? "Creating account…" : "Create Account"}
