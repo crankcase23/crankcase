@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, after } from "next/server";
 import { findUserByEmail } from "@/lib/users";
 import { makeResetToken } from "@/lib/passwordResetToken";
 import { sendEmail } from "@/lib/email";
+import { safeErrorSummary } from "@/lib/safeError";
 import { clientIp, forgotRules, reserve, tooManyRequests, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
 
 // Always returns the same generic success response, whether or not the email is registered -- this is what stops the
@@ -40,6 +41,8 @@ export async function POST(req: NextRequest) {
 
   const origin = new URL(req.url).origin;
   after(async () => {
+    // Runs after the answer has gone out, so a failure here is for the operator, not the customer. Build 104-E: log the error
+    // class and short code only (drizzle's message carries the SQL and bound parameters), never the address or the link.
     try {
       const user = await findUserByEmail(email);
       if (!user) return;
@@ -49,9 +52,10 @@ export async function POST(req: NextRequest) {
         "<p>Someone requested a password reset for your Crankcase Garage account.</p>" +
         "<p><a href=\"" + resetUrl + "\">Click here to set a new password</a>. This link expires in 1 hour.</p>" +
         "<p>If you didn't request this, you can safely ignore this email.</p>";
-      await sendEmail(user.email, "Reset your Crankcase Garage password", html);
+      const sent = await sendEmail(user.email, "Reset your Crankcase Garage password", html);
+      if (!sent || !sent.ok) console.warn("[forgot-password] reset mail not sent:", sent?.error ?? "exception");
     } catch (err) {
-      console.error("[forgot-password] failed to send email", err);
+      console.error("[forgot-password] reset processing failed", safeErrorSummary(err));
     }
   });
 
