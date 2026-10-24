@@ -77,7 +77,9 @@ export type ReserveResult =
   | { ok: true; reservation: Reservation }
   // busy: the limiter could not get a decision in bounded time (contention on a key, or the waiting room is full). The caller
   // DENIES, exactly like a limit hit: contention must never turn into a free pass. Nothing was written.
-  | { ok: false; busy?: true; denied: { scope: string; retryAfter: number }[]; retryAfter: number };
+  | { ok: false; busy?: true; reason?: BusyReason; denied: { scope: string; retryAfter: number }[]; retryAfter: number };
+/** Why the limiter could not decide. Written to the BUSY log line and returned to the route; never carries a key, address or email. */
+export type BusyReason = "lock_timeout" | "statement_timeout" | "queue_deadline";
 
 // ----- keys -----------------------------------------------------------------
 
@@ -285,10 +287,10 @@ function acquireTx(deadlineAt: number): Promise<(() => void) | null> {
 }
 
 // 55P03 lock_not_available (lock_timeout), 57014 query_canceled (statement_timeout). drizzle wraps the driver error in .cause.
-const isContentionTimeout = (err: unknown): boolean => {
+const contentionReason = (err: unknown): BusyReason | null => {
   const e = err as { code?: string; cause?: { code?: string } } | null;
   const code = e?.code ?? e?.cause?.code;
-  return code === "55P03" || code === "57014";
+  return code === "55P03" ? "lock_timeout" : code === "57014" ? "statement_timeout" : null;
 };
 // Contention or failure? A request that finds no free slot within the queue deadline is BUSY (a denial) when the store is merely loaded.
 // But when the store is demonstrably failing (a store failure on record, and no successful or server-answered unit of work since, within
@@ -305,14 +307,30 @@ const noteStoreFailure = () => { lastFailure = { tick: ++tick, at: Date.now() };
 const noteStoreAlive = () => { lastAlive = { tick: ++tick }; };
 const storeLooksDown = () => lastFailure.tick > lastAlive.tick && Date.now() - lastFailure.at < STORE_DOWN_MEMORY_MS;
 /** No slot in bounded time: BUSY (deny) normally, a store failure while the store is failing. Call after giving the keys back. */
-const noSlot = (): ReserveResult => {
+const noSlot = (flow: string): ReserveResult => {
   if (storeLooksDown()) throw new LimiterStoreError("limiter store is failing and no slot is free: request shed", "deadline");
-  return busy();
+  return busy("queue_deadline", flow);
 };
-const busy = (): ReserveResult => {
+const busy = (reason: BusyReason, flow: string): ReserveResult => {
   stats.busyDenials++;
-  return { ok: false, busy: true, denied: [{ scope: "busy", retryAfter: BUSY_RETRY_AFTER }], retryAfter: BUSY_RETRY_AFTER };
+  logBusy(flow, reason);
+  return { ok: false, busy: true, reason, denied: [{ scope: "busy", retryAfter: BUSY_RETRY_AFTER }], retryAfter: BUSY_RETRY_AFTER };
 };
+
+// Patch 12: BUSY used to leave no trace in the application log (Build 104-AP found one only through the Postgres log). One line per (flow, reason)
+// per second, with how many more were held back, so a flood cannot fill the log. flow and reason are fixed words; no key, address or email.
+const FLOW_NAMES: Record<string, string> = { login: "login", signup: "signup", forgot: "forgot-password", reset: "reset-password" };
+const flowOf = (rules: Rule[]): string => FLOW_NAMES[rules[0]?.scope.split(".")[0] ?? ""] ?? "unknown";
+const BUSY_LOG_EVERY_MS = 1000;
+const busyLog = new Map<string, { at: number; held: number }>();
+function logBusy(flow: string, reason: BusyReason): void {
+  const k = `${flow}|${reason}`;
+  const s = busyLog.get(k) ?? { at: 0, held: 0 };
+  const now = Date.now();
+  if (now - s.at < BUSY_LOG_EVERY_MS) { s.held++; busyLog.set(k, s); return; }
+  console.error(`[auth-limiter] BUSY flow=${flow} reason=${reason} retry_after=${BUSY_RETRY_AFTER} held_back=${s.held}`);
+  busyLog.set(k, { at: now, held: 0 });
+}
 
 /**
  * Reserve one attempt against every rule, atomically. Returns ok (rows written, hand the reservation to release() if the
@@ -328,11 +346,11 @@ export async function reserve(rules: Rule[]): Promise<ReserveResult> {
   const releaseAll = () => { for (const r of releases.reverse()) r(); releases.length = 0; };
   for (const r of sorted) { // sorted: two requests can never wait on each other's keys
     const rel = await lockKey(r.key, deadlineAt);
-    if (!rel) { releaseAll(); return noSlot(); }
+    if (!rel) { releaseAll(); return noSlot(flowOf(sorted)); }
     releases.push(rel);
   }
   const slot = await acquireTx(deadlineAt);
-  if (!slot) { releaseAll(); return noSlot(); }
+  if (!slot) { releaseAll(); return noSlot(flowOf(sorted)); }
 
   let result: ReserveResult;
   try {
@@ -360,7 +378,8 @@ export async function reserve(rules: Rule[]): Promise<ReserveResult> {
     }, { transaction: true });
     noteStoreAlive();
   } catch (err) {
-    if (isContentionTimeout(err)) { noteStoreAlive(); return busy(); } // the server answered: loaded, not failing
+    const why = contentionReason(err);
+    if (why) { noteStoreAlive(); return busy(why, flowOf(sorted)); } // the server answered: loaded, not failing
     noteStoreFailure();
     throw err; // LimiterStoreError (no answer in time, cannot connect, connection reset, ...): the caller applies its policy
   } finally {
@@ -403,6 +422,14 @@ export async function pruneThrottleRows(): Promise<void> {
 /** The 429 for signup, forgot-password and reset-password. Says nothing about whether any account exists. */
 export function tooManyRequests(retryAfter: number, error = "Too many attempts. Wait a bit and try again."): NextResponse {
   return NextResponse.json({ error, retryAfter }, { status: 429, headers: { "Retry-After": String(retryAfter) } });
+}
+
+/**
+ * The 503 for BUSY: the limiter could not reach a decision in bounded time. No limit was reached, so this is not a 429. It is still a denial
+ * (nothing was written, nothing proceeds), and the body is generic: it depends on nothing the caller typed, so it cannot reveal an account.
+ */
+export function limiterBusy(retryAfter: number, error = "This is busy right now. Try again in a moment."): NextResponse {
+  return NextResponse.json({ error, retryAfter }, { status: 503, headers: { "Retry-After": String(retryAfter) } });
 }
 
 /** The 503 when the limiter store is down for a flow that must fail closed. Generic by design. */

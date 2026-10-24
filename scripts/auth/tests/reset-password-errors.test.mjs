@@ -19,7 +19,7 @@ Object.assign(process.env, { AUTH_SECRET: ["unit", "test", "signing", "value", "
 
 const S = (globalThis.__rp = { row: null, selectError: null, updateError: null, updated: null });
 const stubs = {
-  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const resetRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
+  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const resetRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const limiterBusy = () => new Response("{}", { status: 503 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
   "@/db": `
     const S = globalThis.__rp;
     export const db = {

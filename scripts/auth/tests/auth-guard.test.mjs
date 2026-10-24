@@ -709,7 +709,7 @@ test("R20 a lock held elsewhere is bounded by lock_timeout and DENIES (never fai
       const r = { login: () => doLogin(M, email, "right-password", ip), signup: () => doSignup(M, email, ip), forgot: () => doForgot(M, email, ip), reset: () => doReset(M, goodReset(user.id, "h"), ip) }[flow]();
       const res = await answered(r, 12000, `${flow} behind a held lock`); // R29: a missing lock_timeout is a fast HUNG failure, not a 10-minute stall
       const took = Date.now() - t0;
-      assert.equal(res.status, 429, `${flow}: contention denies`);
+      assert.equal(res.status, 503, `${flow}: contention denies with 503 (could not decide: not a rate-limit verdict, Patch 12)`);
       assert.ok(Number(res.headers.get("retry-after")) >= 1, `${flow}: Retry-After present`);
       assert.ok(took >= 1000 && took < 6000, `${flow}: waited about lock_timeout, not forever (took ${took} ms)`);
       assert.equal(g.__pwChecks, 0, `${flow}: no password check while the limiter could not decide`);
@@ -748,8 +748,9 @@ test("R20 beyond the per-key waiting room the answer is an immediate, bounded de
   const n = M.guard.BOUNDS.maxWaitersPerKey + 120;
   const s = await statuses(Array.from({ length: n }, () => doLogin(M, email, "wrong", ip)));
   assert.equal(count(s, 200), 8, "admission is still never above the limit");
-  assert.equal(count(s, 200) + count(s, 429), n, "every request gets an answer");
+  assert.equal(count(s, 200) + count(s, 429) + count(s, 503), n, "every request gets an answer");
   const st = M.guard.limiterStats();
+  assert.equal(count(s, 503), st.busyDenials, "every request shed as BUSY is a 503 (Patch 12), and nothing else is");
   assert.ok(st.busyDenials >= 120, `the overflow was shed as busy, not queued without bound (shed ${st.busyDenials})`);
   assert.ok(typeof st.peakKeyDepth === "number" && st.peakKeyDepth <= M.guard.BOUNDS.maxWaitersPerKey, `no key ever had more than ${M.guard.BOUNDS.maxWaitersPerKey} requests in line (peak ${st.peakKeyDepth})`);
 });
@@ -813,9 +814,9 @@ test("R21 a HUNG database: every flow answers inside a bound with its approved f
     assert.ok(cap.logged.some((l) => l.includes("[auth-limiter] FAIL-OPEN flow=login")), "the login fail-open is logged");
     assert.ok(cap.logged.some((l) => l.includes("[auth-limiter] FAIL-CLOSED flow=signup")), "the signup fail-closed is logged");
 
-    // A crowd on a hung store: nobody waits without an answer, and nobody is waved through unthrottled by CONTENTION (busy is a 429).
+    // A crowd on a hung store: nobody waits without an answer, and nobody is waved through unthrottled by CONTENTION (busy is a 503, Patch 12).
     const crowd = await Promise.all(Array.from({ length: 12 }, (_, i) => answered(doLogin(P, emailOf(), "wrong", ipOf()), 11000, `crowd login ${i}`)));
-    assert.ok(crowd.every((r) => r.status === 200 || r.status === 429), "each crowd request is answered (fail-open 200 or busy 429), none hangs");
+    assert.ok(crowd.every((r) => r.status === 200 || r.status === 503), "each crowd request is answered (fail-open 200 or busy 503), none hangs");
   } finally { cap.restore(); }
 
   // The database comes back. The connections that were black-holed stay dead (as in a real partition); nothing restarts.
@@ -851,7 +852,7 @@ test("R21b while the store is demonstrably failing, requests that cannot get a s
     const second = await Promise.all(Array.from({ length: 24 }, (_, i) => answered(doLogin(P, emailOf(), "again" + i, ipOf()), 12000, `second-wave login ${i}`)));
     const signups = await Promise.all(Array.from({ length: 12 }, (_, i) => answered(doSignup(P, emailOf(), ipOf()), 12000, `signup ${i}`)));
     assert.ok(Date.now() - t1 < 12000);
-    assert.ok(logins.every((r) => r.status === 200 || r.status === 429), "first wave: answered");
+    assert.ok(logins.every((r) => r.status === 200 || r.status === 429 || r.status === 503), "first wave: answered (BUSY is 503 since Patch 12)");
     assert.equal(count(second.map((r) => r.status), 200), 24, "login: with the store failing, every request fails open for throttling (password checked), none is told 429 'busy'");
     assert.equal(count(signups.map((r) => r.status), 503), 12, "signup: every request fails closed with 503, none is told 429 'busy'");
     assert.deepEqual(g.__created, []);
@@ -913,7 +914,7 @@ test("R22b a REAL pg_terminate_backend storm (the server sends FATAL 57P01, then
   process.on("uncaughtException", onUncaught);
   try {
     const out = await Promise.all(Array.from({ length: 150 }, (_, i) => answered(doLogin(M, emailOf(), "wrong" + i, ipOf()), 15000, `login ${i} during the kill storm`)));
-    assert.ok(out.every((r) => r.status === 200 || r.status === 429), "every login was answered (fail open 200, or busy 429), none hung or crashed");
+    assert.ok(out.every((r) => r.status === 200 || r.status === 429 || r.status === 503), "every login was answered (fail open 200, or busy 503), none hung or crashed");
   } finally {
     stop = true; await loop; await killer.end(); cap.restore();
     await new Promise((r) => setTimeout(r, 300)); // late 'error' events from the terminated connections
@@ -935,7 +936,7 @@ test("R22c a backend terminated the instant its connection is ready (FATAL arriv
   try {
     proxy.fatalWhenReady(true);
     const logins = await Promise.all(Array.from({ length: 12 }, (_, i) => answered(doLogin(P, emailOf(), "wrong" + i, ipOf()), 12000, `login ${i} on instantly-terminated connections`)));
-    assert.ok(logins.every((r) => r.status === 200 || r.status === 429), "every login answered");
+    assert.ok(logins.every((r) => r.status === 200 || r.status === 429 || r.status === 503), "every login answered");
     const shared = await Promise.all(Array.from({ length: 6 }, () => answered((async () => { const c = await P.db.$client.connect(); try { await c.query("select 1"); } finally { c.release(true); } })().then(() => "ok", () => "failed"), 8000, "shared pool checkout (what db.transaction uses) on instantly-terminated connections")));
     assert.ok(shared.every((o) => o === "failed" || o === "ok"), "shared pool queries end (fail or succeed), none hang");
   } finally {
@@ -986,7 +987,7 @@ test("R23b requests queued behind a stuck key are bounded by the queue deadline,
       return { status: r.status, ms: Date.now() - t0 };
     }));
     const worst = Math.max(...res.map((r) => r.ms));
-    assert.ok(res.every((r) => r.status === 429), "all six are denied (contention), none waved through");
+    assert.ok(res.every((r) => r.status === 503), "all six are denied with 503 (contention, Patch 12), none waved through");
     assert.equal(g.__pwChecks, 0, "no password check while the limiter could not decide");
     // Literals on purpose: a bound computed from the constant under test passes whatever the constant is (mutation M5 survived that).
     assert.equal(M.guard.BOUNDS.queueDeadlineMs, 3000, "queue deadline is the documented 3 s");
@@ -1169,4 +1170,59 @@ test("R31 the SHARED pool recovers from an outage by itself: hung queries are cu
   const back = await Promise.all(Array.from({ length: 14 }, (_, i) => answered(shared.query("select 1").then(() => "ok"), 6000, `query ${i} after recovery`)));
   assert.ok(back.every((o) => o === "ok"), "the same pool answers again with no restart");
   assert.ok(shared.totalCount <= 10, "the pool never exceeds its size");
+});
+
+// ---- Patch 12 (Build 106): BUSY is not a rate-limit verdict ---------------------------------------------------------------------
+// Found in Build 104-AP: after a database restart the limiter's first count hit its statement timeout, the guard classed that as BUSY, and a
+// customer's first sign-up was answered 429 "Too many sign-up attempts. Wait a bit". That is false (no limit was reached) and left no trace in the
+// application log. BUSY now answers 503 (the limiter could not decide; still a denial, still nothing written, never a free pass) and writes one
+// privacy-safe log line. A real limit hit stays 429. No response may reveal whether an account exists.
+test("R32 BUSY answers 503 with a generic body and one privacy-safe log line; nothing is written; a real limit still answers 429", async () => {
+  const lines = [];
+  const prev = console.error;
+  console.error = (...a) => { lines.push(util.format(...a)); };
+  const c = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  await c.connect();
+  const rowsFor = async (keys) => Number((await c.query("select count(*) n from app_events where type='auth.throttle' and object_id = any($1)", [keys])).rows[0].n);
+  try {
+    const secrets = [];
+    const bodies = { forgot: {}, login: {} };
+    for (const flow of ["login", "signup", "forgot", "reset"]) {
+      for (const known of flow === "forgot" || flow === "login" ? [true, false] : [true]) {
+        reset_();
+        const email = emailOf(), ip = ipOf();
+        const user = { id: crypto.randomUUID(), email, passwordHash: "h" };
+        if (known) { g.__users[email] = user; g.__accounts[email] = "right-password"; }
+        const rules = { login: M.guard.loginRules(email, ip), signup: M.guard.signupRules(email, ip), forgot: M.guard.forgotRules(email, ip), reset: M.guard.resetRules(null, ip) }[flow];
+        const keys = rules.map((r) => r.key);
+        secrets.push(email, ip, ...keys);
+        const before = await rowsFor(keys);
+        const mark = lines.length;
+        const unlock = await holdLock(rules[0].key);
+        let res, text;
+        try {
+          const r = { login: () => doLogin(M, email, "right-password", ip), signup: () => doSignup(M, email, ip), forgot: () => doForgot(M, email, ip), reset: () => doReset(M, goodReset(user.id, "h"), ip) }[flow]();
+          res = await answered(r, 12000, `${flow} busy`);
+          text = await res.text();
+        } finally { await unlock(); }
+        assert.equal(res.status, 503, `${flow}: BUSY is 503`);
+        assert.ok(Number(res.headers.get("retry-after")) >= 1, `${flow}: Retry-After present`);
+        assert.ok(!/too many|wait a bit/i.test(text.replace(/RateLimited/g, "")), `${flow}: the body does not claim a limit was reached (${text})`);
+        assert.equal(await rowsFor(keys), before, `${flow}: BUSY wrote no counter row`);
+        const mine = lines.slice(mark).filter((l) => l.includes("[auth-limiter] BUSY"));
+        assert.ok(mine.some((l) => l.includes(`flow=${{ login: "login", signup: "signup", forgot: "forgot-password", reset: "reset-password" }[flow]}`) && l.includes("reason=lock_timeout")), `${flow}: one BUSY line with flow and reason (got ${JSON.stringify(mine)})`);
+        for (const l of mine) for (const s of [email, ip, ...keys]) assert.ok(!l.includes(s), `${flow}: the BUSY line carries no email, address or key`);
+        if (flow === "forgot" || flow === "login") bodies[flow][known ? "known" : "unknown"] = text.replaceAll(email, "<email>");
+      }
+    }
+    assert.equal(bodies.forgot.known, bodies.forgot.unknown, "forgot-password BUSY is identical for an existing and an unknown email");
+    assert.equal(bodies.login.known, bodies.login.unknown, "login BUSY is identical for an existing and an unknown email");
+    // a real limit is still a 429 and still says so (per email 3 / h)
+    reset_();
+    const email = emailOf(), ip = ipOf();
+    for (let i = 0; i < 3; i++) assert.equal((await doSignup(M, email, ip)).status, 200, `attempt ${i + 1} is admitted`);
+    const limited = await doSignup(M, email, ip);
+    assert.equal(limited.status, 429, "a real limit hit stays 429");
+    assert.match(await limited.text(), /too many/i, "and says so");
+  } finally { console.error = prev; await c.end(); }
 });

@@ -121,6 +121,12 @@ async function parseLoginBody(req: Request): Promise<Parsed> {
 
 const rateLimited = (origin: string, retryAfter: number) =>
   NextResponse.json({ url: `${origin}/login?error=RateLimited&code=${retryAfter}` }, { status: 429, headers: { "Retry-After": String(retryAfter) } });
+// BUSY (the limiter could not decide in bounded time) is a 503, not a limit verdict (Patch 12). The body keeps the same url so the login form,
+// which reads error=RateLimited, still shows its rate-limit message instead of "Wrong email or password." (O-2: a BUSY-specific message needs a
+// LoginForm change, which is a separate approval). Identical for every email, known or not.
+const limiterBusyLogin = (origin: string, retryAfter: number) =>
+  NextResponse.json({ url: `${origin}/login?error=RateLimited&code=${retryAfter}` }, { status: 503, headers: { "Retry-After": String(retryAfter) } });
+const denied = (origin: string, slot: { busy?: true; retryAfter: number }) => (slot.busy ? limiterBusyLogin(origin, slot.retryAfter) : rateLimited(origin, slot.retryAfter));
 
 export async function POST(req: NextRequest) {
   const url = new URL(req.url);
@@ -134,7 +140,7 @@ export async function POST(req: NextRequest) {
     // Refused, not evaluated. Charged to the address only (there is no trustworthy account to charge).
     try {
       const slot = await reserve(loginRules("", ip));
-      if (!slot.ok) return rateLimited(url.origin, slot.retryAfter);
+      if (!slot.ok) return denied(url.origin, slot);
     } catch (err) {
       logLimiterFailure("login", "FAIL-OPEN", err); // nothing is evaluated either way
     }
@@ -144,7 +150,7 @@ export async function POST(req: NextRequest) {
   let reservation: Reservation | null = null;
   try {
     const slot = await reserve(loginRules(parsed.email, ip));
-    if (!slot.ok) return rateLimited(url.origin, slot.retryAfter);
+    if (!slot.ok) return denied(url.origin, slot);
     reservation = slot.reservation;
   } catch (err) {
     logLimiterFailure("login", "FAIL-OPEN", err);

@@ -65,7 +65,7 @@ field (limiter read the first, Auth.js the last) let guesses bypass every limit.
 ## Bounded waiting (review M3)
 The advisory lock used to wait forever and every waiter held a pooled connection. Now (`BOUNDS` in `authGuard.ts`): per-key in-process FIFO with a 3 s deadline and at most 200 waiters per key
 (400 overall); at most 5 concurrent limiter transactions per instance (the pool default is 10, so page queries keep headroom); `lock_timeout` 1.5 s and `statement_timeout` 4 s inside the transaction.
-Hitting any bound returns BUSY: **a denial (429, `Retry-After: 2`; forgot-password says 429 too, never a silent success), never a pass-through.** BUSY is deliberately not the store-error path:
+Hitting any bound returns BUSY: **a denial (503, `Retry-After: 2`, generic body; a real limit hit stays 429; forgot-password answers BUSY with the same 503 for every address typed, never a silent success), never a pass-through.** Patch 12 (Build 106): BUSY used to answer 429 "too many attempts", which told a customer a limit was reached when none was. Each BUSY now writes one log line, `[auth-limiter] BUSY flow=<flow> reason=<lock_timeout|statement_timeout|queue_deadline> retry_after=2 held_back=<n>`, at most one per flow and reason per second; it carries no key, address or email. The login body keeps `error=RateLimited` so the form does not say "Wrong email or password." (a BUSY-specific message needs a LoginForm change, O-2). BUSY is deliberately not the store-error path:
 failing open on contention would let a flood turn off the password limiter. Cost: during an overload a legitimate user on the same key sees 429 and retries. Measured locally with 400 requests, 60 in parallel, on one key:
 an unrelated user's login took 0.03-0.06 s (idle 0.02-0.03 s); on the baseline the same test took 0.85-0.98 s and the lock test hung with no bound. No infrastructure, service or migration is involved.
 
@@ -76,7 +76,7 @@ The limiter now owns a **dedicated pool, at most 5 connections per instance** (o
 
 | Bound | Value | What happens at the bound |
 |---|---|---|
-| wait for a limiter slot in this process | 3 s | BUSY: 429 (denial, nothing written) |
+| wait for a limiter slot in this process | 3 s | BUSY: 503 (denial, nothing written) |
 | connect (free client + new connection incl. handshake) | 2.5 s | store failure |
 | each statement, client side | 4.5 s | store failure (covers a server that stops answering) |
 | `lock_timeout` / `statement_timeout`, server side | 1.5 s / 4 s | the database answered: BUSY (denial) |

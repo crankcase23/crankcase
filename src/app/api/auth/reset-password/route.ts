@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { parseResetToken, verifyResetToken } from "@/lib/passwordResetToken";
 import { findUserById, updatePassword } from "@/lib/users";
 import { safeErrorSummary } from "@/lib/safeError";
-import { clientIp, resetRules, reserve, tooManyRequests, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
+import { clientIp, resetRules, reserve, tooManyRequests, limiterBusy, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
 
 // Abuse controls (docs/auth/ABUSE-CONTROLS.md): per network address 10/h on every attempt, then per user 10/h once the token has
 // verified. FAILS CLOSED: if the limiter store is down the password is left unchanged (503).
@@ -34,7 +34,7 @@ if (!ip) {
 }
 try {
   const slot = await reserve(resetRules(null, ip));
-  if (!slot.ok) return tooManyRequests(slot.retryAfter);
+  if (!slot.ok) return slot.busy ? limiterBusy(slot.retryAfter) : tooManyRequests(slot.retryAfter);
 } catch (err) {
   logLimiterFailure("reset-password", "FAIL-CLOSED", err);
   return temporarilyUnavailable();
@@ -63,7 +63,7 @@ const userId = verifyResetToken(token, user.passwordHash);
 // unverified id inside the token, which let anyone who knew a user id burn that user's budget with forged tokens (review M2).
 try {
   const slot = await reserve(resetRules(userId, null));
-  if (!slot.ok) return tooManyRequests(slot.retryAfter);
+  if (!slot.ok) return slot.busy ? limiterBusy(slot.retryAfter) : tooManyRequests(slot.retryAfter);
 } catch (err) {
   logLimiterFailure("reset-password", "FAIL-CLOSED", err);
   return temporarilyUnavailable();

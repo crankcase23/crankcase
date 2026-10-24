@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createUser, EmailTakenError } from "@/lib/users";
 import { safeErrorSummary } from "@/lib/safeError";
 import { recordEvent, EVENT_TYPES } from "@/lib/events";
-import { clientIp, signupRules, reserve, tooManyRequests, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
+import { clientIp, signupRules, reserve, tooManyRequests, limiterBusy, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
 
 // Abuse controls (docs/auth/ABUSE-CONTROLS.md): per network address 10/h, per email 3/h, checked BEFORE the expensive
 // password hash. If the limiter store is down this FAILS CLOSED (503, nothing created): an open signup endpoint with no
@@ -35,7 +35,11 @@ export async function POST(request: Request) {
   }
   try {
     const slot = await reserve(signupRules(email, ip));
-    if (!slot.ok) return tooManyRequests(slot.retryAfter, "Too many sign-up attempts. Wait a bit and try again.");
+    if (!slot.ok) {
+      // BUSY (could not decide in bounded time) is not a limit hit: 503, never "too many attempts" (Patch 12).
+      if (slot.busy) return limiterBusy(slot.retryAfter, "Sign-up is busy right now. Try again in a moment.");
+      return tooManyRequests(slot.retryAfter, "Too many sign-up attempts. Wait a bit and try again.");
+    }
   } catch (err) {
     logLimiterFailure("signup", "FAIL-CLOSED", err);
     return temporarilyUnavailable("Sign-up is temporarily unavailable. Try again in a minute.");

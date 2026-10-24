@@ -3,7 +3,7 @@ import { findUserByEmail } from "@/lib/users";
 import { makeResetToken } from "@/lib/passwordResetToken";
 import { sendEmail } from "@/lib/email";
 import { safeErrorSummary } from "@/lib/safeError";
-import { clientIp, forgotRules, reserve, tooManyRequests, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
+import { clientIp, forgotRules, reserve, tooManyRequests, limiterBusy, temporarilyUnavailable, logLimiterFailure } from "@/lib/authGuard";
 
 // Always returns the same generic success response, whether or not the email is registered -- this is what stops the
 // endpoint from being used to check which emails have accounts (enumeration). Three things keep it that way:
@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
     const slot = await reserve(forgotRules(email, ip));
     if (!slot.ok) {
       // busy (could not decide in bounded time) is keyed on what was typed, never on whether the account exists: say so plainly.
-      if (slot.busy || slot.denied.some((d) => d.scope === "forgot.ip")) return tooManyRequests(slot.retryAfter);
+      if (slot.busy) return limiterBusy(slot.retryAfter); // not a limit hit (Patch 12): 503, same body for every address typed
+      if (slot.denied.some((d) => d.scope === "forgot.ip")) return tooManyRequests(slot.retryAfter);
       return NextResponse.json({ ok: true }); // per-email limit: indistinguishable from success, nothing is sent
     }
   } catch (err) {

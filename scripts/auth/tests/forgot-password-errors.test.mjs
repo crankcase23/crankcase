@@ -20,7 +20,7 @@ globalThis.__nextServer = require("next/server");
 const S = (globalThis.__fp = { user: null, lookupError: null, mailResult: { ok: true }, sent: [] });
 const stubs = {
   "@/lib/users": `export async function findUserByEmail() { const S = globalThis.__fp; if (S.lookupError) throw S.lookupError; return S.user; }`,
-  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const forgotRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
+  "@/lib/authGuard": `export const clientIp = () => "203.0.113.9"; export const forgotRules = () => []; export const reserve = async () => ({ ok: true }); export const tooManyRequests = () => new Response("{}", { status: 429 }); export const limiterBusy = () => new Response("{}", { status: 503 }); export const temporarilyUnavailable = () => new Response("{}", { status: 503 }); export const logLimiterFailure = () => {};`,
   "next/server": `const m = globalThis.__nextServer; export const NextResponse = m.NextResponse; export const NextRequest = m.NextRequest; export const after = (fn) => { (globalThis.__afterQ ??= []).push(fn); };`,
   "@/lib/email": `export async function sendEmail(to, subject, html) { const S = globalThis.__fp; S.sent.push({ to, subject }); if (S.mailResult instanceof Error) throw S.mailResult; return S.mailResult; }`,
 };
