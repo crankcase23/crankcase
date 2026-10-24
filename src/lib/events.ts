@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { db } from "@/db";
 import { appEvents } from "@/db/schema";
+import { describeError } from "@/lib/dbErrorLogSafe";
 
 // ---------------------------------------------------------------------------
 // First-party event capture.
@@ -32,6 +33,9 @@ export const EVENT_TYPES = {
   VIN_DECODED: "vin.decoded",
   // Abuse-protection bookkeeping for adding / completing a VIN (src/lib/vinGuard.ts). Never carries the VIN itself.
   VIN_ATTEMPT: "vin.attempt",
+  // Abuse-protection bookkeeping for login, signup, forgot-password and reset-password (src/lib/authGuard.ts). One row per
+  // reserved attempt per limiter key. Carries only salted hashes (objectId); never an email address or a network address.
+  AUTH_THROTTLE: "auth.throttle",
   // A vehicle added through the NHTSA-outage fallback (src/lib/vinFallbackServer.ts). Counted for the daily cap, so it
   // survives the vehicle being removed. Never carries the VIN.
   VIN_FALLBACK_ADD: "vin.fallback_add",
@@ -60,6 +64,7 @@ export const EVENT_LABELS: Record<string, string> = {
   "vehicle.viewed": "Vehicle viewed",
   "vin.decoded": "VIN decoded",
   "vin.attempt": "VIN add attempt",
+  "auth.throttle": "Sign-in abuse counter",
   "vin.collision": "VIN claim required",
   "vin.fallback_add": "Vehicle added by hand (NHTSA down)",
   "guide.purchased": "Guide purchased",
@@ -93,8 +98,9 @@ export async function recordEvent(input: RecordEventInput): Promise<void> {
       metadata: input.metadata ?? null,
     });
   } catch (err) {
-    // Analytics is never load-bearing. Log and move on.
-    console.error("[events] failed to record", input.type, err);
+    // Analytics is never load-bearing. Log and move on. Class and code only: drizzle's message is the SQL plus the bound
+    // parameters (user id, path, the metadata JSON), none of which belongs in the server log (build 104-G).
+    console.error("[events] failed to record", input.type, describeError(err));
   }
 }
 

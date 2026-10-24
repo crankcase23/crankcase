@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:e2e": "playwright test",
+    "test:e2e": "bash scripts/logging/e2e-gated.sh",
     "visuals:check": "node scripts/visuals/check.mjs",
     "factory:test": "node --test scripts/visuals/factory-reconstructed/tests/*.test.mjs",
     "factory:prove-step10": "node scripts/visuals/factory-reconstructed/charger-step10/run-proving.mjs",
@@ -22,11 +22,13 @@
     "bmw:test": "node --test scripts/bmw/tests/*.test.mjs",
     "bmw:preview": "node scripts/bmw/preview/run.mjs",
     "db:test": "node --test scripts/db/tests/*.test.mjs",
+    "throttle:test": "node --test scripts/auth/tests/auth-guard.test.mjs",
     "sync:printify": "node --env-file=.env.local scripts/printify-sync.mjs",
     "config:test": "node --test scripts/config/tests/*.test.mjs",
     "keys:test": "node --test scripts/keys/tests/*.test.mjs",
     "service:test": "node --test scripts/service/tests/*.test.mjs",
     "wrench:test": "node --test scripts/wrench/tests/*.test.mjs",
+    "auth:test": "node --test scripts/auth/tests/*.test.mjs",
     "release:gate": "node scripts/release-gate.mjs"
   },
   "dependencies": {

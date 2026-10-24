@@ -1,6 +1,7 @@
 import { randomUUID, createHash } from "node:crypto";
 import { db } from "@/db";
 import { errorEvents } from "@/db/schema";
+import { describeError, recordableError } from "@/lib/dbErrorLogSafe";
 
 // ---------------------------------------------------------------------------
 // First-party error capture -- the "glitches" view Andy originally asked for.
@@ -41,14 +42,15 @@ interface RecordErrorInput {
 // error, so the fallback is a console log and nothing more.
 export async function recordError(input: RecordErrorInput): Promise<void> {
   try {
-    const err = input.error;
-    const message = err instanceof Error ? err.message : String(err);
-    // Stack traces can be long; cap them so one runaway error can't bloat a row.
-    const stack = err instanceof Error ? err.stack?.slice(0, 8000) ?? null : null;
+    // A database error's message and stack START with the SQL and its bound parameters (a customer's user id, email, feedback text,
+    // a password hash), so those are stored as class + code + stack frames only. Everything else is stored exactly as before
+    // (build 104-G, see src/lib/dbErrorLog.ts).
+    const { message, stack, sensitive } = recordableError(input.error);
 
     await db.insert(errorEvents).values({
       id: randomUUID(),
-      fingerprint: fingerprintFor(input.source, message),
+      // A sensitive summary is already normalised, and its code must keep its digits (23503 and 23505 are different bugs).
+      fingerprint: sensitive ? createHash("sha1").update(`${input.source}::${message}`).digest("hex").slice(0, 16) : fingerprintFor(input.source, message),
       level: input.level ?? "error",
       source: input.source,
       message: message.slice(0, 1000),
@@ -59,7 +61,8 @@ export async function recordError(input: RecordErrorInput): Promise<void> {
       metadata: input.metadata ?? null,
     });
   } catch (writeErr) {
-    console.error("[errors] failed to record error from", input.source, writeErr);
+    // Class and code only: the failed INSERT's own message repeats every value it was storing.
+    console.error("[errors] failed to record error from", input.source, describeError(writeErr));
   }
 }
 

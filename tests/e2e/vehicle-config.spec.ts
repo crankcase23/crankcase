@@ -61,6 +61,12 @@ async function addBmw(page: Page, trans: string, drive: string, theVin = vin()) 
 async function login(ctx: BrowserContext, email: string) {
   const p = await ctx.newPage();
   await p.goto("/login");
+  // A page with no cookies makes two concurrent /api/auth/session requests when it mounts (`next dev` runs the provider's effect twice), and each
+  // response sets a DIFFERENT csrf cookie. A submit that lands between them posts a csrf token that no longer matches the cookie, Auth.js answers
+  // MissingCSRF, and the form shows "Wrong email or password." (104-AO: 8 of 24 dev runs, 0 of 24 production runs). Wait for those requests to
+  // finish before submitting, as a person on a real device does by the time they have typed an email.
+  await expect.poll(async () => (await ctx.cookies()).some((c) => /csrf-token/.test(c.name)), { timeout: 20_000, message: "the first session response set the csrf cookie" }).toBe(true);
+  await p.waitForLoadState("networkidle");
   await p.getByLabel("Email").fill(email);
   await p.getByLabel("Password").fill(PASSWORD);
   await p.getByRole("button", { name: "Log In" }).click();
